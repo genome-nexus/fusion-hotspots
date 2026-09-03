@@ -6,8 +6,7 @@ core pipeline") targets **BRAF** fusions in the public MSK-IMPACT 50k cohort
 on cBioPortal, using a design that generalizes to other genes without
 code changes.
 
-> This repository is currently a placeholder staged for eventual transfer to
-> `cBioPortal/cancer-fusion-hotspots`.
+> Canonical home: `genome-nexus/fusion-hotspots`.
 
 ## What this is
 
