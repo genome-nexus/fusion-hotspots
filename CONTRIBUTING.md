@@ -10,6 +10,36 @@ source .venv/bin/activate
 pip install -e ".[dev]"
 ```
 
+### LaTeX toolchain (PDF report rendering)
+
+`report.pdf` and `paper.pdf` are rendered from generated LaTeX source and
+compiled with [Tectonic](https://tectonic-typesetting.github.io/), a
+self-contained LaTeX engine that fetches the packages a document needs on
+demand (no multi-gigabyte TeX Live install). Install the `tectonic` binary
+and put it on `PATH`:
+
+```bash
+# macOS
+brew install tectonic
+
+# Linux (or CI): download a prebuilt static binary, no shared libraries
+# needed -- pin the version you download, see
+# https://github.com/tectonic-typesetting/tectonic/releases
+curl -sSL -o tectonic.tar.gz \
+  https://github.com/tectonic-typesetting/tectonic/releases/download/tectonic%400.17.0/tectonic-0.17.0-x86_64-unknown-linux-musl.tar.gz
+tar xzf tectonic.tar.gz
+sudo mv tectonic /usr/local/bin/
+
+# or, with a Rust toolchain:
+cargo install tectonic
+```
+
+Without `tectonic` on `PATH`, `cfh.reporting.pdf.render_pdf_report` and
+`render_manuscript_pdf` (and therefore `pytest -m "not network"`, which
+renders real PDFs in `tests/test_pdf_report.py`/`tests/test_latex.py`) raise
+a `cfh.reporting.latex.LatexRenderError` explaining how to install it,
+rather than silently producing a different-looking PDF.
+
 ## Running checks locally
 
 ```bash

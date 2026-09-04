@@ -1,25 +1,36 @@
-"""Assemble the self-contained, human-reviewer-facing ``report.pdf``.
+"""Assemble the self-contained, human-reviewer-facing ``report.pdf`` and the
+cross-gene ``paper.pdf``/``summary.pdf``.
 
 Consumes exactly the artifacts already written by
-``cfh.real_benchmark.write_outputs`` for one run directory (``results.json``,
-``results.tsv``, ``visualizations/*.svg``) plus the deterministic templated
-text from :mod:`cfh.reporting.text`. Layout only -- no numbers are computed
-here; every figure comes from ``text.py`` or is read verbatim from the run's
-own tables.
+``cfh.real_benchmark.write_outputs`` / ``cfh.cohort.outputs`` for one run
+(``results.json``, ``results.tsv``, ``visualizations/*.svg``) plus the
+deterministic templated text from :mod:`cfh.reporting.text` and
+:mod:`cfh.reporting.manuscript_text`. Layout only -- no numbers are computed
+here; every sentence comes from those two modules and every figure is read
+verbatim from the run's own SVGs.
+
+``render_pdf_report`` (the per-gene ``report.pdf``) and
+``render_manuscript_pdf`` (the cohort-level manuscript ``paper.pdf``) render
+a real two-column academic-paper-style LaTeX document, compiled with
+Tectonic (see :mod:`cfh.reporting.latex` for why Tectonic and how escaping/
+compilation work). ``render_cohort_summary_pdf`` (the plain one-table-per-
+gene ``summary.pdf``) is unaffected -- it keeps using reportlab/platypus
+directly, as before.
 """
 
 from __future__ import annotations
 
 import csv
 import json
+import tempfile
 from pathlib import Path
+from typing import Any
 
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import LETTER, landscape
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import inch
 from reportlab.platypus import (
-    NextPageTemplate,
     PageBreak,
     PageTemplate,
     Paragraph,
@@ -31,6 +42,7 @@ from reportlab.platypus.doctemplate import BaseDocTemplate
 from reportlab.platypus.frames import Frame
 from svglib.svglib import svg2rlg
 
+from cfh.reporting.latex import compile_latex, escape_latex, latex_long_table, svg_to_pdf
 from cfh.reporting.text import render_abstract, render_results_summary
 
 _PORTRAIT_TEMPLATE = "portrait"
@@ -40,6 +52,161 @@ _MAX_TABLE_ROWS = 500
 """Hard cap on rendered TSV rows so a pathologically large run stays a
 readable, boundedly-sized PDF instead of a runaway multi-thousand-page
 document; a note is appended when rows are truncated."""
+
+_LATEX_PREAMBLE = r"""\documentclass[9pt,twocolumn]{article}
+\usepackage[letterpaper,margin=0.65in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{pdflscape}
+\usepackage{xltabular}
+\usepackage{caption}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\captionsetup{font=small,labelfont=bf}
+\pagestyle{plain}
+"""
+
+
+class _FigureCollector:
+    """Converts each SVG handed to :meth:`add` to a real standalone PDF
+    (via :func:`cfh.reporting.latex.svg_to_pdf`, reusing this project's
+    existing svglib/reportlab SVG-loading path) under a plain,
+    LaTeX-special-character-free relative filename (``fig0.pdf``,
+    ``fig1.pdf``, ...) inside ``scratch_dir``, and returns that filename for
+    use in an ``\\includegraphics{...}`` call. Returns ``None`` -- adding
+    nothing -- when the SVG has no renderable content, mirroring
+    ``svg_to_pdf``'s own None-on-empty behavior.
+    """
+
+    def __init__(self, scratch_dir: Path) -> None:
+        self._scratch_dir = scratch_dir
+        self._next_index = 0
+        self.figures: dict[str, Path] = {}
+
+    def add(self, svg_path: Path) -> str | None:
+        name = f"fig{self._next_index}.pdf"
+        destination = self._scratch_dir / name
+        if svg_to_pdf(svg_path, destination) is None:
+            return None
+        self._next_index += 1
+        self.figures[name] = destination
+        return name
+
+
+def _title_and_abstract_tex(title: str, subtitle: str, abstract: str) -> str:
+    """The shared ``\\twocolumn[...]`` title-page idiom: a full-width title
+    and single-column abstract, followed by the two-column body -- see
+    :mod:`cfh.reporting.latex`'s module docstring for why this toolchain/
+    layout was verified against a real compile before being adopted here.
+    """
+    lines = [
+        "\\title{" + escape_latex(title) + "}",
+        "\\author{" + escape_latex(subtitle) + "}",
+        "\\date{}",
+        "\\begin{document}",
+        "\\twocolumn[",
+        "  \\begin{@twocolumnfalse}",
+        "  \\maketitle",
+        "  \\begin{abstract}",
+        escape_latex(abstract),
+        "  \\end{abstract}",
+        "  \\vspace{1em}",
+        "  \\end{@twocolumnfalse}",
+        "]",
+        "",
+    ]
+    return "\n".join(lines)
+
+
+def _figure_block(name: str, caption: str) -> str:
+    lines = [
+        "\\begin{figure*}[htbp]",
+        "\\centering",
+        f"\\includegraphics[width=0.92\\textwidth]{{{name}}}",
+    ]
+    if caption:
+        lines.append("\\caption{" + escape_latex(caption) + "}")
+    lines.append("\\end{figure*}")
+    return "\n".join(lines) + "\n"
+
+
+def _landscape_table_section(heading: str, table_tex: str) -> str:
+    return (
+        "\\clearpage\n\\onecolumn\n\\begin{landscape}\n"
+        + ("\\section{" + escape_latex(heading) + "}\n" if heading else "")
+        + table_tex
+        + "\\end{landscape}\n\\clearpage\n\\twocolumn\n"
+    )
+
+
+def _algorithm_tables_tex(payload: dict) -> str:
+    """Render each algorithm's own ``Tables`` entries (contingency tables,
+    partner-gene counts, cutpoint scan, and -- forward-compatibly -- a
+    ``composite_score`` ranked table if one is ever present) as real
+    booktabs/xltabular tables. Reused verbatim data shape from the previous
+    reportlab implementation -- only the rendering target changed.
+    """
+    parts: list[str] = []
+    for result in payload.get("algorithm_results") or []:
+        algorithm = result.get("Algorithm")
+        for table_name, value in (result.get("Tables") or {}).items():
+            if isinstance(value, dict) and value.get("omitted_from_artifact"):
+                continue
+            if isinstance(value, list) and value and isinstance(value[0], dict):
+                columns = list(value[0].keys())
+                rows: list[list[Any]] = [columns] + [
+                    [row.get(col) for col in columns] for row in value
+                ]
+            elif isinstance(value, list) and value and isinstance(value[0], list):
+                rows = value
+            else:
+                continue
+            heading = f"{algorithm} \u2014 {table_name}" if algorithm else table_name
+            parts.append("\\subsection{" + escape_latex(heading) + "}\n")
+            parts.append(latex_long_table(rows, header=True))
+            parts.append("\n\\vspace{0.6em}\n")
+    return "".join(parts)
+
+
+def _results_tsv_tex(tsv_path: Path) -> str:
+    if not tsv_path.exists():
+        return ""
+    with tsv_path.open(newline="") as handle:
+        rows = list(csv.reader(handle, delimiter="\t"))
+    if not rows:
+        return ""
+    body_rows = rows[1:]
+    truncated = len(body_rows) > _MAX_TABLE_ROWS
+    display_rows = [rows[0]] + body_rows[:_MAX_TABLE_ROWS]
+    parts = [
+        "\\subsection{Per-event results (results.tsv)}\n",
+        latex_long_table(display_rows, header=True),
+    ]
+    if truncated:
+        parts.append(
+            "\n\\par\\textit{Showing the first "
+            f"{_MAX_TABLE_ROWS} of {len(body_rows)} rows; "
+            "see results.tsv for the complete table.}\n"
+        )
+    return "".join(parts)
+
+
+def _figures_section_tex(visualization_dir: Path, collector: _FigureCollector) -> str:
+    if not visualization_dir.exists():
+        return ""
+    svg_paths = sorted(visualization_dir.glob("*.svg"))
+    if not svg_paths:
+        return ""
+    parts = ["\\section{Figures}\n"]
+    for svg_path in svg_paths:
+        name = collector.add(svg_path)
+        if name is None:
+            continue
+        parts.append(_figure_block(name, svg_path.stem.replace("_", " ")))
+    return "".join(parts)
 
 
 def _styles() -> dict[str, ParagraphStyle]:
@@ -88,73 +255,6 @@ def _generic_table_flowable(rows: list[list], styles: dict, header: bool = True)
     return table
 
 
-def _results_tsv_table(tsv_path: Path, styles: dict) -> list:
-    if not tsv_path.exists():
-        return []
-    with tsv_path.open(newline="") as handle:
-        reader = csv.reader(handle, delimiter="\t")
-        rows = list(reader)
-    if not rows:
-        return []
-    flowables: list = [Paragraph("Per-event results (results.tsv)", styles["Heading2"])]
-    body_rows = rows[1:]
-    truncated = len(body_rows) > _MAX_TABLE_ROWS
-    display_rows = [rows[0]] + body_rows[:_MAX_TABLE_ROWS]
-    flowables.append(_generic_table_flowable(display_rows, styles))
-    if truncated:
-        flowables.append(
-            Paragraph(
-                f"Showing the first {_MAX_TABLE_ROWS} of {len(body_rows)} rows; "
-                "see results.tsv for the complete table.",
-                styles["Caption"],
-            )
-        )
-    return flowables
-
-
-def _algorithm_tables(payload: dict, styles: dict) -> list:
-    """Render each algorithm's own ``Tables`` entries (contingency tables,
-    partner-gene counts, cutpoint scan, and -- forward-compatibly -- a
-    ``composite_score`` ranked table if one is ever present) as real tables.
-    """
-    flowables: list = []
-    for result in payload.get("algorithm_results") or []:
-        tables = result.get("Tables") or {}
-        rendered_any = False
-        for table_name, value in tables.items():
-            if isinstance(value, dict) and value.get("omitted_from_artifact"):
-                continue
-            if isinstance(value, list) and value and isinstance(value[0], dict):
-                columns = list(value[0].keys())
-                rows = [columns] + [[row.get(col) for col in columns] for row in value]
-            elif isinstance(value, list) and value and isinstance(value[0], list):
-                rows = value
-            else:
-                continue
-            if not rendered_any:
-                flowables.append(
-                    Paragraph(
-                        f"{result.get('Algorithm')} tables",
-                        styles["Heading2"],
-                    )
-                )
-                rendered_any = True
-            flowables.append(Paragraph(table_name, styles["Caption"]))
-            display_rows = rows[: _MAX_TABLE_ROWS + 1]
-            flowables.append(
-                _generic_table_flowable(display_rows, styles, header=isinstance(value[0], dict))
-            )
-            if len(rows) > _MAX_TABLE_ROWS + 1:
-                flowables.append(
-                    Paragraph(
-                        f"Showing the first {_MAX_TABLE_ROWS} of {len(rows) - 1} rows.",
-                        styles["Caption"],
-                    )
-                )
-            flowables.append(Spacer(1, 0.15 * inch))
-    return flowables
-
-
 def _figures(visualization_dir: Path, styles: dict, max_width: float) -> list:
     flowables: list = []
     if not visualization_dir.exists():
@@ -187,74 +287,49 @@ def render_pdf_report(
     ``results.tsv``/``visualizations`` next to ``output_path`` -- the
     standard ``runs/<run_id>/`` layout -- but can be overridden (e.g. in
     tests using synthetic fixtures that live elsewhere).
+
+    Renders a real two-column academic-paper-style LaTeX document (title,
+    single-column abstract, two-column Results-summary body, a landscape
+    booktabs/xltabular Tables section, and a Figures section), compiled with
+    Tectonic -- see :mod:`cfh.reporting.latex`. Every sentence comes from
+    :func:`cfh.reporting.text.render_abstract` /
+    :func:`cfh.reporting.text.render_results_summary`; nothing is computed
+    here, and every piece of data-derived text is escaped via
+    :func:`cfh.reporting.latex.escape_latex` before being embedded.
     """
     output_path = Path(output_path)
     run_dir = output_path.parent
     tsv_path = Path(results_tsv_path) if results_tsv_path else run_dir / "results.tsv"
     viz_dir = Path(visualizations_dir) if visualizations_dir else run_dir / "visualizations"
 
-    styles = _styles()
-    portrait_width, portrait_height = LETTER
-    landscape_size = landscape(LETTER)
-
-    doc = BaseDocTemplate(
-        str(output_path),
-        pagesize=LETTER,
-        leftMargin=0.75 * inch,
-        rightMargin=0.75 * inch,
-        topMargin=0.75 * inch,
-        bottomMargin=0.75 * inch,
-    )
-    portrait_frame = Frame(
-        doc.leftMargin,
-        doc.bottomMargin,
-        portrait_width - doc.leftMargin - doc.rightMargin,
-        portrait_height - doc.topMargin - doc.bottomMargin,
-        id="portrait",
-    )
-    landscape_frame = Frame(
-        doc.leftMargin,
-        doc.bottomMargin,
-        landscape_size[0] - doc.leftMargin - doc.rightMargin,
-        landscape_size[1] - doc.topMargin - doc.bottomMargin,
-        id="landscape",
-    )
-    doc.addPageTemplates(
-        [
-            PageTemplate(id=_PORTRAIT_TEMPLATE, frames=[portrait_frame], pagesize=LETTER),
-            PageTemplate(id=_LANDSCAPE_TEMPLATE, frames=[landscape_frame], pagesize=landscape_size),
-        ]
-    )
-
     gene = payload.get("gene_symbol") or "Unknown gene"
     study = payload.get("study_id") or "unknown study"
 
-    story: list = [
-        Paragraph(f"{gene} fusion-hotspot benchmark report", styles["Title"]),
-        Paragraph(f"Study: {study}", styles["Body"]),
-        Spacer(1, 0.2 * inch),
-        Paragraph("Abstract", styles["Heading1"]),
-        Paragraph(render_abstract(payload), styles["Body"]),
-        Spacer(1, 0.25 * inch),
-        Paragraph("Results summary", styles["Heading1"]),
-    ]
-    for section in render_results_summary(payload):
-        story.append(Paragraph(section["heading"], styles["Heading2"]))
-        story.append(Paragraph(section["paragraph"], styles["Body"]))
-        story.append(Spacer(1, 0.1 * inch))
+    with tempfile.TemporaryDirectory(prefix="cfh-latex-figures-") as scratch:
+        collector = _FigureCollector(Path(scratch))
 
-    story.append(NextPageTemplate(_LANDSCAPE_TEMPLATE))
-    story.append(PageBreak())
-    story.append(Paragraph("Tables", styles["Heading1"]))
-    story.extend(_algorithm_tables(payload, styles))
-    story.extend(_results_tsv_table(tsv_path, styles))
+        parts = [
+            _LATEX_PREAMBLE,
+            _title_and_abstract_tex(
+                f"{gene} fusion-hotspot benchmark report",
+                f"Study: {study}",
+                render_abstract(payload),
+            ),
+            "\\section{Results summary}\n",
+        ]
+        for section in render_results_summary(payload):
+            parts.append("\\subsection{" + escape_latex(section["heading"]) + "}\n")
+            parts.append(escape_latex(section["paragraph"]) + "\n")
 
-    story.append(NextPageTemplate(_PORTRAIT_TEMPLATE))
-    story.append(PageBreak())
-    story.extend(_figures(viz_dir, styles, portrait_width - doc.leftMargin - doc.rightMargin))
+        tables_tex = _algorithm_tables_tex(payload) + _results_tsv_tex(tsv_path)
+        if tables_tex:
+            parts.append(_landscape_table_section("Tables", tables_tex))
 
-    doc.build(story)
-    return output_path
+        parts.append(_figures_section_tex(viz_dir, collector))
+        parts.append("\\end{document}\n")
+
+        tex_source = "\n".join(parts)
+        return compile_latex(tex_source, output_path, figures=collector.figures)
 
 
 def render_cohort_summary_pdf(
@@ -380,98 +455,71 @@ def render_manuscript_pdf(
     genes); ``figure_path``/``figure_caption``/``report_note`` may be
     ``None``. ``results_table_rows`` and ``appendix_rows`` are each a header
     row followed by data rows, already string-formatted by the caller.
+
+    Renders the same real two-column academic-paper-style LaTeX document
+    (title, single-column abstract, two-column body, landscape
+    booktabs/xltabular tables, figures) as :func:`render_pdf_report` --
+    compiled with Tectonic, see :mod:`cfh.reporting.latex`. Nothing is
+    computed here; every piece of data-derived text is escaped via
+    :func:`cfh.reporting.latex.escape_latex` before being embedded.
     """
     output_path = Path(output_path)
-    styles = _styles()
-    portrait_width, portrait_height = LETTER
-    landscape_size = landscape(LETTER)
 
-    doc = BaseDocTemplate(
-        str(output_path),
-        pagesize=LETTER,
-        leftMargin=0.75 * inch,
-        rightMargin=0.75 * inch,
-        topMargin=0.75 * inch,
-        bottomMargin=0.75 * inch,
-    )
-    portrait_frame = Frame(
-        doc.leftMargin,
-        doc.bottomMargin,
-        portrait_width - doc.leftMargin - doc.rightMargin,
-        portrait_height - doc.topMargin - doc.bottomMargin,
-        id="portrait",
-    )
-    landscape_frame = Frame(
-        doc.leftMargin,
-        doc.bottomMargin,
-        landscape_size[0] - doc.leftMargin - doc.rightMargin,
-        landscape_size[1] - doc.topMargin - doc.bottomMargin,
-        id="landscape",
-    )
-    doc.addPageTemplates(
-        [
-            PageTemplate(id=_PORTRAIT_TEMPLATE, frames=[portrait_frame], pagesize=LETTER),
-            PageTemplate(id=_LANDSCAPE_TEMPLATE, frames=[landscape_frame], pagesize=landscape_size),
+    with tempfile.TemporaryDirectory(prefix="cfh-latex-figures-") as scratch:
+        collector = _FigureCollector(Path(scratch))
+
+        parts = [
+            _LATEX_PREAMBLE,
+            _title_and_abstract_tex(title, "", abstract),
+            "\\section{Methods}\n",
+            escape_latex(methods) + "\n",
+            "\\section{Results}\n",
+            "\\subsection{Genome-wide summary}\n",
+            escape_latex(manhattan_caption) + "\n",
         ]
-    )
+        if manhattan_svg_path is not None and Path(manhattan_svg_path).exists():
+            name = collector.add(Path(manhattan_svg_path))
+            if name is not None:
+                parts.append(_figure_block(name, manhattan_caption))
 
-    content_width = portrait_width - doc.leftMargin - doc.rightMargin
+        if results_table_rows:
+            parts.append(
+                _landscape_table_section(
+                    "FDR-significant and honorable-mention genes",
+                    latex_long_table(results_table_rows, header=True),
+                )
+            )
 
-    story: list = [
-        Paragraph(title, styles["Title"]),
-        Spacer(1, 0.2 * inch),
-        Paragraph("Abstract", styles["Heading1"]),
-        Paragraph(abstract, styles["Body"]),
-        Spacer(1, 0.2 * inch),
-        Paragraph("Methods", styles["Heading1"]),
-        Paragraph(methods, styles["Body"]),
-        Spacer(1, 0.25 * inch),
-        Paragraph("Results", styles["Heading1"]),
-        Paragraph("Genome-wide summary", styles["Heading2"]),
-        Paragraph(manhattan_caption, styles["Caption"]),
-    ]
-    if manhattan_svg_path is not None and Path(manhattan_svg_path).exists():
-        drawing = _load_svg_drawing(Path(manhattan_svg_path), content_width)
-        if drawing is not None:
-            story.append(drawing)
-    story.append(Spacer(1, 0.2 * inch))
+        parts.append("\\subsection{Gene highlights}\n")
+        for highlight in gene_highlights:
+            parts.append("\\subsubsection{" + escape_latex(highlight["heading"]) + "}\n")
+            parts.append(escape_latex(highlight["paragraph"]) + "\n")
+            figure_path = highlight.get("figure_path")
+            if figure_path is not None and Path(figure_path).exists():
+                name = collector.add(Path(figure_path))
+                if name is not None:
+                    parts.append(_figure_block(name, highlight.get("figure_caption") or ""))
+            if highlight.get("report_note"):
+                parts.append("\\par\\textit{" + escape_latex(highlight["report_note"]) + "}\n")
 
-    if results_table_rows:
-        story.append(NextPageTemplate(_LANDSCAPE_TEMPLATE))
-        story.append(PageBreak())
-        story.append(Paragraph("FDR-significant and honorable-mention genes", styles["Heading2"]))
-        story.append(_generic_table_flowable(results_table_rows, styles))
-        story.append(NextPageTemplate(_PORTRAIT_TEMPLATE))
-        story.append(PageBreak())
+        parts.append("\\section{Discussion}\n")
+        parts.append("\\begin{itemize}\n")
+        for bullet in discussion_bullets:
+            parts.append("\\item " + escape_latex(bullet) + "\n")
+        parts.append("\\end{itemize}\n")
 
-    story.append(Paragraph("Gene highlights", styles["Heading2"]))
-    for highlight in gene_highlights:
-        story.append(Paragraph(highlight["heading"], styles["Heading2"]))
-        story.append(Paragraph(highlight["paragraph"], styles["Body"]))
-        figure_path = highlight.get("figure_path")
-        if figure_path is not None and Path(figure_path).exists():
-            drawing = _load_svg_drawing(Path(figure_path), content_width)
-            if drawing is not None:
-                if highlight.get("figure_caption"):
-                    story.append(Paragraph(highlight["figure_caption"], styles["Caption"]))
-                story.append(drawing)
-        if highlight.get("report_note"):
-            story.append(Paragraph(highlight["report_note"], styles["Caption"]))
-        story.append(Spacer(1, 0.15 * inch))
+        if appendix_rows:
+            parts.append(
+                _landscape_table_section(
+                    "Appendix: per-gene report index",
+                    latex_long_table(appendix_rows, header=True),
+                )
+            )
 
-    story.append(Paragraph("Discussion", styles["Heading1"]))
-    for bullet in discussion_bullets:
-        story.append(Paragraph(f"&bull; {bullet}", styles["Body"]))
-        story.append(Spacer(1, 0.05 * inch))
+        parts.append("\\end{document}\n")
 
-    if appendix_rows:
-        story.append(NextPageTemplate(_LANDSCAPE_TEMPLATE))
-        story.append(PageBreak())
-        story.append(Paragraph("Appendix: per-gene report index", styles["Heading1"]))
-        story.append(_generic_table_flowable(appendix_rows, styles))
-
-    doc.build(story)
-    return output_path
+        tex_source = "\n".join(parts)
+        return compile_latex(tex_source, output_path, figures=collector.figures)
 
 
 def render_pdf_report_for_run_dir(run_dir: str | Path) -> Path:

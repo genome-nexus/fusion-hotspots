@@ -47,6 +47,11 @@ source .venv/bin/activate
 pip install -e ".[dev]"
 ```
 
+`report.pdf`/`paper.pdf` rendering also requires the
+[Tectonic](https://tectonic-typesetting.github.io/) LaTeX engine on `PATH`
+(e.g. `brew install tectonic`) -- see CONTRIBUTING.md for full install
+instructions and why Tectonic was chosen.
+
 ## Quickstart
 
 ```python
