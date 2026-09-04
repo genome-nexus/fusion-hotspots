@@ -38,9 +38,9 @@ from cfh.model.fusion_feature import FusionFeature
 from cfh.normalization.event_normalizer import normalize
 from cfh.orchestrator.run import run_algorithms
 from cfh.reporting.fusion_schematic import (
-    exon_boundary_ticks_svg,
     render_fusion_schematic_svg,
     render_intragenic_deletion_schematic_svg,
+    render_position_axis_svg,
 )
 from cfh.reporting.palette import (
     BREAKPOINT_COLOR,
@@ -1242,11 +1242,11 @@ def _domain_highlight_color(index: int, domain_name: str) -> str:
 def _domain_track_svg(run: RealBenchmarkRun, outlier_ids: set[str]) -> str:
     """Render breakpoints by quantitative domain-retention state.
 
-    Shares its exon-boundary tick/label convention
-    (:func:`cfh.reporting.fusion_schematic.exon_boundary_ticks_svg`) with
+    Shares its position-axis and exon-boundary convention
+    (:func:`cfh.reporting.fusion_schematic.render_position_axis_svg`) with
     the fusion-transcript schematic so the two renderers can't drift apart
-    on how an exon number is derived or drawn; both read the same
-    gene-agnostic ``gene_track["exon_boundaries_aa"]`` field.
+    on transcript-end or exon labels; both read the same gene-agnostic
+    ``gene_track["exon_boundaries_aa"]`` field.
     """
     axis_left = 60.0
     axis_width = 800.0
@@ -1321,37 +1321,26 @@ def _domain_track_svg(run: RealBenchmarkRun, outlier_ids: set[str]) -> str:
     dots_bottom = dots_top + 4 * 7 + 3
 
     position_axis_y = dots_bottom + 12.0
-    position_ticks = [0, *range(100, int(maximum), 100), int(maximum)]
-    position_axis_elements = [
-        f'<line x1="{axis_left:.1f}" y1="{position_axis_y:.1f}" '
-        f'x2="{axis_left + axis_width:.1f}" y2="{position_axis_y:.1f}" '
-        'stroke="#444444" stroke-width="1"/>'
-    ]
-    seen_ticks: set[int] = set()
-    for tick in position_ticks:
-        if tick in seen_ticks:
-            continue
-        seen_ticks.add(tick)
+    position_axis_elements = render_position_axis_svg(
+        position_axis_y,
+        int(maximum),
+        scale,
+        axis_left=axis_left,
+        exon_boundaries=(run.gene_track or {}).get("exon_boundaries_aa") or [],
+    )
+    for tick in range(100, int(maximum), 100):
         x = axis_left + tick * scale
-        anchor = "start" if tick == 0 else ("end" if tick == int(maximum) else "middle")
         position_axis_elements.append(
             f'<line x1="{x:.1f}" y1="{position_axis_y:.1f}" x2="{x:.1f}" '
             f'y2="{position_axis_y + 5:.1f}" stroke="#444444" stroke-width="1"/>'
         )
         position_axis_elements.append(
             f'<text x="{x:.1f}" y="{position_axis_y + 15:.1f}" font-family="sans-serif" '
-            f'font-size="8" text-anchor="{anchor}">{tick}</text>'
+            f'font-size="8" text-anchor="middle">{tick}</text>'
         )
 
     exon_boundaries = (run.gene_track or {}).get("exon_boundaries_aa") or []
-    exon_tick_y = position_axis_y + 20.0
-    exon_tick_elements = exon_boundary_ticks_svg(
-        exon_boundaries,
-        axis_left=axis_left,
-        scale=scale,
-        y=exon_tick_y,
-        max_position=maximum,
-    )
+    exon_tick_y = position_axis_y + 18.0
     exon_tick_label_height = 20.0 if exon_boundaries else 0.0
 
     legend_y = exon_tick_y + exon_tick_label_height + 15.0
@@ -1369,7 +1358,6 @@ def _domain_track_svg(run: RealBenchmarkRun, outlier_ids: set[str]) -> str:
             f'y2="{backbone_y:.1f}" stroke="#444" stroke-width="4"/>',
             *dots,
             *position_axis_elements,
-            *exon_tick_elements,
             f'<circle cx="60" cy="{legend_y:.1f}" r="4" fill="{RETAINED_COLOR}"/>'
             f'<text x="70" y="{legend_y + 5:.1f}" font-family="sans-serif" font-size="12">'
             "fully retained</text>",
