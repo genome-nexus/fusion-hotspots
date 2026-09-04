@@ -514,6 +514,13 @@ def _write_manuscript_markdown(
     ordered_genes = _manuscript_gene_order(
         rows_by_gene, significant_genes, honorable_mentions, highlighted_genes
     )
+    # The same denominator the Methods/Discussion sections report as having
+    # entered the Benjamini-Hochberg correction (see
+    # ``cfh.reporting.manuscript_text._scan_counts``'s ``n_with_q``) -- kept
+    # in sync by deriving it here rather than re-stating a separate number.
+    n_fdr_corrected_genes = sum(
+        1 for row in rows if row.get("min_fdr_adjusted_q_value") is not None
+    )
 
     lines = [
         f"# {render_manuscript_title(payload)}",
@@ -584,7 +591,13 @@ def _write_manuscript_markdown(
 
         lines.append(f"#### {gene} ({', '.join(badges)})")
         lines.append("")
-        lines.append(render_gene_highlight(row, honorable_mention_note=note))
+        lines.append(
+            render_gene_highlight(
+                row,
+                n_fdr_corrected_genes=n_fdr_corrected_genes,
+                honorable_mention_note=note,
+            )
+        )
         lines.append("")
         figure_path = _manuscript_key_figure(report_paths)
         if figure_path is not None:
@@ -649,6 +662,9 @@ def _write_manuscript_pdf(
     ordered_genes = _manuscript_gene_order(
         rows_by_gene, significant_genes, honorable_mentions, highlighted_genes
     )
+    n_fdr_corrected_genes = sum(
+        1 for row in rows if row.get("min_fdr_adjusted_q_value") is not None
+    )
 
     table_header = [
         "Gene",
@@ -704,7 +720,11 @@ def _write_manuscript_pdf(
         gene_highlights.append(
             {
                 "heading": f"{gene} ({', '.join(badges)})",
-                "paragraph": render_gene_highlight(row, honorable_mention_note=note),
+                "paragraph": render_gene_highlight(
+                    row,
+                    n_fdr_corrected_genes=n_fdr_corrected_genes,
+                    honorable_mention_note=note,
+                ),
                 "figure_path": figure_path,
                 "figure_caption": (
                     f"Reused from the {gene} individual gene report ({figure_path.name})."
