@@ -73,13 +73,13 @@ def test_mapping_adds_quantitative_detail_without_changing_binary_calls():
     ("run_directory", "gene", "bounds", "expected"),
     [
         (
-            "braf_msk-impact-50k-2026_20260904T005535Z",
+            "braf_msk-impact-50k-2026_20260904T172738Z",
             "BRAF",
             (458, 712),
             (178, 179, 163, 91.06145251396649, [[142, 21], [9, 6]], 0.013367557978153668),
         ),
         (
-            "ret_msk-impact-50k-2026_20260904T005538Z",
+            "ret_msk-impact-50k-2026_20260904T172752Z",
             "RET",
             (724, 1005),
             (194, 194, 179, 92.26804123711341, [[141, 38], [5, 10]], 0.00041966557652448966),
@@ -215,7 +215,7 @@ def test_verified_live_benchmark_conclusions_are_unchanged(
 def test_corrected_ret_live_artifact_summary():
     """Lock RET conclusions directly to the post-locus-validation live artifact."""
     payload = json.loads(
-        (Path("runs") / "ret_msk-impact-50k-2026_20260904T005538Z" / "results.json").read_text()
+        (Path("runs") / "ret_msk-impact-50k-2026_20260904T172752Z" / "results.json").read_text()
     )
     summary = payload["summary"]
 

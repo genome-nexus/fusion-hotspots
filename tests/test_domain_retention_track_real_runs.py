@@ -24,8 +24,14 @@ GENE_REPORTS = (
     / "gene_reports"
 )
 RUN_DIRS = {
-    "BRAF": GENE_REPORTS / "braf",
-    "RET": GENE_REPORTS / "ret",
+    "BRAF (cohort scan)": GENE_REPORTS / "braf",
+    "RET (cohort scan)": GENE_REPORTS / "ret",
+    "BRAF (standalone benchmark run)": (
+        REPO_ROOT / "runs" / "braf_msk-impact-50k-2026_20260904T172738Z"
+    ),
+    "RET (standalone benchmark run)": (
+        REPO_ROOT / "runs" / "ret_msk-impact-50k-2026_20260904T172752Z"
+    ),
 }
 
 

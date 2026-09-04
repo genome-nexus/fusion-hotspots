@@ -15,12 +15,10 @@ each run's ``results.json`` and runs the real algorithm plugins end to end:
 * RET (only ``domain_retention`` configured -- no
   ``disruption_required_domains``) proves composite_score degrades
   gracefully on real data with fewer applicable algorithms, reusing the
-  ``domain_retention``/``cutpoint_detection``/``frequency`` results already
-  present in that committed run's own ``results.json`` (its
-  ``confidence_stats`` entry there is a real recorded failure -- no
-  ``group_field`` was supplied when that run was generated -- which is
-  itself a real example of a result composite_score must treat as
-  unavailable).
+  ``frequency``/``domain_retention``/``cutpoint_detection``/
+  ``confidence_stats`` results already present in that committed run's own
+  ``results.json`` and excluding the explicitly-skipped ``domain_disruption``
+  result rather than zero-filling it.
 
 Both tests print the actual ranked output so it is reported honestly,
 whatever it turns out to be, rather than asserted into a predetermined
@@ -52,7 +50,6 @@ from cfh.real_benchmark import analyze_structural_variant_calls
 
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 _RUNS_DIR = _REPO_ROOT / "runs"
-_RET_COMPOSITE_RESULTS = _RUNS_DIR / "ret_msk-impact-50k-2026_20260904T005538Z" / "results.json"
 _GENOME_NEXUS_BRAF_FIXTURE = (
     Path(__file__).resolve().parents[1]
     / "fixtures"
@@ -285,28 +282,22 @@ def _ret_events_and_features(results_path: Path) -> tuple[list[FusionEvent], lis
 
 def test_composite_score_real_ret_msk_impact_gracefully_degrades():
     """RET only configures ``domain_retention`` (genes/configs/ret.yaml has
-    no ``disruption_required_domains``), and this committed run's own
-    ``confidence_stats`` entry is a real recorded failure (no ``group_field``
-    supplied when the run was generated). This reuses the ``frequency``,
-    ``domain_retention``, and ``cutpoint_detection`` AlgorithmResult objects
-    already present in that committed run's results.json verbatim -- the
-    most literal form of "consume already-computed outputs as inputs" -- and
-    proves composite_score ranks real RET fusion partners using only the
-    two-to-three sub-scores that are genuinely applicable, excluding
-    domain_disruption (recorded as an explicit skipped result) and
-    confidence_stats (a real recorded failure) rather than zero-filling them.
+    no ``disruption_required_domains``), a config-level fact independent of
+    any particular run. This reuses the ``frequency``, ``domain_retention``,
+    ``cutpoint_detection``, and ``confidence_stats`` AlgorithmResult objects
+    already present in the latest committed RET run's results.json verbatim
+    -- the most literal form of "consume already-computed outputs as inputs"
+    -- and proves composite_score ranks real RET fusion partners while
+    excluding domain_disruption (recorded as an explicit skipped result)
+    rather than zero-filling it.
     """
-    # This benchmark needs the orchestrator result set from PR #27. A newer
-    # ``real-benchmark`` run contains only the algorithms configured for that
-    # command, so selecting the lexicographically latest directory is not a
-    # stable way to identify this fixture.
-    results_path = _RET_COMPOSITE_RESULTS
+    results_path = _real_run_results_path("ret_msk-impact-50k-2026")
     payload = json.loads(results_path.read_text())
     committed_results = {item["Algorithm"]: item for item in payload["algorithm_results"]}
     domain_disruption_result = committed_results["domain_disruption"]
     assert domain_disruption_result["Summary"]["fisher_p_value"] is None
     assert "was skipped" in domain_disruption_result["Warnings"][0]
-    assert committed_results["confidence_stats"]["Warnings"][0].startswith("Algorithm failed")
+    assert committed_results["confidence_stats"]["Warnings"] == []
     assert committed_results["cutpoint_detection"]["Summary"]["determinable"] is True
 
     events, features = _ret_events_and_features(results_path)
@@ -332,7 +323,7 @@ def test_composite_score_real_ret_msk_impact_gracefully_degrades():
         "domain_retention": True,
         "domain_disruption": False,
         "cutpoint_proximity": True,
-        "confidence_certainty": False,
+        "confidence_certainty": True,
     }
     ranking = result.Tables["composite_evidence_ranking"]
     assert ranking, "expected at least one ranked RET fusion partner"
@@ -343,20 +334,19 @@ def test_composite_score_real_ret_msk_impact_gracefully_degrades():
     # objects verbatim (no seed/n_permutations choice made here at all).
     assert ranking[0]["Partner_gene"] == "KIF5B"
     assert ranking[0]["Event_count"] == 87
-    assert ranking[0]["Composite_score"] == pytest.approx(0.47278906298812945)
+    assert ranking[0]["Composite_score"] == pytest.approx(0.5046697811340378)
 
     for row in ranking:
         assert row["Domain_disruption_score"] is None
-        assert row["Confidence_certainty_score"] is None
+        assert row["Confidence_certainty_score"] is not None
         assert "domain_disruption" not in row["Components_applicable"]
-        assert "confidence_certainty" not in row["Components_applicable"]
+        assert "confidence_certainty" in row["Components_applicable"]
     composite_scores = [row["Composite_score"] for row in ranking]
     assert composite_scores == sorted(composite_scores, reverse=True)
     assert all(0.0 <= score <= 1.0 for score in composite_scores)
 
     warning_text = " ".join(result.Warnings)
     assert "domain_disruption" in warning_text
-    assert "confidence_certainty" in warning_text
 
 
 # --- Real orchestrator-dispatch integration tests -------------------------

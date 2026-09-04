@@ -72,7 +72,9 @@ pytest -m "not network"
 
 Run the live cBioPortal/Genome Nexus benchmark. Each invocation creates a
 timestamped directory under `runs/` with a manifest, event-level TSV, structured
-JSON, Markdown report, discrepancy table, and SVG visualizations:
+JSON, Markdown report, discrepancy table, and SVG visualizations. Before
+committing a new run, prune any older run of the same type (see
+[CONTRIBUTING.md](CONTRIBUTING.md#committing-run-artifacts)):
 
 ```bash
 cfh real-benchmark BRAF msk_impact_50k_2026

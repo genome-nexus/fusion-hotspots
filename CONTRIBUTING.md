@@ -50,6 +50,31 @@ Implement the `Algorithm` interface in `src/cfh/algorithms/base.py` and
 register it via `src/cfh/algorithms/registry.py` so it can be discovered by
 name.
 
+## Committing run artifacts
+
+Some tests and benchmarks reuse real, already-computed run artifacts
+committed under `runs/<type>_<ISO8601-timestamp>/` (e.g.
+`runs/braf_msk-impact-50k-2026_20260904T172738Z/`), where `<type>` is the
+gene-or-scan-kind + study_id combination (e.g. `braf_msk-impact-50k-2026`,
+`cohort-scan_msk_impact_50k_2026`). Regenerating one of these (e.g. after a
+fix round) produces a new timestamped directory alongside the old one.
+
+**Before committing a new run artifact under `runs/<type>_<timestamp>/`,
+remove any existing `runs/<type>_*/` directory for the same
+gene-or-scan-kind + study_id combination so only the latest run per type is
+ever committed.** Run the helper script to do this automatically:
+
+```bash
+python scripts/prune_old_runs.py            # dry run: reports what would be removed
+python scripts/prune_old_runs.py --apply    # actually deletes the stale directories
+```
+
+It groups `runs/` directories by everything before the trailing
+`_<timestamp>` suffix and removes every directory in a group except the one
+with the latest timestamp; it never touches standalone files directly under
+`runs/`. Run it (with `--apply`) before committing new run artifacts, and
+include the removals in the same commit/PR.
+
 ## Pull requests
 
 - Keep changes focused and covered by tests.
