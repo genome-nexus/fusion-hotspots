@@ -40,7 +40,12 @@ text is byte-for-byte reproducible for a given ``summary.json``.
 
 from __future__ import annotations
 
-from cfh.reporting.text import format_percent, format_stat, significance_clause
+from cfh.reporting.domain_names import domain_interpretation_sentence
+from cfh.reporting.text import (
+    format_percent,
+    format_stat,
+    significance_clause,
+)
 
 
 def _plural(count: int | None, singular: str = "", plural: str = "s") -> str:
@@ -352,6 +357,15 @@ def render_gene_highlight(row: dict, *, honorable_mention_note: str | None = Non
         sentence += f" (raw {sig})." if sig else "."
         sentences.append(sentence)
 
+        interpretation = domain_interpretation_sentence(
+            row.get("key_domains") or [],
+            fisher_p_value=fisher_p,
+            fisher_odds_ratio=row.get("fisher_odds_ratio"),
+            effect="retention",
+        )
+        if interpretation:
+            sentences.append(interpretation)
+
         q_display = format_stat(row.get("min_fdr_adjusted_q_value"))
         if q_display != "unavailable":
             # ``fdr_significant`` is the same precomputed BH-correction verdict
@@ -378,6 +392,16 @@ def render_gene_highlight(row: dict, *, honorable_mention_note: str | None = Non
         sentences.append(
             f"No domain-retention statistical test could be computed for {gene} in this scan."
         )
+
+    disruption_p = row.get("disruption_fisher_p_value")
+    disruption_interpretation = domain_interpretation_sentence(
+        row.get("disruption_required_domains") or [],
+        fisher_p_value=disruption_p,
+        fisher_odds_ratio=row.get("disruption_fisher_odds_ratio"),
+        effect="disruption",
+    )
+    if disruption_interpretation:
+        sentences.append(disruption_interpretation)
 
     if honorable_mention_note:
         sentences.append(honorable_mention_note)

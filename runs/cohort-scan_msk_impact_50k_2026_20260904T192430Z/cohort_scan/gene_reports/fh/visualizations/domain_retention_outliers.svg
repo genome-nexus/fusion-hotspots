@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="184" viewBox="0 0 920 184">
+<rect width="920" height="184" fill="white"/>
+<text x="60" y="28" font-family="sans-serif" font-size="16">FH domain-retention track</text>
+<rect x="151.0" y="34.0" width="519.2" height="16.0" fill="#62b36f" opacity="0.55"/>
+<text x="151.0" y="46.0" font-family="sans-serif" font-size="9.5">Lyase (58-389)</text>
+<line x1="60.0" y1="63.0" x2="860.0" y2="63.0" stroke="#444" stroke-width="4"/>
+<circle cx="130.6" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<circle cx="640.4" cy="78.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0"/>
+<circle cx="640.4" cy="85.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0"/>
+<circle cx="640.4" cy="92.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0"/>
+<circle cx="640.4" cy="99.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0"/>
+<circle cx="640.4" cy="71.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0"/>
+<circle cx="787.8" cy="78.0" r="3" fill="#777777" stroke="none" stroke-width="0"/>
+<circle cx="601.2" cy="85.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0"/>
+<circle cx="792.5" cy="92.0" r="3" fill="#777777" stroke="none" stroke-width="0"/>
+<circle cx="351.8" cy="99.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0"/>
+<circle cx="129.0" cy="71.0" r="3" fill="#777777" stroke="none" stroke-width="0"/>
+<circle cx="445.9" cy="78.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0"/>
+<circle cx="640.4" cy="85.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0"/>
+<circle cx="130.6" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<circle cx="808.2" cy="99.0" r="3" fill="#777777" stroke="none" stroke-width="0"/>
+<line x1="60.0" y1="114.0" x2="860.0" y2="114.0" stroke="#444444" stroke-width="1"/>
+<line x1="60.0" y1="114.0" x2="60.0" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="129.0" font-family="sans-serif" font-size="8" text-anchor="start">0</text>
+<line x1="216.9" y1="114.0" x2="216.9" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="216.9" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">100</text>
+<line x1="373.7" y1="114.0" x2="373.7" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="373.7" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">200</text>
+<line x1="530.6" y1="114.0" x2="530.6" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="530.6" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">300</text>
+<line x1="687.5" y1="114.0" x2="687.5" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="687.5" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">400</text>
+<line x1="844.3" y1="114.0" x2="844.3" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="844.3" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">500</text>
+<line x1="860.0" y1="114.0" x2="860.0" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="860.0" y="129.0" font-family="sans-serif" font-size="8" text-anchor="end">510</text>
+<line x1="61.6" y1="134.0" x2="61.6" y2="138.0" stroke="#777777" stroke-width="0.7"/>
+<text x="61.6" y="139.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 61.6 139.0)">E1</text>
+<line x1="130.6" y1="134.0" x2="130.6" y2="138.0" stroke="#777777" stroke-width="0.7"/>
+<text x="130.6" y="139.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 130.6 139.0)">E2</text>
+<line x1="201.2" y1="134.0" x2="201.2" y2="138.0" stroke="#777777" stroke-width="0.7"/>
+<text x="201.2" y="139.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 201.2 139.0)">E3</text>
+<line x1="259.2" y1="134.0" x2="259.2" y2="138.0" stroke="#777777" stroke-width="0.7"/>
+<text x="259.2" y="139.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 259.2 139.0)">E4</text>
+<line x1="351.8" y1="134.0" x2="351.8" y2="138.0" stroke="#777777" stroke-width="0.7"/>
+<text x="351.8" y="139.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 351.8 139.0)">E5</text>
+<line x1="447.5" y1="134.0" x2="447.5" y2="138.0" stroke="#777777" stroke-width="0.7"/>
+<text x="447.5" y="139.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 447.5 139.0)">E6</text>
+<line x1="533.7" y1="134.0" x2="533.7" y2="138.0" stroke="#777777" stroke-width="0.7"/>
+<text x="533.7" y="139.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 533.7 139.0)">E7</text>
+<line x1="640.4" y1="134.0" x2="640.4" y2="138.0" stroke="#777777" stroke-width="0.7"/>
+<text x="640.4" y="139.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 640.4 139.0)">E8</text>
+<line x1="707.8" y1="134.0" x2="707.8" y2="138.0" stroke="#777777" stroke-width="0.7"/>
+<text x="707.8" y="139.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 707.8 139.0)">E9</text>
+<line x1="787.8" y1="134.0" x2="787.8" y2="138.0" stroke="#777777" stroke-width="0.7"/>
+<text x="787.8" y="139.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 787.8 139.0)">E10</text>
+<circle cx="60" cy="169.0" r="4" fill="#2878b5"/><text x="70" y="174.0" font-family="sans-serif" font-size="12">fully retained</text>
+<circle cx="180" cy="169.0" r="4" fill="#f2a93b"/><text x="190" y="174.0" font-family="sans-serif" font-size="12">truncated</text>
+<circle cx="275" cy="169.0" r="4" fill="#777777"/><text x="285" y="174.0" font-family="sans-serif" font-size="12">fully lost</text>
+<circle cx="365" cy="169.0" r="4" fill="white" stroke="#d62728" stroke-width="1.5"/><text x="375" y="174.0" font-family="sans-serif" font-size="12">reference discrepancy</text>
+</svg>

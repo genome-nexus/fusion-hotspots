@@ -26,6 +26,7 @@ partner always renders the same color within and across runs.
 
 from __future__ import annotations
 
+from cfh.reporting.domain_names import domain_label_for_accession
 from cfh.reporting.palette import (
     BREAKPOINT_COLOR,
     RETAINED_COLOR,
@@ -195,15 +196,6 @@ def _fit_domain_label(name: str, available_width: float, *, font_size: float = 7
     return name[: max_chars - 1].rstrip() + "…"
 
 
-def _domain_label_for_accession(domains: list[dict], accession: str | None) -> str | None:
-    if not accession:
-        return None
-    for domain in domains:
-        if domain.get("accession") == accession:
-            return domain.get("name") or accession
-    return accession
-
-
 def _status_word(status: str | None) -> str:
     return {
         "retained": "retained",
@@ -370,7 +362,7 @@ def render_fusion_schematic_svg(payload: dict, *, max_rows: int = _MAX_ROWS_DEFA
     truncated_count = total_groups - len(shown)
 
     summary = payload.get("summary") or {}
-    domain_label = _domain_label_for_accession(domains, summary.get("domain_accession"))
+    domain_label = domain_label_for_accession(domains, summary.get("domain_accession"))
 
     scale = _axis_scale(protein_length)
     n_rows = len(shown)
