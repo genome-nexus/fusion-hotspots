@@ -21,12 +21,19 @@ Portions of this file are ported from:
 Modified from genome-nexus/fusion-annotation (Apache-2.0): the five
 functions below (``build_exon_cds_map``, ``cds_coord_at_exon_boundary``,
 ``build_exon_genomic_map``, ``cds_coord_at_genomic``,
-``parse_genomic_breakpoint``) are reproduced verbatim (only re-typed for
-this file's ``from __future__ import annotations`` style and this
-project's line length) from ``src/fusion_annotation/core.py`` at the
-commit above. Everything else in this file -- the ``FusionAnnotationCrosscheckResult``
-dataclass, ``crosscheck_breakpoint_protein_position``, and its helpers --
-is new code written for this project, not part of the original project.
+``parse_genomic_breakpoint``) are reproduced with formatting/type-annotation
+adaptations only (re-typed for this file's ``from __future__ import
+annotations`` style and this project's line length/lint config) -- the
+logic and control flow are verbatim from ``src/fusion_annotation/core.py``
+at the commit above. The Apache-2.0 license header above and this
+"Modified from..." notice are additions made by this project for
+attribution purposes (per License Section 4(b)/4(c)); the upstream source
+file itself carries no per-file copyright/license header of its own --
+licensing is established solely by the upstream repository's top-level
+``LICENSE`` file. Everything else in this file -- the
+``FusionAnnotationCrosscheckResult`` dataclass,
+``crosscheck_breakpoint_protein_position``, and its helpers -- is new code
+written for this project, not part of the original project.
 
 Deliberately NOT ported: fusion-annotation's own CDS-genomic-bounds
 derivation (``_cds_bounds_from_utrs`` in ``src/fusion_annotation/gn_provider.py``).
@@ -76,17 +83,38 @@ different residues at a fusion junction depending on fusion role:
   does not land exactly on a codon boundary.
 
 These three coincide only when the breakpoint falls exactly on a codon
-boundary (``cds_position % 3 == 0``, no hybrid codon). Whenever it does
-not, this project's single ``ceil(cds_nt / 3)`` value is the *hybrid
-junction residue* -- consistently one more than fusion-annotation's "last
-complete 5' residue" convention for a 5'-partner breakpoint, and
-consistently one less than its "first complete 3' residue" convention for
-a 3'-partner breakpoint. :func:`crosscheck_breakpoint_protein_position`
-computes fusion-annotation's role-appropriate residue independently (via
-the ported ``cds_coord_at_genomic``) and treats exactly this +/-1 gap --
-only when it coincides with a non-codon-boundary CDS position -- as an
-expected convention difference, not a disagreement. Any other numeric gap
-is reported as a real disagreement.
+boundary (``cds_position % 3 == 0``, no hybrid codon).
+
+The exact relationship between fusion-annotation's role-appropriate
+residue and this project's ``ceil(cds_position / 3)`` is provable, not a
+loose approximation, given the *same* underlying ``cds_position`` (which
+holds whenever both resolvers land the breakpoint in the same coding
+exon -- i.e. not the intronic-clamping-mismatch case described below):
+
+* Three-prime ("first complete 3' residue"): fusion-annotation computes
+  ``(cds_position - 1) // 3 + 1``, which is the standard integer-ceiling
+  identity ``ceil(n / m) == (n - 1) // m + 1`` for positive ``n`` -- i.e.
+  this is *always exactly* ``ceil(cds_position / 3)``, identical to this
+  project's value, with **no legitimate tolerance**. Any difference here
+  is a real disagreement (typically an intronic-clamping mismatch -- see
+  below), never a rounding-convention artifact.
+* Five-prime ("last complete 5' residue"): fusion-annotation computes
+  ``cds_position // 3`` (floor division). This equals
+  ``ceil(cds_position / 3)`` when ``cds_position`` is divisible by 3 (no
+  hybrid codon), and is *exactly* ``ceil(cds_position / 3) - 1`` --
+  never ``+ 1``, never off by more than 1 -- whenever it is not (a hybrid
+  codon). The comparison enforces this exact, signed relationship
+  (``expected = our_protein_position - 1`` when hybrid, an exact
+  ``our_protein_position`` search on the wrong side is never accepted)
+  rather than an undirected ``abs(diff) <= 1`` tolerance, which would
+  wrongly accept a value one *higher* than ours as if it were the
+  expected convention gap.
+
+:func:`crosscheck_breakpoint_protein_position` computes fusion-annotation's
+role-appropriate residue independently (via the ported
+``cds_coord_at_genomic``) and compares it against this exact, signed
+expected value per role. Any other numeric gap is reported as a real
+disagreement.
 
 A second, independent known source of (real) disagreement: for an
 intronic breakpoint, this project's own resolver clamps to the *nearest*
@@ -108,11 +136,12 @@ from typing import Literal
 from cfh.mapping.genome_nexus_source import ExonRecord
 
 # ----------------------------------------------------------------------------
-# Ported verbatim from genome-nexus/fusion-annotation src/fusion_annotation/
-# core.py @ 6baba8638b0742389f94077cb3e9a705db4ed3cc (Apache-2.0). Only
-# reformatted (line length, added return-type-safe local variable names)
-# for this project's lint config; the arithmetic and control flow are
-# unchanged from the original.
+# Ported from genome-nexus/fusion-annotation src/fusion_annotation/core.py @
+# 6baba8638b0742389f94077cb3e9a705db4ed3cc (Apache-2.0): formatting/
+# type-annotation adaptations only (line length, this file's
+# `from __future__ import annotations` style) for this project's lint
+# config -- the logic and control flow are verbatim, unchanged from the
+# original.
 # ----------------------------------------------------------------------------
 
 
@@ -278,10 +307,14 @@ class FusionAnnotationCrosscheckResult:
     intronic breakpoint, since the two resolvers can clamp to different
     exons there (see module docstring)."""
     is_hybrid_codon: bool | None
-    """True when ``cds_position`` does not fall exactly on a codon boundary,
-    i.e. fusion-annotation's role-appropriate residue and this project's own
-    hybrid-junction-inclusive residue are expected to differ by exactly one
-    (see module docstring) rather than being a genuine disagreement."""
+    """True when ``cds_position`` does not fall exactly on a codon boundary
+    (``cds_position % 3 != 0``) -- a property of the breakpoint itself,
+    independent of fusion role. Only affects the comparison for a
+    ``five_prime`` breakpoint, where fusion-annotation's residue is then
+    expected to be exactly one less than this project's own
+    hybrid-junction-inclusive residue (see module docstring); a
+    ``three_prime`` breakpoint's expected residue is always exactly equal
+    to this project's own, hybrid or not."""
     agrees: bool | None
     """Whether fusion-annotation's residue matches this project's own
     ``breakpoint_protein_position`` under the documented comparison
@@ -397,12 +430,17 @@ def crosscheck_breakpoint_protein_position(
             ),
         )
 
+    # Whether the breakpoint lands exactly on a codon boundary is a property
+    # of cds_position itself, not of which role is being evaluated -- it
+    # must be computed the same way regardless of role (using cds_position
+    # % 3, not a role-shifted variant), or the two role branches would
+    # disagree about whether the *same* physical breakpoint is a hybrid
+    # junction.
+    is_hybrid_codon = cds_position % 3 != 0
     if role == "five_prime":
         protein_position = cds_position // 3
-        is_hybrid_codon = cds_position % 3 != 0
     else:
         protein_position = (cds_position - 1) // 3 + 1
-        is_hybrid_codon = (cds_position - 1) % 3 != 0
 
     exon_rank = None
     try:
@@ -430,25 +468,38 @@ def crosscheck_breakpoint_protein_position(
             error="no local breakpoint_protein_position available to compare against",
         )
 
-    diff = abs(protein_position - our_protein_position)
-    if diff == 0:
+    # The expected relationship is exact and signed, proven in the module
+    # docstring: three_prime's protein_position is ALWAYS exactly equal to
+    # our_protein_position (never a rounding-tolerance case); five_prime's
+    # is exactly our_protein_position - 1 when hybrid, or exactly equal
+    # when not. There is no legitimate case where fusion-annotation's
+    # residue is *higher* than ours, so an undirected abs()-based
+    # tolerance would wrongly accept that as agreement -- it must not be
+    # used here.
+    if role == "five_prime" and is_hybrid_codon:
+        expected = our_protein_position - 1
+    else:
+        expected = our_protein_position
+
+    if protein_position == expected:
         agrees = True
-        note = "exact match"
-    elif diff == 1 and is_hybrid_codon:
-        agrees = True
-        note = (
-            "differs by 1 residue at a hybrid junction codon: fusion-annotation reports "
-            f"the {'last complete 5-prime' if role == 'five_prime' else 'first complete 3-prime'} "
-            "residue while this project reports the hybrid-junction-inclusive residue; "
-            "expected convention difference, not a disagreement"
-        )
+        if role == "five_prime" and is_hybrid_codon:
+            note = (
+                "hybrid junction codon: fusion-annotation reports the last complete "
+                "5-prime residue, exactly one less than this project's "
+                "hybrid-junction-inclusive residue; expected convention difference, "
+                "not a disagreement"
+            )
+        else:
+            note = "exact match"
     else:
         agrees = False
         note = (
-            f"residue differs by {diff} and does not fit the known hybrid-codon "
-            "convention gap (which is always exactly 1 residue); possible genuine "
-            "disagreement, e.g. the two resolvers clamped an intronic breakpoint to "
-            "different flanking exons (see module docstring)"
+            f"fusion-annotation reports residue {protein_position}, but the documented "
+            f"convention for this role expects exactly {expected} given this project's "
+            f"residue of {our_protein_position}; possible genuine disagreement, e.g. the "
+            "two resolvers clamped an intronic breakpoint to different flanking exons "
+            "(see module docstring)"
         )
 
     return FusionAnnotationCrosscheckResult(
