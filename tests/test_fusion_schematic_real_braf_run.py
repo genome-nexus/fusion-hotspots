@@ -1,5 +1,5 @@
 """Validate the fusion-transcript schematic against the real, committed BRAF
-benchmark artifact under ``runs/braf_msk-impact-50k-2026_20260904T172738Z/``.
+benchmark artifact under ``runs/braf_msk-impact-50k-2026_20260905T011754Z/``.
 
 No network access, no synthetic fixtures: this reads the exact
 ``results.json`` already committed to the repo (regenerated live from
@@ -26,7 +26,7 @@ from cfh.reporting.fusion_schematic import (
 from cfh.reporting.palette import RETAINED_COLOR, TRUNCATED_COLOR
 
 REPO_ROOT = Path(__file__).parent.parent
-BRAF_RUN_DIR = REPO_ROOT / "runs" / "braf_msk-impact-50k-2026_20260904T172738Z"
+BRAF_RUN_DIR = REPO_ROOT / "runs" / "braf_msk-impact-50k-2026_20260905T011754Z"
 
 _AXIS_LEFT = 60.0
 _AXIS_WIDTH = 560.0

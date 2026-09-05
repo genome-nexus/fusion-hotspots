@@ -64,6 +64,39 @@ def test_braf_disruption_required_domains_are_configured_with_real_pfam_accessio
     assert all(domain.source == "genome_nexus" for domain in config.disruption_required_domains)
 
 
+def test_ret_disruption_required_domains_are_configured_with_real_pfam_accessions():
+    """RET opts into the domain-disruption test with its real N-terminal
+    Cadherin domain, sourced from the same live Genome Nexus data used for
+    the kinase domain.
+
+    Before this fix, ``ret.yaml`` left ``disruption_required_domains``
+    unset, so it was silently re-derived from a live Genome Nexus call on
+    every run instead of being curated (see
+    ``tests/test_cohort_auto_config.py`` and the domain_disruption
+    benchmark tests for how that made RET's committed run artifacts
+    nondeterministic run-to-run). Curating it here, like BRAF, removes that
+    live dependency entirely.
+    """
+    config = load_gene_config("ret")
+    accessions = {domain.accession for domain in config.disruption_required_domains}
+    assert accessions == {"PF00028"}
+    assert all(domain.source == "genome_nexus" for domain in config.disruption_required_domains)
+
+
+def test_alk_and_ntrk1_explicitly_opt_out_of_disruption_required_domains():
+    """ALK and NTRK1 have real N-terminal extracellular domains preceding
+    their kinase domain (verified live), but neither is curated as a
+    ``disruption_required_domains`` entry -- an explicit empty list opts
+    both genes out of domain_disruption for good, rather than leaving the
+    field unset and letting it silently auto-derive (and potentially flip
+    between runs) from whatever a live Genome Nexus call happens to return.
+    """
+    for gene in ("alk", "ntrk1"):
+        config = load_gene_config(gene)
+        assert config.disruption_required_domains == []
+        assert "disruption_required_domains" in config.model_fields_set
+
+
 def test_disruption_required_domains_defaults_to_empty_list():
     """Opt-in field: a config that never mentions it must gracefully default
     to no-op, not error, the same as the existing key_domains pattern."""

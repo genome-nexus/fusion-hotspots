@@ -1,19 +1,19 @@
 {
-  "gene": "ALK",
+  "gene": "NTRK1",
   "study_id": "msk_impact_50k_2026",
   "endpoints_used": [
     "https://www.cbioportal.org/api/structural-variant/fetch",
-    "https://www.genomenexus.org/ensembl/canonical-transcript/hgnc/ALK"
+    "https://www.genomenexus.org/ensembl/canonical-transcript/hgnc/NTRK1"
   ],
-  "git_sha": "9942346147d5edbac28388d2de00735ddab13f62",
+  "git_sha": "d24a43cca243fc7cd0dab09a6fbeca9342e54909",
   "cli_args": [
     "analyze",
-    "ALK",
+    "NTRK1",
     "msk_impact_50k_2026",
     "--output-dir",
     "runs",
     "--n-permutations",
     "1000"
   ],
-  "timestamp": "2026-09-04T17:28:01.725233+00:00"
+  "timestamp": "2026-09-05T01:23:01.099176+00:00"
 }

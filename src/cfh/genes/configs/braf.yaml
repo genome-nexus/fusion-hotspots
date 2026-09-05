@@ -16,9 +16,6 @@ disruption_required_domains:
     source: genome_nexus
     key: cysteine_rich
     accession: PF00130
-autoinhibitory_domains:
-  - "RAS-binding domain"
-  - "Cysteine-rich domain"
 expected_retained_exon_hint: null
 analysis_modes:
   - breakpoint_hotspot

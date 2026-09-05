@@ -1,6 +1,6 @@
 # RET real-data fusion benchmark: msk_impact_50k_2026
 
-Retrieved from public cBioPortal and Genome Nexus on 2026-09-04.
+Retrieved from public cBioPortal and Genome Nexus on 2026-09-05.
 
 ## Results
 
@@ -39,7 +39,7 @@ For each fusion, breakpoint selection preferred the Genome Nexus canonical trans
 
 - Registered algorithms executed: composite_score, confidence_stats, cutpoint_detection, domain_disruption, domain_retention, exon_retention, frequency, joint_partner
 - Cutpoint detection: inferred breakpoint 627 aa; corrected permutation p=0.001998.
-- Top composite score: KIF5B (87 events), 0.50467.
+- Top composite score: KIF5B (87 events), 0.407674.
 
 ## Partners
 

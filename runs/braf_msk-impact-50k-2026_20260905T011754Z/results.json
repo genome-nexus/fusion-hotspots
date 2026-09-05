@@ -2,7 +2,7 @@
   "gene_symbol": "BRAF",
   "study_id": "msk_impact_50k_2026",
   "molecular_profile_id": "msk_impact_50k_2026_structural_variants",
-  "retrieved_at": "2026-09-04T17:27:38.180896+00:00",
+  "retrieved_at": "2026-09-05T01:17:54.652311+00:00",
   "summary": {
     "raw_structural_variant_count": 251,
     "total_fusions": 179,
@@ -4079,7 +4079,7 @@
         "domain_retention_p_value_used": 0.04595404595404595,
         "domain_disruption_p_value_used": 1.0,
         "inferred_cutpoint_aa": 327,
-        "Runtime_seconds": 0.0003382079885341227
+        "Runtime_seconds": 0.0016566250124014914
       },
       "Tables": {
         "composite_evidence_ranking": [
@@ -5292,8 +5292,8 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-04T17:27:38.180639Z",
-      "Input_fingerprint": "c7b588b29b09ec0bc9f587b98d04217ae798505ff8cfd4494328a0ffa9934dfe"
+      "Created_at": "2026-09-05T01:17:54.651195Z",
+      "Input_fingerprint": "a17ef595daf062bb307eeba97289a8b20b53578135c919e55697e3347eefa1f1"
     },
     {
       "Algorithm": "confidence_stats",
@@ -5358,12 +5358,12 @@
           "mean_a": 52.07361963190184,
           "mean_b": 36.4
         },
-        "Runtime_seconds": 0.002702167024835944
+        "Runtime_seconds": 0.036390458000823855
       },
       "Tables": null,
       "Warnings": [],
-      "Created_at": "2026-09-04T17:27:34.230882Z",
-      "Input_fingerprint": "c7b588b29b09ec0bc9f587b98d04217ae798505ff8cfd4494328a0ffa9934dfe"
+      "Created_at": "2026-09-05T01:17:36.414890Z",
+      "Input_fingerprint": "a17ef595daf062bb307eeba97289a8b20b53578135c919e55697e3347eefa1f1"
     },
     {
       "Algorithm": "cutpoint_detection",
@@ -5386,7 +5386,7 @@
           "nearest_known_domain_boundary_aa": 280,
           "distance_aa": 47
         },
-        "Runtime_seconds": 1.9087961670011282
+        "Runtime_seconds": 9.023141000012401
       },
       "Tables": {
         "cutpoint_scan": [
@@ -5493,8 +5493,8 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-04T17:27:36.145208Z",
-      "Input_fingerprint": "c7b588b29b09ec0bc9f587b98d04217ae798505ff8cfd4494328a0ffa9934dfe"
+      "Created_at": "2026-09-05T01:17:45.473288Z",
+      "Input_fingerprint": "a17ef595daf062bb307eeba97289a8b20b53578135c919e55697e3347eefa1f1"
     },
     {
       "Algorithm": "domain_disruption",
@@ -5509,7 +5509,7 @@
         "fisher_p_value": 0.04170498244265482,
         "permutation_empirical_p_value": 1.0,
         "observed_in_frame_disruption_rate": 0.9403973509933775,
-        "Runtime_seconds": 3.9411348330031615
+        "Runtime_seconds": 18.05644499999471
       },
       "Tables": {
         "frame_domain_contingency_table": [
@@ -15546,8 +15546,8 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-04T17:27:38.176829Z",
-      "Input_fingerprint": "c7b588b29b09ec0bc9f587b98d04217ae798505ff8cfd4494328a0ffa9934dfe"
+      "Created_at": "2026-09-05T01:17:54.621922Z",
+      "Input_fingerprint": "a17ef595daf062bb307eeba97289a8b20b53578135c919e55697e3347eefa1f1"
     },
     {
       "Algorithm": "domain_retention",
@@ -15562,7 +15562,7 @@
         "fisher_p_value": 0.013367557978153668,
         "permutation_empirical_p_value": 0.04595404595404595,
         "observed_in_frame_retention_rate": 0.9403973509933775,
-        "Runtime_seconds": 1.0072747090016492
+        "Runtime_seconds": 6.79051716599497
       },
       "Tables": {
         "frame_domain_contingency_table": [
@@ -15592,25 +15592,35 @@
         }
       },
       "Warnings": [],
-      "Created_at": "2026-09-04T17:27:34.215323Z",
-      "Input_fingerprint": "d7ec18324903d3ad072a1b5a63a016cb4f2918054c4a74797c8396ab9e5e2943"
+      "Created_at": "2026-09-05T01:17:36.340249Z",
+      "Input_fingerprint": "6c933b89c0deb67deccb2aff0016a8917e93ffc1d3be02b7e1511327066e7e1a"
     },
     {
       "Algorithm": "exon_retention",
       "Algorithm_version": "1.0.0",
-      "Parameters": {},
+      "Parameters": {
+        "target_exon": 11
+      },
       "Summary": {
-        "retained_fraction": null,
-        "Runtime_seconds": 3.079100861214101e-05
+        "target_exon": 11,
+        "retained_event_count": 163,
+        "total_event_count": 179,
+        "retained_fraction": 0.9106145251396648,
+        "Runtime_seconds": 0.0010618329979479313
       },
       "Tables": {
-        "Exon_retention": []
+        "Exon_retention": [
+          {
+            "Exon": 11,
+            "Retained_event_count": 163,
+            "Total_event_count": 179,
+            "Retained_fraction": 0.9106145251396648
+          }
+        ]
       },
-      "Warnings": [
-        "No target exon was supplied in params or GeneConfig."
-      ],
-      "Created_at": "2026-09-04T17:27:34.279456Z",
-      "Input_fingerprint": "c7b588b29b09ec0bc9f587b98d04217ae798505ff8cfd4494328a0ffa9934dfe"
+      "Warnings": [],
+      "Created_at": "2026-09-05T01:17:36.595522Z",
+      "Input_fingerprint": "a17ef595daf062bb307eeba97289a8b20b53578135c919e55697e3347eefa1f1"
     },
     {
       "Algorithm": "frequency",
@@ -15622,7 +15632,7 @@
         "input_event_count": 179,
         "analyzed_event_count": 179,
         "unique_partner_gene_count": 67,
-        "Runtime_seconds": 0.0001142919936683029
+        "Runtime_seconds": 0.000345667009241879
       },
       "Tables": {
         "Partner_gene_counts": [
@@ -15897,22 +15907,22 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-04T17:27:34.317401Z",
-      "Input_fingerprint": "c7b588b29b09ec0bc9f587b98d04217ae798505ff8cfd4494328a0ffa9934dfe"
+      "Created_at": "2026-09-05T01:17:36.616982Z",
+      "Input_fingerprint": "a17ef595daf062bb307eeba97289a8b20b53578135c919e55697e3347eefa1f1"
     },
     {
       "Algorithm": "joint_partner",
       "Algorithm_version": "0.1.0",
       "Parameters": {},
       "Summary": {
-        "Runtime_seconds": 2.3500004317611456e-05
+        "Runtime_seconds": 6.874999962747097e-05
       },
       "Tables": {},
       "Warnings": [
         "BRAF has no gene_pair configured; joint-partner analysis was skipped."
       ],
-      "Created_at": "2026-09-04T17:27:34.378230Z",
-      "Input_fingerprint": "c7b588b29b09ec0bc9f587b98d04217ae798505ff8cfd4494328a0ffa9934dfe"
+      "Created_at": "2026-09-05T01:17:36.658767Z",
+      "Input_fingerprint": "a17ef595daf062bb307eeba97289a8b20b53578135c919e55697e3347eefa1f1"
     }
   ],
   "reference": {

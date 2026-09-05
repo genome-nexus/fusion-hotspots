@@ -18,8 +18,8 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).parent.parent
 RUN_DIRS = {
-    "BRAF": REPO_ROOT / "runs" / "braf_msk-impact-50k-2026_20260904T172738Z",
-    "RET": REPO_ROOT / "runs" / "ret_msk-impact-50k-2026_20260904T172752Z",
+    "BRAF": REPO_ROOT / "runs" / "braf_msk-impact-50k-2026_20260905T011754Z",
+    "RET": REPO_ROOT / "runs" / "ret_msk-impact-50k-2026_20260905T011503Z",
 }
 
 

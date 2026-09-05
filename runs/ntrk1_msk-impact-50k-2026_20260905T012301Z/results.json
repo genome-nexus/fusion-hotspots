@@ -2,7 +2,7 @@
   "gene_symbol": "NTRK1",
   "study_id": "msk_impact_50k_2026",
   "molecular_profile_id": "msk_impact_50k_2026_structural_variants",
-  "retrieved_at": "2026-09-04T17:28:08.432191+00:00",
+  "retrieved_at": "2026-09-05T01:23:01.099176+00:00",
   "summary": {
     "raw_structural_variant_count": 118,
     "total_fusions": 78,
@@ -1842,7 +1842,7 @@
         "domain_retention_p_value_used": 0.000999000999000999,
         "domain_disruption_p_value_used": null,
         "inferred_cutpoint_aa": 501,
-        "Runtime_seconds": 0.00014112499775364995
+        "Runtime_seconds": 0.002364374988246709
       },
       "Tables": {
         "composite_evidence_ranking": [
@@ -2580,8 +2580,8 @@
       "Warnings": [
         "domain_disruption sub-score excluded: the supplied result had no applicable p-value (e.g. disruption_required_domains not configured for this gene)."
       ],
-      "Created_at": "2026-09-04T17:28:08.432074Z",
-      "Input_fingerprint": "886a62c8d64eb3f034c1423b9549b46c16f42b0433b8c8aa7797cd36f4af7706"
+      "Created_at": "2026-09-05T01:23:01.097355Z",
+      "Input_fingerprint": "e1fa0ccf9bef72779afb9774bb06e3a49bdb2b56e40130dbc7be11e6eacc07fc"
     },
     {
       "Algorithm": "confidence_stats",
@@ -2646,12 +2646,12 @@
           "mean_a": 66.359375,
           "mean_b": 43.25
         },
-        "Runtime_seconds": 0.0011770830024033785
+        "Runtime_seconds": 0.02349558300920762
       },
       "Tables": null,
       "Warnings": [],
-      "Created_at": "2026-09-04T17:28:03.957092Z",
-      "Input_fingerprint": "886a62c8d64eb3f034c1423b9549b46c16f42b0433b8c8aa7797cd36f4af7706"
+      "Created_at": "2026-09-05T01:22:46.438633Z",
+      "Input_fingerprint": "e1fa0ccf9bef72779afb9774bb06e3a49bdb2b56e40130dbc7be11e6eacc07fc"
     },
     {
       "Algorithm": "cutpoint_detection",
@@ -2674,7 +2674,7 @@
           "nearest_known_domain_boundary_aa": 512,
           "distance_aa": -11
         },
-        "Runtime_seconds": 4.472343166999053
+        "Runtime_seconds": 14.612510290986393
       },
       "Tables": {
         "cutpoint_scan": [
@@ -2941,8 +2941,8 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-04T17:28:08.430897Z",
-      "Input_fingerprint": "886a62c8d64eb3f034c1423b9549b46c16f42b0433b8c8aa7797cd36f4af7706"
+      "Created_at": "2026-09-05T01:23:01.065124Z",
+      "Input_fingerprint": "e1fa0ccf9bef72779afb9774bb06e3a49bdb2b56e40130dbc7be11e6eacc07fc"
     },
     {
       "Algorithm": "domain_disruption",
@@ -2953,14 +2953,14 @@
         "fisher_p_value": null,
         "permutation_empirical_p_value": null,
         "observed_in_frame_disruption_rate": null,
-        "Runtime_seconds": 9.29197994992137e-06
+        "Runtime_seconds": 5.195898120291531e-05
       },
       "Tables": {},
       "Warnings": [
         "NTRK1 has no disruption_required_domains configured; domain-disruption analysis was skipped."
       ],
-      "Created_at": "2026-09-04T17:28:03.958600Z",
-      "Input_fingerprint": "886a62c8d64eb3f034c1423b9549b46c16f42b0433b8c8aa7797cd36f4af7706"
+      "Created_at": "2026-09-05T01:22:46.472778Z",
+      "Input_fingerprint": "e1fa0ccf9bef72779afb9774bb06e3a49bdb2b56e40130dbc7be11e6eacc07fc"
     },
     {
       "Algorithm": "domain_retention",
@@ -2975,7 +2975,7 @@
         "fisher_p_value": 0.04826275446570913,
         "permutation_empirical_p_value": 0.000999000999000999,
         "observed_in_frame_retention_rate": 0.9375,
-        "Runtime_seconds": 0.18518162501277402
+        "Runtime_seconds": 0.5144981249759439
       },
       "Tables": {
         "frame_domain_contingency_table": [
@@ -3005,25 +3005,35 @@
         }
       },
       "Warnings": [],
-      "Created_at": "2026-09-04T17:28:03.954117Z",
-      "Input_fingerprint": "e5a7b65631eceaff81780883297cda3c6a74e065431dd74fcec1941da6c2ec99"
+      "Created_at": "2026-09-05T01:22:46.407298Z",
+      "Input_fingerprint": "b3c09e135b6349aa56faa004e418641e3dde95503eb3dfa483adfb48cfbf048a"
     },
     {
       "Algorithm": "exon_retention",
       "Algorithm_version": "1.0.0",
-      "Parameters": {},
+      "Parameters": {
+        "target_exon": 13
+      },
       "Summary": {
-        "retained_fraction": null,
-        "Runtime_seconds": 2.13750172406435e-05
+        "target_exon": 13,
+        "retained_event_count": 65,
+        "total_event_count": 78,
+        "retained_fraction": 0.8333333333333334,
+        "Runtime_seconds": 0.00029133399948477745
       },
       "Tables": {
-        "Exon_retention": []
+        "Exon_retention": [
+          {
+            "Exon": 13,
+            "Retained_event_count": 65,
+            "Total_event_count": 78,
+            "Retained_fraction": 0.8333333333333334
+          }
+        ]
       },
-      "Warnings": [
-        "No target exon was supplied in params or GeneConfig."
-      ],
-      "Created_at": "2026-09-04T17:28:04.273024Z",
-      "Input_fingerprint": "886a62c8d64eb3f034c1423b9549b46c16f42b0433b8c8aa7797cd36f4af7706"
+      "Warnings": [],
+      "Created_at": "2026-09-05T01:22:46.473365Z",
+      "Input_fingerprint": "e1fa0ccf9bef72779afb9774bb06e3a49bdb2b56e40130dbc7be11e6eacc07fc"
     },
     {
       "Algorithm": "frequency",
@@ -3035,7 +3045,7 @@
         "input_event_count": 78,
         "analyzed_event_count": 78,
         "unique_partner_gene_count": 43,
-        "Runtime_seconds": 8.191601955331862e-05
+        "Runtime_seconds": 0.00015779101522639394
       },
       "Tables": {
         "Partner_gene_counts": [
@@ -3214,22 +3224,22 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-04T17:28:04.268952Z",
-      "Input_fingerprint": "886a62c8d64eb3f034c1423b9549b46c16f42b0433b8c8aa7797cd36f4af7706"
+      "Created_at": "2026-09-05T01:22:46.510020Z",
+      "Input_fingerprint": "e1fa0ccf9bef72779afb9774bb06e3a49bdb2b56e40130dbc7be11e6eacc07fc"
     },
     {
       "Algorithm": "joint_partner",
       "Algorithm_version": "0.1.0",
       "Parameters": {},
       "Summary": {
-        "Runtime_seconds": 3.300001844763756e-05
+        "Runtime_seconds": 5.345800309441984e-05
       },
       "Tables": {},
       "Warnings": [
         "NTRK1 has no gene_pair configured; joint-partner analysis was skipped."
       ],
-      "Created_at": "2026-09-04T17:28:04.485651Z",
-      "Input_fingerprint": "886a62c8d64eb3f034c1423b9549b46c16f42b0433b8c8aa7797cd36f4af7706"
+      "Created_at": "2026-09-05T01:22:46.518288Z",
+      "Input_fingerprint": "e1fa0ccf9bef72779afb9774bb06e3a49bdb2b56e40130dbc7be11e6eacc07fc"
     }
   ],
   "reference": null,
