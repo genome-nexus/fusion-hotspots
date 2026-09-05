@@ -1,0 +1,161 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="458" viewBox="0 0 1000 458">
+<rect width="1000" height="458" fill="white"/>
+<text x="60" y="24" font-family="sans-serif" font-size="15">FH fusion-transcript schematic</text>
+<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555">partner block → breakpoint → retained FH portion (domain-colored, exon ticks)</text>
+<rect x="466.3" y="56.0" width="153.7" height="22" fill="#cb9f4d"/>
+<rect x="60.0" y="56.0" width="406.3" height="22" fill="#e2e2e2"/>
+<rect x="123.7" y="56.0" width="342.6" height="22" fill="#f2a93b"/>
+<text x="295.0" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Lyase</text>
+<line x1="61.1" y1="56.0" x2="61.1" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="109.4" y1="56.0" x2="109.4" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="158.8" y1="56.0" x2="158.8" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="199.5" y1="56.0" x2="199.5" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="264.2" y1="56.0" x2="264.2" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="331.2" y1="56.0" x2="331.2" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="391.6" y1="56.0" x2="391.6" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="466.3" y1="55.0" x2="466.3" y2="79.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="70.5" font-family="sans-serif" font-size="9.5">DGKH (x4) – Lyase truncated</text>
+<rect x="108.3" y="82.0" width="511.7" height="22" fill="#cb4da3"/>
+<rect x="60.0" y="82.0" width="48.3" height="22" fill="#e2e2e2"/>
+<line x1="61.1" y1="82.0" x2="61.1" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="108.3" y1="81.0" x2="108.3" y2="105.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="96.5" font-family="sans-serif" font-size="9.5">PDE1C – Lyase lost</text>
+<rect x="60.0" y="108.0" width="49.4" height="22" fill="#4dcb55"/>
+<rect x="109.4" y="108.0" width="510.6" height="22" fill="#e2e2e2"/>
+<rect x="559.6" y="108.0" width="59.3" height="22" fill="#2878b5"/>
+<text x="589.3" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF10415</text>
+<rect x="123.7" y="108.0" width="363.5" height="22" fill="#2878b5"/>
+<text x="305.4" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Lyase</text>
+<line x1="158.8" y1="108.0" x2="158.8" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="199.5" y1="108.0" x2="199.5" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="264.2" y1="108.0" x2="264.2" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="331.2" y1="108.0" x2="331.2" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="391.6" y1="108.0" x2="391.6" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="466.3" y1="108.0" x2="466.3" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="513.5" y1="108.0" x2="513.5" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="569.5" y1="108.0" x2="569.5" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="109.4" y1="107.0" x2="109.4" y2="131.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="122.5" font-family="sans-serif" font-size="9.5">RYR2 – Lyase retained</text>
+<rect x="60.0" y="134.0" width="49.4" height="22" fill="#4dcb5b"/>
+<rect x="109.4" y="134.0" width="510.6" height="22" fill="#e2e2e2"/>
+<rect x="559.6" y="134.0" width="59.3" height="22" fill="#2878b5"/>
+<text x="589.3" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF10415</text>
+<rect x="123.7" y="134.0" width="363.5" height="22" fill="#2878b5"/>
+<text x="305.4" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Lyase</text>
+<line x1="158.8" y1="134.0" x2="158.8" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="199.5" y1="134.0" x2="199.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="264.2" y1="134.0" x2="264.2" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="331.2" y1="134.0" x2="331.2" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="391.6" y1="134.0" x2="391.6" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="466.3" y1="134.0" x2="466.3" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="513.5" y1="134.0" x2="513.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="569.5" y1="134.0" x2="569.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="109.4" y1="133.0" x2="109.4" y2="157.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="148.5" font-family="sans-serif" font-size="9.5">unknown – Lyase retained</text>
+<rect x="60.0" y="160.0" width="204.2" height="22" fill="#cb984d"/>
+<rect x="264.2" y="160.0" width="355.8" height="22" fill="#e2e2e2"/>
+<rect x="559.6" y="160.0" width="59.3" height="22" fill="#2878b5"/>
+<text x="589.3" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF10415</text>
+<rect x="264.2" y="160.0" width="222.9" height="22" fill="#f2a93b"/>
+<text x="375.7" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Lyase</text>
+<line x1="331.2" y1="160.0" x2="331.2" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="391.6" y1="160.0" x2="391.6" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="466.3" y1="160.0" x2="466.3" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="513.5" y1="160.0" x2="513.5" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="569.5" y1="160.0" x2="569.5" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="264.2" y1="159.0" x2="264.2" y2="183.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="174.5" font-family="sans-serif" font-size="9.5">NOTCH1 – Lyase truncated</text>
+<rect x="330.1" y="186.0" width="289.9" height="22" fill="#cba14d"/>
+<rect x="60.0" y="186.0" width="270.1" height="22" fill="#e2e2e2"/>
+<rect x="123.7" y="186.0" width="206.4" height="22" fill="#f2a93b"/>
+<text x="226.9" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Lyase</text>
+<line x1="61.1" y1="186.0" x2="61.1" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="109.4" y1="186.0" x2="109.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="158.8" y1="186.0" x2="158.8" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="199.5" y1="186.0" x2="199.5" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="264.2" y1="186.0" x2="264.2" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="330.1" y1="185.0" x2="330.1" y2="209.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="200.5" font-family="sans-serif" font-size="9.5">RGS7 – Lyase truncated</text>
+<rect x="438.8" y="212.0" width="181.2" height="22" fill="#ab4dcb"/>
+<rect x="60.0" y="212.0" width="378.8" height="22" fill="#e2e2e2"/>
+<rect x="123.7" y="212.0" width="315.1" height="22" fill="#f2a93b"/>
+<text x="281.3" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Lyase</text>
+<line x1="61.1" y1="212.0" x2="61.1" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="109.4" y1="212.0" x2="109.4" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="158.8" y1="212.0" x2="158.8" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="199.5" y1="212.0" x2="199.5" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="264.2" y1="212.0" x2="264.2" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="331.2" y1="212.0" x2="331.2" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="391.6" y1="212.0" x2="391.6" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="438.8" y1="211.0" x2="438.8" y2="235.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="226.5" font-family="sans-serif" font-size="9.5">FMN2 – Lyase truncated</text>
+<rect x="60.0" y="238.0" width="406.3" height="22" fill="#8ecb4d"/>
+<rect x="466.3" y="238.0" width="153.7" height="22" fill="#e2e2e2"/>
+<rect x="559.6" y="238.0" width="59.3" height="22" fill="#2878b5"/>
+<text x="589.3" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF10415</text>
+<rect x="466.3" y="238.0" width="20.9" height="22" fill="#f2a93b"/>
+<text x="476.7" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Lyase</text>
+<line x1="513.5" y1="238.0" x2="513.5" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="569.5" y1="238.0" x2="569.5" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="466.3" y1="237.0" x2="466.3" y2="261.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="252.5" font-family="sans-serif" font-size="9.5">ARID4B – Lyase truncated</text>
+<rect x="60.0" y="264.0" width="406.3" height="22" fill="#cba14d"/>
+<rect x="466.3" y="264.0" width="153.7" height="22" fill="#e2e2e2"/>
+<rect x="559.6" y="264.0" width="59.3" height="22" fill="#2878b5"/>
+<text x="589.3" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF10415</text>
+<rect x="466.3" y="264.0" width="20.9" height="22" fill="#f2a93b"/>
+<text x="476.7" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Lyase</text>
+<line x1="513.5" y1="264.0" x2="513.5" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="569.5" y1="264.0" x2="569.5" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="466.3" y1="263.0" x2="466.3" y2="287.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="278.5" font-family="sans-serif" font-size="9.5">RGS7 – Lyase truncated</text>
+<rect x="60.0" y="290.0" width="509.5" height="22" fill="#cb9f4d"/>
+<rect x="569.5" y="290.0" width="50.5" height="22" fill="#e2e2e2"/>
+<rect x="569.5" y="290.0" width="49.4" height="22" fill="#f2a93b"/>
+<text x="594.2" y="304.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF10415</text>
+<line x1="569.5" y1="289.0" x2="569.5" y2="313.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="304.5" font-family="sans-serif" font-size="9.5">DGKH – Lyase lost</text>
+<rect x="60.0" y="316.0" width="512.8" height="22" fill="#cb4d57"/>
+<rect x="572.8" y="316.0" width="47.2" height="22" fill="#e2e2e2"/>
+<rect x="572.8" y="316.0" width="46.1" height="22" fill="#f2a93b"/>
+<text x="595.8" y="330.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF10415</text>
+<line x1="572.8" y1="315.0" x2="572.8" y2="339.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="330.5" font-family="sans-serif" font-size="9.5">MAFTRR – Lyase lost</text>
+<rect x="60.0" y="342.0" width="523.8" height="22" fill="#cb534d"/>
+<rect x="583.8" y="342.0" width="36.2" height="22" fill="#e2e2e2"/>
+<rect x="583.8" y="342.0" width="35.1" height="22" fill="#f2a93b"/>
+<text x="601.3" y="356.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF10415</text>
+<line x1="583.8" y1="341.0" x2="583.8" y2="365.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="356.5" font-family="sans-serif" font-size="9.5">SLC35F3 – Lyase lost</text>
+<line x1="60.0" y1="372.0" x2="620.0" y2="372.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="386.0" font-family="sans-serif" font-size="9">1</text>
+<text x="620.0" y="386.0" font-family="sans-serif" font-size="9" text-anchor="end">510 aa</text>
+<line x1="61.1" y1="390.0" x2="61.1" y2="394.0" stroke="#777777" stroke-width="0.7"/>
+<text x="61.1" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 61.1 395.0)">E1</text>
+<line x1="109.4" y1="390.0" x2="109.4" y2="394.0" stroke="#777777" stroke-width="0.7"/>
+<text x="109.4" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 109.4 395.0)">E2</text>
+<line x1="158.8" y1="390.0" x2="158.8" y2="394.0" stroke="#777777" stroke-width="0.7"/>
+<text x="158.8" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 158.8 395.0)">E3</text>
+<line x1="199.5" y1="390.0" x2="199.5" y2="394.0" stroke="#777777" stroke-width="0.7"/>
+<text x="199.5" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 199.5 395.0)">E4</text>
+<line x1="264.2" y1="390.0" x2="264.2" y2="394.0" stroke="#777777" stroke-width="0.7"/>
+<text x="264.2" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 264.2 395.0)">E5</text>
+<line x1="331.2" y1="390.0" x2="331.2" y2="394.0" stroke="#777777" stroke-width="0.7"/>
+<text x="331.2" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 331.2 395.0)">E6</text>
+<line x1="391.6" y1="390.0" x2="391.6" y2="394.0" stroke="#777777" stroke-width="0.7"/>
+<text x="391.6" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 391.6 395.0)">E7</text>
+<line x1="466.3" y1="390.0" x2="466.3" y2="394.0" stroke="#777777" stroke-width="0.7"/>
+<text x="466.3" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 466.3 395.0)">E8</text>
+<line x1="513.5" y1="390.0" x2="513.5" y2="394.0" stroke="#777777" stroke-width="0.7"/>
+<text x="513.5" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 513.5 395.0)">E9</text>
+<line x1="569.5" y1="390.0" x2="569.5" y2="394.0" stroke="#777777" stroke-width="0.7"/>
+<text x="569.5" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 569.5 395.0)">E10</text>
+<rect x="60.0" y="403.0" width="12" height="10" fill="#2878b5"/>
+<text x="76.0" y="412.0" font-family="sans-serif" font-size="9">domain retained</text>
+<rect x="227.0" y="403.0" width="12" height="10" fill="#f2a93b"/>
+<text x="243.0" y="412.0" font-family="sans-serif" font-size="9">domain truncated</text>
+<rect x="403.0" y="403.0" width="12" height="10" fill="#e2e2e2"/>
+<text x="419.0" y="412.0" font-family="sans-serif" font-size="9">target backbone (no domain)</text>
+<rect x="678.0" y="403.0" width="12" height="10" fill="#d62728"/>
+<text x="694.0" y="412.0" font-family="sans-serif" font-size="9">breakpoint</text>
+</svg>

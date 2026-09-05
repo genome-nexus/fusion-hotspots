@@ -20,6 +20,13 @@ from __future__ import annotations
 import math
 from typing import Any
 
+from cfh.reporting.domain_names import (
+    configured_domain_names,
+    domain_interpretation_sentence,
+    domain_label_for_accession,
+    format_domain_names,
+)
+
 ALPHA = 0.05
 
 # The order results-summary paragraphs are rendered in when the underlying
@@ -77,6 +84,27 @@ def significance_clause(p_value: Any, alpha: float = ALPHA) -> str | None:
     return f"{verdict} at alpha={alpha:g}"
 
 
+def _configured_domains(payload: dict, field: str) -> list[dict]:
+    summary = payload.get("summary") or {}
+    domains = summary.get(field) or []
+    return domains if isinstance(domains, list) else []
+
+
+def _retention_domain_names(payload: dict) -> list[str]:
+    domains = _configured_domains(payload, "configured_key_domains")
+    if not domains:
+        domains = _configured_domains(payload, "key_domains")
+    names = configured_domain_names(domains)
+    if names:
+        return names
+    summary = payload.get("summary") or {}
+    label = domain_label_for_accession(
+        (payload.get("gene_track") or {}).get("domains") or summary.get("key_domains") or [],
+        summary.get("domain_accession"),
+    )
+    return [label] if label else []
+
+
 def _find_algorithm(payload: dict, name: str) -> dict | None:
     for result in payload.get("algorithm_results") or []:
         if result.get("Algorithm") == name:
@@ -112,13 +140,14 @@ def render_abstract(payload: dict) -> str:
             "were in-frame."
         )
 
-    domain = summary.get("domain_accession")
+    domain_names = _retention_domain_names(payload)
+    domain = format_domain_names(domain_names)
     retained_count = summary.get("kinase_retained_count")
     if total and domain and retained_count is not None:
         sentences.append(
             f"{retained_count}/{total} fusions "
             f"({format_percent(summary.get('kinase_retained_percent'))}) retained the "
-            f"{domain} domain."
+            f"{domain}{'' if domain.lower().endswith('domain') else ' domain'}."
         )
 
     domain_retention = _find_algorithm(payload, "domain_retention")
@@ -184,12 +213,20 @@ def _domain_retention_paragraph(result: dict, payload: dict) -> str:
         reason = warnings[0] if warnings else "insufficient mapped in-frame domain-status data"
         return f"Domain-retention statistics were not computed for this run: {reason}"
 
-    domain = top.get("domain_accession") or "the configured"
+    configured_domains = _configured_domains(payload, "configured_key_domains")
+    if not configured_domains:
+        configured_domains = _configured_domains(payload, "key_domains")
+    domain_names = _retention_domain_names(payload)
+    domain = format_domain_names(domain_names)
+    domain_subject = domain or "The configured domain"
+    if domain and not domain.lower().endswith("domain"):
+        domain_subject += " domain"
     in_frame_count = top.get("in_frame_count")
     in_frame_retained = top.get("in_frame_kinase_retained_count")
     sig = significance_clause(fisher_p)
     sentence = (
-        f"{domain} domain retention was tested with Fisher's exact test comparing in-frame "
+        f"{domain_subject} retention was tested with Fisher's exact test "
+        "comparing in-frame "
         "fusions against all others; "
     )
     if in_frame_count and in_frame_retained is not None:
@@ -203,6 +240,15 @@ def _domain_retention_paragraph(result: dict, payload: dict) -> str:
     sentence += f" ({sig})." if sig else "."
     sentences = [sentence]
 
+    interpretation = domain_interpretation_sentence(
+        configured_domains,
+        fisher_p_value=summary.get("fisher_p_value"),
+        fisher_odds_ratio=summary.get("fisher_odds_ratio"),
+        effect="retention",
+    )
+    if interpretation:
+        sentences.append(interpretation)
+
     perm_p = summary.get("permutation_empirical_p_value")
     if _finite(perm_p) is not None:
         sentences.append(
@@ -213,7 +259,6 @@ def _domain_retention_paragraph(result: dict, payload: dict) -> str:
 
 
 def _domain_disruption_paragraph(result: dict, payload: dict) -> str:
-    del payload
     summary = result.get("Summary") or {}
     warnings = result.get("Warnings") or []
     fisher_p = summary.get("fisher_p_value")
@@ -228,8 +273,13 @@ def _domain_disruption_paragraph(result: dict, payload: dict) -> str:
     other_in_frame = table[1][0]
     in_frame_total = disrupted_in_frame + other_in_frame
     sig = significance_clause(fisher_p)
+    domain_names = configured_domain_names(
+        _configured_domains(payload, "configured_disruption_required_domains")
+    )
+    domain = format_domain_names(domain_names)
+    subject = f"Disruption of the {domain}" if domain else "Domain disruption"
     sentence = (
-        "Disruption of the configured disruption-required domain(s) was tested with "
+        f"{subject} was tested with "
         "Fisher's exact test comparing in-frame fusions against all others; "
     )
     if in_frame_total:
@@ -242,6 +292,15 @@ def _domain_disruption_paragraph(result: dict, payload: dict) -> str:
         sentence += f"p={format_stat(fisher_p)}"
     sentence += f" ({sig})." if sig else "."
     sentences = [sentence]
+
+    interpretation = domain_interpretation_sentence(
+        _configured_domains(payload, "configured_disruption_required_domains"),
+        fisher_p_value=summary.get("fisher_p_value"),
+        fisher_odds_ratio=summary.get("fisher_odds_ratio"),
+        effect="disruption",
+    )
+    if interpretation:
+        sentences.append(interpretation)
 
     perm_p = summary.get("permutation_empirical_p_value")
     if _finite(perm_p) is not None:
