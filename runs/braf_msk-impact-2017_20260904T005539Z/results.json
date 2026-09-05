@@ -11822,5 +11822,7 @@
     "fusion_count": 33,
     "in_frame_percent": 100.0,
     "domain_retained_percent": 100.0
-  }
+  },
+  "gene_track": null,
+  "intragenic_deletions": []
 }

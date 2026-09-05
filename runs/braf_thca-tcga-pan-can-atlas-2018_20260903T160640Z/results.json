@@ -439,5 +439,13 @@
       "Created_at": "2026-09-03T16:06:40.839378Z",
       "Input_fingerprint": "da8bed59057d1650a6e67934a8ac7e724d864bb7fcb01a606f768428606c8ff3"
     }
-  ]
+  ],
+  "reference": {
+    "citation": "PMC5461196",
+    "fusion_count": 33,
+    "in_frame_percent": 100.0,
+    "domain_retained_percent": 100.0
+  },
+  "gene_track": null,
+  "intragenic_deletions": []
 }

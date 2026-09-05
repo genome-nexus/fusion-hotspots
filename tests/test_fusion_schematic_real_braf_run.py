@@ -23,7 +23,7 @@ from cfh.reporting.fusion_schematic import (
 # Imported from the shared palette module (not re-exported from
 # fusion_schematic) so these assertions catch the two renderers actually
 # drifting apart, not just a coincidental match today.
-from cfh.reporting.palette import RETAINED_COLOR, TRUNCATED_COLOR
+from cfh.reporting.palette import CONNECTOR_COLOR, RETAINED_COLOR, TRUNCATED_COLOR
 
 REPO_ROOT = Path(__file__).parent.parent
 BRAF_RUN_DIR = REPO_ROOT / "runs" / "braf_msk-impact-50k-2026_20260904T172738Z"
@@ -154,7 +154,9 @@ def test_intragenic_deletion_schematic_row_count_and_bounds():
     svg = render_intragenic_deletion_schematic_svg(payload)
     assert svg is not None  # this real cohort does have qualifying records
 
-    connectors = re.findall(r'<line x1="([\d.]+)"[^>]*x2="([\d.]+)"[^>]*stroke="#999999"', svg)
+    connectors = re.findall(
+        rf'<line x1="([\d.]+)"[^>]*x2="([\d.]+)"[^>]*stroke="{re.escape(CONNECTOR_COLOR)}"', svg
+    )
     assert 0 < len(connectors) <= _MAX_ROWS
     for x1, x2 in connectors:
         aa1 = (float(x1) - _AXIS_LEFT) / _AXIS_WIDTH * protein_length

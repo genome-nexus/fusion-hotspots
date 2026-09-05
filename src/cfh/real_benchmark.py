@@ -43,8 +43,11 @@ from cfh.reporting.fusion_schematic import (
     render_intragenic_deletion_schematic_svg,
 )
 from cfh.reporting.palette import (
+    AXIS_COLOR,
     BREAKPOINT_COLOR,
+    DOMAIN_HIGHLIGHT_COLOR,
     LOST_COLOR,
+    REFERENCE_BAR_COLOR,
     RETAINED_COLOR,
     TRUNCATED_COLOR,
     deterministic_color,
@@ -1228,14 +1231,23 @@ def _domain_track_key_domains(run: RealBenchmarkRun) -> list[dict]:
 
 
 def _domain_highlight_color(index: int, domain_name: str) -> str:
-    """First key domain keeps this module's original highlight green (so
-    the common single-domain case looks the same as before this change);
-    any additional key domain gets its own stable color, derived the same
-    way :func:`cfh.reporting.fusion_schematic.partner_color` derives a
-    partner's color, so two domain highlights are visually distinguishable
-    without hardcoding a fixed-size color list."""
+    """Color for one configured key-domain highlight span.
+
+    The first key domain always gets ``DOMAIN_HIGHLIGHT_COLOR`` (documented
+    in the track's own legend as "configured key-domain span"); every
+    additional key domain -- when a gene configures more than one, e.g. to
+    also highlight an autoinhibitory or RAS-binding domain alongside the
+    kinase domain -- gets its own stable color derived the same way
+    :func:`cfh.reporting.fusion_schematic.partner_color` derives a
+    partner's, so multiple domain highlights stay visually distinguishable
+    without hardcoding a fixed-size color list. The legend entry covers
+    this whole scheme (one shared meaning -- "a configured key-domain
+    span" -- regardless of exactly which stable shade a given domain name
+    hashes to), the same way the fusion schematic's legend documents
+    partner colors as decorative without a swatch per partner.
+    """
     if index == 0:
-        return "#62b36f"
+        return DOMAIN_HIGHLIGHT_COLOR
     return deterministic_color(domain_name, lightness=0.6, saturation=0.5)
 
 
@@ -1303,6 +1315,11 @@ def _domain_track_svg(run: RealBenchmarkRun, outlier_ids: set[str]) -> str:
             continue
         fraction = row.get("domain_retained_fraction")
         status = row.get("domain_status")
+        # `domain_is_truncated` is derived as exactly `0.0 < fraction < 1.0`
+        # (cfh.mapping.feature_mapper.calculate_domain_retention), so a
+        # fraction strictly between 0 and 1 always implies truncated and
+        # vice versa -- there is no real "partially retained but not
+        # truncated" case to separately color.
         if row.get("domain_is_truncated") or status == "disrupted":
             color = TRUNCATED_COLOR
         elif fraction == 0.0 or status == "lost":
@@ -1310,7 +1327,16 @@ def _domain_track_svg(run: RealBenchmarkRun, outlier_ids: set[str]) -> str:
         elif fraction == 1.0 or status == "retained":
             color = RETAINED_COLOR
         else:
-            color = "#aaaaaa"
+            # domain_status == "unknown": no resolvable domain/breakpoint
+            # coordinates for this event's target domain (see
+            # classify_domain_retention), a genuine "insufficient data"
+            # state distinct from a confirmed "lost" call. Never observed
+            # in the committed BRAF/RET real-cohort runs (every row there
+            # resolves to retained/lost/disrupted), so rather than invent
+            # an extra legended color for an unreached case, skip drawing
+            # a dot instead of implying a retention outcome that was never
+            # actually determined.
+            continue
         stroke = BREAKPOINT_COLOR if row["event_id"] in outlier_ids else "none"
         stroke_width = "1.5" if row["event_id"] in outlier_ids else "0"
         y = dots_top + (index % 5) * 7
@@ -1325,7 +1351,7 @@ def _domain_track_svg(run: RealBenchmarkRun, outlier_ids: set[str]) -> str:
     position_axis_elements = [
         f'<line x1="{axis_left:.1f}" y1="{position_axis_y:.1f}" '
         f'x2="{axis_left + axis_width:.1f}" y2="{position_axis_y:.1f}" '
-        'stroke="#444444" stroke-width="1"/>'
+        f'stroke="{AXIS_COLOR}" stroke-width="1"/>'
     ]
     seen_ticks: set[int] = set()
     for tick in position_ticks:
@@ -1336,7 +1362,7 @@ def _domain_track_svg(run: RealBenchmarkRun, outlier_ids: set[str]) -> str:
         anchor = "start" if tick == 0 else ("end" if tick == int(maximum) else "middle")
         position_axis_elements.append(
             f'<line x1="{x:.1f}" y1="{position_axis_y:.1f}" x2="{x:.1f}" '
-            f'y2="{position_axis_y + 5:.1f}" stroke="#444444" stroke-width="1"/>'
+            f'y2="{position_axis_y + 5:.1f}" stroke="{AXIS_COLOR}" stroke-width="1"/>'
         )
         position_axis_elements.append(
             f'<text x="{x:.1f}" y="{position_axis_y + 15:.1f}" font-family="sans-serif" '
@@ -1355,7 +1381,7 @@ def _domain_track_svg(run: RealBenchmarkRun, outlier_ids: set[str]) -> str:
     exon_tick_label_height = 20.0 if exon_boundaries else 0.0
 
     legend_y = exon_tick_y + exon_tick_label_height + 15.0
-    height = legend_y + 15.0
+    height = legend_y + 33.0
 
     return "\n".join(
         [
@@ -1366,7 +1392,7 @@ def _domain_track_svg(run: RealBenchmarkRun, outlier_ids: set[str]) -> str:
             f"{run.gene_symbol} domain-retention track</text>",
             *domain_elements,
             f'<line x1="{axis_left:.1f}" y1="{backbone_y:.1f}" x2="{axis_left + axis_width:.1f}" '
-            f'y2="{backbone_y:.1f}" stroke="#444" stroke-width="4"/>',
+            f'y2="{backbone_y:.1f}" stroke="{AXIS_COLOR}" stroke-width="4"/>',
             *dots,
             *position_axis_elements,
             *exon_tick_elements,
@@ -1383,6 +1409,11 @@ def _domain_track_svg(run: RealBenchmarkRun, outlier_ids: set[str]) -> str:
             'stroke-width="1.5"/>'
             f'<text x="375" y="{legend_y + 5:.1f}" font-family="sans-serif" font-size="12">'
             "reference discrepancy</text>",
+            f'<rect x="60" y="{legend_y + 13:.1f}" width="12" height="10" '
+            f'fill="{DOMAIN_HIGHLIGHT_COLOR}" opacity="0.55"/>'
+            f'<text x="80" y="{legend_y + 22:.1f}" font-family="sans-serif" font-size="12">'
+            "configured key-domain span (name/range labeled above; a second "
+            "or later configured domain gets its own distinct shade)</text>",
             "</svg>",
         ]
     )
@@ -1410,7 +1441,7 @@ def _comparison_svg(run: RealBenchmarkRun) -> str:
             [
                 f'<text x="20" y="{y}" font-family="sans-serif" font-size="12">{label}</text>',
                 f'<rect x="140" y="{y - 14}" width="{ref_value * 3.8:.1f}" '
-                'height="16" fill="#999"/>',
+                f'height="16" fill="{REFERENCE_BAR_COLOR}"/>',
                 f'<text x="530" y="{y}" font-family="sans-serif" font-size="12">'
                 f"reference {ref_value:.1f}%</text>",
                 f'<rect x="140" y="{y + 10}" width="{run_value * 3.8:.1f}" height="16" '
@@ -1419,7 +1450,15 @@ def _comparison_svg(run: RealBenchmarkRun) -> str:
                 f"run {run_value:.1f}%</text>",
             ]
         )
-    elements.append("</svg>")
+    elements.extend(
+        [
+            f'<rect x="140" y="190" width="12" height="10" fill="{REFERENCE_BAR_COLOR}"/>',
+            '<text x="157" y="199" font-family="sans-serif" font-size="11">reference</text>',
+            f'<rect x="245" y="190" width="12" height="10" fill="{RETAINED_COLOR}"/>',
+            '<text x="262" y="199" font-family="sans-serif" font-size="11">current run</text>',
+            "</svg>",
+        ]
+    )
     return "\n".join(elements)
 
 

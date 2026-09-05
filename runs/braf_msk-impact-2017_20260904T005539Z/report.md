@@ -15,6 +15,12 @@ Retrieved from public cBioPortal and Genome Nexus on 2026-09-04.
 - Breakpoint-permutation empirical p-value: 0.000999001
 - Contingency table `[[retained/in-frame, retained/other], [not-retained/in-frame, not-retained/other]]`: `[[31, 2], [2, 5]]`
 
+### Domain retention and discrepancies
+
+![Domain retention diagram](visualizations/domain_retention_outliers.svg)
+
+*Domain-retention positions for analyzed fusion events; red outlines mark reference discrepancies.*
+
 ## Method
 
 The cBioPortal `msk_impact_2017_structural_variants` structural-variant profile was queried by the configured Entrez gene ID. Fusion-annotated records were adapted to the production SV schema and normalized; when `site2EffectOnFrame=NA`, frame status was resolved from `Event_Info`, not copied into `FusionEvent.Frame_status`.
@@ -43,6 +49,10 @@ AGAP3 (2), AGK (3), CCDC6 (1), CDK5RAP2 (2), CUL1 (1), FAM131B (1), GIPC2 (1), K
 |---|---:|---:|
 | In-frame | 100.0% | 80.5% |
 | Domain retained | 100.0% | 80.5% |
+
+![Reference comparison](visualizations/reference_comparison.svg)
+
+*Published reference percentages compared with this run.*
 
 ## Interpretation
 
