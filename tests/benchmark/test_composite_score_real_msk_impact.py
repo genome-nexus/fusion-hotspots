@@ -281,22 +281,26 @@ def _ret_events_and_features(results_path: Path) -> tuple[list[FusionEvent], lis
 
 
 def test_composite_score_real_ret_msk_impact_gracefully_degrades():
-    """RET only configures ``domain_retention`` (genes/configs/ret.yaml has
-    no ``disruption_required_domains``), a config-level fact independent of
-    any particular run. This reuses the ``frequency``, ``domain_retention``,
-    ``cutpoint_detection``, and ``confidence_stats`` AlgorithmResult objects
-    already present in the latest committed RET run's results.json verbatim
-    -- the most literal form of "consume already-computed outputs as inputs"
-    -- and proves composite_score ranks real RET fusion partners while
-    excluding domain_disruption (recorded as an explicit skipped result)
+    """``genes/configs/ret.yaml`` itself leaves ``disruption_required_domains``
+    unset; ``derive_gene_config_defaults`` auto-derives a real one (RET's
+    PF00028 cadherin-like domain, N-terminal to its PF07714 kinase domain)
+    from live Genome Nexus data, so the committed run's own
+    ``domain_disruption`` result is genuinely computed, not skipped -- this
+    test does not depend on that either way. It reuses the
+    ``frequency``, ``domain_retention``, ``cutpoint_detection``, and
+    ``confidence_stats`` AlgorithmResult objects already present in the
+    latest committed RET run's results.json verbatim -- the most literal
+    form of "consume already-computed outputs as inputs" -- and proves
+    composite_score ranks real RET fusion partners while gracefully
+    degrading domain_disruption (simply never supplied as an input here)
     rather than zero-filling it.
     """
     results_path = _real_run_results_path("ret_msk-impact-50k-2026")
     payload = json.loads(results_path.read_text())
     committed_results = {item["Algorithm"]: item for item in payload["algorithm_results"]}
     domain_disruption_result = committed_results["domain_disruption"]
-    assert domain_disruption_result["Summary"]["fisher_p_value"] is None
-    assert "was skipped" in domain_disruption_result["Warnings"][0]
+    assert domain_disruption_result["Summary"]["fisher_p_value"] is not None
+    assert domain_disruption_result["Warnings"] == []
     assert committed_results["confidence_stats"]["Warnings"] == []
     assert committed_results["cutpoint_detection"]["Summary"]["determinable"] is True
 

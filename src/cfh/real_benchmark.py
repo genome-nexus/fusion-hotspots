@@ -37,6 +37,7 @@ from cfh.model.fusion_event import FusionEvent
 from cfh.model.fusion_feature import FusionFeature
 from cfh.normalization.event_normalizer import normalize
 from cfh.orchestrator.run import run_algorithms
+from cfh.reporting.exon_labels import exon_label_for_protein_position
 from cfh.reporting.fusion_schematic import (
     exon_boundary_ticks_svg,
     render_fusion_schematic_svg,
@@ -1013,10 +1014,14 @@ def markdown_summary(
     cutpoint = results_by_name.get("cutpoint_detection")
     if cutpoint and cutpoint.Summary.get("determinable"):
         cutpoint_summary = cutpoint.Summary
+        cutpoint_exon_label = exon_label_for_protein_position(
+            (run.gene_track or {}).get("exon_boundaries_aa"),
+            cutpoint_summary["inferred_cutpoint_aa"],
+        )
         lines.append(
             "- Cutpoint detection: inferred breakpoint "
-            f"{cutpoint_summary['inferred_cutpoint_aa']} aa; corrected permutation "
-            f"p={_format_stat(cutpoint_summary['corrected_p_value'])}."
+            f"{cutpoint_summary['inferred_cutpoint_aa']} aa ({cutpoint_exon_label}); "
+            f"corrected permutation p={_format_stat(cutpoint_summary['corrected_p_value'])}."
         )
     elif cutpoint:
         lines.append(
@@ -1167,6 +1172,9 @@ def _discrepancies(run: RealBenchmarkRun) -> list[dict]:
             "event_id": row.get("event_id"),
             "partner_gene": row.get("partner_gene"),
             "frame_status": row.get("frame_status"),
+            "breakpoint_protein_position": row.get("breakpoint_protein_position"),
+            "breakpoint_exon": row.get("breakpoint_exon"),
+            "is_intronic_breakpoint": row.get("is_intronic_breakpoint"),
             "retained_domains": row.get("retained_domains", ""),
             "lost_domains": row.get("lost_domains", ""),
             "disrupted_domains": row.get("disrupted_domains", ""),
@@ -1490,6 +1498,9 @@ def write_outputs(
             "event_id",
             "partner_gene",
             "frame_status",
+            "breakpoint_protein_position",
+            "breakpoint_exon",
+            "is_intronic_breakpoint",
             "retained_domains",
             "lost_domains",
             "disrupted_domains",
