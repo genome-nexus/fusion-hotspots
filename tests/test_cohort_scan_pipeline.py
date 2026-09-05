@@ -268,6 +268,12 @@ def test_cohort_scan_end_to_end_offline(mock_session, tmp_path):
     # Summary-building and output writing must not crash either.
     rows = build_summary_rows(result)
     assert {row["gene_symbol"] for row in rows} == {"BRAF", "RET", "FAKE1", "FAKE2"}
+    braf_row = next(row for row in rows if row["gene_symbol"] == "BRAF")
+    assert [domain["name"] for domain in braf_row["key_domains"]] == ["Protein kinase domain"]
+    assert [domain["name"] for domain in braf_row["disruption_required_domains"]] == [
+        "RAS-binding domain",
+        "Cysteine-rich domain",
+    ]
     # Sorted by significance: no row with a real q-value sorts after one with none.
     q_values = [row["min_fdr_adjusted_q_value"] for row in rows]
     real_positions = [i for i, q in enumerate(q_values) if q is not None]

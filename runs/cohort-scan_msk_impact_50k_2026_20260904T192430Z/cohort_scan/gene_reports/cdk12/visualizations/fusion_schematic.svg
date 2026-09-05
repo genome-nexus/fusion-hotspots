@@ -1,0 +1,420 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="890" viewBox="0 0 1000 890">
+<rect width="1000" height="890" fill="white"/>
+<text x="60" y="24" font-family="sans-serif" font-size="15">CDK12 fusion-transcript schematic</text>
+<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555">partner block → breakpoint → retained CDK12 portion (domain-colored, exon ticks)</text>
+<rect x="60.0" y="56.0" width="356.7" height="22" fill="#c5cb4d"/>
+<rect x="416.7" y="56.0" width="203.3" height="22" fill="#e2e2e2"/>
+<rect x="416.7" y="56.0" width="26.7" height="22" fill="#f2a93b"/>
+<text x="430.0" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Prote…</text>
+<line x1="431.3" y1="56.0" x2="431.3" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="447.9" y1="56.0" x2="447.9" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="474.6" y1="56.0" x2="474.6" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="531.3" y1="56.0" x2="531.3" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="416.7" y1="55.0" x2="416.7" y2="79.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="70.5" font-family="sans-serif" font-size="9.5">STAT5B (x4) – Protein kinase domain truncated</text>
+<rect x="60.0" y="82.0" width="242.0" height="22" fill="#cb4dbe"/>
+<rect x="302.0" y="82.0" width="318.0" height="22" fill="#e2e2e2"/>
+<rect x="333.6" y="82.0" width="109.7" height="22" fill="#2878b5"/>
+<text x="388.5" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="324.2" y1="82.0" x2="324.2" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="341.9" y1="82.0" x2="341.9" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="363.3" y1="82.0" x2="363.3" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="387.0" y1="82.0" x2="387.0" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="394.1" y1="82.0" x2="394.1" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="406.9" y1="82.0" x2="406.9" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="416.7" y1="82.0" x2="416.7" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.3" y1="82.0" x2="431.3" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="447.9" y1="82.0" x2="447.9" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="474.6" y1="82.0" x2="474.6" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="531.3" y1="82.0" x2="531.3" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="302.0" y1="81.0" x2="302.0" y2="105.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="96.5" font-family="sans-serif" font-size="9.5">ADCY9 (x2) – Protein kinase domain retained</text>
+<rect x="323.1" y="108.0" width="296.9" height="22" fill="#4dcb75"/>
+<rect x="60.0" y="108.0" width="263.1" height="22" fill="#e2e2e2"/>
+<line x1="60.4" y1="108.0" x2="60.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="191.2" y1="108.0" x2="191.2" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="302.0" y1="108.0" x2="302.0" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="323.1" y1="107.0" x2="323.1" y2="131.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="122.5" font-family="sans-serif" font-size="9.5">HTR1E (x2) – Protein kinase domain lost</text>
+<rect x="60.0" y="134.0" width="30.1" height="22" fill="#4dcbc0"/>
+<rect x="90.1" y="134.0" width="529.9" height="22" fill="#e2e2e2"/>
+<rect x="333.6" y="134.0" width="109.7" height="22" fill="#2878b5"/>
+<text x="388.5" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="191.2" y1="134.0" x2="191.2" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="302.0" y1="134.0" x2="302.0" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="324.2" y1="134.0" x2="324.2" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="341.9" y1="134.0" x2="341.9" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="363.3" y1="134.0" x2="363.3" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="387.0" y1="134.0" x2="387.0" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="394.1" y1="134.0" x2="394.1" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="406.9" y1="134.0" x2="406.9" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="416.7" y1="134.0" x2="416.7" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.3" y1="134.0" x2="431.3" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="447.9" y1="134.0" x2="447.9" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="474.6" y1="134.0" x2="474.6" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="531.3" y1="134.0" x2="531.3" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="90.1" y1="133.0" x2="90.1" y2="157.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="148.5" font-family="sans-serif" font-size="9.5">VMP1 – Protein kinase domain retained</text>
+<rect x="60.0" y="160.0" width="90.2" height="22" fill="#4dcb83"/>
+<rect x="150.2" y="160.0" width="469.8" height="22" fill="#e2e2e2"/>
+<rect x="333.6" y="160.0" width="109.7" height="22" fill="#2878b5"/>
+<text x="388.5" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="191.2" y1="160.0" x2="191.2" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="302.0" y1="160.0" x2="302.0" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="324.2" y1="160.0" x2="324.2" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="341.9" y1="160.0" x2="341.9" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="363.3" y1="160.0" x2="363.3" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="387.0" y1="160.0" x2="387.0" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="394.1" y1="160.0" x2="394.1" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="406.9" y1="160.0" x2="406.9" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="416.7" y1="160.0" x2="416.7" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.3" y1="160.0" x2="431.3" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="447.9" y1="160.0" x2="447.9" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="474.6" y1="160.0" x2="474.6" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="531.3" y1="160.0" x2="531.3" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="150.2" y1="159.0" x2="150.2" y2="183.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="174.5" font-family="sans-serif" font-size="9.5">IKZF3 – Protein kinase domain retained</text>
+<rect x="60.0" y="186.0" width="92.5" height="22" fill="#81cb4d"/>
+<rect x="152.5" y="186.0" width="467.5" height="22" fill="#e2e2e2"/>
+<rect x="333.6" y="186.0" width="109.7" height="22" fill="#2878b5"/>
+<text x="388.5" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="191.2" y1="186.0" x2="191.2" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="302.0" y1="186.0" x2="302.0" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="324.2" y1="186.0" x2="324.2" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="341.9" y1="186.0" x2="341.9" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="363.3" y1="186.0" x2="363.3" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="387.0" y1="186.0" x2="387.0" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="394.1" y1="186.0" x2="394.1" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="406.9" y1="186.0" x2="406.9" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="416.7" y1="186.0" x2="416.7" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.3" y1="186.0" x2="431.3" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="447.9" y1="186.0" x2="447.9" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="474.6" y1="186.0" x2="474.6" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="531.3" y1="186.0" x2="531.3" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="152.5" y1="185.0" x2="152.5" y2="209.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="200.5" font-family="sans-serif" font-size="9.5">FBXL20 – Protein kinase domain retained</text>
+<rect x="60.0" y="212.0" width="131.2" height="22" fill="#684dcb"/>
+<rect x="191.2" y="212.0" width="428.8" height="22" fill="#e2e2e2"/>
+<rect x="333.6" y="212.0" width="109.7" height="22" fill="#2878b5"/>
+<text x="388.5" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="302.0" y1="212.0" x2="302.0" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="324.2" y1="212.0" x2="324.2" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="341.9" y1="212.0" x2="341.9" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="363.3" y1="212.0" x2="363.3" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="387.0" y1="212.0" x2="387.0" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="394.1" y1="212.0" x2="394.1" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="406.9" y1="212.0" x2="406.9" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="416.7" y1="212.0" x2="416.7" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.3" y1="212.0" x2="431.3" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="447.9" y1="212.0" x2="447.9" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="474.6" y1="212.0" x2="474.6" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="531.3" y1="212.0" x2="531.3" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="191.2" y1="211.0" x2="191.2" y2="235.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="226.5" font-family="sans-serif" font-size="9.5">ANKFN1 – Protein kinase domain retained</text>
+<rect x="60.0" y="238.0" width="226.6" height="22" fill="#cb4d8c"/>
+<rect x="286.6" y="238.0" width="333.4" height="22" fill="#e2e2e2"/>
+<rect x="333.6" y="238.0" width="109.7" height="22" fill="#2878b5"/>
+<text x="388.5" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="302.0" y1="238.0" x2="302.0" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="324.2" y1="238.0" x2="324.2" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="341.9" y1="238.0" x2="341.9" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="363.3" y1="238.0" x2="363.3" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="387.0" y1="238.0" x2="387.0" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="394.1" y1="238.0" x2="394.1" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="406.9" y1="238.0" x2="406.9" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="416.7" y1="238.0" x2="416.7" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.3" y1="238.0" x2="431.3" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="447.9" y1="238.0" x2="447.9" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="474.6" y1="238.0" x2="474.6" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="531.3" y1="238.0" x2="531.3" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="286.6" y1="237.0" x2="286.6" y2="261.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="252.5" font-family="sans-serif" font-size="9.5">MED13 – Protein kinase domain retained</text>
+<rect x="60.0" y="264.0" width="239.4" height="22" fill="#624dcb"/>
+<rect x="299.4" y="264.0" width="320.6" height="22" fill="#e2e2e2"/>
+<rect x="333.6" y="264.0" width="109.7" height="22" fill="#2878b5"/>
+<text x="388.5" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="302.0" y1="264.0" x2="302.0" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="324.2" y1="264.0" x2="324.2" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="341.9" y1="264.0" x2="341.9" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="363.3" y1="264.0" x2="363.3" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="387.0" y1="264.0" x2="387.0" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="394.1" y1="264.0" x2="394.1" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="406.9" y1="264.0" x2="406.9" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="416.7" y1="264.0" x2="416.7" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.3" y1="264.0" x2="431.3" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="447.9" y1="264.0" x2="447.9" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="474.6" y1="264.0" x2="474.6" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="531.3" y1="264.0" x2="531.3" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="299.4" y1="263.0" x2="299.4" y2="287.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="278.5" font-family="sans-serif" font-size="9.5">AKAP8L – Protein kinase domain retained</text>
+<rect x="60.0" y="290.0" width="242.0" height="22" fill="#cb4dcb"/>
+<rect x="302.0" y="290.0" width="318.0" height="22" fill="#e2e2e2"/>
+<rect x="333.6" y="290.0" width="109.7" height="22" fill="#2878b5"/>
+<text x="388.5" y="304.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="324.2" y1="290.0" x2="324.2" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="341.9" y1="290.0" x2="341.9" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="363.3" y1="290.0" x2="363.3" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="387.0" y1="290.0" x2="387.0" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="394.1" y1="290.0" x2="394.1" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="406.9" y1="290.0" x2="406.9" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="416.7" y1="290.0" x2="416.7" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.3" y1="290.0" x2="431.3" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="447.9" y1="290.0" x2="447.9" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="474.6" y1="290.0" x2="474.6" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="531.3" y1="290.0" x2="531.3" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="302.0" y1="289.0" x2="302.0" y2="313.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="304.5" font-family="sans-serif" font-size="9.5">ERBB2 – Protein kinase domain retained</text>
+<rect x="60.0" y="316.0" width="264.2" height="22" fill="#4dcb77"/>
+<rect x="324.2" y="316.0" width="295.8" height="22" fill="#e2e2e2"/>
+<rect x="333.6" y="316.0" width="109.7" height="22" fill="#2878b5"/>
+<text x="388.5" y="330.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="341.9" y1="316.0" x2="341.9" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="363.3" y1="316.0" x2="363.3" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="387.0" y1="316.0" x2="387.0" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="394.1" y1="316.0" x2="394.1" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="406.9" y1="316.0" x2="406.9" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="416.7" y1="316.0" x2="416.7" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.3" y1="316.0" x2="431.3" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="447.9" y1="316.0" x2="447.9" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="474.6" y1="316.0" x2="474.6" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="531.3" y1="316.0" x2="531.3" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="324.2" y1="315.0" x2="324.2" y2="339.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="330.5" font-family="sans-serif" font-size="9.5">ODAD4 – Protein kinase domain retained</text>
+<rect x="60.0" y="342.0" width="264.2" height="22" fill="#4d60cb"/>
+<rect x="324.2" y="342.0" width="295.8" height="22" fill="#e2e2e2"/>
+<rect x="333.6" y="342.0" width="109.7" height="22" fill="#2878b5"/>
+<text x="388.5" y="356.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="341.9" y1="342.0" x2="341.9" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="363.3" y1="342.0" x2="363.3" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="387.0" y1="342.0" x2="387.0" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="394.1" y1="342.0" x2="394.1" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="406.9" y1="342.0" x2="406.9" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="416.7" y1="342.0" x2="416.7" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.3" y1="342.0" x2="431.3" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="447.9" y1="342.0" x2="447.9" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="474.6" y1="342.0" x2="474.6" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="531.3" y1="342.0" x2="531.3" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="324.2" y1="341.0" x2="324.2" y2="365.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="356.5" font-family="sans-serif" font-size="9.5">TBKBP1 – Protein kinase domain retained</text>
+<rect x="60.0" y="368.0" width="281.9" height="22" fill="#4d51cb"/>
+<rect x="341.9" y="368.0" width="278.1" height="22" fill="#e2e2e2"/>
+<rect x="341.9" y="368.0" width="101.5" height="22" fill="#f2a93b"/>
+<text x="392.6" y="382.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="363.3" y1="368.0" x2="363.3" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="387.0" y1="368.0" x2="387.0" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="394.1" y1="368.0" x2="394.1" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="406.9" y1="368.0" x2="406.9" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="416.7" y1="368.0" x2="416.7" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.3" y1="368.0" x2="431.3" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="447.9" y1="368.0" x2="447.9" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="474.6" y1="368.0" x2="474.6" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="531.3" y1="368.0" x2="531.3" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="341.9" y1="367.0" x2="341.9" y2="391.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="382.5" font-family="sans-serif" font-size="9.5">GRB7 – Protein kinase domain truncated</text>
+<rect x="363.3" y="394.0" width="256.7" height="22" fill="#594dcb"/>
+<rect x="60.0" y="394.0" width="303.3" height="22" fill="#e2e2e2"/>
+<rect x="333.6" y="394.0" width="29.7" height="22" fill="#f2a93b"/>
+<text x="348.5" y="408.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protei…</text>
+<line x1="60.4" y1="394.0" x2="60.4" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="191.2" y1="394.0" x2="191.2" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="302.0" y1="394.0" x2="302.0" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="324.2" y1="394.0" x2="324.2" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="341.9" y1="394.0" x2="341.9" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="363.3" y1="393.0" x2="363.3" y2="417.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="408.5" font-family="sans-serif" font-size="9.5">RECQL4 – Protein kinase domain truncated</text>
+<rect x="60.0" y="420.0" width="327.0" height="22" fill="#cb4d81"/>
+<rect x="387.0" y="420.0" width="233.0" height="22" fill="#e2e2e2"/>
+<rect x="387.0" y="420.0" width="56.4" height="22" fill="#f2a93b"/>
+<text x="415.2" y="434.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kina…</text>
+<line x1="394.1" y1="420.0" x2="394.1" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="406.9" y1="420.0" x2="406.9" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="416.7" y1="420.0" x2="416.7" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.3" y1="420.0" x2="431.3" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="447.9" y1="420.0" x2="447.9" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="474.6" y1="420.0" x2="474.6" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="531.3" y1="420.0" x2="531.3" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="387.0" y1="419.0" x2="387.0" y2="443.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="434.5" font-family="sans-serif" font-size="9.5">COLEC12 – Protein kinase domain truncated</text>
+<rect x="397.1" y="446.0" width="222.9" height="22" fill="#b64dcb"/>
+<rect x="60.0" y="446.0" width="337.1" height="22" fill="#e2e2e2"/>
+<rect x="333.6" y="446.0" width="63.5" height="22" fill="#f2a93b"/>
+<text x="365.4" y="460.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase…</text>
+<line x1="60.4" y1="446.0" x2="60.4" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="191.2" y1="446.0" x2="191.2" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="302.0" y1="446.0" x2="302.0" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="324.2" y1="446.0" x2="324.2" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="341.9" y1="446.0" x2="341.9" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="363.3" y1="446.0" x2="363.3" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="387.0" y1="446.0" x2="387.0" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="394.1" y1="446.0" x2="394.1" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="397.1" y1="445.0" x2="397.1" y2="469.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="460.5" font-family="sans-serif" font-size="9.5">CACNA1G – Protein kinase domain truncated</text>
+<rect x="60.0" y="472.0" width="346.9" height="22" fill="#cb4dcb"/>
+<rect x="406.9" y="472.0" width="213.1" height="22" fill="#e2e2e2"/>
+<rect x="406.9" y="472.0" width="36.5" height="22" fill="#f2a93b"/>
+<text x="425.1" y="486.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein…</text>
+<line x1="416.7" y1="472.0" x2="416.7" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.3" y1="472.0" x2="431.3" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="447.9" y1="472.0" x2="447.9" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="474.6" y1="472.0" x2="474.6" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="531.3" y1="472.0" x2="531.3" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="406.9" y1="471.0" x2="406.9" y2="495.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="486.5" font-family="sans-serif" font-size="9.5">ERBB2 – Protein kinase domain truncated</text>
+<rect x="60.0" y="498.0" width="346.9" height="22" fill="#81cb4d"/>
+<rect x="406.9" y="498.0" width="213.1" height="22" fill="#e2e2e2"/>
+<rect x="406.9" y="498.0" width="36.5" height="22" fill="#f2a93b"/>
+<text x="425.1" y="512.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein…</text>
+<line x1="416.7" y1="498.0" x2="416.7" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.3" y1="498.0" x2="431.3" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="447.9" y1="498.0" x2="447.9" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="474.6" y1="498.0" x2="474.6" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="531.3" y1="498.0" x2="531.3" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="406.9" y1="497.0" x2="406.9" y2="521.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="512.5" font-family="sans-serif" font-size="9.5">FBXL20 – Protein kinase domain truncated</text>
+<rect x="60.0" y="524.0" width="346.9" height="22" fill="#c0cb4d"/>
+<rect x="406.9" y="524.0" width="213.1" height="22" fill="#e2e2e2"/>
+<rect x="406.9" y="524.0" width="36.5" height="22" fill="#f2a93b"/>
+<text x="425.1" y="538.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein…</text>
+<line x1="416.7" y1="524.0" x2="416.7" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.3" y1="524.0" x2="431.3" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="447.9" y1="524.0" x2="447.9" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="474.6" y1="524.0" x2="474.6" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="531.3" y1="524.0" x2="531.3" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="406.9" y1="523.0" x2="406.9" y2="547.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="538.5" font-family="sans-serif" font-size="9.5">SYNRG – Protein kinase domain truncated</text>
+<rect x="416.7" y="550.0" width="203.3" height="22" fill="#4dcb53"/>
+<rect x="60.0" y="550.0" width="356.7" height="22" fill="#e2e2e2"/>
+<rect x="333.6" y="550.0" width="83.1" height="22" fill="#f2a93b"/>
+<text x="375.1" y="564.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase doma…</text>
+<line x1="60.4" y1="550.0" x2="60.4" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="191.2" y1="550.0" x2="191.2" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="302.0" y1="550.0" x2="302.0" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="324.2" y1="550.0" x2="324.2" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="341.9" y1="550.0" x2="341.9" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="363.3" y1="550.0" x2="363.3" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="387.0" y1="550.0" x2="387.0" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="394.1" y1="550.0" x2="394.1" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="406.9" y1="550.0" x2="406.9" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="416.7" y1="549.0" x2="416.7" y2="573.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="564.5" font-family="sans-serif" font-size="9.5">SKAP1 – Protein kinase domain truncated</text>
+<rect x="60.0" y="576.0" width="356.7" height="22" fill="#4dcb7f"/>
+<rect x="416.7" y="576.0" width="203.3" height="22" fill="#e2e2e2"/>
+<rect x="416.7" y="576.0" width="26.7" height="22" fill="#f2a93b"/>
+<text x="430.0" y="590.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Prote…</text>
+<line x1="431.3" y1="576.0" x2="431.3" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="447.9" y1="576.0" x2="447.9" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="474.6" y1="576.0" x2="474.6" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="531.3" y1="576.0" x2="531.3" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="416.7" y1="575.0" x2="416.7" y2="599.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="590.5" font-family="sans-serif" font-size="9.5">USP6 – Protein kinase domain truncated</text>
+<rect x="60.0" y="602.0" width="358.9" height="22" fill="#cb4dcb"/>
+<rect x="418.9" y="602.0" width="201.1" height="22" fill="#e2e2e2"/>
+<rect x="418.9" y="602.0" width="24.4" height="22" fill="#f2a93b"/>
+<text x="431.1" y="616.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Prote…</text>
+<line x1="431.3" y1="602.0" x2="431.3" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="447.9" y1="602.0" x2="447.9" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="474.6" y1="602.0" x2="474.6" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="531.3" y1="602.0" x2="531.3" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="418.9" y1="601.0" x2="418.9" y2="625.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="616.5" font-family="sans-serif" font-size="9.5">ERBB2 – Protein kinase domain truncated</text>
+<rect x="60.0" y="628.0" width="371.3" height="22" fill="#cb854d"/>
+<rect x="431.3" y="628.0" width="188.7" height="22" fill="#e2e2e2"/>
+<rect x="431.3" y="628.0" width="12.0" height="22" fill="#f2a93b"/>
+<line x1="447.9" y1="628.0" x2="447.9" y2="650.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="474.6" y1="628.0" x2="474.6" y2="650.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="531.3" y1="628.0" x2="531.3" y2="650.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.3" y1="627.0" x2="431.3" y2="651.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="642.5" font-family="sans-serif" font-size="9.5">CSF3 – Protein kinase domain truncated</text>
+<rect x="447.9" y="654.0" width="172.1" height="22" fill="#81cb4d"/>
+<rect x="60.0" y="654.0" width="387.9" height="22" fill="#e2e2e2"/>
+<rect x="333.6" y="654.0" width="109.7" height="22" fill="#2878b5"/>
+<text x="388.5" y="668.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="60.4" y1="654.0" x2="60.4" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="191.2" y1="654.0" x2="191.2" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="302.0" y1="654.0" x2="302.0" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="324.2" y1="654.0" x2="324.2" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="341.9" y1="654.0" x2="341.9" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="363.3" y1="654.0" x2="363.3" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="387.0" y1="654.0" x2="387.0" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="394.1" y1="654.0" x2="394.1" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="406.9" y1="654.0" x2="406.9" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="416.7" y1="654.0" x2="416.7" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.3" y1="654.0" x2="431.3" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="447.9" y1="653.0" x2="447.9" y2="677.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="668.5" font-family="sans-serif" font-size="9.5">FBXL20 – Protein kinase domain retained</text>
+<rect x="60.0" y="680.0" width="409.7" height="22" fill="#cb4dc9"/>
+<rect x="469.7" y="680.0" width="150.3" height="22" fill="#e2e2e2"/>
+<line x1="474.6" y1="680.0" x2="474.6" y2="702.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="531.3" y1="680.0" x2="531.3" y2="702.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="469.7" y1="679.0" x2="469.7" y2="703.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="694.5" font-family="sans-serif" font-size="9.5">FAM222B – Protein kinase domain lost</text>
+<rect x="60.0" y="706.0" width="421.3" height="22" fill="#81cb4d"/>
+<rect x="481.3" y="706.0" width="138.7" height="22" fill="#e2e2e2"/>
+<line x1="531.3" y1="706.0" x2="531.3" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="481.3" y1="705.0" x2="481.3" y2="729.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="720.5" font-family="sans-serif" font-size="9.5">FBXL20 – Protein kinase domain lost</text>
+<rect x="490.7" y="732.0" width="129.3" height="22" fill="#4dcbc2"/>
+<rect x="60.0" y="732.0" width="430.7" height="22" fill="#e2e2e2"/>
+<rect x="333.6" y="732.0" width="109.7" height="22" fill="#2878b5"/>
+<text x="388.5" y="746.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="60.4" y1="732.0" x2="60.4" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="191.2" y1="732.0" x2="191.2" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="302.0" y1="732.0" x2="302.0" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="324.2" y1="732.0" x2="324.2" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="341.9" y1="732.0" x2="341.9" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="363.3" y1="732.0" x2="363.3" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="387.0" y1="732.0" x2="387.0" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="394.1" y1="732.0" x2="394.1" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="406.9" y1="732.0" x2="406.9" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="416.7" y1="732.0" x2="416.7" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.3" y1="732.0" x2="431.3" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="447.9" y1="732.0" x2="447.9" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="474.6" y1="732.0" x2="474.6" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="490.7" y1="731.0" x2="490.7" y2="755.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="746.5" font-family="sans-serif" font-size="9.5">SPON1 – Protein kinase domain retained</text>
+<rect x="60.0" y="758.0" width="435.6" height="22" fill="#81cb4d"/>
+<rect x="495.6" y="758.0" width="124.4" height="22" fill="#e2e2e2"/>
+<line x1="531.3" y1="758.0" x2="531.3" y2="780.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="495.6" y1="757.0" x2="495.6" y2="781.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="660" y="772.5" font-family="sans-serif" font-size="9.5">FBXL20 – Protein kinase domain lost</text>
+<line x1="60.0" y1="788.0" x2="620.0" y2="788.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="802.0" font-family="sans-serif" font-size="9">1</text>
+<text x="620.0" y="802.0" font-family="sans-serif" font-size="9" text-anchor="end">1490 aa</text>
+<line x1="60.4" y1="806.0" x2="60.4" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<text x="60.4" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 60.4 811.0)">E1</text>
+<line x1="191.2" y1="806.0" x2="191.2" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<text x="191.2" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 191.2 811.0)">E2</text>
+<line x1="302.0" y1="806.0" x2="302.0" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<text x="302.0" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 302.0 811.0)">E3</text>
+<line x1="324.2" y1="806.0" x2="324.2" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<text x="324.2" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 324.2 811.0)">E4</text>
+<line x1="341.9" y1="806.0" x2="341.9" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<text x="341.9" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 341.9 811.0)">E5</text>
+<line x1="363.3" y1="806.0" x2="363.3" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<text x="363.3" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 363.3 811.0)">E6</text>
+<line x1="387.0" y1="806.0" x2="387.0" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<text x="387.0" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 387.0 811.0)">E7</text>
+<line x1="394.1" y1="806.0" x2="394.1" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<text x="394.1" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 394.1 811.0)">E8</text>
+<line x1="406.9" y1="806.0" x2="406.9" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<text x="406.9" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 406.9 811.0)">E9</text>
+<line x1="416.7" y1="806.0" x2="416.7" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<text x="416.7" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 416.7 811.0)">E10</text>
+<line x1="431.3" y1="806.0" x2="431.3" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<text x="431.3" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 431.3 811.0)">E11</text>
+<line x1="447.9" y1="806.0" x2="447.9" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<text x="447.9" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 447.9 811.0)">E12</text>
+<line x1="474.6" y1="806.0" x2="474.6" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<text x="474.6" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 474.6 811.0)">E13</text>
+<line x1="531.3" y1="806.0" x2="531.3" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<text x="531.3" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 531.3 811.0)">E14</text>
+<rect x="60.0" y="819.0" width="12" height="10" fill="#2878b5"/>
+<text x="76.0" y="828.0" font-family="sans-serif" font-size="9">domain retained</text>
+<rect x="227.0" y="819.0" width="12" height="10" fill="#f2a93b"/>
+<text x="243.0" y="828.0" font-family="sans-serif" font-size="9">domain truncated</text>
+<rect x="403.0" y="819.0" width="12" height="10" fill="#e2e2e2"/>
+<text x="419.0" y="828.0" font-family="sans-serif" font-size="9">target backbone (no domain)</text>
+<rect x="678.0" y="819.0" width="12" height="10" fill="#d62728"/>
+<text x="694.0" y="828.0" font-family="sans-serif" font-size="9">breakpoint</text>
+<text x="60" y="864.0" font-family="sans-serif" font-size="9" fill="#555">Showing the top 28 of 36 partner/breakpoint groups by recurrence; see results.tsv for the complete list.</text>
+</svg>
