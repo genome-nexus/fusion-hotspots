@@ -81,7 +81,13 @@ ingestion path.
 
 ## Artifacts
 
-- Corrected full scan: `runs/cohort-scan_msk_impact_50k_2026_20260904T005352Z/cohort_scan/`
-- Corrected BRAF 50k: `runs/braf_msk-impact-50k-2026_20260904T005535Z/`
-- Corrected RET 50k: `runs/ret_msk-impact-50k-2026_20260904T005538Z/`
+The specific timestamped run directories originally cited here have since
+been superseded by later fix rounds and pruned per the keep-latest-run
+convention (see `CONTRIBUTING.md`); the numeric claims above still match the
+current committed data. The closest surviving runs for the same
+gene-or-scan-kind/study_id groups are:
+
+- Corrected full scan: `runs/cohort-scan_msk_impact_50k_2026_20260904T144201Z/cohort_scan/`
+- Corrected BRAF 50k: `runs/braf_msk-impact-50k-2026_20260904T172738Z/`
+- Corrected RET 50k: `runs/ret_msk-impact-50k-2026_20260904T172752Z/`
 - Refreshed BRAF 2017: `runs/braf_msk-impact-2017_20260904T005539Z/`
