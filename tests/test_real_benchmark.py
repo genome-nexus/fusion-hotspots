@@ -119,11 +119,19 @@ def test_real_benchmark_pipeline_writes_tsv_json_and_markdown(
     assert run.summary["total_fusions"] == 2
     assert run.summary["mapped_fusions"] == 2
     assert run.summary["in_frame_count"] == 1
-    assert run.warnings == []
+    # Both records mapped successfully (no skips); any warning present is the
+    # fusion-annotation QA cross-check flagging its own known
+    # directional-intronic-breakpoint-snapping difference from this
+    # project's nearest-exon-by-distance approximation (see
+    # cfh.mapping.fusion_annotation_crosscheck), never a processing failure.
+    assert all("Fusion-annotation cross-check" in warning for warning in run.warnings)
     assert paths["tsv"].read_text().splitlines()[0].startswith("event_id\tsample_id")
     payload = json.loads(paths["json"].read_text())
     assert payload["summary"]["domain_accession"] == "PF07714"
     assert len(payload["events"]) == 2
+    assert "fusion_annotation_crosscheck" in payload["summary"]
+    for event_row in payload["events"]:
+        assert "fusion_annotation_crosscheck_agrees" in event_row
     assert paths["tsv"].name == "results.tsv"
     assert paths["json"].name == "results.json"
     assert paths["markdown"].name == "report.md"
