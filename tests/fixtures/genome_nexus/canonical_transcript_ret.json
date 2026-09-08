@@ -1,0 +1,201 @@
+{
+  "transcriptId": "ENST00000355710",
+  "transcriptIdVersion": "3",
+  "geneId": "ENSG00000165731",
+  "refseqMrnaId": "NM_020975",
+  "ccdsId": "CCDS7200",
+  "hugoSymbols": [
+    "RET"
+  ],
+  "proteinId": "ENSP00000347942",
+  "proteinLength": 1114,
+  "pfamDomains": [
+    {
+      "pfamDomainId": "PF00028",
+      "pfamDomainStart": 173,
+      "pfamDomainEnd": 256
+    },
+    {
+      "pfamDomainId": "PF07714",
+      "pfamDomainStart": 724,
+      "pfamDomainEnd": 1005
+    }
+  ],
+  "exons": [
+    {
+      "exonId": "ENSE00001948565",
+      "exonStart": 43572475,
+      "exonEnd": 43572779,
+      "rank": 1,
+      "strand": 1,
+      "version": 1
+    },
+    {
+      "exonId": "ENSE00001365997",
+      "exonStart": 43595907,
+      "exonEnd": 43596170,
+      "rank": 2,
+      "strand": 1,
+      "version": 1
+    },
+    {
+      "exonId": "ENSE00001095923",
+      "exonStart": 43597790,
+      "exonEnd": 43598077,
+      "rank": 3,
+      "strand": 1,
+      "version": 1
+    },
+    {
+      "exonId": "ENSE00001095946",
+      "exonStart": 43600400,
+      "exonEnd": 43600641,
+      "rank": 4,
+      "strand": 1,
+      "version": 1
+    },
+    {
+      "exonId": "ENSE00001095907",
+      "exonStart": 43601824,
+      "exonEnd": 43602019,
+      "rank": 5,
+      "strand": 1,
+      "version": 1
+    },
+    {
+      "exonId": "ENSE00001095904",
+      "exonStart": 43604479,
+      "exonEnd": 43604678,
+      "rank": 6,
+      "strand": 1,
+      "version": 1
+    },
+    {
+      "exonId": "ENSE00001312192",
+      "exonStart": 43606655,
+      "exonEnd": 43606913,
+      "rank": 7,
+      "strand": 1,
+      "version": 1
+    },
+    {
+      "exonId": "ENSE00001164816",
+      "exonStart": 43607547,
+      "exonEnd": 43607672,
+      "rank": 8,
+      "strand": 1,
+      "version": 1
+    },
+    {
+      "exonId": "ENSE00001164807",
+      "exonStart": 43608301,
+      "exonEnd": 43608411,
+      "rank": 9,
+      "strand": 1,
+      "version": 1
+    },
+    {
+      "exonId": "ENSE00001164798",
+      "exonStart": 43609004,
+      "exonEnd": 43609123,
+      "rank": 10,
+      "strand": 1,
+      "version": 1
+    },
+    {
+      "exonId": "ENSE00001164787",
+      "exonStart": 43609928,
+      "exonEnd": 43610184,
+      "rank": 11,
+      "strand": 1,
+      "version": 1
+    },
+    {
+      "exonId": "ENSE00001095944",
+      "exonStart": 43612032,
+      "exonEnd": 43612179,
+      "rank": 12,
+      "strand": 1,
+      "version": 1
+    },
+    {
+      "exonId": "ENSE00001164770",
+      "exonStart": 43613821,
+      "exonEnd": 43613928,
+      "rank": 13,
+      "strand": 1,
+      "version": 1
+    },
+    {
+      "exonId": "ENSE00001164762",
+      "exonStart": 43614979,
+      "exonEnd": 43615193,
+      "rank": 14,
+      "strand": 1,
+      "version": 1
+    },
+    {
+      "exonId": "ENSE00002434226",
+      "exonStart": 43615529,
+      "exonEnd": 43615651,
+      "rank": 15,
+      "strand": 1,
+      "version": 1
+    },
+    {
+      "exonId": "ENSE00002515890",
+      "exonStart": 43617394,
+      "exonEnd": 43617464,
+      "rank": 16,
+      "strand": 1,
+      "version": 1
+    },
+    {
+      "exonId": "ENSE00002442774",
+      "exonStart": 43619119,
+      "exonEnd": 43619256,
+      "rank": 17,
+      "strand": 1,
+      "version": 1
+    },
+    {
+      "exonId": "ENSE00002444663",
+      "exonStart": 43620331,
+      "exonEnd": 43620430,
+      "rank": 18,
+      "strand": 1,
+      "version": 1
+    },
+    {
+      "exonId": "ENSE00001095931",
+      "exonStart": 43622023,
+      "exonEnd": 43622170,
+      "rank": 19,
+      "strand": 1,
+      "version": 2
+    },
+    {
+      "exonId": "ENSE00001386034",
+      "exonStart": 43623560,
+      "exonEnd": 43625799,
+      "rank": 20,
+      "strand": 1,
+      "version": 3
+    }
+  ],
+  "utrs": [
+    {
+      "type": "five_prime_UTR",
+      "start": 43572475,
+      "end": 43572706,
+      "strand": 1
+    },
+    {
+      "type": "three_prime_UTR",
+      "start": 43623718,
+      "end": 43625799,
+      "strand": 1
+    }
+  ],
+  "uniprotId": "P07949"
+}

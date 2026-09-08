@@ -1,6 +1,6 @@
 """Validate the fusion-transcript schematic against real, committed BRAF
 artifacts: the genome-wide MSK-IMPACT cohort scan, and the standalone
-BRAF benchmark run under ``runs/braf_msk-impact-50k-2026_20260904T172738Z/``.
+BRAF benchmark run under ``runs/braf_msk-impact-50k-2026_20260905T011754Z/``.
 
 No network access, no synthetic fixtures: this reads the exact
 ``results.json`` already committed to the repo (regenerated live from
@@ -37,7 +37,7 @@ COHORT_SCAN_BRAF_RUN_DIR = (
     / "gene_reports"
     / "braf"
 )
-STANDALONE_BRAF_RUN_DIR = REPO_ROOT / "runs" / "braf_msk-impact-50k-2026_20260904T172738Z"
+STANDALONE_BRAF_RUN_DIR = REPO_ROOT / "runs" / "braf_msk-impact-50k-2026_20260905T011754Z"
 BRAF_RUN_DIRS = [COHORT_SCAN_BRAF_RUN_DIR, STANDALONE_BRAF_RUN_DIR]
 BRAF_RUN_DIR_IDS = ["cohort-scan", "standalone-benchmark-run"]
 
