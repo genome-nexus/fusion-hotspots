@@ -26,6 +26,8 @@
 <line x1="432.3" y1="67.0" x2="481.6" y2="67.0" stroke="#999999" stroke-width="1.5" stroke-dasharray="3,2"/>
 <text x="660" y="70.5" font-family="sans-serif" font-size="9.5">2-exon deletion (in-frame)</text>
 <line x1="60.0" y1="86.0" x2="620.0" y2="86.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="81.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="620.0" y="81.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
 <text x="60.0" y="100.0" font-family="sans-serif" font-size="9">1</text>
 <text x="620.0" y="100.0" font-family="sans-serif" font-size="9" text-anchor="end">716 aa</text>
 <line x1="60.8" y1="104.0" x2="60.8" y2="108.0" stroke="#777777" stroke-width="0.7"/>

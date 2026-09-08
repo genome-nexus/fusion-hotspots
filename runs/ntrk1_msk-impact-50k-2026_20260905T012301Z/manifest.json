@@ -1,19 +1,19 @@
 {
-  "gene": "RET",
+  "gene": "NTRK1",
   "study_id": "msk_impact_50k_2026",
   "endpoints_used": [
     "https://www.cbioportal.org/api/structural-variant/fetch",
-    "https://www.genomenexus.org/ensembl/canonical-transcript/hgnc/RET"
+    "https://www.genomenexus.org/ensembl/canonical-transcript/hgnc/NTRK1"
   ],
-  "git_sha": "1127fcab41036eaefabcc70d47efe107b47fd797",
+  "git_sha": "d24a43cca243fc7cd0dab09a6fbeca9342e54909",
   "cli_args": [
     "analyze",
-    "RET",
+    "NTRK1",
     "msk_impact_50k_2026",
     "--output-dir",
     "runs",
     "--n-permutations",
     "1000"
   ],
-  "timestamp": "2026-09-05T17:22:17.407801+00:00"
+  "timestamp": "2026-09-05T01:23:01.099176+00:00"
 }

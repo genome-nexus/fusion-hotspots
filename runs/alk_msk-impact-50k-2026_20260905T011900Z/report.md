@@ -1,6 +1,6 @@
 # ALK real-data fusion benchmark: msk_impact_50k_2026
 
-Retrieved from public cBioPortal and Genome Nexus on 2026-09-04.
+Retrieved from public cBioPortal and Genome Nexus on 2026-09-05.
 
 ## Results
 
@@ -45,7 +45,7 @@ For each fusion, breakpoint selection preferred the Genome Nexus canonical trans
 
 - Registered algorithms executed: composite_score, confidence_stats, cutpoint_detection, domain_disruption, domain_retention, exon_retention, frequency, joint_partner
 - Cutpoint detection: inferred breakpoint 972 aa; corrected permutation p=0.000999001.
-- Top composite score: EML4 (221 events), 0.521252.
+- Top composite score: EML4 (221 events), 0.650354.
 
 ## Partners
 

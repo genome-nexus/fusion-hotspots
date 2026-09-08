@@ -1,6 +1,6 @@
 # NTRK1 real-data fusion benchmark: msk_impact_50k_2026
 
-Retrieved from public cBioPortal and Genome Nexus on 2026-09-04.
+Retrieved from public cBioPortal and Genome Nexus on 2026-09-05.
 
 ## Results
 
@@ -45,7 +45,7 @@ For each fusion, breakpoint selection preferred the Genome Nexus canonical trans
 
 - Registered algorithms executed: composite_score, confidence_stats, cutpoint_detection, domain_disruption, domain_retention, exon_retention, frequency, joint_partner
 - Cutpoint detection: inferred breakpoint 501 aa; corrected permutation p=0.014985.
-- Top composite score: LMNA (12 events), 0.317283.
+- Top composite score: LMNA (12 events), 0.388729.
 
 ## Partners
 

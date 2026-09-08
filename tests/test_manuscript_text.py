@@ -52,6 +52,8 @@ PAYLOAD_WITH_SIGNIFICANT_AND_HONORABLE_MENTIONS = {
             "in_frame_percent": 71.11111111111111,
             "domain_retention_percent": 75.55555555555556,
             "fisher_p_value": 5.123255667283157e-06,
+            "fisher_odds_ratio": 4.2,
+            "key_domains": [{"name": "Sterile alpha motif (SAM) domain"}],
             "min_fdr_adjusted_q_value": 0.004334274294521551,
             "fdr_significant": True,
             "top_composite_score": 0.41577810494717626,
@@ -64,6 +66,8 @@ PAYLOAD_WITH_SIGNIFICANT_AND_HONORABLE_MENTIONS = {
             "in_frame_percent": 75.25773195876289,
             "domain_retention_percent": 92.26804123711341,
             "fisher_p_value": 0.00041966557652448966,
+            "fisher_odds_ratio": 3.1,
+            "key_domains": [{"name": "Protein kinase domain"}],
             "min_fdr_adjusted_q_value": 0.11976161828924137,
             "fdr_significant": False,
             "top_composite_score": 0.3,
@@ -398,7 +402,8 @@ def test_gene_highlight_significant_gene_matches_exact_text():
     assert paragraph == (
         "ETV6 was analyzed across 90 fusion events, 71.1% in-frame and 75.6% domain-retained. "
         "Domain-retention Fisher's exact test p=5.12326e-06 (raw statistically significant at "
-        "alpha=0.05). Genome-wide BH-adjusted q=0.00433427 (reaches genome-wide FDR "
+        "alpha=0.05). The Sterile alpha motif (SAM) domain appears to be required for retention. "
+        "Genome-wide BH-adjusted q=0.00433427 (reaches genome-wide FDR "
         "significance)."
     )
 
@@ -417,7 +422,8 @@ def test_gene_highlight_honorable_mention_appends_note_verbatim():
     # neither verdict can be misread as describing the other statistic.
     assert (
         "Domain-retention Fisher's exact test p=0.000419666 (raw statistically significant "
-        "at alpha=0.05). Genome-wide BH-adjusted q=0.119762 (does not reach genome-wide FDR "
+        "at alpha=0.05). The Protein kinase domain appears to be required for retention. "
+        "Genome-wide BH-adjusted q=0.119762 (does not reach genome-wide FDR "
         "significance)."
     ) in paragraph
 

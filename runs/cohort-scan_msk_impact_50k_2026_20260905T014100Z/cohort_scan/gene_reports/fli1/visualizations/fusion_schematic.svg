@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1000" height="432" viewBox="0 0 1000 432">
 <rect width="1000" height="432" fill="white"/>
 <text x="60" y="24" font-family="sans-serif" font-size="15">FLI1 fusion-transcript schematic</text>
-<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555">partner block → breakpoint → retained FLI1 portion (domain-colored, exon ticks)</text>
+<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555">Fusion order varies by row; follow each row's 5' and 3' labels (FLI1 portion is domain-colored, exon ticks)</text>
 <rect x="60.0" y="56.0" width="271.3" height="22" fill="#cb834d"/>
 <rect x="331.3" y="56.0" width="288.7" height="22" fill="#e2e2e2"/>
 <rect x="406.9" y="56.0" width="101.6" height="22" fill="#2878b5"/>
@@ -10,6 +10,8 @@
 <line x1="383.4" y1="56.0" x2="383.4" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="403.2" y1="56.0" x2="403.2" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="331.3" y1="55.0" x2="331.3" y2="79.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="70.5" font-family="sans-serif" font-size="9.5">EWSR1 (x76) – Sterile alpha motif (SAM)/Pointed domain lost</text>
 <rect x="60.0" y="82.0" width="244.1" height="22" fill="#cb834d"/>
 <rect x="304.1" y="82.0" width="315.9" height="22" fill="#e2e2e2"/>
@@ -21,6 +23,8 @@
 <line x1="383.4" y1="82.0" x2="383.4" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="403.2" y1="82.0" x2="403.2" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="304.1" y1="81.0" x2="304.1" y2="105.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="96.5" font-family="sans-serif" font-size="9.5">EWSR1 (x26) – Sterile alpha motif (SAM)/Pointed domain truncated</text>
 <rect x="60.0" y="108.0" width="159.8" height="22" fill="#cb834d"/>
 <rect x="219.8" y="108.0" width="400.2" height="22" fill="#e2e2e2"/>
@@ -34,6 +38,8 @@
 <line x1="383.4" y1="108.0" x2="383.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="403.2" y1="108.0" x2="403.2" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="219.8" y1="107.0" x2="219.8" y2="131.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="122.5" font-family="sans-serif" font-size="9.5">EWSR1 (x3) – Sterile alpha motif (SAM)/Pointed domain truncated</text>
 <rect x="331.3" y="134.0" width="288.7" height="22" fill="#cb834d"/>
 <rect x="60.0" y="134.0" width="271.3" height="22" fill="#e2e2e2"/>
@@ -45,6 +51,8 @@
 <line x1="219.8" y1="134.0" x2="219.8" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="304.1" y1="134.0" x2="304.1" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="331.3" y1="133.0" x2="331.3" y2="157.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="148.5" font-family="sans-serif" font-size="9.5">EWSR1 (x3) – Sterile alpha motif (SAM)/Pointed domain retained</text>
 <rect x="60.0" y="160.0" width="298.6" height="22" fill="#cb834d"/>
 <rect x="358.6" y="160.0" width="261.4" height="22" fill="#e2e2e2"/>
@@ -53,6 +61,8 @@
 <line x1="383.4" y1="160.0" x2="383.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="403.2" y1="160.0" x2="403.2" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="358.6" y1="159.0" x2="358.6" y2="183.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="174.5" font-family="sans-serif" font-size="9.5">EWSR1 (x2) – Sterile alpha motif (SAM)/Pointed domain lost</text>
 <rect x="60.0" y="186.0" width="323.4" height="22" fill="#cb834d"/>
 <rect x="383.4" y="186.0" width="236.6" height="22" fill="#e2e2e2"/>
@@ -60,6 +70,8 @@
 <text x="457.7" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF00178</text>
 <line x1="403.2" y1="186.0" x2="403.2" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="383.4" y1="185.0" x2="383.4" y2="209.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="200.5" font-family="sans-serif" font-size="9.5">EWSR1 (x2) – Sterile alpha motif (SAM)/Pointed domain lost</text>
 <rect x="304.1" y="212.0" width="315.9" height="22" fill="#cb834d"/>
 <rect x="60.0" y="212.0" width="244.1" height="22" fill="#e2e2e2"/>
@@ -70,6 +82,8 @@
 <line x1="155.4" y1="212.0" x2="155.4" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="219.8" y1="212.0" x2="219.8" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="304.1" y1="211.0" x2="304.1" y2="235.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="226.5" font-family="sans-serif" font-size="9.5">EWSR1 – Sterile alpha motif (SAM)/Pointed domain retained</text>
 <rect x="383.4" y="238.0" width="236.6" height="22" fill="#cbb24d"/>
 <rect x="60.0" y="238.0" width="323.4" height="22" fill="#e2e2e2"/>
@@ -83,6 +97,8 @@
 <line x1="331.3" y1="238.0" x2="331.3" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="358.6" y1="238.0" x2="358.6" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="383.4" y1="237.0" x2="383.4" y2="261.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="252.5" font-family="sans-serif" font-size="9.5">ATM – Sterile alpha motif (SAM)/Pointed domain retained</text>
 <rect x="383.4" y="264.0" width="236.6" height="22" fill="#cb834d"/>
 <rect x="60.0" y="264.0" width="323.4" height="22" fill="#e2e2e2"/>
@@ -96,12 +112,16 @@
 <line x1="331.3" y1="264.0" x2="331.3" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="358.6" y1="264.0" x2="358.6" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="383.4" y1="263.0" x2="383.4" y2="287.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="278.5" font-family="sans-serif" font-size="9.5">EWSR1 – Sterile alpha motif (SAM)/Pointed domain retained</text>
 <rect x="60.0" y="290.0" width="343.2" height="22" fill="#cb834d"/>
 <rect x="403.2" y="290.0" width="216.8" height="22" fill="#e2e2e2"/>
 <rect x="406.9" y="290.0" width="101.6" height="22" fill="#2878b5"/>
 <text x="457.7" y="304.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF00178</text>
 <line x1="403.2" y1="289.0" x2="403.2" y2="313.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="304.5" font-family="sans-serif" font-size="9.5">EWSR1 – Sterile alpha motif (SAM)/Pointed domain lost</text>
 <rect x="489.9" y="316.0" width="130.1" height="22" fill="#cbcb4d"/>
 <rect x="60.0" y="316.0" width="429.9" height="22" fill="#e2e2e2"/>
@@ -119,8 +139,12 @@
 <line x1="383.4" y1="316.0" x2="383.4" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="403.2" y1="316.0" x2="403.2" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="489.9" y1="315.0" x2="489.9" y2="339.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="330.5" font-family="sans-serif" font-size="9.5">ERG – Sterile alpha motif (SAM)/Pointed domain retained</text>
 <line x1="60.0" y1="346.0" x2="620.0" y2="346.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="341.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="620.0" y="341.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
 <text x="60.0" y="360.0" font-family="sans-serif" font-size="9">1</text>
 <text x="620.0" y="360.0" font-family="sans-serif" font-size="9" text-anchor="end">452 aa</text>
 <line x1="61.2" y1="364.0" x2="61.2" y2="368.0" stroke="#777777" stroke-width="0.7"/>
