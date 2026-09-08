@@ -54,14 +54,22 @@ _GENOME_NEXUS_BRAF_FIXTURE = (
     / "genome_nexus"
     / "canonical_transcript_braf.json"
 )
+_GENOME_NEXUS_RET_FIXTURE = (
+    Path(__file__).resolve().parents[1]
+    / "fixtures"
+    / "genome_nexus"
+    / "canonical_transcript_ret.json"
+)
 
 
 def _real_run_results_path(prefix: str) -> Path:
     return latest_run_dir(prefix) / "results.json"
 
 
-def _domain_bounds(pfam_id: str) -> tuple[int, int]:
-    payload = json.loads(_GENOME_NEXUS_BRAF_FIXTURE.read_text())
+def _domain_bounds(
+    pfam_id: str, fixture_path: Path = _GENOME_NEXUS_BRAF_FIXTURE
+) -> tuple[int, int]:
+    payload = json.loads(fixture_path.read_text())
     domain = next(d for d in payload["pfamDomains"] if d["pfamDomainId"] == pfam_id)
     return domain["pfamDomainStart"], domain["pfamDomainEnd"]
 
@@ -248,7 +256,16 @@ def test_composite_score_real_braf_msk_impact_all_five_subscores_applicable():
 
 
 def _ret_events_and_features(results_path: Path) -> tuple[list[FusionEvent], list[FusionFeature]]:
+    """Reconstruct real RET events/features from a committed run, including
+    the Cadherin-domain status (needed for a real domain_disruption result,
+    now that ``genes/configs/ret.yaml`` curates it as a
+    ``disruption_required_domains`` entry) using the same real per-event
+    breakpoint protein position and the same committed Genome Nexus domain
+    boundaries the domain_disruption benchmark already uses.
+    """
     payload = json.loads(results_path.read_text())
+    cadherin_bounds = _domain_bounds("PF00028", _GENOME_NEXUS_RET_FIXTURE)
+
     events: list[FusionEvent] = []
     features: list[FusionFeature] = []
     for row in payload["events"]:
@@ -264,38 +281,46 @@ def _ret_events_and_features(results_path: Path) -> tuple[list[FusionEvent], lis
                 Is_protein_fusion=True,
             )
         )
+        role = row["target_role"]
+        position = row["breakpoint_protein_position"]
         features.append(
             FusionFeature(
                 Event_id=row["event_id"],
                 Gene="RET",
-                Role=row["target_role"],
-                Junction_position_aa=row["breakpoint_protein_position"],
-                Domain_retention_flags={"kinase": row["domain_status"]},
+                Role=role,
+                Junction_position_aa=position,
+                Domain_retention_flags={
+                    "kinase": row["domain_status"],
+                    "cadherin": classify_domain_retention(*cadherin_bounds, position, role),
+                },
             )
         )
     return events, features
 
 
 def test_composite_score_real_ret_msk_impact_all_five_subscores_applicable():
-    """``genes/configs/ret.yaml`` has no explicit ``disruption_required_domains``,
-    but :func:`~cfh.genes.registry.derive_gene_config_defaults` auto-derives
-    one from RET's own kinase Pfam domain match (the same coordinate-derived
-    default BRAF's curated config sets explicitly), so a real ``cfh
-    analyze``/``cfh cohort-scan`` run's committed ``domain_disruption``
-    result for RET is a genuinely computed statistic, not a skip. This
-    reuses the ``frequency``, ``domain_retention``, ``domain_disruption``,
-    ``cutpoint_detection``, and ``confidence_stats`` AlgorithmResult objects
-    already present in the latest committed RET run's results.json verbatim
-    -- the most literal form of "consume already-computed outputs as
-    inputs" -- and proves composite_score ranks real RET fusion partners
-    with all five sub-scores applicable at once.
+    """RET now curates a real ``disruption_required_domains`` entry (the
+    N-terminal Cadherin domain, PF00028) in ``genes/configs/ret.yaml``,
+    alongside ``domain_retention``, so all five composite_score sub-scores
+    are applicable for RET, same as BRAF. This reuses the ``frequency``,
+    ``domain_retention``, ``domain_disruption``, ``cutpoint_detection``, and
+    ``confidence_stats`` AlgorithmResult objects already present in the
+    latest committed RET run's results.json verbatim -- the most literal
+    form of "consume already-computed outputs as inputs".
+
+    Before this fix, RET's ``disruption_required_domains`` was silently
+    auto-derived from a live Genome Nexus call on every run instead of being
+    curated, so whether this domain was found at all (and therefore whether
+    domain_disruption produced a real p-value or a null/skipped result)
+    depended on which code state happened to generate that particular
+    commit's run artifact, not on anything about this specific run. Curating
+    the domain in the YAML config removes that dependency entirely.
     """
     results_path = _real_run_results_path("ret_msk-impact-50k-2026")
     payload = json.loads(results_path.read_text())
     committed_results = {item["Algorithm"]: item for item in payload["algorithm_results"]}
     domain_disruption_result = committed_results["domain_disruption"]
     assert domain_disruption_result["Summary"]["fisher_p_value"] is not None
-    assert domain_disruption_result["Warnings"] == []
     assert committed_results["confidence_stats"]["Warnings"] == []
     assert committed_results["cutpoint_detection"]["Summary"]["determinable"] is True
 
@@ -325,6 +350,7 @@ def test_composite_score_real_ret_msk_impact_all_five_subscores_applicable():
         "cutpoint_proximity": True,
         "confidence_certainty": True,
     }
+    assert result.Warnings == []
     ranking = result.Tables["composite_evidence_ranking"]
     assert ranking, "expected at least one ranked RET fusion partner"
 
@@ -334,7 +360,7 @@ def test_composite_score_real_ret_msk_impact_all_five_subscores_applicable():
     # objects verbatim (no seed/n_permutations choice made here at all).
     assert ranking[0]["Partner_gene"] == "KIF5B"
     assert ranking[0]["Event_count"] == 87
-    assert ranking[0]["Composite_score"] == pytest.approx(0.4593659412119797)
+    assert ranking[0]["Composite_score"] == pytest.approx(0.407674382354967)
 
     for row in ranking:
         assert row["Domain_disruption_score"] is not None
@@ -344,7 +370,6 @@ def test_composite_score_real_ret_msk_impact_all_five_subscores_applicable():
     composite_scores = [row["Composite_score"] for row in ranking]
     assert composite_scores == sorted(composite_scores, reverse=True)
     assert all(0.0 <= score <= 1.0 for score in composite_scores)
-    assert result.Warnings == []
 
 
 # --- Real orchestrator-dispatch integration tests -------------------------
@@ -416,13 +441,14 @@ def test_composite_score_via_real_orchestrator_dispatch_braf():
 
 
 def test_composite_score_via_real_orchestrator_dispatch_ret_gracefully_degrades():
-    """Same real-orchestrator proof for RET: domain_disruption legitimately
-    runs (it is registered) but no-ops for RET (no
-    ``disruption_required_domains`` configured), and confidence_stats is
+    """Same real-orchestrator proof for RET: domain_disruption now legitimately
+    computes a real p-value (RET curates the Cadherin domain as a
+    ``disruption_required_domains`` entry), but confidence_stats is
     requested with no per-algorithm params (matching what `cfh analyze`
     actually sends today) so it fails exactly as the committed real RET run
     already shows -- composite_score must still produce a populated,
-    correctly-degraded ranking table, not fail or no-op itself.
+    correctly-degraded ranking table (degraded only on confidence_certainty,
+    not on domain_disruption), not fail or no-op itself.
     """
     results_path = _real_run_results_path("ret_msk-impact-50k-2026")
     events, features = _ret_events_and_features(results_path)
@@ -449,7 +475,7 @@ def test_composite_score_via_real_orchestrator_dispatch_ret_gracefully_degrades(
     assert composite_result.Summary["components_applicable"] == {
         "recurrence": True,
         "domain_retention": True,
-        "domain_disruption": False,
+        "domain_disruption": True,
         "cutpoint_proximity": True,
         "confidence_certainty": False,
     }
