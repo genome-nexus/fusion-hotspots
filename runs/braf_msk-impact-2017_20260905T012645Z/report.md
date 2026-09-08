@@ -1,6 +1,6 @@
 # BRAF real-data fusion benchmark: msk_impact_2017
 
-Retrieved from public cBioPortal and Genome Nexus on 2026-09-04.
+Retrieved from public cBioPortal and Genome Nexus on 2026-09-05.
 
 ## Results
 
@@ -21,6 +21,18 @@ Retrieved from public cBioPortal and Genome Nexus on 2026-09-04.
 
 *Domain-retention positions for analyzed fusion events; red outlines mark reference discrepancies.*
 
+### Fusion-transcript schematic
+
+![BRAF fusion-transcript schematic](visualizations/fusion_schematic.svg)
+
+*One row per recurrent partner/breakpoint group, sharing one amino-acid x-axis for BRAF's full protein length; the partner-contributed portion is colored per partner, the retained target-gene portion is colored by domain-retention status, and a red line marks the breakpoint.*
+
+### Intragenic-deletion schematic
+
+![BRAF intragenic-deletion schematic](visualizations/intragenic_deletion_schematic.svg)
+
+*Same-gene (Site1==Site2==BRAF) intragenic-deletion-style SV records: a retained N-terminal block, a plain connector line for the deleted span, and a resumed C-terminal block.*
+
 ## Method
 
 The cBioPortal `msk_impact_2017_structural_variants` structural-variant profile was queried by the configured Entrez gene ID. Fusion-annotated records were adapted to the production SV schema and normalized; when `site2EffectOnFrame=NA`, frame status was resolved from `Event_Info`, not copied into `FusionEvent.Frame_status`.
@@ -32,8 +44,8 @@ For each fusion, breakpoint selection preferred the Genome Nexus canonical trans
 ## Full-suite highlights
 
 - Registered algorithms executed: composite_score, confidence_stats, cutpoint_detection, domain_disruption, domain_retention, exon_retention, frequency, joint_partner
-- Cutpoint detection: inferred breakpoint 439 aa; corrected permutation p=0.0599401.
-- Top composite score: SND1 (8 events), 0.310496.
+- Cutpoint detection: inferred breakpoint 439 aa (exon 11); corrected permutation p=0.0599401.
+- Top composite score: SND1 (8 events), 0.341053.
 
 ## Partners
 

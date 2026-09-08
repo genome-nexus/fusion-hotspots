@@ -119,11 +119,19 @@ def test_real_benchmark_pipeline_writes_tsv_json_and_markdown(
     assert run.summary["total_fusions"] == 2
     assert run.summary["mapped_fusions"] == 2
     assert run.summary["in_frame_count"] == 1
-    assert run.warnings == []
+    # Both records mapped successfully (no skips); any warning present is the
+    # fusion-annotation QA cross-check flagging its own known
+    # directional-intronic-breakpoint-snapping difference from this
+    # project's nearest-exon-by-distance approximation (see
+    # cfh.mapping.fusion_annotation_crosscheck), never a processing failure.
+    assert all("Fusion-annotation cross-check" in warning for warning in run.warnings)
     assert paths["tsv"].read_text().splitlines()[0].startswith("event_id\tsample_id")
     payload = json.loads(paths["json"].read_text())
     assert payload["summary"]["domain_accession"] == "PF07714"
     assert len(payload["events"]) == 2
+    assert "fusion_annotation_crosscheck" in payload["summary"]
+    for event_row in payload["events"]:
+        assert "fusion_annotation_crosscheck_agrees" in event_row
     assert paths["tsv"].name == "results.tsv"
     assert paths["json"].name == "results.json"
     assert paths["markdown"].name == "report.md"
@@ -154,6 +162,14 @@ def test_real_benchmark_pipeline_writes_tsv_json_and_markdown(
         if row["discrepancy_type"] == "source_vs_derived_qa_mismatch"
     }
     assert qa_event_ids == {"EVT-SAMPLE-2-2"}
+    # Every discrepancy/outlier row also states the mapped breakpoint's
+    # protein position AND the exon it falls in (or was clamped to, for an
+    # intronic breakpoint), not amino-acid position alone.
+    assert outlier_rows
+    for row in outlier_rows:
+        assert row["breakpoint_protein_position"] == "380"
+        assert row["breakpoint_exon"] == "8"
+        assert row["is_intronic_breakpoint"] == "True"
     report = paths["markdown"].read_text()
     assert "does **not** reproduce" in report
     assert "Protein kinase domain (458-712 aa)" in report
@@ -164,6 +180,66 @@ def test_real_benchmark_pipeline_writes_tsv_json_and_markdown(
         assert re.search(rf"!\[[^]]+\]\({re.escape(relative_path)}\)", report)
     assert "![Domain retention diagram](visualizations/domain_retention_outliers.svg)" in report
     assert "![Reference comparison](visualizations/reference_comparison.svg)" in report
+
+
+def test_markdown_cutpoint_line_states_the_exon_the_inferred_position_falls_in(
+    tmp_path,
+    genome_nexus_canonical_transcript_fixture_path,
+):
+    """The ``Cutpoint detection`` line in report.md is a specific breakpoint
+    amino-acid position, so it must also state the protein exon it falls
+    in -- not the aa number alone.
+    """
+    from cfh.algorithms.registry import list_algorithms
+
+    client = _genome_nexus_client(genome_nexus_canonical_transcript_fixture_path)
+
+    def retained_call(sample):
+        return {
+            "sampleId": sample,
+            "site1HugoSymbol": "KIAA1549",
+            "site2HugoSymbol": "BRAF",
+            "site2Position": 140493152,
+            "site2EffectOnFrame": "NA",
+            "connectionType": "3to3",
+            "eventInfo": "Protein Fusion: in frame  {KIAA1549:BRAF}",
+        }
+
+    def lost_call(sample):
+        return {
+            "sampleId": sample,
+            "site1HugoSymbol": "BRAF",
+            "site2HugoSymbol": "SOMEPARTNER",
+            "site1Position": 140534500,
+            "site2EffectOnFrame": "NA",
+            "connectionType": "5to5",
+            "eventInfo": "Protein Fusion: in frame  {BRAF:SOMEPARTNER}",
+        }
+
+    calls = [retained_call("S1"), retained_call("S2"), lost_call("S3"), lost_call("S4")]
+    run = analyze_structural_variant_calls(
+        calls,
+        "BRAF",
+        "msk_impact_50k_2026",
+        genome_nexus_client=client,
+        n_permutations=50,
+        algorithm_names=list_algorithms(),
+    )
+    cutpoint_result = next(r for r in run.results if r.Algorithm == "cutpoint_detection")
+    assert cutpoint_result.Summary["determinable"] is True
+    # aa 138 sits strictly inside exon 3 (81-168 aa) of this fixture's
+    # canonical transcript -- not on a shared exon/intron boundary, so a
+    # single, unambiguous exon number is expected here.
+    assert cutpoint_result.Summary["inferred_cutpoint_aa"] == 138
+
+    paths = write_outputs(run, tmp_path, output_stem="benchmark", pdf=False)
+    report = paths["markdown"].read_text()
+    cutpoint_lines = [line for line in report.splitlines() if line.startswith("- Cutpoint")]
+
+    assert cutpoint_lines == [
+        "- Cutpoint detection: inferred breakpoint 138 aa (exon 3); "
+        "corrected permutation p=0.431373."
+    ]
 
 
 def test_write_outputs_renders_pdf_report_by_default_and_can_be_disabled(

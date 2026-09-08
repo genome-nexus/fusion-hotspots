@@ -1,6 +1,6 @@
 # BRAF real-data fusion benchmark: thca_tcga_pan_can_atlas_2018
 
-Retrieved from public cBioPortal and Genome Nexus on 2026-09-03.
+Retrieved from public cBioPortal and Genome Nexus on 2026-09-05.
 
 ## Results
 
@@ -20,6 +20,12 @@ Retrieved from public cBioPortal and Genome Nexus on 2026-09-03.
 ![Domain retention diagram](visualizations/domain_retention_outliers.svg)
 
 *Domain-retention positions for analyzed fusion events; red outlines mark reference discrepancies.*
+
+### Fusion-transcript schematic
+
+![BRAF fusion-transcript schematic](visualizations/fusion_schematic.svg)
+
+*One row per recurrent partner/breakpoint group, sharing one amino-acid x-axis for BRAF's full protein length; the partner-contributed portion is colored per partner, the retained target-gene portion is colored by domain-retention status, and a red line marks the breakpoint.*
 
 ## Method
 

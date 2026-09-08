@@ -2,7 +2,7 @@
 
 This exercises the full PDF-rendering path (``cfh.reporting.pdf``) against
 the already-committed real BRAF benchmark artifact under
-``runs/braf_msk-impact-2017_20260904T005539Z/`` -- no network access, no
+``runs/braf_msk-impact-2017_20260905T012645Z/`` -- no network access, no
 new fixtures -- and asserts the extracted text contains the actual numbers
 from that run's results.json, not just that "a PDF was produced".
 """
@@ -18,7 +18,7 @@ from cfh.reporting.pdf import render_pdf_report
 from cfh.reporting.text import format_stat
 
 REPO_ROOT = Path(__file__).parent.parent
-BRAF_RUN_DIR = REPO_ROOT / "runs" / "braf_msk-impact-2017_20260904T005539Z"
+BRAF_RUN_DIR = REPO_ROOT / "runs" / "braf_msk-impact-2017_20260905T012645Z"
 
 
 def test_pdf_report_generated_from_real_braf_run_contains_actual_numbers(tmp_path):
@@ -47,7 +47,19 @@ def test_pdf_report_generated_from_real_braf_run_contains_actual_numbers(tmp_pat
     assert str(summary["total_fusions"]) in text
     assert f"{summary['in_frame_percent']:.1f}%" in text
     assert f"{summary['kinase_retained_percent']:.1f}%" in text
-    assert summary["domain_accession"] in text
+    # The report prefers a configured domain's human-readable name over its
+    # bare accession when one is available (see ``cfh.reporting.domain_names``);
+    # this run's ``summary.key_domains`` supplies "Protein kinase domain" for
+    # PF07714, so that's what actually appears in the rendered text.
+    domain_name = next(
+        (
+            domain["name"]
+            for domain in summary.get("key_domains") or []
+            if domain.get("accession") == summary["domain_accession"]
+        ),
+        summary["domain_accession"],
+    )
+    assert domain_name in text
     assert format_stat(summary["fisher_p_value"]) in text
 
     # A real partner-gene name from the run's frequency table, embedded via

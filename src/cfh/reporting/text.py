@@ -26,6 +26,7 @@ from cfh.reporting.domain_names import (
     domain_label_for_accession,
     format_domain_names,
 )
+from cfh.reporting.exon_labels import exon_label_for_protein_position
 
 ALPHA = 0.05
 
@@ -312,7 +313,6 @@ def _domain_disruption_paragraph(result: dict, payload: dict) -> str:
 
 
 def _cutpoint_detection_paragraph(result: dict, payload: dict) -> str:
-    del payload
     summary = result.get("Summary") or {}
     if not summary.get("determinable"):
         reason = summary.get("reason") or "insufficient data"
@@ -323,12 +323,15 @@ def _cutpoint_detection_paragraph(result: dict, payload: dict) -> str:
     n = summary.get("n_events_analyzed")
     cutpoint = summary.get("inferred_cutpoint_aa")
     corrected_p = summary.get("corrected_p_value")
+    exon_label = exon_label_for_protein_position(
+        (payload.get("gene_track") or {}).get("exon_boundaries_aa"), cutpoint
+    )
     sig = significance_clause(corrected_p)
     sentence = (
         f"Cutpoint detection scanned {n if n is not None else 'an unknown number of'} mapped "
         "breakpoints for the protein position that best separates domain-retained from "
         f"lost/disrupted fusions; the inferred cutpoint was position {cutpoint} aa "
-        f"(permutation-corrected p={format_stat(corrected_p)}"
+        f"({exon_label}; permutation-corrected p={format_stat(corrected_p)}"
     )
     sentence += f", {sig})." if sig else ")."
     sentences = [sentence]
