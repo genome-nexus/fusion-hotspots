@@ -469,12 +469,12 @@ def render_fusion_schematic_svg(payload: dict, *, max_rows: int = _MAX_ROWS_DEFA
             [
                 f'<text x="{_AXIS_LEFT + 4:.1f}" y="{end_label_y:.1f}" '
                 'font-family="sans-serif" font-size="8" font-weight="bold" '
-                'text-anchor="start" fill="#111111" stroke="white" stroke-width="2" '
+                f'text-anchor="start" fill="{TEXT_COLOR}" stroke="white" stroke-width="2" '
                 f'paint-order="stroke" data-fusion-end="5-prime" '
                 f'data-block="{five_prime_block}">5\'</text>',
                 f'<text x="{_AXIS_LEFT + _AXIS_WIDTH - 4:.1f}" y="{end_label_y:.1f}" '
                 'font-family="sans-serif" font-size="8" font-weight="bold" '
-                'text-anchor="end" fill="#111111" stroke="white" stroke-width="2" '
+                f'text-anchor="end" fill="{TEXT_COLOR}" stroke="white" stroke-width="2" '
                 f'paint-order="stroke" data-fusion-end="3-prime" '
                 f'data-block="{three_prime_block}">3\'</text>',
             ]
