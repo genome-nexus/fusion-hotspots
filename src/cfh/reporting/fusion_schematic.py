@@ -26,6 +26,7 @@ partner always renders the same color within and across runs.
 
 from __future__ import annotations
 
+from cfh.reporting.domain_names import domain_label_for_accession
 from cfh.reporting.palette import (
     BREAKPOINT_COLOR,
     RETAINED_COLOR,
@@ -195,15 +196,6 @@ def _fit_domain_label(name: str, available_width: float, *, font_size: float = 7
     return name[: max_chars - 1].rstrip() + "…"
 
 
-def _domain_label_for_accession(domains: list[dict], accession: str | None) -> str | None:
-    if not accession:
-        return None
-    for domain in domains:
-        if domain.get("accession") == accession:
-            return domain.get("name") or accession
-    return accession
-
-
 def _status_word(status: str | None) -> str:
     return {
         "retained": "retained",
@@ -298,7 +290,8 @@ def render_position_axis_svg(
     exon_boundaries: list[dict] | None = None,
 ) -> list[str]:
     """The shared amino-acid-position axis drawn once at the bottom of a
-    schematic: the 1/protein-length endpoint labels (existing behavior),
+    schematic: the 1/protein-length endpoint labels and the target coding
+    sequence's 5'/N-terminus and 3'/C-terminus labels,
     plus -- when ``exon_boundaries`` (gene_track's ``exon_boundaries_aa``)
     is given -- one tick and ``E<rank>`` label per exon boundary, via
     :func:`exon_boundary_ticks_svg`. Exported so
@@ -310,6 +303,10 @@ def render_position_axis_svg(
     elements = [
         f'<line x1="{x0:.1f}" y1="{y:.1f}" x2="{x1:.1f}" y2="{y:.1f}" '
         f'stroke="{AXIS_COLOR}" stroke-width="1"/>',
+        f'<text x="{x0:.1f}" y="{y - 5:.1f}" font-family="sans-serif" font-size="8" '
+        'data-axis-end="5-prime" text-anchor="start">5\' / N-terminus</text>',
+        f'<text x="{x1:.1f}" y="{y - 5:.1f}" font-family="sans-serif" font-size="8" '
+        'data-axis-end="3-prime" text-anchor="end">3\' / C-terminus</text>',
         f'<text x="{x0:.1f}" y="{y + 14:.1f}" font-family="sans-serif" font-size="9">1</text>',
         f'<text x="{x1:.1f}" y="{y + 14:.1f}" font-family="sans-serif" font-size="9" '
         f'text-anchor="end">{protein_length} aa</text>',
@@ -370,7 +367,7 @@ def render_fusion_schematic_svg(payload: dict, *, max_rows: int = _MAX_ROWS_DEFA
     truncated_count = total_groups - len(shown)
 
     summary = payload.get("summary") or {}
-    domain_label = _domain_label_for_accession(domains, summary.get("domain_accession"))
+    domain_label = domain_label_for_accession(domains, summary.get("domain_accession"))
 
     scale = _axis_scale(protein_length)
     n_rows = len(shown)
@@ -393,8 +390,8 @@ def render_fusion_schematic_svg(payload: dict, *, max_rows: int = _MAX_ROWS_DEFA
     )
     elements.append(
         f'<text x="{_AXIS_LEFT}" y="40" font-family="sans-serif" font-size="10" fill="#555">'
-        f"partner block → breakpoint → retained {gene_symbol} portion "
-        "(domain-colored, exon ticks)</text>"
+        "Fusion order varies by row; follow each row's 5' and 3' labels "
+        f"({gene_symbol} portion is domain-colored, exon ticks)</text>"
     )
 
     y = _TOP_MARGIN
@@ -423,6 +420,7 @@ def render_fusion_schematic_svg(payload: dict, *, max_rows: int = _MAX_ROWS_DEFA
             f'<rect x="{t_x0:.1f}" y="{row_top:.1f}" width="{max(0.5, t_x1 - t_x0):.1f}" '
             f'height="{_ROW_HEIGHT}" fill="{BACKBONE_COLOR}"/>'
         )
+
         for seg_start, seg_end, seg_color, seg_name in _domain_color_segments(
             domains, target_span[0], target_span[1]
         ):
@@ -454,6 +452,27 @@ def render_fusion_schematic_svg(payload: dict, *, max_rows: int = _MAX_ROWS_DEFA
         elements.append(
             f'<line x1="{bx:.1f}" y1="{breakpoint_top:.1f}" x2="{bx:.1f}" '
             f'y2="{breakpoint_bottom:.1f}" stroke="{BREAKPOINT_COLOR}" stroke-width="1.6"/>'
+        )
+
+        # Append the end tags after every colored segment/tick so they are
+        # always on the top SVG paint layer, including when a domain reaches
+        # the outer edge of the target block.
+        five_prime_block = "partner" if group["role"] == "three_prime" else "target"
+        three_prime_block = "target" if group["role"] == "three_prime" else "partner"
+        end_label_y = row_mid + 3
+        elements.extend(
+            [
+                f'<text x="{_AXIS_LEFT + 4:.1f}" y="{end_label_y:.1f}" '
+                'font-family="sans-serif" font-size="8" font-weight="bold" '
+                'text-anchor="start" fill="#111111" stroke="white" stroke-width="2" '
+                f'paint-order="stroke" data-fusion-end="5-prime" '
+                f'data-block="{five_prime_block}">5\'</text>',
+                f'<text x="{_AXIS_LEFT + _AXIS_WIDTH - 4:.1f}" y="{end_label_y:.1f}" '
+                'font-family="sans-serif" font-size="8" font-weight="bold" '
+                'text-anchor="end" fill="#111111" stroke="white" stroke-width="2" '
+                f'paint-order="stroke" data-fusion-end="3-prime" '
+                f'data-block="{three_prime_block}">3\'</text>',
+            ]
         )
 
         label = _row_label(group, domain_label)

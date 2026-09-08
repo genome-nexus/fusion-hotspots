@@ -1,6 +1,5 @@
 """Validate the domain-retention track (``domain_retention_outliers.svg``)
-against the real, committed BRAF and RET benchmark artifacts under
-``runs/``.
+against real BRAF and RET artifacts from the committed cohort scan.
 
 No network access, no synthetic fixtures: reads the exact
 ``results.json``/``visualizations/domain_retention_outliers.svg`` already
@@ -18,9 +17,14 @@ from pathlib import Path
 
 from conftest import latest_run_dir
 
+GENE_REPORTS = (
+    latest_run_dir("cohort-scan_msk_impact_50k_2026") / "cohort_scan" / "gene_reports"
+)
 RUN_DIRS = {
-    "BRAF": latest_run_dir("braf_msk-impact-50k-2026"),
-    "RET": latest_run_dir("ret_msk-impact-50k-2026"),
+    "BRAF (cohort scan)": GENE_REPORTS / "braf",
+    "RET (cohort scan)": GENE_REPORTS / "ret",
+    "BRAF (standalone benchmark run)": latest_run_dir("braf_msk-impact-50k-2026"),
+    "RET (standalone benchmark run)": latest_run_dir("ret_msk-impact-50k-2026"),
 }
 
 
@@ -68,8 +72,10 @@ def test_domain_retention_track_x_axis_spans_the_real_protein_length():
         payload = _payload(run_dir)
         svg = _svg(run_dir)
         protein_length = payload["gene_track"]["protein_length"]
-        assert f">{protein_length}<" in svg, gene
-        assert ">0<" in svg, gene
+        assert f">{protein_length} aa<" in svg, gene
+        assert ">1<" in svg, gene
+        assert ">5' / N-terminus<" in svg, gene
+        assert ">3' / C-terminus<" in svg, gene
         # At least one interior hundred-aa tick between 0 and the protein
         # length actually appears (not just the two endpoints).
         interior_hundreds = [str(hundred) for hundred in range(100, protein_length, 100)]
