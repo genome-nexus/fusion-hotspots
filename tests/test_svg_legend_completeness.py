@@ -20,8 +20,8 @@ from cfh.reporting.palette import CHROME_COLORS, SEMANTIC_COLORS
 
 REPO_ROOT = Path(__file__).parent.parent
 RUN_DIRS = {
-    "BRAF": REPO_ROOT / "runs" / "braf_msk-impact-50k-2026_20260905T011754Z",
-    "RET": REPO_ROOT / "runs" / "ret_msk-impact-50k-2026_20260905T011503Z",
+    "BRAF": REPO_ROOT / "runs" / "braf_msk-impact-50k-2026_20260905T012352Z",
+    "RET": REPO_ROOT / "runs" / "ret_msk-impact-50k-2026_20260905T012611Z",
 }
 
 _SVG_NAMES = [
