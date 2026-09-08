@@ -60,6 +60,7 @@ from cfh.reporting.palette import (
     deterministic_color,
 )
 from cfh.reporting.pdf import render_pdf_report
+from cfh.reporting.svg_utils import escape_xml_text
 from cfh.stats.breakpoint_tests import build_frame_domain_contingency_table
 from cfh.studies.registry import load_study_config
 
@@ -1457,20 +1458,35 @@ def _domain_track_svg(run: RealBenchmarkRun, outlier_ids: set[str]) -> str:
             continue
         fraction = row.get("domain_retained_fraction")
         status = row.get("domain_status")
+        is_outlier = row["event_id"] in outlier_ids
         if row.get("domain_is_truncated") or status == "disrupted":
             color = TRUNCATED_COLOR
+            status_word = "truncated"
         elif fraction == 0.0 or status == "lost":
             color = LOST_COLOR
+            status_word = "lost"
         elif fraction == 1.0 or status == "retained":
             color = RETAINED_COLOR
+            status_word = "retained"
         else:
             color = "#aaaaaa"
-        stroke = BREAKPOINT_COLOR if row["event_id"] in outlier_ids else "none"
-        stroke_width = "1.5" if row["event_id"] in outlier_ids else "0"
+            status_word = status or "unknown"
+        stroke = BREAKPOINT_COLOR if is_outlier else "none"
+        stroke_width = "1.5" if is_outlier else "0"
         y = dots_top + (index % 5) * 7
+        title_parts = [f"event {row['event_id']}"]
+        if row.get("sample_id"):
+            title_parts.append(f"sample {row['sample_id']}")
+        if row.get("partner_gene"):
+            title_parts.append(f"partner {row['partner_gene']}")
+        title_parts.append(f"breakpoint aa {position}")
+        title_parts.append(f"domain {status_word}")
+        if is_outlier:
+            title_parts.append("reference discrepancy")
+        title = escape_xml_text("; ".join(title_parts))
         dots.append(
             f'<circle cx="{axis_left + position * scale:.1f}" cy="{y:.1f}" r="3" fill="{color}" '
-            f'stroke="{stroke}" stroke-width="{stroke_width}"/>'
+            f'stroke="{stroke}" stroke-width="{stroke_width}"><title>{title}</title></circle>'
         )
     dots_bottom = dots_top + 4 * 7 + 3
 

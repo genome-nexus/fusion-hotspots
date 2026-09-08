@@ -2,7 +2,7 @@
   "gene_symbol": "RET",
   "study_id": "msk_impact_50k_2026",
   "molecular_profile_id": "msk_impact_50k_2026_structural_variants",
-  "retrieved_at": "2026-09-08T14:19:22.049594+00:00",
+  "retrieved_at": "2026-09-08T18:10:49.883534+00:00",
   "summary": {
     "raw_structural_variant_count": 230,
     "total_fusions": 194,
@@ -4880,7 +4880,7 @@
         "domain_retention_p_value_used": 0.000999000999000999,
         "domain_disruption_p_value_used": 0.034896510348965105,
         "inferred_cutpoint_aa": 712,
-        "Runtime_seconds": 0.0001952499987964984
+        "Runtime_seconds": 0.0010052090001408942
       },
       "Tables": {
         "composite_evidence_ranking": [
@@ -5061,7 +5061,7 @@
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.3281808248765652,
+            "Composite_score": 0.32818082487656514,
             "Rank": 10
           },
           {
@@ -5079,7 +5079,7 @@
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.3281808248765652,
+            "Composite_score": 0.32818082487656514,
             "Rank": 11
           },
           {
@@ -5097,7 +5097,7 @@
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.3281808248765652,
+            "Composite_score": 0.32818082487656514,
             "Rank": 12
           },
           {
@@ -5115,7 +5115,7 @@
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.3281808248765652,
+            "Composite_score": 0.32818082487656514,
             "Rank": 13
           },
           {
@@ -5133,7 +5133,7 @@
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.3281808248765652,
+            "Composite_score": 0.32818082487656514,
             "Rank": 14
           },
           {
@@ -5151,7 +5151,7 @@
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.3281808248765652,
+            "Composite_score": 0.32818082487656514,
             "Rank": 15
           },
           {
@@ -5169,7 +5169,7 @@
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.3281808248765652,
+            "Composite_score": 0.32818082487656514,
             "Rank": 16
           },
           {
@@ -5187,7 +5187,7 @@
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.3281808248765652,
+            "Composite_score": 0.32818082487656514,
             "Rank": 17
           },
           {
@@ -5205,7 +5205,7 @@
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.3281808248765652,
+            "Composite_score": 0.32818082487656514,
             "Rank": 18
           },
           {
@@ -5223,7 +5223,7 @@
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.3281808248765652,
+            "Composite_score": 0.32818082487656514,
             "Rank": 19
           },
           {
@@ -5421,7 +5421,7 @@
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.24116256929847185,
+            "Composite_score": 0.24116256929847182,
             "Rank": 30
           },
           {
@@ -5481,7 +5481,7 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-08T14:19:22.049357Z",
+      "Created_at": "2026-09-08T18:10:49.879823Z",
       "Input_fingerprint": "449d7ceecc2bea13602ab349d6d77680990890e521d3fb0495eabbf53c8ba392"
     },
     {
@@ -5547,11 +5547,11 @@
           "mean_a": 67.44134078212291,
           "mean_b": 49.266666666666666
         },
-        "Runtime_seconds": 0.0017281250002270099
+        "Runtime_seconds": 0.014189959001669195
       },
       "Tables": null,
       "Warnings": [],
-      "Created_at": "2026-09-08T14:19:02.325652Z",
+      "Created_at": "2026-09-08T18:08:54.592871Z",
       "Input_fingerprint": "449d7ceecc2bea13602ab349d6d77680990890e521d3fb0495eabbf53c8ba392"
     },
     {
@@ -5575,7 +5575,7 @@
           "nearest_known_domain_boundary_aa": 724,
           "distance_aa": -12
         },
-        "Runtime_seconds": 4.289433040999938
+        "Runtime_seconds": 29.293541291997826
       },
       "Tables": {
         "cutpoint_scan": [
@@ -5772,7 +5772,7 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-08T14:19:06.623807Z",
+      "Created_at": "2026-09-08T18:09:23.909711Z",
       "Input_fingerprint": "449d7ceecc2bea13602ab349d6d77680990890e521d3fb0495eabbf53c8ba392"
     },
     {
@@ -5788,7 +5788,7 @@
         "fisher_p_value": 0.0017804552504953803,
         "permutation_empirical_p_value": 0.034896510348965105,
         "observed_in_frame_disruption_rate": 0.952054794520548,
-        "Runtime_seconds": 19.676632124999742
+        "Runtime_seconds": 97.51939687499907
       },
       "Tables": {
         "frame_domain_contingency_table": [
@@ -15816,7 +15816,7 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-08T14:19:22.044413Z",
+      "Created_at": "2026-09-08T18:10:32.362532Z",
       "Input_fingerprint": "449d7ceecc2bea13602ab349d6d77680990890e521d3fb0495eabbf53c8ba392"
     },
     {
@@ -15832,7 +15832,7 @@
         "fisher_p_value": 0.00041966557652448966,
         "permutation_empirical_p_value": 0.000999000999000999,
         "observed_in_frame_retention_rate": 0.9657534246575342,
-        "Runtime_seconds": 1.067947790999824
+        "Runtime_seconds": 5.411988458999986
       },
       "Tables": {
         "frame_domain_contingency_table": [
@@ -15862,7 +15862,7 @@
         }
       },
       "Warnings": [],
-      "Created_at": "2026-09-08T14:19:02.316837Z",
+      "Created_at": "2026-09-08T18:08:54.548206Z",
       "Input_fingerprint": "449d7ceecc2bea13602ab349d6d77680990890e521d3fb0495eabbf53c8ba392"
     },
     {
@@ -15876,7 +15876,7 @@
         "retained_event_count": 180,
         "total_event_count": 194,
         "retained_fraction": 0.9278350515463918,
-        "Runtime_seconds": 0.0001499579993833322
+        "Runtime_seconds": 0.0013813330006087199
       },
       "Tables": {
         "Exon_retention": [
@@ -15889,7 +15889,7 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-08T14:19:02.381230Z",
+      "Created_at": "2026-09-08T18:08:54.885394Z",
       "Input_fingerprint": "449d7ceecc2bea13602ab349d6d77680990890e521d3fb0495eabbf53c8ba392"
     },
     {
@@ -15902,7 +15902,7 @@
         "input_event_count": 194,
         "analyzed_event_count": 194,
         "unique_partner_gene_count": 33,
-        "Runtime_seconds": 6.324999958451372e-05
+        "Runtime_seconds": 0.0004498330017668195
       },
       "Tables": {
         "Partner_gene_counts": [
@@ -16041,7 +16041,7 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-08T14:19:02.391184Z",
+      "Created_at": "2026-09-08T18:08:54.922590Z",
       "Input_fingerprint": "449d7ceecc2bea13602ab349d6d77680990890e521d3fb0495eabbf53c8ba392"
     },
     {
@@ -16049,13 +16049,13 @@
       "Algorithm_version": "0.1.0",
       "Parameters": {},
       "Summary": {
-        "Runtime_seconds": 2.2542000806424767e-05
+        "Runtime_seconds": 7.666700184927322e-05
       },
       "Tables": {},
       "Warnings": [
         "RET has no gene_pair configured; joint-partner analysis was skipped."
       ],
-      "Created_at": "2026-09-08T14:19:02.417492Z",
+      "Created_at": "2026-09-08T18:08:54.949131Z",
       "Input_fingerprint": "449d7ceecc2bea13602ab349d6d77680990890e521d3fb0495eabbf53c8ba392"
     },
     {
@@ -16121,7 +16121,7 @@
           "n_unknown": 0,
           "fraction_clamped_or_approximate": 1.0
         },
-        "Runtime_seconds": 17.930896416000905
+        "Runtime_seconds": 114.83366075000231
       },
       "Tables": {
         "window_scan": [
@@ -29194,7 +29194,7 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-08T14:19:20.353502Z",
+      "Created_at": "2026-09-08T18:10:49.857323Z",
       "Input_fingerprint": "449d7ceecc2bea13602ab349d6d77680990890e521d3fb0495eabbf53c8ba392"
     }
   ],
