@@ -1,5 +1,4 @@
 import json
-from pathlib import Path
 from unittest.mock import MagicMock
 
 import pytest
@@ -10,6 +9,7 @@ from cfh.mapping.domain_source import ProteinDomain
 from cfh.mapping.feature_mapper import calculate_domain_retention, map_event
 from cfh.model.fusion_event import FusionEvent
 from cfh.model.fusion_feature import FusionFeature
+from conftest import latest_run_dir
 
 
 @pytest.mark.parametrize(
@@ -70,16 +70,16 @@ def test_mapping_adds_quantitative_detail_without_changing_binary_calls():
 
 
 @pytest.mark.parametrize(
-    ("run_directory", "gene", "bounds", "expected"),
+    ("run_prefix", "gene", "bounds", "expected"),
     [
         (
-            "braf_msk-impact-50k-2026_20260905T012352Z",
+            "braf_msk-impact-50k-2026",
             "BRAF",
             (458, 712),
             (178, 179, 163, 91.06145251396649, [[142, 21], [9, 6]], 0.013367557978153668),
         ),
         (
-            "ret_msk-impact-50k-2026_20260905T012611Z",
+            "ret_msk-impact-50k-2026",
             "RET",
             (724, 1005),
             (194, 194, 179, 92.26804123711341, [[141, 38], [5, 10]], 0.00041966557652448966),
@@ -87,10 +87,10 @@ def test_mapping_adds_quantitative_detail_without_changing_binary_calls():
     ],
 )
 def test_committed_benchmark_binary_results_are_unchanged_with_quantitative_details(
-    run_directory, gene, bounds, expected
+    run_prefix, gene, bounds, expected
 ):
     """Sanity-check reconstructed features against the committed live artifact rows."""
-    payload = json.loads((Path("runs") / run_directory / "results.json").read_text())
+    payload = json.loads((latest_run_dir(run_prefix) / "results.json").read_text())
     events = []
     features = []
     for row in payload["events"]:
@@ -214,9 +214,7 @@ def test_verified_live_benchmark_conclusions_are_unchanged(
 
 def test_corrected_ret_live_artifact_summary():
     """Lock RET conclusions directly to the post-locus-validation live artifact."""
-    payload = json.loads(
-        (Path("runs") / "ret_msk-impact-50k-2026_20260905T012611Z" / "results.json").read_text()
-    )
+    payload = json.loads((latest_run_dir("ret_msk-impact-50k-2026") / "results.json").read_text())
     summary = payload["summary"]
 
     assert summary["total_fusions"] == 194

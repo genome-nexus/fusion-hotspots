@@ -11,7 +11,6 @@ from __future__ import annotations
 
 import json
 import re
-from pathlib import Path
 
 from cfh.reporting.manuscript_text import (
     render_discussion_bullets,
@@ -21,14 +20,10 @@ from cfh.reporting.manuscript_text import (
     render_manuscript_methods,
     render_manuscript_title,
 )
+from conftest import latest_run_dir
 
-REPO_ROOT = Path(__file__).parent.parent
 REAL_COHORT_SCAN_SUMMARY_JSON = (
-    REPO_ROOT
-    / "runs"
-    / "cohort-scan_msk_impact_50k_2026_20260904T144201Z"
-    / "cohort_scan"
-    / "summary.json"
+    latest_run_dir("cohort-scan_msk_impact_50k_2026") / "cohort_scan" / "summary.json"
 )
 
 # ``genes_after_gating`` (2) intentionally equals ``len(genes)`` below (an

@@ -3,6 +3,8 @@ from pathlib import Path
 
 import pytest
 
+REPO_ROOT = Path(__file__).parent.parent
+RUNS_DIR = REPO_ROOT / "runs"
 FIXTURES_DIR = Path(__file__).parent / "fixtures"
 SV_FIXTURE_DIR = FIXTURES_DIR / "sv"
 SV_FIXTURE_FILE = SV_FIXTURE_DIR / "data_sv.txt"
@@ -62,6 +64,24 @@ def genome_nexus_transcript_fixture_path() -> Path:
 @pytest.fixture
 def genome_nexus_canonical_transcript_pik3ca_fixture_path() -> Path:
     return GENOME_NEXUS_CANONICAL_TRANSCRIPT_PIK3CA_FIXTURE
+
+
+def latest_run_dir(prefix: str) -> Path:
+    """Resolve the most recently generated committed run directory under
+    ``runs/`` matching ``<prefix>_<ISO8601-timestamp>`` (this repo's
+    keep-latest-run convention -- see CONTRIBUTING.md and
+    ``scripts/prune_old_runs.py``).
+
+    Tests must never hardcode a specific run timestamp directly: regenerating
+    a run (e.g. after a fix round) prunes the old timestamped directory and
+    commits a new one, which silently breaks any test pinning the old name
+    with a ``FileNotFoundError`` unrelated to the change that prompted the
+    regeneration. This glob-based lookup is immune to that by construction.
+    """
+    candidates = sorted(RUNS_DIR.glob(f"{prefix}_*"))
+    if not candidates:
+        pytest.skip(f"no committed real run directory found for {prefix!r} under {RUNS_DIR}")
+    return candidates[-1]
 
 
 @pytest.fixture(autouse=True)

@@ -1,0 +1,1199 @@
+{
+  "gene_symbol": "KDM5A",
+  "study_id": "msk_impact_50k_2026",
+  "molecular_profile_id": "msk_impact_50k_2026_structural_variants",
+  "retrieved_at": "2026-09-05T01:39:09.232289+00:00",
+  "summary": {
+    "raw_structural_variant_count": 45,
+    "total_fusions": 10,
+    "mapped_fusions": 9,
+    "skipped_fusions": 1,
+    "in_frame_count": 3,
+    "in_frame_percent": 30.0,
+    "kinase_retained_count": 5,
+    "kinase_retained_percent": 50.0,
+    "in_frame_kinase_retained_count": 3,
+    "fisher_odds_ratio": "inf",
+    "fisher_p_value": 0.11904761904761901,
+    "permutation_p_value": 0.2376237623762376,
+    "frame_domain_contingency_table": [
+      [
+        3,
+        2
+      ],
+      [
+        0,
+        4
+      ]
+    ],
+    "partner_counts": [
+      {
+        "Partner_gene": "BMAL2",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "CACNA1C",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "COLGALT1",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "DHX37",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "DIPK1A",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "NINJ2",
+        "Event_count": 2
+      },
+      {
+        "Partner_gene": "OSBPL8",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "STAT5A",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "USHBP1",
+        "Event_count": 1
+      }
+    ],
+    "domain_accession": "PF08429",
+    "domain_start_aa": 740,
+    "domain_end_aa": 1072,
+    "key_domains": [
+      {
+        "name": "PLU-1-like protein",
+        "accession": "PF08429",
+        "start_aa": 740,
+        "end_aa": 1072
+      }
+    ]
+  },
+  "warnings": [
+    "Skipped EVT-P-0022444-T01-IM6-45 (USHBP1-KDM5A): ValueError: could not determine 5'/3' role for KDM5A in EVT-P-0022444-T01-IM6-45; Event_Info='Antisense Fusion'"
+  ],
+  "events": [
+    {
+      "event_id": "EVT-P-0021409-T01-IM6-1",
+      "sample_id": "P-0021409-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "COLGALT1-KDM5A",
+      "partner_gene": "COLGALT1",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 416253,
+      "breakpoint_exon": 24,
+      "breakpoint_protein_position": 1311,
+      "is_intronic_breakpoint": false,
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "retained_domains": "",
+      "lost_domains": "PLU-1-like protein; jmjN domain; ARID/BRIGHT DNA binding domain; PHD-finger; JmjC domain, hydroxylase; C5HC2 zinc finger",
+      "disrupted_domains": "",
+      "source_annotation_text": "COLGALT1 (NM_024656) - KDM5A (NM_001042603) rearrangement: t(19;12)(p13.11;p13.33)(chr19:g.17669210::chr12:g.416253) | Protein Fusion: mid-exon  {COLGALT1:KDM5A}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0030719-T01-IM6-4",
+      "sample_id": "P-0030719-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "KDM5A-BMAL2",
+      "partner_gene": "BMAL2",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 432924,
+      "breakpoint_exon": 15,
+      "breakpoint_protein_position": 664,
+      "is_intronic_breakpoint": false,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "PLU-1-like protein; PHD-finger; C5HC2 zinc finger",
+      "lost_domains": "jmjN domain; ARID/BRIGHT DNA binding domain; JmjC domain, hydroxylase",
+      "disrupted_domains": "",
+      "source_annotation_text": "ARNTL2 (NM_001248002) - KDM5A (NM_001042603) rearrangement: c.285-4357:ARNTL2_c.1992:KDM5A | Protein Fusion: mid-exon  {ARNTL2:KDM5A}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0030473-T01-IM6-5",
+      "sample_id": "P-0030473-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "KDM5A-CACNA1C",
+      "partner_gene": "CACNA1C",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 465876,
+      "breakpoint_exon": 6,
+      "breakpoint_protein_position": 225,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "PLU-1-like protein; PHD-finger; JmjC domain, hydroxylase; C5HC2 zinc finger",
+      "lost_domains": "jmjN domain; ARID/BRIGHT DNA binding domain",
+      "disrupted_domains": "",
+      "source_annotation_text": "CACNA1C (NM_001129827) - KDM5A (NM_001042603) rearrangement: c.1114-2453:CACNA1C_c.673-173:KDM5Ainv | Protein Fusion: in frame  {CACNA1C:KDM5A}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0064343-T01-IM7-8",
+      "sample_id": "P-0064343-T01-IM7",
+      "patient_id": null,
+      "fusion_name": "KDM5A-DHX37",
+      "partner_gene": "DHX37",
+      "frame_status": "out-of-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 402339,
+      "breakpoint_exon": 26,
+      "breakpoint_protein_position": 1485,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "PLU-1-like protein; jmjN domain; ARID/BRIGHT DNA binding domain; PHD-finger; JmjC domain, hydroxylase; C5HC2 zinc finger",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "KDM5A (NM_001042603) - DHX37 (NM_032656) rearrangement: c.4456-4:KDM5A_c.2045+567:DHX37dup | Protein Fusion: out of frame  {KDM5A:DHX37}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0065027-T03-IM7-9",
+      "sample_id": "P-0065027-T03-IM7",
+      "patient_id": null,
+      "fusion_name": "KDM5A-DIPK1A",
+      "partner_gene": "DIPK1A",
+      "frame_status": "in-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 415999,
+      "breakpoint_exon": 24,
+      "breakpoint_protein_position": 1358,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "PLU-1-like protein; jmjN domain; ARID/BRIGHT DNA binding domain; PHD-finger; JmjC domain, hydroxylase; C5HC2 zinc finger",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "KDM5A (NM_001042603) - FAM69A (NM_001006605) rearrangement: t(1;12)(p22.1;p13.33)(chr1:g.93411462::chr12:g.415999) | Protein Fusion: in frame  {KDM5A:FAM69A}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0060766-T02-IM7-41",
+      "sample_id": "P-0060766-T02-IM7",
+      "patient_id": null,
+      "fusion_name": "KDM5A-NINJ2",
+      "partner_gene": "NINJ2",
+      "frame_status": "in-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 401803,
+      "breakpoint_exon": 27,
+      "breakpoint_protein_position": 1622,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "PLU-1-like protein; jmjN domain; ARID/BRIGHT DNA binding domain; PHD-finger; JmjC domain, hydroxylase; C5HC2 zinc finger",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "KDM5A (NM_001042603) - NINJ2 (NM_016533) rearrangement: c.4866+122:KDM5A_c.172-28503:NINJ2dup | Protein Fusion: in frame  {KDM5A:NINJ2}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0030430-T03-IM7-42",
+      "sample_id": "P-0030430-T03-IM7",
+      "patient_id": null,
+      "fusion_name": "KDM5A-NINJ2",
+      "partner_gene": "NINJ2",
+      "frame_status": "out-of-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 432137,
+      "breakpoint_exon": 16,
+      "breakpoint_protein_position": 759,
+      "is_intronic_breakpoint": true,
+      "domain_status": "disrupted",
+      "domain_retained_fraction": 0.06006006006006006,
+      "domain_is_truncated": true,
+      "retained_domains": "jmjN domain; ARID/BRIGHT DNA binding domain; JmjC domain, hydroxylase; C5HC2 zinc finger",
+      "lost_domains": "PHD-finger",
+      "disrupted_domains": "PLU-1-like protein",
+      "source_annotation_text": "KDM5A (NM_001042603) - NINJ2 (NM_016533) rearrangement: c.2275+111:KDM5A_c.172-20595:NINJ2dup | Protein Fusion: out of frame  {KDM5A:NINJ2}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0022798-T01-IM6-43",
+      "sample_id": "P-0022798-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "KDM5A-OSBPL8",
+      "partner_gene": "OSBPL8",
+      "frame_status": "unknown",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 472234,
+      "breakpoint_exon": 5,
+      "breakpoint_protein_position": 189,
+      "is_intronic_breakpoint": false,
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "retained_domains": "jmjN domain; ARID/BRIGHT DNA binding domain",
+      "lost_domains": "PLU-1-like protein; PHD-finger; JmjC domain, hydroxylase; C5HC2 zinc finger",
+      "disrupted_domains": "",
+      "source_annotation_text": "KDM5A (NM_001042603) - OSBPL8 (NM_020841) Rearrangement : c.567:KDM5A_c.1630+2182:OSBPL8dup | Protein Fusion: mid-exon  {KDM5A:OSBPL8}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0039045-T01-IM6-44",
+      "sample_id": "P-0039045-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "KDM5A-STAT5A",
+      "partner_gene": "STAT5A",
+      "frame_status": "out-of-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 470840,
+      "breakpoint_exon": 5,
+      "breakpoint_protein_position": 224,
+      "is_intronic_breakpoint": true,
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "retained_domains": "jmjN domain; ARID/BRIGHT DNA binding domain",
+      "lost_domains": "PLU-1-like protein; PHD-finger; JmjC domain, hydroxylase; C5HC2 zinc finger",
+      "disrupted_domains": "",
+      "source_annotation_text": "KDM5A (NM_001042603) - STAT5A (NM_003152) rearrangement: t(12;17)(p13.33;q21.2)(chr12:g.470840::chr17:g.40459887) | Protein Fusion: out of frame  {KDM5A:STAT5A}",
+      "source_site2_effect_on_frame": "NA"
+    }
+  ],
+  "algorithm_results": [
+    {
+      "Algorithm": "composite_score",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "weights": {
+          "recurrence": 0.3,
+          "domain_retention": 0.25,
+          "domain_disruption": 0.2,
+          "cutpoint_proximity": 0.15,
+          "confidence_certainty": 0.1
+        },
+        "neg_log10_p_cap": 10.0
+      },
+      "Summary": {
+        "gene_symbol": "KDM5A",
+        "n_partners_ranked": 9,
+        "total_events": 10,
+        "components_applicable": {
+          "recurrence": true,
+          "domain_retention": true,
+          "domain_disruption": true,
+          "cutpoint_proximity": true,
+          "confidence_certainty": true
+        },
+        "domain_retention_p_value_used": 0.2376237623762376,
+        "domain_disruption_p_value_used": 0.693069306930693,
+        "inferred_cutpoint_aa": 1311,
+        "Runtime_seconds": 8.554200758226216e-05
+      },
+      "Tables": {
+        "composite_evidence_ranking": [
+          {
+            "Partner_gene": "COLGALT1",
+            "Event_count": 1,
+            "Recurrence_score": 0.1,
+            "Domain_retention_score": 0.06241101320710366,
+            "Domain_disruption_score": 0.015922333376838578,
+            "Cutpoint_proximity_score": 1.0,
+            "Confidence_certainty_score": 0.34430466544937777,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.2332176865220814,
+            "Rank": 1
+          },
+          {
+            "Partner_gene": "DIPK1A",
+            "Event_count": 1,
+            "Recurrence_score": 0.1,
+            "Domain_retention_score": 0.06241101320710366,
+            "Domain_disruption_score": 0.015922333376838578,
+            "Cutpoint_proximity_score": 0.9581105169340464,
+            "Confidence_certainty_score": 0.34430466544937777,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.22693426406218836,
+            "Rank": 2
+          },
+          {
+            "Partner_gene": "DHX37",
+            "Event_count": 1,
+            "Recurrence_score": 0.1,
+            "Domain_retention_score": 0.06241101320710366,
+            "Domain_disruption_score": 0.015922333376838578,
+            "Cutpoint_proximity_score": 0.8449197860962567,
+            "Confidence_certainty_score": 0.34430466544937777,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.20995565443651992,
+            "Rank": 3
+          },
+          {
+            "Partner_gene": "NINJ2",
+            "Event_count": 2,
+            "Recurrence_score": 0.2,
+            "Domain_retention_score": 0.06241101320710366,
+            "Domain_disruption_score": 0.015922333376838578,
+            "Cutpoint_proximity_score": 0.6154188948306596,
+            "Confidence_certainty_score": 0.34430466544937777,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.20553052074668035,
+            "Rank": 4
+          },
+          {
+            "Partner_gene": "BMAL2",
+            "Event_count": 1,
+            "Recurrence_score": 0.1,
+            "Domain_retention_score": 0.06241101320710366,
+            "Domain_disruption_score": 0.015922333376838578,
+            "Cutpoint_proximity_score": 0.4233511586452763,
+            "Confidence_certainty_score": 0.34430466544937777,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.14672036031887284,
+            "Rank": 5
+          },
+          {
+            "Partner_gene": "USHBP1",
+            "Event_count": 1,
+            "Recurrence_score": 0.1,
+            "Domain_retention_score": 0.06241101320710366,
+            "Domain_disruption_score": 0.015922333376838578,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.34430466544937777,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.09790316061421342,
+            "Rank": 6
+          },
+          {
+            "Partner_gene": "CACNA1C",
+            "Event_count": 1,
+            "Recurrence_score": 0.1,
+            "Domain_retention_score": 0.06241101320710366,
+            "Domain_disruption_score": 0.015922333376838578,
+            "Cutpoint_proximity_score": 0.03208556149732622,
+            "Confidence_certainty_score": 0.34430466544937777,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.08803052074668033,
+            "Rank": 7
+          },
+          {
+            "Partner_gene": "STAT5A",
+            "Event_count": 1,
+            "Recurrence_score": 0.1,
+            "Domain_retention_score": 0.06241101320710366,
+            "Domain_disruption_score": 0.015922333376838578,
+            "Cutpoint_proximity_score": 0.031194295900178304,
+            "Confidence_certainty_score": 0.34430466544937777,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.08789683090710815,
+            "Rank": 8
+          },
+          {
+            "Partner_gene": "OSBPL8",
+            "Event_count": 1,
+            "Recurrence_score": 0.1,
+            "Domain_retention_score": 0.06241101320710366,
+            "Domain_disruption_score": 0.015922333376838578,
+            "Cutpoint_proximity_score": 0.0,
+            "Confidence_certainty_score": 0.34430466544937777,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.0832176865220814,
+            "Rank": 9
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-09-05T01:39:09.232172Z",
+      "Input_fingerprint": "783931f3a12227c336facf1f8b5e23320da56bd659c8aeb71c41a1ecbe18c6d4"
+    },
+    {
+      "Algorithm": "confidence_stats",
+      "Algorithm_version": "1.0.0",
+      "Parameters": {
+        "group_field": "Domain_retention_flags",
+        "group_key": "auto_key_domain",
+        "group_value_map": {
+          "retained": "retained",
+          "lost": "not_retained",
+          "disrupted": "not_retained",
+          "unknown": null
+        },
+        "group_values": [
+          "retained",
+          "not_retained"
+        ],
+        "outcome_field": "Frame_status",
+        "outcome_success_value": "in-frame",
+        "outcome_valid_values": [
+          "in-frame",
+          "out-of-frame"
+        ],
+        "numeric_field": "Tumor_variant_count"
+      },
+      "Summary": {
+        "group_field": "Domain_retention_flags",
+        "group_a_label": "retained",
+        "group_b_label": "not_retained",
+        "n_group_a": 5,
+        "n_group_b": 4,
+        "mle": {
+          "outcome_field": "Frame_status",
+          "groups": {
+            "retained": {
+              "n": 4,
+              "successes": 3,
+              "point_estimate": 0.75,
+              "ci_low": 0.30064184258240184,
+              "ci_high": 0.9544127391902995,
+              "method": "wilson"
+            },
+            "not_retained": {
+              "n": 2,
+              "successes": 0,
+              "point_estimate": 0.0,
+              "ci_low": 0.0,
+              "ci_high": 0.6576197724933469,
+              "method": "wilson"
+            }
+          }
+        },
+        "ttest": {
+          "numeric_field": "Tumor_variant_count",
+          "group_a_label": "retained",
+          "group_b_label": "not_retained",
+          "n_a": 5,
+          "n_b": 4,
+          "t_statistic": -0.21464956447248415,
+          "p_value": 0.8430162375770506,
+          "df": 3.195642697989636,
+          "mean_a": 15.6,
+          "mean_b": 17.25
+        },
+        "Runtime_seconds": 0.002342583000427112
+      },
+      "Tables": null,
+      "Warnings": [],
+      "Created_at": "2026-09-05T01:39:09.052460Z",
+      "Input_fingerprint": "783931f3a12227c336facf1f8b5e23320da56bd659c8aeb71c41a1ecbe18c6d4"
+    },
+    {
+      "Algorithm": "cutpoint_detection",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 100,
+        "adaptive": true
+      },
+      "Summary": {
+        "determinable": true,
+        "reason": null,
+        "n_events_analyzed": 9,
+        "inferred_cutpoint_aa": 1311,
+        "observed_statistic_neg_log10_p": 0.7781512503836437,
+        "observed_p_value": 0.16666666666666663,
+        "observed_odds_ratio": 0.0,
+        "corrected_p_value": 0.26732673267326734,
+        "known_domain_boundary_comparison": {
+          "nearest_known_domain_boundary_aa": 1217,
+          "distance_aa": 94
+        },
+        "adaptive_permutations": {
+          "enabled": true,
+          "n_permutations_small": 100,
+          "n_permutations_full": 1000,
+          "n_permutations_used": 100,
+          "escalated_to_full": false
+        },
+        "Runtime_seconds": 0.17705091700190678
+      },
+      "Tables": {
+        "cutpoint_scan": [
+          {
+            "cutpoint": 189,
+            "n_positive_at_or_below": 0,
+            "n_positive_above": 5,
+            "n_negative_at_or_below": 1,
+            "n_negative_above": 3,
+            "odds_ratio": 0.0,
+            "p_value": 0.4444444444444445,
+            "neg_log10_p_value": 0.3521825181113625
+          },
+          {
+            "cutpoint": 224,
+            "n_positive_at_or_below": 0,
+            "n_positive_above": 5,
+            "n_negative_at_or_below": 2,
+            "n_negative_above": 2,
+            "odds_ratio": 0.0,
+            "p_value": 0.16666666666666669,
+            "neg_log10_p_value": 0.7781512503836436
+          },
+          {
+            "cutpoint": 225,
+            "n_positive_at_or_below": 1,
+            "n_positive_above": 4,
+            "n_negative_at_or_below": 2,
+            "n_negative_above": 2,
+            "odds_ratio": 0.25,
+            "p_value": 0.523809523809524,
+            "neg_log10_p_value": 0.2808266095756941
+          },
+          {
+            "cutpoint": 664,
+            "n_positive_at_or_below": 2,
+            "n_positive_above": 3,
+            "n_negative_at_or_below": 2,
+            "n_negative_above": 2,
+            "odds_ratio": 0.6666666666666666,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0
+          },
+          {
+            "cutpoint": 759,
+            "n_positive_at_or_below": 2,
+            "n_positive_above": 3,
+            "n_negative_at_or_below": 3,
+            "n_negative_above": 1,
+            "odds_ratio": 0.2222222222222222,
+            "p_value": 0.5238095238095237,
+            "neg_log10_p_value": 0.2808266095756943
+          },
+          {
+            "cutpoint": 1311,
+            "n_positive_at_or_below": 2,
+            "n_positive_above": 3,
+            "n_negative_at_or_below": 4,
+            "n_negative_above": 0,
+            "odds_ratio": 0.0,
+            "p_value": 0.16666666666666663,
+            "neg_log10_p_value": 0.7781512503836437
+          },
+          {
+            "cutpoint": 1358,
+            "n_positive_at_or_below": 3,
+            "n_positive_above": 2,
+            "n_negative_at_or_below": 4,
+            "n_negative_above": 0,
+            "odds_ratio": 0.0,
+            "p_value": 0.4444444444444444,
+            "neg_log10_p_value": 0.35218251811136253
+          },
+          {
+            "cutpoint": 1485,
+            "n_positive_at_or_below": 4,
+            "n_positive_above": 1,
+            "n_negative_at_or_below": 4,
+            "n_negative_above": 0,
+            "odds_ratio": 0.0,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-09-05T01:39:09.231065Z",
+      "Input_fingerprint": "783931f3a12227c336facf1f8b5e23320da56bd659c8aeb71c41a1ecbe18c6d4"
+    },
+    {
+      "Algorithm": "domain_disruption",
+      "Algorithm_version": "0.2.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 100,
+        "adaptive": true
+      },
+      "Summary": {
+        "fisher_odds_ratio": 1.0,
+        "fisher_p_value": 0.7619047619047619,
+        "permutation_empirical_p_value": 0.693069306930693,
+        "observed_in_frame_disruption_rate": 0.3333333333333333,
+        "adaptive_permutations": {
+          "enabled": true,
+          "n_permutations_small": 100,
+          "n_permutations_full": 10000,
+          "n_permutations_used": 100,
+          "escalated_to_full": false
+        },
+        "Runtime_seconds": 0.010827124991919845
+      },
+      "Tables": {
+        "frame_domain_contingency_table": [
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            4
+          ]
+        ],
+        "domain_disruption_descriptives": [
+          {
+            "Domain_key": "auto_disruption_pf02375",
+            "Domain_name": "jmjN domain",
+            "Quantitative_call_count": 9,
+            "Fully_retained_count": 6,
+            "Truncated_count": 0,
+            "Fully_lost_count": 3,
+            "Mean_retained_fraction_among_non_retained_calls": 0.0
+          },
+          {
+            "Domain_key": "auto_disruption_pf01388",
+            "Domain_name": "ARID/BRIGHT DNA binding domain",
+            "Quantitative_call_count": 9,
+            "Fully_retained_count": 6,
+            "Truncated_count": 0,
+            "Fully_lost_count": 3,
+            "Mean_retained_fraction_among_non_retained_calls": 0.0
+          },
+          {
+            "Domain_key": "auto_disruption_pf00628",
+            "Domain_name": "PHD-finger",
+            "Quantitative_call_count": 9,
+            "Fully_retained_count": 5,
+            "Truncated_count": 0,
+            "Fully_lost_count": 4,
+            "Mean_retained_fraction_among_non_retained_calls": 0.0
+          },
+          {
+            "Domain_key": "auto_disruption_pf02373",
+            "Domain_name": "JmjC domain, hydroxylase",
+            "Quantitative_call_count": 9,
+            "Fully_retained_count": 5,
+            "Truncated_count": 0,
+            "Fully_lost_count": 4,
+            "Mean_retained_fraction_among_non_retained_calls": 0.0
+          },
+          {
+            "Domain_key": "auto_disruption_pf02928",
+            "Domain_name": "C5HC2 zinc finger",
+            "Quantitative_call_count": 9,
+            "Fully_retained_count": 6,
+            "Truncated_count": 0,
+            "Fully_lost_count": 3,
+            "Mean_retained_fraction_among_non_retained_calls": 0.0
+          }
+        ],
+        "permutation_null_disruption_rates": [
+          0.3333333333333333,
+          0.0,
+          0.6666666666666666,
+          0.3333333333333333,
+          0.0,
+          0.3333333333333333,
+          0.0,
+          0.3333333333333333,
+          0.0,
+          0.0,
+          0.6666666666666666,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.0,
+          0.0,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.0,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.6666666666666666,
+          0.0,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.0,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.6666666666666666,
+          0.3333333333333333,
+          0.0,
+          0.3333333333333333,
+          0.0,
+          0.3333333333333333,
+          1.0,
+          0.0,
+          0.0,
+          0.3333333333333333,
+          0.0,
+          0.3333333333333333,
+          0.6666666666666666,
+          0.0,
+          0.6666666666666666,
+          0.3333333333333333,
+          0.6666666666666666,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.0,
+          0.0,
+          0.6666666666666666,
+          0.6666666666666666,
+          0.3333333333333333,
+          0.0,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.0,
+          0.6666666666666666,
+          0.3333333333333333,
+          0.0,
+          0.6666666666666666,
+          0.0,
+          0.0,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.6666666666666666,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.0,
+          0.3333333333333333,
+          0.6666666666666666,
+          0.3333333333333333,
+          0.0,
+          0.6666666666666666,
+          0.6666666666666666,
+          0.6666666666666666,
+          0.3333333333333333,
+          0.6666666666666666,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.3333333333333333,
+          0.6666666666666666,
+          0.0,
+          0.3333333333333333,
+          0.0,
+          0.6666666666666666,
+          0.0,
+          0.6666666666666666
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-09-05T01:39:09.095567Z",
+      "Input_fingerprint": "783931f3a12227c336facf1f8b5e23320da56bd659c8aeb71c41a1ecbe18c6d4"
+    },
+    {
+      "Algorithm": "domain_retention",
+      "Algorithm_version": "0.2.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 100,
+        "adaptive": true
+      },
+      "Summary": {
+        "fisher_odds_ratio": null,
+        "fisher_p_value": 0.11904761904761901,
+        "permutation_empirical_p_value": 0.2376237623762376,
+        "observed_in_frame_retention_rate": 1.0,
+        "adaptive_permutations": {
+          "enabled": true,
+          "n_permutations_small": 100,
+          "n_permutations_full": 1000,
+          "n_permutations_used": 100,
+          "escalated_to_full": false
+        },
+        "Runtime_seconds": 0.014903374976711348
+      },
+      "Tables": {
+        "frame_domain_contingency_table": [
+          [
+            3,
+            2
+          ],
+          [
+            0,
+            4
+          ]
+        ],
+        "domain_retention_descriptives": [
+          {
+            "Domain_key": "auto_key_domain",
+            "Domain_name": "PLU-1-like protein",
+            "Quantitative_call_count": 9,
+            "Fully_retained_count": 5,
+            "Truncated_count": 1,
+            "Fully_lost_count": 3,
+            "Mean_retained_fraction_among_non_retained_calls": 0.015015015015015015
+          }
+        ],
+        "permutation_null_retention_rates": {
+          "omitted_from_artifact": true,
+          "count": 100
+        }
+      },
+      "Warnings": [],
+      "Created_at": "2026-09-05T01:39:09.047075Z",
+      "Input_fingerprint": "024df96e4d6c5c1300f2ee5b1dd787c940e023f98d6444e07daf2dbe6df864c6"
+    },
+    {
+      "Algorithm": "exon_retention",
+      "Algorithm_version": "1.0.0",
+      "Parameters": {
+        "target_exon": 16
+      },
+      "Summary": {
+        "target_exon": 16,
+        "retained_event_count": 6,
+        "total_event_count": 10,
+        "retained_fraction": 0.6,
+        "Runtime_seconds": 7.28330051060766e-05
+      },
+      "Tables": {
+        "Exon_retention": [
+          {
+            "Exon": 16,
+            "Retained_event_count": 6,
+            "Total_event_count": 10,
+            "Retained_fraction": 0.6
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-09-05T01:39:09.090732Z",
+      "Input_fingerprint": "783931f3a12227c336facf1f8b5e23320da56bd659c8aeb71c41a1ecbe18c6d4"
+    },
+    {
+      "Algorithm": "frequency",
+      "Algorithm_version": "1.0.0",
+      "Parameters": {
+        "dedup_by_patient": false
+      },
+      "Summary": {
+        "input_event_count": 10,
+        "analyzed_event_count": 10,
+        "unique_partner_gene_count": 9,
+        "Runtime_seconds": 5.9874990256503224e-05
+      },
+      "Tables": {
+        "Partner_gene_counts": [
+          {
+            "Partner_gene": "BMAL2",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "CACNA1C",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "COLGALT1",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "DHX37",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "DIPK1A",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "NINJ2",
+            "Event_count": 2
+          },
+          {
+            "Partner_gene": "OSBPL8",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "STAT5A",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "USHBP1",
+            "Event_count": 1
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-09-05T01:39:09.094062Z",
+      "Input_fingerprint": "783931f3a12227c336facf1f8b5e23320da56bd659c8aeb71c41a1ecbe18c6d4"
+    },
+    {
+      "Algorithm": "joint_partner",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {},
+      "Summary": {
+        "Runtime_seconds": 1.7082988051697612e-05
+      },
+      "Tables": {},
+      "Warnings": [
+        "KDM5A has no gene_pair configured; joint-partner analysis was skipped."
+      ],
+      "Created_at": "2026-09-05T01:39:09.094154Z",
+      "Input_fingerprint": "783931f3a12227c336facf1f8b5e23320da56bd659c8aeb71c41a1ecbe18c6d4"
+    }
+  ],
+  "reference": null,
+  "gene_track": {
+    "protein_length": 1690,
+    "domains": [
+      {
+        "name": "jmjN domain",
+        "accession": "PF02375",
+        "start_aa": 20,
+        "end_aa": 53
+      },
+      {
+        "name": "ARID/BRIGHT DNA binding domain",
+        "accession": "PF01388",
+        "start_aa": 82,
+        "end_aa": 170
+      },
+      {
+        "name": "PLU-1-like protein",
+        "accession": "PF08429",
+        "start_aa": 740,
+        "end_aa": 1072
+      },
+      {
+        "name": "C5HC2 zinc finger",
+        "accession": "PF02928",
+        "start_aa": 676,
+        "end_aa": 729
+      },
+      {
+        "name": "PHD-finger",
+        "accession": "PF00628",
+        "start_aa": 1163,
+        "end_aa": 1217
+      },
+      {
+        "name": "PHD-finger",
+        "accession": "PF00628",
+        "start_aa": 295,
+        "end_aa": 342
+      },
+      {
+        "name": "JmjC domain, hydroxylase",
+        "accession": "PF02373",
+        "start_aa": 470,
+        "end_aa": 586
+      }
+    ],
+    "exon_boundaries_aa": [
+      {
+        "exon_rank": 1,
+        "start_aa": 1,
+        "end_aa": 55
+      },
+      {
+        "exon_rank": 2,
+        "start_aa": 56,
+        "end_aa": 81
+      },
+      {
+        "exon_rank": 3,
+        "start_aa": 82,
+        "end_aa": 122
+      },
+      {
+        "exon_rank": 4,
+        "start_aa": 123,
+        "end_aa": 179
+      },
+      {
+        "exon_rank": 5,
+        "start_aa": 180,
+        "end_aa": 224
+      },
+      {
+        "exon_rank": 6,
+        "start_aa": 225,
+        "end_aa": 260
+      },
+      {
+        "exon_rank": 7,
+        "start_aa": 260,
+        "end_aa": 290
+      },
+      {
+        "exon_rank": 8,
+        "start_aa": 291,
+        "end_aa": 343
+      },
+      {
+        "exon_rank": 9,
+        "start_aa": 344,
+        "end_aa": 383
+      },
+      {
+        "exon_rank": 10,
+        "start_aa": 384,
+        "end_aa": 436
+      },
+      {
+        "exon_rank": 11,
+        "start_aa": 437,
+        "end_aa": 497
+      },
+      {
+        "exon_rank": 12,
+        "start_aa": 497,
+        "end_aa": 551
+      },
+      {
+        "exon_rank": 13,
+        "start_aa": 552,
+        "end_aa": 591
+      },
+      {
+        "exon_rank": 14,
+        "start_aa": 592,
+        "end_aa": 656
+      },
+      {
+        "exon_rank": 15,
+        "start_aa": 657,
+        "end_aa": 717
+      },
+      {
+        "exon_rank": 16,
+        "start_aa": 717,
+        "end_aa": 759
+      },
+      {
+        "exon_rank": 17,
+        "start_aa": 759,
+        "end_aa": 809
+      },
+      {
+        "exon_rank": 18,
+        "start_aa": 809,
+        "end_aa": 847
+      },
+      {
+        "exon_rank": 19,
+        "start_aa": 848,
+        "end_aa": 966
+      },
+      {
+        "exon_rank": 20,
+        "start_aa": 966,
+        "end_aa": 1012
+      },
+      {
+        "exon_rank": 21,
+        "start_aa": 1013,
+        "end_aa": 1072
+      },
+      {
+        "exon_rank": 22,
+        "start_aa": 1073,
+        "end_aa": 1126
+      },
+      {
+        "exon_rank": 23,
+        "start_aa": 1127,
+        "end_aa": 1310
+      },
+      {
+        "exon_rank": 24,
+        "start_aa": 1311,
+        "end_aa": 1358
+      },
+      {
+        "exon_rank": 25,
+        "start_aa": 1359,
+        "end_aa": 1412
+      },
+      {
+        "exon_rank": 26,
+        "start_aa": 1412,
+        "end_aa": 1485
+      },
+      {
+        "exon_rank": 27,
+        "start_aa": 1486,
+        "end_aa": 1622
+      },
+      {
+        "exon_rank": 28,
+        "start_aa": 1623,
+        "end_aa": 1691
+      }
+    ]
+  },
+  "intragenic_deletions": [
+    {
+      "sample_id": "P-0057632-T01-IM6",
+      "annotation": "KDM5A (NM_001042603) rearrangement: c.2898-819_c.3217-57del",
+      "event_info": "Deletion of 2 exons : out of frame",
+      "n_exons_deleted": 2,
+      "frame_status": "out-of-frame",
+      "retained_up_to_aa": 966,
+      "resumed_from_aa": 1073
+    }
+  ]
+}

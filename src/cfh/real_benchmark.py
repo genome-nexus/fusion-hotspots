@@ -321,19 +321,52 @@ def _intragenic_deletion_records(
         (raw["Site1_Hugo_Symbol"].astype(str).str.upper() == target)
         & (raw["Site2_Hugo_Symbol"].astype(str).str.upper() == target)
     ]
+    if same_gene.empty:
+        return records, warnings
+
+    # Both breakpoints belong to this same gene/transcript, so there is no
+    # Five_prime_gene/Three_prime_gene partner annotation to draw a role
+    # from (unlike the cross-gene fusion path below). But the deletion is
+    # still directional: whichever breakpoint sits upstream of the other in
+    # transcript order is the retained-up-to (five_prime-role) side, and the
+    # other is the resumed-from (three_prime-role) side -- determined from
+    # strand, not any hardcoded gene fact. Best-effort: if the strand can't
+    # be resolved, both breakpoints fall back to the direction-unaware
+    # nearest-exon behavior, same as before this fix.
+    strand: int | None = None
+    try:
+        canonical_for_strand = parse_canonical_transcript(
+            client.fetch_canonical_transcript(config.gene_symbol)
+        )
+        if canonical_for_strand.exons:
+            strand = canonical_for_strand.exons[0].strand
+    except (GenomeNexusGeneNotFound, requests.RequestException):
+        strand = None
+
     for _, row in same_gene.iterrows():
         event_info = str(row.get("Event_Info") or "")
         match = _DELETION_EVENT_INFO_PATTERN.search(event_info)
         if match is None:
             continue
         try:
+            genomic_positions = (int(row.get("Site1_Position")), int(row.get("Site2_Position")))
             positions_aa = []
-            for genomic_position in (row.get("Site1_Position"), row.get("Site2_Position")):
+            for index, genomic_position in enumerate(genomic_positions):
+                role = None
+                if strand is not None:
+                    other_position = genomic_positions[1 - index]
+                    is_upstream = (
+                        genomic_position <= other_position
+                        if strand == 1
+                        else genomic_position >= other_position
+                    )
+                    role = "five_prime" if is_upstream else "three_prime"
                 mapping = resolve_breakpoint_protein_position(
                     None,
                     config,
-                    breakpoint_genomic=int(genomic_position),
+                    breakpoint_genomic=genomic_position,
                     genome_nexus_client=client,
+                    role=role,
                 )
                 if mapping.breakpoint_protein_position is None:
                     raise ValueError("Genome Nexus returned no protein position")
@@ -560,6 +593,7 @@ def analyze_structural_variant_calls_with_config(
                 config,
                 breakpoint_genomic=breakpoint,
                 genome_nexus_client=client,
+                role=role,
             )
             if mapping.breakpoint_protein_position is None:
                 raise ValueError("Genome Nexus returned no protein position")

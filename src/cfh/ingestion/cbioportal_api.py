@@ -10,6 +10,7 @@ everything else in this module is plain, mockable request-building logic.
 
 from __future__ import annotations
 
+import random
 import time
 from typing import Any, Iterable
 
@@ -22,6 +23,23 @@ DEFAULT_BASE_URL = "https://www.cbioportal.org/api"
 DEFAULT_STUDY_ID = "msk_impact_50k_2026"
 DEFAULT_SV_MOLECULAR_PROFILE_ID = "msk_impact_50k_2026_structural_variants"
 _RETRYABLE_STATUS_CODES = {429, 500, 502, 503, 504}
+_MAX_BACKOFF_SECONDS = 30.0
+
+
+def _retry_sleep_seconds(backoff_seconds: float, attempt: int) -> float:
+    """Exponential backoff, capped, with up to 25% random jitter.
+
+    A genome-wide cohort scan makes hundreds of sequential calls to this
+    same endpoint, and may run concurrently with other callers hitting the
+    same public API -- an uncapped exponential wait can grow unreasonably
+    long, and every caller retrying on the exact same schedule synchronizes
+    their retries into new bursts of contention instead of spreading them
+    out. Both are transient-infrastructure-load mitigations, independent of
+    any particular gene or query.
+    """
+    capped = min(backoff_seconds * (2**attempt), _MAX_BACKOFF_SECONDS)
+    return capped * (1 + random.uniform(0, 0.25))
+
 
 _API_TO_NORMALIZED_COLUMNS = {
     "sampleId": "Sample_Id",
@@ -51,8 +69,8 @@ def fetch_structural_variants(
     base_url: str = DEFAULT_BASE_URL,
     session: "requests.Session | None" = None,
     timeout: float = 30,
-    max_retries: int = 3,
-    backoff_seconds: float = 0.5,
+    max_retries: int = 6,
+    backoff_seconds: float = 1.0,
 ) -> list[dict]:
     """POST to ``/structural-variant/fetch`` and return the parsed JSON body.
 
@@ -61,6 +79,12 @@ def fetch_structural_variants(
     config), never silently defaulted to a specific study like MSK-IMPACT.
     ``DEFAULT_SV_MOLECULAR_PROFILE_ID`` remains available for callers that
     do want the MSK-IMPACT 50k profile, but it's opt-in, not automatic.
+
+    A genome-wide cohort scan calls this hundreds of times in one run, so
+    the retry/backoff defaults here are more patient than a single one-off
+    call needs (see :func:`_retry_sleep_seconds`) -- this endpoint is where
+    transient upstream 503s under sustained per-gene load are actually
+    observed in practice.
     """
     session = session or requests.Session()
     url = f"{base_url.rstrip('/')}/structural-variant/fetch"
@@ -73,7 +97,7 @@ def fetch_structural_variants(
         response = session.post(url, json=body, timeout=timeout)
         if response.status_code not in _RETRYABLE_STATUS_CODES or attempt >= max_retries:
             break
-        time.sleep(backoff_seconds * (2**attempt))
+        time.sleep(_retry_sleep_seconds(backoff_seconds, attempt))
         attempt += 1
     response.raise_for_status()
     return response.json()
@@ -85,8 +109,8 @@ def fetch_structural_variant_genes(
     base_url: str = DEFAULT_BASE_URL,
     session: "requests.Session | None" = None,
     timeout: float = 30,
-    max_retries: int = 3,
-    backoff_seconds: float = 0.5,
+    max_retries: int = 6,
+    backoff_seconds: float = 1.0,
 ) -> list[dict]:
     """POST to ``/structuralvariant-genes/fetch`` for cohort-wide SV gene recurrence.
 
@@ -107,7 +131,7 @@ def fetch_structural_variant_genes(
         response = session.post(url, json=body, timeout=timeout)
         if response.status_code not in _RETRYABLE_STATUS_CODES or attempt >= max_retries:
             break
-        time.sleep(backoff_seconds * (2**attempt))
+        time.sleep(_retry_sleep_seconds(backoff_seconds, attempt))
         attempt += 1
     response.raise_for_status()
     return response.json()

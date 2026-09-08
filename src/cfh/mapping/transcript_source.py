@@ -163,6 +163,7 @@ def resolve_breakpoint_protein_position(
     genome_nexus_client: "GenomeNexusClient | None" = None,
     ensembl_protein_id: str | None = None,
     ensembl_client: "EnsemblClient | Any | None" = None,
+    role: str | None = None,
 ) -> TranscriptMapping:
     """Resolve a breakpoint to a real protein-position estimate where possible.
 
@@ -196,6 +197,13 @@ def resolve_breakpoint_protein_position(
     3. If neither can produce or attempt a mapping, raises
        :class:`EnsemblFallbackUnavailable` -- the genuinely unmappable
        case.
+
+    ``role`` is the target gene's role in the fusion ("five_prime" or
+    "three_prime"), when known -- forwarded to
+    :func:`~cfh.mapping.genome_nexus_source.map_genomic_breakpoint_to_protein_position`
+    to disambiguate which side of an intronic breakpoint to snap to.
+    Leaving it ``None`` (the default) keeps the direction-unaware
+    nearest-exon fallback for callers with no fusion-partner context.
     """
     exon = extract_exon_from_annotation(annotation)
     if exon is not None:
@@ -223,6 +231,7 @@ def resolve_breakpoint_protein_position(
                 strand,
                 cds_min_genomic=cds_min_genomic,
                 cds_max_genomic=cds_max_genomic,
+                role=role,
             )
             return TranscriptMapping(
                 transcript_id=canonical.refseq_mrna_id or canonical.transcript_id,

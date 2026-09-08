@@ -1,0 +1,1039 @@
+{
+  "gene_symbol": "IKBKE",
+  "study_id": "msk_impact_50k_2026",
+  "molecular_profile_id": "msk_impact_50k_2026_structural_variants",
+  "retrieved_at": "2026-09-05T01:39:45.413173+00:00",
+  "summary": {
+    "raw_structural_variant_count": 28,
+    "total_fusions": 12,
+    "mapped_fusions": 11,
+    "skipped_fusions": 1,
+    "in_frame_count": 3,
+    "in_frame_percent": 25.0,
+    "kinase_retained_count": 4,
+    "kinase_retained_percent": 33.333333333333336,
+    "in_frame_kinase_retained_count": 3,
+    "fisher_odds_ratio": "inf",
+    "fisher_p_value": 0.024242424242424242,
+    "permutation_p_value": 0.019801980198019802,
+    "frame_domain_contingency_table": [
+      [
+        3,
+        1
+      ],
+      [
+        0,
+        7
+      ]
+    ],
+    "partner_counts": [
+      {
+        "Partner_gene": "IL20",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "NAV1",
+        "Event_count": 2
+      },
+      {
+        "Partner_gene": "NFASC",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "RABGAP1L",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "RASAL2",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "RASSF5",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "RBBP5",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "SMYD2",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "SRGAP2",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "TCEA3",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "THBS3",
+        "Event_count": 1
+      }
+    ],
+    "domain_accession": "PF00069",
+    "domain_start_aa": 10,
+    "domain_end_aa": 244,
+    "key_domains": [
+      {
+        "name": "Protein kinase domain",
+        "accession": "PF00069",
+        "start_aa": 10,
+        "end_aa": 244
+      }
+    ]
+  },
+  "warnings": [
+    "Skipped EVT-P-0032949-T01-IM6-20 (IKBKE-SMYD2): ValueError: could not determine 5'/3' role for IKBKE in EVT-P-0032949-T01-IM6-20; Event_Info='Antisense Fusion'"
+  ],
+  "events": [
+    {
+      "event_id": "EVT-P-0027193-T03-IM6-14",
+      "sample_id": "P-0027193-T03-IM6",
+      "patient_id": null,
+      "fusion_name": "IKBKE-IL20",
+      "partner_gene": "IL20",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 206667107,
+      "breakpoint_exon": 21,
+      "breakpoint_protein_position": 682,
+      "is_intronic_breakpoint": true,
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "retained_domains": "",
+      "lost_domains": "Protein kinase domain",
+      "disrupted_domains": "",
+      "source_annotation_text": "IL20 (NM_018724) - IKBKE (NM_014002) Rearrangement : c.398:IL20_c.2046-146:IKBKE | Protein Fusion: mid-exon  {IL20:IKBKE}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0051760-T01-IM6-15",
+      "sample_id": "P-0051760-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "IKBKE-NAV1",
+      "partner_gene": "NAV1",
+      "frame_status": "in-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 206653556,
+      "breakpoint_exon": 12,
+      "breakpoint_protein_position": 447,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "IKBKE (NM_014002) - NAV1 (NM_020443) rearrangement: c.1340+100:IKBKE_c.1226+27872:NAV1dup | Protein Fusion: in frame  {IKBKE:NAV1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0051760-T02-IM6-16",
+      "sample_id": "P-0051760-T02-IM6",
+      "patient_id": null,
+      "fusion_name": "IKBKE-NAV1",
+      "partner_gene": "NAV1",
+      "frame_status": "in-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 206653558,
+      "breakpoint_exon": 12,
+      "breakpoint_protein_position": 447,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "IKBKE (NM_014002) - NAV1 (NM_020443) rearrangement: c.1340+102:IKBKE_c.1226+27873:NAV1dup | Protein Fusion: in frame  {IKBKE:NAV1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0053124-T01-IM6-17",
+      "sample_id": "P-0053124-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "IKBKE-RABGAP1L",
+      "partner_gene": "RABGAP1L",
+      "frame_status": "out-of-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 206666746,
+      "breakpoint_exon": 20,
+      "breakpoint_protein_position": 682,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "IKBKE (NM_014002) - RABGAP1L (NM_014857) rearrangement: c.2045+35:IKBKE_c.1710+64980:RABGAP1Ldup | Protein Fusion: out of frame  {IKBKE:RABGAP1L}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0052992-T01-IM6-18",
+      "sample_id": "P-0052992-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "IKBKE-RBBP5",
+      "partner_gene": "RBBP5",
+      "frame_status": "out-of-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 206648412,
+      "breakpoint_exon": 5,
+      "breakpoint_protein_position": 120,
+      "is_intronic_breakpoint": true,
+      "domain_status": "disrupted",
+      "domain_retained_fraction": 0.4723404255319149,
+      "domain_is_truncated": true,
+      "retained_domains": "",
+      "lost_domains": "",
+      "disrupted_domains": "Protein kinase domain",
+      "source_annotation_text": "IKBKE (NM_014002) - RBBP5 (NM_005057) rearrangement: c.358+75:IKBKE_c.218+2153:RBBP5inv | Protein Fusion: out of frame  {IKBKE:RBBP5}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0058226-T01-IM6-21",
+      "sample_id": "P-0058226-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "IKBKE-THBS3",
+      "partner_gene": "THBS3",
+      "frame_status": "unknown",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 206648064,
+      "breakpoint_exon": 4,
+      "breakpoint_protein_position": 76,
+      "is_intronic_breakpoint": true,
+      "domain_status": "disrupted",
+      "domain_retained_fraction": 0.2851063829787234,
+      "domain_is_truncated": true,
+      "retained_domains": "",
+      "lost_domains": "",
+      "disrupted_domains": "Protein kinase domain",
+      "source_annotation_text": "IKBKE (NM_014002) - THBS3 (NM_007112) rearrangement: c.229-144:IKBKE_c.2579:THBS3inv | Protein Fusion: mid-exon  {IKBKE:THBS3}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0001902-T01-IM3-23",
+      "sample_id": "P-0001902-T01-IM3",
+      "patient_id": null,
+      "fusion_name": "NFASC-IKBKE",
+      "partner_gene": "NFASC",
+      "frame_status": "in-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 206652479,
+      "breakpoint_exon": 10,
+      "breakpoint_protein_position": 395,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "IKBKE (NM_014002) - NFASC (NM_001005388) Duplication   : c.1183+3_c.2782+2783dup | Protein fusion: in frame (IKBKE-NFASC)",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0019364-T01-IM6-24",
+      "sample_id": "P-0019364-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "RASAL2-IKBKE",
+      "partner_gene": "RASAL2",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 206652369,
+      "breakpoint_exon": 10,
+      "breakpoint_protein_position": 359,
+      "is_intronic_breakpoint": false,
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "retained_domains": "",
+      "lost_domains": "Protein kinase domain",
+      "disrupted_domains": "",
+      "source_annotation_text": "RASAL2 (NM_170692) - IKBKE(NM_014002) Rearrangement : c.1628-181:RASAL2_c.1076:IKBKEdel | Protein Fusion: mid-exon  {RASAL2:IKBKE}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0067348-T01-IM7-25",
+      "sample_id": "P-0067348-T01-IM7",
+      "patient_id": null,
+      "fusion_name": "RASSF5-IKBKE",
+      "partner_gene": "RASSF5",
+      "frame_status": "out-of-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 206661210,
+      "breakpoint_exon": 16,
+      "breakpoint_protein_position": 539,
+      "is_intronic_breakpoint": true,
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "retained_domains": "",
+      "lost_domains": "Protein kinase domain",
+      "disrupted_domains": "",
+      "source_annotation_text": "RASSF5 (NM_182663) - IKBKE (NM_014002) rearrangement: c.579+1935:RASSF5_c.1617-41:IKBKEdup | Protein Fusion: out of frame  {RASSF5:IKBKE}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0022004-T02-IM6-27",
+      "sample_id": "P-0022004-T02-IM6",
+      "patient_id": null,
+      "fusion_name": "SRGAP2-IKBKE",
+      "partner_gene": "SRGAP2",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 206664172,
+      "breakpoint_exon": 17,
+      "breakpoint_protein_position": 572,
+      "is_intronic_breakpoint": false,
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "retained_domains": "",
+      "lost_domains": "Protein kinase domain",
+      "disrupted_domains": "",
+      "source_annotation_text": "SRGAP2 (NM_015326) - IKBKE (NM_014002) rearrangement: c.2085:SRGAP2_c.1714:IKBKEdel | Protein Fusion: mid-exon  {SRGAP2:IKBKE}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0054307-T01-IM6-28",
+      "sample_id": "P-0054307-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "TCEA3-IKBKE",
+      "partner_gene": "TCEA3",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 206650096,
+      "breakpoint_exon": 7,
+      "breakpoint_protein_position": 206,
+      "is_intronic_breakpoint": false,
+      "domain_status": "disrupted",
+      "domain_retained_fraction": 0.16595744680851063,
+      "domain_is_truncated": true,
+      "retained_domains": "",
+      "lost_domains": "",
+      "disrupted_domains": "Protein kinase domain",
+      "source_annotation_text": "TCEA3 (NM_003196) - IKBKE (NM_014002) rearrangement: c.69+346:TCEA3_c.616:IKBKEinv | Protein Fusion: mid-exon  {TCEA3:IKBKE}",
+      "source_site2_effect_on_frame": "NA"
+    }
+  ],
+  "algorithm_results": [
+    {
+      "Algorithm": "composite_score",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "weights": {
+          "recurrence": 0.3,
+          "domain_retention": 0.25,
+          "domain_disruption": 0.2,
+          "cutpoint_proximity": 0.15,
+          "confidence_certainty": 0.1
+        },
+        "neg_log10_p_cap": 10.0
+      },
+      "Summary": {
+        "gene_symbol": "IKBKE",
+        "n_partners_ranked": 11,
+        "total_events": 12,
+        "components_applicable": {
+          "recurrence": true,
+          "domain_retention": true,
+          "domain_disruption": false,
+          "cutpoint_proximity": true,
+          "confidence_certainty": true
+        },
+        "domain_retention_p_value_used": 0.019801980198019802,
+        "domain_disruption_p_value_used": null,
+        "inferred_cutpoint_aa": 359,
+        "Runtime_seconds": 0.00011074999929405749
+      },
+      "Tables": {
+        "composite_evidence_ranking": [
+          {
+            "Partner_gene": "RASAL2",
+            "Event_count": 1,
+            "Recurrence_score": 0.08333333333333333,
+            "Domain_retention_score": 0.17032913781186615,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": 1.0,
+            "Confidence_certainty_score": 0.34430466544937777,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.3150159387473804,
+            "Rank": 1
+          },
+          {
+            "Partner_gene": "NAV1",
+            "Event_count": 2,
+            "Recurrence_score": 0.16666666666666666,
+            "Domain_retention_score": 0.17032913781186615,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": 0.7275541795665634,
+            "Confidence_certainty_score": 0.34430466544937777,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.295182347416111,
+            "Rank": 2
+          },
+          {
+            "Partner_gene": "NFASC",
+            "Event_count": 1,
+            "Recurrence_score": 0.08333333333333333,
+            "Domain_retention_score": 0.17032913781186615,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": 0.8885448916408669,
+            "Confidence_certainty_score": 0.34430466544937777,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.29411810593004295,
+            "Rank": 3
+          },
+          {
+            "Partner_gene": "TCEA3",
+            "Event_count": 1,
+            "Recurrence_score": 0.08333333333333333,
+            "Domain_retention_score": 0.17032913781186615,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": 0.5263157894736843,
+            "Confidence_certainty_score": 0.34430466544937777,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.2262001492736962,
+            "Rank": 4
+          },
+          {
+            "Partner_gene": "RASSF5",
+            "Event_count": 1,
+            "Recurrence_score": 0.08333333333333333,
+            "Domain_retention_score": 0.17032913781186615,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": 0.44272445820433437,
+            "Confidence_certainty_score": 0.34430466544937777,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.21052677466069308,
+            "Rank": 5
+          },
+          {
+            "Partner_gene": "SRGAP2",
+            "Event_count": 1,
+            "Recurrence_score": 0.08333333333333333,
+            "Domain_retention_score": 0.17032913781186615,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": 0.3405572755417957,
+            "Confidence_certainty_score": 0.34430466544937777,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.19137042791146705,
+            "Rank": 6
+          },
+          {
+            "Partner_gene": "RBBP5",
+            "Event_count": 1,
+            "Recurrence_score": 0.08333333333333333,
+            "Domain_retention_score": 0.17032913781186615,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": 0.26006191950464397,
+            "Confidence_certainty_score": 0.34430466544937777,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.17627754865450113,
+            "Rank": 7
+          },
+          {
+            "Partner_gene": "SMYD2",
+            "Event_count": 1,
+            "Recurrence_score": 0.08333333333333333,
+            "Domain_retention_score": 0.17032913781186615,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.34430466544937777,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.1569426938429297,
+            "Rank": 8
+          },
+          {
+            "Partner_gene": "THBS3",
+            "Event_count": 1,
+            "Recurrence_score": 0.08333333333333333,
+            "Domain_retention_score": 0.17032913781186615,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": 0.12383900928792568,
+            "Confidence_certainty_score": 0.34430466544937777,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.15073575298886646,
+            "Rank": 9
+          },
+          {
+            "Partner_gene": "IL20",
+            "Event_count": 1,
+            "Recurrence_score": 0.08333333333333333,
+            "Domain_retention_score": 0.17032913781186615,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": 0.0,
+            "Confidence_certainty_score": 0.34430466544937777,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.12751593874738038,
+            "Rank": 10
+          },
+          {
+            "Partner_gene": "RABGAP1L",
+            "Event_count": 1,
+            "Recurrence_score": 0.08333333333333333,
+            "Domain_retention_score": 0.17032913781186615,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": 0.0,
+            "Confidence_certainty_score": 0.34430466544937777,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.12751593874738038,
+            "Rank": 11
+          }
+        ]
+      },
+      "Warnings": [
+        "domain_disruption sub-score excluded: the supplied result had no applicable p-value (e.g. disruption_required_domains not configured for this gene)."
+      ],
+      "Created_at": "2026-09-05T01:39:45.413018Z",
+      "Input_fingerprint": "90a6a737cfa27380a8baa3291be5ba747480af6cfeae3f23a1d4b5d0868b6b00"
+    },
+    {
+      "Algorithm": "confidence_stats",
+      "Algorithm_version": "1.0.0",
+      "Parameters": {
+        "group_field": "Domain_retention_flags",
+        "group_key": "kinase",
+        "group_value_map": {
+          "retained": "retained",
+          "lost": "not_retained",
+          "disrupted": "not_retained",
+          "unknown": null
+        },
+        "group_values": [
+          "retained",
+          "not_retained"
+        ],
+        "outcome_field": "Frame_status",
+        "outcome_success_value": "in-frame",
+        "outcome_valid_values": [
+          "in-frame",
+          "out-of-frame"
+        ],
+        "numeric_field": "Tumor_variant_count"
+      },
+      "Summary": {
+        "group_field": "Domain_retention_flags",
+        "group_a_label": "retained",
+        "group_b_label": "not_retained",
+        "n_group_a": 4,
+        "n_group_b": 7,
+        "mle": {
+          "outcome_field": "Frame_status",
+          "groups": {
+            "retained": {
+              "n": 4,
+              "successes": 3,
+              "point_estimate": 0.75,
+              "ci_low": 0.30064184258240184,
+              "ci_high": 0.9544127391902995,
+              "method": "wilson"
+            },
+            "not_retained": {
+              "n": 2,
+              "successes": 0,
+              "point_estimate": 0.0,
+              "ci_low": 0.0,
+              "ci_high": 0.6576197724933469,
+              "method": "wilson"
+            }
+          }
+        },
+        "ttest": {
+          "numeric_field": "Tumor_variant_count",
+          "group_a_label": "retained",
+          "group_b_label": "not_retained",
+          "n_a": 4,
+          "n_b": 7,
+          "t_statistic": 0.03395646218956968,
+          "p_value": 0.9736606018556695,
+          "df": 8.907462120848821,
+          "mean_a": 19.75,
+          "mean_b": 19.428571428571427
+        },
+        "Runtime_seconds": 0.0010992499883286655
+      },
+      "Tables": null,
+      "Warnings": [],
+      "Created_at": "2026-09-05T01:39:45.229016Z",
+      "Input_fingerprint": "90a6a737cfa27380a8baa3291be5ba747480af6cfeae3f23a1d4b5d0868b6b00"
+    },
+    {
+      "Algorithm": "cutpoint_detection",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 100,
+        "adaptive": true
+      },
+      "Summary": {
+        "determinable": true,
+        "reason": null,
+        "n_events_analyzed": 11,
+        "inferred_cutpoint_aa": 359,
+        "observed_statistic_neg_log10_p": 0.7123339658940003,
+        "observed_p_value": 0.19393939393939394,
+        "observed_odds_ratio": 0.0,
+        "corrected_p_value": 0.39603960396039606,
+        "known_domain_boundary_comparison": {
+          "nearest_known_domain_boundary_aa": 244,
+          "distance_aa": 115
+        },
+        "adaptive_permutations": {
+          "enabled": true,
+          "n_permutations_small": 100,
+          "n_permutations_full": 1000,
+          "n_permutations_used": 100,
+          "escalated_to_full": false
+        },
+        "Runtime_seconds": 0.18070016702404246
+      },
+      "Tables": {
+        "cutpoint_scan": [
+          {
+            "cutpoint": 76,
+            "n_positive_at_or_below": 0,
+            "n_positive_above": 4,
+            "n_negative_at_or_below": 1,
+            "n_negative_above": 6,
+            "odds_ratio": 0.0,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0
+          },
+          {
+            "cutpoint": 120,
+            "n_positive_at_or_below": 0,
+            "n_positive_above": 4,
+            "n_negative_at_or_below": 2,
+            "n_negative_above": 5,
+            "odds_ratio": 0.0,
+            "p_value": 0.49090909090909096,
+            "neg_log10_p_value": 0.30899892533525647
+          },
+          {
+            "cutpoint": 206,
+            "n_positive_at_or_below": 0,
+            "n_positive_above": 4,
+            "n_negative_at_or_below": 3,
+            "n_negative_above": 4,
+            "odds_ratio": 0.0,
+            "p_value": 0.23636363636363636,
+            "neg_log10_p_value": 0.626419337187407
+          },
+          {
+            "cutpoint": 359,
+            "n_positive_at_or_below": 0,
+            "n_positive_above": 4,
+            "n_negative_at_or_below": 4,
+            "n_negative_above": 3,
+            "odds_ratio": 0.0,
+            "p_value": 0.19393939393939394,
+            "neg_log10_p_value": 0.7123339658940003
+          },
+          {
+            "cutpoint": 395,
+            "n_positive_at_or_below": 1,
+            "n_positive_above": 3,
+            "n_negative_at_or_below": 4,
+            "n_negative_above": 3,
+            "odds_ratio": 0.25,
+            "p_value": 0.5454545454545454,
+            "neg_log10_p_value": 0.26324143477458145
+          },
+          {
+            "cutpoint": 447,
+            "n_positive_at_or_below": 3,
+            "n_positive_above": 1,
+            "n_negative_at_or_below": 4,
+            "n_negative_above": 3,
+            "odds_ratio": 2.25,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0
+          },
+          {
+            "cutpoint": 539,
+            "n_positive_at_or_below": 3,
+            "n_positive_above": 1,
+            "n_negative_at_or_below": 5,
+            "n_negative_above": 2,
+            "odds_ratio": 1.2,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0
+          },
+          {
+            "cutpoint": 572,
+            "n_positive_at_or_below": 3,
+            "n_positive_above": 1,
+            "n_negative_at_or_below": 6,
+            "n_negative_above": 1,
+            "odds_ratio": 0.5,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-09-05T01:39:45.410601Z",
+      "Input_fingerprint": "90a6a737cfa27380a8baa3291be5ba747480af6cfeae3f23a1d4b5d0868b6b00"
+    },
+    {
+      "Algorithm": "domain_disruption",
+      "Algorithm_version": "0.2.0",
+      "Parameters": {},
+      "Summary": {
+        "fisher_odds_ratio": null,
+        "fisher_p_value": null,
+        "permutation_empirical_p_value": null,
+        "observed_in_frame_disruption_rate": null,
+        "Runtime_seconds": 1.3165990822017193e-05
+      },
+      "Tables": {},
+      "Warnings": [
+        "IKBKE has no disruption_required_domains configured; domain-disruption analysis was skipped."
+      ],
+      "Created_at": "2026-09-05T01:39:45.231104Z",
+      "Input_fingerprint": "90a6a737cfa27380a8baa3291be5ba747480af6cfeae3f23a1d4b5d0868b6b00"
+    },
+    {
+      "Algorithm": "domain_retention",
+      "Algorithm_version": "0.2.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 100,
+        "adaptive": true
+      },
+      "Summary": {
+        "fisher_odds_ratio": null,
+        "fisher_p_value": 0.024242424242424242,
+        "permutation_empirical_p_value": 0.019801980198019802,
+        "observed_in_frame_retention_rate": 1.0,
+        "adaptive_permutations": {
+          "enabled": true,
+          "n_permutations_small": 100,
+          "n_permutations_full": 1000,
+          "n_permutations_used": 100,
+          "escalated_to_full": false
+        },
+        "Runtime_seconds": 0.0059068330156151205
+      },
+      "Tables": {
+        "frame_domain_contingency_table": [
+          [
+            3,
+            1
+          ],
+          [
+            0,
+            7
+          ]
+        ],
+        "domain_retention_descriptives": [
+          {
+            "Domain_key": "kinase",
+            "Domain_name": "Protein kinase domain",
+            "Quantitative_call_count": 11,
+            "Fully_retained_count": 4,
+            "Truncated_count": 3,
+            "Fully_lost_count": 4,
+            "Mean_retained_fraction_among_non_retained_calls": 0.13191489361702127
+          }
+        ],
+        "permutation_null_retention_rates": {
+          "omitted_from_artifact": true,
+          "count": 100
+        }
+      },
+      "Warnings": [],
+      "Created_at": "2026-09-05T01:39:45.227017Z",
+      "Input_fingerprint": "f95d4d9bf49ef3f85c42f5a593c8b5fb2089b1e1ecfe1ce82e367efce3dc3f75"
+    },
+    {
+      "Algorithm": "exon_retention",
+      "Algorithm_version": "1.0.0",
+      "Parameters": {
+        "target_exon": 3
+      },
+      "Summary": {
+        "target_exon": 3,
+        "retained_event_count": 6,
+        "total_event_count": 12,
+        "retained_fraction": 0.5,
+        "Runtime_seconds": 6.808299804106355e-05
+      },
+      "Tables": {
+        "Exon_retention": [
+          {
+            "Exon": 3,
+            "Retained_event_count": 6,
+            "Total_event_count": 12,
+            "Retained_fraction": 0.5
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-09-05T01:39:45.250422Z",
+      "Input_fingerprint": "90a6a737cfa27380a8baa3291be5ba747480af6cfeae3f23a1d4b5d0868b6b00"
+    },
+    {
+      "Algorithm": "frequency",
+      "Algorithm_version": "1.0.0",
+      "Parameters": {
+        "dedup_by_patient": false
+      },
+      "Summary": {
+        "input_event_count": 12,
+        "analyzed_event_count": 12,
+        "unique_partner_gene_count": 11,
+        "Runtime_seconds": 3.2459007343277335e-05
+      },
+      "Tables": {
+        "Partner_gene_counts": [
+          {
+            "Partner_gene": "IL20",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "NAV1",
+            "Event_count": 2
+          },
+          {
+            "Partner_gene": "NFASC",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "RABGAP1L",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "RASAL2",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "RASSF5",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "RBBP5",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "SMYD2",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "SRGAP2",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "TCEA3",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "THBS3",
+            "Event_count": 1
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-09-05T01:39:45.250500Z",
+      "Input_fingerprint": "90a6a737cfa27380a8baa3291be5ba747480af6cfeae3f23a1d4b5d0868b6b00"
+    },
+    {
+      "Algorithm": "joint_partner",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {},
+      "Summary": {
+        "Runtime_seconds": 1.987497671507299e-05
+      },
+      "Tables": {},
+      "Warnings": [
+        "IKBKE has no gene_pair configured; joint-partner analysis was skipped."
+      ],
+      "Created_at": "2026-09-05T01:39:45.411675Z",
+      "Input_fingerprint": "90a6a737cfa27380a8baa3291be5ba747480af6cfeae3f23a1d4b5d0868b6b00"
+    }
+  ],
+  "reference": null,
+  "gene_track": {
+    "protein_length": 716,
+    "domains": [
+      {
+        "name": "Protein kinase domain",
+        "accession": "PF00069",
+        "start_aa": 10,
+        "end_aa": 244
+      }
+    ],
+    "exon_boundaries_aa": [
+      {
+        "exon_rank": 3,
+        "start_aa": 1,
+        "end_aa": 29
+      },
+      {
+        "exon_rank": 4,
+        "start_aa": 30,
+        "end_aa": 76
+      },
+      {
+        "exon_rank": 5,
+        "start_aa": 77,
+        "end_aa": 120
+      },
+      {
+        "exon_rank": 6,
+        "start_aa": 120,
+        "end_aa": 180
+      },
+      {
+        "exon_rank": 7,
+        "start_aa": 181,
+        "end_aa": 234
+      },
+      {
+        "exon_rank": 8,
+        "start_aa": 234,
+        "end_aa": 271
+      },
+      {
+        "exon_rank": 9,
+        "start_aa": 271,
+        "end_aa": 331
+      },
+      {
+        "exon_rank": 10,
+        "start_aa": 331,
+        "end_aa": 395
+      },
+      {
+        "exon_rank": 11,
+        "start_aa": 395,
+        "end_aa": 416
+      },
+      {
+        "exon_rank": 12,
+        "start_aa": 417,
+        "end_aa": 447
+      },
+      {
+        "exon_rank": 13,
+        "start_aa": 447,
+        "end_aa": 476
+      },
+      {
+        "exon_rank": 14,
+        "start_aa": 476,
+        "end_aa": 501
+      },
+      {
+        "exon_rank": 15,
+        "start_aa": 502,
+        "end_aa": 539
+      },
+      {
+        "exon_rank": 16,
+        "start_aa": 539,
+        "end_aa": 565
+      },
+      {
+        "exon_rank": 17,
+        "start_aa": 565,
+        "end_aa": 578
+      },
+      {
+        "exon_rank": 18,
+        "start_aa": 578,
+        "end_aa": 612
+      },
+      {
+        "exon_rank": 19,
+        "start_aa": 612,
+        "end_aa": 644
+      },
+      {
+        "exon_rank": 20,
+        "start_aa": 645,
+        "end_aa": 682
+      },
+      {
+        "exon_rank": 21,
+        "start_aa": 682,
+        "end_aa": 706
+      },
+      {
+        "exon_rank": 22,
+        "start_aa": 706,
+        "end_aa": 717
+      }
+    ]
+  },
+  "intragenic_deletions": [
+    {
+      "sample_id": "P-0024266-T01-IM6",
+      "annotation": "IKBKE (NM_014002) Rearrangement : c.1427+76_c.1616+931del",
+      "event_info": "Deletion of 2 exons : in frame",
+      "n_exons_deleted": 2,
+      "frame_status": "in-frame",
+      "retained_up_to_aa": 476,
+      "resumed_from_aa": 539
+    }
+  ]
+}
