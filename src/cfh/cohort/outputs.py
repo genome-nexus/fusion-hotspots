@@ -114,6 +114,15 @@ def _top_composite(run) -> tuple[float | None, str | None]:
     return None, None
 
 
+def _algorithm_summary(run, algorithm: str) -> dict:
+    if run is None:
+        return {}
+    return next(
+        (result.Summary for result in run.results if result.Algorithm == algorithm),
+        {},
+    )
+
+
 def build_summary_rows(result: CohortScanResult) -> list[dict]:
     """Build one row per scanned gene, sorted by significance (most
     significant FDR-adjusted q-value first; genes with no q-value sort
@@ -124,6 +133,8 @@ def build_summary_rows(result: CohortScanResult) -> list[dict]:
     rows: list[dict] = []
     for outcome in result.gene_outcomes:
         summary = outcome.run.summary if outcome.run is not None else {}
+        retention = _algorithm_summary(outcome.run, "domain_retention")
+        disruption = _algorithm_summary(outcome.run, "domain_disruption")
         top_score, top_partner = _top_composite(outcome.run)
         q_value = min_q_by_gene.get(outcome.gene_symbol)
         rows.append(
@@ -137,6 +148,12 @@ def build_summary_rows(result: CohortScanResult) -> list[dict]:
                 "in_frame_percent": summary.get("in_frame_percent"),
                 "domain_retention_percent": summary.get("kinase_retained_percent"),
                 "fisher_p_value": summary.get("fisher_p_value"),
+                "fisher_odds_ratio": retention.get("fisher_odds_ratio"),
+                "key_domains": summary.get("configured_key_domains") or [],
+                "disruption_fisher_p_value": disruption.get("fisher_p_value"),
+                "disruption_fisher_odds_ratio": disruption.get("fisher_odds_ratio"),
+                "disruption_required_domains": summary.get("configured_disruption_required_domains")
+                or [],
                 "permutation_p_value": summary.get("permutation_p_value"),
                 "min_fdr_adjusted_q_value": q_value,
                 # ``None`` (never computed -- this gene contributed no
@@ -780,7 +797,11 @@ def write_cohort_scan_outputs(
     tsv_path = destination / "summary.tsv"
     with tsv_path.open("w", newline="") as handle:
         writer = csv.DictWriter(
-            handle, fieldnames=_SUMMARY_FIELDNAMES, delimiter="\t", lineterminator="\n"
+            handle,
+            fieldnames=_SUMMARY_FIELDNAMES,
+            delimiter="\t",
+            lineterminator="\n",
+            extrasaction="ignore",
         )
         writer.writeheader()
         writer.writerows(rows)
