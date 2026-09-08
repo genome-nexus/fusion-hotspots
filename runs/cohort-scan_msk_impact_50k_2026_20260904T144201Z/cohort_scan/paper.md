@@ -41,7 +41,7 @@ Genome-wide summary of 359 scanned genes with an FDR-adjusted q-value, ranked le
 
 #### ETV6 (FDR-significant)
 
-ETV6 was analyzed across 90 fusion events, 71.1% in-frame and 75.6% domain-retained. Domain-retention Fisher's exact test p=5.12326e-06 (raw statistically significant at alpha=0.05). Genome-wide BH-adjusted q=0.00433427 (reaches genome-wide FDR significance).
+ETV6 was analyzed across 90 fusion events, 71.1% in-frame and 75.6% domain-retained. Domain-retention Fisher's exact test on ETV6's own fusion events alone gives p=5.12326e-06 (statistically significant at alpha=0.05). Among 359 genes scanned genome-wide in this cohort run, ETV6's Benjamini-Hochberg-adjusted q=0.00433427 (reaches genome-wide FDR significance).
 
 ![ETV6 key figure](gene_reports/etv6/visualizations/fusion_schematic.svg)
 
@@ -49,7 +49,7 @@ Full per-gene detail: [gene_reports/etv6/report.md](gene_reports/etv6/report.md)
 
 #### RET (Honorable mention, Curated gene config)
 
-RET was analyzed across 194 fusion events, 75.3% in-frame and 92.3% domain-retained. Domain-retention Fisher's exact test p=0.000419666 (raw statistically significant at alpha=0.05). Genome-wide BH-adjusted q=0.119762 (does not reach genome-wide FDR significance). Did not survive genome-wide multiple-testing correction (FDR-adjusted q-value at or above the significance threshold), but ranks highly by raw p-value among the non-FDR-significant genes and may warrant targeted follow-up. This is NOT a claim of statistical significance.
+RET was analyzed across 194 fusion events, 75.3% in-frame and 92.3% domain-retained. Domain-retention Fisher's exact test on RET's own fusion events alone gives p=0.000419666 (statistically significant at alpha=0.05). Among 359 genes scanned genome-wide in this cohort run, RET's Benjamini-Hochberg-adjusted q=0.119762 (does not reach genome-wide FDR significance). Did not survive genome-wide multiple-testing correction (FDR-adjusted q-value at or above the significance threshold), but ranks highly by raw p-value among the non-FDR-significant genes and may warrant targeted follow-up. This is NOT a claim of statistical significance.
 
 ![RET key figure](gene_reports/ret/visualizations/fusion_schematic.svg)
 
@@ -57,7 +57,7 @@ Full per-gene detail: [gene_reports/ret/report.md](gene_reports/ret/report.md)
 
 #### FGFR2 (Honorable mention)
 
-FGFR2 was analyzed across 136 fusion events, 79.4% in-frame and 84.6% domain-retained. Domain-retention Fisher's exact test p=0.000424687 (raw statistically significant at alpha=0.05). Genome-wide BH-adjusted q=0.119762 (does not reach genome-wide FDR significance). Did not survive genome-wide multiple-testing correction (FDR-adjusted q-value at or above the significance threshold), but ranks highly by raw p-value among the non-FDR-significant genes and may warrant targeted follow-up. This is NOT a claim of statistical significance.
+FGFR2 was analyzed across 136 fusion events, 79.4% in-frame and 84.6% domain-retained. Domain-retention Fisher's exact test on FGFR2's own fusion events alone gives p=0.000424687 (statistically significant at alpha=0.05). Among 359 genes scanned genome-wide in this cohort run, FGFR2's Benjamini-Hochberg-adjusted q=0.119762 (does not reach genome-wide FDR significance). Did not survive genome-wide multiple-testing correction (FDR-adjusted q-value at or above the significance threshold), but ranks highly by raw p-value among the non-FDR-significant genes and may warrant targeted follow-up. This is NOT a claim of statistical significance.
 
 ![FGFR2 key figure](gene_reports/fgfr2/visualizations/fusion_schematic.svg)
 
@@ -65,7 +65,7 @@ Full per-gene detail: [gene_reports/fgfr2/report.md](gene_reports/fgfr2/report.m
 
 #### ALK (Honorable mention, Curated gene config)
 
-ALK was analyzed across 272 fusion events, 83.1% in-frame and 96.0% domain-retained. Domain-retention Fisher's exact test p=0.00191661 (raw statistically significant at alpha=0.05). Genome-wide BH-adjusted q=0.182092 (does not reach genome-wide FDR significance). Did not survive genome-wide multiple-testing correction (FDR-adjusted q-value at or above the significance threshold), but ranks highly by raw p-value among the non-FDR-significant genes and may warrant targeted follow-up. This is NOT a claim of statistical significance.
+ALK was analyzed across 272 fusion events, 83.1% in-frame and 96.0% domain-retained. Domain-retention Fisher's exact test on ALK's own fusion events alone gives p=0.00191661 (statistically significant at alpha=0.05). Among 359 genes scanned genome-wide in this cohort run, ALK's Benjamini-Hochberg-adjusted q=0.182092 (does not reach genome-wide FDR significance). Did not survive genome-wide multiple-testing correction (FDR-adjusted q-value at or above the significance threshold), but ranks highly by raw p-value among the non-FDR-significant genes and may warrant targeted follow-up. This is NOT a claim of statistical significance.
 
 ![ALK key figure](gene_reports/alk/visualizations/fusion_schematic.svg)
 
@@ -73,7 +73,7 @@ Full per-gene detail: [gene_reports/alk/report.md](gene_reports/alk/report.md)
 
 #### EGFR (Honorable mention)
 
-EGFR was analyzed across 55 fusion events, 50.9% in-frame and 74.5% domain-retained. Domain-retention Fisher's exact test p=0.0114539 (raw statistically significant at alpha=0.05). Genome-wide BH-adjusted q=0.206169 (does not reach genome-wide FDR significance). Did not survive genome-wide multiple-testing correction (FDR-adjusted q-value at or above the significance threshold), but ranks highly by raw p-value among the non-FDR-significant genes and may warrant targeted follow-up. This is NOT a claim of statistical significance.
+EGFR was analyzed across 55 fusion events, 50.9% in-frame and 74.5% domain-retained. Domain-retention Fisher's exact test on EGFR's own fusion events alone gives p=0.0114539 (statistically significant at alpha=0.05). Among 359 genes scanned genome-wide in this cohort run, EGFR's Benjamini-Hochberg-adjusted q=0.206169 (does not reach genome-wide FDR significance). Did not survive genome-wide multiple-testing correction (FDR-adjusted q-value at or above the significance threshold), but ranks highly by raw p-value among the non-FDR-significant genes and may warrant targeted follow-up. This is NOT a claim of statistical significance.
 
 ![EGFR key figure](gene_reports/egfr/visualizations/fusion_schematic.svg)
 
@@ -81,7 +81,7 @@ Full per-gene detail: [gene_reports/egfr/report.md](gene_reports/egfr/report.md)
 
 #### BRAF (Honorable mention, Curated gene config)
 
-BRAF was analyzed across 179 fusion events, 84.4% in-frame and 91.1% domain-retained. Domain-retention Fisher's exact test p=0.0133676 (raw statistically significant at alpha=0.05). Genome-wide BH-adjusted q=0.235603 (does not reach genome-wide FDR significance). Did not survive genome-wide multiple-testing correction (FDR-adjusted q-value at or above the significance threshold), but ranks highly by raw p-value among the non-FDR-significant genes and may warrant targeted follow-up. This is NOT a claim of statistical significance.
+BRAF was analyzed across 179 fusion events, 84.4% in-frame and 91.1% domain-retained. Domain-retention Fisher's exact test on BRAF's own fusion events alone gives p=0.0133676 (statistically significant at alpha=0.05). Among 359 genes scanned genome-wide in this cohort run, BRAF's Benjamini-Hochberg-adjusted q=0.235603 (does not reach genome-wide FDR significance). Did not survive genome-wide multiple-testing correction (FDR-adjusted q-value at or above the significance threshold), but ranks highly by raw p-value among the non-FDR-significant genes and may warrant targeted follow-up. This is NOT a claim of statistical significance.
 
 ![BRAF key figure](gene_reports/braf/visualizations/fusion_schematic.svg)
 
@@ -89,7 +89,7 @@ Full per-gene detail: [gene_reports/braf/report.md](gene_reports/braf/report.md)
 
 #### FGFR3 (Honorable mention)
 
-FGFR3 was analyzed across 152 fusion events, 48.7% in-frame and 93.4% domain-retained. Domain-retention Fisher's exact test p=0.0194824 (raw statistically significant at alpha=0.05). Genome-wide BH-adjusted q=0.182092 (does not reach genome-wide FDR significance). Did not survive genome-wide multiple-testing correction (FDR-adjusted q-value at or above the significance threshold), but ranks highly by raw p-value among the non-FDR-significant genes and may warrant targeted follow-up. This is NOT a claim of statistical significance.
+FGFR3 was analyzed across 152 fusion events, 48.7% in-frame and 93.4% domain-retained. Domain-retention Fisher's exact test on FGFR3's own fusion events alone gives p=0.0194824 (statistically significant at alpha=0.05). Among 359 genes scanned genome-wide in this cohort run, FGFR3's Benjamini-Hochberg-adjusted q=0.182092 (does not reach genome-wide FDR significance). Did not survive genome-wide multiple-testing correction (FDR-adjusted q-value at or above the significance threshold), but ranks highly by raw p-value among the non-FDR-significant genes and may warrant targeted follow-up. This is NOT a claim of statistical significance.
 
 ![FGFR3 key figure](gene_reports/fgfr3/visualizations/fusion_schematic.svg)
 
@@ -97,7 +97,7 @@ Full per-gene detail: [gene_reports/fgfr3/report.md](gene_reports/fgfr3/report.m
 
 #### CDKN2B (Honorable mention)
 
-CDKN2B was analyzed across 12 fusion events, 16.7% in-frame and 16.7% domain-retained. Domain-retention Fisher's exact test p=0.0222222 (raw statistically significant at alpha=0.05). Genome-wide BH-adjusted q=0.182092 (does not reach genome-wide FDR significance). Did not survive genome-wide multiple-testing correction (FDR-adjusted q-value at or above the significance threshold), but ranks highly by raw p-value among the non-FDR-significant genes and may warrant targeted follow-up. This is NOT a claim of statistical significance.
+CDKN2B was analyzed across 12 fusion events, 16.7% in-frame and 16.7% domain-retained. Domain-retention Fisher's exact test on CDKN2B's own fusion events alone gives p=0.0222222 (statistically significant at alpha=0.05). Among 359 genes scanned genome-wide in this cohort run, CDKN2B's Benjamini-Hochberg-adjusted q=0.182092 (does not reach genome-wide FDR significance). Did not survive genome-wide multiple-testing correction (FDR-adjusted q-value at or above the significance threshold), but ranks highly by raw p-value among the non-FDR-significant genes and may warrant targeted follow-up. This is NOT a claim of statistical significance.
 
 ![CDKN2B key figure](gene_reports/cdkn2b/visualizations/fusion_schematic.svg)
 
@@ -105,7 +105,7 @@ Full per-gene detail: [gene_reports/cdkn2b/report.md](gene_reports/cdkn2b/report
 
 #### IKBKE (Honorable mention)
 
-IKBKE was analyzed across 12 fusion events, 25.0% in-frame and 33.3% domain-retained. Domain-retention Fisher's exact test p=0.0242424 (raw statistically significant at alpha=0.05). Genome-wide BH-adjusted q=0.2771 (does not reach genome-wide FDR significance). Did not survive genome-wide multiple-testing correction (FDR-adjusted q-value at or above the significance threshold), but ranks highly by raw p-value among the non-FDR-significant genes and may warrant targeted follow-up. This is NOT a claim of statistical significance.
+IKBKE was analyzed across 12 fusion events, 25.0% in-frame and 33.3% domain-retained. Domain-retention Fisher's exact test on IKBKE's own fusion events alone gives p=0.0242424 (statistically significant at alpha=0.05). Among 359 genes scanned genome-wide in this cohort run, IKBKE's Benjamini-Hochberg-adjusted q=0.2771 (does not reach genome-wide FDR significance). Did not survive genome-wide multiple-testing correction (FDR-adjusted q-value at or above the significance threshold), but ranks highly by raw p-value among the non-FDR-significant genes and may warrant targeted follow-up. This is NOT a claim of statistical significance.
 
 ![IKBKE key figure](gene_reports/ikbke/visualizations/fusion_schematic.svg)
 
@@ -113,7 +113,7 @@ Full per-gene detail: [gene_reports/ikbke/report.md](gene_reports/ikbke/report.m
 
 #### TMPRSS2 (Honorable mention)
 
-TMPRSS2 was analyzed across 867 fusion events, 30.0% in-frame and 6.1% domain-retained. Domain-retention Fisher's exact test p=0.0292045 (raw statistically significant at alpha=0.05). Genome-wide BH-adjusted q=0.2771 (does not reach genome-wide FDR significance). Did not survive genome-wide multiple-testing correction (FDR-adjusted q-value at or above the significance threshold), but ranks highly by raw p-value among the non-FDR-significant genes and may warrant targeted follow-up. This is NOT a claim of statistical significance.
+TMPRSS2 was analyzed across 867 fusion events, 30.0% in-frame and 6.1% domain-retained. Domain-retention Fisher's exact test on TMPRSS2's own fusion events alone gives p=0.0292045 (statistically significant at alpha=0.05). Among 359 genes scanned genome-wide in this cohort run, TMPRSS2's Benjamini-Hochberg-adjusted q=0.2771 (does not reach genome-wide FDR significance). Did not survive genome-wide multiple-testing correction (FDR-adjusted q-value at or above the significance threshold), but ranks highly by raw p-value among the non-FDR-significant genes and may warrant targeted follow-up. This is NOT a claim of statistical significance.
 
 ![TMPRSS2 key figure](gene_reports/tmprss2/visualizations/fusion_schematic.svg)
 
@@ -121,7 +121,7 @@ Full per-gene detail: [gene_reports/tmprss2/report.md](gene_reports/tmprss2/repo
 
 #### NTRK1 (Honorable mention, Curated gene config)
 
-NTRK1 was analyzed across 78 fusion events, 41.0% in-frame and 82.1% domain-retained. Domain-retention Fisher's exact test p=0.0482628 (raw statistically significant at alpha=0.05). Genome-wide BH-adjusted q=0.182092 (does not reach genome-wide FDR significance). Did not survive genome-wide multiple-testing correction (FDR-adjusted q-value at or above the significance threshold), but ranks highly by raw p-value among the non-FDR-significant genes and may warrant targeted follow-up. This is NOT a claim of statistical significance.
+NTRK1 was analyzed across 78 fusion events, 41.0% in-frame and 82.1% domain-retained. Domain-retention Fisher's exact test on NTRK1's own fusion events alone gives p=0.0482628 (statistically significant at alpha=0.05). Among 359 genes scanned genome-wide in this cohort run, NTRK1's Benjamini-Hochberg-adjusted q=0.182092 (does not reach genome-wide FDR significance). Did not survive genome-wide multiple-testing correction (FDR-adjusted q-value at or above the significance threshold), but ranks highly by raw p-value among the non-FDR-significant genes and may warrant targeted follow-up. This is NOT a claim of statistical significance.
 
 ![NTRK1 key figure](gene_reports/ntrk1/visualizations/fusion_schematic.svg)
 
@@ -129,7 +129,7 @@ Full per-gene detail: [gene_reports/ntrk1/report.md](gene_reports/ntrk1/report.m
 
 #### INPPL1 (Honorable mention)
 
-INPPL1 was analyzed across 14 fusion events, 28.6% in-frame and 50.0% domain-retained. Domain-retention Fisher's exact test p=0.048951 (raw statistically significant at alpha=0.05). Genome-wide BH-adjusted q=0.404722 (does not reach genome-wide FDR significance). Did not survive genome-wide multiple-testing correction (FDR-adjusted q-value at or above the significance threshold), but ranks highly by raw p-value among the non-FDR-significant genes and may warrant targeted follow-up. This is NOT a claim of statistical significance.
+INPPL1 was analyzed across 14 fusion events, 28.6% in-frame and 50.0% domain-retained. Domain-retention Fisher's exact test on INPPL1's own fusion events alone gives p=0.048951 (statistically significant at alpha=0.05). Among 359 genes scanned genome-wide in this cohort run, INPPL1's Benjamini-Hochberg-adjusted q=0.404722 (does not reach genome-wide FDR significance). Did not survive genome-wide multiple-testing correction (FDR-adjusted q-value at or above the significance threshold), but ranks highly by raw p-value among the non-FDR-significant genes and may warrant targeted follow-up. This is NOT a claim of statistical significance.
 
 ![INPPL1 key figure](gene_reports/inppl1/visualizations/fusion_schematic.svg)
 
@@ -137,7 +137,7 @@ Full per-gene detail: [gene_reports/inppl1/report.md](gene_reports/inppl1/report
 
 #### CDK12 (Honorable mention)
 
-CDK12 was analyzed across 43 fusion events, 16.3% in-frame and 37.2% domain-retained. Domain-retention Fisher's exact test p=0.0677006 (raw not statistically significant at alpha=0.05). Genome-wide BH-adjusted q=0.182092 (does not reach genome-wide FDR significance). Did not survive genome-wide multiple-testing correction (FDR-adjusted q-value at or above the significance threshold), but ranks highly by raw p-value among the non-FDR-significant genes and may warrant targeted follow-up. This is NOT a claim of statistical significance.
+CDK12 was analyzed across 43 fusion events, 16.3% in-frame and 37.2% domain-retained. Domain-retention Fisher's exact test on CDK12's own fusion events alone gives p=0.0677006 (not statistically significant at alpha=0.05). Among 359 genes scanned genome-wide in this cohort run, CDK12's Benjamini-Hochberg-adjusted q=0.182092 (does not reach genome-wide FDR significance). Did not survive genome-wide multiple-testing correction (FDR-adjusted q-value at or above the significance threshold), but ranks highly by raw p-value among the non-FDR-significant genes and may warrant targeted follow-up. This is NOT a claim of statistical significance.
 
 ![CDK12 key figure](gene_reports/cdk12/visualizations/fusion_schematic.svg)
 
@@ -145,7 +145,7 @@ Full per-gene detail: [gene_reports/cdk12/report.md](gene_reports/cdk12/report.m
 
 #### NTRK3 (Honorable mention)
 
-NTRK3 was analyzed across 58 fusion events, 94.8% in-frame and 94.8% domain-retained. Domain-retention Fisher's exact test p=0.0695489 (raw not statistically significant at alpha=0.05). Genome-wide BH-adjusted q=0.182092 (does not reach genome-wide FDR significance). Did not survive genome-wide multiple-testing correction (FDR-adjusted q-value at or above the significance threshold), but ranks highly by raw p-value among the non-FDR-significant genes and may warrant targeted follow-up. This is NOT a claim of statistical significance.
+NTRK3 was analyzed across 58 fusion events, 94.8% in-frame and 94.8% domain-retained. Domain-retention Fisher's exact test on NTRK3's own fusion events alone gives p=0.0695489 (not statistically significant at alpha=0.05). Among 359 genes scanned genome-wide in this cohort run, NTRK3's Benjamini-Hochberg-adjusted q=0.182092 (does not reach genome-wide FDR significance). Did not survive genome-wide multiple-testing correction (FDR-adjusted q-value at or above the significance threshold), but ranks highly by raw p-value among the non-FDR-significant genes and may warrant targeted follow-up. This is NOT a claim of statistical significance.
 
 ![NTRK3 key figure](gene_reports/ntrk3/visualizations/fusion_schematic.svg)
 
@@ -153,7 +153,7 @@ Full per-gene detail: [gene_reports/ntrk3/report.md](gene_reports/ntrk3/report.m
 
 #### NAB2 (Honorable mention)
 
-NAB2 was analyzed across 72 fusion events, 34.7% in-frame and 68.1% domain-retained. Domain-retention Fisher's exact test p=0.11258 (raw not statistically significant at alpha=0.05). Genome-wide BH-adjusted q=0.182092 (does not reach genome-wide FDR significance). Did not survive genome-wide multiple-testing correction (FDR-adjusted q-value at or above the significance threshold), but ranks highly by raw p-value among the non-FDR-significant genes and may warrant targeted follow-up. This is NOT a claim of statistical significance.
+NAB2 was analyzed across 72 fusion events, 34.7% in-frame and 68.1% domain-retained. Domain-retention Fisher's exact test on NAB2's own fusion events alone gives p=0.11258 (not statistically significant at alpha=0.05). Among 359 genes scanned genome-wide in this cohort run, NAB2's Benjamini-Hochberg-adjusted q=0.182092 (does not reach genome-wide FDR significance). Did not survive genome-wide multiple-testing correction (FDR-adjusted q-value at or above the significance threshold), but ranks highly by raw p-value among the non-FDR-significant genes and may warrant targeted follow-up. This is NOT a claim of statistical significance.
 
 ![NAB2 key figure](gene_reports/nab2/visualizations/fusion_schematic.svg)
 
@@ -161,7 +161,7 @@ Full per-gene detail: [gene_reports/nab2/report.md](gene_reports/nab2/report.md)
 
 #### KDM5A (Honorable mention)
 
-KDM5A was analyzed across 10 fusion events, 30.0% in-frame and 50.0% domain-retained. Domain-retention Fisher's exact test p=0.119048 (raw not statistically significant at alpha=0.05). Genome-wide BH-adjusted q=0.875776 (does not reach genome-wide FDR significance). Did not survive genome-wide multiple-testing correction (FDR-adjusted q-value at or above the significance threshold), but ranks highly by raw p-value among the non-FDR-significant genes and may warrant targeted follow-up. This is NOT a claim of statistical significance.
+KDM5A was analyzed across 10 fusion events, 30.0% in-frame and 50.0% domain-retained. Domain-retention Fisher's exact test on KDM5A's own fusion events alone gives p=0.119048 (not statistically significant at alpha=0.05). Among 359 genes scanned genome-wide in this cohort run, KDM5A's Benjamini-Hochberg-adjusted q=0.875776 (does not reach genome-wide FDR significance). Did not survive genome-wide multiple-testing correction (FDR-adjusted q-value at or above the significance threshold), but ranks highly by raw p-value among the non-FDR-significant genes and may warrant targeted follow-up. This is NOT a claim of statistical significance.
 
 ![KDM5A key figure](gene_reports/kdm5a/visualizations/fusion_schematic.svg)
 
