@@ -476,6 +476,7 @@ def analyze_structural_variant_calls_with_config(
     study_id: str,
     *,
     molecular_profile_id: str | None = None,
+    clinical_df: pd.DataFrame | None = None,
     genome_nexus_client: GenomeNexusClient | None = None,
     n_permutations: int = 1_000,
     algorithm_names: list[str] | None = None,
@@ -511,7 +512,15 @@ def analyze_structural_variant_calls_with_config(
     client = genome_nexus_client or GenomeNexusClient()
 
     raw = cbioportal_api.structural_variants_to_dataframe(calls)
-    normalized = normalize(raw, None, study_id)
+    # Restrict enrichment to annotations: patient IDs/panel metadata must not
+    # change the existing statistical inputs or grouping.
+    clinical_annotations = None
+    if clinical_df is not None:
+        clinical_annotations = clinical_df.reindex(
+            columns=["Sample_id", "Tumor_type", "Oncotree_code"]
+        ).astype(object)
+        clinical_annotations = clinical_annotations.fillna("")
+    normalized = normalize(raw, clinical_annotations, study_id)
     selected = [
         (row.to_dict(), event)
         for (_, row), event in zip(raw.iterrows(), normalized, strict=True)
@@ -672,6 +681,8 @@ def analyze_structural_variant_calls_with_config(
                 "event_id": event.Event_id,
                 "sample_id": event.Sample_id,
                 "patient_id": event.Patient_id,
+                "tumor_type": event.Tumor_type,
+                "oncotree_code": event.Oncotree_code,
                 "fusion_name": event.Fusion_name,
                 "partner_gene": _partner(event, config.gene_symbol),
                 "frame_status": event.Frame_status,
@@ -917,6 +928,7 @@ def analyze_structural_variant_calls(
     study_id: str,
     *,
     molecular_profile_id: str | None = None,
+    clinical_df: pd.DataFrame | None = None,
     genome_nexus_client: GenomeNexusClient | None = None,
     n_permutations: int = 1_000,
     algorithm_names: list[str] | None = None,
@@ -934,6 +946,7 @@ def analyze_structural_variant_calls(
         config,
         study_id,
         molecular_profile_id=molecular_profile_id,
+        clinical_df=clinical_df,
         genome_nexus_client=genome_nexus_client,
         n_permutations=n_permutations,
         algorithm_names=algorithm_names,
@@ -971,15 +984,23 @@ def run_real_benchmark(
             f"{profile_id}: {exc}. Check the study ID, network access, and "
             "https://www.cbioportal.org availability, then retry."
         ) from exc
-    return analyze_structural_variant_calls(
+    run = analyze_structural_variant_calls(
         calls,
         gene_symbol,
         study_id,
         molecular_profile_id=profile_id,
+        clinical_df=cbioportal_api.fetch_sample_tumor_types(
+            study_id, [call["sampleId"] for call in calls if call.get("sampleId")]
+        ),
         genome_nexus_client=genome_nexus_client,
         n_permutations=n_permutations,
         algorithm_names=algorithm_names,
     )
+
+    run.endpoints.append(
+        f"{cbioportal_api.DEFAULT_BASE_URL}/studies/{study_id}/clinical-data/fetch"
+    )
+    return run
 
 
 def run_analysis(

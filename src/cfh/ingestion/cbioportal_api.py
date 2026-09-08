@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import random
 import time
+import warnings
 from typing import Any, Iterable
 
 import pandas as pd
@@ -163,3 +164,41 @@ def structural_variants_to_dataframe(calls: Iterable[dict]) -> pd.DataFrame:
         record["Parse_warnings"] = None
         records.append(record)
     return pd.DataFrame.from_records(records, columns=_API_OUTPUT_COLUMNS)
+
+
+def fetch_sample_tumor_types(
+    study_id: str,
+    sample_ids: Iterable[str],
+    *,
+    base_url: str = DEFAULT_BASE_URL,
+    session: requests.Session | None = None,
+    timeout: float = 30,
+) -> pd.DataFrame:
+    """Fetch optional sample annotations without changing patient/grouping metadata."""
+    columns = ["Sample_id", "Tumor_type", "Oncotree_code"]
+    ids = sorted(set(sample_ids))
+    if not ids:
+        return pd.DataFrame(columns=columns)
+    session = session or requests.Session()
+    try:
+        response = session.post(
+            f"{base_url.rstrip('/')}/studies/{study_id}/clinical-data/fetch",
+            params={"clinicalDataType": "SAMPLE"},
+            json={"ids": ids, "attributeIds": ["CANCER_TYPE", "ONCOTREE_CODE"]},
+            timeout=timeout,
+        )
+        response.raise_for_status()
+        records = response.json()
+    except (requests.RequestException, ValueError) as exc:
+        warnings.warn(f"Sample tumor annotations unavailable for {study_id}: {exc}", stacklevel=2)
+        return pd.DataFrame(columns=columns)
+    fields = {"CANCER_TYPE": "Tumor_type", "ONCOTREE_CODE": "Oncotree_code"}
+    rows: dict[str, dict] = {}
+    for record in records:
+        sample_id = record.get("sampleId")
+        field = fields.get(record.get("clinicalAttributeId"))
+        if sample_id in ids and field:
+            row = rows.setdefault(sample_id, dict.fromkeys(columns))
+            row["Sample_id"] = sample_id
+            row[field] = record.get("value") or None
+    return pd.DataFrame(rows.values(), columns=columns)

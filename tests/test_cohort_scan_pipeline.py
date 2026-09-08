@@ -158,6 +158,12 @@ def mock_session() -> MagicMock:
         response = MagicMock(status_code=200)
         if url.endswith("/structuralvariant-genes/fetch"):
             response.json.return_value = _recurrence_records()
+        elif url.endswith("/clinical-data/fetch"):
+            response.json.return_value = [
+                {"sampleId": sample, "clinicalAttributeId": attribute, "value": value}
+                for sample in json["ids"]
+                for attribute, value in [("CANCER_TYPE", "Glioma"), ("ONCOTREE_CODE", "PA")]
+            ]
         elif url.endswith("/structural-variant/fetch"):
             entrez_ids = json["entrezGeneIds"]
             gene_symbol = next(
@@ -228,6 +234,8 @@ def test_cohort_scan_end_to_end_offline(mock_session, tmp_path):
     for outcome in result.gene_outcomes:
         assert outcome.status == "ok", outcome.error
         assert outcome.run is not None
+        assert all(row["tumor_type"] == "Glioma" for row in outcome.run.rows)
+        assert all(row["oncotree_code"] == "PA" for row in outcome.run.rows)
         algorithm_names = {r.Algorithm for r in outcome.run.results}
         assert "composite_score" in algorithm_names
         assert "confidence_stats" in algorithm_names
@@ -294,7 +302,10 @@ def test_cohort_scan_end_to_end_offline(mock_session, tmp_path):
     assert {"BRAF", "RET"} <= set(full_report_genes)
     assert set(full_report_genes) <= scanned_symbols
     for gene_symbol in full_report_genes:
-        assert (paths["gene_reports"][gene_symbol]["run_directory"] / "results.json").exists()
+        payload = json.loads(paths["gene_reports"][gene_symbol]["json"].read_text())
+        assert payload["events"]
+        assert all(row["tumor_type"] == "Glioma" for row in payload["events"])
+        assert all(row["oncotree_code"] == "PA" for row in payload["events"])
 
 
 def test_cohort_scan_never_crashes_on_one_malformed_gene(mock_session, tmp_path):
@@ -336,6 +347,12 @@ def test_cohort_scan_gracefully_skips_gene_genome_nexus_cannot_resolve(mock_sess
         response = MagicMock(status_code=200)
         if url.endswith("/structuralvariant-genes/fetch"):
             response.json.return_value = _recurrence_records()
+        elif url.endswith("/clinical-data/fetch"):
+            response.json.return_value = [
+                {"sampleId": sample, "clinicalAttributeId": attribute, "value": value}
+                for sample in json["ids"]
+                for attribute, value in [("CANCER_TYPE", "Glioma"), ("ONCOTREE_CODE", "PA")]
+            ]
         elif url.endswith("/structural-variant/fetch"):
             entrez_ids = json["entrezGeneIds"]
             gene_symbol = next(

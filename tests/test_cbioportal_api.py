@@ -150,3 +150,34 @@ def test_fetch_structural_variants_real_network_call():
         [cbioportal_api.DEFAULT_SV_MOLECULAR_PROFILE_ID],
     )
     assert isinstance(result, list)
+
+
+@pytest.mark.parametrize("value", ["Glioma", None])
+def test_fetch_sample_tumor_types_joins_by_sample_and_handles_null(value):
+    session = MagicMock()
+    session.post.return_value.json.return_value = [
+        {"sampleId": "S1", "clinicalAttributeId": "CANCER_TYPE", "value": value},
+        {"sampleId": "S1", "clinicalAttributeId": "ONCOTREE_CODE", "value": "PA"},
+        {"sampleId": "OTHER", "clinicalAttributeId": "CANCER_TYPE", "value": "Lung Cancer"},
+    ]
+    result = cbioportal_api.fetch_sample_tumor_types("study", ["S1", "S1"], session=session)
+    assert result.to_dict("records") == [
+        {"Sample_id": "S1", "Tumor_type": value, "Oncotree_code": "PA"}
+    ]
+    assert session.post.call_args.kwargs["json"] == {
+        "ids": ["S1"],
+        "attributeIds": ["CANCER_TYPE", "ONCOTREE_CODE"],
+    }
+
+
+def test_fetch_sample_tumor_types_unavailable_and_empty():
+    import requests
+
+    session = MagicMock()
+    assert cbioportal_api.fetch_sample_tumor_types("study", [], session=session).empty
+    session.post.assert_not_called()
+    session.post.side_effect = requests.Timeout("offline")
+    with pytest.warns(UserWarning, match="Sample tumor annotations unavailable"):
+        result = cbioportal_api.fetch_sample_tumor_types("study", ["S1"], session=session)
+    assert result.empty
+    assert list(result.columns) == ["Sample_id", "Tumor_type", "Oncotree_code"]

@@ -17,7 +17,7 @@
 <line x1="418.4" y1="55.0" x2="418.4" y2="79.0" stroke="#d62728" stroke-width="1.6"/>
 <text x="64.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
-<text x="660" y="70.5" font-family="sans-serif" font-size="9.5">KIF5B (x78) – Protein kinase domain retained</text>
+<text x="660" y="70.5" font-family="sans-serif" font-size="9.5">KIF5B (x78) – Protein kinase domain retained – Non-Small Cell Lung Cancer, Cancer of Unknown Primary, Small Cell Lung Cancer</text>
 <rect x="60.0" y="82.0" width="358.4" height="22" fill="#cb4d55"/>
 <rect x="418.4" y="82.0" width="201.6" height="22" fill="#e2e2e2"/>
 <rect x="423.9" y="82.0" width="141.3" height="22" fill="#2878b5"/>
@@ -33,7 +33,7 @@
 <line x1="418.4" y1="81.0" x2="418.4" y2="105.0" stroke="#d62728" stroke-width="1.6"/>
 <text x="64.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
-<text x="660" y="96.5" font-family="sans-serif" font-size="9.5">CCDC6 (x45) – Protein kinase domain retained</text>
+<text x="660" y="96.5" font-family="sans-serif" font-size="9.5">CCDC6 (x45) – Protein kinase domain retained – multiple tumor types</text>
 <rect x="60.0" y="108.0" width="358.4" height="22" fill="#4dcba5"/>
 <rect x="418.4" y="108.0" width="201.6" height="22" fill="#e2e2e2"/>
 <rect x="423.9" y="108.0" width="141.3" height="22" fill="#2878b5"/>
@@ -49,7 +49,7 @@
 <line x1="418.4" y1="107.0" x2="418.4" y2="131.0" stroke="#d62728" stroke-width="1.6"/>
 <text x="64.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
-<text x="660" y="122.5" font-family="sans-serif" font-size="9.5">NCOA4 (x16) – Protein kinase domain retained</text>
+<text x="660" y="122.5" font-family="sans-serif" font-size="9.5">NCOA4 (x16) – Protein kinase domain retained – multiple tumor types</text>
 <rect x="60.0" y="134.0" width="358.4" height="22" fill="#4db0cb"/>
 <rect x="418.4" y="134.0" width="201.6" height="22" fill="#e2e2e2"/>
 <rect x="423.9" y="134.0" width="141.3" height="22" fill="#2878b5"/>
@@ -65,7 +65,7 @@
 <line x1="418.4" y1="133.0" x2="418.4" y2="157.0" stroke="#d62728" stroke-width="1.6"/>
 <text x="64.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
-<text x="660" y="148.5" font-family="sans-serif" font-size="9.5">SPECC1L (x4) – Protein kinase domain retained</text>
+<text x="660" y="148.5" font-family="sans-serif" font-size="9.5">SPECC1L (x4) – Protein kinase domain retained – Soft Tissue Sarcoma, Breast Cancer, Renal Cell Carcinoma</text>
 <rect x="417.9" y="160.0" width="202.1" height="22" fill="#4d79cb"/>
 <rect x="60.0" y="160.0" width="357.9" height="22" fill="#e2e2e2"/>
 <rect x="147.0" y="160.0" width="41.7" height="22" fill="#2878b5"/>
@@ -84,7 +84,7 @@
 <line x1="417.9" y1="159.0" x2="417.9" y2="183.0" stroke="#d62728" stroke-width="1.6"/>
 <text x="64.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
-<text x="660" y="174.5" font-family="sans-serif" font-size="9.5">ERCC6 (x3) – Protein kinase domain lost</text>
+<text x="660" y="174.5" font-family="sans-serif" font-size="9.5">ERCC6 (x3) – Protein kinase domain lost – Non-Small Cell Lung Cancer</text>
 <rect x="60.0" y="186.0" width="358.4" height="22" fill="#4da9cb"/>
 <rect x="418.4" y="186.0" width="201.6" height="22" fill="#e2e2e2"/>
 <rect x="423.9" y="186.0" width="141.3" height="22" fill="#2878b5"/>
@@ -100,7 +100,7 @@
 <line x1="418.4" y1="185.0" x2="418.4" y2="209.0" stroke="#d62728" stroke-width="1.6"/>
 <text x="64.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
-<text x="660" y="200.5" font-family="sans-serif" font-size="9.5">TIMM23B (x3) – Protein kinase domain retained</text>
+<text x="660" y="200.5" font-family="sans-serif" font-size="9.5">TIMM23B (x3) – Protein kinase domain retained – Non-Small Cell Lung Cancer, Thyroid Cancer</text>
 <rect x="60.0" y="212.0" width="333.3" height="22" fill="#4dcb64"/>
 <rect x="393.3" y="212.0" width="226.7" height="22" fill="#e2e2e2"/>
 <rect x="423.9" y="212.0" width="141.3" height="22" fill="#2878b5"/>
@@ -117,7 +117,7 @@
 <line x1="393.3" y1="211.0" x2="393.3" y2="235.0" stroke="#d62728" stroke-width="1.6"/>
 <text x="64.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
-<text x="660" y="226.5" font-family="sans-serif" font-size="9.5">RUFY1 (x2) – Protein kinase domain retained</text>
+<text x="660" y="226.5" font-family="sans-serif" font-size="9.5">RUFY1 (x2) – Protein kinase domain retained – Thyroid Cancer</text>
 <rect x="60.0" y="238.0" width="337.3" height="22" fill="#b64dcb"/>
 <rect x="397.3" y="238.0" width="222.7" height="22" fill="#e2e2e2"/>
 <rect x="423.9" y="238.0" width="141.3" height="22" fill="#2878b5"/>
@@ -134,7 +134,7 @@
 <line x1="397.3" y1="237.0" x2="397.3" y2="261.0" stroke="#d62728" stroke-width="1.6"/>
 <text x="64.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
-<text x="660" y="252.5" font-family="sans-serif" font-size="9.5">KIF5B (x2) – Protein kinase domain retained</text>
+<text x="660" y="252.5" font-family="sans-serif" font-size="9.5">KIF5B (x2) – Protein kinase domain retained – Non-Small Cell Lung Cancer</text>
 <rect x="417.9" y="264.0" width="202.1" height="22" fill="#cb4d55"/>
 <rect x="60.0" y="264.0" width="357.9" height="22" fill="#e2e2e2"/>
 <rect x="147.0" y="264.0" width="41.7" height="22" fill="#2878b5"/>
@@ -153,7 +153,7 @@
 <line x1="417.9" y1="263.0" x2="417.9" y2="287.0" stroke="#d62728" stroke-width="1.6"/>
 <text x="64.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
-<text x="660" y="278.5" font-family="sans-serif" font-size="9.5">CCDC6 (x2) – Protein kinase domain lost</text>
+<text x="660" y="278.5" font-family="sans-serif" font-size="9.5">CCDC6 (x2) – Protein kinase domain lost – Thyroid Cancer</text>
 <rect x="417.9" y="290.0" width="202.1" height="22" fill="#b64dcb"/>
 <rect x="60.0" y="290.0" width="357.9" height="22" fill="#e2e2e2"/>
 <rect x="147.0" y="290.0" width="41.7" height="22" fill="#2878b5"/>
@@ -172,7 +172,7 @@
 <line x1="417.9" y1="289.0" x2="417.9" y2="313.0" stroke="#d62728" stroke-width="1.6"/>
 <text x="64.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
-<text x="660" y="304.5" font-family="sans-serif" font-size="9.5">KIF5B (x2) – Protein kinase domain lost</text>
+<text x="660" y="304.5" font-family="sans-serif" font-size="9.5">KIF5B (x2) – Protein kinase domain lost – Non-Small Cell Lung Cancer</text>
 <rect x="60.0" y="316.0" width="358.4" height="22" fill="#4dc5cb"/>
 <rect x="418.4" y="316.0" width="201.6" height="22" fill="#e2e2e2"/>
 <rect x="423.9" y="316.0" width="141.3" height="22" fill="#2878b5"/>
@@ -188,7 +188,7 @@
 <line x1="418.4" y1="315.0" x2="418.4" y2="339.0" stroke="#d62728" stroke-width="1.6"/>
 <text x="64.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
-<text x="660" y="330.5" font-family="sans-serif" font-size="9.5">RUFY3 (x2) – Protein kinase domain retained</text>
+<text x="660" y="330.5" font-family="sans-serif" font-size="9.5">RUFY3 (x2) – Protein kinase domain retained – Thyroid Cancer</text>
 <rect x="594.4" y="342.0" width="25.6" height="22" fill="#cb4d77"/>
 <rect x="60.0" y="342.0" width="534.4" height="22" fill="#e2e2e2"/>
 <rect x="147.0" y="342.0" width="41.7" height="22" fill="#2878b5"/>
@@ -217,7 +217,7 @@
 <line x1="594.4" y1="341.0" x2="594.4" y2="365.0" stroke="#d62728" stroke-width="1.6"/>
 <text x="64.0" y="356.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="356.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
-<text x="660" y="356.5" font-family="sans-serif" font-size="9.5">FBXL7 (x2) – Protein kinase domain retained</text>
+<text x="660" y="356.5" font-family="sans-serif" font-size="9.5">FBXL7 (x2) – Protein kinase domain retained – Non-Small Cell Lung Cancer</text>
 <rect x="170.1" y="368.0" width="449.9" height="22" fill="#4f4dcb"/>
 <rect x="60.0" y="368.0" width="110.1" height="22" fill="#e2e2e2"/>
 <rect x="147.0" y="368.0" width="23.1" height="22" fill="#f2a93b"/>
@@ -229,7 +229,7 @@
 <line x1="170.1" y1="367.0" x2="170.1" y2="391.0" stroke="#d62728" stroke-width="1.6"/>
 <text x="64.0" y="382.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="382.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
-<text x="660" y="382.5" font-family="sans-serif" font-size="9.5">UXS1 – Protein kinase domain lost</text>
+<text x="660" y="382.5" font-family="sans-serif" font-size="9.5">UXS1 – Protein kinase domain lost – Hepatobiliary Cancer</text>
 <rect x="60.0" y="394.0" width="213.6" height="22" fill="#cb8e4d"/>
 <rect x="273.6" y="394.0" width="346.4" height="22" fill="#e2e2e2"/>
 <rect x="423.9" y="394.0" width="141.3" height="22" fill="#2878b5"/>
@@ -250,7 +250,7 @@
 <line x1="273.6" y1="393.0" x2="273.6" y2="417.0" stroke="#d62728" stroke-width="1.6"/>
 <text x="64.0" y="408.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="408.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
-<text x="660" y="408.5" font-family="sans-serif" font-size="9.5">KIAA1217 – Protein kinase domain retained</text>
+<text x="660" y="408.5" font-family="sans-serif" font-size="9.5">KIAA1217 – Protein kinase domain retained – Esophagogastric Cancer</text>
 <rect x="60.0" y="420.0" width="276.5" height="22" fill="#4d51cb"/>
 <rect x="336.5" y="420.0" width="283.5" height="22" fill="#e2e2e2"/>
 <rect x="423.9" y="420.0" width="141.3" height="22" fill="#2878b5"/>
@@ -269,7 +269,7 @@
 <line x1="336.5" y1="419.0" x2="336.5" y2="443.0" stroke="#d62728" stroke-width="1.6"/>
 <text x="64.0" y="434.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="434.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
-<text x="660" y="434.5" font-family="sans-serif" font-size="9.5">KCNMA1 – Protein kinase domain retained</text>
+<text x="660" y="434.5" font-family="sans-serif" font-size="9.5">KCNMA1 – Protein kinase domain retained – Esophagogastric Cancer</text>
 <rect x="336.5" y="446.0" width="283.5" height="22" fill="#b64dcb"/>
 <rect x="60.0" y="446.0" width="276.5" height="22" fill="#e2e2e2"/>
 <rect x="147.0" y="446.0" width="41.7" height="22" fill="#2878b5"/>
@@ -285,7 +285,7 @@
 <line x1="336.5" y1="445.0" x2="336.5" y2="469.0" stroke="#d62728" stroke-width="1.6"/>
 <text x="64.0" y="460.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="460.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
-<text x="660" y="460.5" font-family="sans-serif" font-size="9.5">KIF5B – Protein kinase domain lost</text>
+<text x="660" y="460.5" font-family="sans-serif" font-size="9.5">KIF5B – Protein kinase domain lost – Non-Small Cell Lung Cancer</text>
 <rect x="60.0" y="472.0" width="276.5" height="22" fill="#b64dcb"/>
 <rect x="336.5" y="472.0" width="283.5" height="22" fill="#e2e2e2"/>
 <rect x="423.9" y="472.0" width="141.3" height="22" fill="#2878b5"/>
@@ -304,7 +304,7 @@
 <line x1="336.5" y1="471.0" x2="336.5" y2="495.0" stroke="#d62728" stroke-width="1.6"/>
 <text x="64.0" y="486.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="486.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
-<text x="660" y="486.5" font-family="sans-serif" font-size="9.5">KIF5B – Protein kinase domain retained</text>
+<text x="660" y="486.5" font-family="sans-serif" font-size="9.5">KIF5B – Protein kinase domain retained – Non-Small Cell Lung Cancer</text>
 <rect x="60.0" y="498.0" width="279.5" height="22" fill="#4dcbb6"/>
 <rect x="339.5" y="498.0" width="280.5" height="22" fill="#e2e2e2"/>
 <rect x="423.9" y="498.0" width="141.3" height="22" fill="#2878b5"/>
@@ -323,7 +323,7 @@
 <line x1="339.5" y1="497.0" x2="339.5" y2="521.0" stroke="#d62728" stroke-width="1.6"/>
 <text x="64.0" y="512.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="512.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
-<text x="660" y="512.5" font-family="sans-serif" font-size="9.5">DOCK1 – Protein kinase domain retained</text>
+<text x="660" y="512.5" font-family="sans-serif" font-size="9.5">DOCK1 – Protein kinase domain retained – Non-Small Cell Lung Cancer</text>
 <rect x="60.0" y="524.0" width="295.1" height="22" fill="#cb4d55"/>
 <rect x="355.1" y="524.0" width="264.9" height="22" fill="#e2e2e2"/>
 <rect x="423.9" y="524.0" width="141.3" height="22" fill="#2878b5"/>
@@ -341,7 +341,7 @@
 <line x1="355.1" y1="523.0" x2="355.1" y2="547.0" stroke="#d62728" stroke-width="1.6"/>
 <text x="64.0" y="538.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="538.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
-<text x="660" y="538.5" font-family="sans-serif" font-size="9.5">CCDC6 – Protein kinase domain retained</text>
+<text x="660" y="538.5" font-family="sans-serif" font-size="9.5">CCDC6 – Protein kinase domain retained – Esophagogastric Cancer</text>
 <rect x="355.1" y="550.0" width="264.9" height="22" fill="#cb4da5"/>
 <rect x="60.0" y="550.0" width="295.1" height="22" fill="#e2e2e2"/>
 <rect x="147.0" y="550.0" width="41.7" height="22" fill="#2878b5"/>
@@ -358,7 +358,7 @@
 <line x1="355.1" y1="549.0" x2="355.1" y2="573.0" stroke="#d62728" stroke-width="1.6"/>
 <text x="64.0" y="564.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="564.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
-<text x="660" y="564.5" font-family="sans-serif" font-size="9.5">LIN52 – Protein kinase domain lost</text>
+<text x="660" y="564.5" font-family="sans-serif" font-size="9.5">LIN52 – Protein kinase domain lost – Prostate Cancer</text>
 <rect x="60.0" y="576.0" width="312.7" height="22" fill="#b64dcb"/>
 <rect x="372.7" y="576.0" width="247.3" height="22" fill="#e2e2e2"/>
 <rect x="423.9" y="576.0" width="141.3" height="22" fill="#2878b5"/>
@@ -376,7 +376,7 @@
 <line x1="372.7" y1="575.0" x2="372.7" y2="599.0" stroke="#d62728" stroke-width="1.6"/>
 <text x="64.0" y="590.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="590.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
-<text x="660" y="590.5" font-family="sans-serif" font-size="9.5">KIF5B – Protein kinase domain retained</text>
+<text x="660" y="590.5" font-family="sans-serif" font-size="9.5">KIF5B – Protein kinase domain retained – Non-Small Cell Lung Cancer</text>
 <rect x="60.0" y="602.0" width="315.2" height="22" fill="#cb4d55"/>
 <rect x="375.2" y="602.0" width="244.8" height="22" fill="#e2e2e2"/>
 <rect x="423.9" y="602.0" width="141.3" height="22" fill="#2878b5"/>
@@ -393,7 +393,7 @@
 <line x1="375.2" y1="601.0" x2="375.2" y2="625.0" stroke="#d62728" stroke-width="1.6"/>
 <text x="64.0" y="616.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="616.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
-<text x="660" y="616.5" font-family="sans-serif" font-size="9.5">CCDC6 – Protein kinase domain retained</text>
+<text x="660" y="616.5" font-family="sans-serif" font-size="9.5">CCDC6 – Protein kinase domain retained – Colorectal Cancer</text>
 <rect x="375.2" y="628.0" width="244.8" height="22" fill="#cb4d55"/>
 <rect x="60.0" y="628.0" width="315.2" height="22" fill="#e2e2e2"/>
 <rect x="147.0" y="628.0" width="41.7" height="22" fill="#2878b5"/>
@@ -411,7 +411,7 @@
 <line x1="375.2" y1="627.0" x2="375.2" y2="651.0" stroke="#d62728" stroke-width="1.6"/>
 <text x="64.0" y="642.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="642.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
-<text x="660" y="642.5" font-family="sans-serif" font-size="9.5">CCDC6 – Protein kinase domain lost</text>
+<text x="660" y="642.5" font-family="sans-serif" font-size="9.5">CCDC6 – Protein kinase domain lost – Thyroid Cancer</text>
 <rect x="375.2" y="654.0" width="244.8" height="22" fill="#cb4d55"/>
 <rect x="60.0" y="654.0" width="315.2" height="22" fill="#e2e2e2"/>
 <rect x="147.0" y="654.0" width="41.7" height="22" fill="#2878b5"/>
@@ -429,7 +429,7 @@
 <line x1="375.2" y1="653.0" x2="375.2" y2="677.0" stroke="#d62728" stroke-width="1.6"/>
 <text x="64.0" y="668.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="668.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
-<text x="660" y="668.5" font-family="sans-serif" font-size="9.5">PDCD10 – Protein kinase domain lost</text>
+<text x="660" y="668.5" font-family="sans-serif" font-size="9.5">PDCD10 – Protein kinase domain lost – Thyroid Cancer</text>
 <rect x="60.0" y="680.0" width="315.2" height="22" fill="#83cb4d"/>
 <rect x="375.2" y="680.0" width="244.8" height="22" fill="#e2e2e2"/>
 <rect x="423.9" y="680.0" width="141.3" height="22" fill="#2878b5"/>
@@ -446,7 +446,7 @@
 <line x1="375.2" y1="679.0" x2="375.2" y2="703.0" stroke="#d62728" stroke-width="1.6"/>
 <text x="64.0" y="694.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="694.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
-<text x="660" y="694.5" font-family="sans-serif" font-size="9.5">TFG – Protein kinase domain retained</text>
+<text x="660" y="694.5" font-family="sans-serif" font-size="9.5">TFG – Protein kinase domain retained – Thyroid Cancer</text>
 <rect x="60.0" y="706.0" width="321.2" height="22" fill="#b0cb4d"/>
 <rect x="381.2" y="706.0" width="238.8" height="22" fill="#e2e2e2"/>
 <rect x="423.9" y="706.0" width="141.3" height="22" fill="#2878b5"/>
@@ -463,7 +463,7 @@
 <line x1="381.2" y1="705.0" x2="381.2" y2="729.0" stroke="#d62728" stroke-width="1.6"/>
 <text x="64.0" y="720.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="720.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
-<text x="660" y="720.5" font-family="sans-serif" font-size="9.5">ERC1 – Protein kinase domain retained</text>
+<text x="660" y="720.5" font-family="sans-serif" font-size="9.5">ERC1 – Protein kinase domain retained – Non-Small Cell Lung Cancer</text>
 <rect x="60.0" y="732.0" width="321.7" height="22" fill="#cb4d55"/>
 <rect x="381.7" y="732.0" width="238.3" height="22" fill="#e2e2e2"/>
 <rect x="423.9" y="732.0" width="141.3" height="22" fill="#2878b5"/>
@@ -480,7 +480,7 @@
 <line x1="381.7" y1="731.0" x2="381.7" y2="755.0" stroke="#d62728" stroke-width="1.6"/>
 <text x="64.0" y="746.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="746.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
-<text x="660" y="746.5" font-family="sans-serif" font-size="9.5">CCDC6 – Protein kinase domain retained</text>
+<text x="660" y="746.5" font-family="sans-serif" font-size="9.5">CCDC6 – Protein kinase domain retained – Thyroid Cancer</text>
 <rect x="60.0" y="758.0" width="330.3" height="22" fill="#4dcb6a"/>
 <rect x="390.3" y="758.0" width="229.7" height="22" fill="#e2e2e2"/>
 <rect x="423.9" y="758.0" width="141.3" height="22" fill="#2878b5"/>
@@ -497,7 +497,7 @@
 <line x1="390.3" y1="757.0" x2="390.3" y2="781.0" stroke="#d62728" stroke-width="1.6"/>
 <text x="64.0" y="772.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="772.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
-<text x="660" y="772.5" font-family="sans-serif" font-size="9.5">RBPMS – Protein kinase domain retained</text>
+<text x="660" y="772.5" font-family="sans-serif" font-size="9.5">RBPMS – Protein kinase domain retained – Non-Small Cell Lung Cancer</text>
 <line x1="60.0" y1="788.0" x2="620.0" y2="788.0" stroke="#444444" stroke-width="1"/>
 <text x="60.0" y="783.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
 <text x="620.0" y="783.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>

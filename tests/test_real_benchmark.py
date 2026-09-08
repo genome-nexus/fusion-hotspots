@@ -5,6 +5,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import MagicMock
 
+import pandas as pd
 import pytest
 import requests
 from click.testing import CliRunner
@@ -590,9 +591,13 @@ def test_tcga_study_config_selects_profile_and_grch38_genome_nexus(monkeypatch):
         "fetch_structural_variants",
         MagicMock(return_value=fetched_calls),
     )
+    clinical = pd.DataFrame()
+    monkeypatch.setattr(
+        cbioportal_api, "fetch_sample_tumor_types", MagicMock(return_value=clinical)
+    )
     client = MagicMock(spec=GenomeNexusClient)
     client_factory = MagicMock(return_value=client)
-    analyze_mock = MagicMock(return_value=object())
+    analyze_mock = MagicMock(return_value=SimpleNamespace(endpoints=[]))
     monkeypatch.setattr(benchmark_module, "GenomeNexusClient", client_factory)
     monkeypatch.setattr(benchmark_module, "analyze_structural_variant_calls", analyze_mock)
 
@@ -607,6 +612,7 @@ def test_tcga_study_config_selects_profile_and_grch38_genome_nexus(monkeypatch):
         "BRAF",
         "thca_tcga_pan_can_atlas_2018",
         molecular_profile_id=profile_id,
+        clinical_df=clinical,
         genome_nexus_client=client,
         n_permutations=7,
         algorithm_names=None,
@@ -620,3 +626,52 @@ def test_real_benchmark_click_command_explains_unknown_gene_without_traceback():
     assert "Error: Unknown gene 'SOMEGENE'" in result.output
     assert "cfh list-genes" in result.output
     assert "Traceback" not in result.output
+
+
+@pytest.mark.parametrize("clinical_value", ["Glioma", None, float("nan")])
+def test_serialized_clinical_annotations_preserve_statistics(
+    tmp_path, genome_nexus_canonical_transcript_fixture_path, clinical_value
+):
+    client = _genome_nexus_client(genome_nexus_canonical_transcript_fixture_path)
+    calls = [_call("SAMPLE-1"), _call("MISSING")]
+    baseline = analyze_structural_variant_calls(
+        calls, "BRAF", "study", genome_nexus_client=client, n_permutations=5
+    )
+    enriched = analyze_structural_variant_calls(
+        calls,
+        "BRAF",
+        "study",
+        genome_nexus_client=client,
+        n_permutations=5,
+        clinical_df=pd.DataFrame(
+            [
+                {
+                    "Sample_id": "SAMPLE-1",
+                    "Tumor_type": clinical_value,
+                    "Oncotree_code": "PA",
+                    "Patient_id": "MUST-NOT-CHANGE-GROUPING",
+                }
+            ]
+        ),
+    )
+    before = json.loads(
+        write_outputs(baseline, tmp_path, run_id="before", pdf=False)["json"].read_text()
+    )
+    after = json.loads(
+        write_outputs(enriched, tmp_path, run_id="after", pdf=False)["json"].read_text()
+    )
+    assert after["events"][0]["tumor_type"] == ("Glioma" if clinical_value == "Glioma" else "")
+    assert after["events"][0]["oncotree_code"] == "PA"
+    assert after["events"][1]["tumor_type"] is None
+    assert after["events"][1]["oncotree_code"] is None
+    assert enriched.events[0].Tumor_type == after["events"][0]["tumor_type"]
+    for payload in (before, after):
+        payload.pop("retrieved_at")
+        for result in payload["algorithm_results"]:
+            result.pop("Created_at")
+            result.pop("Input_fingerprint")  # includes the newly populated annotations
+            result["Summary"].pop("Runtime_seconds", None)
+        for row in payload["events"]:
+            row.pop("tumor_type")
+            row.pop("oncotree_code")
+    assert json.dumps(before).encode() == json.dumps(after).encode()

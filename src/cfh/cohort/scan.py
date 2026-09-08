@@ -256,6 +256,12 @@ def run_cohort_scan(
                 config,
                 study_id,
                 molecular_profile_id=profile_id,
+                clinical_df=cbioportal_api.fetch_sample_tumor_types(
+                    study_id,
+                    [call["sampleId"] for call in calls if call.get("sampleId")],
+                    base_url=cbioportal_base_url,
+                    session=session,
+                ),
                 genome_nexus_client=genome_nexus_client,
                 n_permutations=n_permutations,
                 algorithm_names=algorithm_names,
@@ -266,6 +272,9 @@ def run_cohort_scan(
             )
             p_value_rows = collect_p_values_from_algorithm_results(
                 symbol, study_id, run.results, source=f"cohort_scan:{symbol}"
+            )
+            run.endpoints.append(
+                f"{cbioportal_base_url.rstrip('/')}/studies/{study_id}/clinical-data/fetch"
             )
             outcomes.append(
                 GeneScanOutcome(
