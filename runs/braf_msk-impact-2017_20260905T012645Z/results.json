@@ -2,7 +2,7 @@
   "gene_symbol": "BRAF",
   "study_id": "msk_impact_2017",
   "molecular_profile_id": "msk_impact_2017_structural_variants",
-  "retrieved_at": "2026-09-04T00:55:39.421051+00:00",
+  "retrieved_at": "2026-09-05T01:26:45.319241+00:00",
   "summary": {
     "raw_structural_variant_count": 48,
     "total_fusions": 41,
@@ -130,7 +130,15 @@
     ],
     "domain_accession": "PF07714",
     "domain_start_aa": 458,
-    "domain_end_aa": 712
+    "domain_end_aa": 712,
+    "key_domains": [
+      {
+        "name": "Protein kinase domain",
+        "accession": "PF07714",
+        "start_aa": 458,
+        "end_aa": 712
+      }
+    ]
   },
   "warnings": [
     "Skipped EVT-P-0010083-T01-IM5-35 (PARP12-BRAF): ValueError: BRAF fusion has no site breakpoint within target locus 140434279-140624564: Site1=-1, Site2=-1"
@@ -1000,12 +1008,12 @@
           "domain_retention": true,
           "domain_disruption": true,
           "cutpoint_proximity": true,
-          "confidence_certainty": false
+          "confidence_certainty": true
         },
         "domain_retention_p_value_used": 0.000999000999000999,
         "domain_disruption_p_value_used": 0.024997500249975,
         "inferred_cutpoint_aa": 439,
-        "Runtime_seconds": 0.0005649999948218465
+        "Runtime_seconds": 0.0005964169977232814
       },
       "Tables": {
         "composite_evidence_ranking": [
@@ -1016,14 +1024,15 @@
             "Domain_retention_score": 0.30004340774793187,
             "Domain_disruption_score": 0.1602103418604825,
             "Cutpoint_proximity_score": 0.759046052631579,
-            "Confidence_certainty_score": null,
+            "Confidence_certainty_score": 0.6160624160231085,
             "Components_applicable": [
+              "confidence_certainty",
               "cutpoint_proximity",
               "domain_disruption",
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.3104960150774111,
+            "Composite_score": 0.34105265517198086,
             "Rank": 1
           },
           {
@@ -1033,14 +1042,15 @@
             "Domain_retention_score": 0.30004340774793187,
             "Domain_disruption_score": 0.1602103418604825,
             "Cutpoint_proximity_score": 1.0,
-            "Confidence_certainty_score": null,
+            "Confidence_certainty_score": 0.6160624160231085,
             "Components_applicable": [
+              "confidence_certainty",
               "cutpoint_proximity",
               "domain_disruption",
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.29374443719979015,
+            "Composite_score": 0.32597623508212203,
             "Rank": 2
           },
           {
@@ -1050,14 +1060,15 @@
             "Domain_retention_score": 0.30004340774793187,
             "Domain_disruption_score": 0.1602103418604825,
             "Cutpoint_proximity_score": 0.993421052631579,
-            "Confidence_certainty_score": null,
+            "Confidence_certainty_score": 0.6160624160231085,
             "Components_applicable": [
+              "confidence_certainty",
               "cutpoint_proximity",
               "domain_disruption",
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.29264794597172006,
+            "Composite_score": 0.3249893929768589,
             "Rank": 3
           },
           {
@@ -1067,14 +1078,15 @@
             "Domain_retention_score": 0.30004340774793187,
             "Domain_disruption_score": 0.1602103418604825,
             "Cutpoint_proximity_score": 0.993421052631579,
-            "Confidence_certainty_score": null,
+            "Confidence_certainty_score": 0.6160624160231085,
             "Components_applicable": [
+              "confidence_certainty",
               "cutpoint_proximity",
               "domain_disruption",
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.29264794597172006,
+            "Composite_score": 0.3249893929768589,
             "Rank": 4
           },
           {
@@ -1084,14 +1096,15 @@
             "Domain_retention_score": 0.30004340774793187,
             "Domain_disruption_score": 0.1602103418604825,
             "Cutpoint_proximity_score": 0.7105263157894737,
-            "Confidence_certainty_score": null,
+            "Confidence_certainty_score": 0.6160624160231085,
             "Components_applicable": [
+              "confidence_certainty",
               "cutpoint_proximity",
               "domain_disruption",
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.2698890670671415,
+            "Composite_score": 0.3045064019627382,
             "Rank": 5
           },
           {
@@ -1101,14 +1114,15 @@
             "Domain_retention_score": 0.30004340774793187,
             "Domain_disruption_score": 0.1602103418604825,
             "Cutpoint_proximity_score": 0.805921052631579,
-            "Confidence_certainty_score": null,
+            "Confidence_certainty_score": 0.6160624160231085,
             "Components_applicable": [
+              "confidence_certainty",
               "cutpoint_proximity",
               "domain_disruption",
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.269528027272533,
+            "Composite_score": 0.30418146614759056,
             "Rank": 6
           },
           {
@@ -1118,14 +1132,15 @@
             "Domain_retention_score": 0.30004340774793187,
             "Domain_disruption_score": 0.1602103418604825,
             "Cutpoint_proximity_score": 0.6973684210526316,
-            "Confidence_certainty_score": null,
+            "Confidence_certainty_score": 0.6160624160231085,
             "Components_applicable": [
+              "confidence_certainty",
               "cutpoint_proximity",
               "domain_disruption",
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.24330584070856212,
+            "Composite_score": 0.28058149824001677,
             "Rank": 7
           },
           {
@@ -1135,14 +1150,15 @@
             "Domain_retention_score": 0.30004340774793187,
             "Domain_disruption_score": 0.1602103418604825,
             "Cutpoint_proximity_score": 0.6973684210526316,
-            "Confidence_certainty_score": null,
+            "Confidence_certainty_score": 0.6160624160231085,
             "Components_applicable": [
+              "confidence_certainty",
               "cutpoint_proximity",
               "domain_disruption",
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.24330584070856212,
+            "Composite_score": 0.28058149824001677,
             "Rank": 8
           },
           {
@@ -1152,14 +1168,15 @@
             "Domain_retention_score": 0.30004340774793187,
             "Domain_disruption_score": 0.1602103418604825,
             "Cutpoint_proximity_score": 0.6973684210526316,
-            "Confidence_certainty_score": null,
+            "Confidence_certainty_score": 0.6160624160231085,
             "Components_applicable": [
+              "confidence_certainty",
               "cutpoint_proximity",
               "domain_disruption",
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.24330584070856212,
+            "Composite_score": 0.28058149824001677,
             "Rank": 9
           },
           {
@@ -1169,14 +1186,15 @@
             "Domain_retention_score": 0.30004340774793187,
             "Domain_disruption_score": 0.1602103418604825,
             "Cutpoint_proximity_score": 0.6973684210526316,
-            "Confidence_certainty_score": null,
+            "Confidence_certainty_score": 0.6160624160231085,
             "Components_applicable": [
+              "confidence_certainty",
               "cutpoint_proximity",
               "domain_disruption",
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.24330584070856212,
+            "Composite_score": 0.28058149824001677,
             "Rank": 10
           },
           {
@@ -1186,14 +1204,15 @@
             "Domain_retention_score": 0.30004340774793187,
             "Domain_disruption_score": 0.1602103418604825,
             "Cutpoint_proximity_score": 0.6973684210526316,
-            "Confidence_certainty_score": null,
+            "Confidence_certainty_score": 0.6160624160231085,
             "Components_applicable": [
+              "confidence_certainty",
               "cutpoint_proximity",
               "domain_disruption",
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.24330584070856212,
+            "Composite_score": 0.28058149824001677,
             "Rank": 11
           },
           {
@@ -1203,14 +1222,15 @@
             "Domain_retention_score": 0.30004340774793187,
             "Domain_disruption_score": 0.1602103418604825,
             "Cutpoint_proximity_score": 0.6151315789473684,
-            "Confidence_certainty_score": null,
+            "Confidence_certainty_score": 0.6160624160231085,
             "Components_applicable": [
+              "confidence_certainty",
               "cutpoint_proximity",
               "domain_disruption",
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.2377297816584979,
+            "Composite_score": 0.275563045094959,
             "Rank": 12
           },
           {
@@ -1220,14 +1240,15 @@
             "Domain_retention_score": 0.30004340774793187,
             "Domain_disruption_score": 0.1602103418604825,
             "Cutpoint_proximity_score": 0.618421052631579,
-            "Confidence_certainty_score": null,
+            "Confidence_certainty_score": 0.6160624160231085,
             "Components_applicable": [
+              "confidence_certainty",
               "cutpoint_proximity",
               "domain_disruption",
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.23014794597172,
+            "Composite_score": 0.2687393929768589,
             "Rank": 13
           },
           {
@@ -1237,14 +1258,15 @@
             "Domain_retention_score": 0.30004340774793187,
             "Domain_disruption_score": 0.1602103418604825,
             "Cutpoint_proximity_score": 0.618421052631579,
-            "Confidence_certainty_score": null,
+            "Confidence_certainty_score": 0.6160624160231085,
             "Components_applicable": [
+              "confidence_certainty",
               "cutpoint_proximity",
               "domain_disruption",
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.23014794597172,
+            "Composite_score": 0.2687393929768589,
             "Rank": 14
           },
           {
@@ -1254,14 +1276,15 @@
             "Domain_retention_score": 0.30004340774793187,
             "Domain_disruption_score": 0.1602103418604825,
             "Cutpoint_proximity_score": 0.618421052631579,
-            "Confidence_certainty_score": null,
+            "Confidence_certainty_score": 0.6160624160231085,
             "Components_applicable": [
+              "confidence_certainty",
               "cutpoint_proximity",
               "domain_disruption",
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.23014794597172,
+            "Composite_score": 0.2687393929768589,
             "Rank": 15
           },
           {
@@ -1271,14 +1294,15 @@
             "Domain_retention_score": 0.30004340774793187,
             "Domain_disruption_score": 0.1602103418604825,
             "Cutpoint_proximity_score": 0.611842105263158,
-            "Confidence_certainty_score": null,
+            "Confidence_certainty_score": 0.6160624160231085,
             "Components_applicable": [
+              "confidence_certainty",
               "cutpoint_proximity",
               "domain_disruption",
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.22905145474364985,
+            "Composite_score": 0.2677525508715957,
             "Rank": 16
           },
           {
@@ -1288,14 +1312,15 @@
             "Domain_retention_score": 0.30004340774793187,
             "Domain_disruption_score": 0.1602103418604825,
             "Cutpoint_proximity_score": 0.611842105263158,
-            "Confidence_certainty_score": null,
+            "Confidence_certainty_score": 0.6160624160231085,
             "Components_applicable": [
+              "confidence_certainty",
               "cutpoint_proximity",
               "domain_disruption",
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.22905145474364985,
+            "Composite_score": 0.2677525508715957,
             "Rank": 17
           },
           {
@@ -1305,14 +1330,15 @@
             "Domain_retention_score": 0.30004340774793187,
             "Domain_disruption_score": 0.1602103418604825,
             "Cutpoint_proximity_score": 0.611842105263158,
-            "Confidence_certainty_score": null,
+            "Confidence_certainty_score": 0.6160624160231085,
             "Components_applicable": [
+              "confidence_certainty",
               "cutpoint_proximity",
               "domain_disruption",
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.22905145474364985,
+            "Composite_score": 0.2677525508715957,
             "Rank": 18
           },
           {
@@ -1322,14 +1348,15 @@
             "Domain_retention_score": 0.30004340774793187,
             "Domain_disruption_score": 0.1602103418604825,
             "Cutpoint_proximity_score": 0.611842105263158,
-            "Confidence_certainty_score": null,
+            "Confidence_certainty_score": 0.6160624160231085,
             "Components_applicable": [
+              "confidence_certainty",
               "cutpoint_proximity",
               "domain_disruption",
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.22905145474364985,
+            "Composite_score": 0.2677525508715957,
             "Rank": 19
           },
           {
@@ -1339,14 +1366,15 @@
             "Domain_retention_score": 0.30004340774793187,
             "Domain_disruption_score": 0.1602103418604825,
             "Cutpoint_proximity_score": 0.26315789473684215,
-            "Confidence_certainty_score": null,
+            "Confidence_certainty_score": 0.6160624160231085,
             "Components_applicable": [
+              "confidence_certainty",
               "cutpoint_proximity",
               "domain_disruption",
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.18719758225755653,
+            "Composite_score": 0.23008406563411174,
             "Rank": 20
           },
           {
@@ -1356,14 +1384,15 @@
             "Domain_retention_score": 0.30004340774793187,
             "Domain_disruption_score": 0.1602103418604825,
             "Cutpoint_proximity_score": 0.19956140350877194,
-            "Confidence_certainty_score": null,
+            "Confidence_certainty_score": 0.6160624160231085,
             "Components_applicable": [
+              "confidence_certainty",
               "cutpoint_proximity",
               "domain_disruption",
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.1765981670528782,
+            "Composite_score": 0.22054459194990123,
             "Rank": 21
           },
           {
@@ -1373,32 +1402,16 @@
             "Domain_retention_score": 0.30004340774793187,
             "Domain_disruption_score": 0.1602103418604825,
             "Cutpoint_proximity_score": 0.26315789473684215,
-            "Confidence_certainty_score": null,
+            "Confidence_certainty_score": 0.6160624160231085,
             "Components_applicable": [
+              "confidence_certainty",
               "cutpoint_proximity",
               "domain_disruption",
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.17093741965593054,
+            "Composite_score": 0.21544991929264834,
             "Rank": 22
-          },
-          {
-            "Partner_gene": "VIPR2",
-            "Event_count": 1,
-            "Recurrence_score": 0.024390243902439025,
-            "Domain_retention_score": 0.30004340774793187,
-            "Domain_disruption_score": 0.1602103418604825,
-            "Cutpoint_proximity_score": 0.17105263157894735,
-            "Confidence_certainty_score": null,
-            "Components_applicable": [
-              "cutpoint_proximity",
-              "domain_disruption",
-              "domain_retention",
-              "recurrence"
-            ],
-            "Composite_score": 0.15558654246294806,
-            "Rank": 23
           },
           {
             "Partner_gene": "PARP12",
@@ -1407,13 +1420,32 @@
             "Domain_retention_score": 0.30004340774793187,
             "Domain_disruption_score": 0.1602103418604825,
             "Cutpoint_proximity_score": null,
-            "Confidence_certainty_score": null,
+            "Confidence_certainty_score": 0.6160624160231085,
             "Components_applicable": [
+              "confidence_certainty",
               "domain_disruption",
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.1524933246397482,
+            "Composite_score": 0.2070308648024965,
+            "Rank": 23
+          },
+          {
+            "Partner_gene": "VIPR2",
+            "Event_count": 1,
+            "Recurrence_score": 0.024390243902439025,
+            "Domain_retention_score": 0.30004340774793187,
+            "Domain_disruption_score": 0.1602103418604825,
+            "Cutpoint_proximity_score": 0.17105263157894735,
+            "Confidence_certainty_score": 0.6160624160231085,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.20163412981896411,
             "Rank": 24
           },
           {
@@ -1423,37 +1455,92 @@
             "Domain_retention_score": 0.30004340774793187,
             "Domain_disruption_score": 0.1602103418604825,
             "Cutpoint_proximity_score": 0.0,
-            "Confidence_certainty_score": null,
+            "Confidence_certainty_score": 0.6160624160231085,
             "Components_applicable": [
+              "confidence_certainty",
               "cutpoint_proximity",
               "domain_disruption",
               "domain_retention",
               "recurrence"
             ],
-            "Composite_score": 0.12707777053312352,
+            "Composite_score": 0.175976235082122,
             "Rank": 25
           }
         ]
       },
-      "Warnings": [
-        "confidence_certainty sub-score excluded: no applicable confidence_stats MLE/CI result was supplied."
-      ],
-      "Created_at": "2026-09-04T00:55:39.420655Z",
-      "Input_fingerprint": "0c8bf8a64a5f7dd898dd916f2abe23cb4cb04622243f828a5f93f7ef9b8b03eb"
+      "Warnings": [],
+      "Created_at": "2026-09-05T01:26:45.318433Z",
+      "Input_fingerprint": "0e317a3b34df45dca56a24384bf9f6c5bfdc33dfbece1e7c24eb4dc8f05a98c9"
     },
     {
       "Algorithm": "confidence_stats",
-      "Algorithm_version": null,
-      "Parameters": {},
-      "Summary": {
-        "Runtime_seconds": 9.459006832912564e-06
+      "Algorithm_version": "1.0.0",
+      "Parameters": {
+        "group_field": "Domain_retention_flags",
+        "group_key": "kinase",
+        "group_value_map": {
+          "retained": "retained",
+          "lost": "not_retained",
+          "disrupted": "not_retained",
+          "unknown": null
+        },
+        "group_values": [
+          "retained",
+          "not_retained"
+        ],
+        "outcome_field": "Frame_status",
+        "outcome_success_value": "in-frame",
+        "outcome_valid_values": [
+          "in-frame",
+          "out-of-frame"
+        ],
+        "numeric_field": "Tumor_variant_count"
       },
-      "Tables": {},
-      "Warnings": [
-        "Algorithm failed: ValueError: params['group_field'] is required"
-      ],
-      "Created_at": "2026-09-04T00:55:35.670785Z",
-      "Input_fingerprint": "0c8bf8a64a5f7dd898dd916f2abe23cb4cb04622243f828a5f93f7ef9b8b03eb"
+      "Summary": {
+        "group_field": "Domain_retention_flags",
+        "group_a_label": "retained",
+        "group_b_label": "not_retained",
+        "n_group_a": 33,
+        "n_group_b": 7,
+        "mle": {
+          "outcome_field": "Frame_status",
+          "groups": {
+            "retained": {
+              "n": 31,
+              "successes": 31,
+              "point_estimate": 1.0,
+              "ci_low": 0.889744604539564,
+              "ci_high": 1.0,
+              "method": "wilson"
+            },
+            "not_retained": {
+              "n": 2,
+              "successes": 2,
+              "point_estimate": 1.0,
+              "ci_low": 0.34238022750665303,
+              "ci_high": 1.0,
+              "method": "wilson"
+            }
+          }
+        },
+        "ttest": {
+          "numeric_field": "Tumor_variant_count",
+          "group_a_label": "retained",
+          "group_b_label": "not_retained",
+          "n_a": 33,
+          "n_b": 7,
+          "t_statistic": 1.148713286113098,
+          "p_value": 0.2737876381840702,
+          "df": 11.611585674370573,
+          "mean_a": 48.303030303030305,
+          "mean_b": 30.857142857142858
+        },
+        "Runtime_seconds": 0.005338499991921708
+      },
+      "Tables": null,
+      "Warnings": [],
+      "Created_at": "2026-09-05T01:26:37.947024Z",
+      "Input_fingerprint": "0e317a3b34df45dca56a24384bf9f6c5bfdc33dfbece1e7c24eb4dc8f05a98c9"
     },
     {
       "Algorithm": "cutpoint_detection",
@@ -1474,9 +1561,9 @@
         "corrected_p_value": 0.059940059940059943,
         "known_domain_boundary_comparison": {
           "nearest_known_domain_boundary_aa": 458,
-          "distance_aa": 19
+          "distance_aa": -19
         },
-        "Runtime_seconds": 3.137193542002933
+        "Runtime_seconds": 5.8485575419908855
       },
       "Tables": {
         "cutpoint_scan": [
@@ -1563,8 +1650,8 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-04T00:55:38.810624Z",
-      "Input_fingerprint": "0c8bf8a64a5f7dd898dd916f2abe23cb4cb04622243f828a5f93f7ef9b8b03eb"
+      "Created_at": "2026-09-05T01:26:43.801633Z",
+      "Input_fingerprint": "0e317a3b34df45dca56a24384bf9f6c5bfdc33dfbece1e7c24eb4dc8f05a98c9"
     },
     {
       "Algorithm": "domain_disruption",
@@ -1579,7 +1666,7 @@
         "fisher_p_value": 0.004996899733741839,
         "permutation_empirical_p_value": 0.024997500249975,
         "observed_in_frame_disruption_rate": 0.9393939393939394,
-        "Runtime_seconds": 3.6577066669997294
+        "Runtime_seconds": 7.345894666999811
       },
       "Tables": {
         "frame_domain_contingency_table": [
@@ -11616,8 +11703,8 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-04T00:55:39.417229Z",
-      "Input_fingerprint": "0c8bf8a64a5f7dd898dd916f2abe23cb4cb04622243f828a5f93f7ef9b8b03eb"
+      "Created_at": "2026-09-05T01:26:45.309362Z",
+      "Input_fingerprint": "0e317a3b34df45dca56a24384bf9f6c5bfdc33dfbece1e7c24eb4dc8f05a98c9"
     },
     {
       "Algorithm": "domain_retention",
@@ -11632,7 +11719,7 @@
         "fisher_p_value": 0.0006071801737436412,
         "permutation_empirical_p_value": 0.000999000999000999,
         "observed_in_frame_retention_rate": 0.9393939393939394,
-        "Runtime_seconds": 0.45944783301092684
+        "Runtime_seconds": 1.4244235000223853
       },
       "Tables": {
         "frame_domain_contingency_table": [
@@ -11662,25 +11749,35 @@
         }
       },
       "Warnings": [],
-      "Created_at": "2026-09-04T00:55:35.664863Z",
-      "Input_fingerprint": "a83ecfd07fb034ac26c9cfb7854e1fbb0086101624710f307e0cb6cc6d5c60e2"
+      "Created_at": "2026-09-05T01:26:37.936297Z",
+      "Input_fingerprint": "2adbdb552d44ec2165eaf200b61b7f854064e16f5707e1a27356c52e9db36812"
     },
     {
       "Algorithm": "exon_retention",
       "Algorithm_version": "1.0.0",
-      "Parameters": {},
+      "Parameters": {
+        "target_exon": 11
+      },
       "Summary": {
-        "retained_fraction": null,
-        "Runtime_seconds": 6.18330086581409e-05
+        "target_exon": 11,
+        "retained_event_count": 34,
+        "total_event_count": 41,
+        "retained_fraction": 0.8292682926829268,
+        "Runtime_seconds": 0.00037200000951997936
       },
       "Tables": {
-        "Exon_retention": []
+        "Exon_retention": [
+          {
+            "Exon": 11,
+            "Retained_event_count": 34,
+            "Total_event_count": 41,
+            "Retained_fraction": 0.8292682926829268
+          }
+        ]
       },
-      "Warnings": [
-        "No target exon was supplied in params or GeneConfig."
-      ],
-      "Created_at": "2026-09-04T00:55:35.867325Z",
-      "Input_fingerprint": "0c8bf8a64a5f7dd898dd916f2abe23cb4cb04622243f828a5f93f7ef9b8b03eb"
+      "Warnings": [],
+      "Created_at": "2026-09-05T01:26:37.967975Z",
+      "Input_fingerprint": "0e317a3b34df45dca56a24384bf9f6c5bfdc33dfbece1e7c24eb4dc8f05a98c9"
     },
     {
       "Algorithm": "frequency",
@@ -11692,7 +11789,7 @@
         "input_event_count": 41,
         "analyzed_event_count": 41,
         "unique_partner_gene_count": 25,
-        "Runtime_seconds": 0.00016795899136923254
+        "Runtime_seconds": 0.00018245799583382905
       },
       "Tables": {
         "Partner_gene_counts": [
@@ -11799,22 +11896,22 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-04T00:55:35.910469Z",
-      "Input_fingerprint": "0c8bf8a64a5f7dd898dd916f2abe23cb4cb04622243f828a5f93f7ef9b8b03eb"
+      "Created_at": "2026-09-05T01:26:38.052565Z",
+      "Input_fingerprint": "0e317a3b34df45dca56a24384bf9f6c5bfdc33dfbece1e7c24eb4dc8f05a98c9"
     },
     {
       "Algorithm": "joint_partner",
-      "Algorithm_version": null,
+      "Algorithm_version": "0.1.0",
       "Parameters": {},
       "Summary": {
-        "Runtime_seconds": 1.750001683831215e-05
+        "Runtime_seconds": 9.312498150393367e-05
       },
       "Tables": {},
       "Warnings": [
-        "Algorithm failed: ValueError: joint_partner requires a GeneConfig with gene_pair"
+        "BRAF has no gene_pair configured; joint-partner analysis was skipped."
       ],
-      "Created_at": "2026-09-04T00:55:35.889324Z",
-      "Input_fingerprint": "0c8bf8a64a5f7dd898dd916f2abe23cb4cb04622243f828a5f93f7ef9b8b03eb"
+      "Created_at": "2026-09-05T01:26:38.116053Z",
+      "Input_fingerprint": "0e317a3b34df45dca56a24384bf9f6c5bfdc33dfbece1e7c24eb4dc8f05a98c9"
     }
   ],
   "reference": {
@@ -11822,5 +11919,185 @@
     "fusion_count": 33,
     "in_frame_percent": 100.0,
     "domain_retained_percent": 100.0
-  }
+  },
+  "gene_track": {
+    "protein_length": 766,
+    "domains": [
+      {
+        "name": "Protein kinase domain",
+        "accession": "PF07714",
+        "start_aa": 458,
+        "end_aa": 712
+      },
+      {
+        "name": "RAS-binding domain",
+        "accession": "PF02196",
+        "start_aa": 156,
+        "end_aa": 227
+      },
+      {
+        "name": "Cysteine-rich domain",
+        "accession": "PF00130",
+        "start_aa": 235,
+        "end_aa": 280
+      }
+    ],
+    "exon_boundaries_aa": [
+      {
+        "exon_rank": 1,
+        "start_aa": 1,
+        "end_aa": 46
+      },
+      {
+        "exon_rank": 2,
+        "start_aa": 47,
+        "end_aa": 80
+      },
+      {
+        "exon_rank": 3,
+        "start_aa": 81,
+        "end_aa": 168
+      },
+      {
+        "exon_rank": 4,
+        "start_aa": 169,
+        "end_aa": 203
+      },
+      {
+        "exon_rank": 5,
+        "start_aa": 203,
+        "end_aa": 237
+      },
+      {
+        "exon_rank": 6,
+        "start_aa": 238,
+        "end_aa": 287
+      },
+      {
+        "exon_rank": 7,
+        "start_aa": 287,
+        "end_aa": 327
+      },
+      {
+        "exon_rank": 8,
+        "start_aa": 327,
+        "end_aa": 380
+      },
+      {
+        "exon_rank": 9,
+        "start_aa": 381,
+        "end_aa": 393
+      },
+      {
+        "exon_rank": 10,
+        "start_aa": 393,
+        "end_aa": 438
+      },
+      {
+        "exon_rank": 11,
+        "start_aa": 439,
+        "end_aa": 478
+      },
+      {
+        "exon_rank": 12,
+        "start_aa": 478,
+        "end_aa": 506
+      },
+      {
+        "exon_rank": 13,
+        "start_aa": 506,
+        "end_aa": 565
+      },
+      {
+        "exon_rank": 14,
+        "start_aa": 565,
+        "end_aa": 581
+      },
+      {
+        "exon_rank": 15,
+        "start_aa": 581,
+        "end_aa": 620
+      },
+      {
+        "exon_rank": 16,
+        "start_aa": 621,
+        "end_aa": 664
+      },
+      {
+        "exon_rank": 17,
+        "start_aa": 665,
+        "end_aa": 709
+      },
+      {
+        "exon_rank": 18,
+        "start_aa": 710,
+        "end_aa": 767
+      }
+    ]
+  },
+  "intragenic_deletions": [
+    {
+      "sample_id": "P-0011370-T01-IM5",
+      "annotation": "BRAF (NM_004333) Rearrangement :  c.240+3096_c.1314+210del",
+      "event_info": "Deletion of 8 exons: in frame",
+      "n_exons_deleted": 8,
+      "frame_status": "in-frame",
+      "retained_up_to_aa": 80,
+      "resumed_from_aa": 438
+    },
+    {
+      "sample_id": "P-0003872-T01-IM5",
+      "annotation": "BRAF (NM_004333) rearrangement: c.711+1013_c.1314+129 :BRAFdel",
+      "event_info": "Deletion of 5 exons: in frame",
+      "n_exons_deleted": 5,
+      "frame_status": "in-frame",
+      "retained_up_to_aa": 237,
+      "resumed_from_aa": 438
+    },
+    {
+      "sample_id": "P-0008098-T01-IM5",
+      "annotation": "BRAF (NM_004333) rearrangement : c.139-17798_1314+634del",
+      "event_info": "Deletion of 9 exons: in frame",
+      "n_exons_deleted": 9,
+      "frame_status": "in-frame",
+      "retained_up_to_aa": 47,
+      "resumed_from_aa": 438
+    },
+    {
+      "sample_id": "P-0004140-T01-IM5",
+      "annotation": "BRAF(NM_004333) Rearrangement : c.1141-973_139-1097del",
+      "event_info": "Deletion of 7 exons: in frame",
+      "n_exons_deleted": 7,
+      "frame_status": "in-frame",
+      "retained_up_to_aa": 47,
+      "resumed_from_aa": 381
+    },
+    {
+      "sample_id": "P-0006714-T01-IM5",
+      "annotation": "BRAF (NM_004333) rearrangement: c.139-32224_c.1141-1764del",
+      "event_info": "Deletion of 7 exons: in frame",
+      "n_exons_deleted": 7,
+      "frame_status": "in-frame",
+      "retained_up_to_aa": 47,
+      "resumed_from_aa": 381
+    },
+    {
+      "sample_id": "P-0006114-T02-IM5",
+      "annotation": "BRAF (NM_004333) rearrangement: c.240+4736_c.1140+680del",
+      "event_info": "Deletion of 6 exons: in frame",
+      "n_exons_deleted": 6,
+      "frame_status": "in-frame",
+      "retained_up_to_aa": 80,
+      "resumed_from_aa": 380
+    },
+    {
+      "sample_id": "P-0005109-T01-IM5",
+      "annotation": "BRAF (NM_004333) rearrangement: c.504+6767_c.1140+2849del",
+      "event_info": "Deletion of 5 exons: in frame",
+      "n_exons_deleted": 5,
+      "frame_status": "in-frame",
+      "retained_up_to_aa": 168,
+      "resumed_from_aa": 380
+    }
+  ]
 }

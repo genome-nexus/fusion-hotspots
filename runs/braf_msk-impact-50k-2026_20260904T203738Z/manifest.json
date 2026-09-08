@@ -5,7 +5,7 @@
     "https://www.cbioportal.org/api/structural-variant/fetch",
     "https://www.genomenexus.org/ensembl/canonical-transcript/hgnc/BRAF"
   ],
-  "git_sha": "d24a43cca243fc7cd0dab09a6fbeca9342e54909",
+  "git_sha": "28d4b4c9691d1f9008f3d48a4aed43ee3a2da3bd",
   "cli_args": [
     "analyze",
     "BRAF",

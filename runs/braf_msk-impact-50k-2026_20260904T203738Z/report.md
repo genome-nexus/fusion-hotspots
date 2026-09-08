@@ -44,7 +44,7 @@ For each fusion, breakpoint selection preferred the Genome Nexus canonical trans
 ## Full-suite highlights
 
 - Registered algorithms executed: composite_score, confidence_stats, cutpoint_detection, domain_disruption, domain_retention, exon_retention, frequency, joint_partner
-- Cutpoint detection: inferred breakpoint 380 aa; corrected permutation p=0.001998.
+- Cutpoint detection: inferred breakpoint 380 aa (exon 8); corrected permutation p=0.001998.
 - Top composite score: KIAA1549 (43 events), 0.333664.
 
 ## Partners

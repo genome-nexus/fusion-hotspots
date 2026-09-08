@@ -21,6 +21,10 @@ from cfh.genes.registry import GeneConfig, derive_gene_config_defaults, load_gen
 from cfh.ingestion import cbioportal_api
 from cfh.mapping.domain_source import ProteinDomain
 from cfh.mapping.feature_mapper import map_event
+from cfh.mapping.fusion_annotation_crosscheck import (
+    FusionAnnotationCrosscheckResult,
+    crosscheck_breakpoint_protein_position,
+)
 from cfh.mapping.genome_nexus_source import (
     CanonicalTranscript,
     GenomeNexusClient,
@@ -42,6 +46,7 @@ from cfh.reporting.domain_names import (
     domain_interpretation_sentence,
     format_domain_names,
 )
+from cfh.reporting.exon_labels import exon_label_for_protein_position
 from cfh.reporting.fusion_schematic import (
     render_fusion_schematic_svg,
     render_intragenic_deletion_schematic_svg,
@@ -554,8 +559,11 @@ def analyze_structural_variant_calls_with_config(
             ) from exc
     if target_canonical is not None:
         target_locus = _target_locus(target_canonical)
+        target_cds_min_genomic, target_cds_max_genomic = cds_bounds_from_utrs(target_canonical.utrs)
     else:
         target_locus = None
+        target_cds_min_genomic = None
+        target_cds_max_genomic = None
     domain_source = _ResolvedDomainSource(domains)
 
     gene_track: dict | None = None
@@ -616,6 +624,42 @@ def analyze_structural_variant_calls_with_config(
                 f"{type(exc).__name__}: {exc}"
             )
             continue
+
+        # Independent QA cross-check (genome-nexus/fusion-annotation's ported
+        # arithmetic, fed our own already-correct UTR-derived CDS bounds --
+        # see cfh.mapping.fusion_annotation_crosscheck). Isolated in its own
+        # try/except so a cross-check failure can never skip a row or affect
+        # any existing statistic -- it only ever adds a new, additional field.
+        try:
+            crosscheck = crosscheck_breakpoint_protein_position(
+                target_canonical.exons,
+                breakpoint,
+                target_canonical.exons[0].strand,
+                role,
+                mapping.breakpoint_protein_position,
+                cds_min_genomic=target_cds_min_genomic,
+                cds_max_genomic=target_cds_max_genomic,
+            )
+        except Exception as exc:  # noqa: BLE001 - QA cross-check must never fail the row
+            crosscheck = FusionAnnotationCrosscheckResult(
+                protein_position=None,
+                cds_position=None,
+                exon_rank=None,
+                is_hybrid_codon=None,
+                agrees=None,
+                note=None,
+                error=(
+                    f"fusion-annotation cross-check raised unexpectedly: "
+                    f"{type(exc).__name__}: {exc}"
+                ),
+            )
+        if crosscheck.agrees is False:
+            warnings.append(
+                f"Fusion-annotation cross-check disagreement for {event.Event_id} "
+                f"({config.gene_symbol}, {role}): ours={mapping.breakpoint_protein_position}, "
+                f"fusion-annotation={crosscheck.protein_position}. {crosscheck.note}"
+            )
+
         events.append(event)
         features.append(feature)
         domain_detail = (
@@ -634,6 +678,11 @@ def analyze_structural_variant_calls_with_config(
                 "breakpoint_exon": mapping.breakpoint_exon,
                 "breakpoint_protein_position": mapping.breakpoint_protein_position,
                 "is_intronic_breakpoint": mapping.is_intronic_breakpoint,
+                "fusion_annotation_crosscheck_protein_position": crosscheck.protein_position,
+                "fusion_annotation_crosscheck_agrees": crosscheck.agrees,
+                "fusion_annotation_crosscheck_detail": (
+                    crosscheck.note if crosscheck.agrees is not None else crosscheck.error
+                ),
                 "domain_status": (
                     (feature.Domain_retention_flags or {}).get(target_key, "unknown")
                     if target_key
@@ -794,6 +843,15 @@ def analyze_structural_variant_calls_with_config(
         domain.model_dump(mode="json") for domain in config.disruption_required_domains
     ]
     total = len(selected_events)
+    crosscheck_agree_count = sum(
+        1 for row in rows if row["fusion_annotation_crosscheck_agrees"] is True
+    )
+    crosscheck_disagree_count = sum(
+        1 for row in rows if row["fusion_annotation_crosscheck_agrees"] is False
+    )
+    crosscheck_unavailable_count = sum(
+        1 for row in rows if row["fusion_annotation_crosscheck_agrees"] is None
+    )
     summary = {
         "raw_structural_variant_count": len(calls),
         "total_fusions": total,
@@ -813,6 +871,11 @@ def analyze_structural_variant_calls_with_config(
         "domain_start_aa": domain_definition.start_aa if domain_definition else None,
         "domain_end_aa": domain_definition.end_aa if domain_definition else None,
         "key_domains": key_domain_definitions,
+        "fusion_annotation_crosscheck": {
+            "agree": crosscheck_agree_count,
+            "disagree": crosscheck_disagree_count,
+            "unavailable": crosscheck_unavailable_count,
+        },
         "configured_key_domains": configured_key_domains,
         "configured_disruption_required_domains": configured_disruption_domains,
     }
@@ -1088,10 +1151,14 @@ def markdown_summary(
     cutpoint = results_by_name.get("cutpoint_detection")
     if cutpoint and cutpoint.Summary.get("determinable"):
         cutpoint_summary = cutpoint.Summary
+        cutpoint_exon_label = exon_label_for_protein_position(
+            (run.gene_track or {}).get("exon_boundaries_aa"),
+            cutpoint_summary["inferred_cutpoint_aa"],
+        )
         lines.append(
             "- Cutpoint detection: inferred breakpoint "
-            f"{cutpoint_summary['inferred_cutpoint_aa']} aa; corrected permutation "
-            f"p={_format_stat(cutpoint_summary['corrected_p_value'])}."
+            f"{cutpoint_summary['inferred_cutpoint_aa']} aa ({cutpoint_exon_label}); "
+            f"corrected permutation p={_format_stat(cutpoint_summary['corrected_p_value'])}."
         )
     elif cutpoint:
         lines.append(
@@ -1242,6 +1309,9 @@ def _discrepancies(run: RealBenchmarkRun) -> list[dict]:
             "event_id": row.get("event_id"),
             "partner_gene": row.get("partner_gene"),
             "frame_status": row.get("frame_status"),
+            "breakpoint_protein_position": row.get("breakpoint_protein_position"),
+            "breakpoint_exon": row.get("breakpoint_exon"),
+            "is_intronic_breakpoint": row.get("is_intronic_breakpoint"),
             "retained_domains": row.get("retained_domains", ""),
             "lost_domains": row.get("lost_domains", ""),
             "disrupted_domains": row.get("disrupted_domains", ""),
@@ -1553,6 +1623,9 @@ def write_outputs(
             "event_id",
             "partner_gene",
             "frame_status",
+            "breakpoint_protein_position",
+            "breakpoint_exon",
+            "is_intronic_breakpoint",
             "retained_domains",
             "lost_domains",
             "disrupted_domains",

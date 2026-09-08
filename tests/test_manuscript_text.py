@@ -397,14 +397,15 @@ def test_manhattan_caption_handles_no_plottable_points():
 
 def test_gene_highlight_significant_gene_matches_exact_text():
     row = PAYLOAD_WITH_SIGNIFICANT_AND_HONORABLE_MENTIONS["genes"][0]
-    paragraph = render_gene_highlight(row)
+    paragraph = render_gene_highlight(row, n_fdr_corrected_genes=2)
 
     assert paragraph == (
         "ETV6 was analyzed across 90 fusion events, 71.1% in-frame and 75.6% domain-retained. "
-        "Domain-retention Fisher's exact test p=5.12326e-06 (raw statistically significant at "
-        "alpha=0.05). The Sterile alpha motif (SAM) domain appears to be required for retention. "
-        "Genome-wide BH-adjusted q=0.00433427 (reaches genome-wide FDR "
-        "significance)."
+        "Domain-retention Fisher's exact test on ETV6's own fusion events alone gives "
+        "p=5.12326e-06 (statistically significant at alpha=0.05). The Sterile alpha motif "
+        "(SAM) domain appears to be required for retention. Among 2 genes scanned "
+        "genome-wide in this cohort run, ETV6's Benjamini-Hochberg-adjusted q=0.00433427 "
+        "(reaches genome-wide FDR significance)."
     )
 
 
@@ -412,19 +413,23 @@ def test_gene_highlight_honorable_mention_appends_note_verbatim():
     row = PAYLOAD_WITH_SIGNIFICANT_AND_HONORABLE_MENTIONS["genes"][1]
     mention = PAYLOAD_WITH_SIGNIFICANT_AND_HONORABLE_MENTIONS["honorable_mentions"][0]
 
-    paragraph = render_gene_highlight(row, honorable_mention_note=mention["note"])
+    paragraph = render_gene_highlight(
+        row, n_fdr_corrected_genes=2, honorable_mention_note=mention["note"]
+    )
 
     assert paragraph.endswith(mention["note"])
     # RET's raw Fisher p-value (0.00042) is significant at alpha=0.05 even
     # though its FDR-adjusted q-value (0.12) is not -- exact text below
     # pins down that each verdict is stated in its own sentence, explicitly
-    # labeled with the statistic (raw p vs. BH-adjusted q) it describes, so
-    # neither verdict can be misread as describing the other statistic.
+    # labeled with the statistic (within-gene Fisher p vs. cohort-scale
+    # BH-adjusted q) it describes, so neither verdict can be misread as
+    # describing the other statistic or as a retraction of it.
     assert (
-        "Domain-retention Fisher's exact test p=0.000419666 (raw statistically significant "
-        "at alpha=0.05). The Protein kinase domain appears to be required for retention. "
-        "Genome-wide BH-adjusted q=0.119762 (does not reach genome-wide FDR "
-        "significance)."
+        "Domain-retention Fisher's exact test on RET's own fusion events alone gives "
+        "p=0.000419666 (statistically significant at alpha=0.05). The Protein kinase domain "
+        "appears to be required for retention. Among 2 genes scanned genome-wide in this "
+        "cohort run, RET's Benjamini-Hochberg-adjusted q=0.119762 (does not reach genome-wide "
+        "FDR significance)."
     ) in paragraph
 
 
@@ -438,11 +443,43 @@ def test_gene_highlight_never_labels_an_fdr_nonsignificant_q_value_as_significan
     contradicts genome-wide FDR significance semantics.
     """
     row = PAYLOAD_WITH_SIGNIFICANT_AND_HONORABLE_MENTIONS["genes"][1]
-    paragraph = render_gene_highlight(row)
+    paragraph = render_gene_highlight(row, n_fdr_corrected_genes=2)
 
     assert "q=0.119762 (statistically significant" not in paragraph
     assert "q=0.119762 (does not reach genome-wide FDR significance)" in paragraph
-    assert "p=0.000419666 (raw statistically significant at alpha=0.05)" in paragraph
+    assert "p=0.000419666 (statistically significant at alpha=0.05)" in paragraph
+
+
+def test_gene_highlight_p_and_q_sentences_read_as_answering_different_questions():
+    """The Fisher p-value sentence answers a purely within-gene question --
+    "is this domain-retention finding real for this gene" -- computed from
+    RET's own fusion events alone, and carries no cohort-scale/cross-gene
+    language. The FDR q-value sentence answers the separate, cohort-scale
+    question "is this gene notable among every gene scanned genome-wide in
+    this run", and says so explicitly (naming the actual gene count) rather
+    than sharing an ambiguous pronoun/adjacency with the p-value sentence
+    that a reader could misread as one sentence qualifying the other.
+    """
+    row = PAYLOAD_WITH_SIGNIFICANT_AND_HONORABLE_MENTIONS["genes"][1]
+    paragraph = render_gene_highlight(row, n_fdr_corrected_genes=2)
+
+    fisher_start = paragraph.index("Domain-retention Fisher's exact test")
+    fisher_end = paragraph.index(". ", fisher_start) + 1
+    fisher_sentence = paragraph[fisher_start:fisher_end]
+
+    q_start = paragraph.index("Among 2 genes")
+    q_sentence = paragraph[q_start:]
+
+    # Cohort-scale scope language ("among the N genes scanned genome-wide")
+    # appears only in the q-value sentence, never in the p-value sentence.
+    assert "genes scanned genome-wide" in q_sentence
+    assert "genes scanned genome-wide" not in fisher_sentence
+    assert "among" not in fisher_sentence.lower()
+
+    # Each sentence names its own subject explicitly instead of leaning on a
+    # shared pronoun ("it"/"this") that could let the two verdicts blur.
+    assert fisher_sentence.startswith("Domain-retention Fisher's exact test on RET's own")
+    assert q_sentence.startswith("Among 2 genes scanned genome-wide in this cohort run, RET's")
 
 
 def test_gene_highlight_states_missing_data_explicitly_not_invented():
@@ -465,10 +502,23 @@ def test_gene_highlight_omits_fdr_verdict_when_fdr_significant_flag_is_absent():
         **PAYLOAD_WITH_SIGNIFICANT_AND_HONORABLE_MENTIONS["genes"][1],
         "fdr_significant": None,
     }
+    paragraph = render_gene_highlight(row, n_fdr_corrected_genes=2)
+
+    assert "Among 2 genes scanned genome-wide in this cohort run, RET's " in paragraph
+    assert "Benjamini-Hochberg-adjusted q=0.119762." in paragraph
+    assert "reach genome-wide FDR significance" not in paragraph
+
+
+def test_gene_highlight_omits_gene_count_when_not_provided():
+    """When the caller doesn't have the full cohort payload's scanned-gene
+    count handy, the FDR sentence still carries explicit cohort-scope
+    language, but never invents a specific count -- it states the count is
+    unknown rather than guessing (same omission-over-invention discipline
+    as :func:`_count_display` elsewhere in this module)."""
+    row = PAYLOAD_WITH_SIGNIFICANT_AND_HONORABLE_MENTIONS["genes"][1]
     paragraph = render_gene_highlight(row)
 
-    assert "Genome-wide BH-adjusted q=0.119762." in paragraph
-    assert "reach genome-wide FDR significance" not in paragraph
+    assert "Among an unknown number of genes scanned genome-wide in this cohort run" in paragraph
 
 
 def test_discussion_bullets_are_gated_on_real_fields():

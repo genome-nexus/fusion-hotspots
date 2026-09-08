@@ -5,7 +5,7 @@
     "https://www.cbioportal.org/api/structural-variant/fetch",
     "https://grch38.genomenexus.org/ensembl/canonical-transcript/hgnc/BRAF"
   ],
-  "git_sha": "9da7125ea7f2a8bc7fba417a9e5cc48634bb85c9",
+  "git_sha": "d24a43cca243fc7cd0dab09a6fbeca9342e54909",
   "cli_args": [
     "real-benchmark",
     "BRAF",
@@ -15,5 +15,5 @@
     "--n-permutations",
     "1000"
   ],
-  "timestamp": "2026-09-03T16:06:40.839466+00:00"
+  "timestamp": "2026-09-05T01:26:56.321585+00:00"
 }

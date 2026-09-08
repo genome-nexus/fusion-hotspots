@@ -46,7 +46,19 @@ def test_pdf_report_generated_from_real_braf_run_contains_actual_numbers(tmp_pat
     assert str(summary["total_fusions"]) in text
     assert f"{summary['in_frame_percent']:.1f}%" in text
     assert f"{summary['kinase_retained_percent']:.1f}%" in text
-    assert summary["domain_accession"] in text
+    # The report prefers a configured domain's human-readable name over its
+    # bare accession when one is available (see ``cfh.reporting.domain_names``);
+    # this run's ``summary.key_domains`` supplies "Protein kinase domain" for
+    # PF07714, so that's what actually appears in the rendered text.
+    domain_name = next(
+        (
+            domain["name"]
+            for domain in summary.get("key_domains") or []
+            if domain.get("accession") == summary["domain_accession"]
+        ),
+        summary["domain_accession"],
+    )
+    assert domain_name in text
     assert format_stat(summary["fisher_p_value"]) in text
 
     # A real partner-gene name from the run's frequency table, embedded via
