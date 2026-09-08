@@ -126,7 +126,7 @@ def test_exon_boundary_ticks_show_real_exon_numbers():
         assert expected in labels
 
 
-def test_position_axis_includes_zero_and_max_and_hundred_step_ticks():
+def test_position_axis_includes_transcript_endpoints_and_hundred_step_ticks():
     run = _run(
         summary={"domain_accession": "PF07714", "domain_start_aa": 458, "domain_end_aa": 712},
         rows=[_row("E1", 700)],
@@ -134,8 +134,10 @@ def test_position_axis_includes_zero_and_max_and_hundred_step_ticks():
     )
     svg = _domain_track_svg(run, set())
     labels = _text_labels(svg)
-    assert "0" in labels
-    assert "766" in labels
+    assert "1" in labels
+    assert "766 aa" in labels
+    assert "5' / N-terminus" in labels
+    assert "3' / C-terminus" in labels
     for hundred in ("100", "200", "300", "400", "500", "600", "700"):
         assert hundred in labels
 

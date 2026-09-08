@@ -9,6 +9,8 @@ fields already present in a run's ``results.json``.
 
 from __future__ import annotations
 
+from copy import deepcopy
+
 from cfh.reporting.text import (
     format_percent,
     format_stat,
@@ -25,6 +27,7 @@ BRAF_WITH_REFERENCE = {
         "in_frame_count": 3,
         "in_frame_percent": 75.0,
         "domain_accession": "PF07714",
+        "configured_key_domains": [{"name": "Protein kinase domain", "accession": "PF07714"}],
         "kinase_retained_count": 2,
         "kinase_retained_percent": 50.0,
         "in_frame_kinase_retained_count": 2,
@@ -70,6 +73,7 @@ RET_WITHOUT_REFERENCE = {
         "in_frame_count": 8,
         "in_frame_percent": 80.0,
         "domain_accession": "PF07714",
+        "configured_key_domains": [{"name": "Protein kinase domain", "accession": "PF07714"}],
         "kinase_retained_count": 6,
         "kinase_retained_percent": 60.0,
         "in_frame_kinase_retained_count": 6,
@@ -173,7 +177,7 @@ def test_abstract_with_configured_benchmark_reference_matches_exact_text():
     assert abstract == (
         "This report analyzes BRAF gene fusions from the msk_impact_2017 study, covering "
         "4 fusion events. 3/4 fusions (75.0%) were in-frame. 2/4 fusions (50.0%) retained "
-        "the PF07714 domain. Domain retention was tested with Fisher's exact test "
+        "the Protein kinase domain. Domain retention was tested with Fisher's exact test "
         "(p=0.02, statistically significant at alpha=0.05). Compared to the literature "
         "benchmark (PMC5461196: 100.0% in-frame, 100.0% domain-retained), this run "
         "observed 75.0% in-frame and 50.0% domain retention."
@@ -186,7 +190,7 @@ def test_abstract_without_benchmark_reference_states_none_configured_explicitly(
     assert abstract == (
         "This report analyzes RET gene fusions from the msk_impact_50k_2026 study, "
         "covering 10 fusion events. 8/10 fusions (80.0%) were in-frame. 6/10 fusions "
-        "(60.0%) retained the PF07714 domain. Domain retention was tested with Fisher's "
+        "(60.0%) retained the Protein kinase domain. Domain retention was tested with Fisher's "
         "exact test (p=0.004, statistically significant at alpha=0.05). No literature "
         "benchmark is configured for RET."
     )
@@ -207,12 +211,59 @@ def test_results_summary_domain_retention_paragraph_braf():
     sections = {s["algorithm"]: s["paragraph"] for s in render_results_summary(BRAF_WITH_REFERENCE)}
 
     assert sections["domain_retention"] == (
-        "PF07714 domain retention was tested with Fisher's exact test comparing "
+        "Protein kinase domain retention was tested with Fisher's exact test comparing "
         "in-frame fusions against all others; 2/3 (66.7%) of in-frame fusions retained "
-        "the domain, p=0.02 (statistically significant at alpha=0.05). A "
+        "the domain, p=0.02 (statistically significant at alpha=0.05). The Protein kinase "
+        "domain appears to be required for retention. A "
         "breakpoint-position permutation test produced a corroborating empirical "
         "p-value of 0.15."
     )
+
+
+def test_results_summary_domain_disruption_uses_real_names_and_interprets_loss():
+    payload = deepcopy(BRAF_WITH_REFERENCE)
+    payload["summary"]["configured_disruption_required_domains"] = [
+        {"name": "RAS-binding domain", "accession": "PF02196"},
+        {"name": "Cysteine-rich domain", "accession": "PF00130"},
+    ]
+    payload["algorithm_results"].append(
+        {
+            "Algorithm": "domain_disruption",
+            "Summary": {
+                "fisher_odds_ratio": 3.585858585858586,
+                "fisher_p_value": 0.04170498244265482,
+                "permutation_empirical_p_value": None,
+            },
+            "Tables": {"frame_domain_contingency_table": [[142, 22], [9, 5]]},
+            "Warnings": [],
+        }
+    )
+
+    sections = {s["algorithm"]: s["paragraph"] for s in render_results_summary(payload)}
+
+    assert sections["domain_disruption"] == (
+        "Disruption of the RAS-binding domain and Cysteine-rich domain was tested with "
+        "Fisher's exact test comparing in-frame fusions against all others; 142/151 (94.0%) "
+        "of in-frame fusions disrupted the domain, p=0.041705 (statistically significant at "
+        "alpha=0.05). The RAS-binding domain and Cysteine-rich domain appear to require loss "
+        "or disruption rather than retention."
+    )
+
+
+def test_interpretive_clause_is_omitted_when_nonsignificant_or_domain_unconfigured():
+    nonsignificant = deepcopy(BRAF_WITH_REFERENCE)
+    nonsignificant["algorithm_results"][1]["Summary"]["fisher_p_value"] = 0.2
+    paragraph = {s["algorithm"]: s["paragraph"] for s in render_results_summary(nonsignificant)}[
+        "domain_retention"
+    ]
+    assert "appears to be required" not in paragraph
+
+    unconfigured = deepcopy(BRAF_WITH_REFERENCE)
+    del unconfigured["summary"]["configured_key_domains"]
+    paragraph = {s["algorithm"]: s["paragraph"] for s in render_results_summary(unconfigured)}[
+        "domain_retention"
+    ]
+    assert "appears to be required" not in paragraph
 
 
 def test_results_summary_ret_orders_canonically_and_covers_excluded_algorithms():
@@ -235,9 +286,10 @@ def test_results_summary_ret_orders_canonically_and_covers_excluded_algorithms()
         "CCDC6, observed in 7 events."
     )
     assert by_name["domain_retention"] == (
-        "PF07714 domain retention was tested with Fisher's exact test comparing "
+        "Protein kinase domain retention was tested with Fisher's exact test comparing "
         "in-frame fusions against all others; 6/8 (75.0%) of in-frame fusions retained "
-        "the domain, p=0.004 (statistically significant at alpha=0.05). A "
+        "the domain, p=0.004 (statistically significant at alpha=0.05). The Protein kinase "
+        "domain appears to be required for retention. A "
         "breakpoint-position permutation test produced a corroborating empirical "
         "p-value of 0.01."
     )

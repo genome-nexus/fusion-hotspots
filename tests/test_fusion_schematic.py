@@ -21,6 +21,7 @@ from cfh.reporting.fusion_schematic import (
     partner_color,
     render_fusion_schematic_svg,
     render_intragenic_deletion_schematic_svg,
+    render_position_axis_svg,
 )
 
 # Imported from the shared palette module (not re-exported from
@@ -255,6 +256,33 @@ def test_svg_has_valid_dimensions_and_is_well_formed_xml():
     width, height = int(match.group(1)), int(match.group(2))
     assert width > 0 and height > 0
     assert svg.strip().endswith("</svg>")
+
+
+@pytest.mark.parametrize(
+    ("role", "five_prime_block", "three_prime_block"),
+    [
+        ("three_prime", "partner", "target"),
+        ("five_prime", "target", "partner"),
+    ],
+)
+def test_fusion_end_labels_follow_the_role_dependent_blocks(
+    role, five_prime_block, three_prime_block
+):
+    svg = render_fusion_schematic_svg(_payload([_event("AGK", 380, role)]))
+    assert f'data-fusion-end="5-prime" data-block="{five_prime_block}">5\'' in svg
+    assert f'data-fusion-end="3-prime" data-block="{three_prime_block}">3\'' in svg
+
+
+def test_shared_position_axis_labels_coding_sequence_ends():
+    svg = "\n".join(render_position_axis_svg(100, _PROTEIN_LENGTH, 1.0))
+    assert 'data-axis-end="5-prime" text-anchor="start">5\' / N-terminus<' in svg
+    assert 'data-axis-end="3-prime" text-anchor="end">3\' / C-terminus<' in svg
+
+
+def test_header_defers_to_each_rows_orientation_labels():
+    svg = render_fusion_schematic_svg(_payload([_event("AGK", 380, "five_prime")]))
+    assert "Fusion order varies by row; follow each row's 5' and 3' labels" in svg
+    assert "partner block → breakpoint" not in svg
 
 
 # --- partner coloring --------------------------------------------------------

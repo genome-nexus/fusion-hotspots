@@ -7,11 +7,16 @@ key_domains:
     source: genome_nexus
     key: kinase
     accession: PF07714
-autoinhibitory_domains: []
+disruption_required_domains:
+  - name: "Cadherin domain"
+    source: genome_nexus
+    key: cadherin
+    accession: PF00028
 expected_retained_exon_hint: null
 analysis_modes:
   - breakpoint_hotspot
   - domain_retention
+  - domain_disruption
 benchmark_reference:
   citation: "PMCID: PMC6430196 (KIF5B-RET)"
   fusion_count: 7

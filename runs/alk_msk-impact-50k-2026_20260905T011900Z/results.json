@@ -2,7 +2,7 @@
   "gene_symbol": "ALK",
   "study_id": "msk_impact_50k_2026",
   "molecular_profile_id": "msk_impact_50k_2026_structural_variants",
-  "retrieved_at": "2026-09-04T17:28:01.725233+00:00",
+  "retrieved_at": "2026-09-05T01:19:00.527696+00:00",
   "summary": {
     "raw_structural_variant_count": 322,
     "total_fusions": 272,
@@ -5892,7 +5892,7 @@
         "domain_retention_p_value_used": 0.000999000999000999,
         "domain_disruption_p_value_used": null,
         "inferred_cutpoint_aa": 972,
-        "Runtime_seconds": 0.00019791699014604092
+        "Runtime_seconds": 0.00269875000230968
       },
       "Tables": {
         "composite_evidence_ranking": [
@@ -6444,8 +6444,8 @@
       "Warnings": [
         "domain_disruption sub-score excluded: the supplied result had no applicable p-value (e.g. disruption_required_domains not configured for this gene)."
       ],
-      "Created_at": "2026-09-04T17:28:01.725025Z",
-      "Input_fingerprint": "ecc3c8d49879ff783d09883cac4eef587aa18c7637588fa8248e5587271d9b0b"
+      "Created_at": "2026-09-05T01:19:00.523569Z",
+      "Input_fingerprint": "9874e4d9147acd199bb90199b55986cda99df197ec9661753b50b63efa4d8d25"
     },
     {
       "Algorithm": "confidence_stats",
@@ -6510,12 +6510,12 @@
           "mean_a": 65.61389961389962,
           "mean_b": 31.8
         },
-        "Runtime_seconds": 0.0021000420092605054
+        "Runtime_seconds": 0.023743416997604072
       },
       "Tables": null,
       "Warnings": [],
-      "Created_at": "2026-09-04T17:27:59.509304Z",
-      "Input_fingerprint": "ecc3c8d49879ff783d09883cac4eef587aa18c7637588fa8248e5587271d9b0b"
+      "Created_at": "2026-09-05T01:18:40.817550Z",
+      "Input_fingerprint": "9874e4d9147acd199bb90199b55986cda99df197ec9661753b50b63efa4d8d25"
     },
     {
       "Algorithm": "cutpoint_detection",
@@ -6538,7 +6538,7 @@
           "nearest_known_domain_boundary_aa": 960,
           "distance_aa": 12
         },
-        "Runtime_seconds": 2.2073815829935484
+        "Runtime_seconds": 19.60648741701152
       },
       "Tables": {
         "cutpoint_scan": [
@@ -6745,8 +6745,8 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-04T17:28:01.721782Z",
-      "Input_fingerprint": "ecc3c8d49879ff783d09883cac4eef587aa18c7637588fa8248e5587271d9b0b"
+      "Created_at": "2026-09-05T01:19:00.463571Z",
+      "Input_fingerprint": "9874e4d9147acd199bb90199b55986cda99df197ec9661753b50b63efa4d8d25"
     },
     {
       "Algorithm": "domain_disruption",
@@ -6757,14 +6757,14 @@
         "fisher_p_value": null,
         "permutation_empirical_p_value": null,
         "observed_in_frame_disruption_rate": null,
-        "Runtime_seconds": 3.541700425557792e-05
+        "Runtime_seconds": 0.00011354201706126332
       },
       "Tables": {},
       "Warnings": [
         "ALK has no disruption_required_domains configured; domain-disruption analysis was skipped."
       ],
-      "Created_at": "2026-09-04T17:27:59.533746Z",
-      "Input_fingerprint": "ecc3c8d49879ff783d09883cac4eef587aa18c7637588fa8248e5587271d9b0b"
+      "Created_at": "2026-09-05T01:18:40.957934Z",
+      "Input_fingerprint": "9874e4d9147acd199bb90199b55986cda99df197ec9661753b50b63efa4d8d25"
     },
     {
       "Algorithm": "domain_retention",
@@ -6779,7 +6779,7 @@
         "fisher_p_value": 0.001916606889583502,
         "permutation_empirical_p_value": 0.000999000999000999,
         "observed_in_frame_retention_rate": 0.9823008849557522,
-        "Runtime_seconds": 1.9295758749940433
+        "Runtime_seconds": 18.281271249987185
       },
       "Tables": {
         "frame_domain_contingency_table": [
@@ -6809,25 +6809,35 @@
         }
       },
       "Warnings": [],
-      "Created_at": "2026-09-04T17:27:59.501262Z",
-      "Input_fingerprint": "4b42283bf636b69b7a4d3a99ab2704d832a868f7d1adef18025f9c2436eaca4f"
+      "Created_at": "2026-09-05T01:18:40.758812Z",
+      "Input_fingerprint": "f8537d9ae653a5e657f8ed755c0156705642f23d1cc4025bd8a5b5662ea5a6ec"
     },
     {
       "Algorithm": "exon_retention",
       "Algorithm_version": "1.0.0",
-      "Parameters": {},
+      "Parameters": {
+        "target_exon": 20
+      },
       "Summary": {
-        "retained_fraction": null,
-        "Runtime_seconds": 3.4083001082763076e-05
+        "target_exon": 20,
+        "retained_event_count": 254,
+        "total_event_count": 272,
+        "retained_fraction": 0.9338235294117647,
+        "Runtime_seconds": 0.001001958007691428
       },
       "Tables": {
-        "Exon_retention": []
+        "Exon_retention": [
+          {
+            "Exon": 20,
+            "Retained_event_count": 254,
+            "Total_event_count": 272,
+            "Retained_fraction": 0.9338235294117647
+          }
+        ]
       },
-      "Warnings": [
-        "No target exon was supplied in params or GeneConfig."
-      ],
-      "Created_at": "2026-09-04T17:28:00.949405Z",
-      "Input_fingerprint": "ecc3c8d49879ff783d09883cac4eef587aa18c7637588fa8248e5587271d9b0b"
+      "Warnings": [],
+      "Created_at": "2026-09-05T01:18:40.991042Z",
+      "Input_fingerprint": "9874e4d9147acd199bb90199b55986cda99df197ec9661753b50b63efa4d8d25"
     },
     {
       "Algorithm": "frequency",
@@ -6839,7 +6849,7 @@
         "input_event_count": 272,
         "analyzed_event_count": 272,
         "unique_partner_gene_count": 32,
-        "Runtime_seconds": 8.066699956543744e-05
+        "Runtime_seconds": 0.0009629999985918403
       },
       "Tables": {
         "Partner_gene_counts": [
@@ -6974,22 +6984,22 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-04T17:28:00.949682Z",
-      "Input_fingerprint": "ecc3c8d49879ff783d09883cac4eef587aa18c7637588fa8248e5587271d9b0b"
+      "Created_at": "2026-09-05T01:18:41.221898Z",
+      "Input_fingerprint": "9874e4d9147acd199bb90199b55986cda99df197ec9661753b50b63efa4d8d25"
     },
     {
       "Algorithm": "joint_partner",
       "Algorithm_version": "0.1.0",
       "Parameters": {},
       "Summary": {
-        "Runtime_seconds": 8.542003342881799e-06
+        "Runtime_seconds": 9.625000529922545e-05
       },
       "Tables": {},
       "Warnings": [
         "ALK has no gene_pair configured; joint-partner analysis was skipped."
       ],
-      "Created_at": "2026-09-04T17:28:01.722041Z",
-      "Input_fingerprint": "ecc3c8d49879ff783d09883cac4eef587aa18c7637588fa8248e5587271d9b0b"
+      "Created_at": "2026-09-05T01:18:41.410935Z",
+      "Input_fingerprint": "9874e4d9147acd199bb90199b55986cda99df197ec9661753b50b63efa4d8d25"
     }
   ],
   "reference": null,
