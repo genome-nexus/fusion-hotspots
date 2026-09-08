@@ -13,15 +13,14 @@ renderers' actual real-world output, not a fixture crafted to pass.
 from __future__ import annotations
 
 import re
-from pathlib import Path
 
 from cfh.reporting import palette as palette_module
 from cfh.reporting.palette import CHROME_COLORS, SEMANTIC_COLORS
+from conftest import latest_run_dir
 
-REPO_ROOT = Path(__file__).parent.parent
 RUN_DIRS = {
-    "BRAF": REPO_ROOT / "runs" / "braf_msk-impact-50k-2026_20260905T012352Z",
-    "RET": REPO_ROOT / "runs" / "ret_msk-impact-50k-2026_20260905T012611Z",
+    "BRAF": latest_run_dir("braf_msk-impact-50k-2026"),
+    "RET": latest_run_dir("ret_msk-impact-50k-2026"),
 }
 
 _SVG_NAMES = [
