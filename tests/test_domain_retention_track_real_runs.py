@@ -25,10 +25,10 @@ GENE_REPORTS = (
 )
 RUN_DIRS = {
     "BRAF (standalone benchmark run)": (
-        REPO_ROOT / "runs" / "braf_msk-impact-50k-2026_20260905T011754Z"
+        REPO_ROOT / "runs" / "braf_msk-impact-50k-2026_20260905T012352Z"
     ),
     "RET (standalone benchmark run)": (
-        REPO_ROOT / "runs" / "ret_msk-impact-50k-2026_20260905T011503Z"
+        REPO_ROOT / "runs" / "ret_msk-impact-50k-2026_20260905T012611Z"
     ),
     "BRAF (cohort scan)": GENE_REPORTS / "braf",
     "RET (cohort scan)": GENE_REPORTS / "ret",

@@ -79,6 +79,14 @@ RET_WITHOUT_REFERENCE = {
         "in_frame_kinase_retained_count": 6,
     },
     "reference": None,
+    "gene_track": {
+        "protein_length": 1114,
+        "domains": [],
+        "exon_boundaries_aa": [
+            {"exon_rank": 14, "start_aa": 950, "end_aa": 1000},
+            {"exon_rank": 15, "start_aa": 1000, "end_aa": 1114},
+        ],
+    },
     "algorithm_results": [
         {
             "Algorithm": "frequency",
@@ -293,14 +301,86 @@ def test_results_summary_ret_orders_canonically_and_covers_excluded_algorithms()
     assert by_name["cutpoint_detection"] == (
         "Cutpoint detection scanned 10 mapped breakpoints for the protein position that "
         "best separates domain-retained from lost/disrupted fusions; the inferred "
-        "cutpoint was position 1063 aa (permutation-corrected p=0.0009, statistically "
-        "significant at alpha=0.05). This is 63 aa from the nearest configured domain "
-        "boundary at 1000 aa."
+        "cutpoint was position 1063 aa (exon 15; permutation-corrected p=0.0009, "
+        "statistically significant at alpha=0.05). This is 63 aa from the nearest "
+        "configured domain boundary at 1000 aa."
     )
     # Inapplicable/excluded: confidence_stats failed with no group_field configured.
     assert by_name["confidence_stats"] == (
         "Corroborating confidence statistics were not computed for this run: Algorithm "
         "failed: ValueError: params['group_field'] is required"
+    )
+
+
+def test_cutpoint_detection_paragraph_states_exon_boundary_when_position_is_ambiguous():
+    """Regression for BRAF: aa 327 is exactly the shared coordinate between
+    exon 7's end and exon 8's start (a clamped intronic-breakpoint estimate
+    artifact), so the paragraph must name both flanking exons rather than
+    fabricating a single one.
+    """
+    payload = {
+        "gene_track": {
+            "protein_length": 766,
+            "domains": [],
+            "exon_boundaries_aa": [
+                {"exon_rank": 7, "start_aa": 287, "end_aa": 327},
+                {"exon_rank": 8, "start_aa": 327, "end_aa": 380},
+            ],
+        },
+        "algorithm_results": [
+            {
+                "Algorithm": "cutpoint_detection",
+                "Summary": {
+                    "determinable": True,
+                    "reason": None,
+                    "n_events_analyzed": 179,
+                    "inferred_cutpoint_aa": 327,
+                    "observed_statistic_neg_log10_p": 1.4,
+                    "observed_p_value": 0.04,
+                    "observed_odds_ratio": 2.0,
+                    "corrected_p_value": 0.035964,
+                    "known_domain_boundary_comparison": None,
+                },
+                "Tables": {"cutpoint_scan": []},
+                "Warnings": [],
+            }
+        ],
+    }
+
+    paragraph = render_results_summary(payload)[0]["paragraph"]
+
+    assert paragraph == (
+        "Cutpoint detection scanned 179 mapped breakpoints for the protein position that "
+        "best separates domain-retained from lost/disrupted fusions; the inferred "
+        "cutpoint was position 327 aa (exon 7/8 boundary; permutation-corrected "
+        "p=0.035964, statistically significant at alpha=0.05)."
+    )
+
+
+def test_cutpoint_detection_paragraph_states_exon_unavailable_without_gene_track():
+    payload = {
+        "algorithm_results": [
+            {
+                "Algorithm": "cutpoint_detection",
+                "Summary": {
+                    "determinable": True,
+                    "reason": None,
+                    "n_events_analyzed": 5,
+                    "inferred_cutpoint_aa": 200,
+                    "corrected_p_value": 0.2,
+                    "known_domain_boundary_comparison": None,
+                },
+                "Tables": {"cutpoint_scan": []},
+                "Warnings": [],
+            }
+        ],
+    }
+
+    paragraph = render_results_summary(payload)[0]["paragraph"]
+
+    assert (
+        "(exon position unavailable; permutation-corrected p=0.2, "
+        "not statistically significant at alpha=0.05)." in paragraph
     )
 
 

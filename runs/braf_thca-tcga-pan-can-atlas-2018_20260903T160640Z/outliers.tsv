@@ -1,7 +1,0 @@
-discrepancy_type	event_id	partner_gene	frame_status	retained_domains	lost_domains	disrupted_domains	source_annotation_text	source_site2_effect_on_frame
-reference_discrepancy	EVT-TCGA-EL-A3T0-01-3	AP3B1	in-frame		Protein kinase domain		NA | BRAF-AP3B1 Fusion	in-frame
-reference_discrepancy	EVT-TCGA-ET-A3BN-01-4	FAM114A2	in-frame		Protein kinase domain		NA | BRAF-FAM114A2 Fusion	in-frame
-reference_discrepancy	EVT-TCGA-DE-A0Y2-01-5	MACF1	in-frame		Protein kinase domain		NA | BRAF-MACF1 Fusion	in-frame
-reference_discrepancy	EVT-TCGA-EL-A3ZK-01-6	SND1	in-frame		Protein kinase domain		NA | BRAF-SND1 Fusion	in-frame
-reference_discrepancy	EVT-TCGA-KS-A41I-01-7	SND1	in-frame		Protein kinase domain		NA | BRAF-SND1 Fusion	in-frame
-reference_discrepancy	EVT-TCGA-FY-A40N-01-8	SUGCT	in-frame		Protein kinase domain		NA | BRAF-SUGCT Fusion	in-frame
