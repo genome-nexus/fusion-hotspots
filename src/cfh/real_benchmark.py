@@ -37,10 +37,15 @@ from cfh.model.fusion_event import FusionEvent
 from cfh.model.fusion_feature import FusionFeature
 from cfh.normalization.event_normalizer import normalize
 from cfh.orchestrator.run import run_algorithms
+from cfh.reporting.domain_names import (
+    configured_domain_names,
+    domain_interpretation_sentence,
+    format_domain_names,
+)
 from cfh.reporting.fusion_schematic import (
-    exon_boundary_ticks_svg,
     render_fusion_schematic_svg,
     render_intragenic_deletion_schematic_svg,
+    render_position_axis_svg,
 )
 from cfh.reporting.palette import (
     AXIS_COLOR,
@@ -753,6 +758,10 @@ def analyze_structural_variant_calls_with_config(
         ]
         if matched is not None
     ]
+    configured_key_domains = [domain.model_dump(mode="json") for domain in config.key_domains]
+    configured_disruption_domains = [
+        domain.model_dump(mode="json") for domain in config.disruption_required_domains
+    ]
     total = len(selected_events)
     summary = {
         "raw_structural_variant_count": len(calls),
@@ -773,6 +782,8 @@ def analyze_structural_variant_calls_with_config(
         "domain_start_aa": domain_definition.start_aa if domain_definition else None,
         "domain_end_aa": domain_definition.end_aa if domain_definition else None,
         "key_domains": key_domain_definitions,
+        "configured_key_domains": configured_key_domains,
+        "configured_disruption_required_domains": configured_disruption_domains,
     }
     return RealBenchmarkRun(
         gene_symbol=config.gene_symbol,
@@ -916,7 +927,9 @@ def markdown_summary(
     with a broken image link.
     """
     summary = run.summary
-    domain = summary["domain_accession"] or "configured domain"
+    configured_key_domains = summary.get("configured_key_domains") or []
+    domain = format_domain_names(configured_domain_names(configured_key_domains))
+    domain = domain or summary["domain_accession"] or "configured domain"
     results_by_name = {result.Algorithm: result for result in run.results}
     partners = ", ".join(
         f"{row['Partner_gene']} ({row['Event_count']})" for row in summary["partner_counts"]
@@ -950,14 +963,42 @@ def markdown_summary(
         f"- Contingency table `[[retained/in-frame, retained/other], "
         f"[not-retained/in-frame, not-retained/other]]`: `{table}`",
         "",
-        "### Domain retention and discrepancies",
-        "",
-        f"![Domain retention diagram]({domain_svg_path})",
-        "",
-        "*Domain-retention positions for analyzed fusion events; red outlines mark "
-        "reference discrepancies.*",
-        "",
     ]
+    retention_interpretation = domain_interpretation_sentence(
+        configured_key_domains,
+        fisher_p_value=summary.get("fisher_p_value"),
+        fisher_odds_ratio=summary.get("fisher_odds_ratio"),
+        effect="retention",
+    )
+    disruption_summary = (
+        results_by_name.get("domain_disruption").Summary
+        if results_by_name.get("domain_disruption") is not None
+        else {}
+    )
+    disruption_interpretation = domain_interpretation_sentence(
+        summary.get("configured_disruption_required_domains") or [],
+        fisher_p_value=disruption_summary.get("fisher_p_value"),
+        fisher_odds_ratio=disruption_summary.get("fisher_odds_ratio"),
+        effect="disruption",
+    )
+    lines.extend(
+        interpretation
+        for interpretation in (retention_interpretation, disruption_interpretation)
+        if interpretation
+    )
+    if retention_interpretation or disruption_interpretation:
+        lines.append("")
+    lines.extend(
+        [
+            "### Domain retention and discrepancies",
+            "",
+            f"![Domain retention diagram]({domain_svg_path})",
+            "",
+            "*Domain-retention positions for analyzed fusion events; red outlines mark "
+            "reference discrepancies.*",
+            "",
+        ]
+    )
     if fusion_schematic_svg_path:
         lines.extend(
             [
@@ -1254,11 +1295,11 @@ def _domain_highlight_color(index: int, domain_name: str) -> str:
 def _domain_track_svg(run: RealBenchmarkRun, outlier_ids: set[str]) -> str:
     """Render breakpoints by quantitative domain-retention state.
 
-    Shares its exon-boundary tick/label convention
-    (:func:`cfh.reporting.fusion_schematic.exon_boundary_ticks_svg`) with
+    Shares its position-axis and exon-boundary convention
+    (:func:`cfh.reporting.fusion_schematic.render_position_axis_svg`) with
     the fusion-transcript schematic so the two renderers can't drift apart
-    on how an exon number is derived or drawn; both read the same
-    gene-agnostic ``gene_track["exon_boundaries_aa"]`` field.
+    on transcript-end or exon labels; both read the same gene-agnostic
+    ``gene_track["exon_boundaries_aa"]`` field.
     """
     axis_left = 60.0
     axis_width = 800.0
@@ -1347,37 +1388,26 @@ def _domain_track_svg(run: RealBenchmarkRun, outlier_ids: set[str]) -> str:
     dots_bottom = dots_top + 4 * 7 + 3
 
     position_axis_y = dots_bottom + 12.0
-    position_ticks = [0, *range(100, int(maximum), 100), int(maximum)]
-    position_axis_elements = [
-        f'<line x1="{axis_left:.1f}" y1="{position_axis_y:.1f}" '
-        f'x2="{axis_left + axis_width:.1f}" y2="{position_axis_y:.1f}" '
-        f'stroke="{AXIS_COLOR}" stroke-width="1"/>'
-    ]
-    seen_ticks: set[int] = set()
-    for tick in position_ticks:
-        if tick in seen_ticks:
-            continue
-        seen_ticks.add(tick)
+    position_axis_elements = render_position_axis_svg(
+        position_axis_y,
+        int(maximum),
+        scale,
+        axis_left=axis_left,
+        exon_boundaries=(run.gene_track or {}).get("exon_boundaries_aa") or [],
+    )
+    for tick in range(100, int(maximum), 100):
         x = axis_left + tick * scale
-        anchor = "start" if tick == 0 else ("end" if tick == int(maximum) else "middle")
         position_axis_elements.append(
             f'<line x1="{x:.1f}" y1="{position_axis_y:.1f}" x2="{x:.1f}" '
             f'y2="{position_axis_y + 5:.1f}" stroke="{AXIS_COLOR}" stroke-width="1"/>'
         )
         position_axis_elements.append(
             f'<text x="{x:.1f}" y="{position_axis_y + 15:.1f}" font-family="sans-serif" '
-            f'font-size="8" text-anchor="{anchor}">{tick}</text>'
+            f'font-size="8" text-anchor="middle">{tick}</text>'
         )
 
     exon_boundaries = (run.gene_track or {}).get("exon_boundaries_aa") or []
-    exon_tick_y = position_axis_y + 20.0
-    exon_tick_elements = exon_boundary_ticks_svg(
-        exon_boundaries,
-        axis_left=axis_left,
-        scale=scale,
-        y=exon_tick_y,
-        max_position=maximum,
-    )
+    exon_tick_y = position_axis_y + 18.0
     exon_tick_label_height = 20.0 if exon_boundaries else 0.0
 
     legend_y = exon_tick_y + exon_tick_label_height + 15.0
@@ -1395,7 +1425,6 @@ def _domain_track_svg(run: RealBenchmarkRun, outlier_ids: set[str]) -> str:
             f'y2="{backbone_y:.1f}" stroke="{AXIS_COLOR}" stroke-width="4"/>',
             *dots,
             *position_axis_elements,
-            *exon_tick_elements,
             f'<circle cx="60" cy="{legend_y:.1f}" r="4" fill="{RETAINED_COLOR}"/>'
             f'<text x="70" y="{legend_y + 5:.1f}" font-family="sans-serif" font-size="12">'
             "fully retained</text>",

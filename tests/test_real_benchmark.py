@@ -156,7 +156,7 @@ def test_real_benchmark_pipeline_writes_tsv_json_and_markdown(
     assert qa_event_ids == {"EVT-SAMPLE-2-2"}
     report = paths["markdown"].read_text()
     assert "does **not** reproduce" in report
-    assert "PF07714 (458-712 aa)" in report
+    assert "Protein kinase domain (458-712 aa)" in report
     svg_paths = sorted(paths["run_directory"].glob("visualizations/*.svg"))
     assert svg_paths
     for svg_path in svg_paths:

@@ -1,9 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="920" height="184" viewBox="0 0 920 184">
-<rect width="920" height="184" fill="white"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="200" viewBox="0 0 920 200">
+<rect width="920" height="200" fill="white"/>
 <text x="60" y="28" font-family="sans-serif" font-size="16">CDK12 domain-retention track</text>
 <rect x="450.9" y="34.0" width="156.8" height="16.0" fill="#62b36f" opacity="0.55"/>
 <text x="450.9" y="46.0" font-family="sans-serif" font-size="9.5">Protein kinase domain (728-1020)</text>
-<line x1="60.0" y1="63.0" x2="860.0" y2="63.0" stroke="#444" stroke-width="4"/>
+<line x1="60.0" y1="63.0" x2="860.0" y2="63.0" stroke="#444444" stroke-width="4"/>
 <circle cx="402.0" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
 <circle cx="247.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
 <circle cx="405.8" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
@@ -46,8 +46,38 @@
 <circle cx="569.5" cy="99.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0"/>
 <circle cx="103.0" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
 <line x1="60.0" y1="114.0" x2="860.0" y2="114.0" stroke="#444444" stroke-width="1"/>
-<line x1="60.0" y1="114.0" x2="60.0" y2="119.0" stroke="#444444" stroke-width="1"/>
-<text x="60.0" y="129.0" font-family="sans-serif" font-size="8" text-anchor="start">0</text>
+<text x="60.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="860.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
+<text x="60.0" y="128.0" font-family="sans-serif" font-size="9">1</text>
+<text x="860.0" y="128.0" font-family="sans-serif" font-size="9" text-anchor="end">1490 aa</text>
+<line x1="60.5" y1="132.0" x2="60.5" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="60.5" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 60.5 137.0)">E1</text>
+<line x1="247.4" y1="132.0" x2="247.4" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="247.4" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 247.4 137.0)">E2</text>
+<line x1="405.8" y1="132.0" x2="405.8" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="405.8" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 405.8 137.0)">E3</text>
+<line x1="437.4" y1="132.0" x2="437.4" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="437.4" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 437.4 137.0)">E4</text>
+<line x1="462.7" y1="132.0" x2="462.7" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="462.7" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 462.7 137.0)">E5</text>
+<line x1="493.3" y1="132.0" x2="493.3" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="493.3" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 493.3 137.0)">E6</text>
+<line x1="527.1" y1="132.0" x2="527.1" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="527.1" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 527.1 137.0)">E7</text>
+<line x1="537.3" y1="132.0" x2="537.3" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="537.3" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 537.3 137.0)">E8</text>
+<line x1="555.6" y1="132.0" x2="555.6" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="555.6" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 555.6 137.0)">E9</text>
+<line x1="569.5" y1="132.0" x2="569.5" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="569.5" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 569.5 137.0)">E10</text>
+<line x1="590.5" y1="132.0" x2="590.5" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="590.5" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 590.5 137.0)">E11</text>
+<line x1="614.1" y1="132.0" x2="614.1" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="614.1" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 614.1 137.0)">E12</text>
+<line x1="652.2" y1="132.0" x2="652.2" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="652.2" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 652.2 137.0)">E13</text>
+<line x1="733.3" y1="132.0" x2="733.3" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="733.3" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 733.3 137.0)">E14</text>
 <line x1="113.7" y1="114.0" x2="113.7" y2="119.0" stroke="#444444" stroke-width="1"/>
 <text x="113.7" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">100</text>
 <line x1="167.4" y1="114.0" x2="167.4" y2="119.0" stroke="#444444" stroke-width="1"/>
@@ -76,38 +106,9 @@
 <text x="758.0" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">1300</text>
 <line x1="811.7" y1="114.0" x2="811.7" y2="119.0" stroke="#444444" stroke-width="1"/>
 <text x="811.7" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">1400</text>
-<line x1="860.0" y1="114.0" x2="860.0" y2="119.0" stroke="#444444" stroke-width="1"/>
-<text x="860.0" y="129.0" font-family="sans-serif" font-size="8" text-anchor="end">1490</text>
-<line x1="60.5" y1="134.0" x2="60.5" y2="138.0" stroke="#777777" stroke-width="0.7"/>
-<text x="60.5" y="139.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 60.5 139.0)">E1</text>
-<line x1="247.4" y1="134.0" x2="247.4" y2="138.0" stroke="#777777" stroke-width="0.7"/>
-<text x="247.4" y="139.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 247.4 139.0)">E2</text>
-<line x1="405.8" y1="134.0" x2="405.8" y2="138.0" stroke="#777777" stroke-width="0.7"/>
-<text x="405.8" y="139.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 405.8 139.0)">E3</text>
-<line x1="437.4" y1="134.0" x2="437.4" y2="138.0" stroke="#777777" stroke-width="0.7"/>
-<text x="437.4" y="139.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 437.4 139.0)">E4</text>
-<line x1="462.7" y1="134.0" x2="462.7" y2="138.0" stroke="#777777" stroke-width="0.7"/>
-<text x="462.7" y="139.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 462.7 139.0)">E5</text>
-<line x1="493.3" y1="134.0" x2="493.3" y2="138.0" stroke="#777777" stroke-width="0.7"/>
-<text x="493.3" y="139.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 493.3 139.0)">E6</text>
-<line x1="527.1" y1="134.0" x2="527.1" y2="138.0" stroke="#777777" stroke-width="0.7"/>
-<text x="527.1" y="139.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 527.1 139.0)">E7</text>
-<line x1="537.3" y1="134.0" x2="537.3" y2="138.0" stroke="#777777" stroke-width="0.7"/>
-<text x="537.3" y="139.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 537.3 139.0)">E8</text>
-<line x1="555.6" y1="134.0" x2="555.6" y2="138.0" stroke="#777777" stroke-width="0.7"/>
-<text x="555.6" y="139.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 555.6 139.0)">E9</text>
-<line x1="569.5" y1="134.0" x2="569.5" y2="138.0" stroke="#777777" stroke-width="0.7"/>
-<text x="569.5" y="139.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 569.5 139.0)">E10</text>
-<line x1="590.5" y1="134.0" x2="590.5" y2="138.0" stroke="#777777" stroke-width="0.7"/>
-<text x="590.5" y="139.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 590.5 139.0)">E11</text>
-<line x1="614.1" y1="134.0" x2="614.1" y2="138.0" stroke="#777777" stroke-width="0.7"/>
-<text x="614.1" y="139.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 614.1 139.0)">E12</text>
-<line x1="652.2" y1="134.0" x2="652.2" y2="138.0" stroke="#777777" stroke-width="0.7"/>
-<text x="652.2" y="139.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 652.2 139.0)">E13</text>
-<line x1="733.3" y1="134.0" x2="733.3" y2="138.0" stroke="#777777" stroke-width="0.7"/>
-<text x="733.3" y="139.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 733.3 139.0)">E14</text>
-<circle cx="60" cy="169.0" r="4" fill="#2878b5"/><text x="70" y="174.0" font-family="sans-serif" font-size="12">fully retained</text>
-<circle cx="180" cy="169.0" r="4" fill="#f2a93b"/><text x="190" y="174.0" font-family="sans-serif" font-size="12">truncated</text>
-<circle cx="275" cy="169.0" r="4" fill="#777777"/><text x="285" y="174.0" font-family="sans-serif" font-size="12">fully lost</text>
-<circle cx="365" cy="169.0" r="4" fill="white" stroke="#d62728" stroke-width="1.5"/><text x="375" y="174.0" font-family="sans-serif" font-size="12">reference discrepancy</text>
+<circle cx="60" cy="167.0" r="4" fill="#2878b5"/><text x="70" y="172.0" font-family="sans-serif" font-size="12">fully retained</text>
+<circle cx="180" cy="167.0" r="4" fill="#f2a93b"/><text x="190" y="172.0" font-family="sans-serif" font-size="12">truncated</text>
+<circle cx="275" cy="167.0" r="4" fill="#777777"/><text x="285" y="172.0" font-family="sans-serif" font-size="12">fully lost</text>
+<circle cx="365" cy="167.0" r="4" fill="white" stroke="#d62728" stroke-width="1.5"/><text x="375" y="172.0" font-family="sans-serif" font-size="12">reference discrepancy</text>
+<rect x="60" y="180.0" width="12" height="10" fill="#62b36f" opacity="0.55"/><text x="80" y="189.0" font-family="sans-serif" font-size="12">configured key-domain span (name/range labeled above; a second or later configured domain gets its own distinct shade)</text>
 </svg>
