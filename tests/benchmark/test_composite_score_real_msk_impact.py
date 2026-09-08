@@ -12,13 +12,12 @@ each run's ``results.json`` and runs the real algorithm plugins end to end:
   ``disruption_required_domains``, and ``breakpoint_hotspot``/
   ``domain_disruption`` analysis modes) proves composite_score with all five
   sub-scores applicable at once.
-* RET (only ``domain_retention`` configured -- no
-  ``disruption_required_domains``) proves composite_score degrades
-  gracefully on real data with fewer applicable algorithms, reusing the
-  ``frequency``/``domain_retention``/``cutpoint_detection``/
-  ``confidence_stats`` results already present in that committed run's own
-  ``results.json`` and excluding the explicitly-skipped ``domain_disruption``
-  result rather than zero-filling it.
+* RET (no explicit ``disruption_required_domains`` in its curated YAML, but
+  one is auto-derived from its own kinase Pfam domain match) also proves
+  composite_score with all five sub-scores applicable at once, reusing the
+  ``frequency``/``domain_retention``/``domain_disruption``/
+  ``cutpoint_detection``/``confidence_stats`` results already present in
+  that committed run's own ``results.json``.
 
 Both tests print the actual ranked output so it is reported honestly,
 whatever it turns out to be, rather than asserted into a predetermined
@@ -47,9 +46,8 @@ from cfh.model.fusion_event import FusionEvent
 from cfh.model.fusion_feature import FusionFeature
 from cfh.orchestrator.run import run_algorithms
 from cfh.real_benchmark import analyze_structural_variant_calls
+from conftest import latest_run_dir
 
-_REPO_ROOT = Path(__file__).resolve().parents[2]
-_RUNS_DIR = _REPO_ROOT / "runs"
 _GENOME_NEXUS_BRAF_FIXTURE = (
     Path(__file__).resolve().parents[1]
     / "fixtures"
@@ -65,10 +63,7 @@ _GENOME_NEXUS_RET_FIXTURE = (
 
 
 def _real_run_results_path(prefix: str) -> Path:
-    candidates = sorted(_RUNS_DIR.glob(f"{prefix}_*"))
-    if not candidates:
-        pytest.skip(f"no committed real run directory found for {prefix!r} under {_RUNS_DIR}")
-    return candidates[-1] / "results.json"
+    return latest_run_dir(prefix) / "results.json"
 
 
 def _domain_bounds(
@@ -251,12 +246,13 @@ def test_composite_score_real_braf_msk_impact_all_five_subscores_applicable():
             "confidence_certainty",
         }
 
-    # With corrected locus mapping, AGK leads the five-component composite
-    # despite KIAA1549 remaining the most recurrent partner. Pin the exact
-    # corrected real-data result so changes in aggregation are caught.
-    assert ranking[0]["Partner_gene"] == "AGK"
-    assert ranking[0]["Event_count"] == 14
-    assert ranking[0]["Composite_score"] == pytest.approx(0.2579, abs=5e-5)
+    # With corrected locus mapping and directional intronic-breakpoint
+    # snapping, KIAA1549 -- BRAF's most recurrent real partner -- also leads
+    # the five-component composite. Pin the exact corrected real-data
+    # result so changes in aggregation are caught.
+    assert ranking[0]["Partner_gene"] == "KIAA1549"
+    assert ranking[0]["Event_count"] == 43
+    assert ranking[0]["Composite_score"] == pytest.approx(0.29300550202103604)
 
 
 def _ret_events_and_features(results_path: Path) -> tuple[list[FusionEvent], list[FusionFeature]]:
@@ -362,9 +358,12 @@ def test_composite_score_real_ret_msk_impact_all_five_subscores_applicable():
     # Pinned to the exact real value, not just the ranking, since this
     # reuses the committed run's own already-computed AlgorithmResult
     # objects verbatim (no seed/n_permutations choice made here at all).
+    # With directional intronic-breakpoint snapping now merged in (which
+    # shifts several events' breakpoint_protein_position/exon), the honest
+    # corrected value differs from the pre-snapping pin.
     assert ranking[0]["Partner_gene"] == "KIF5B"
     assert ranking[0]["Event_count"] == 87
-    assert ranking[0]["Composite_score"] == pytest.approx(0.407674382354967)
+    assert ranking[0]["Composite_score"] == pytest.approx(0.4593659412119797)
 
     for row in ranking:
         assert row["Domain_disruption_score"] is not None
@@ -439,8 +438,8 @@ def test_composite_score_via_real_orchestrator_dispatch_braf():
     }
     ranking = composite_result.Tables["composite_evidence_ranking"]
     assert ranking, "expected a populated composite_score ranking table"
-    assert ranking[0]["Partner_gene"] == "AGK"
-    assert ranking[0]["Event_count"] == 14
+    assert ranking[0]["Partner_gene"] == "KIAA1549"
+    assert ranking[0]["Event_count"] == 43
     assert all(0.0 <= row["Composite_score"] <= 1.0 for row in ranking)
 
 

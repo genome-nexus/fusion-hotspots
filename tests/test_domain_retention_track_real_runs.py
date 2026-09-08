@@ -15,23 +15,14 @@ import json
 import re
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).parent.parent
-GENE_REPORTS = (
-    REPO_ROOT
-    / "runs"
-    / "cohort-scan_msk_impact_50k_2026_20260904T144201Z"
-    / "cohort_scan"
-    / "gene_reports"
-)
+from conftest import latest_run_dir
+
+GENE_REPORTS = latest_run_dir("cohort-scan_msk_impact_50k_2026") / "cohort_scan" / "gene_reports"
 RUN_DIRS = {
-    "BRAF (standalone benchmark run)": (
-        REPO_ROOT / "runs" / "braf_msk-impact-50k-2026_20260905T012352Z"
-    ),
-    "RET (standalone benchmark run)": (
-        REPO_ROOT / "runs" / "ret_msk-impact-50k-2026_20260905T012611Z"
-    ),
     "BRAF (cohort scan)": GENE_REPORTS / "braf",
     "RET (cohort scan)": GENE_REPORTS / "ret",
+    "BRAF (standalone benchmark run)": latest_run_dir("braf_msk-impact-50k-2026"),
+    "RET (standalone benchmark run)": latest_run_dir("ret_msk-impact-50k-2026"),
 }
 
 

@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import json
 import re
-from pathlib import Path
 from unittest.mock import MagicMock
 
 from pypdf import PdfReader
@@ -21,14 +20,10 @@ from cfh.cohort.outputs import (
 )
 from cfh.cohort.recurrence import GeneRecurrence, RecurrenceGateResult
 from cfh.cohort.scan import CohortScanResult, GeneScanOutcome, genes_needing_full_report
+from conftest import latest_run_dir
 
-REPO_ROOT = Path(__file__).parent.parent
 REAL_COHORT_SCAN_SUMMARY_JSON = (
-    REPO_ROOT
-    / "runs"
-    / "cohort-scan_msk_impact_50k_2026_20260904T144201Z"
-    / "cohort_scan"
-    / "summary.json"
+    latest_run_dir("cohort-scan_msk_impact_50k_2026") / "cohort_scan" / "summary.json"
 )
 
 

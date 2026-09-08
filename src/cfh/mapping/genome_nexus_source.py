@@ -393,6 +393,7 @@ def map_genomic_breakpoint_to_protein_position(
     *,
     cds_min_genomic: int | None = None,
     cds_max_genomic: int | None = None,
+    role: str | None = None,
 ) -> BreakpointProteinPosition:
     """Estimate the protein residue a genomic breakpoint falls in.
 
@@ -407,9 +408,29 @@ def map_genomic_breakpoint_to_protein_position(
        contributes its coding portion (an exon entirely outside this
        range contributes nothing).
     3. Find the exon whose clipped genomic range contains the breakpoint.
-       If none does (an intronic breakpoint), use the nearest exon by
-       genomic distance and clamp the breakpoint to that exon's nearest
-       boundary -- an approximation, flagged via ``is_intronic``.
+       If none does (an intronic breakpoint), disambiguate directionally:
+
+       - When ``role`` is ``"five_prime"`` (this gene retains everything
+         *before* the breakpoint in the chimeric transcript -- everything
+         after is spliced away), snap to the nearest exon strictly
+         upstream of the breakpoint in transcript order -- the last
+         fully-retained exon -- never a downstream exon just because it
+         happens to be geometrically closer.
+       - When ``role`` is ``"three_prime"`` (this gene retains everything
+         *after* the breakpoint), snap to the nearest exon strictly
+         downstream of the breakpoint in transcript order.
+       - When ``role`` is ``None``/unrecognized (no fusion-partner context
+         available, e.g. a same-gene intragenic event, or a caller that
+         predates this parameter), fall back to whichever exon boundary is
+         nearest by raw genomic distance, regardless of side -- the
+         original, direction-unaware approximation.
+
+       "Upstream"/"downstream" here means transcript order, which flips
+       relative to genomic coordinate depending on ``strand``: on the plus
+       strand transcript order tracks increasing genomic position, on the
+       minus strand it runs in decreasing genomic position. Either way,
+       the breakpoint is clamped to the chosen exon's nearest boundary --
+       an approximation, flagged via ``is_intronic``.
     4. Convert the breakpoint's position within that exon to a
        CDS-relative nucleotide offset: on the plus strand this counts up
        from the exon's clipped start; on the minus strand -- transcribed
@@ -451,7 +472,26 @@ def map_genomic_breakpoint_to_protein_position(
                 return breakpoint_genomic - end
             return 0
 
-        containing = min(ordered, key=_distance)
+        def _is_upstream_of_breakpoint(exon: ExonRecord) -> bool:
+            """True if ``exon`` lies strictly before the breakpoint in
+            transcript order (i.e. is retained by a 5'-partner gene)."""
+            interval = coding_intervals[exon.rank]
+            if interval is None:
+                return False
+            start, end = interval
+            return end <= breakpoint_genomic if strand == 1 else start >= breakpoint_genomic
+
+        directional_candidates: list[ExonRecord] = []
+        if role == "five_prime" or role == "three_prime":
+            want_upstream = role == "five_prime"
+            directional_candidates = [
+                exon
+                for exon in ordered
+                if coding_intervals[exon.rank] is not None
+                and _is_upstream_of_breakpoint(exon) == want_upstream
+            ]
+
+        containing = min(directional_candidates or ordered, key=_distance)
         start, end = coding_intervals[containing.rank]
         clamped_breakpoint = min(max(breakpoint_genomic, start), end)
     else:

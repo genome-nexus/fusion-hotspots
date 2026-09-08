@@ -275,6 +275,111 @@ def test_cds_offset_handles_intronic_breakpoint_by_clamping_to_nearest_exon(
     assert result.exon_rank in (5, 6)
 
 
+def _synthetic_plus_strand_exons():
+    # Two coding exons on a plus-strand transcript with an intron between
+    # them: exon 1 spans 100-200, exon 2 spans 203-400. Gene-agnostic,
+    # synthetic coordinates -- not tied to any real gene.
+    return [
+        gns.ExonRecord(exon_id="synthetic-exon-1", start=100, end=200, rank=1, strand=1),
+        gns.ExonRecord(exon_id="synthetic-exon-2", start=203, end=400, rank=2, strand=1),
+    ]
+
+
+def test_intronic_breakpoint_role_overrides_geometrically_nearer_wrong_side_exon():
+    """An intronic breakpoint must never snap to whichever exon is merely
+    closer in raw base pairs when the target gene's 5'/3' role in the
+    fusion is known -- it must snap to the correct side of the splice
+    junction for that role, even when that side is geometrically farther.
+    """
+    exons = _synthetic_plus_strand_exons()
+
+    # Breakpoint at 202: nearest by raw genomic distance is exon 2's start
+    # (203, distance 1) over exon 1's end (200, distance 2). A 5'-partner
+    # gene retains everything through the end of exon 1 and must resolve
+    # there regardless -- never into the downstream exon just because it
+    # is one base pair closer.
+    five_prime_result = gns.map_genomic_breakpoint_to_protein_position(
+        exons, breakpoint_genomic=202, strand=1, role="five_prime"
+    )
+    assert five_prime_result.is_intronic is True
+    assert five_prime_result.exon_rank == 1
+
+    # Confirm the naive nearest-distance fallback (no role supplied) really
+    # would have picked the other, wrong-for-five_prime exon here -- this
+    # is what makes the case above a genuine semantic gap, not a no-op.
+    no_role_result = gns.map_genomic_breakpoint_to_protein_position(
+        exons, breakpoint_genomic=202, strand=1
+    )
+    assert no_role_result.exon_rank == 2
+
+    # Mirror case, breakpoint at 201: nearest by raw distance is now exon
+    # 1's end (200, distance 1) over exon 2's start (203, distance 2). A
+    # 3'-partner gene retains everything from the start of exon 2 onward
+    # and must resolve there regardless -- never into the upstream exon.
+    three_prime_result = gns.map_genomic_breakpoint_to_protein_position(
+        exons, breakpoint_genomic=201, strand=1, role="three_prime"
+    )
+    assert three_prime_result.is_intronic is True
+    assert three_prime_result.exon_rank == 2
+
+    no_role_mirror_result = gns.map_genomic_breakpoint_to_protein_position(
+        exons, breakpoint_genomic=201, strand=1
+    )
+    assert no_role_mirror_result.exon_rank == 1
+
+
+def _synthetic_minus_strand_exons():
+    # Two coding exons on a minus-strand transcript: transcript order runs
+    # from high to low genomic coordinate, so rank 1 (the 5' start) is the
+    # *higher*-coordinate exon (203-400) and rank 2 is the lower-coordinate
+    # exon (100-200), with a 2bp intronic gap between them (201-202).
+    # Gene-agnostic, synthetic coordinates -- not tied to any real gene.
+    return [
+        gns.ExonRecord(exon_id="synthetic-exon-1", start=203, end=400, rank=1, strand=-1),
+        gns.ExonRecord(exon_id="synthetic-exon-2", start=100, end=200, rank=2, strand=-1),
+    ]
+
+
+def test_intronic_breakpoint_role_overrides_nearer_exon_on_minus_strand():
+    """Same semantic gap as the plus-strand case above, but on a minus
+    strand transcript, where transcript order runs opposite to increasing
+    genomic coordinate -- the upstream/downstream side of an intronic
+    breakpoint flips accordingly, and the fix must still get it right.
+    """
+    exons = _synthetic_minus_strand_exons()
+
+    # Breakpoint at 201: nearest by raw genomic distance is exon 2's end
+    # (200, distance 1) over exon 1's start (203, distance 2). But exon 2
+    # is the *downstream* (3'-side) exon on this minus-strand transcript, so
+    # a 5'-partner gene must still resolve to exon 1 (upstream), not the
+    # geometrically nearer exon 2.
+    five_prime_result = gns.map_genomic_breakpoint_to_protein_position(
+        exons, breakpoint_genomic=201, strand=-1, role="five_prime"
+    )
+    assert five_prime_result.is_intronic is True
+    assert five_prime_result.exon_rank == 1
+
+    no_role_result = gns.map_genomic_breakpoint_to_protein_position(
+        exons, breakpoint_genomic=201, strand=-1
+    )
+    assert no_role_result.exon_rank == 2
+
+    # Mirror case, breakpoint at 202: nearest by raw distance is now exon
+    # 1's start (203, distance 1) over exon 2's end (200, distance 2), but
+    # exon 1 is the *upstream* (5'-side) exon here, so a 3'-partner gene
+    # must resolve to exon 2 instead.
+    three_prime_result = gns.map_genomic_breakpoint_to_protein_position(
+        exons, breakpoint_genomic=202, strand=-1, role="three_prime"
+    )
+    assert three_prime_result.is_intronic is True
+    assert three_prime_result.exon_rank == 2
+
+    no_role_mirror_result = gns.map_genomic_breakpoint_to_protein_position(
+        exons, breakpoint_genomic=202, strand=-1
+    )
+    assert no_role_mirror_result.exon_rank == 1
+
+
 def test_resolve_domains_falls_back_to_uniprot_when_gene_not_in_genome_nexus(
     uniprot_fixture_path,
 ):

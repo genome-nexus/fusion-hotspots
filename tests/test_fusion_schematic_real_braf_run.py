@@ -1,6 +1,7 @@
 """Validate the fusion-transcript schematic against real, committed BRAF
 artifacts: the genome-wide MSK-IMPACT cohort scan, and the standalone
-BRAF benchmark run under ``runs/braf_msk-impact-50k-2026_20260905T012352Z/``.
+BRAF benchmark run under ``runs/braf_msk-impact-50k-2026_*/`` (always the
+latest committed run per the keep-latest-run convention).
 
 No network access, no synthetic fixtures: this reads the exact
 ``results.json`` already committed to the repo (regenerated live from
@@ -27,17 +28,12 @@ from cfh.reporting.fusion_schematic import (
 # fusion_schematic) so these assertions catch the two renderers actually
 # drifting apart, not just a coincidental match today.
 from cfh.reporting.palette import CONNECTOR_COLOR, RETAINED_COLOR, TRUNCATED_COLOR
+from conftest import latest_run_dir
 
-REPO_ROOT = Path(__file__).parent.parent
 COHORT_SCAN_BRAF_RUN_DIR = (
-    REPO_ROOT
-    / "runs"
-    / "cohort-scan_msk_impact_50k_2026_20260904T144201Z"
-    / "cohort_scan"
-    / "gene_reports"
-    / "braf"
+    latest_run_dir("cohort-scan_msk_impact_50k_2026") / "cohort_scan" / "gene_reports" / "braf"
 )
-STANDALONE_BRAF_RUN_DIR = REPO_ROOT / "runs" / "braf_msk-impact-50k-2026_20260905T012352Z"
+STANDALONE_BRAF_RUN_DIR = latest_run_dir("braf_msk-impact-50k-2026")
 BRAF_RUN_DIRS = [COHORT_SCAN_BRAF_RUN_DIR, STANDALONE_BRAF_RUN_DIR]
 BRAF_RUN_DIR_IDS = ["cohort-scan", "standalone-benchmark-run"]
 

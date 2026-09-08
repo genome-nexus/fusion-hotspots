@@ -1,24 +1,23 @@
 """Tests that a real, valid, non-trivial PDF is produced from a committed run.
 
 This exercises the full PDF-rendering path (``cfh.reporting.pdf``) against
-the already-committed real BRAF benchmark artifact under
-``runs/braf_msk-impact-2017_20260905T012645Z/`` -- no network access, no
-new fixtures -- and asserts the extracted text contains the actual numbers
-from that run's results.json, not just that "a PDF was produced".
+the already-committed real, latest ``braf_msk-impact-2017_*`` benchmark
+artifact under ``runs/`` -- no network access, no new fixtures -- and
+asserts the extracted text contains the actual numbers from that run's
+results.json, not just that "a PDF was produced".
 """
 
 from __future__ import annotations
 
 import json
-from pathlib import Path
 
 from pypdf import PdfReader
 
-from cfh.reporting.pdf import render_pdf_report
+from cfh.reporting.pdf import _format_cell_value, render_pdf_report
 from cfh.reporting.text import format_stat
+from conftest import latest_run_dir
 
-REPO_ROOT = Path(__file__).parent.parent
-BRAF_RUN_DIR = REPO_ROOT / "runs" / "braf_msk-impact-2017_20260905T012645Z"
+BRAF_RUN_DIR = latest_run_dir("braf_msk-impact-2017")
 
 
 def test_pdf_report_generated_from_real_braf_run_contains_actual_numbers(tmp_path):
@@ -100,3 +99,54 @@ def test_pdf_report_is_deterministic_across_repeated_renders(tmp_path):
     first_text = "".join(page.extract_text() or "" for page in PdfReader(str(first)).pages)
     second_text = "".join(page.extract_text() or "" for page in PdfReader(str(second)).pages)
     assert first_text == second_text
+
+
+def test_format_cell_value_summarizes_long_lists_and_passes_through_scalars():
+    assert _format_cell_value("plain") == "plain"
+    assert _format_cell_value(42) == 42
+    assert _format_cell_value(("a", "b")) == "a, b"
+    long_value = tuple(f"event_{i}" for i in range(200))
+    formatted = _format_cell_value(long_value)
+    assert isinstance(formatted, str)
+    assert "200 total" in formatted
+    assert formatted.count(",") < 200
+
+
+def test_pdf_report_does_not_overflow_on_a_table_with_a_long_list_column(tmp_path):
+    """Regression test: a real algorithm table (e.g. window_detection's
+    ``window_scan``/``top_windows``) can carry an ``event_ids_inside``
+    column holding dozens to hundreds of recurrent event ids per row. Before
+    ``_format_cell_value`` existed, rendering that column verbatim produced
+    one gigantic multi-thousand-point-tall table cell that overflowed the
+    landscape page layout with a ``LayoutError``, aborting the whole report.
+    """
+    payload = json.loads((BRAF_RUN_DIR / "results.json").read_text())
+    payload = dict(payload)
+    payload["algorithm_results"] = [
+        *payload["algorithm_results"],
+        {
+            "Algorithm": "window_detection",
+            "Tables": {
+                "window_scan": [
+                    {
+                        "start_aa": 100,
+                        "end_aa": 200,
+                        "event_ids_inside": [f"EVT-{i:04d}" for i in range(150)],
+                    }
+                ]
+            },
+        },
+    ]
+
+    output_path = tmp_path / "report.pdf"
+    render_pdf_report(
+        payload,
+        output_path,
+        results_tsv_path=BRAF_RUN_DIR / "results.tsv",
+        visualizations_dir=BRAF_RUN_DIR / "visualizations",
+    )
+
+    assert output_path.exists()
+    reader = PdfReader(str(output_path))
+    text = "".join(page.extract_text() or "" for page in reader.pages)
+    assert "150 total" in text

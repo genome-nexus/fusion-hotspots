@@ -81,6 +81,41 @@ def test_fetch_structural_variants_retries_transient_service_failure():
     recovered.raise_for_status.assert_called_once_with()
 
 
+def test_fetch_structural_variants_retries_more_than_three_times_by_default(monkeypatch):
+    """Regression: a genome-wide cohort scan makes hundreds of sequential
+    calls to this endpoint and can run alongside other callers hitting the
+    same public API, so the default retry budget must tolerate more than a
+    couple of transient 503s in a row, not give up after the first few.
+    """
+    monkeypatch.setattr(cbioportal_api.time, "sleep", lambda _seconds: None)
+    mock_session = MagicMock()
+    unavailable = MagicMock(status_code=503)
+    recovered = MagicMock(status_code=200)
+    recovered.json.return_value = [{"sampleId": "RECOVERED"}]
+    mock_session.post.side_effect = [unavailable, unavailable, unavailable, unavailable, recovered]
+
+    result = cbioportal_api.fetch_structural_variants(
+        [5979],
+        ["study_structural_variants"],
+        session=mock_session,
+    )
+
+    assert result == [{"sampleId": "RECOVERED"}]
+    assert mock_session.post.call_count == 5
+
+
+def test_retry_sleep_seconds_is_capped_and_jittered_above_the_uncapped_value():
+    """The exponential backoff must never exceed the cap, but a large enough
+    attempt number must actually hit that cap (not silently keep growing) --
+    and the jitter must only ever add delay, never subtract it."""
+    uncapped = cbioportal_api._retry_sleep_seconds(1.0, attempt=1)
+    assert 2.0 <= uncapped <= 2.0 * 1.25
+
+    max_backoff = cbioportal_api._MAX_BACKOFF_SECONDS
+    capped = cbioportal_api._retry_sleep_seconds(1.0, attempt=10)
+    assert max_backoff <= capped <= max_backoff * 1.25
+
+
 def test_structural_variant_api_rows_are_adapted_to_production_normalizer_schema():
     rows = cbioportal_api.structural_variants_to_dataframe(
         [

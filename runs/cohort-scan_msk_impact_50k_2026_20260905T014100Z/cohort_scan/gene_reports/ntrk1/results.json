@@ -1,0 +1,3564 @@
+{
+  "gene_symbol": "NTRK1",
+  "study_id": "msk_impact_50k_2026",
+  "molecular_profile_id": "msk_impact_50k_2026_structural_variants",
+  "retrieved_at": "2026-09-05T01:37:40.634500+00:00",
+  "summary": {
+    "raw_structural_variant_count": 118,
+    "total_fusions": 78,
+    "mapped_fusions": 76,
+    "skipped_fusions": 2,
+    "in_frame_count": 32,
+    "in_frame_percent": 41.02564102564103,
+    "kinase_retained_count": 64,
+    "kinase_retained_percent": 82.05128205128206,
+    "in_frame_kinase_retained_count": 30,
+    "fisher_odds_ratio": 4.411764705882353,
+    "fisher_p_value": 0.04826275446570913,
+    "permutation_p_value": 0.009900990099009901,
+    "frame_domain_contingency_table": [
+      [
+        30,
+        34
+      ],
+      [
+        2,
+        10
+      ]
+    ],
+    "partner_counts": [
+      {
+        "Partner_gene": "AFAP1",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "ANKRD36",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "ARHGEF11",
+        "Event_count": 2
+      },
+      {
+        "Partner_gene": "ATP1A2",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "BCAN",
+        "Event_count": 2
+      },
+      {
+        "Partner_gene": "CADM3",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "COP1",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "CTRC",
+        "Event_count": 2
+      },
+      {
+        "Partner_gene": "DDR2",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "DIAPH1",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "EML4",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "EPS15",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "F11R",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "GON4L",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "IQGAP3",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "IRF2BP2",
+        "Event_count": 3
+      },
+      {
+        "Partner_gene": "KIF21B",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "LMNA",
+        "Event_count": 12
+      },
+      {
+        "Partner_gene": "LTAP1",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "MEF2D",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "METTL25B",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "NELFCD",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "NOS1AP",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "P2RY8",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "PEAR1",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "PLEKHA6",
+        "Event_count": 3
+      },
+      {
+        "Partner_gene": "PRCC",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "RAB25",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "RABGAP1L",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "SCP2",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "SEMA4A",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "SHPRH",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "SLAMF6",
+        "Event_count": 3
+      },
+      {
+        "Partner_gene": "SMYD2",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "STK11",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "TAFA2",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "TARS2",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "TPM3",
+        "Event_count": 12
+      },
+      {
+        "Partner_gene": "TPR",
+        "Event_count": 5
+      },
+      {
+        "Partner_gene": "TRIM63",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "TRPM8",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "VANGL2",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "ZBTB7B",
+        "Event_count": 1
+      }
+    ],
+    "domain_accession": "PF07714",
+    "domain_start_aa": 512,
+    "domain_end_aa": 781,
+    "key_domains": [
+      {
+        "name": "Protein kinase domain",
+        "accession": "PF07714",
+        "start_aa": 512,
+        "end_aa": 781
+      }
+    ]
+  },
+  "warnings": [
+    "Skipped EVT-P-0022046-T01-IM6-34 (METTL25B-NTRK1): ValueError: could not determine 5'/3' role for NTRK1 in EVT-P-0022046-T01-IM6-34; Event_Info='Antisense Fusion'",
+    "Skipped EVT-P-0008246-T02-IM5-40 (NTRK1-DDR2): ValueError: could not determine 5'/3' role for NTRK1 in EVT-P-0008246-T02-IM5-40; Event_Info='Antisense fusion'"
+  ],
+  "events": [
+    {
+      "event_id": "EVT-P-0013559-T01-IM5-1",
+      "sample_id": "P-0013559-T01-IM5",
+      "patient_id": null,
+      "fusion_name": "AFAP1-NTRK1",
+      "partner_gene": "AFAP1",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156844093,
+      "breakpoint_exon": 9,
+      "breakpoint_protein_position": 393,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "AFAP1(NM_001134647) - NTRK1(NM_002529) Rearrangement : t(1;4)(q23.1;p16.1)(chr1:g.156844093::chr4:g.7852375) | Protein fusion: in frame (AFAP1-NTRK1)",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0042270-T01-IM6-2",
+      "sample_id": "P-0042270-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "ANKRD36-NTRK1",
+      "partner_gene": "ANKRD36",
+      "frame_status": "out-of-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156844593,
+      "breakpoint_exon": 11,
+      "breakpoint_protein_position": 418,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "ANKRD36 (NM_001164315) - NTRK1 (NM_002529) fusion: t(1;2)(q23.1;q11.2)(chr1:g.156844593::chr2:g.97835462) | Protein Fusion: out of frame  {ANKRD36:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0017558-T02-IM7-3",
+      "sample_id": "P-0017558-T02-IM7",
+      "patient_id": null,
+      "fusion_name": "ARHGEF11-NTRK1",
+      "partner_gene": "ARHGEF11",
+      "frame_status": "out-of-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156845502,
+      "breakpoint_exon": 13,
+      "breakpoint_protein_position": 501,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "ARHGEF11 (NM_198236) - NTRK1 (NM_002529) fusion: c.32+488:ARHGEF11_c.1501+44:NTRK1inv | Protein Fusion: out of frame  {ARHGEF11:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0050637-T01-IM6-4",
+      "sample_id": "P-0050637-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "BCAN-NTRK1",
+      "partner_gene": "BCAN",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156842373,
+      "breakpoint_exon": 8,
+      "breakpoint_protein_position": 284,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "BCAN (NM_021948) - NTRK1 (NM_002529) fusion: c.1064-525:BCAN_c.850+826:NTRK1del | Protein Fusion: in frame  {BCAN:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0041874-T01-IM6-5",
+      "sample_id": "P-0041874-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "BCAN-NTRK1",
+      "partner_gene": "BCAN",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156843258,
+      "breakpoint_exon": 8,
+      "breakpoint_protein_position": 284,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "BCAN (NM_021948) - NTRK1 (NM_002529) fusion: c.92-224:BCAN_c.851-167:NTRK1del | Protein Fusion: in frame  {BCAN:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0055952-T01-IM6-6",
+      "sample_id": "P-0055952-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "COP1-NTRK1",
+      "partner_gene": "COP1",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156851106,
+      "breakpoint_exon": 17,
+      "breakpoint_protein_position": 736,
+      "is_intronic_breakpoint": true,
+      "domain_status": "disrupted",
+      "domain_retained_fraction": 0.17037037037037037,
+      "domain_is_truncated": true,
+      "retained_domains": "",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "Protein kinase domain",
+      "source_annotation_text": "RFWD2 (NM_022457) - NTRK1 (NM_002529) rearrangement: c.2133+18462:RFWD2_c.2206-143:NTRK1inv | Protein Fusion: in frame  {RFWD2:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0014859-T03-IM6-8",
+      "sample_id": "P-0014859-T03-IM6",
+      "patient_id": null,
+      "fusion_name": "CTRC-NTRK1",
+      "partner_gene": "CTRC",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156841593,
+      "breakpoint_exon": 8,
+      "breakpoint_protein_position": 284,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "CTRC (NM_007272) - NTRK1 (NM_002529) rearrangement: c.88:CTRC_c.850+46:NTRK1del | Protein Fusion: mid-exon  {CTRC:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0014859-T01-IM6-9",
+      "sample_id": "P-0014859-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "CTRC-NTRK1",
+      "partner_gene": "CTRC",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156841592,
+      "breakpoint_exon": 8,
+      "breakpoint_protein_position": 284,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "CTRC (NM_007272)  - NTRK1 (NM_002529) rearrangement: c.88:CTRC_c.850+45:NTRK1del | Protein fusion: mid-exon (CTRC-NTRK1)",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0029326-T01-IM6-10",
+      "sample_id": "P-0029326-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "DIAPH1-NTRK1",
+      "partner_gene": "DIAPH1",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156843860,
+      "breakpoint_exon": 9,
+      "breakpoint_protein_position": 393,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "DIAPH1 (NM_005219) - NTRK1 (NM_002529) rearrangement: t(1;5)(q23.1;q31.3)(chr1:g.156843860::chr5:g.140904837) | Protein Fusion: in frame  {DIAPH1:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0059139-T01-IM7-11",
+      "sample_id": "P-0059139-T01-IM7",
+      "patient_id": null,
+      "fusion_name": "EML4-NTRK1",
+      "partner_gene": "EML4",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156844256,
+      "breakpoint_exon": 10,
+      "breakpoint_protein_position": 399,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "EML4 (NM_019063) - NTRK1 (NM_002529) fusion: t(1;2)(q23.1;p21)(chr1:g.156844256::chr2:g.42473987) | Protein Fusion: in frame  {EML4:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0037901-T01-IM6-12",
+      "sample_id": "P-0037901-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "EPS15-NTRK1",
+      "partner_gene": "EPS15",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156844212,
+      "breakpoint_exon": 10,
+      "breakpoint_protein_position": 399,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "EPS15 (NM_001981) - NTRK1 (NM_002529) rearrangement: c.2119+1240:EPS15_c.1195+20:NTRK1inv | Protein Fusion: in frame  {EPS15:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0009855-T01-IM5-13",
+      "sample_id": "P-0009855-T01-IM5",
+      "patient_id": null,
+      "fusion_name": "GON4L-NTRK1",
+      "partner_gene": "GON4L",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156843711,
+      "breakpoint_exon": 8,
+      "breakpoint_protein_position": 379,
+      "is_intronic_breakpoint": false,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "GON4L (NM_001037533) - NTRK1 (NM_002529) rearrangement : c.4141:GON4L_c.1137:NTRK1inv | Protein fusion: mid-exon (GON4L-NTRK1)",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0050669-T01-IM6-15",
+      "sample_id": "P-0050669-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "IQGAP3-NTRK1",
+      "partner_gene": "IQGAP3",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156844408,
+      "breakpoint_exon": 10,
+      "breakpoint_protein_position": 414,
+      "is_intronic_breakpoint": false,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "IQGAP3 (NM_178229) - NTRK1 (NM_002529) fusion: c.2531-131:IQGAP3_c.1241:NTRK1inv | Protein Fusion: mid-exon  {IQGAP3:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0022925-T01-IM6-16",
+      "sample_id": "P-0022925-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "LMNA-NTRK1",
+      "partner_gene": "LMNA",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156844398,
+      "breakpoint_exon": 10,
+      "breakpoint_protein_position": 411,
+      "is_intronic_breakpoint": false,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "LMNA (NM_170707) - NTRK1 (NM_002529) fusion (LMNA exons 1-3 fused to NTRK1 exons 10 - 17): c.513+1675:LMNA_c.1231:NTRK1del | Protein Fusion: mid-exon  {LMNA:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0010581-T01-IM5-17",
+      "sample_id": "P-0010581-T01-IM5",
+      "patient_id": null,
+      "fusion_name": "LMNA-NTRK1",
+      "partner_gene": "LMNA",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156844556,
+      "breakpoint_exon": 11,
+      "breakpoint_protein_position": 418,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "LMNA (NM_170707) - NTRK (NM_002529) fusion (LMNA exons 1-2 fused to NTRK1 exons 11-17): c.514-811:LMNA_c.1251+138:NTRK1del | Protein fusion: in frame (LMNA-NTRK1)",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0010086-T01-IM5-18",
+      "sample_id": "P-0010086-T01-IM5",
+      "patient_id": null,
+      "fusion_name": "LMNA-NTRK1",
+      "partner_gene": "LMNA",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156844436,
+      "breakpoint_exon": 11,
+      "breakpoint_protein_position": 418,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "LMNA (NM_170707) - NTRK1 (NM_002529) rearrangement: c.514-1686:LMNA_c.1251+18:NTRK1del | Protein fusion: in frame (LMNA-NTRK1)",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0007739-T01-IM5-19",
+      "sample_id": "P-0007739-T01-IM5",
+      "patient_id": null,
+      "fusion_name": "LMNA-NTRK1",
+      "partner_gene": "LMNA",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156845035,
+      "breakpoint_exon": 12,
+      "breakpoint_protein_position": 452,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "LMNA (NM_170707) - NTRK1 (NM_002529) Fusion (LMNA exons 1-8 fused to NTRK1 exons 12-17):  c.1443:LMNA_c.1354+235:NTRK1 | Protein fusion: mid-exon (LMNA-NTRK1)",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0003705-T01-IM5-24",
+      "sample_id": "P-0003705-T01-IM5",
+      "patient_id": null,
+      "fusion_name": "LMNA-NTRK1",
+      "partner_gene": "LMNA",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156845433,
+      "breakpoint_exon": 12,
+      "breakpoint_protein_position": 492,
+      "is_intronic_breakpoint": false,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "c.686:LMNA_c.1476:NTRK1del | Protein fusion: mid-exon (LMNA-NTRK1)",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0003329-T04-IM6-25",
+      "sample_id": "P-0003329-T04-IM6",
+      "patient_id": null,
+      "fusion_name": "LMNA-NTRK1",
+      "partner_gene": "LMNA",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156845200,
+      "breakpoint_exon": 12,
+      "breakpoint_protein_position": 452,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "LMNA (NM_170707) - NTRK1 (NM_002529) fusion (LMNA exons 1-2 fused to NTRK1 exons 12 - 17): c.495:LMNA_c.1355-112:NTRK1del | Protein Fusion: mid-exon  {LMNA:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0003329-T03-IM6-26",
+      "sample_id": "P-0003329-T03-IM6",
+      "patient_id": null,
+      "fusion_name": "LMNA-NTRK1",
+      "partner_gene": "LMNA",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156845200,
+      "breakpoint_exon": 12,
+      "breakpoint_protein_position": 452,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "LMNA (NM_170707) - NTRK1 (NM_002529) fusion (LMNA exons 1-2 fused to NTRK1 exons 12 - 17): c.495:LMNA_c.1355-112:NTRK1del | Protein Fusion: mid-exon  {LMNA:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0066239-T01-IM7-27",
+      "sample_id": "P-0066239-T01-IM7",
+      "patient_id": null,
+      "fusion_name": "LMNA-NTRK1",
+      "partner_gene": "LMNA",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156845170,
+      "breakpoint_exon": 12,
+      "breakpoint_protein_position": 452,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "LMNA (NM_170707) - NTRK1 (NM_002529) fusion: c.1428:LMNA_c.1355-142:NTRK1del | Protein Fusion: mid-exon  {LMNA:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0003329-T02-IM6-28",
+      "sample_id": "P-0003329-T02-IM6",
+      "patient_id": null,
+      "fusion_name": "LMNA-NTRK1",
+      "partner_gene": "LMNA",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156845200,
+      "breakpoint_exon": 12,
+      "breakpoint_protein_position": 452,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "LMNA (NM_170707) - NTRK1 (NM_002529) Fusion (LMNA exon2 fused with NTRK1 exon12 ): c.495:LMNA_c.1355-112:NTRK1del | Protein Fusion: mid-exon  {LMNA:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0023994-T06-IM6-29",
+      "sample_id": "P-0023994-T06-IM6",
+      "patient_id": null,
+      "fusion_name": "LMNA-NTRK1",
+      "partner_gene": "LMNA",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156844525,
+      "breakpoint_exon": 11,
+      "breakpoint_protein_position": 418,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "LMNA (NM_170707) - NTRK1 (NM_002529) fusion: c.1699-362:LMNA_c.1251+107:NTRK1del | Protein Fusion: in frame  {LMNA:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0023994-T05-IM6-30",
+      "sample_id": "P-0023994-T05-IM6",
+      "patient_id": null,
+      "fusion_name": "LMNA-NTRK1",
+      "partner_gene": "LMNA",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156844525,
+      "breakpoint_exon": 11,
+      "breakpoint_protein_position": 418,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "LMNA (NM_170707) - NTRK1 (NM_002529) Fusion (LMNA exon 10 fused with NTRK1 exon 11) : c.1699-362:LMNA_c.1251+107:NTRK1del | Protein Fusion: in frame  {LMNA:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0023994-T01-IM6-31",
+      "sample_id": "P-0023994-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "LMNA-NTRK1",
+      "partner_gene": "LMNA",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156844525,
+      "breakpoint_exon": 11,
+      "breakpoint_protein_position": 418,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "LMNA (NM_170707) - NTRK1 (NM_002529) fusion (LMNA exons 1-10 fused to NTRK1 exons 11-17): c.1699-362:LMNA_c.1251+107:NTRK1del | Protein Fusion: in frame  {LMNA:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0025031-T02-IM6-32",
+      "sample_id": "P-0025031-T02-IM6",
+      "patient_id": null,
+      "fusion_name": "LTAP1-NTRK1",
+      "partner_gene": "LTAP1",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156846272,
+      "breakpoint_exon": 14,
+      "breakpoint_protein_position": 571,
+      "is_intronic_breakpoint": false,
+      "domain_status": "disrupted",
+      "domain_retained_fraction": 0.7814814814814814,
+      "domain_is_truncated": true,
+      "retained_domains": "",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "Protein kinase domain",
+      "source_annotation_text": "C1orf43 (NM_001098616) - NTRK1 (NM_002529): c.168+114:C1orf43_c.1713:NTRK1inv | Protein Fusion: mid-exon  {C1orf43:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0024231-T01-IM6-33",
+      "sample_id": "P-0024231-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "MEF2D-NTRK1",
+      "partner_gene": "MEF2D",
+      "frame_status": "in-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 156845756,
+      "breakpoint_exon": 12,
+      "breakpoint_protein_position": 501,
+      "is_intronic_breakpoint": true,
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "retained_domains": "PF13855; PF13895",
+      "lost_domains": "Protein kinase domain",
+      "disrupted_domains": "",
+      "source_annotation_text": "NTRK1 (NM_002529) - MEF2D (NM_005920) rearrangement: c.1502-116:NTRK1_c.1006+1908:MEF2Binv | Protein Fusion: in frame  {NTRK1:MEF2D}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0045731-T01-IM6-35",
+      "sample_id": "P-0045731-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "NOS1AP-NTRK1",
+      "partner_gene": "NOS1AP",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156843455,
+      "breakpoint_exon": 8,
+      "breakpoint_protein_position": 294,
+      "is_intronic_breakpoint": false,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "NOS1AP (NM_014697) - NTRK1 (NM_002529) fusion: c.1106-363:NOS1AP_c.881:NTRK1dup | Protein Fusion: mid-exon  {NOS1AP:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0026354-T01-IM6-36",
+      "sample_id": "P-0026354-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "NTRK1-ARHGEF11",
+      "partner_gene": "ARHGEF11",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156845184,
+      "breakpoint_exon": 12,
+      "breakpoint_protein_position": 452,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "ARHGEF11 (NM_198236) - NTRK1 (NM_002529)  rearrangement: c.4631-285:ARHGEF11_c.1355-128:NTRK1inv | Protein Fusion: in frame  {ARHGEF11:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0035466-T01-IM6-37",
+      "sample_id": "P-0035466-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "NTRK1-ATP1A2",
+      "partner_gene": "ATP1A2",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156844714,
+      "breakpoint_exon": 11,
+      "breakpoint_protein_position": 423,
+      "is_intronic_breakpoint": false,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "ATP1A2 (NM_000702) - NTRK1 (NM_002529) rearrangement: c.2563+2:ATP1A2_c.1268:NTRK1dup | Protein Fusion: mid-exon  {ATP1A2:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0058090-T04-IM7-38",
+      "sample_id": "P-0058090-T04-IM7",
+      "patient_id": null,
+      "fusion_name": "NTRK1-CADM3",
+      "partner_gene": "CADM3",
+      "frame_status": "out-of-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 156836298,
+      "breakpoint_exon": 3,
+      "breakpoint_protein_position": 120,
+      "is_intronic_breakpoint": true,
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "retained_domains": "",
+      "lost_domains": "Protein kinase domain; PF13895",
+      "disrupted_domains": "PF13855",
+      "source_annotation_text": "NTRK1 (NM_002529) - CADM3 (NM_021189) rearrangement: c.360-404:NTRK1_c.88+5312:CADM3del | Protein Fusion: out of frame  {NTRK1:CADM3}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0021262-T01-IM6-41",
+      "sample_id": "P-0021262-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "NTRK1-F11R",
+      "partner_gene": "F11R",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156844288,
+      "breakpoint_exon": 10,
+      "breakpoint_protein_position": 399,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "F11R (NM_016946) - NTRK1 (NM_002529) rearrangement: c.389-101:F11R_c.1196-75:NTRK1inv | Protein Fusion: in frame  {F11R:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0022467-T01-IM6-42",
+      "sample_id": "P-0022467-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "NTRK1-IRF2BP2",
+      "partner_gene": "IRF2BP2",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156844129,
+      "breakpoint_exon": 9,
+      "breakpoint_protein_position": 393,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "IRF2BP2 (NM_001077397) - NTRK1 (NM_002529) fusion (IRF2BP2 exon 1 fused with NTRK1 exons 9-17): c.1001-193:IRF2BP2_c.1178-46:NTRK1inv | Protein Fusion: in frame  {IRF2BP2:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0010628-T01-IM5-43",
+      "sample_id": "P-0010628-T01-IM5",
+      "patient_id": null,
+      "fusion_name": "NTRK1-IRF2BP2",
+      "partner_gene": "IRF2BP2",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156844224,
+      "breakpoint_exon": 10,
+      "breakpoint_protein_position": 399,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "IRF2BP2 (NM_001077397) - NTRK1 (NM_002529) rearrangement : c.948:IRF2BP2_1195+32:NTRK1inv | Protein fusion: mid-exon (IRF2BP2-NTRK1)",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0010628-T03-IM6-44",
+      "sample_id": "P-0010628-T03-IM6",
+      "patient_id": null,
+      "fusion_name": "NTRK1-IRF2BP2",
+      "partner_gene": "IRF2BP2",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156844223,
+      "breakpoint_exon": 10,
+      "breakpoint_protein_position": 399,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "IRF2BP2 (NM_001077397) - NTRK1 (NM_002529) rearrangement: c.950:IRF2BP2_c.1195+31:NTRK1inv | Protein Fusion: mid-exon  {IRF2BP2:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0027278-T01-IM6-45",
+      "sample_id": "P-0027278-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "NTRK1-KIF21B",
+      "partner_gene": "KIF21B",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156843723,
+      "breakpoint_exon": 8,
+      "breakpoint_protein_position": 383,
+      "is_intronic_breakpoint": false,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "KIF21B (NM_001252100) - NTRK1 (NM_002529) rearrangement: c.2077+601:KIF21B_c.1149:NTRK1inv | Protein Fusion: mid-exon  {KIF21B:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0056197-T01-IM6-46",
+      "sample_id": "P-0056197-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "NTRK1-NELFCD",
+      "partner_gene": "NELFCD",
+      "frame_status": "out-of-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 156843148,
+      "breakpoint_exon": 7,
+      "breakpoint_protein_position": 284,
+      "is_intronic_breakpoint": true,
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "retained_domains": "PF13855; PF13895",
+      "lost_domains": "Protein kinase domain",
+      "disrupted_domains": "",
+      "source_annotation_text": "NTRK1 (NM_002529) - NELFCD (NM_198976) rearrangement: t(1;20)(q23.1;q13.32)(chr1:g.156843148::chr20:g.57565762) | Protein Fusion: out of frame  {NTRK1:NELFCD}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0027277-T01-IM6-79",
+      "sample_id": "P-0027277-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "NTRK1-PEAR1",
+      "partner_gene": "PEAR1",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156844219,
+      "breakpoint_exon": 10,
+      "breakpoint_protein_position": 399,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "PEAR1 (NM_001080471) - NTRK1 (NM_002529) fusion (PEAR1 exons 1-15 fused to NTRK1 exons 9-17): c.1951+466:PEAR1_c.1195+27:NTRK1dup | Protein Fusion: in frame  {PEAR1:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0029892-T05-IM6-80",
+      "sample_id": "P-0029892-T05-IM6",
+      "patient_id": null,
+      "fusion_name": "NTRK1-PLEKHA6",
+      "partner_gene": "PLEKHA6",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156844239,
+      "breakpoint_exon": 10,
+      "breakpoint_protein_position": 399,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "PLEKHA6 (NM_014935) - NTRK1 (NM_002529) fusion: c.2032+105:PLEKHA6_c.1195+47:NTRK1inv | Protein Fusion: in frame  {PLEKHA6:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0029892-T04-IM6-81",
+      "sample_id": "P-0029892-T04-IM6",
+      "patient_id": null,
+      "fusion_name": "NTRK1-PLEKHA6",
+      "partner_gene": "PLEKHA6",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156844239,
+      "breakpoint_exon": 10,
+      "breakpoint_protein_position": 399,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "PLEKHA6 (NM_014935) - NTRK1 (NM_002529) fusion: c.2032+105:PLEKHA6_c.1195+47:NTRK1inv | Protein Fusion: in frame  {PLEKHA6:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0029892-T03-IM6-82",
+      "sample_id": "P-0029892-T03-IM6",
+      "patient_id": null,
+      "fusion_name": "NTRK1-PLEKHA6",
+      "partner_gene": "PLEKHA6",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156844239,
+      "breakpoint_exon": 10,
+      "breakpoint_protein_position": 399,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "PLEKHA6 (NM_014935) - NTRK1 (NM_002529) fusion: c.2032+105:PLEKHA6_c.1195+47:NTRK1inv | Protein Fusion: in frame  {PLEKHA6:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0038819-T01-IM6-83",
+      "sample_id": "P-0038819-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "NTRK1-RAB25",
+      "partner_gene": "RAB25",
+      "frame_status": "out-of-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 156844458,
+      "breakpoint_exon": 10,
+      "breakpoint_protein_position": 417,
+      "is_intronic_breakpoint": true,
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "retained_domains": "PF13855; PF13895",
+      "lost_domains": "Protein kinase domain",
+      "disrupted_domains": "",
+      "source_annotation_text": "NTRK1 (NM_002529) - RAB25 (NM_020387) Rearrangement : | Protein Fusion: out of frame  {NTRK1:RAB25}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0015004-T01-IM6-84",
+      "sample_id": "P-0015004-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "NTRK1-RABGAP1L",
+      "partner_gene": "RABGAP1L",
+      "frame_status": "out-of-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 156844972,
+      "breakpoint_exon": 11,
+      "breakpoint_protein_position": 452,
+      "is_intronic_breakpoint": true,
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "retained_domains": "PF13855; PF13895",
+      "lost_domains": "Protein kinase domain",
+      "disrupted_domains": "",
+      "source_annotation_text": "NTRK1 (NM_002529) - RABGAP1L (NM_014857) rearrangement: c.1354+172:NTRK1_c.2340+50594:RABGAP1Ldel | Protein fusion: out of frame (NTRK1-RABGAP1L)",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0038568-T01-IM6-85",
+      "sample_id": "P-0038568-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "NTRK1-SEMA4A",
+      "partner_gene": "SEMA4A",
+      "frame_status": "out-of-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 156841963,
+      "breakpoint_exon": 7,
+      "breakpoint_protein_position": 284,
+      "is_intronic_breakpoint": true,
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "retained_domains": "PF13855; PF13895",
+      "lost_domains": "Protein kinase domain",
+      "disrupted_domains": "",
+      "source_annotation_text": "NTRK1 (NM_002529) - SEMA4A (NM_001193300) rearrangement: c.850+416:NTRK1_c.301-270:SEMA4Adup | Protein Fusion: out of frame  {NTRK1:SEMA4A}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0048896-T01-IM6-86",
+      "sample_id": "P-0048896-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "NTRK1-SMYD2",
+      "partner_gene": "SMYD2",
+      "frame_status": "unknown",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 156844382,
+      "breakpoint_exon": 10,
+      "breakpoint_protein_position": 405,
+      "is_intronic_breakpoint": false,
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "retained_domains": "PF13855; PF13895",
+      "lost_domains": "Protein kinase domain",
+      "disrupted_domains": "",
+      "source_annotation_text": "NTRK1 (NM_002529) - SMYD2 (NM_020197) rearrangement: c.1215:NTRK1_c.602+876:SMYD2del | Protein Fusion: mid-exon  {NTRK1:SMYD2}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0023987-T01-IM6-88",
+      "sample_id": "P-0023987-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "NTRK1-TPR",
+      "partner_gene": "TPR",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156844285,
+      "breakpoint_exon": 10,
+      "breakpoint_protein_position": 399,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "TPR (NM_003292) - NTRK1 (NM_002529) rearrangement: c.2902:TPR_c.1196-78:NTRK1inv | Protein Fusion: mid-exon  {TPR:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0024549-T03-IM6-89",
+      "sample_id": "P-0024549-T03-IM6",
+      "patient_id": null,
+      "fusion_name": "NTRK1-TPR",
+      "partner_gene": "TPR",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156844290,
+      "breakpoint_exon": 10,
+      "breakpoint_protein_position": 399,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "TPR (NM_003292) - NTRK1 (NM_002529) fusion: c.2776+651_c.1196-73inv | Protein Fusion: in frame  {TPR:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0007050-T01-IM5-90",
+      "sample_id": "P-0007050-T01-IM5",
+      "patient_id": null,
+      "fusion_name": "NTRK1-VANGL2",
+      "partner_gene": "VANGL2",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156845141,
+      "breakpoint_exon": 12,
+      "breakpoint_protein_position": 452,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "VANGL2 (NM_020335) - NTRK1(NM_002529) rearrangement : c.-191+4456:VANGL2_c.1355-171:NTRK1dup | Transcript fusion (VANGL2-NTRK1)",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0006172-T01-IM5-91",
+      "sample_id": "P-0006172-T01-IM5",
+      "patient_id": null,
+      "fusion_name": "P2RY8-NTRK1",
+      "partner_gene": "P2RY8",
+      "frame_status": "unknown",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 156838012,
+      "breakpoint_exon": 5,
+      "breakpoint_protein_position": 182,
+      "is_intronic_breakpoint": false,
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "retained_domains": "PF13855",
+      "lost_domains": "Protein kinase domain; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "P2RY8(NM_178129) - NTRK1 (NM_002529) rearrangement: t(X;1)(chrX:g.1598513::chr1:g.156838012) | Protein fusion: mid-exon (NTRK1-P2RY8)",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0042526-T02-IM6-92",
+      "sample_id": "P-0042526-T02-IM6",
+      "patient_id": null,
+      "fusion_name": "PRCC-NTRK1",
+      "partner_gene": "PRCC",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156834591,
+      "breakpoint_exon": 3,
+      "breakpoint_protein_position": 120,
+      "is_intronic_breakpoint": false,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain; PF13895",
+      "lost_domains": "",
+      "disrupted_domains": "PF13855",
+      "source_annotation_text": "PRCC (NM_005973) - NTRK1 (NM_002529) fusion: c.1323+10:PRCC_c.359:NTRK1del | Protein Fusion: mid-exon  {PRCC:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0044467-T01-IM6-93",
+      "sample_id": "P-0044467-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "SCP2-NTRK1",
+      "partner_gene": "SCP2",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156844773,
+      "breakpoint_exon": 11,
+      "breakpoint_protein_position": 443,
+      "is_intronic_breakpoint": false,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "SCP2 (NM_002979) - NTRK1 (NM_002529) fusion: c.1338+1979:SCP2_c.1327:NTRK1del | Protein Fusion: mid-exon  {SCP2:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0036662-T01-IM6-94",
+      "sample_id": "P-0036662-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "SHPRH-NTRK1",
+      "partner_gene": "SHPRH",
+      "frame_status": "out-of-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 156831180,
+      "breakpoint_exon": 1,
+      "breakpoint_protein_position": 71,
+      "is_intronic_breakpoint": true,
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "retained_domains": "",
+      "lost_domains": "Protein kinase domain; PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "NTRK1 (NM_002529) - SHPRH (NM_001042683) rearrangement: t(1;6)(q231;q24.3)(chr1:g.156831180::chr6:g.146225530) | Protein Fusion: out of frame  {NTRK1:SHPRH}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0055621-T05-IM6-95",
+      "sample_id": "P-0055621-T05-IM6",
+      "patient_id": null,
+      "fusion_name": "SLAMF6-NTRK1",
+      "partner_gene": "SLAMF6",
+      "frame_status": "out-of-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156836411,
+      "breakpoint_exon": 4,
+      "breakpoint_protein_position": 120,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain; PF13895",
+      "lost_domains": "",
+      "disrupted_domains": "PF13855",
+      "source_annotation_text": "SLAMF6 (NM_052931) - NTRK1 (NM_002529) fusion: c.50-1837:SLAMF6_c.360-291:NTRK1inv | Protein Fusion: out of frame  {SLAMF6:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0055621-T02-IM6-96",
+      "sample_id": "P-0055621-T02-IM6",
+      "patient_id": null,
+      "fusion_name": "SLAMF6-NTRK1",
+      "partner_gene": "SLAMF6",
+      "frame_status": "out-of-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156836411,
+      "breakpoint_exon": 4,
+      "breakpoint_protein_position": 120,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain; PF13895",
+      "lost_domains": "",
+      "disrupted_domains": "PF13855",
+      "source_annotation_text": "SLAMF6 (NM_052931) - NTRK1 (NM_002529) rearrangement: c.50-1839:SLAMF6_c.360-291:NTRK1inv | Protein Fusion: out of frame  {SLAMF6:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0055621-T01-IM6-97",
+      "sample_id": "P-0055621-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "SLAMF6-NTRK1",
+      "partner_gene": "SLAMF6",
+      "frame_status": "out-of-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156836411,
+      "breakpoint_exon": 4,
+      "breakpoint_protein_position": 120,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain; PF13895",
+      "lost_domains": "",
+      "disrupted_domains": "PF13855",
+      "source_annotation_text": "SLAMF6 (NM_052931) - NTRK1 (NM_002529) rearrangement: c.50-1839:SLAMF6_c.360-291:NTRK1inv | Protein Fusion: out of frame  {SLAMF6:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0022936-T01-IM6-98",
+      "sample_id": "P-0022936-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "STK11-NTRK1",
+      "partner_gene": "STK11",
+      "frame_status": "unknown",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 156848955,
+      "breakpoint_exon": 15,
+      "breakpoint_protein_position": 616,
+      "is_intronic_breakpoint": false,
+      "domain_status": "disrupted",
+      "domain_retained_fraction": 0.3888888888888889,
+      "domain_is_truncated": true,
+      "retained_domains": "PF13855; PF13895",
+      "lost_domains": "",
+      "disrupted_domains": "Protein kinase domain",
+      "source_annotation_text": "NTRK1 (NM_002529) - STK11 (NM_000455) rearrangement: t(1;19)(;)(chr1:g.56848955::chr19:g.204186) | Protein Fusion: mid-exon  {NTRK1:STK11}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0024875-T01-IM6-99",
+      "sample_id": "P-0024875-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "TAFA2-NTRK1",
+      "partner_gene": "TAFA2",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156836548,
+      "breakpoint_exon": 4,
+      "breakpoint_protein_position": 120,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain; PF13895",
+      "lost_domains": "",
+      "disrupted_domains": "PF13855",
+      "source_annotation_text": "NTRK1 (NM_002529) rearrangement: t(1;12)(q23.1;q14.1)(chr1:g.156836548::chr12:g.62314748) | Transcript Fusion {FAM19A2:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0069757-T01-IM7-100",
+      "sample_id": "P-0069757-T01-IM7",
+      "patient_id": null,
+      "fusion_name": "TARS2-NTRK1",
+      "partner_gene": "TARS2",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156838028,
+      "breakpoint_exon": 5,
+      "breakpoint_protein_position": 187,
+      "is_intronic_breakpoint": false,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain; PF13895",
+      "lost_domains": "PF13855",
+      "disrupted_domains": "",
+      "source_annotation_text": "TARS2 (NM_025150) - NTRK1 (NM_002529) fusion: c.264-188:TARS2_c.561:NTRK1del | Protein Fusion: mid-exon  {TARS2:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0050767-T01-IM6-101",
+      "sample_id": "P-0050767-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "TPM3-NTRK1",
+      "partner_gene": "TPM3",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156845252,
+      "breakpoint_exon": 12,
+      "breakpoint_protein_position": 452,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "TPM3(NM_153469) - NTRK1 (NM_002529) Fusion(TPM3 exon 12 with NTRK1 exon12): c.665-654:TPM3_c.1355-60:NTRK1inv | Protein Fusion: in frame  {TPM3:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0049078-T04-IM6-102",
+      "sample_id": "P-0049078-T04-IM6",
+      "patient_id": null,
+      "fusion_name": "TPM3-NTRK1",
+      "partner_gene": "TPM3",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156843537,
+      "breakpoint_exon": 8,
+      "breakpoint_protein_position": 321,
+      "is_intronic_breakpoint": false,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "TPM3 (NM_001278190) - NTRK1 (NM_002529)  fusion: c.395-6179:TPM3_ c.963:NTRK1inv | Protein Fusion: mid-exon  {TPM3:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0049078-T01-IM6-103",
+      "sample_id": "P-0049078-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "TPM3-NTRK1",
+      "partner_gene": "TPM3",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156843537,
+      "breakpoint_exon": 8,
+      "breakpoint_protein_position": 321,
+      "is_intronic_breakpoint": false,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "TPM3 (NM_001278190) - NTRK1 (NM_002529)  fusion: c.395-6179:TPM3_ c.963:NTRK1inv | Protein Fusion: mid-exon  {TPM3:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0046877-T02-IM6-104",
+      "sample_id": "P-0046877-T02-IM6",
+      "patient_id": null,
+      "fusion_name": "TPM3-NTRK1",
+      "partner_gene": "TPM3",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156843811,
+      "breakpoint_exon": 9,
+      "breakpoint_protein_position": 393,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "TPM3 (NM_152263) - NTRK1 (NM_002529) fusion: c.776-357:TPM3_c.1177+60:NTRK1inv | Protein Fusion: in frame  {TPM3:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0026375-T04-IM6-105",
+      "sample_id": "P-0026375-T04-IM6",
+      "patient_id": null,
+      "fusion_name": "TPM3-NTRK1",
+      "partner_gene": "TPM3",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156844046,
+      "breakpoint_exon": 9,
+      "breakpoint_protein_position": 393,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "TPM3 (NM_152263) - NTRK1 (NM_002529) fusion: c.775+355:TPM3_c.1178-129:NTRK1inv | Protein Fusion: in frame  {TPM3:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0026375-T01-IM6-106",
+      "sample_id": "P-0026375-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "TPM3-NTRK1",
+      "partner_gene": "TPM3",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156844046,
+      "breakpoint_exon": 9,
+      "breakpoint_protein_position": 393,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "TPM3 (NM_152263) - NTRK1 (NM_002529) fusion (TPM3 exons 1-8 fused to NTRK1 exons 9-17): c.775+355:TPM3_c.1178-129:NTRK1inv | Protein Fusion: in frame  {TPM3:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0025815-T02-IM6-107",
+      "sample_id": "P-0025815-T02-IM6",
+      "patient_id": null,
+      "fusion_name": "TPM3-NTRK1",
+      "partner_gene": "TPM3",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156844230,
+      "breakpoint_exon": 10,
+      "breakpoint_protein_position": 399,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "TPM3 (NM_152263) - NTRK1 (NM_002529) fusion (TPM3  exons 1-6 with NTRK1 exons 10-17): c.*6032:TPM3_c.1195+38:NTRK1inv | Protein Fusion: in frame  {TPM3:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0021467-T01-IM6-108",
+      "sample_id": "P-0021467-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "TPM3-NTRK1",
+      "partner_gene": "TPM3",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156844038,
+      "breakpoint_exon": 9,
+      "breakpoint_protein_position": 393,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "TPM3 (NM_152263) - NTRK1 (NM_002529) fusion (TPM3 exons 1-6 fused in-frame to NTRK1 exons 9-17): c.*652:TPM3_c.1178-137:NTRK1inv | Protein Fusion: in frame  {TPM3:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0021170-T03-IM6-109",
+      "sample_id": "P-0021170-T03-IM6",
+      "patient_id": null,
+      "fusion_name": "TPM3-NTRK1",
+      "partner_gene": "TPM3",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156845218,
+      "breakpoint_exon": 12,
+      "breakpoint_protein_position": 452,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "TPM3 (NM_152263) - NTRK1 (NM_002529) fusion (TPM3 exons 1-8 fused to NTRK1 exons 12-17): c.775+235:TPM3_c.1355-94:NTRK1inv | Protein Fusion: in frame  {TPM3:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0021170-T02-IM6-110",
+      "sample_id": "P-0021170-T02-IM6",
+      "patient_id": null,
+      "fusion_name": "TPM3-NTRK1",
+      "partner_gene": "TPM3",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156845218,
+      "breakpoint_exon": 12,
+      "breakpoint_protein_position": 452,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "TPM3 (NM_152263) - NTRK1 (NM_002529) fusion (TPM3 exons 1-8 fused to NTRK1 exons 12-17): c.775+235:TPM3_c.1355-94:NTRK1inv | Protein Fusion: in frame  {TPM3:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0014143-T01-IM5-111",
+      "sample_id": "P-0014143-T01-IM5",
+      "patient_id": null,
+      "fusion_name": "TPM3-NTRK1",
+      "partner_gene": "TPM3",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156844002,
+      "breakpoint_exon": 9,
+      "breakpoint_protein_position": 393,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "TPM3 (NM_152263) - NTRK1 (NM_002529) fusion (TPM3 exons 1-10 fused in-frame to NTRK1 exons 9-17): c.*1568:TPM3_c.1178-173:NTRK1inv | Protein fusion: in frame (TPM3-NTRK1)",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0069266-T01-IM7-112",
+      "sample_id": "P-0069266-T01-IM7",
+      "patient_id": null,
+      "fusion_name": "TPM3-NTRK1",
+      "partner_gene": "TPM3",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156843601,
+      "breakpoint_exon": 8,
+      "breakpoint_protein_position": 343,
+      "is_intronic_breakpoint": false,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "TPM3 (NM_152263) - NTRK1 (NM_002529) fusion: c.854+282:TPM3_c.1027:NTRK1inv | Protein Fusion: mid-exon  {TPM3:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0049951-T01-IM6-113",
+      "sample_id": "P-0049951-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "TPR-NTRK1",
+      "partner_gene": "TPR",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156844660,
+      "breakpoint_exon": 11,
+      "breakpoint_protein_position": 418,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "TPR (NM_003292) - NTRK1 (NM_002529) fusion: c.2610+187:TPR_c.1252-38:NTRK1inv | Protein Fusion: in frame  {TPR:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0042965-T01-IM6-114",
+      "sample_id": "P-0042965-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "TPR-NTRK1",
+      "partner_gene": "TPR",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156843703,
+      "breakpoint_exon": 8,
+      "breakpoint_protein_position": 377,
+      "is_intronic_breakpoint": false,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "TPR (NM_003292) - NTRK1 (NM_002529) fusion: c.2776+531:TPR_c.1129:NTRK1inv | Protein Fusion: mid-exon  {TPR:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0065034-T02-IM7-115",
+      "sample_id": "P-0065034-T02-IM7",
+      "patient_id": null,
+      "fusion_name": "TPR-NTRK1",
+      "partner_gene": "TPR",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156843651,
+      "breakpoint_exon": 8,
+      "breakpoint_protein_position": 359,
+      "is_intronic_breakpoint": false,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "TPR (NM_003292) - NTRK1 (NM_002529) fusion: c.2777-512:TPR_c.1077:NTRK1inv | Protein Fusion: mid-exon  {TPR:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0016347-T01-IM6-116",
+      "sample_id": "P-0016347-T01-IM6",
+      "patient_id": null,
+      "fusion_name": "TRIM63-NTRK1",
+      "partner_gene": "TRIM63",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156844048,
+      "breakpoint_exon": 9,
+      "breakpoint_protein_position": 393,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "TRIM63 (NM_032588) - NTRK1 (NM_002529) Rearrangement : c.1051+386:TRIM63_c.1178-127:NTRK1inv | Protein Fusion: in frame  {TRIM63:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0007755-T02-IM5-117",
+      "sample_id": "P-0007755-T02-IM5",
+      "patient_id": null,
+      "fusion_name": "TRPM8-NTRK1",
+      "partner_gene": "TRPM8",
+      "frame_status": "out-of-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156845664,
+      "breakpoint_exon": 13,
+      "breakpoint_protein_position": 501,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "TRPM8 (NM_024080) - NTRK1 (NM_002529) rearrangement: t(1;2)(q23.1; q27.1)(chr1:g.156845664::chr2:g.234866124) | Protein fusion: out of frame (TRPM8-NTRK1)",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0000104-T02-IM6-118",
+      "sample_id": "P-0000104-T02-IM6",
+      "patient_id": null,
+      "fusion_name": "ZBTB7B-NTRK1",
+      "partner_gene": "ZBTB7B",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 156845173,
+      "breakpoint_exon": 12,
+      "breakpoint_protein_position": 452,
+      "is_intronic_breakpoint": true,
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "PF13855; PF13895",
+      "disrupted_domains": "",
+      "source_annotation_text": "ZBTB7B (NM_001252406) -  NTRK1 (NM_002529) Rearrangement : c.944:ZBTB7B_c.1355-139:NTRK1del | Protein fusion: mid-exon (ZBTB7B-NTRK1)",
+      "source_site2_effect_on_frame": "NA"
+    }
+  ],
+  "algorithm_results": [
+    {
+      "Algorithm": "composite_score",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "weights": {
+          "recurrence": 0.3,
+          "domain_retention": 0.25,
+          "domain_disruption": 0.2,
+          "cutpoint_proximity": 0.15,
+          "confidence_certainty": 0.1
+        },
+        "neg_log10_p_cap": 10.0
+      },
+      "Summary": {
+        "gene_symbol": "NTRK1",
+        "n_partners_ranked": 43,
+        "total_events": 78,
+        "components_applicable": {
+          "recurrence": true,
+          "domain_retention": true,
+          "domain_disruption": true,
+          "cutpoint_proximity": true,
+          "confidence_certainty": true
+        },
+        "domain_retention_p_value_used": 0.009900990099009901,
+        "domain_disruption_p_value_used": 0.49504950495049505,
+        "inferred_cutpoint_aa": 501,
+        "Runtime_seconds": 0.0002212919935118407
+      },
+      "Tables": {
+        "composite_evidence_ranking": [
+          {
+            "Partner_gene": "LMNA",
+            "Event_count": 12,
+            "Recurrence_score": 0.15384615384615385,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.852906976744186,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.2923325131939558,
+            "Rank": 1
+          },
+          {
+            "Partner_gene": "TPM3",
+            "Event_count": 12,
+            "Recurrence_score": 0.15384615384615385,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.7467054263565891,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.2764022806358163,
+            "Rank": 2
+          },
+          {
+            "Partner_gene": "MEF2D",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 1.0,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.27208877437463563,
+            "Rank": 3
+          },
+          {
+            "Partner_gene": "TRPM8",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 1.0,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.27208877437463563,
+            "Rank": 4
+          },
+          {
+            "Partner_gene": "ARHGEF11",
+            "Event_count": 2,
+            "Recurrence_score": 0.02564102564102564,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.9430232558139535,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.2673884165928825,
+            "Rank": 5
+          },
+          {
+            "Partner_gene": "RABGAP1L",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.8860465116279069,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.25499575111882167,
+            "Rank": 6
+          },
+          {
+            "Partner_gene": "VANGL2",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.8860465116279069,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.25499575111882167,
+            "Rank": 7
+          },
+          {
+            "Partner_gene": "ZBTB7B",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.8860465116279069,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.25499575111882167,
+            "Rank": 8
+          },
+          {
+            "Partner_gene": "SCP2",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.8651162790697674,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.2518562162351007,
+            "Rank": 9
+          },
+          {
+            "Partner_gene": "TPR",
+            "Event_count": 5,
+            "Recurrence_score": 0.0641025641025641,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.7427906976744186,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.2488919944104138,
+            "Rank": 10
+          },
+          {
+            "Partner_gene": "LTAP1",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.8372093023255813,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.2476701697234728,
+            "Rank": 11
+          },
+          {
+            "Partner_gene": "ATP1A2",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.8186046511627907,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.24487947204905422,
+            "Rank": 12
+          },
+          {
+            "Partner_gene": "PLEKHA6",
+            "Event_count": 3,
+            "Recurrence_score": 0.038461538461538464,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.7627906976744185,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.24419968671810607,
+            "Rank": 13
+          },
+          {
+            "Partner_gene": "IRF2BP2",
+            "Event_count": 3,
+            "Recurrence_score": 0.038461538461538464,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.758139534883721,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.24350201229950144,
+            "Rank": 14
+          },
+          {
+            "Partner_gene": "ANKRD36",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.8069767441860465,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.24313528600254258,
+            "Rank": 15
+          },
+          {
+            "Partner_gene": "RAB25",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.8046511627906977,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.24278644879324027,
+            "Rank": 16
+          },
+          {
+            "Partner_gene": "IQGAP3",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.7976744186046512,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.2417399371653333,
+            "Rank": 17
+          },
+          {
+            "Partner_gene": "SMYD2",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.7767441860465116,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.23860040228161236,
+            "Rank": 18
+          },
+          {
+            "Partner_gene": "EML4",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.7627906976744185,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.23650737902579838,
+            "Rank": 19
+          },
+          {
+            "Partner_gene": "EPS15",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.7627906976744185,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.23650737902579838,
+            "Rank": 20
+          },
+          {
+            "Partner_gene": "F11R",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.7627906976744185,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.23650737902579838,
+            "Rank": 21
+          },
+          {
+            "Partner_gene": "PEAR1",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.7627906976744185,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.23650737902579838,
+            "Rank": 22
+          },
+          {
+            "Partner_gene": "AFAP1",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.7488372093023256,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.23441435576998446,
+            "Rank": 23
+          },
+          {
+            "Partner_gene": "DIAPH1",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.7488372093023256,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.23441435576998446,
+            "Rank": 24
+          },
+          {
+            "Partner_gene": "TRIM63",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.7488372093023256,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.23441435576998446,
+            "Rank": 25
+          },
+          {
+            "Partner_gene": "STK11",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.7325581395348837,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.23197249530486816,
+            "Rank": 26
+          },
+          {
+            "Partner_gene": "KIF21B",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.7255813953488373,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.2309259836769612,
+            "Rank": 27
+          },
+          {
+            "Partner_gene": "GON4L",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.7162790697674419,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.22953063483975192,
+            "Rank": 28
+          },
+          {
+            "Partner_gene": "BCAN",
+            "Event_count": 2,
+            "Recurrence_score": 0.02564102564102564,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.49534883720930234,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.20023725380218482,
+            "Rank": 29
+          },
+          {
+            "Partner_gene": "CTRC",
+            "Event_count": 2,
+            "Recurrence_score": 0.02564102564102564,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.49534883720930234,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.20023725380218482,
+            "Rank": 30
+          },
+          {
+            "Partner_gene": "NOS1AP",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.5186046511627906,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.1998794720490542,
+            "Rank": 31
+          },
+          {
+            "Partner_gene": "NELFCD",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.49534883720930234,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.19639109995603096,
+            "Rank": 32
+          },
+          {
+            "Partner_gene": "SEMA4A",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.49534883720930234,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.19639109995603096,
+            "Rank": 33
+          },
+          {
+            "Partner_gene": "COP1",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.4534883720930233,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.1901120301885891,
+            "Rank": 34
+          },
+          {
+            "Partner_gene": "TARS2",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.2697674418604651,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.16255389065370537,
+            "Rank": 35
+          },
+          {
+            "Partner_gene": "P2RY8",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.2581395348837209,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.16080970460719374,
+            "Rank": 36
+          },
+          {
+            "Partner_gene": "SLAMF6",
+            "Event_count": 3,
+            "Recurrence_score": 0.038461538461538464,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.11395348837209307,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.14687410532275727,
+            "Rank": 37
+          },
+          {
+            "Partner_gene": "DDR2",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.14363385220545366,
+            "Rank": 38
+          },
+          {
+            "Partner_gene": "METTL25B",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.14363385220545366,
+            "Rank": 39
+          },
+          {
+            "Partner_gene": "CADM3",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.11395348837209307,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.13918179763044958,
+            "Rank": 40
+          },
+          {
+            "Partner_gene": "PRCC",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.11395348837209307,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.13918179763044958,
+            "Rank": 41
+          },
+          {
+            "Partner_gene": "TAFA2",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.11395348837209307,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.13918179763044958,
+            "Rank": 42
+          },
+          {
+            "Partner_gene": "SHPRH",
+            "Event_count": 1,
+            "Recurrence_score": 0.01282051282051282,
+            "Domain_retention_score": 0.20043213737826426,
+            "Domain_disruption_score": 0.030535136944662377,
+            "Cutpoint_proximity_score": 0.0,
+            "Confidence_certainty_score": 0.6202755879498323,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.12208877437463561,
+            "Rank": 43
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-09-05T01:37:40.634297Z",
+      "Input_fingerprint": "76abf6446396e299145209ae6e17094e1d78d88c99ddb517d9fa21d3bc0ac224"
+    },
+    {
+      "Algorithm": "confidence_stats",
+      "Algorithm_version": "1.0.0",
+      "Parameters": {
+        "group_field": "Domain_retention_flags",
+        "group_key": "kinase",
+        "group_value_map": {
+          "retained": "retained",
+          "lost": "not_retained",
+          "disrupted": "not_retained",
+          "unknown": null
+        },
+        "group_values": [
+          "retained",
+          "not_retained"
+        ],
+        "outcome_field": "Frame_status",
+        "outcome_success_value": "in-frame",
+        "outcome_valid_values": [
+          "in-frame",
+          "out-of-frame"
+        ],
+        "numeric_field": "Tumor_variant_count"
+      },
+      "Summary": {
+        "group_field": "Domain_retention_flags",
+        "group_a_label": "retained",
+        "group_b_label": "not_retained",
+        "n_group_a": 64,
+        "n_group_b": 12,
+        "mle": {
+          "outcome_field": "Frame_status",
+          "groups": {
+            "retained": {
+              "n": 36,
+              "successes": 30,
+              "point_estimate": 0.8333333333333334,
+              "ci_low": 0.6810920568872054,
+              "ci_high": 0.9212955240498188,
+              "method": "wilson"
+            },
+            "not_retained": {
+              "n": 8,
+              "successes": 2,
+              "point_estimate": 0.25,
+              "ci_low": 0.071479212752109,
+              "ci_high": 0.5907245696898311,
+              "method": "wilson"
+            }
+          }
+        },
+        "ttest": {
+          "numeric_field": "Tumor_variant_count",
+          "group_a_label": "retained",
+          "group_b_label": "not_retained",
+          "n_a": 64,
+          "n_b": 12,
+          "t_statistic": 1.3109360175728753,
+          "p_value": 0.20031373213588627,
+          "df": 28.58540143561933,
+          "mean_a": 66.359375,
+          "mean_b": 43.25
+        },
+        "Runtime_seconds": 0.003145208000205457
+      },
+      "Tables": null,
+      "Warnings": [],
+      "Created_at": "2026-09-05T01:37:39.820606Z",
+      "Input_fingerprint": "76abf6446396e299145209ae6e17094e1d78d88c99ddb517d9fa21d3bc0ac224"
+    },
+    {
+      "Algorithm": "cutpoint_detection",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 100,
+        "adaptive": true
+      },
+      "Summary": {
+        "determinable": true,
+        "reason": null,
+        "n_events_analyzed": 76,
+        "inferred_cutpoint_aa": 501,
+        "observed_statistic_neg_log10_p": 2.5045326441976177,
+        "observed_p_value": 0.0031294452347083927,
+        "observed_odds_ratio": null,
+        "corrected_p_value": 0.019801980198019802,
+        "known_domain_boundary_comparison": {
+          "nearest_known_domain_boundary_aa": 512,
+          "distance_aa": -11
+        },
+        "adaptive_permutations": {
+          "enabled": true,
+          "n_permutations_small": 100,
+          "n_permutations_full": 1000,
+          "n_permutations_used": 100,
+          "escalated_to_full": false
+        },
+        "Runtime_seconds": 0.8016254170215689
+      },
+      "Tables": {
+        "cutpoint_scan": [
+          {
+            "cutpoint": 71,
+            "n_positive_at_or_below": 0,
+            "n_positive_above": 64,
+            "n_negative_at_or_below": 1,
+            "n_negative_above": 11,
+            "odds_ratio": 0.0,
+            "p_value": 0.15789473684210525,
+            "neg_log10_p_value": 0.8016323462331666
+          },
+          {
+            "cutpoint": 120,
+            "n_positive_at_or_below": 5,
+            "n_positive_above": 59,
+            "n_negative_at_or_below": 2,
+            "n_negative_above": 10,
+            "odds_ratio": 0.423728813559322,
+            "p_value": 0.3043106841520683,
+            "neg_log10_p_value": 0.5166827995746912
+          },
+          {
+            "cutpoint": 182,
+            "n_positive_at_or_below": 5,
+            "n_positive_above": 59,
+            "n_negative_at_or_below": 3,
+            "n_negative_above": 9,
+            "odds_ratio": 0.2542372881355932,
+            "p_value": 0.10748982443269033,
+            "neg_log10_p_value": 0.9686326464637113
+          },
+          {
+            "cutpoint": 187,
+            "n_positive_at_or_below": 6,
+            "n_positive_above": 58,
+            "n_negative_at_or_below": 3,
+            "n_negative_above": 9,
+            "odds_ratio": 0.3103448275862069,
+            "p_value": 0.14608214986786255,
+            "neg_log10_p_value": 0.83540284831964
+          },
+          {
+            "cutpoint": 284,
+            "n_positive_at_or_below": 10,
+            "n_positive_above": 54,
+            "n_negative_at_or_below": 5,
+            "n_negative_above": 7,
+            "odds_ratio": 0.25925925925925924,
+            "p_value": 0.05253839246726117,
+            "neg_log10_p_value": 1.2795232195834179
+          },
+          {
+            "cutpoint": 294,
+            "n_positive_at_or_below": 11,
+            "n_positive_above": 53,
+            "n_negative_at_or_below": 5,
+            "n_negative_above": 7,
+            "odds_ratio": 0.29056603773584905,
+            "p_value": 0.11464025310482523,
+            "neg_log10_p_value": 0.9406628637664377
+          },
+          {
+            "cutpoint": 321,
+            "n_positive_at_or_below": 13,
+            "n_positive_above": 51,
+            "n_negative_at_or_below": 5,
+            "n_negative_above": 7,
+            "odds_ratio": 0.3568627450980392,
+            "p_value": 0.14136093824402443,
+            "neg_log10_p_value": 0.8496705809825442
+          },
+          {
+            "cutpoint": 343,
+            "n_positive_at_or_below": 14,
+            "n_positive_above": 50,
+            "n_negative_at_or_below": 5,
+            "n_negative_above": 7,
+            "odds_ratio": 0.392,
+            "p_value": 0.1614921032975089,
+            "neg_log10_p_value": 0.7918487091109843
+          },
+          {
+            "cutpoint": 359,
+            "n_positive_at_or_below": 15,
+            "n_positive_above": 49,
+            "n_negative_at_or_below": 5,
+            "n_negative_above": 7,
+            "odds_ratio": 0.42857142857142855,
+            "p_value": 0.28166616270038797,
+            "neg_log10_p_value": 0.550265322823117
+          },
+          {
+            "cutpoint": 377,
+            "n_positive_at_or_below": 16,
+            "n_positive_above": 48,
+            "n_negative_at_or_below": 5,
+            "n_negative_above": 7,
+            "odds_ratio": 0.4666666666666667,
+            "p_value": 0.29450254706111656,
+            "neg_log10_p_value": 0.530910944782467
+          },
+          {
+            "cutpoint": 379,
+            "n_positive_at_or_below": 17,
+            "n_positive_above": 47,
+            "n_negative_at_or_below": 5,
+            "n_negative_above": 7,
+            "odds_ratio": 0.5063829787234042,
+            "p_value": 0.31247043251825074,
+            "neg_log10_p_value": 0.505191071445305
+          },
+          {
+            "cutpoint": 383,
+            "n_positive_at_or_below": 18,
+            "n_positive_above": 46,
+            "n_negative_at_or_below": 5,
+            "n_negative_above": 7,
+            "odds_ratio": 0.5478260869565217,
+            "p_value": 0.494013437398657,
+            "neg_log10_p_value": 0.30626123790080845
+          },
+          {
+            "cutpoint": 393,
+            "n_positive_at_or_below": 27,
+            "n_positive_above": 37,
+            "n_negative_at_or_below": 5,
+            "n_negative_above": 7,
+            "odds_ratio": 1.0216216216216216,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0
+          },
+          {
+            "cutpoint": 399,
+            "n_positive_at_or_below": 39,
+            "n_positive_above": 25,
+            "n_negative_at_or_below": 5,
+            "n_negative_above": 7,
+            "odds_ratio": 2.184,
+            "p_value": 0.33960073354007925,
+            "neg_log10_p_value": 0.46903138034780045
+          },
+          {
+            "cutpoint": 405,
+            "n_positive_at_or_below": 39,
+            "n_positive_above": 25,
+            "n_negative_at_or_below": 6,
+            "n_negative_above": 6,
+            "odds_ratio": 1.56,
+            "p_value": 0.5328211446391313,
+            "neg_log10_p_value": 0.27341854881920497
+          },
+          {
+            "cutpoint": 411,
+            "n_positive_at_or_below": 40,
+            "n_positive_above": 24,
+            "n_negative_at_or_below": 6,
+            "n_negative_above": 6,
+            "odds_ratio": 1.6666666666666667,
+            "p_value": 0.5236156499522178,
+            "neg_log10_p_value": 0.28098738162793063
+          },
+          {
+            "cutpoint": 414,
+            "n_positive_at_or_below": 41,
+            "n_positive_above": 23,
+            "n_negative_at_or_below": 6,
+            "n_negative_above": 6,
+            "odds_ratio": 1.7826086956521738,
+            "p_value": 0.5184932375861125,
+            "neg_log10_p_value": 0.2852569034951671
+          },
+          {
+            "cutpoint": 417,
+            "n_positive_at_or_below": 41,
+            "n_positive_above": 23,
+            "n_negative_at_or_below": 7,
+            "n_negative_above": 5,
+            "odds_ratio": 1.2732919254658386,
+            "p_value": 0.7509447780617822,
+            "neg_log10_p_value": 0.12439199836843534
+          },
+          {
+            "cutpoint": 418,
+            "n_positive_at_or_below": 48,
+            "n_positive_above": 16,
+            "n_negative_at_or_below": 7,
+            "n_negative_above": 5,
+            "odds_ratio": 2.142857142857143,
+            "p_value": 0.29450254706111656,
+            "neg_log10_p_value": 0.530910944782467
+          },
+          {
+            "cutpoint": 423,
+            "n_positive_at_or_below": 49,
+            "n_positive_above": 15,
+            "n_negative_at_or_below": 7,
+            "n_negative_above": 5,
+            "odds_ratio": 2.3333333333333335,
+            "p_value": 0.28166616270038797,
+            "neg_log10_p_value": 0.550265322823117
+          },
+          {
+            "cutpoint": 443,
+            "n_positive_at_or_below": 50,
+            "n_positive_above": 14,
+            "n_negative_at_or_below": 7,
+            "n_negative_above": 5,
+            "odds_ratio": 2.5510204081632653,
+            "p_value": 0.1614921032975089,
+            "neg_log10_p_value": 0.7918487091109843
+          },
+          {
+            "cutpoint": 452,
+            "n_positive_at_or_below": 61,
+            "n_positive_above": 3,
+            "n_negative_at_or_below": 8,
+            "n_negative_above": 4,
+            "odds_ratio": 10.166666666666666,
+            "p_value": 0.010191376831302902,
+            "neg_log10_p_value": 1.9917671398557228
+          },
+          {
+            "cutpoint": 492,
+            "n_positive_at_or_below": 62,
+            "n_positive_above": 2,
+            "n_negative_at_or_below": 8,
+            "n_negative_above": 4,
+            "odds_ratio": 15.5,
+            "p_value": 0.004800736843751964,
+            "neg_log10_p_value": 2.3186920995794114
+          },
+          {
+            "cutpoint": 501,
+            "n_positive_at_or_below": 64,
+            "n_positive_above": 0,
+            "n_negative_at_or_below": 9,
+            "n_negative_above": 3,
+            "odds_ratio": null,
+            "p_value": 0.0031294452347083927,
+            "neg_log10_p_value": 2.5045326441976177
+          },
+          {
+            "cutpoint": 571,
+            "n_positive_at_or_below": 64,
+            "n_positive_above": 0,
+            "n_negative_at_or_below": 10,
+            "n_negative_above": 2,
+            "odds_ratio": null,
+            "p_value": 0.023157894736842103,
+            "neg_log10_p_value": 1.6353009244666417
+          },
+          {
+            "cutpoint": 616,
+            "n_positive_at_or_below": 64,
+            "n_positive_above": 0,
+            "n_negative_at_or_below": 11,
+            "n_negative_above": 1,
+            "odds_ratio": null,
+            "p_value": 0.15789473684210525,
+            "neg_log10_p_value": 0.8016323462331666
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-09-05T01:37:40.630058Z",
+      "Input_fingerprint": "76abf6446396e299145209ae6e17094e1d78d88c99ddb517d9fa21d3bc0ac224"
+    },
+    {
+      "Algorithm": "domain_disruption",
+      "Algorithm_version": "0.2.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 100,
+        "adaptive": true
+      },
+      "Summary": {
+        "fisher_odds_ratio": 5.864864864864865,
+        "fisher_p_value": 0.07443251319502274,
+        "permutation_empirical_p_value": 0.49504950495049505,
+        "observed_in_frame_disruption_rate": 0.96875,
+        "adaptive_permutations": {
+          "enabled": true,
+          "n_permutations_small": 100,
+          "n_permutations_full": 10000,
+          "n_permutations_used": 100,
+          "escalated_to_full": false
+        },
+        "Runtime_seconds": 0.17738933299551718
+      },
+      "Tables": {
+        "frame_domain_contingency_table": [
+          [
+            31,
+            37
+          ],
+          [
+            1,
+            7
+          ]
+        ],
+        "domain_disruption_descriptives": [
+          {
+            "Domain_key": "auto_disruption_pf13855",
+            "Domain_name": "PF13855",
+            "Quantitative_call_count": 76,
+            "Fully_retained_count": 8,
+            "Truncated_count": 6,
+            "Fully_lost_count": 62,
+            "Mean_retained_fraction_among_non_retained_calls": 0.045862412761714856
+          },
+          {
+            "Domain_key": "auto_disruption_pf13895",
+            "Domain_name": "PF13895",
+            "Quantitative_call_count": 76,
+            "Fully_retained_count": 13,
+            "Truncated_count": 0,
+            "Fully_lost_count": 63,
+            "Mean_retained_fraction_among_non_retained_calls": 0.0
+          }
+        ],
+        "permutation_null_disruption_rates": [
+          0.90625,
+          0.9375,
+          1.0,
+          0.96875,
+          0.96875,
+          1.0,
+          1.0,
+          0.90625,
+          0.90625,
+          0.84375,
+          0.9375,
+          0.96875,
+          1.0,
+          0.96875,
+          0.9375,
+          1.0,
+          0.96875,
+          0.90625,
+          0.9375,
+          0.96875,
+          0.9375,
+          0.875,
+          0.9375,
+          0.90625,
+          0.90625,
+          0.96875,
+          1.0,
+          0.90625,
+          0.875,
+          0.96875,
+          0.84375,
+          0.9375,
+          0.96875,
+          0.96875,
+          0.9375,
+          0.90625,
+          0.9375,
+          0.96875,
+          0.90625,
+          0.96875,
+          1.0,
+          0.90625,
+          0.9375,
+          0.9375,
+          0.90625,
+          0.96875,
+          0.96875,
+          1.0,
+          0.96875,
+          0.84375,
+          0.96875,
+          1.0,
+          0.96875,
+          0.90625,
+          0.96875,
+          0.9375,
+          1.0,
+          0.9375,
+          0.90625,
+          1.0,
+          1.0,
+          1.0,
+          0.90625,
+          0.9375,
+          0.90625,
+          0.96875,
+          0.875,
+          0.9375,
+          0.9375,
+          0.9375,
+          0.9375,
+          1.0,
+          1.0,
+          0.9375,
+          0.96875,
+          0.96875,
+          0.9375,
+          1.0,
+          1.0,
+          0.9375,
+          0.9375,
+          1.0,
+          0.96875,
+          0.96875,
+          0.875,
+          0.96875,
+          0.90625,
+          1.0,
+          0.90625,
+          0.9375,
+          1.0,
+          0.96875,
+          0.90625,
+          0.96875,
+          0.9375,
+          0.9375,
+          0.96875,
+          0.96875,
+          0.90625,
+          1.0
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-09-05T01:37:40.026753Z",
+      "Input_fingerprint": "76abf6446396e299145209ae6e17094e1d78d88c99ddb517d9fa21d3bc0ac224"
+    },
+    {
+      "Algorithm": "domain_retention",
+      "Algorithm_version": "0.2.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 100,
+        "adaptive": true
+      },
+      "Summary": {
+        "fisher_odds_ratio": 4.411764705882353,
+        "fisher_p_value": 0.04826275446570913,
+        "permutation_empirical_p_value": 0.009900990099009901,
+        "observed_in_frame_retention_rate": 0.9375,
+        "adaptive_permutations": {
+          "enabled": true,
+          "n_permutations_small": 100,
+          "n_permutations_full": 1000,
+          "n_permutations_used": 100,
+          "escalated_to_full": false
+        },
+        "Runtime_seconds": 0.036086165986489505
+      },
+      "Tables": {
+        "frame_domain_contingency_table": [
+          [
+            30,
+            34
+          ],
+          [
+            2,
+            10
+          ]
+        ],
+        "domain_retention_descriptives": [
+          {
+            "Domain_key": "kinase",
+            "Domain_name": "Protein kinase domain",
+            "Quantitative_call_count": 76,
+            "Fully_retained_count": 64,
+            "Truncated_count": 3,
+            "Fully_lost_count": 9,
+            "Mean_retained_fraction_among_non_retained_calls": 0.1117283950617284
+          }
+        ],
+        "permutation_null_retention_rates": {
+          "omitted_from_artifact": true,
+          "count": 100
+        }
+      },
+      "Warnings": [],
+      "Created_at": "2026-09-05T01:37:39.811087Z",
+      "Input_fingerprint": "ee78b4eabe1a3e1dad3cae5b306ab5bdbcda638c2691a523138eb7bb5bdd1451"
+    },
+    {
+      "Algorithm": "exon_retention",
+      "Algorithm_version": "1.0.0",
+      "Parameters": {
+        "target_exon": 13
+      },
+      "Summary": {
+        "target_exon": 13,
+        "retained_event_count": 65,
+        "total_event_count": 78,
+        "retained_fraction": 0.8333333333333334,
+        "Runtime_seconds": 0.00022112499573267996
+      },
+      "Tables": {
+        "Exon_retention": [
+          {
+            "Exon": 13,
+            "Retained_event_count": 65,
+            "Total_event_count": 78,
+            "Retained_fraction": 0.8333333333333334
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-09-05T01:37:39.887178Z",
+      "Input_fingerprint": "76abf6446396e299145209ae6e17094e1d78d88c99ddb517d9fa21d3bc0ac224"
+    },
+    {
+      "Algorithm": "frequency",
+      "Algorithm_version": "1.0.0",
+      "Parameters": {
+        "dedup_by_patient": false
+      },
+      "Summary": {
+        "input_event_count": 78,
+        "analyzed_event_count": 78,
+        "unique_partner_gene_count": 43,
+        "Runtime_seconds": 0.00024104100884869695
+      },
+      "Tables": {
+        "Partner_gene_counts": [
+          {
+            "Partner_gene": "AFAP1",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "ANKRD36",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "ARHGEF11",
+            "Event_count": 2
+          },
+          {
+            "Partner_gene": "ATP1A2",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "BCAN",
+            "Event_count": 2
+          },
+          {
+            "Partner_gene": "CADM3",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "COP1",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "CTRC",
+            "Event_count": 2
+          },
+          {
+            "Partner_gene": "DDR2",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "DIAPH1",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "EML4",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "EPS15",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "F11R",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "GON4L",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "IQGAP3",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "IRF2BP2",
+            "Event_count": 3
+          },
+          {
+            "Partner_gene": "KIF21B",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "LMNA",
+            "Event_count": 12
+          },
+          {
+            "Partner_gene": "LTAP1",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "MEF2D",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "METTL25B",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "NELFCD",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "NOS1AP",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "P2RY8",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "PEAR1",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "PLEKHA6",
+            "Event_count": 3
+          },
+          {
+            "Partner_gene": "PRCC",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "RAB25",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "RABGAP1L",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "SCP2",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "SEMA4A",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "SHPRH",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "SLAMF6",
+            "Event_count": 3
+          },
+          {
+            "Partner_gene": "SMYD2",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "STK11",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "TAFA2",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "TARS2",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "TPM3",
+            "Event_count": 12
+          },
+          {
+            "Partner_gene": "TPR",
+            "Event_count": 5
+          },
+          {
+            "Partner_gene": "TRIM63",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "TRPM8",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "VANGL2",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "ZBTB7B",
+            "Event_count": 1
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-09-05T01:37:39.898404Z",
+      "Input_fingerprint": "76abf6446396e299145209ae6e17094e1d78d88c99ddb517d9fa21d3bc0ac224"
+    },
+    {
+      "Algorithm": "joint_partner",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {},
+      "Summary": {
+        "Runtime_seconds": 4.67080099042505e-05
+      },
+      "Tables": {},
+      "Warnings": [
+        "NTRK1 has no gene_pair configured; joint-partner analysis was skipped."
+      ],
+      "Created_at": "2026-09-05T01:37:40.025466Z",
+      "Input_fingerprint": "76abf6446396e299145209ae6e17094e1d78d88c99ddb517d9fa21d3bc0ac224"
+    }
+  ],
+  "reference": null,
+  "gene_track": {
+    "protein_length": 796,
+    "domains": [
+      {
+        "name": "PF13855",
+        "accession": "PF13855",
+        "start_aa": 92,
+        "end_aa": 150
+      },
+      {
+        "name": "PF13895",
+        "accession": "PF13895",
+        "start_aa": 197,
+        "end_aa": 281
+      },
+      {
+        "name": "Protein kinase domain",
+        "accession": "PF07714",
+        "start_aa": 512,
+        "end_aa": 781
+      }
+    ],
+    "exon_boundaries_aa": [
+      {
+        "exon_rank": 1,
+        "start_aa": 1,
+        "end_aa": 71
+      },
+      {
+        "exon_rank": 2,
+        "start_aa": 71,
+        "end_aa": 96
+      },
+      {
+        "exon_rank": 3,
+        "start_aa": 96,
+        "end_aa": 120
+      },
+      {
+        "exon_rank": 4,
+        "start_aa": 120,
+        "end_aa": 143
+      },
+      {
+        "exon_rank": 5,
+        "start_aa": 143,
+        "end_aa": 192
+      },
+      {
+        "exon_rank": 6,
+        "start_aa": 192,
+        "end_aa": 239
+      },
+      {
+        "exon_rank": 7,
+        "start_aa": 240,
+        "end_aa": 284
+      },
+      {
+        "exon_rank": 8,
+        "start_aa": 284,
+        "end_aa": 393
+      },
+      {
+        "exon_rank": 9,
+        "start_aa": 393,
+        "end_aa": 399
+      },
+      {
+        "exon_rank": 10,
+        "start_aa": 399,
+        "end_aa": 417
+      },
+      {
+        "exon_rank": 11,
+        "start_aa": 418,
+        "end_aa": 452
+      },
+      {
+        "exon_rank": 12,
+        "start_aa": 452,
+        "end_aa": 501
+      },
+      {
+        "exon_rank": 13,
+        "start_aa": 501,
+        "end_aa": 544
+      },
+      {
+        "exon_rank": 14,
+        "start_aa": 545,
+        "end_aa": 602
+      },
+      {
+        "exon_rank": 15,
+        "start_aa": 602,
+        "end_aa": 682
+      },
+      {
+        "exon_rank": 16,
+        "start_aa": 683,
+        "end_aa": 735
+      },
+      {
+        "exon_rank": 17,
+        "start_aa": 736,
+        "end_aa": 797
+      }
+    ]
+  },
+  "intragenic_deletions": [
+    {
+      "sample_id": "P-0054874-T01-IM6",
+      "annotation": "NTRK1 (NM_002529) rearrangement: c.287+117_c.359+896del",
+      "event_info": "Deletion of 1 exon : in frame",
+      "n_exons_deleted": 1,
+      "frame_status": "in-frame",
+      "retained_up_to_aa": 96,
+      "resumed_from_aa": 120
+    }
+  ]
+}
