@@ -141,6 +141,85 @@ def test_structural_variant_api_rows_are_adapted_to_production_normalizer_schema
     assert rows.loc[0, "Extra_fields"]["patientId"] == "PATIENT-001"
 
 
+def test_fetch_molecular_data_posts_expected_body_with_sample_list_id():
+    mock_session = MagicMock()
+    mock_response = MagicMock()
+    mock_response.json.return_value = [{"sampleId": "SAMPLE-001", "value": 1.23}]
+    mock_response.raise_for_status.return_value = None
+    mock_session.post.return_value = mock_response
+
+    result = cbioportal_api.fetch_molecular_data(
+        [673],
+        "thca_tcga_pan_can_atlas_2018_rna_seq_v2_mrna_median_Zscores",
+        sample_list_id="thca_tcga_pan_can_atlas_2018_all",
+        session=mock_session,
+    )
+
+    assert result == [{"sampleId": "SAMPLE-001", "value": 1.23}]
+    called_url = mock_session.post.call_args.args[0]
+    assert called_url == (
+        f"{cbioportal_api.DEFAULT_BASE_URL}/molecular-profiles/"
+        "thca_tcga_pan_can_atlas_2018_rna_seq_v2_mrna_median_Zscores/molecular-data/fetch"
+    )
+    _, kwargs = mock_session.post.call_args
+    assert kwargs["json"] == {
+        "entrezGeneIds": [673],
+        "sampleListId": "thca_tcga_pan_can_atlas_2018_all",
+    }
+
+
+def test_fetch_molecular_data_supports_explicit_sample_ids_instead_of_a_sample_list():
+    mock_session = MagicMock()
+    mock_session.post.return_value.json.return_value = []
+
+    cbioportal_api.fetch_molecular_data(
+        [5979],
+        "some_profile",
+        sample_ids=["S1", "S2"],
+        session=mock_session,
+    )
+
+    _, kwargs = mock_session.post.call_args
+    assert kwargs["json"] == {"entrezGeneIds": [5979], "sampleIds": ["S1", "S2"]}
+
+
+def test_fetch_molecular_data_requires_exactly_one_of_sample_list_id_or_sample_ids():
+    with pytest.raises(ValueError, match="exactly one of"):
+        cbioportal_api.fetch_molecular_data([673], "profile")
+    with pytest.raises(ValueError, match="exactly one of"):
+        cbioportal_api.fetch_molecular_data([673], "profile", sample_list_id="a", sample_ids=["b"])
+
+
+def test_molecular_data_to_expression_by_sample_adapts_real_shape():
+    records = [
+        {"sampleId": "TCGA-1", "value": 0.5},
+        {"sampleId": "TCGA-2", "value": -1.25},
+    ]
+    assert cbioportal_api.molecular_data_to_expression_by_sample(records) == {
+        "TCGA-1": 0.5,
+        "TCGA-2": -1.25,
+    }
+
+
+@pytest.mark.parametrize(
+    "malformed_record",
+    [
+        {"sampleId": "TCGA-1"},  # missing value
+        {"value": 1.0},  # missing sampleId
+        {"sampleId": "TCGA-1", "value": None},
+        {"sampleId": "TCGA-1", "value": "not-a-number"},
+        {"sampleId": "TCGA-1", "value": float("nan")},
+        "not-a-dict",
+    ],
+)
+def test_molecular_data_to_expression_by_sample_skips_malformed_rows_without_raising(
+    malformed_record,
+):
+    records = [malformed_record, {"sampleId": "TCGA-GOOD", "value": 2.0}]
+    result = cbioportal_api.molecular_data_to_expression_by_sample(records)
+    assert result == {"TCGA-GOOD": 2.0}
+
+
 @pytest.mark.network
 def test_fetch_structural_variants_real_network_call():
     """Excluded from default `pytest -m "not network"` runs."""

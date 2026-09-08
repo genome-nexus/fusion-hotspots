@@ -10,6 +10,7 @@ import subprocess
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Any
 
 import pandas as pd
 import requests
@@ -47,6 +48,7 @@ from cfh.reporting.domain_names import (
     format_domain_names,
 )
 from cfh.reporting.exon_labels import exon_label_for_protein_position
+from cfh.reporting.expression_association_text import expression_association_sentence
 from cfh.reporting.fusion_schematic import (
     render_fusion_schematic_svg,
     render_intragenic_deletion_schematic_svg,
@@ -61,7 +63,7 @@ from cfh.reporting.palette import (
 )
 from cfh.reporting.pdf import render_pdf_report
 from cfh.stats.breakpoint_tests import build_frame_domain_contingency_table
-from cfh.studies.registry import load_study_config
+from cfh.studies.registry import StudyConfig, load_study_config
 
 _DELETION_EVENT_INFO_PATTERN = re.compile(
     r"deletion of (\d+) exons?\s*:\s*(in frame|out of frame)", re.IGNORECASE
@@ -920,6 +922,7 @@ def analyze_structural_variant_calls(
     genome_nexus_client: GenomeNexusClient | None = None,
     n_permutations: int = 1_000,
     algorithm_names: list[str] | None = None,
+    algorithm_params: dict[str, dict] | None = None,
 ) -> RealBenchmarkRun:
     """Normalize and analyze already-fetched cBioPortal SV API objects.
 
@@ -937,7 +940,53 @@ def analyze_structural_variant_calls(
         genome_nexus_client=genome_nexus_client,
         n_permutations=n_permutations,
         algorithm_names=algorithm_names,
+        algorithm_params=algorithm_params,
     )
+
+
+def _fetch_expression_association_params(
+    config: GeneConfig, study_config: StudyConfig | None, study_id: str
+) -> tuple[dict[str, Any], str | None]:
+    """Best-effort live mRNA-expression fetch feeding the
+    ``expression_association`` algorithm.
+
+    Returns an empty params dict (never a crash) when this cohort has no
+    configured mRNA-expression molecular profile at all -- e.g. a targeted
+    DNA panel like ``msk_impact_50k_2026``, which carries no
+    ``MRNA_EXPRESSION`` profile in the first place, so
+    ``load_study_config`` returns ``None`` for it and this never even
+    attempts a request. A transient network failure fetching an
+    otherwise-configured profile degrades the same way, surfaced as a
+    warning rather than a raised exception, since expression-association
+    evidence is optional corroborating evidence, not required for the run.
+    """
+    if study_config is None:
+        return {}, None
+    profile_id = study_config.mrna_expression_profile_id(study_id)
+    if profile_id is None:
+        return {}, None
+    try:
+        records = cbioportal_api.fetch_molecular_data(
+            [config.entrez_gene_id],
+            profile_id,
+            sample_list_id=f"{study_id}_all",
+        )
+    except requests.RequestException as exc:
+        return {}, (
+            f"mRNA-expression fetch failed for {config.gene_symbol} in {profile_id}: "
+            f"{type(exc).__name__}: {exc}. expression_association analysis was skipped."
+        )
+    expression_by_sample = cbioportal_api.molecular_data_to_expression_by_sample(records)
+    if not expression_by_sample:
+        return {}, (
+            f"No mRNA-expression records were returned for {config.gene_symbol} from "
+            f"{profile_id}; expression_association analysis was skipped."
+        )
+    return {
+        "expression_by_sample": expression_by_sample,
+        "cohort_sample_ids": list(expression_by_sample.keys()),
+        "expression_field": "mRNA expression z-score",
+    }, None
 
 
 def run_real_benchmark(
@@ -946,6 +995,7 @@ def run_real_benchmark(
     *,
     n_permutations: int = 1_000,
     algorithm_names: list[str] | None = None,
+    algorithm_params: dict[str, dict] | None = None,
 ) -> RealBenchmarkRun:
     """Fetch and analyze a gene's structural variants from cBioPortal."""
     config = _load_benchmark_config(gene_symbol)
@@ -971,7 +1021,20 @@ def run_real_benchmark(
             f"{profile_id}: {exc}. Check the study ID, network access, and "
             "https://www.cbioportal.org availability, then retry."
         ) from exc
-    return analyze_structural_variant_calls(
+
+    resolved_algorithm_params: dict[str, dict] = {
+        name: dict(value) for name, value in (algorithm_params or {}).items()
+    }
+    expression_params, expression_warning = _fetch_expression_association_params(
+        config, study_config, study_id
+    )
+    if expression_params:
+        resolved_algorithm_params["expression_association"] = {
+            **expression_params,
+            **resolved_algorithm_params.get("expression_association", {}),
+        }
+
+    run = analyze_structural_variant_calls(
         calls,
         gene_symbol,
         study_id,
@@ -979,7 +1042,11 @@ def run_real_benchmark(
         genome_nexus_client=genome_nexus_client,
         n_permutations=n_permutations,
         algorithm_names=algorithm_names,
+        algorithm_params=resolved_algorithm_params,
     )
+    if expression_warning:
+        run.warnings.append(expression_warning)
+    return run
 
 
 def run_analysis(
@@ -1183,6 +1250,15 @@ def markdown_summary(
             f"{top['Partner_gene']} ({top['Event_count']} events), "
             f"{top['Composite_score']:.6g}."
         )
+    expression_result = results_by_name.get("expression_association")
+    if expression_result is not None:
+        expression_sentence = expression_association_sentence(
+            run.gene_symbol, expression_result.Summary
+        )
+        if expression_sentence:
+            lines.append(f"- Expression association: {expression_sentence}")
+        elif expression_result.Warnings:
+            lines.append(f"- Expression association: {expression_result.Warnings[0]}")
     lines.extend(
         [
             "",
