@@ -5,7 +5,7 @@
     "https://www.cbioportal.org/api/structural-variant/fetch",
     "https://www.genomenexus.org/ensembl/canonical-transcript/hgnc/RET"
   ],
-  "git_sha": "837d429849c4b98199a0d4be85b01127756e5b34",
+  "git_sha": "798e0a8134d77885a829c5dc5c58c57c86516549",
   "cli_args": [
     "analyze",
     "RET",
@@ -15,5 +15,5 @@
     "--n-permutations",
     "1000"
   ],
-  "timestamp": "2026-09-08T14:19:22.049594+00:00"
+  "timestamp": "2026-09-08T18:52:48.798866+00:00"
 }

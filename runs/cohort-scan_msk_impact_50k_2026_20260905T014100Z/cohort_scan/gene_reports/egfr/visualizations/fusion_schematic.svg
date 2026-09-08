@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1000" height="890" viewBox="0 0 1000 890">
 <rect width="1000" height="890" fill="white"/>
 <text x="60" y="24" font-family="sans-serif" font-size="15">EGFR fusion-transcript schematic</text>
-<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555">Fusion order varies by row; follow each row's 5' and 3' labels (EGFR portion is domain-colored, exon ticks)</text>
-<rect x="514.5" y="56.0" width="105.5" height="22" fill="#55cb4d"/>
+<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555">Fusion order varies by row; follow each row's 5' and 3' labels (EGFR portion is domain-colored, exon ticks). Partner-gene blocks share one color; row labels identify each partner.</text>
+<rect x="514.5" y="56.0" width="105.5" height="22" fill="#8064a2"/>
 <rect x="60.0" y="56.0" width="454.5" height="22" fill="#e2e2e2"/>
 <rect x="145.6" y="56.0" width="70.8" height="22" fill="#2878b5"/>
 <text x="181.0" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Furin-like cyste…</text>
@@ -42,7 +42,7 @@
 <text x="64.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="70.5" font-family="sans-serif" font-size="9.5">SEPTIN14 (x12) – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="378.0" y="82.0" width="242.0" height="22" fill="#4dcbc7"/>
+<rect x="378.0" y="82.0" width="242.0" height="22" fill="#8064a2"/>
 <rect x="60.0" y="82.0" width="318.0" height="22" fill="#e2e2e2"/>
 <rect x="145.6" y="82.0" width="70.8" height="22" fill="#2878b5"/>
 <text x="181.0" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Furin-like cyste…</text>
@@ -73,7 +73,7 @@
 <text x="64.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="96.5" font-family="sans-serif" font-size="9.5">FADD (x2) – Protein tyrosine and serine/threonine kinase lost</text>
-<rect x="514.5" y="108.0" width="105.5" height="22" fill="#4dc7cb"/>
+<rect x="514.5" y="108.0" width="105.5" height="22" fill="#8064a2"/>
 <rect x="60.0" y="108.0" width="454.5" height="22" fill="#e2e2e2"/>
 <rect x="145.6" y="108.0" width="70.8" height="22" fill="#2878b5"/>
 <text x="181.0" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Furin-like cyste…</text>
@@ -113,7 +113,7 @@
 <text x="64.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="122.5" font-family="sans-serif" font-size="9.5">RAD51 (x2) – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="60.0" y="134.0" width="454.9" height="22" fill="#53cb4d"/>
+<rect x="60.0" y="134.0" width="454.9" height="22" fill="#8064a2"/>
 <rect x="514.9" y="134.0" width="105.1" height="22" fill="#e2e2e2"/>
 <line x1="540.9" y1="134.0" x2="540.9" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="548.3" y1="134.0" x2="548.3" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -122,7 +122,7 @@
 <text x="64.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="148.5" font-family="sans-serif" font-size="9.5">NIPSNAP2 (x2) – Protein tyrosine and serine/threonine kinase lost</text>
-<rect x="547.8" y="160.0" width="72.2" height="22" fill="#55cb4d"/>
+<rect x="547.8" y="160.0" width="72.2" height="22" fill="#8064a2"/>
 <rect x="60.0" y="160.0" width="487.8" height="22" fill="#e2e2e2"/>
 <rect x="145.6" y="160.0" width="70.8" height="22" fill="#2878b5"/>
 <text x="181.0" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Furin-like cyste…</text>
@@ -164,7 +164,7 @@
 <text x="64.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="174.5" font-family="sans-serif" font-size="9.5">SEPTIN14 (x2) – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="60.0" y="186.0" width="13.9" height="22" fill="#a34dcb"/>
+<rect x="60.0" y="186.0" width="13.9" height="22" fill="#8064a2"/>
 <rect x="73.9" y="186.0" width="546.1" height="22" fill="#e2e2e2"/>
 <rect x="145.6" y="186.0" width="70.8" height="22" fill="#2878b5"/>
 <text x="181.0" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Furin-like cyste…</text>
@@ -206,7 +206,7 @@
 <text x="64.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="200.5" font-family="sans-serif" font-size="9.5">PLOD3 – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="60.0" y="212.0" width="16.7" height="22" fill="#814dcb"/>
+<rect x="60.0" y="212.0" width="16.7" height="22" fill="#8064a2"/>
 <rect x="76.7" y="212.0" width="543.3" height="22" fill="#e2e2e2"/>
 <rect x="145.6" y="212.0" width="70.8" height="22" fill="#2878b5"/>
 <text x="181.0" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Furin-like cyste…</text>
@@ -248,7 +248,7 @@
 <text x="64.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="226.5" font-family="sans-serif" font-size="9.5">ZPBP – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="60.0" y="238.0" width="65.7" height="22" fill="#4d55cb"/>
+<rect x="60.0" y="238.0" width="65.7" height="22" fill="#8064a2"/>
 <rect x="125.7" y="238.0" width="494.3" height="22" fill="#e2e2e2"/>
 <rect x="145.6" y="238.0" width="70.8" height="22" fill="#2878b5"/>
 <text x="181.0" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Furin-like cyste…</text>
@@ -287,7 +287,7 @@
 <text x="64.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="252.5" font-family="sans-serif" font-size="9.5">SCAF4 – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="175.2" y="264.0" width="444.8" height="22" fill="#4dcb85"/>
+<rect x="175.2" y="264.0" width="444.8" height="22" fill="#8064a2"/>
 <rect x="60.0" y="264.0" width="115.2" height="22" fill="#e2e2e2"/>
 <rect x="145.6" y="264.0" width="29.6" height="22" fill="#f2a93b"/>
 <text x="160.4" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Furin-…</text>
@@ -303,7 +303,7 @@
 <text x="64.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="278.5" font-family="sans-serif" font-size="9.5">VOPP1 – Protein tyrosine and serine/threonine kinase lost</text>
-<rect x="193.3" y="290.0" width="426.7" height="22" fill="#ad4dcb"/>
+<rect x="193.3" y="290.0" width="426.7" height="22" fill="#8064a2"/>
 <rect x="60.0" y="290.0" width="133.3" height="22" fill="#e2e2e2"/>
 <rect x="145.6" y="290.0" width="47.7" height="22" fill="#f2a93b"/>
 <text x="169.5" y="304.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Furin-like…</text>
@@ -320,7 +320,7 @@
 <text x="64.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="304.5" font-family="sans-serif" font-size="9.5">PCDH15 – Protein tyrosine and serine/threonine kinase lost</text>
-<rect x="60.0" y="316.0" width="137.5" height="22" fill="#96cb4d"/>
+<rect x="60.0" y="316.0" width="137.5" height="22" fill="#8064a2"/>
 <rect x="197.5" y="316.0" width="422.5" height="22" fill="#e2e2e2"/>
 <rect x="197.5" y="316.0" width="19.0" height="22" fill="#f2a93b"/>
 <text x="206.9" y="330.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Fur…</text>
@@ -354,7 +354,7 @@
 <text x="64.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="330.5" font-family="sans-serif" font-size="9.5">DDC – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="60.0" y="342.0" width="137.5" height="22" fill="#4dcb8e"/>
+<rect x="60.0" y="342.0" width="137.5" height="22" fill="#8064a2"/>
 <rect x="197.5" y="342.0" width="422.5" height="22" fill="#e2e2e2"/>
 <rect x="197.5" y="342.0" width="19.0" height="22" fill="#f2a93b"/>
 <text x="206.9" y="356.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Fur…</text>
@@ -388,7 +388,7 @@
 <text x="64.0" y="356.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="356.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="356.5" font-family="sans-serif" font-size="9.5">GARS1 – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="60.0" y="368.0" width="137.5" height="22" fill="#4d55cb"/>
+<rect x="60.0" y="368.0" width="137.5" height="22" fill="#8064a2"/>
 <rect x="197.5" y="368.0" width="422.5" height="22" fill="#e2e2e2"/>
 <rect x="197.5" y="368.0" width="19.0" height="22" fill="#f2a93b"/>
 <text x="206.9" y="382.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Fur…</text>
@@ -422,7 +422,7 @@
 <text x="64.0" y="382.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="382.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="382.5" font-family="sans-serif" font-size="9.5">SEL1L – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="60.0" y="394.0" width="137.5" height="22" fill="#4dcb51"/>
+<rect x="60.0" y="394.0" width="137.5" height="22" fill="#8064a2"/>
 <rect x="197.5" y="394.0" width="422.5" height="22" fill="#e2e2e2"/>
 <rect x="197.5" y="394.0" width="19.0" height="22" fill="#f2a93b"/>
 <text x="206.9" y="408.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Fur…</text>
@@ -456,7 +456,7 @@
 <text x="64.0" y="408.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="408.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="408.5" font-family="sans-serif" font-size="9.5">TNS3 – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="60.0" y="420.0" width="155.5" height="22" fill="#cb794d"/>
+<rect x="60.0" y="420.0" width="155.5" height="22" fill="#8064a2"/>
 <rect x="215.5" y="420.0" width="404.5" height="22" fill="#e2e2e2"/>
 <rect x="215.5" y="420.0" width="0.9" height="22" fill="#f2a93b"/>
 <rect x="390.0" y="420.0" width="116.6" height="22" fill="#2878b5"/>
@@ -488,7 +488,7 @@
 <text x="64.0" y="434.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="434.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="434.5" font-family="sans-serif" font-size="9.5">CSF2RA – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="60.0" y="446.0" width="277.2" height="22" fill="#53cb4d"/>
+<rect x="60.0" y="446.0" width="277.2" height="22" fill="#8064a2"/>
 <rect x="337.2" y="446.0" width="282.8" height="22" fill="#e2e2e2"/>
 <rect x="390.0" y="446.0" width="116.6" height="22" fill="#2878b5"/>
 <text x="448.3" y="460.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein tyrosine and serine…</text>
@@ -511,7 +511,7 @@
 <text x="64.0" y="460.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="460.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="460.5" font-family="sans-serif" font-size="9.5">NIPSNAP2 – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="350.2" y="472.0" width="269.8" height="22" fill="#4dcb79"/>
+<rect x="350.2" y="472.0" width="269.8" height="22" fill="#8064a2"/>
 <rect x="60.0" y="472.0" width="290.2" height="22" fill="#e2e2e2"/>
 <rect x="145.6" y="472.0" width="70.8" height="22" fill="#2878b5"/>
 <text x="181.0" y="486.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Furin-like cyste…</text>
@@ -540,7 +540,7 @@
 <text x="64.0" y="486.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="486.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="486.5" font-family="sans-serif" font-size="9.5">TUT7 – Protein tyrosine and serine/threonine kinase lost</text>
-<rect x="60.0" y="498.0" width="296.2" height="22" fill="#4d55cb"/>
+<rect x="60.0" y="498.0" width="296.2" height="22" fill="#8064a2"/>
 <rect x="356.2" y="498.0" width="263.8" height="22" fill="#e2e2e2"/>
 <rect x="390.0" y="498.0" width="116.6" height="22" fill="#2878b5"/>
 <text x="448.3" y="512.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein tyrosine and serine…</text>
@@ -559,7 +559,7 @@
 <text x="64.0" y="512.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="512.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="512.5" font-family="sans-serif" font-size="9.5">YIF1B – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="60.0" y="524.0" width="301.3" height="22" fill="#cb4da3"/>
+<rect x="60.0" y="524.0" width="301.3" height="22" fill="#8064a2"/>
 <rect x="361.3" y="524.0" width="258.7" height="22" fill="#e2e2e2"/>
 <rect x="390.0" y="524.0" width="116.6" height="22" fill="#2878b5"/>
 <text x="448.3" y="538.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein tyrosine and serine…</text>
@@ -578,7 +578,7 @@
 <text x="64.0" y="538.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="538.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="538.5" font-family="sans-serif" font-size="9.5">PDE1C – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="378.0" y="550.0" width="242.0" height="22" fill="#cb854d"/>
+<rect x="378.0" y="550.0" width="242.0" height="22" fill="#8064a2"/>
 <rect x="60.0" y="550.0" width="318.0" height="22" fill="#e2e2e2"/>
 <rect x="145.6" y="550.0" width="70.8" height="22" fill="#2878b5"/>
 <text x="181.0" y="564.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Furin-like cyste…</text>
@@ -609,7 +609,7 @@
 <text x="64.0" y="564.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="564.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="564.5" font-family="sans-serif" font-size="9.5">VSTM2A – Protein tyrosine and serine/threonine kinase lost</text>
-<rect x="60.0" y="576.0" width="318.4" height="22" fill="#4dcb73"/>
+<rect x="60.0" y="576.0" width="318.4" height="22" fill="#8064a2"/>
 <rect x="378.4" y="576.0" width="241.6" height="22" fill="#e2e2e2"/>
 <rect x="390.0" y="576.0" width="116.6" height="22" fill="#2878b5"/>
 <text x="448.3" y="590.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein tyrosine and serine…</text>
@@ -627,7 +627,7 @@
 <text x="64.0" y="590.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="590.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="590.5" font-family="sans-serif" font-size="9.5">CADPS – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="60.0" y="602.0" width="318.4" height="22" fill="#594dcb"/>
+<rect x="60.0" y="602.0" width="318.4" height="22" fill="#8064a2"/>
 <rect x="378.4" y="602.0" width="241.6" height="22" fill="#e2e2e2"/>
 <rect x="390.0" y="602.0" width="116.6" height="22" fill="#2878b5"/>
 <text x="448.3" y="616.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein tyrosine and serine…</text>
@@ -645,7 +645,7 @@
 <text x="64.0" y="616.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="616.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="616.5" font-family="sans-serif" font-size="9.5">EEA1 – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="60.0" y="628.0" width="318.4" height="22" fill="#b64dcb"/>
+<rect x="60.0" y="628.0" width="318.4" height="22" fill="#8064a2"/>
 <rect x="378.4" y="628.0" width="241.6" height="22" fill="#e2e2e2"/>
 <rect x="390.0" y="628.0" width="116.6" height="22" fill="#2878b5"/>
 <text x="448.3" y="642.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein tyrosine and serine…</text>
@@ -663,7 +663,7 @@
 <text x="64.0" y="642.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="642.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="642.5" font-family="sans-serif" font-size="9.5">KIF5B – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="60.0" y="654.0" width="318.4" height="22" fill="#b2cb4d"/>
+<rect x="60.0" y="654.0" width="318.4" height="22" fill="#8064a2"/>
 <rect x="378.4" y="654.0" width="241.6" height="22" fill="#e2e2e2"/>
 <rect x="390.0" y="654.0" width="116.6" height="22" fill="#2878b5"/>
 <text x="448.3" y="668.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein tyrosine and serine…</text>
@@ -681,7 +681,7 @@
 <text x="64.0" y="668.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="668.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="668.5" font-family="sans-serif" font-size="9.5">NUMA1 – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="440.9" y="680.0" width="179.1" height="22" fill="#814dcb"/>
+<rect x="440.9" y="680.0" width="179.1" height="22" fill="#8064a2"/>
 <rect x="60.0" y="680.0" width="380.9" height="22" fill="#e2e2e2"/>
 <rect x="145.6" y="680.0" width="70.8" height="22" fill="#2878b5"/>
 <text x="181.0" y="694.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Furin-like cyste…</text>
@@ -717,7 +717,7 @@
 <text x="64.0" y="694.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="694.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="694.5" font-family="sans-serif" font-size="9.5">CDH7 – Protein tyrosine and serine/threonine kinase truncated</text>
-<rect x="465.0" y="706.0" width="155.0" height="22" fill="#4dcba7"/>
+<rect x="465.0" y="706.0" width="155.0" height="22" fill="#8064a2"/>
 <rect x="60.0" y="706.0" width="405.0" height="22" fill="#e2e2e2"/>
 <rect x="145.6" y="706.0" width="70.8" height="22" fill="#2878b5"/>
 <text x="181.0" y="720.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Furin-like cyste…</text>
@@ -754,7 +754,7 @@
 <text x="64.0" y="720.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="720.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="720.5" font-family="sans-serif" font-size="9.5">LANCL2 – Protein tyrosine and serine/threonine kinase truncated</text>
-<rect x="60.0" y="732.0" width="405.4" height="22" fill="#cb4dc0"/>
+<rect x="60.0" y="732.0" width="405.4" height="22" fill="#8064a2"/>
 <rect x="465.4" y="732.0" width="154.6" height="22" fill="#e2e2e2"/>
 <rect x="465.4" y="732.0" width="41.2" height="22" fill="#f2a93b"/>
 <text x="486.0" y="746.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein t…</text>
@@ -768,7 +768,7 @@
 <text x="64.0" y="746.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="746.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="746.5" font-family="sans-serif" font-size="9.5">VWC2 – Protein tyrosine and serine/threonine kinase truncated</text>
-<rect x="60.0" y="758.0" width="454.0" height="22" fill="#4db4cb"/>
+<rect x="60.0" y="758.0" width="454.0" height="22" fill="#8064a2"/>
 <rect x="514.0" y="758.0" width="106.0" height="22" fill="#e2e2e2"/>
 <line x1="514.9" y1="758.0" x2="514.9" y2="780.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="540.9" y1="758.0" x2="540.9" y2="780.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>

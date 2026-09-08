@@ -27,7 +27,12 @@ from cfh.reporting.fusion_schematic import (
 # Imported from the shared palette module (not re-exported from
 # fusion_schematic) so these assertions catch the two renderers actually
 # drifting apart, not just a coincidental match today.
-from cfh.reporting.palette import BREAKPOINT_COLOR, RETAINED_COLOR, TRUNCATED_COLOR
+from cfh.reporting.palette import (
+    BREAKPOINT_COLOR,
+    PARTNER_COLOR,
+    RETAINED_COLOR,
+    TRUNCATED_COLOR,
+)
 
 _KINASE = {
     "name": "Protein kinase domain",
@@ -295,9 +300,12 @@ def test_partner_color_is_deterministic_and_a_valid_hex_color():
     assert re.fullmatch(r"#[0-9a-f]{6}", color1)
 
 
-def test_different_partners_usually_get_different_colors():
+def test_every_partner_gets_the_same_fixed_color():
+    """Partner-gene block color is decorative chrome, not a per-partner
+    identifier -- every partner must render in the one shared
+    ``PARTNER_COLOR``, not a color derived from its name."""
     colors = {partner_color(name) for name in ["AGK", "CUL1", "SND1", "KIAA1549", "TRIM24"]}
-    assert len(colors) >= 4  # allow for a rare hash collision, not a systemic one
+    assert colors == {PARTNER_COLOR}
 
 
 # --- intragenic deletion (panel-C style) schematic --------------------------

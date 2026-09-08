@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1000" height="458" viewBox="0 0 1000 458">
 <rect width="1000" height="458" fill="white"/>
 <text x="60" y="24" font-family="sans-serif" font-size="15">FH fusion-transcript schematic</text>
-<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555">Fusion order varies by row; follow each row's 5' and 3' labels (FH portion is domain-colored, exon ticks)</text>
-<rect x="466.3" y="56.0" width="153.7" height="22" fill="#cb9f4d"/>
+<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555">Fusion order varies by row; follow each row's 5' and 3' labels (FH portion is domain-colored, exon ticks). Partner-gene blocks share one color; row labels identify each partner.</text>
+<rect x="466.3" y="56.0" width="153.7" height="22" fill="#8064a2"/>
 <rect x="60.0" y="56.0" width="406.3" height="22" fill="#e2e2e2"/>
 <rect x="123.7" y="56.0" width="342.6" height="22" fill="#f2a93b"/>
 <text x="295.0" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Lyase</text>
@@ -17,14 +17,14 @@
 <text x="64.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="70.5" font-family="sans-serif" font-size="9.5">DGKH (x4) – Lyase truncated</text>
-<rect x="108.3" y="82.0" width="511.7" height="22" fill="#cb4da3"/>
+<rect x="108.3" y="82.0" width="511.7" height="22" fill="#8064a2"/>
 <rect x="60.0" y="82.0" width="48.3" height="22" fill="#e2e2e2"/>
 <line x1="61.1" y1="82.0" x2="61.1" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="108.3" y1="81.0" x2="108.3" y2="105.0" stroke="#d62728" stroke-width="1.6"/>
 <text x="64.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="96.5" font-family="sans-serif" font-size="9.5">PDE1C – Lyase lost</text>
-<rect x="60.0" y="108.0" width="49.4" height="22" fill="#4dcb55"/>
+<rect x="60.0" y="108.0" width="49.4" height="22" fill="#8064a2"/>
 <rect x="109.4" y="108.0" width="510.6" height="22" fill="#e2e2e2"/>
 <rect x="559.6" y="108.0" width="59.3" height="22" fill="#2878b5"/>
 <text x="589.3" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF10415</text>
@@ -42,7 +42,7 @@
 <text x="64.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="122.5" font-family="sans-serif" font-size="9.5">RYR2 – Lyase retained</text>
-<rect x="60.0" y="134.0" width="49.4" height="22" fill="#4dcb5b"/>
+<rect x="60.0" y="134.0" width="49.4" height="22" fill="#8064a2"/>
 <rect x="109.4" y="134.0" width="510.6" height="22" fill="#e2e2e2"/>
 <rect x="559.6" y="134.0" width="59.3" height="22" fill="#2878b5"/>
 <text x="589.3" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF10415</text>
@@ -60,7 +60,7 @@
 <text x="64.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="148.5" font-family="sans-serif" font-size="9.5">unknown – Lyase retained</text>
-<rect x="60.0" y="160.0" width="204.2" height="22" fill="#cb984d"/>
+<rect x="60.0" y="160.0" width="204.2" height="22" fill="#8064a2"/>
 <rect x="264.2" y="160.0" width="355.8" height="22" fill="#e2e2e2"/>
 <rect x="559.6" y="160.0" width="59.3" height="22" fill="#2878b5"/>
 <text x="589.3" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF10415</text>
@@ -75,7 +75,7 @@
 <text x="64.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="174.5" font-family="sans-serif" font-size="9.5">NOTCH1 – Lyase truncated</text>
-<rect x="330.1" y="186.0" width="289.9" height="22" fill="#cba14d"/>
+<rect x="330.1" y="186.0" width="289.9" height="22" fill="#8064a2"/>
 <rect x="60.0" y="186.0" width="270.1" height="22" fill="#e2e2e2"/>
 <rect x="123.7" y="186.0" width="206.4" height="22" fill="#f2a93b"/>
 <text x="226.9" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Lyase</text>
@@ -88,7 +88,7 @@
 <text x="64.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="200.5" font-family="sans-serif" font-size="9.5">RGS7 – Lyase truncated</text>
-<rect x="438.8" y="212.0" width="181.2" height="22" fill="#ab4dcb"/>
+<rect x="438.8" y="212.0" width="181.2" height="22" fill="#8064a2"/>
 <rect x="60.0" y="212.0" width="378.8" height="22" fill="#e2e2e2"/>
 <rect x="123.7" y="212.0" width="315.1" height="22" fill="#f2a93b"/>
 <text x="281.3" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Lyase</text>
@@ -103,7 +103,7 @@
 <text x="64.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="226.5" font-family="sans-serif" font-size="9.5">FMN2 – Lyase truncated</text>
-<rect x="60.0" y="238.0" width="406.3" height="22" fill="#8ecb4d"/>
+<rect x="60.0" y="238.0" width="406.3" height="22" fill="#8064a2"/>
 <rect x="466.3" y="238.0" width="153.7" height="22" fill="#e2e2e2"/>
 <rect x="559.6" y="238.0" width="59.3" height="22" fill="#2878b5"/>
 <text x="589.3" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF10415</text>
@@ -115,7 +115,7 @@
 <text x="64.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="252.5" font-family="sans-serif" font-size="9.5">ARID4B – Lyase truncated</text>
-<rect x="60.0" y="264.0" width="406.3" height="22" fill="#cba14d"/>
+<rect x="60.0" y="264.0" width="406.3" height="22" fill="#8064a2"/>
 <rect x="466.3" y="264.0" width="153.7" height="22" fill="#e2e2e2"/>
 <rect x="559.6" y="264.0" width="59.3" height="22" fill="#2878b5"/>
 <text x="589.3" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF10415</text>
@@ -127,7 +127,7 @@
 <text x="64.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="278.5" font-family="sans-serif" font-size="9.5">RGS7 – Lyase truncated</text>
-<rect x="60.0" y="290.0" width="509.5" height="22" fill="#cb9f4d"/>
+<rect x="60.0" y="290.0" width="509.5" height="22" fill="#8064a2"/>
 <rect x="569.5" y="290.0" width="50.5" height="22" fill="#e2e2e2"/>
 <rect x="569.5" y="290.0" width="49.4" height="22" fill="#f2a93b"/>
 <text x="594.2" y="304.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF10415</text>
@@ -135,7 +135,7 @@
 <text x="64.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="304.5" font-family="sans-serif" font-size="9.5">DGKH – Lyase lost</text>
-<rect x="60.0" y="316.0" width="512.8" height="22" fill="#cb4d57"/>
+<rect x="60.0" y="316.0" width="512.8" height="22" fill="#8064a2"/>
 <rect x="572.8" y="316.0" width="47.2" height="22" fill="#e2e2e2"/>
 <rect x="572.8" y="316.0" width="46.1" height="22" fill="#f2a93b"/>
 <text x="595.8" y="330.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF10415</text>
@@ -143,7 +143,7 @@
 <text x="64.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="330.5" font-family="sans-serif" font-size="9.5">MAFTRR – Lyase lost</text>
-<rect x="60.0" y="342.0" width="523.8" height="22" fill="#cb534d"/>
+<rect x="60.0" y="342.0" width="523.8" height="22" fill="#8064a2"/>
 <rect x="583.8" y="342.0" width="36.2" height="22" fill="#e2e2e2"/>
 <rect x="583.8" y="342.0" width="35.1" height="22" fill="#f2a93b"/>
 <text x="601.3" y="356.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF10415</text>

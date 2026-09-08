@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1000" height="890" viewBox="0 0 1000 890">
 <rect width="1000" height="890" fill="white"/>
 <text x="60" y="24" font-family="sans-serif" font-size="15">FGFR2 fusion-transcript schematic</text>
-<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555">Fusion order varies by row; follow each row's 5' and 3' labels (FGFR2 portion is domain-colored, exon ticks)</text>
-<rect x="583.2" y="56.0" width="36.8" height="22" fill="#4dc7cb"/>
+<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555">Fusion order varies by row; follow each row's 5' and 3' labels (FGFR2 portion is domain-colored, exon ticks). Partner-gene blocks share one color; row labels identify each partner.</text>
+<rect x="583.2" y="56.0" width="36.8" height="22" fill="#8064a2"/>
 <rect x="60.0" y="56.0" width="523.2" height="22" fill="#e2e2e2"/>
 <rect x="240.1" y="56.0" width="64.8" height="22" fill="#2878b5"/>
 <text x="272.5" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Immunoglobulin…</text>
@@ -32,7 +32,7 @@
 <text x="64.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="70.5" font-family="sans-serif" font-size="9.5">BICC1 (x25) – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="583.2" y="82.0" width="36.8" height="22" fill="#4f4dcb"/>
+<rect x="583.2" y="82.0" width="36.8" height="22" fill="#8064a2"/>
 <rect x="60.0" y="82.0" width="523.2" height="22" fill="#e2e2e2"/>
 <rect x="240.1" y="82.0" width="64.8" height="22" fill="#2878b5"/>
 <text x="272.5" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Immunoglobulin…</text>
@@ -62,7 +62,7 @@
 <text x="64.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="96.5" font-family="sans-serif" font-size="9.5">TACC2 (x7) – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="583.2" y="108.0" width="36.8" height="22" fill="#cb8e4d"/>
+<rect x="583.2" y="108.0" width="36.8" height="22" fill="#8064a2"/>
 <rect x="60.0" y="108.0" width="523.2" height="22" fill="#e2e2e2"/>
 <rect x="240.1" y="108.0" width="64.8" height="22" fill="#2878b5"/>
 <text x="272.5" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Immunoglobulin…</text>
@@ -92,7 +92,7 @@
 <text x="64.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="122.5" font-family="sans-serif" font-size="9.5">KIAA1217 (x4) – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="583.2" y="134.0" width="36.8" height="22" fill="#4d57cb"/>
+<rect x="583.2" y="134.0" width="36.8" height="22" fill="#8064a2"/>
 <rect x="60.0" y="134.0" width="523.2" height="22" fill="#e2e2e2"/>
 <rect x="240.1" y="134.0" width="64.8" height="22" fill="#2878b5"/>
 <text x="272.5" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Immunoglobulin…</text>
@@ -122,7 +122,7 @@
 <text x="64.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="148.5" font-family="sans-serif" font-size="9.5">NOL4 (x4) – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="583.2" y="160.0" width="36.8" height="22" fill="#cb4d7d"/>
+<rect x="583.2" y="160.0" width="36.8" height="22" fill="#8064a2"/>
 <rect x="60.0" y="160.0" width="523.2" height="22" fill="#e2e2e2"/>
 <rect x="240.1" y="160.0" width="64.8" height="22" fill="#2878b5"/>
 <text x="272.5" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Immunoglobulin…</text>
@@ -152,7 +152,7 @@
 <text x="64.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="174.5" font-family="sans-serif" font-size="9.5">SHTN1 (x3) – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="583.2" y="186.0" width="36.8" height="22" fill="#cbb84d"/>
+<rect x="583.2" y="186.0" width="36.8" height="22" fill="#8064a2"/>
 <rect x="60.0" y="186.0" width="523.2" height="22" fill="#e2e2e2"/>
 <rect x="240.1" y="186.0" width="64.8" height="22" fill="#2878b5"/>
 <text x="272.5" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Immunoglobulin…</text>
@@ -182,7 +182,7 @@
 <text x="64.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="200.5" font-family="sans-serif" font-size="9.5">TBC1D4 (x3) – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="583.2" y="212.0" width="36.8" height="22" fill="#cb4dbe"/>
+<rect x="583.2" y="212.0" width="36.8" height="22" fill="#8064a2"/>
 <rect x="60.0" y="212.0" width="523.2" height="22" fill="#e2e2e2"/>
 <rect x="240.1" y="212.0" width="64.8" height="22" fill="#2878b5"/>
 <text x="272.5" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Immunoglobulin…</text>
@@ -212,7 +212,7 @@
 <text x="64.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="226.5" font-family="sans-serif" font-size="9.5">ATE1 (x2) – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="583.2" y="238.0" width="36.8" height="22" fill="#c7cb4d"/>
+<rect x="583.2" y="238.0" width="36.8" height="22" fill="#8064a2"/>
 <rect x="60.0" y="238.0" width="523.2" height="22" fill="#e2e2e2"/>
 <rect x="240.1" y="238.0" width="64.8" height="22" fill="#2878b5"/>
 <text x="272.5" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Immunoglobulin…</text>
@@ -242,7 +242,7 @@
 <text x="64.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="252.5" font-family="sans-serif" font-size="9.5">BAIAP2L1 (x2) – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="583.2" y="264.0" width="36.8" height="22" fill="#4d77cb"/>
+<rect x="583.2" y="264.0" width="36.8" height="22" fill="#8064a2"/>
 <rect x="60.0" y="264.0" width="523.2" height="22" fill="#e2e2e2"/>
 <rect x="240.1" y="264.0" width="64.8" height="22" fill="#2878b5"/>
 <text x="272.5" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Immunoglobulin…</text>
@@ -272,7 +272,7 @@
 <text x="64.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="278.5" font-family="sans-serif" font-size="9.5">CTNNA3 (x2) – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="583.2" y="290.0" width="36.8" height="22" fill="#604dcb"/>
+<rect x="583.2" y="290.0" width="36.8" height="22" fill="#8064a2"/>
 <rect x="60.0" y="290.0" width="523.2" height="22" fill="#e2e2e2"/>
 <rect x="240.1" y="290.0" width="64.8" height="22" fill="#2878b5"/>
 <text x="272.5" y="304.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Immunoglobulin…</text>
@@ -302,7 +302,7 @@
 <text x="64.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="304.5" font-family="sans-serif" font-size="9.5">NRBF2 (x2) – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="583.2" y="316.0" width="36.8" height="22" fill="#4dcb4d"/>
+<rect x="583.2" y="316.0" width="36.8" height="22" fill="#8064a2"/>
 <rect x="60.0" y="316.0" width="523.2" height="22" fill="#e2e2e2"/>
 <rect x="240.1" y="316.0" width="64.8" height="22" fill="#2878b5"/>
 <text x="272.5" y="330.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Immunoglobulin…</text>
@@ -332,7 +332,7 @@
 <text x="64.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="330.5" font-family="sans-serif" font-size="9.5">OPTN (x2) – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="583.2" y="342.0" width="36.8" height="22" fill="#cbc24d"/>
+<rect x="583.2" y="342.0" width="36.8" height="22" fill="#8064a2"/>
 <rect x="60.0" y="342.0" width="523.2" height="22" fill="#e2e2e2"/>
 <rect x="240.1" y="342.0" width="64.8" height="22" fill="#2878b5"/>
 <text x="272.5" y="356.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Immunoglobulin…</text>
@@ -362,7 +362,7 @@
 <text x="64.0" y="356.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="356.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="356.5" font-family="sans-serif" font-size="9.5">SORBS1 (x2) – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="583.2" y="368.0" width="36.8" height="22" fill="#4dcb79"/>
+<rect x="583.2" y="368.0" width="36.8" height="22" fill="#8064a2"/>
 <rect x="60.0" y="368.0" width="523.2" height="22" fill="#e2e2e2"/>
 <rect x="240.1" y="368.0" width="64.8" height="22" fill="#2878b5"/>
 <text x="272.5" y="382.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Immunoglobulin…</text>
@@ -392,7 +392,7 @@
 <text x="64.0" y="382.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="382.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="382.5" font-family="sans-serif" font-size="9.5">TTC28 (x2) – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="583.2" y="394.0" width="36.8" height="22" fill="#4dc0cb"/>
+<rect x="583.2" y="394.0" width="36.8" height="22" fill="#8064a2"/>
 <rect x="60.0" y="394.0" width="523.2" height="22" fill="#e2e2e2"/>
 <rect x="240.1" y="394.0" width="64.8" height="22" fill="#2878b5"/>
 <text x="272.5" y="408.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Immunoglobulin…</text>
@@ -422,19 +422,19 @@
 <text x="64.0" y="408.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="408.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="408.5" font-family="sans-serif" font-size="9.5">WAC (x2) – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="60.0" y="420.0" width="523.8" height="22" fill="#4dc7cb"/>
+<rect x="60.0" y="420.0" width="523.8" height="22" fill="#8064a2"/>
 <rect x="583.8" y="420.0" width="36.2" height="22" fill="#e2e2e2"/>
 <line x1="583.8" y1="419.0" x2="583.8" y2="443.0" stroke="#d62728" stroke-width="1.6"/>
 <text x="64.0" y="434.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="434.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="434.5" font-family="sans-serif" font-size="9.5">BICC1 (x2) – Protein tyrosine and serine/threonine kinase lost</text>
-<rect x="60.0" y="446.0" width="523.8" height="22" fill="#cb4d6e"/>
+<rect x="60.0" y="446.0" width="523.8" height="22" fill="#8064a2"/>
 <rect x="583.8" y="446.0" width="36.2" height="22" fill="#e2e2e2"/>
 <line x1="583.8" y1="445.0" x2="583.8" y2="469.0" stroke="#d62728" stroke-width="1.6"/>
 <text x="64.0" y="460.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="460.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="460.5" font-family="sans-serif" font-size="9.5">INA (x2) – Protein tyrosine and serine/threonine kinase lost</text>
-<rect x="163.7" y="472.0" width="456.3" height="22" fill="#6ccb4d"/>
+<rect x="163.7" y="472.0" width="456.3" height="22" fill="#8064a2"/>
 <rect x="60.0" y="472.0" width="103.7" height="22" fill="#e2e2e2"/>
 <rect x="89.3" y="472.0" width="49.1" height="22" fill="#2878b5"/>
 <text x="113.9" y="486.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Immunoglobu…</text>
@@ -445,7 +445,7 @@
 <text x="64.0" y="486.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="486.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="486.5" font-family="sans-serif" font-size="9.5">GRID1 – Protein tyrosine and serine/threonine kinase lost</text>
-<rect x="379.9" y="498.0" width="240.1" height="22" fill="#cb4dbe"/>
+<rect x="379.9" y="498.0" width="240.1" height="22" fill="#8064a2"/>
 <rect x="60.0" y="498.0" width="319.9" height="22" fill="#e2e2e2"/>
 <rect x="240.1" y="498.0" width="64.8" height="22" fill="#2878b5"/>
 <text x="272.5" y="512.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Immunoglobulin…</text>
@@ -466,7 +466,7 @@
 <text x="64.0" y="512.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="512.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="512.5" font-family="sans-serif" font-size="9.5">ATE1 – Protein tyrosine and serine/threonine kinase lost</text>
-<rect x="521.1" y="524.0" width="98.9" height="22" fill="#becb4d"/>
+<rect x="521.1" y="524.0" width="98.9" height="22" fill="#8064a2"/>
 <rect x="60.0" y="524.0" width="461.1" height="22" fill="#e2e2e2"/>
 <rect x="240.1" y="524.0" width="64.8" height="22" fill="#2878b5"/>
 <text x="272.5" y="538.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Immunoglobulin…</text>
@@ -494,7 +494,7 @@
 <text x="64.0" y="538.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="538.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="538.5" font-family="sans-serif" font-size="9.5">ADAM12 – Protein tyrosine and serine/threonine kinase truncated</text>
-<rect x="559.3" y="550.0" width="60.7" height="22" fill="#59cb4d"/>
+<rect x="559.3" y="550.0" width="60.7" height="22" fill="#8064a2"/>
 <rect x="60.0" y="550.0" width="499.3" height="22" fill="#e2e2e2"/>
 <rect x="240.1" y="550.0" width="64.8" height="22" fill="#2878b5"/>
 <text x="272.5" y="564.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Immunoglobulin…</text>
@@ -523,7 +523,7 @@
 <text x="64.0" y="564.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="564.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="564.5" font-family="sans-serif" font-size="9.5">ANKRD11 – Protein tyrosine and serine/threonine kinase truncated</text>
-<rect x="60.0" y="576.0" width="499.3" height="22" fill="#cb4da1"/>
+<rect x="60.0" y="576.0" width="499.3" height="22" fill="#8064a2"/>
 <rect x="559.3" y="576.0" width="60.7" height="22" fill="#e2e2e2"/>
 <rect x="559.3" y="576.0" width="17.1" height="22" fill="#f2a93b"/>
 <text x="567.8" y="590.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Pro…</text>
@@ -532,7 +532,7 @@
 <text x="64.0" y="590.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="590.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="590.5" font-family="sans-serif" font-size="9.5">NRG3 – Protein tyrosine and serine/threonine kinase truncated</text>
-<rect x="583.2" y="602.0" width="36.8" height="22" fill="#cb4d79"/>
+<rect x="583.2" y="602.0" width="36.8" height="22" fill="#8064a2"/>
 <rect x="60.0" y="602.0" width="523.2" height="22" fill="#e2e2e2"/>
 <rect x="240.1" y="602.0" width="64.8" height="22" fill="#2878b5"/>
 <text x="272.5" y="616.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Immunoglobulin…</text>
@@ -562,7 +562,7 @@
 <text x="64.0" y="616.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="616.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="616.5" font-family="sans-serif" font-size="9.5">ABLIM1 – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="583.2" y="628.0" width="36.8" height="22" fill="#cb704d"/>
+<rect x="583.2" y="628.0" width="36.8" height="22" fill="#8064a2"/>
 <rect x="60.0" y="628.0" width="523.2" height="22" fill="#e2e2e2"/>
 <rect x="240.1" y="628.0" width="64.8" height="22" fill="#2878b5"/>
 <text x="272.5" y="642.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Immunoglobulin…</text>
@@ -592,7 +592,7 @@
 <text x="64.0" y="642.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="642.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="642.5" font-family="sans-serif" font-size="9.5">ADAM9 – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="583.2" y="654.0" width="36.8" height="22" fill="#cb4d85"/>
+<rect x="583.2" y="654.0" width="36.8" height="22" fill="#8064a2"/>
 <rect x="60.0" y="654.0" width="523.2" height="22" fill="#e2e2e2"/>
 <rect x="240.1" y="654.0" width="64.8" height="22" fill="#2878b5"/>
 <text x="272.5" y="668.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Immunoglobulin…</text>
@@ -622,7 +622,7 @@
 <text x="64.0" y="668.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="668.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="668.5" font-family="sans-serif" font-size="9.5">AHCYL1 – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="583.2" y="680.0" width="36.8" height="22" fill="#4dcb6e"/>
+<rect x="583.2" y="680.0" width="36.8" height="22" fill="#8064a2"/>
 <rect x="60.0" y="680.0" width="523.2" height="22" fill="#e2e2e2"/>
 <rect x="240.1" y="680.0" width="64.8" height="22" fill="#2878b5"/>
 <text x="272.5" y="694.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Immunoglobulin…</text>
@@ -652,7 +652,7 @@
 <text x="64.0" y="694.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="694.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="694.5" font-family="sans-serif" font-size="9.5">AMOT – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="583.2" y="706.0" width="36.8" height="22" fill="#c9cb4d"/>
+<rect x="583.2" y="706.0" width="36.8" height="22" fill="#8064a2"/>
 <rect x="60.0" y="706.0" width="523.2" height="22" fill="#e2e2e2"/>
 <rect x="240.1" y="706.0" width="64.8" height="22" fill="#2878b5"/>
 <text x="272.5" y="720.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Immunoglobulin…</text>
@@ -682,7 +682,7 @@
 <text x="64.0" y="720.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="720.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="720.5" font-family="sans-serif" font-size="9.5">ATAD1 – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="583.2" y="732.0" width="36.8" height="22" fill="#794dcb"/>
+<rect x="583.2" y="732.0" width="36.8" height="22" fill="#8064a2"/>
 <rect x="60.0" y="732.0" width="523.2" height="22" fill="#e2e2e2"/>
 <rect x="240.1" y="732.0" width="64.8" height="22" fill="#2878b5"/>
 <text x="272.5" y="746.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Immunoglobulin…</text>
@@ -712,7 +712,7 @@
 <text x="64.0" y="746.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="746.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="746.5" font-family="sans-serif" font-size="9.5">ATP6V1D – Protein tyrosine and serine/threonine kinase retained</text>
-<rect x="583.2" y="758.0" width="36.8" height="22" fill="#cb4d7d"/>
+<rect x="583.2" y="758.0" width="36.8" height="22" fill="#8064a2"/>
 <rect x="60.0" y="758.0" width="523.2" height="22" fill="#e2e2e2"/>
 <rect x="240.1" y="758.0" width="64.8" height="22" fill="#2878b5"/>
 <text x="272.5" y="772.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Immunoglobulin…</text>

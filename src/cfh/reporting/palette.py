@@ -1,5 +1,6 @@
-"""Single source of truth for the domain-retention-status SVG color
-convention shared by every renderer that visualizes it.
+"""Single source of truth for the SVG color conventions shared by every
+renderer that visualizes them: domain-retention status, and the fixed
+decorative fill used for fusion partner-gene blocks.
 
 Two renderers currently draw from this palette:
 :func:`cfh.real_benchmark._domain_track_svg` (the per-event domain-retention
@@ -27,6 +28,15 @@ BREAKPOINT_COLOR = "#d62728"
 """Breakpoint marker; also used as the lollipop track's
 reference-discrepancy outline color."""
 
+PARTNER_COLOR = "#8064a2"
+"""Fixed, non-semantic fill for every fusion partner-gene block in
+:mod:`cfh.reporting.fusion_schematic`. Every partner-gene block renders in
+this one color regardless of which gene it is -- it exists only to set the
+partner block visually apart from the domain-colored target-gene block
+sharing its row, not to distinguish one partner from another (row labels
+do that, and there is deliberately no legend entry mapping this color to
+any partner identity)."""
+
 
 def deterministic_color(label: str, *, lightness: float = 0.55, saturation: float = 0.55) -> str:
     """Deterministic, arbitrary-but-stable hex color for an arbitrary
@@ -37,11 +47,12 @@ def deterministic_color(label: str, *, lightness: float = 0.55, saturation: floa
     per-process and would make the same label render a different color on
     every regeneration.
 
-    Shared by :func:`cfh.reporting.fusion_schematic.partner_color`
-    (partner-gene coloring) and
-    :func:`cfh.real_benchmark._domain_track_svg` (per-domain highlight
-    coloring when a gene configures more than one key domain), so the two
-    renderers can't drift apart on how a stable color is derived.
+    Used by :func:`cfh.real_benchmark._domain_track_svg` for per-domain
+    highlight coloring when a gene configures more than one key domain
+    (each such domain gets its own legend entry, so distinct hues are the
+    point). Fusion partner-gene blocks do *not* use this function -- see
+    :func:`cfh.reporting.fusion_schematic.partner_color`, which is a fixed
+    color instead, deliberately not derived from the partner's name.
     """
     hue = (zlib.crc32(label.encode("utf-8")) % 360) / 360.0
     r, g, b = colorsys.hls_to_rgb(hue, lightness, saturation)
