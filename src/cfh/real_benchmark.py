@@ -39,6 +39,10 @@ from cfh.mapping.transcript_source import resolve_breakpoint_protein_position
 from cfh.model.algorithm_result import AlgorithmResult
 from cfh.model.fusion_event import FusionEvent
 from cfh.model.fusion_feature import FusionFeature
+from cfh.normalization.alteration_normalizer import (
+    normalize_discrete_copy_number,
+    normalize_mutations,
+)
 from cfh.normalization.event_normalizer import normalize
 from cfh.orchestrator.run import run_algorithms
 from cfh.reporting.domain_names import (
@@ -52,6 +56,7 @@ from cfh.reporting.fusion_schematic import (
     render_intragenic_deletion_schematic_svg,
     render_position_axis_svg,
 )
+from cfh.reporting.mutual_exclusivity_text import mutual_exclusivity_report_lines
 from cfh.reporting.palette import (
     BREAKPOINT_COLOR,
     LOST_COLOR,
@@ -61,7 +66,7 @@ from cfh.reporting.palette import (
 )
 from cfh.reporting.pdf import render_pdf_report
 from cfh.stats.breakpoint_tests import build_frame_domain_contingency_table
-from cfh.studies.registry import load_study_config
+from cfh.studies.registry import StudyConfig, load_study_config
 
 _DELETION_EVENT_INFO_PATTERN = re.compile(
     r"deletion of (\d+) exons?\s*:\s*(in frame|out of frame)", re.IGNORECASE
@@ -480,6 +485,7 @@ def analyze_structural_variant_calls_with_config(
     n_permutations: int = 1_000,
     algorithm_names: list[str] | None = None,
     algorithm_params: dict[str, dict] | None = None,
+    extra_warnings: list[str] | None = None,
 ) -> RealBenchmarkRun:
     """Normalize and analyze already-fetched cBioPortal SV API objects
     against an already-resolved ``GeneConfig``.
@@ -496,8 +502,13 @@ def analyze_structural_variant_calls_with_config(
     ``expected_retained_exon_hint``, and ``gene_pair``.
 
     ``algorithm_params`` lets a caller pass through additional per-algorithm
-    parameters (e.g. adaptive-permutation knobs) merged under each
-    algorithm's existing defaults below.
+    parameters (e.g. adaptive-permutation knobs, or the
+    ``mutation_cooccurrence`` live-fetch data assembled by
+    :func:`run_real_benchmark`) merged under each algorithm's existing
+    defaults below. ``extra_warnings`` lets a caller (e.g. a live-fetch step
+    that happened before this function was called) seed the returned run's
+    ``warnings`` with messages of its own -- both default to ``None``/empty
+    and change nothing for a caller that doesn't pass them.
     """
     if n_permutations <= 0:
         raise RealBenchmarkInputError("n_permutations must be positive")
@@ -518,7 +529,7 @@ def analyze_structural_variant_calls_with_config(
         if _is_target_protein_fusion(event, config.gene_symbol)
     ]
 
-    warnings: list[str] = []
+    warnings: list[str] = list(extra_warnings or [])
     target_canonical = None
     needs_domain_lookup = bool(config.key_domains or config.disruption_required_domains)
     if selected and needs_domain_lookup:
@@ -920,6 +931,8 @@ def analyze_structural_variant_calls(
     genome_nexus_client: GenomeNexusClient | None = None,
     n_permutations: int = 1_000,
     algorithm_names: list[str] | None = None,
+    algorithm_params: dict[str, dict] | None = None,
+    extra_warnings: list[str] | None = None,
 ) -> RealBenchmarkRun:
     """Normalize and analyze already-fetched cBioPortal SV API objects.
 
@@ -937,6 +950,90 @@ def analyze_structural_variant_calls(
         genome_nexus_client=genome_nexus_client,
         n_permutations=n_permutations,
         algorithm_names=algorithm_names,
+        algorithm_params=algorithm_params,
+        extra_warnings=extra_warnings,
+    )
+
+
+def _fetch_mutual_exclusivity_params(
+    config: GeneConfig, study_id: str, study_config: StudyConfig | None
+) -> tuple[dict[str, dict] | None, list[str]]:
+    """Best-effort live fetch of the comparator alteration + cohort-sample-
+    universe data ``mutation_cooccurrence`` needs, for a gene that opts in
+    via ``GeneConfig.mutual_exclusivity_targets``.
+
+    Never raises: a network or lookup failure here only produces a warning
+    and (for a target it applies to) fewer comparator_alterations -- this
+    evidence layer is additive, and must never take down an otherwise
+    successful domain-retention benchmark run over a failure fetching its
+    own, separate data.
+    """
+    warnings: list[str] = []
+    sample_list_id = (
+        study_config.all_sample_list_id(study_id) if study_config else f"{study_id}_all"
+    )
+    try:
+        cohort_sample_ids = cbioportal_api.fetch_sample_list_ids(sample_list_id)
+    except requests.RequestException as exc:
+        warnings.append(
+            f"Could not fetch cohort sample universe {sample_list_id!r} for "
+            f"mutation_cooccurrence: {type(exc).__name__}: {exc}. Co-occurrence/"
+            "mutual-exclusivity analysis was skipped for this run."
+        )
+        return None, warnings
+
+    comparator_alterations: list[dict] = []
+    for target in config.mutual_exclusivity_targets:
+        if target.entrez_gene_id is None:
+            warnings.append(
+                f"mutual_exclusivity_targets entry for {target.gene} has no "
+                "entrez_gene_id configured; it cannot be live-fetched and was skipped."
+            )
+            continue
+        try:
+            if target.alteration_type == "point_mutation":
+                mutation_profile_id = (
+                    study_config.mutation_profile_id(study_id)
+                    if study_config
+                    else f"{study_id}_mutations"
+                )
+                calls = cbioportal_api.fetch_mutations(
+                    [target.entrez_gene_id], [mutation_profile_id]
+                )
+                events, row_warnings = normalize_mutations(calls, target.gene, study_id)
+            elif target.alteration_type.startswith("cna_"):
+                cna_profile_id = (
+                    study_config.discrete_cna_profile_id(study_id)
+                    if study_config
+                    else f"{study_id}_cna"
+                )
+                calls = cbioportal_api.fetch_discrete_copy_number(
+                    [target.entrez_gene_id], cna_profile_id, sample_list_id
+                )
+                events, row_warnings = normalize_discrete_copy_number(calls, target.gene, study_id)
+            else:
+                warnings.append(
+                    "Unrecognized mutual_exclusivity_targets alteration_type "
+                    f"{target.alteration_type!r} for {target.gene}; skipped."
+                )
+                continue
+        except requests.RequestException as exc:
+            warnings.append(
+                f"Could not fetch {target.alteration_type} data for {target.gene} "
+                f"(mutation_cooccurrence comparator): {type(exc).__name__}: {exc}."
+            )
+            continue
+        warnings.extend(row_warnings)
+        comparator_alterations.extend(event.model_dump() for event in events)
+
+    return (
+        {
+            "mutation_cooccurrence": {
+                "cohort_sample_ids": cohort_sample_ids,
+                "comparator_alterations": comparator_alterations,
+            }
+        },
+        warnings,
     )
 
 
@@ -947,7 +1044,15 @@ def run_real_benchmark(
     n_permutations: int = 1_000,
     algorithm_names: list[str] | None = None,
 ) -> RealBenchmarkRun:
-    """Fetch and analyze a gene's structural variants from cBioPortal."""
+    """Fetch and analyze a gene's structural variants from cBioPortal.
+
+    When the resolved gene config opts into ``mutual_exclusivity_targets``,
+    this also live-fetches the comparator alteration(s) and the cohort's
+    full sample universe (see :func:`_fetch_mutual_exclusivity_params`) and
+    passes them through to the ``mutation_cooccurrence`` algorithm -- a
+    gene that doesn't configure this makes no additional network calls and
+    is completely unaffected.
+    """
     config = _load_benchmark_config(gene_symbol)
     study_config = load_study_config(study_id)
     profile_id = (
@@ -960,6 +1065,13 @@ def run_real_benchmark(
             study_config.genome_nexus_base_url if study_config else "https://www.genomenexus.org"
         )
     )
+    algorithm_params: dict[str, dict] | None = None
+    extra_warnings: list[str] = []
+    if config.mutual_exclusivity_targets:
+        algorithm_params, fetch_warnings = _fetch_mutual_exclusivity_params(
+            config, study_id, study_config
+        )
+        extra_warnings.extend(fetch_warnings)
     try:
         calls = cbioportal_api.fetch_structural_variants(
             [config.entrez_gene_id],
@@ -979,6 +1091,8 @@ def run_real_benchmark(
         genome_nexus_client=genome_nexus_client,
         n_permutations=n_permutations,
         algorithm_names=algorithm_names,
+        algorithm_params=algorithm_params,
+        extra_warnings=extra_warnings,
     )
 
 
@@ -1090,6 +1204,14 @@ def markdown_summary(
         if interpretation
     )
     if retention_interpretation or disruption_interpretation:
+        lines.append("")
+    cooccurrence_result = results_by_name.get("mutation_cooccurrence")
+    cooccurrence_lines = mutual_exclusivity_report_lines(
+        cooccurrence_result.model_dump(mode="json") if cooccurrence_result else None,
+        run.gene_symbol,
+    )
+    if cooccurrence_lines:
+        lines.extend(cooccurrence_lines)
         lines.append("")
     lines.extend(
         [

@@ -18,6 +18,8 @@ Retrieved from public cBioPortal and Genome Nexus on 2026-09-08.
 The Protein kinase domain appears to be required for retention.
 The RAS-binding domain and Cysteine-rich domain appear to require loss or disruption rather than retention.
 
+- BRAF fusions are not significantly associated with BRAF point_mutation (V600E) across 54331 cohort samples and tend toward mutual exclusivity with it (2x2 table [[2, 175], [1407, 52747]]; odds ratio 0.428, Fisher's exact two-sided p=0.338).
+
 ### Domain retention and discrepancies
 
 ![Domain retention diagram](visualizations/domain_retention_outliers.svg)
@@ -46,7 +48,7 @@ For each fusion, breakpoint selection preferred the Genome Nexus canonical trans
 
 ## Full-suite highlights
 
-- Registered algorithms executed: composite_score, confidence_stats, cutpoint_detection, domain_disruption, domain_retention, exon_retention, frequency, joint_partner, window_detection
+- Registered algorithms executed: composite_score, confidence_stats, cutpoint_detection, domain_disruption, domain_retention, exon_retention, frequency, joint_partner, mutation_cooccurrence, window_detection
 - Cutpoint detection: inferred breakpoint 380 aa (exon 8); corrected permutation p=0.001998.
 - Top composite score: KIAA1549 (43 events), 0.333664.
 

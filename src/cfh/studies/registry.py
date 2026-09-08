@@ -17,12 +17,30 @@ class StudyConfig(BaseModel):
 
     study_ids: list[str]
     structural_variant_profile_template: str = "{study_id}_structural_variants"
+    mutation_profile_template: str = "{study_id}_mutations"
+    discrete_cna_profile_template: str = "{study_id}_cna"
+    all_sample_list_template: str = "{study_id}_all"
     genome_nexus_base_url: str = "https://www.genomenexus.org"
 
     def molecular_profile_id(self, study_id: str) -> str:
         if study_id not in self.study_ids:
             raise ValueError(f"Study {study_id!r} is not covered by this config")
         return self.structural_variant_profile_template.format(study_id=study_id)
+
+    def mutation_profile_id(self, study_id: str) -> str:
+        if study_id not in self.study_ids:
+            raise ValueError(f"Study {study_id!r} is not covered by this config")
+        return self.mutation_profile_template.format(study_id=study_id)
+
+    def discrete_cna_profile_id(self, study_id: str) -> str:
+        if study_id not in self.study_ids:
+            raise ValueError(f"Study {study_id!r} is not covered by this config")
+        return self.discrete_cna_profile_template.format(study_id=study_id)
+
+    def all_sample_list_id(self, study_id: str) -> str:
+        if study_id not in self.study_ids:
+            raise ValueError(f"Study {study_id!r} is not covered by this config")
+        return self.all_sample_list_template.format(study_id=study_id)
 
 
 def load_study_config(study_id: str) -> StudyConfig | None:

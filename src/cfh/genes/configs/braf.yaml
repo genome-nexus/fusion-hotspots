@@ -21,6 +21,14 @@ analysis_modes:
   - breakpoint_hotspot
   - domain_retention
   - domain_disruption
+  - mutation_cooccurrence
+mutual_exclusivity_targets:
+  # BRAF fusions and BRAF V600E point mutations are both MAPK-activating;
+  # canonical biology predicts near-mutual-exclusivity between them.
+  - gene: BRAF
+    alteration_type: point_mutation
+    entrez_gene_id: 673
+    protein_change: V600E
 benchmark_reference:
   citation: "PMC5461196"
   fusion_count: 33

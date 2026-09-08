@@ -22,6 +22,9 @@ from cfh.ingestion.sv_parser import OUTPUT_COLUMNS
 DEFAULT_BASE_URL = "https://www.cbioportal.org/api"
 DEFAULT_STUDY_ID = "msk_impact_50k_2026"
 DEFAULT_SV_MOLECULAR_PROFILE_ID = "msk_impact_50k_2026_structural_variants"
+DEFAULT_MUTATION_MOLECULAR_PROFILE_ID = "msk_impact_50k_2026_mutations"
+DEFAULT_CNA_MOLECULAR_PROFILE_ID = "msk_impact_50k_2026_gistic"
+DEFAULT_SAMPLE_LIST_ID = "msk_impact_50k_2026_all"
 _RETRYABLE_STATUS_CODES = {429, 500, 502, 503, 504}
 _MAX_BACKOFF_SECONDS = 30.0
 
@@ -95,6 +98,119 @@ def fetch_structural_variants(
     attempt = 0
     while True:
         response = session.post(url, json=body, timeout=timeout)
+        if response.status_code not in _RETRYABLE_STATUS_CODES or attempt >= max_retries:
+            break
+        time.sleep(_retry_sleep_seconds(backoff_seconds, attempt))
+        attempt += 1
+    response.raise_for_status()
+    return response.json()
+
+
+def fetch_mutations(
+    entrez_gene_ids: Iterable[int],
+    molecular_profile_ids: Iterable[str],
+    *,
+    base_url: str = DEFAULT_BASE_URL,
+    session: "requests.Session | None" = None,
+    timeout: float = 30,
+    max_retries: int = 6,
+    backoff_seconds: float = 1.0,
+) -> list[dict]:
+    """POST to ``/mutations/fetch`` and return the parsed JSON body.
+
+    Mirrors :func:`fetch_structural_variants`'s request shape and retry
+    behavior -- ``molecularProfileIds`` + ``entrezGeneIds`` -- for the
+    point-mutation evidence layer. ``molecular_profile_ids`` has no default
+    for the same reason as the structural-variant fetch: which cohort's
+    mutation profile to query is always caller-supplied, never silently
+    defaulted to a specific study.
+    """
+    session = session or requests.Session()
+    url = f"{base_url.rstrip('/')}/mutations/fetch"
+    body: dict[str, Any] = {
+        "entrezGeneIds": list(entrez_gene_ids),
+        "molecularProfileIds": list(molecular_profile_ids),
+    }
+    attempt = 0
+    while True:
+        response = session.post(url, json=body, timeout=timeout)
+        if response.status_code not in _RETRYABLE_STATUS_CODES or attempt >= max_retries:
+            break
+        time.sleep(_retry_sleep_seconds(backoff_seconds, attempt))
+        attempt += 1
+    response.raise_for_status()
+    return response.json()
+
+
+def fetch_discrete_copy_number(
+    entrez_gene_ids: Iterable[int],
+    molecular_profile_id: str,
+    sample_list_id: str,
+    *,
+    event_type: str = "ALL",
+    base_url: str = DEFAULT_BASE_URL,
+    session: "requests.Session | None" = None,
+    timeout: float = 30,
+    max_retries: int = 6,
+    backoff_seconds: float = 1.0,
+) -> list[dict]:
+    """POST to ``/molecular-profiles/{molecularProfileId}/discrete-copy-number/fetch``.
+
+    Unlike mutations/structural-variants, this cBioPortal endpoint is
+    per-molecular-profile (not multi-profile) and requires a
+    ``sampleListId`` -- both ``molecular_profile_id`` and ``sample_list_id``
+    are always caller-supplied, never defaulted to a specific study or
+    gene. ``event_type`` follows cBioPortal's ``DiscreteCopyNumberEventType``
+    enum (``AMP``, ``HOMDEL``, ``GAIN``, ``HETLOSS``, ``DIPLOID``,
+    ``HOMDEL_AND_AMP``, ``ALL``); ``"ALL"`` returns every alteration state
+    so the caller -- not this client -- decides which states count as a
+    "hit" (see ``cfh.normalization.alteration_normalizer``).
+    """
+    session = session or requests.Session()
+    url = (
+        f"{base_url.rstrip('/')}/molecular-profiles/{molecular_profile_id}"
+        "/discrete-copy-number/fetch"
+    )
+    body: dict[str, Any] = {
+        "sampleListId": sample_list_id,
+        "entrezGeneIds": list(entrez_gene_ids),
+    }
+    attempt = 0
+    while True:
+        response = session.post(
+            url,
+            json=body,
+            params={"discreteCopyNumberEventType": event_type},
+            timeout=timeout,
+        )
+        if response.status_code not in _RETRYABLE_STATUS_CODES or attempt >= max_retries:
+            break
+        time.sleep(_retry_sleep_seconds(backoff_seconds, attempt))
+        attempt += 1
+    response.raise_for_status()
+    return response.json()
+
+
+def fetch_sample_list_ids(
+    sample_list_id: str,
+    *,
+    base_url: str = DEFAULT_BASE_URL,
+    session: "requests.Session | None" = None,
+    timeout: float = 30,
+    max_retries: int = 6,
+    backoff_seconds: float = 1.0,
+) -> list[str]:
+    """GET ``/sample-lists/{sampleListId}/sample-ids``: every sample ID in a
+    named cBioPortal sample list (e.g. a study's "_all" list). Used as the
+    cohort-wide 2x2 background universe for the mutation/CNA co-occurrence
+    test -- gene-agnostic and study-agnostic, ``sample_list_id`` is always
+    caller-supplied.
+    """
+    session = session or requests.Session()
+    url = f"{base_url.rstrip('/')}/sample-lists/{sample_list_id}/sample-ids"
+    attempt = 0
+    while True:
+        response = session.get(url, timeout=timeout)
         if response.status_code not in _RETRYABLE_STATUS_CODES or attempt >= max_retries:
             break
         time.sleep(_retry_sleep_seconds(backoff_seconds, attempt))

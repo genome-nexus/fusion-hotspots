@@ -413,6 +413,14 @@ def test_cbioportal_network_failure_is_wrapped_with_actionable_context(monkeypat
         raise requests.Timeout("timed out")
 
     monkeypatch.setattr(cbioportal_api, "fetch_structural_variants", fail_fetch)
+    # BRAF's real config opts into mutual_exclusivity_targets (see
+    # genes/configs/braf.yaml), so run_real_benchmark also live-fetches that
+    # comparator's cohort sample list before the structural-variant fetch
+    # under test below -- mock it out so this stays a real-network-free test.
+    monkeypatch.setattr(
+        cbioportal_api, "fetch_sample_list_ids", MagicMock(return_value=["SAMPLE-1"])
+    )
+    monkeypatch.setattr(cbioportal_api, "fetch_mutations", MagicMock(return_value=[]))
 
     with pytest.raises(RealBenchmarkNetworkError) as caught:
         run_real_benchmark("BRAF", "some-study")
@@ -584,12 +592,24 @@ def test_run_analysis_requests_every_registered_algorithm(monkeypatch):
 
 
 def test_tcga_study_config_selects_profile_and_grch38_genome_nexus(monkeypatch):
+    """BRAF's real curated config now opts into ``mutual_exclusivity_targets``
+    (see genes/configs/braf.yaml), so ``run_real_benchmark`` also live-fetches
+    that comparator's data for ANY study, not just msk_impact_50k_2026 --
+    the cohort-sample-list/mutation fetches used for that must be mocked
+    here too, or this test would otherwise attempt a real network call.
+    """
     fetched_calls = [{"sampleId": "TCGA-SAMPLE"}]
     monkeypatch.setattr(
         cbioportal_api,
         "fetch_structural_variants",
         MagicMock(return_value=fetched_calls),
     )
+    monkeypatch.setattr(
+        cbioportal_api,
+        "fetch_sample_list_ids",
+        MagicMock(return_value=["TCGA-SAMPLE", "TCGA-OTHER"]),
+    )
+    monkeypatch.setattr(cbioportal_api, "fetch_mutations", MagicMock(return_value=[]))
     client = MagicMock(spec=GenomeNexusClient)
     client_factory = MagicMock(return_value=client)
     analyze_mock = MagicMock(return_value=object())
@@ -602,6 +622,10 @@ def test_tcga_study_config_selects_profile_and_grch38_genome_nexus(monkeypatch):
     profile_id = "thca_tcga_pan_can_atlas_2018_structural_variants"
     cbioportal_api.fetch_structural_variants.assert_called_once_with([673], [profile_id])
     client_factory.assert_called_once_with(base_url="https://grch38.genomenexus.org")
+    cbioportal_api.fetch_sample_list_ids.assert_called_once_with("thca_tcga_pan_can_atlas_2018_all")
+    cbioportal_api.fetch_mutations.assert_called_once_with(
+        [673], ["thca_tcga_pan_can_atlas_2018_mutations"]
+    )
     analyze_mock.assert_called_once_with(
         fetched_calls,
         "BRAF",
@@ -610,6 +634,13 @@ def test_tcga_study_config_selects_profile_and_grch38_genome_nexus(monkeypatch):
         genome_nexus_client=client,
         n_permutations=7,
         algorithm_names=None,
+        algorithm_params={
+            "mutation_cooccurrence": {
+                "cohort_sample_ids": ["TCGA-SAMPLE", "TCGA-OTHER"],
+                "comparator_alterations": [],
+            }
+        },
+        extra_warnings=[],
     )
 
 

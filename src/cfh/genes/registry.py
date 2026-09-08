@@ -32,6 +32,27 @@ class KeyDomain(BaseModel):
     """Source-native identifier, such as a Pfam accession from Genome Nexus."""
 
 
+class MutualExclusivityTarget(BaseModel):
+    """One opt-in comparator alteration to test a gene's fusion status
+    against for cohort-wide co-occurrence/mutual-exclusivity (Fisher's
+    exact), via the ``mutation_cooccurrence`` algorithm."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    gene: str
+    alteration_type: str
+    """E.g. ``point_mutation``, ``cna_amp``, ``cna_del`` -- see
+    ``cfh.normalization.alteration_normalizer.CNA_ALTERATION_TYPE_BY_CODE``
+    for the full copy-number vocabulary."""
+    entrez_gene_id: Optional[int] = None
+    """Required only for a caller (e.g. ``run_real_benchmark``) that wants
+    to live-fetch this target's alteration data automatically; a target
+    left without it is still valid config but cannot be auto-fetched."""
+    protein_change: Optional[str] = None
+    """Optional point-mutation filter, e.g. ``"V600E"``. Only applicable
+    when ``alteration_type == "point_mutation"``; ignored otherwise."""
+
+
 class BenchmarkReference(BaseModel):
     """Optional literature baseline used by reports and discrepancy artifacts."""
 
@@ -61,6 +82,14 @@ class GeneConfig(BaseModel):
     entrez_gene_id: Optional[int] = None
     benchmark_reference: Optional[BenchmarkReference] = None
     """NCBI Entrez gene id, e.g. for cBioPortal structural-variant API queries."""
+    mutual_exclusivity_targets: list[MutualExclusivityTarget] = []
+    """Opt-in comparator alteration(s) -- e.g. this gene's own hotspot point
+    mutation, or another pathway member's alteration -- to test this gene's
+    fusion-positive sample set against for cohort-wide co-occurrence/mutual-
+    exclusivity (Fisher's exact), via the ``mutation_cooccurrence``
+    algorithm. Empty by default; the algorithm gracefully no-ops for genes
+    that don't configure this, the same opt-in pattern as
+    ``disruption_required_domains``/``gene_pair``."""
 
     @model_validator(mode="after")
     def _validate_config_target(self) -> "GeneConfig":
