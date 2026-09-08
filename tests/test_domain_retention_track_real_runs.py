@@ -17,9 +17,7 @@ from pathlib import Path
 
 from conftest import latest_run_dir
 
-GENE_REPORTS = (
-    latest_run_dir("cohort-scan_msk_impact_50k_2026") / "cohort_scan" / "gene_reports"
-)
+GENE_REPORTS = latest_run_dir("cohort-scan_msk_impact_50k_2026") / "cohort_scan" / "gene_reports"
 RUN_DIRS = {
     "BRAF (cohort scan)": GENE_REPORTS / "braf",
     "RET (cohort scan)": GENE_REPORTS / "ret",

@@ -4,18 +4,12 @@ from __future__ import annotations
 
 import json
 import xml.etree.ElementTree as ET
-from pathlib import Path
 
 from cfh.reporting.fusion_schematic import _fusion_groups, render_fusion_schematic_svg
+from conftest import latest_run_dir
 
-REPO_ROOT = Path(__file__).parent.parent
 ETV6_RUN_DIR = (
-    REPO_ROOT
-    / "runs"
-    / "cohort-scan_msk_impact_50k_2026_20260904T144201Z"
-    / "cohort_scan"
-    / "gene_reports"
-    / "etv6"
+    latest_run_dir("cohort-scan_msk_impact_50k_2026") / "cohort_scan" / "gene_reports" / "etv6"
 )
 
 

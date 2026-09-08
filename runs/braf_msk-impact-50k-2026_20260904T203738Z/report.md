@@ -1,6 +1,6 @@
 # BRAF real-data fusion benchmark: msk_impact_50k_2026
 
-Retrieved from public cBioPortal and Genome Nexus on 2026-09-05.
+Retrieved from public cBioPortal and Genome Nexus on 2026-09-04.
 
 ## Results
 
@@ -12,7 +12,7 @@ Retrieved from public cBioPortal and Genome Nexus on 2026-09-05.
 - PF07714 (458-712 aa) retained: 163/179 (91.1%)
 - In-frame and PF07714-retained: 142/151
 - Fisher exact test (one-sided): odds ratio 4.50794, p=0.0133676
-- Breakpoint-permutation empirical p-value: 0.045954
+- Breakpoint-permutation empirical p-value: 0.00699301
 - Contingency table `[[retained/in-frame, retained/other], [not-retained/in-frame, not-retained/other]]`: `[[142, 21], [9, 6]]`
 
 ### Domain retention and discrepancies
@@ -44,8 +44,8 @@ For each fusion, breakpoint selection preferred the Genome Nexus canonical trans
 ## Full-suite highlights
 
 - Registered algorithms executed: composite_score, confidence_stats, cutpoint_detection, domain_disruption, domain_retention, exon_retention, frequency, joint_partner
-- Cutpoint detection: inferred breakpoint 327 aa; corrected permutation p=0.035964.
-- Top composite score: AGK (14 events), 0.279292.
+- Cutpoint detection: inferred breakpoint 380 aa; corrected permutation p=0.001998.
+- Top composite score: KIAA1549 (43 events), 0.333664.
 
 ## Partners
 

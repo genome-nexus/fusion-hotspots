@@ -151,6 +151,8 @@
 <line x1="479.2" y1="249.0" x2="563.9" y2="249.0" stroke="#999999" stroke-width="1.5" stroke-dasharray="3,2"/>
 <text x="660" y="252.5" font-family="sans-serif" font-size="9.5">2-exon deletion (out-of-frame)</text>
 <line x1="60.0" y1="268.0" x2="620.0" y2="268.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="263.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="620.0" y="263.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
 <text x="60.0" y="282.0" font-family="sans-serif" font-size="9">1</text>
 <text x="620.0" y="282.0" font-family="sans-serif" font-size="9" text-anchor="end">529 aa</text>
 <line x1="61.1" y1="286.0" x2="61.1" y2="290.0" stroke="#777777" stroke-width="0.7"/>
