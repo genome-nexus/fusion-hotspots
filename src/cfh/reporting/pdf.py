@@ -41,6 +41,25 @@ _MAX_TABLE_ROWS = 500
 readable, boundedly-sized PDF instead of a runaway multi-thousand-page
 document; a note is appended when rows are truncated."""
 
+_MAX_LIST_CELL_ITEMS = 5
+"""Cap on how many list/tuple elements are spelled out inline in one
+rendered table cell (e.g. an algorithm's ``event_ids_inside`` column). A
+cell holding a long list (dozens to hundreds of recurrent-event ids, as a
+window-scan candidate can) would otherwise render as one enormous
+multi-thousand-point-tall cell that overflows the page layout; the full
+list is still available verbatim in ``results.json``/``results.tsv``, this
+is a display-only summary."""
+
+
+def _format_cell_value(value: object) -> object:
+    """Summarize a list/tuple cell value for display; pass everything else through."""
+    if isinstance(value, (list, tuple)):
+        if len(value) <= _MAX_LIST_CELL_ITEMS:
+            return ", ".join(str(item) for item in value)
+        shown = ", ".join(str(item) for item in value[:_MAX_LIST_CELL_ITEMS])
+        return f"{shown}, ... ({len(value)} total)"
+    return value
+
 
 def _styles() -> dict[str, ParagraphStyle]:
     base = getSampleStyleSheet()
@@ -126,7 +145,9 @@ def _algorithm_tables(payload: dict, styles: dict) -> list:
                 continue
             if isinstance(value, list) and value and isinstance(value[0], dict):
                 columns = list(value[0].keys())
-                rows = [columns] + [[row.get(col) for col in columns] for row in value]
+                rows = [columns] + [
+                    [_format_cell_value(row.get(col)) for col in columns] for row in value
+                ]
             elif isinstance(value, list) and value and isinstance(value[0], list):
                 rows = value
             else:

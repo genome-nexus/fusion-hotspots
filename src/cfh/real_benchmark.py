@@ -577,6 +577,7 @@ def analyze_structural_variant_calls_with_config(
     events: list[FusionEvent] = []
     features: list[FusionFeature] = []
     rows: list[dict] = []
+    mapping_sensitivity: dict[str, bool | None] = {}
     has_key_domain = bool(config.key_domains)
     target_key = (
         (config.key_domains[0].key or config.key_domains[0].name) if has_key_domain else None
@@ -662,6 +663,7 @@ def analyze_structural_variant_calls_with_config(
 
         events.append(event)
         features.append(feature)
+        mapping_sensitivity[event.Event_id] = mapping.is_intronic_breakpoint
         domain_detail = (
             (feature.Domain_retention_details or {}).get(target_key) if target_key else None
         )
@@ -771,6 +773,12 @@ def analyze_structural_variant_calls_with_config(
                 "genome_nexus_client": client,
                 **algorithm_params.get("cutpoint_detection", {}),
             },
+            "window_detection": {
+                "n_permutations": n_permutations,
+                "genome_nexus_client": client,
+                "mapping_sensitivity": mapping_sensitivity,
+                **algorithm_params.get("window_detection", {}),
+            },
             **{
                 name: value
                 for name, value in algorithm_params.items()
@@ -779,6 +787,7 @@ def analyze_structural_variant_calls_with_config(
                     "confidence_stats",
                     "frequency",
                     "cutpoint_detection",
+                    "window_detection",
                     "domain_retention",
                 }
             },

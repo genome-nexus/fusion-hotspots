@@ -1,6 +1,6 @@
 # BRAF real-data fusion benchmark: msk_impact_50k_2026
 
-Retrieved from public cBioPortal and Genome Nexus on 2026-09-04.
+Retrieved from public cBioPortal and Genome Nexus on 2026-09-08.
 
 ## Results
 
@@ -9,11 +9,14 @@ Retrieved from public cBioPortal and Genome Nexus on 2026-09-04.
 - Protein-fusion records mapped: 178
 - Malformed/unmappable fusion records skipped: 1
 - In-frame: 151/179 (84.4%)
-- PF07714 (458-712 aa) retained: 163/179 (91.1%)
-- In-frame and PF07714-retained: 142/151
+- Protein kinase domain (458-712 aa) retained: 163/179 (91.1%)
+- In-frame and Protein kinase domain-retained: 142/151
 - Fisher exact test (one-sided): odds ratio 4.50794, p=0.0133676
 - Breakpoint-permutation empirical p-value: 0.00699301
 - Contingency table `[[retained/in-frame, retained/other], [not-retained/in-frame, not-retained/other]]`: `[[142, 21], [9, 6]]`
+
+The Protein kinase domain appears to be required for retention.
+The RAS-binding domain and Cysteine-rich domain appear to require loss or disruption rather than retention.
 
 ### Domain retention and discrepancies
 
@@ -37,13 +40,13 @@ Retrieved from public cBioPortal and Genome Nexus on 2026-09-04.
 
 The cBioPortal `msk_impact_50k_2026_structural_variants` structural-variant profile was queried by the configured Entrez gene ID. Fusion-annotated records were adapted to the production SV schema and normalized; when `site2EffectOnFrame=NA`, frame status was resolved from `Event_Info`, not copied into `FusionEvent.Frame_status`.
 
-BRAF genomic breakpoints were mapped against the Genome Nexus canonical transcript, and retention was classified against its returned PF07714 coordinates. Counts are event-level with no patient deduplication. The Fisher comparison's `other` column combines out-of-frame and unknown-frame events, as pre-specified by the domain-retention algorithm.
+BRAF genomic breakpoints were mapped against the Genome Nexus canonical transcript, and retention was classified against its returned Protein kinase domain coordinates. Counts are event-level with no patient deduplication. The Fisher comparison's `other` column combines out-of-frame and unknown-frame events, as pre-specified by the domain-retention algorithm.
 
 For each fusion, breakpoint selection preferred the Genome Nexus canonical transcript's exon-spanned target locus over cBioPortal site labels; malformed rows with no unambiguous target-locus coordinate were skipped and listed in Warnings.
 
 ## Full-suite highlights
 
-- Registered algorithms executed: composite_score, confidence_stats, cutpoint_detection, domain_disruption, domain_retention, exon_retention, frequency, joint_partner
+- Registered algorithms executed: composite_score, confidence_stats, cutpoint_detection, domain_disruption, domain_retention, exon_retention, frequency, joint_partner, window_detection
 - Cutpoint detection: inferred breakpoint 380 aa (exon 8); corrected permutation p=0.001998.
 - Top composite score: KIAA1549 (43 events), 0.333664.
 
@@ -68,6 +71,6 @@ ABCC1 (1), ABCC2 (1), AGAP3 (6), AGK (14), AKAP9 (2), ATF7 (1), CAPZA2 (1), CARM
 
 ## Interpretation
 
-This does **not** reproduce the Zehir et al. (PMC5461196) report of 33/33 BRAF fusions being in-frame with the kinase domain retained: this live successor cohort has 151/179 in-frame and 142/151 in-frame fusions retaining PF07714.
+This does **not** reproduce the Zehir et al. (PMC5461196) report of 33/33 BRAF fusions being in-frame with the kinase domain retained: this live successor cohort has 151/179 in-frame and 142/151 in-frame fusions retaining Protein kinase domain.
 
 `msk_impact_50k_2026` is a newer successor cohort, not the paper's original `msk_impact_2017` cohort. This is therefore replication in a related cohort, not a reanalysis of the paper's original 33 cases.

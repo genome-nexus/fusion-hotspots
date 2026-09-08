@@ -12,6 +12,7 @@ from cfh.algorithms.domain_retention import DomainRetentionAlgorithm
 from cfh.algorithms.exon_retention import ExonRetentionAnalysis
 from cfh.algorithms.frequency import FrequencyAnalysis
 from cfh.algorithms.joint_partner import JointPartnerMode
+from cfh.algorithms.window_detection import WindowDetectionAlgorithm
 
 __all__ = [
     "CompositeScoreAlgorithm",
@@ -22,4 +23,5 @@ __all__ = [
     "ExonRetentionAnalysis",
     "FrequencyAnalysis",
     "JointPartnerMode",
+    "WindowDetectionAlgorithm",
 ]

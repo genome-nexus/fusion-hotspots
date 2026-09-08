@@ -358,9 +358,12 @@ def test_composite_score_real_ret_msk_impact_all_five_subscores_applicable():
     # Pinned to the exact real value, not just the ranking, since this
     # reuses the committed run's own already-computed AlgorithmResult
     # objects verbatim (no seed/n_permutations choice made here at all).
+    # With directional intronic-breakpoint snapping now merged in (which
+    # shifts several events' breakpoint_protein_position/exon), the honest
+    # corrected value differs from the pre-snapping pin.
     assert ranking[0]["Partner_gene"] == "KIF5B"
     assert ranking[0]["Event_count"] == 87
-    assert ranking[0]["Composite_score"] == pytest.approx(0.407674382354967)
+    assert ranking[0]["Composite_score"] == pytest.approx(0.4593659412119797)
 
     for row in ranking:
         assert row["Domain_disruption_score"] is not None

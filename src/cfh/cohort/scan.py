@@ -3,7 +3,7 @@
 Ties together: cohort-wide recurrence gating (:mod:`cfh.cohort.recurrence`),
 auto-generated ``GeneConfig`` construction for genes with no curated config
 (:mod:`cfh.cohort.auto_config`), the existing per-gene analysis pipeline
-(:mod:`cfh.real_benchmark`) run through the existing 8-algorithm
+(:mod:`cfh.real_benchmark`) run through the existing registered-algorithm
 orchestrator (:mod:`cfh.orchestrator.run`), and cross-gene FDR correction
 (:mod:`cfh.stats.multiple_testing`, via :mod:`cfh.gene_comparison`).
 
@@ -45,7 +45,12 @@ from cfh.studies.registry import load_study_config
 DEFAULT_N_PERMUTATIONS = 1_000
 DEFAULT_N_PERMUTATIONS_SMALL = 100
 DEFAULT_SIGNIFICANCE_LEVEL = 0.05
-ADAPTIVE_ALGORITHMS = ("domain_retention", "domain_disruption", "cutpoint_detection")
+ADAPTIVE_ALGORITHMS = (
+    "domain_retention",
+    "domain_disruption",
+    "cutpoint_detection",
+    "window_detection",
+)
 
 
 @dataclass

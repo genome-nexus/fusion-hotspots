@@ -1,19 +1,19 @@
 {
-  "gene": "RET",
+  "gene": "BRAF",
   "study_id": "msk_impact_50k_2026",
   "endpoints_used": [
     "https://www.cbioportal.org/api/structural-variant/fetch",
-    "https://www.genomenexus.org/ensembl/canonical-transcript/hgnc/RET"
+    "https://www.genomenexus.org/ensembl/canonical-transcript/hgnc/BRAF"
   ],
-  "git_sha": "28d4b4c9691d1f9008f3d48a4aed43ee3a2da3bd",
+  "git_sha": "837d429849c4b98199a0d4be85b01127756e5b34",
   "cli_args": [
     "analyze",
-    "RET",
+    "BRAF",
     "msk_impact_50k_2026",
     "--output-dir",
     "runs",
     "--n-permutations",
     "1000"
   ],
-  "timestamp": "2026-09-05T01:26:11.686896+00:00"
+  "timestamp": "2026-09-08T14:18:55.198464+00:00"
 }

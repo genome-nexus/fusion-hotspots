@@ -1,6 +1,6 @@
 # RET real-data fusion benchmark: msk_impact_50k_2026
 
-Retrieved from public cBioPortal and Genome Nexus on 2026-09-05.
+Retrieved from public cBioPortal and Genome Nexus on 2026-09-08.
 
 ## Results
 
@@ -9,11 +9,14 @@ Retrieved from public cBioPortal and Genome Nexus on 2026-09-05.
 - Protein-fusion records mapped: 194
 - Malformed/unmappable fusion records skipped: 0
 - In-frame: 146/194 (75.3%)
-- PF07714 (724-1005 aa) retained: 179/194 (92.3%)
-- In-frame and PF07714-retained: 141/146
+- Protein kinase domain (724-1005 aa) retained: 179/194 (92.3%)
+- In-frame and Protein kinase domain-retained: 141/146
 - Fisher exact test (one-sided): odds ratio 7.42105, p=0.000419666
 - Breakpoint-permutation empirical p-value: 0.000999001
 - Contingency table `[[retained/in-frame, retained/other], [not-retained/in-frame, not-retained/other]]`: `[[141, 38], [5, 10]]`
+
+The Protein kinase domain appears to be required for retention.
+The Cadherin domain appears to require loss or disruption rather than retention.
 
 ### Domain retention and discrepancies
 
@@ -31,15 +34,15 @@ Retrieved from public cBioPortal and Genome Nexus on 2026-09-05.
 
 The cBioPortal `msk_impact_50k_2026_structural_variants` structural-variant profile was queried by the configured Entrez gene ID. Fusion-annotated records were adapted to the production SV schema and normalized; when `site2EffectOnFrame=NA`, frame status was resolved from `Event_Info`, not copied into `FusionEvent.Frame_status`.
 
-RET genomic breakpoints were mapped against the Genome Nexus canonical transcript, and retention was classified against its returned PF07714 coordinates. Counts are event-level with no patient deduplication. The Fisher comparison's `other` column combines out-of-frame and unknown-frame events, as pre-specified by the domain-retention algorithm.
+RET genomic breakpoints were mapped against the Genome Nexus canonical transcript, and retention was classified against its returned Protein kinase domain coordinates. Counts are event-level with no patient deduplication. The Fisher comparison's `other` column combines out-of-frame and unknown-frame events, as pre-specified by the domain-retention algorithm.
 
 For each fusion, breakpoint selection preferred the Genome Nexus canonical transcript's exon-spanned target locus over cBioPortal site labels; malformed rows with no unambiguous target-locus coordinate were skipped and listed in Warnings.
 
 ## Full-suite highlights
 
-- Registered algorithms executed: composite_score, confidence_stats, cutpoint_detection, domain_disruption, domain_retention, exon_retention, frequency, joint_partner
-- Cutpoint detection: inferred breakpoint 627 aa (exon 10/11 boundary); corrected permutation p=0.001998.
-- Top composite score: KIF5B (87 events), 0.407674.
+- Registered algorithms executed: composite_score, confidence_stats, cutpoint_detection, domain_disruption, domain_retention, exon_retention, frequency, joint_partner, window_detection
+- Cutpoint detection: inferred breakpoint 712 aa (exon 11); corrected permutation p=0.000999001.
+- Top composite score: KIF5B (87 events), 0.459366.
 
 ## Partners
 

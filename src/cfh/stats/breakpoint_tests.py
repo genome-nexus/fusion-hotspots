@@ -196,6 +196,27 @@ def gene_breakpoint_domain_status_records(
     return records
 
 
+def gene_breakpoint_domain_status_event_records(
+    events: list[FusionEvent], features: list[FusionFeature], gene_config: GeneConfig
+) -> list[tuple[str, int, str]]:
+    """Return ``(event_id, breakpoint_protein_position, domain_status)`` triples.
+
+    Same underlying observation as :func:`gene_breakpoint_domain_status_records`,
+    with the owning ``Event_id`` carried alongside so a caller can identify
+    *which* events fall inside a candidate region -- needed by window-based
+    scans (e.g. ``window_detection``) to de-duplicate candidate windows by
+    event membership rather than by numeric position alone.
+    """
+    target_key = _target_domain_key(gene_config.key_domains, gene_config.gene_symbol)
+    records: list[tuple[str, int, str]] = []
+    for feature in _target_features(features, gene_config):
+        status = _domain_status(feature, target_key)
+        if status is None or feature.Junction_position_aa is None:
+            continue
+        records.append((feature.Event_id, feature.Junction_position_aa, status))
+    return records
+
+
 def domain_retention_descriptive_table(
     features: list[FusionFeature],
     gene_config: GeneConfig,
