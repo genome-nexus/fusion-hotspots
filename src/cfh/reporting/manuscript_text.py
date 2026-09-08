@@ -323,18 +323,40 @@ def render_manhattan_caption(payload: dict) -> str:
     )
 
 
-def render_gene_highlight(row: dict, *, honorable_mention_note: str | None = None) -> str:
+def render_gene_highlight(
+    row: dict,
+    *,
+    n_fdr_corrected_genes: int | None = None,
+    honorable_mention_note: str | None = None,
+) -> str:
     """Render the 2-5 sentence templated highlight paragraph for one
     highlighted gene's summary row: gene name, event count, in-frame%,
-    domain-retention%, and Fisher/FDR-adjusted p-values -- each in its own
-    sentence, explicitly labeled with the statistic (raw p vs. BH-adjusted
-    q) its significance verdict describes, since a gene's raw p-value can be
-    significant while its genome-wide q-value is not -- following the same
-    omission-over-invention discipline as
-    :func:`cfh.reporting.text.render_abstract`. ``honorable_mention_note``,
-    if given, is the gene's own already-established honorable-mentions note
-    text (see :func:`cfh.cohort.outputs.build_honorable_mentions`), appended
-    verbatim rather than re-derived.
+    domain-retention%, and Fisher/FDR-adjusted p-values.
+
+    The Fisher p-value and the FDR-adjusted q-value answer two genuinely
+    different questions, and are worded so a reader cannot mistake one for a
+    retraction of the other:
+
+    * the Fisher sentence answers "is this domain-retention finding real for
+      *this gene*", computed from this gene's own fusion events alone, with
+      no other gene involved;
+    * the FDR sentence answers the separate, cohort-scale question "is this
+      gene notable *relative to every other gene scanned genome-wide in this
+      run*" -- a gene's own within-gene finding can be real even when it
+      does not stand out in that larger comparison, so a non-significant
+      q-value here is not evidence against the Fisher sentence above.
+
+    ``n_fdr_corrected_genes`` is the number of genes that produced at least
+    one computable p-value and so entered the Benjamini-Hochberg correction
+    this q-value comes from (the same count reported in
+    :func:`render_manuscript_methods`/:func:`render_discussion_bullets` --
+    pass ``_scan_counts(payload)["n_with_q"]``); omitted (``None``) rather
+    than guessed when the caller doesn't have the full cohort payload handy,
+    per the omission-over-invention discipline used throughout this module.
+    ``honorable_mention_note``, if given, is the gene's own already-
+    established honorable-mentions note text (see
+    :func:`cfh.cohort.outputs.build_honorable_mentions`), appended verbatim
+    rather than re-derived.
     """
     gene = row.get("gene_symbol") or "This gene"
     n_events = row.get("n_events_analyzed")
@@ -353,8 +375,15 @@ def render_gene_highlight(row: dict, *, honorable_mention_note: str | None = Non
     fisher_display = format_stat(fisher_p)
     if fisher_display != "unavailable":
         sig = significance_clause(fisher_p)
-        sentence = f"Domain-retention Fisher's exact test p={fisher_display}"
-        sentence += f" (raw {sig})." if sig else "."
+        # Framed as a question about this gene alone -- "on {gene}'s own
+        # fusion events alone" -- so it stands on its own and carries no
+        # cohort-scale/cross-gene language that could be conflated with the
+        # separate FDR sentence below.
+        sentence = (
+            f"Domain-retention Fisher's exact test on {gene}'s own fusion events alone "
+            f"gives p={fisher_display}"
+        )
+        sentence += f" ({sig})." if sig else "."
         sentences.append(sentence)
 
         interpretation = domain_interpretation_sentence(
@@ -372,12 +401,15 @@ def render_gene_highlight(row: dict, *, honorable_mention_note: str | None = Non
             # used for this gene's badge/tier elsewhere (see
             # ``cfh.cohort.outputs._gene_badges``) -- reusing it here (rather
             # than re-deriving a threshold check on q) guarantees this clause
-            # can never drift from, or be confused with, the raw p-value's own
-            # significance clause above. A gene's raw Fisher p-value can be
-            # significant while its genome-wide BH-adjusted q-value is not
-            # (that is the entire point of multiple-testing correction), so
-            # these two verdicts are stated in separate sentences, each
-            # explicitly labeled with the statistic it describes.
+            # can never drift from, or be confused with, the Fisher sentence's
+            # own significance clause above. This sentence deliberately opens
+            # with explicit cohort-scale framing ("Among the N genes scanned
+            # genome-wide...") -- a different grammatical subject than the
+            # Fisher sentence above -- so the two verdicts can never be misread
+            # as describing the same comparison: a gene's within-gene Fisher
+            # p-value can be significant while its genome-wide BH-adjusted
+            # q-value is not (that is the entire point of multiple-testing
+            # correction), and neither statement retracts the other.
             fdr_significant = row.get("fdr_significant")
             if fdr_significant is True:
                 q_clause = "reaches genome-wide FDR significance"
@@ -385,7 +417,12 @@ def render_gene_highlight(row: dict, *, honorable_mention_note: str | None = Non
                 q_clause = "does not reach genome-wide FDR significance"
             else:
                 q_clause = None
-            q_sentence = f"Genome-wide BH-adjusted q={q_display}"
+            gene_count_display = _count_display(n_fdr_corrected_genes)
+            q_sentence = (
+                f"Among {gene_count_display} gene{_plural(n_fdr_corrected_genes)} scanned "
+                f"genome-wide in this cohort run, {gene}'s Benjamini-Hochberg-adjusted "
+                f"q={q_display}"
+            )
             q_sentence += f" ({q_clause})." if q_clause else "."
             sentences.append(q_sentence)
     else:

@@ -2,7 +2,7 @@
   "gene_symbol": "BRAF",
   "study_id": "thca_tcga_pan_can_atlas_2018",
   "molecular_profile_id": "thca_tcga_pan_can_atlas_2018_structural_variants",
-  "retrieved_at": "2026-09-03T16:06:40.839466+00:00",
+  "retrieved_at": "2026-09-05T01:26:56.321585+00:00",
   "summary": {
     "raw_structural_variant_count": 15,
     "total_fusions": 15,
@@ -62,7 +62,15 @@
     ],
     "domain_accession": "PF07714",
     "domain_start_aa": 457,
-    "domain_end_aa": 712
+    "domain_end_aa": 712,
+    "key_domains": [
+      {
+        "name": "Protein kinase domain",
+        "accession": "PF07714",
+        "start_aa": 457,
+        "end_aa": 712
+      }
+    ]
   },
   "warnings": [],
   "events": [
@@ -79,8 +87,10 @@
       "breakpoint_protein_position": 381,
       "is_intronic_breakpoint": false,
       "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
       "retained_domains": "Protein kinase domain",
-      "lost_domains": "",
+      "lost_domains": "RAS-binding domain; Cysteine-rich domain",
       "disrupted_domains": "",
       "source_annotation_text": "NA | AP3B1-BRAF Fusion",
       "source_site2_effect_on_frame": "in-frame"
@@ -98,8 +108,10 @@
       "breakpoint_protein_position": 393,
       "is_intronic_breakpoint": false,
       "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
       "retained_domains": "Protein kinase domain",
-      "lost_domains": "",
+      "lost_domains": "RAS-binding domain; Cysteine-rich domain",
       "disrupted_domains": "",
       "source_annotation_text": "NA | BCL2L11-BRAF Fusion",
       "source_site2_effect_on_frame": "in-frame"
@@ -117,7 +129,9 @@
       "breakpoint_protein_position": 380,
       "is_intronic_breakpoint": false,
       "domain_status": "lost",
-      "retained_domains": "",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "retained_domains": "RAS-binding domain; Cysteine-rich domain",
       "lost_domains": "Protein kinase domain",
       "disrupted_domains": "",
       "source_annotation_text": "NA | BRAF-AP3B1 Fusion",
@@ -136,7 +150,9 @@
       "breakpoint_protein_position": 438,
       "is_intronic_breakpoint": false,
       "domain_status": "lost",
-      "retained_domains": "",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "retained_domains": "RAS-binding domain; Cysteine-rich domain",
       "lost_domains": "Protein kinase domain",
       "disrupted_domains": "",
       "source_annotation_text": "NA | BRAF-FAM114A2 Fusion",
@@ -155,7 +171,9 @@
       "breakpoint_protein_position": 380,
       "is_intronic_breakpoint": false,
       "domain_status": "lost",
-      "retained_domains": "",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "retained_domains": "RAS-binding domain; Cysteine-rich domain",
       "lost_domains": "Protein kinase domain",
       "disrupted_domains": "",
       "source_annotation_text": "NA | BRAF-MACF1 Fusion",
@@ -174,7 +192,9 @@
       "breakpoint_protein_position": 393,
       "is_intronic_breakpoint": false,
       "domain_status": "lost",
-      "retained_domains": "",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "retained_domains": "RAS-binding domain; Cysteine-rich domain",
       "lost_domains": "Protein kinase domain",
       "disrupted_domains": "",
       "source_annotation_text": "NA | BRAF-SND1 Fusion",
@@ -193,7 +213,9 @@
       "breakpoint_protein_position": 380,
       "is_intronic_breakpoint": false,
       "domain_status": "lost",
-      "retained_domains": "",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "retained_domains": "RAS-binding domain; Cysteine-rich domain",
       "lost_domains": "Protein kinase domain",
       "disrupted_domains": "",
       "source_annotation_text": "NA | BRAF-SND1 Fusion",
@@ -212,8 +234,10 @@
       "breakpoint_protein_position": 46,
       "is_intronic_breakpoint": false,
       "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
       "retained_domains": "",
-      "lost_domains": "Protein kinase domain",
+      "lost_domains": "Protein kinase domain; RAS-binding domain; Cysteine-rich domain",
       "disrupted_domains": "",
       "source_annotation_text": "NA | BRAF-SUGCT Fusion",
       "source_site2_effect_on_frame": "in-frame"
@@ -231,8 +255,10 @@
       "breakpoint_protein_position": 439,
       "is_intronic_breakpoint": false,
       "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
       "retained_domains": "Protein kinase domain",
-      "lost_domains": "",
+      "lost_domains": "RAS-binding domain; Cysteine-rich domain",
       "disrupted_domains": "",
       "source_annotation_text": "NA | FAM114A2-BRAF Fusion",
       "source_site2_effect_on_frame": "in-frame"
@@ -250,8 +276,10 @@
       "breakpoint_protein_position": 381,
       "is_intronic_breakpoint": false,
       "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
       "retained_domains": "Protein kinase domain",
-      "lost_domains": "",
+      "lost_domains": "RAS-binding domain; Cysteine-rich domain",
       "disrupted_domains": "",
       "source_annotation_text": "NA | MACF1-BRAF Fusion",
       "source_site2_effect_on_frame": "in-frame"
@@ -269,8 +297,10 @@
       "breakpoint_protein_position": 381,
       "is_intronic_breakpoint": false,
       "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
       "retained_domains": "Protein kinase domain",
-      "lost_domains": "",
+      "lost_domains": "RAS-binding domain; Cysteine-rich domain",
       "disrupted_domains": "",
       "source_annotation_text": "NA | MKRN1-BRAF Fusion",
       "source_site2_effect_on_frame": "in-frame"
@@ -288,8 +318,10 @@
       "breakpoint_protein_position": 381,
       "is_intronic_breakpoint": false,
       "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
       "retained_domains": "Protein kinase domain",
-      "lost_domains": "",
+      "lost_domains": "RAS-binding domain; Cysteine-rich domain",
       "disrupted_domains": "",
       "source_annotation_text": "NA | SND1-BRAF Fusion",
       "source_site2_effect_on_frame": "in-frame"
@@ -307,8 +339,10 @@
       "breakpoint_protein_position": 393,
       "is_intronic_breakpoint": false,
       "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
       "retained_domains": "Protein kinase domain",
-      "lost_domains": "",
+      "lost_domains": "RAS-binding domain; Cysteine-rich domain",
       "disrupted_domains": "",
       "source_annotation_text": "NA | SND1-BRAF Fusion",
       "source_site2_effect_on_frame": "in-frame"
@@ -326,8 +360,10 @@
       "breakpoint_protein_position": 381,
       "is_intronic_breakpoint": false,
       "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
       "retained_domains": "Protein kinase domain",
-      "lost_domains": "",
+      "lost_domains": "RAS-binding domain; Cysteine-rich domain",
       "disrupted_domains": "",
       "source_annotation_text": "NA | SND1-BRAF Fusion",
       "source_site2_effect_on_frame": "in-frame"
@@ -345,8 +381,10 @@
       "breakpoint_protein_position": 439,
       "is_intronic_breakpoint": false,
       "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
       "retained_domains": "Protein kinase domain",
-      "lost_domains": "",
+      "lost_domains": "RAS-binding domain; Cysteine-rich domain",
       "disrupted_domains": "",
       "source_annotation_text": "NA | ZC3HAV1-BRAF Fusion",
       "source_site2_effect_on_frame": "in-frame"
@@ -355,17 +393,18 @@
   "algorithm_results": [
     {
       "Algorithm": "domain_retention",
-      "Algorithm_version": "0.1.0",
+      "Algorithm_version": "0.2.0",
       "Parameters": {
         "seed": 42,
-        "n_permutations": 1000
+        "n_permutations": 1000,
+        "adaptive": false
       },
       "Summary": {
         "fisher_odds_ratio": null,
         "fisher_p_value": 1.0,
         "permutation_empirical_p_value": 0.015984015984015984,
         "observed_in_frame_retention_rate": 0.6,
-        "Runtime_seconds": 0.11466216700500809
+        "Runtime_seconds": 0.5453611249977257
       },
       "Tables": {
         "frame_domain_contingency_table": [
@@ -378,14 +417,25 @@
             0
           ]
         ],
+        "domain_retention_descriptives": [
+          {
+            "Domain_key": "kinase",
+            "Domain_name": "Protein kinase domain",
+            "Quantitative_call_count": 15,
+            "Fully_retained_count": 9,
+            "Truncated_count": 0,
+            "Fully_lost_count": 6,
+            "Mean_retained_fraction_among_non_retained_calls": 0.0
+          }
+        ],
         "permutation_null_retention_rates": {
           "omitted_from_artifact": true,
           "count": 1000
         }
       },
       "Warnings": [],
-      "Created_at": "2026-09-03T16:06:40.838734Z",
-      "Input_fingerprint": "da8bed59057d1650a6e67934a8ac7e724d864bb7fcb01a606f768428606c8ff3"
+      "Created_at": "2026-09-05T01:26:56.315483Z",
+      "Input_fingerprint": "61ecf53c428b49a84bc689ab9ab26809991f35cc39a9cb0a68eeca90a8646f15"
     },
     {
       "Algorithm": "frequency",
@@ -397,7 +447,7 @@
         "input_event_count": 15,
         "analyzed_event_count": 15,
         "unique_partner_gene_count": 8,
-        "Runtime_seconds": 3.608300175983459e-05
+        "Runtime_seconds": 7.083400851115584e-05
       },
       "Tables": {
         "Partner_gene_counts": [
@@ -436,8 +486,130 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-03T16:06:40.839378Z",
-      "Input_fingerprint": "da8bed59057d1650a6e67934a8ac7e724d864bb7fcb01a606f768428606c8ff3"
+      "Created_at": "2026-09-05T01:26:56.321357Z",
+      "Input_fingerprint": "61ecf53c428b49a84bc689ab9ab26809991f35cc39a9cb0a68eeca90a8646f15"
     }
-  ]
+  ],
+  "reference": {
+    "citation": "PMC5461196",
+    "fusion_count": 33,
+    "in_frame_percent": 100.0,
+    "domain_retained_percent": 100.0
+  },
+  "gene_track": {
+    "protein_length": 766,
+    "domains": [
+      {
+        "name": "Cysteine-rich domain",
+        "accession": "PF00130",
+        "start_aa": 235,
+        "end_aa": 281
+      },
+      {
+        "name": "Protein kinase domain",
+        "accession": "PF07714",
+        "start_aa": 457,
+        "end_aa": 712
+      },
+      {
+        "name": "RAS-binding domain",
+        "accession": "PF02196",
+        "start_aa": 157,
+        "end_aa": 225
+      }
+    ],
+    "exon_boundaries_aa": [
+      {
+        "exon_rank": 1,
+        "start_aa": 1,
+        "end_aa": 46
+      },
+      {
+        "exon_rank": 2,
+        "start_aa": 47,
+        "end_aa": 80
+      },
+      {
+        "exon_rank": 3,
+        "start_aa": 81,
+        "end_aa": 168
+      },
+      {
+        "exon_rank": 4,
+        "start_aa": 169,
+        "end_aa": 203
+      },
+      {
+        "exon_rank": 5,
+        "start_aa": 203,
+        "end_aa": 237
+      },
+      {
+        "exon_rank": 6,
+        "start_aa": 238,
+        "end_aa": 287
+      },
+      {
+        "exon_rank": 7,
+        "start_aa": 287,
+        "end_aa": 327
+      },
+      {
+        "exon_rank": 8,
+        "start_aa": 327,
+        "end_aa": 380
+      },
+      {
+        "exon_rank": 9,
+        "start_aa": 381,
+        "end_aa": 393
+      },
+      {
+        "exon_rank": 10,
+        "start_aa": 393,
+        "end_aa": 438
+      },
+      {
+        "exon_rank": 11,
+        "start_aa": 439,
+        "end_aa": 478
+      },
+      {
+        "exon_rank": 12,
+        "start_aa": 478,
+        "end_aa": 506
+      },
+      {
+        "exon_rank": 13,
+        "start_aa": 506,
+        "end_aa": 565
+      },
+      {
+        "exon_rank": 14,
+        "start_aa": 565,
+        "end_aa": 581
+      },
+      {
+        "exon_rank": 15,
+        "start_aa": 581,
+        "end_aa": 620
+      },
+      {
+        "exon_rank": 16,
+        "start_aa": 621,
+        "end_aa": 664
+      },
+      {
+        "exon_rank": 17,
+        "start_aa": 665,
+        "end_aa": 709
+      },
+      {
+        "exon_rank": 18,
+        "start_aa": 710,
+        "end_aa": 767
+      }
+    ]
+  },
+  "intragenic_deletions": []
 }
