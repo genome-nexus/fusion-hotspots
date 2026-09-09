@@ -381,8 +381,7 @@
   },
   "warnings": [
     "Skipped EVT-P-0013148-T01-IM5-128 (FGFR2-PRKAG2): ValueError: could not determine 5'/3' role for FGFR2 in EVT-P-0013148-T01-IM5-128; Event_Info='Antisense fusion'",
-    "Skipped EVT-P-0034590-T01-IM6-138 (FGFR2-ST8SIA6): ValueError: could not determine 5'/3' role for FGFR2 in EVT-P-0034590-T01-IM6-138; Event_Info='Antisense Fusion'",
-    "report.pdf could not be rendered (reportlab LayoutError: a per-event results table with this many columns and rows occasionally hits a pagination edge case in reportlab's Table splitting; see PR discussion). All other outputs (results.json/results.tsv/report.md/visualizations) were generated successfully and are unaffected."
+    "Skipped EVT-P-0034590-T01-IM6-138 (FGFR2-ST8SIA6): ValueError: could not determine 5'/3' role for FGFR2 in EVT-P-0034590-T01-IM6-138; Event_Info='Antisense Fusion'"
   ],
   "events": [
     {

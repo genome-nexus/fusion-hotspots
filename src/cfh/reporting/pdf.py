@@ -67,6 +67,17 @@ defensively keeps every cell's height bounded regardless of how many
 domains a gene has; the untruncated value is still available verbatim in
 ``results.json``/``results.tsv``."""
 
+_TABLE_PAGE_SAFETY_MARGIN = 12
+"""Leave room for ReportLab's cell padding when paginating table blocks."""
+
+_MAX_RESULTS_CELL_HEIGHT = 330
+"""Maximum rendered height of a per-event body cell, in points.
+
+The 24-column table's header consumes meaningful vertical space.  A body cell
+can therefore be shorter than a page and still be too tall when repeated with
+that header.  Bound rendered height, rather than only character count.
+"""
+
 
 def _format_cell_value(value: object) -> object:
     """Summarize a list/tuple cell value for display; pass everything else through."""
@@ -83,6 +94,30 @@ def _truncate_cell_text(text: str) -> str:
     if len(text) <= _MAX_CELL_TEXT_LENGTH:
         return text
     return f"{text[:_MAX_CELL_TEXT_LENGTH]}... ({len(text)} chars total)"
+
+
+def _truncate_cell_text_to_height(
+    text: str, style: ParagraphStyle, width: float, max_height: float
+) -> str:
+    """Return the longest display string whose Paragraph fits ``max_height``."""
+
+    def display_text(length: int) -> str:
+        if length >= len(text):
+            return text
+        return f"{text[:length]}... ({len(text)} chars total)"
+
+    initial_length = min(len(text), _MAX_CELL_TEXT_LENGTH)
+    if Paragraph(display_text(initial_length), style).wrap(width, max_height)[1] <= max_height:
+        return display_text(initial_length)
+
+    low, high = 0, initial_length
+    while low < high:
+        middle = (low + high + 1) // 2
+        if Paragraph(display_text(middle), style).wrap(width, max_height)[1] <= max_height:
+            low = middle
+        else:
+            high = middle - 1
+    return display_text(low)
 
 
 def _styles() -> dict[str, ParagraphStyle]:
@@ -113,7 +148,12 @@ def _load_svg_drawing(path: Path, max_width: float):
 
 
 def _generic_table_flowable(
-    rows: list[list], styles: dict, header: bool = True, *, total_width: float | None = None
+    rows: list[list],
+    styles: dict,
+    header: bool = True,
+    *,
+    total_width: float | None = None,
+    max_body_cell_height: float | None = None,
 ) -> Table:
     """Build a bordered, striped table of ``Paragraph`` cells.
 
@@ -131,10 +171,21 @@ def _generic_table_flowable(
     """
     cell_style = styles["Cell"]
     header_style = styles["CellHeader"]
+    cell_width = total_width / len(rows[0]) if total_width is not None and rows else None
     formatted = []
     for row_index, row in enumerate(rows):
         style = header_style if header and row_index == 0 else cell_style
-        formatted.append([Paragraph(_truncate_cell_text(str(value)), style) for value in row])
+        formatted_row = []
+        for value in row:
+            text = str(value)
+            if row_index > 0 and cell_width is not None and max_body_cell_height is not None:
+                text = _truncate_cell_text_to_height(
+                    text, style, cell_width - 4, max_body_cell_height
+                )
+            else:
+                text = _truncate_cell_text(text)
+            formatted_row.append(Paragraph(text, style))
+        formatted.append(formatted_row)
     col_widths = None
     if total_width is not None and formatted:
         col_widths = [total_width / len(formatted[0])] * len(formatted[0])
@@ -142,6 +193,8 @@ def _generic_table_flowable(
     table_style = [
         ("GRID", (0, 0), (-1, -1), 0.4, colors.grey),
         ("VALIGN", (0, 0), (-1, -1), "TOP"),
+        ("LEFTPADDING", (0, 0), (-1, -1), 2),
+        ("RIGHTPADDING", (0, 0), (-1, -1), 2),
         ("ROWBACKGROUNDS", (0, 1 if header else 0), (-1, -1), [colors.white, colors.whitesmoke]),
     ]
     if header:
@@ -164,7 +217,18 @@ def _results_tsv_table(tsv_path: Path, styles: dict, *, total_width: float | Non
     body_rows = rows[1:]
     truncated = len(body_rows) > _MAX_TABLE_ROWS
     display_rows = [rows[0]] + body_rows[:_MAX_TABLE_ROWS]
-    flowables.append(_generic_table_flowable(display_rows, styles, total_width=total_width))
+    # Tall rows fit a fresh landscape frame individually, but ReportLab's
+    # repeated-header Table.split() can fail when it reaches one late in a
+    # long table.  Use independently measured page-sized blocks instead.
+    flowables.extend(
+        _page_sized_table_flowables(
+            display_rows,
+            styles,
+            total_width=total_width,
+            max_height=landscape(LETTER)[1] - (2 * 0.75 * inch),
+            max_body_cell_height=_MAX_RESULTS_CELL_HEIGHT,
+        )
+    )
     if truncated:
         flowables.append(
             Paragraph(
@@ -173,6 +237,72 @@ def _results_tsv_table(tsv_path: Path, styles: dict, *, total_width: float | Non
                 styles["Caption"],
             )
         )
+    return flowables
+
+
+def _page_sized_table_flowables(
+    rows: list[list],
+    styles: dict,
+    *,
+    total_width: float | None,
+    max_height: float,
+    max_body_cell_height: float,
+) -> list:
+    """Return header-repeated table blocks which each fit a fresh page.
+
+    This avoids the ReportLab ``Table.split`` repeated-header pagination path
+    for long narrow-column tables.  Each complete block is measured before it
+    is placed into the story, and begins on its own page.
+    """
+    if not rows:
+        return []
+
+    header, body_rows = rows[0], rows[1:]
+    blocks: list[Table] = []
+    current_rows: list[list] = []
+    usable_height = max_height - _TABLE_PAGE_SAFETY_MARGIN
+
+    for row in body_rows:
+        candidate = [header, *current_rows, row]
+        candidate_table = _generic_table_flowable(
+            candidate,
+            styles,
+            total_width=total_width,
+            max_body_cell_height=max_body_cell_height,
+        )
+        _, candidate_height = candidate_table.wrap(total_width or 0, usable_height)
+        if current_rows and candidate_height > usable_height:
+            blocks.append(
+                _generic_table_flowable(
+                    [header, *current_rows],
+                    styles,
+                    total_width=total_width,
+                    max_body_cell_height=max_body_cell_height,
+                )
+            )
+            current_rows = [row]
+        else:
+            current_rows.append(row)
+
+    if current_rows:
+        blocks.append(
+            _generic_table_flowable(
+                [header, *current_rows],
+                styles,
+                total_width=total_width,
+                max_body_cell_height=max_body_cell_height,
+            )
+        )
+    elif not body_rows:
+        blocks.append(
+            _generic_table_flowable(
+                [header], styles, total_width=total_width, max_body_cell_height=max_body_cell_height
+            )
+        )
+
+    flowables: list = []
+    for block in blocks:
+        flowables.extend((PageBreak(), block))
     return flowables
 
 
