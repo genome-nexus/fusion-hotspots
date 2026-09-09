@@ -65,5 +65,3 @@ CCDC186 (1), CCDC6 (51), CLIP1 (1), CTNNA1 (1), CTNNA3 (1), CUBN (1), DOCK1 (1),
 ## Interpretation
 
 These values describe the live study named above.
-
-**Note:** report.pdf could not be rendered (reportlab LayoutError: a per-event results table with this many columns and rows occasionally hits a pagination edge case in reportlab's Table splitting; see PR discussion). All other outputs (results.json/results.tsv/report.md/visualizations) were generated successfully and are unaffected.

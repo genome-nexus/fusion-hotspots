@@ -21,6 +21,7 @@ from cfh.real_benchmark import (
     run_real_benchmark,
     write_outputs,
 )
+from cfh.reporting.text import render_abstract
 
 
 def test_target_breakpoint_uses_genome_nexus_locus_when_cbioportal_site_labels_are_swapped():
@@ -312,6 +313,63 @@ def test_malformed_fusion_rows_are_warned_and_skipped_without_losing_valid_rows(
         "NO-BREAKPOINT" in warning and "no genomic breakpoint" in warning
         for warning in run.warnings
     )
+
+
+@pytest.mark.parametrize("skip_reason", ["missing", "malformed", "ambiguous"])
+@pytest.mark.parametrize("include_mapped", [True, False])
+def test_in_frame_and_retention_summaries_exclude_skipped_in_frame_rows(
+    tmp_path, genome_nexus_canonical_transcript_fixture_path, skip_reason, include_mapped
+):
+    client = _genome_nexus_client(genome_nexus_canonical_transcript_fixture_path)
+    mapped_calls = (
+        [
+            _call("IN-FRAME"),
+            _call("OUT-OF-FRAME", event_info="Protein Fusion: out of frame  {KIAA1549:BRAF}"),
+        ]
+        if include_mapped
+        else []
+    )
+    skipped_call = _call("SKIPPED-IN-FRAME", breakpoint=None)
+    if skip_reason == "malformed":
+        skipped_call["site2Position"] = "not-a-coordinate"
+    elif skip_reason == "ambiguous":
+        skipped_call.update(site1Position=140493152, site2Position=140493153)
+    baseline = analyze_structural_variant_calls(
+        mapped_calls, "BRAF", "edge-study", genome_nexus_client=client, n_permutations=5
+    )
+    run = analyze_structural_variant_calls(
+        [*mapped_calls, skipped_call],
+        "BRAF",
+        "edge-study",
+        genome_nexus_client=client,
+        n_permutations=5,
+    )
+
+    assert run.summary["total_fusions"] == len(mapped_calls) + 1
+    assert run.summary["mapped_fusions"] == len(mapped_calls)
+    assert run.summary["skipped_fusions"] == 1
+    assert any("SKIPPED-IN-FRAME" in warning for warning in run.warnings)
+    assert run.rows == baseline.rows
+    assert run.summary["in_frame_count"] == (1 if include_mapped else 0)
+    assert run.summary["in_frame_percent"] == (50.0 if include_mapped else 0.0)
+    assert run.summary["kinase_retained_count"] == len(mapped_calls)
+    assert run.summary["kinase_retained_percent"] == (100.0 if include_mapped else 0.0)
+    for key in (
+        "in_frame_kinase_retained_count",
+        "frame_domain_contingency_table",
+        "fisher_p_value",
+        "fisher_odds_ratio",
+        "permutation_p_value",
+    ):
+        assert json.dumps(run.summary[key]) == json.dumps(baseline.summary[key])
+
+    paths = write_outputs(run, tmp_path, pdf=False)
+    report = paths["markdown"].read_text()
+    if include_mapped:
+        assert "- In-frame: 1/2 (50.0%)" in report
+        abstract = render_abstract(json.loads(paths["json"].read_text()))
+        assert "1/2 fusions (50.0%) were in-frame" in abstract
+        assert "2/2 fusions (100.0%) retained" in abstract
 
 
 def test_tcga_fusion_annotation_uses_shared_benchmark_pipeline(

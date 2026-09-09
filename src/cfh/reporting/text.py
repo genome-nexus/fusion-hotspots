@@ -134,19 +134,21 @@ def render_abstract(payload: dict) -> str:
     else:
         sentences.append(f"This report analyzes {gene} gene fusions from the {study} study.")
 
+    mapped_total = summary.get("mapped_fusions", total)
     in_frame_count = summary.get("in_frame_count")
-    if total and in_frame_count is not None:
+    if mapped_total and in_frame_count is not None:
         sentences.append(
-            f"{in_frame_count}/{total} fusions ({format_percent(summary.get('in_frame_percent'))}) "
+            f"{in_frame_count}/{mapped_total} fusions "
+            f"({format_percent(summary.get('in_frame_percent'))}) "
             "were in-frame."
         )
 
     domain_names = _retention_domain_names(payload)
     domain = format_domain_names(domain_names)
     retained_count = summary.get("kinase_retained_count")
-    if total and domain and retained_count is not None:
+    if mapped_total and domain and retained_count is not None:
         sentences.append(
-            f"{retained_count}/{total} fusions "
+            f"{retained_count}/{mapped_total} fusions "
             f"({format_percent(summary.get('kinase_retained_percent'))}) retained the "
             f"{domain}{'' if domain.lower().endswith('domain') else ' domain'}."
         )

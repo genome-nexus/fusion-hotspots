@@ -830,7 +830,9 @@ def analyze_structural_variant_calls_with_config(
             selected_events, features, config, {"dedup_by_patient": False}
         )
     partner_counts = frequency_result.Tables["Partner_gene_counts"]
-    in_frame_count = sum(event.Frame_status == "in-frame" for event in selected_events)
+    # Frame and retention summaries describe the same post-mapping population.
+    mapped_total = len(rows)
+    in_frame_count = sum(row["frame_status"] == "in-frame" for row in rows)
     retained_count = sum(row["domain_status"] == "retained" for row in rows)
     in_frame_retained_count = sum(
         row["frame_status"] == "in-frame" and row["domain_status"] == "retained" for row in rows
@@ -895,9 +897,9 @@ def analyze_structural_variant_calls_with_config(
         "mapped_fusions": len(features),
         "skipped_fusions": total - len(features),
         "in_frame_count": in_frame_count,
-        "in_frame_percent": 100 * in_frame_count / total if total else 0.0,
+        "in_frame_percent": 100 * in_frame_count / mapped_total if mapped_total else 0.0,
         "kinase_retained_count": retained_count,
-        "kinase_retained_percent": 100 * retained_count / total if total else 0.0,
+        "kinase_retained_percent": 100 * retained_count / mapped_total if mapped_total else 0.0,
         "in_frame_kinase_retained_count": in_frame_retained_count,
         "fisher_odds_ratio": domain_result.Summary["fisher_odds_ratio"],
         "fisher_p_value": domain_result.Summary["fisher_p_value"],
@@ -1258,10 +1260,10 @@ def markdown_summary(
         f"- Protein-fusion records found: {summary['total_fusions']}",
         f"- Protein-fusion records mapped: {summary['mapped_fusions']}",
         f"- Malformed/unmappable fusion records skipped: {summary['skipped_fusions']}",
-        f"- In-frame: {summary['in_frame_count']}/{summary['total_fusions']} "
+        f"- In-frame: {summary['in_frame_count']}/{summary['mapped_fusions']} "
         f"({summary['in_frame_percent']:.1f}%)",
         f"- {domain} ({summary['domain_start_aa']}-{summary['domain_end_aa']} aa) retained: "
-        f"{summary['kinase_retained_count']}/{summary['total_fusions']} "
+        f"{summary['kinase_retained_count']}/{summary['mapped_fusions']} "
         f"({summary['kinase_retained_percent']:.1f}%)",
         f"- In-frame and {domain}-retained: "
         f"{summary['in_frame_kinase_retained_count']}/{summary['in_frame_count']}",
@@ -1464,7 +1466,7 @@ def markdown_summary(
                 "This does **not** reproduce the Zehir et al. (PMC5461196) report of "
                 "33/33 BRAF fusions being in-frame with the kinase domain retained: "
                 f"this live successor cohort has {summary['in_frame_count']}/"
-                f"{summary['total_fusions']} in-frame and "
+                f"{summary['mapped_fusions']} mapped fusions in-frame and "
                 f"{summary['in_frame_kinase_retained_count']}/"
                 f"{summary['in_frame_count']} in-frame fusions retaining {domain}.",
                 "",
