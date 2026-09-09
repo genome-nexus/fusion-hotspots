@@ -12,6 +12,32 @@ from cfh.cohort.scan import DEFAULT_N_PERMUTATIONS_SMALL, run_cohort_scan
 from cfh.gene_comparison import compare_gene_runs, write_comparison_tsv
 from cfh.genes.registry import available_genes, load_gene_config
 from cfh.real_benchmark import RealBenchmarkError, run_analysis, run_real_benchmark, write_outputs
+from cfh.reporting.html_viewer import build_run_viewer
+
+_HTML_OPTION = click.option(
+    "--html/--no-html",
+    default=True,
+    show_default=True,
+    help="Also assemble the backend-less static-site HTML viewer bundle (viewer/index.html) "
+    "alongside this run's report.md/report.pdf.",
+)
+
+
+def _build_html_viewer_safely(run_directory: Path | None) -> Path | None:
+    """Build the static HTML viewer for ``run_directory``, tolerating any
+    failure the same way :func:`cfh.real_benchmark.write_outputs` tolerates
+    a report.pdf failure: the viewer is a convenience rendering of data
+    already fully captured in results.json/summary.json, so it must never
+    take down an otherwise-successful run."""
+    if run_directory is None:
+        return None
+    try:
+        return build_run_viewer(run_directory)
+    except Exception as exc:
+        click.echo(
+            f"Warning: HTML viewer could not be generated ({type(exc).__name__}: {exc})", err=True
+        )
+        return None
 
 
 @click.group()
@@ -78,6 +104,7 @@ def compare_genes(run_artifacts: tuple[Path, ...], output_path: Path) -> None:
     show_default=True,
     help="Also render a self-contained report.pdf for human reviewers.",
 )
+@_HTML_OPTION
 def real_benchmark(
     gene_symbol: str,
     study_id: str,
@@ -85,6 +112,7 @@ def real_benchmark(
     n_permutations: int,
     output_stem: str | None,
     pdf: bool,
+    html: bool,
 ) -> None:
     """Run the prototype live cBioPortal/Genome Nexus benchmark."""
     try:
@@ -127,6 +155,10 @@ def real_benchmark(
         )
     for warning in run.warnings:
         click.echo(f"Warning: {warning}", err=True)
+    if html:
+        viewer_path = _build_html_viewer_safely(paths.get("run_directory"))
+        if viewer_path is not None:
+            paths["viewer"] = viewer_path
     for kind, path in paths.items():
         click.echo(f"{kind}: {path}")
 
@@ -147,8 +179,9 @@ def real_benchmark(
     show_default=True,
     help="Also render a self-contained report.pdf for human reviewers.",
 )
+@_HTML_OPTION
 def analyze(
-    gene_symbol: str, study_id: str, output_dir: Path, n_permutations: int, pdf: bool
+    gene_symbol: str, study_id: str, output_dir: Path, n_permutations: int, pdf: bool, html: bool
 ) -> None:
     """Run all registered algorithms for a configured gene and live study."""
     try:
@@ -185,6 +218,10 @@ def analyze(
         )
     for warning in run.warnings:
         click.echo(f"Warning: {warning}", err=True)
+    if html:
+        viewer_path = _build_html_viewer_safely(paths.get("run_directory"))
+        if viewer_path is not None:
+            paths["viewer"] = viewer_path
     for kind, path in paths.items():
         click.echo(f"{kind}: {path}")
 
@@ -247,6 +284,7 @@ def analyze(
     help="Size of the 'honorable mentions' highly ranked non-FDR-significant tier: the top N "
     "genes by raw Fisher p-value among genes that did NOT survive genome-wide FDR correction.",
 )
+@_HTML_OPTION
 def cohort_scan(
     study_id: str,
     output_dir: Path,
@@ -258,6 +296,7 @@ def cohort_scan(
     cache_dir: Path | None,
     pdf: bool,
     honorable_mention_count: int,
+    html: bool,
 ) -> None:
     """Genome-wide fusion-hotspot scan: gate cohort-wide SV recurrence, run
     the full algorithm suite for every gated gene (auto-configuring genes
@@ -290,6 +329,17 @@ def cohort_scan(
     click.echo(f"FDR-significant genes (q<0.05): {len(result.significant_genes)}")
     for warning in result.warnings:
         click.echo(f"Warning: {warning}", err=True)
+    if html:
+        # ``cohort_scan``'s own "run_directory" is <run_id>/cohort_scan/ (its
+        # summary.md/summary.pdf/gene_reports/ all live there); the viewer
+        # bundle sits at the top-level <run_id>/viewer/, matching the exact
+        # "open runs/<run_id>/viewer/index.html" path used for every run type.
+        run_directory = paths.get("run_directory")
+        viewer_path = _build_html_viewer_safely(
+            run_directory.parent if run_directory is not None else None
+        )
+        if viewer_path is not None:
+            paths["viewer"] = viewer_path
     for kind in (
         "run_directory",
         "summary_tsv",
@@ -298,11 +348,39 @@ def cohort_scan(
         "summary_pdf",
         "manuscript_markdown",
         "manuscript_pdf",
+        "viewer",
     ):
         if kind in paths:
             click.echo(f"{kind}: {paths[kind]}")
     for gene_symbol, gene_paths in paths.get("gene_reports", {}).items():
         click.echo(f"gene_report[{gene_symbol}]: {gene_paths['run_directory']}")
+
+
+@main.command("report")
+@click.argument(
+    "run_directory",
+    type=click.Path(path_type=Path, file_okay=False, exists=True),
+)
+@_HTML_OPTION
+def report(run_directory: Path, html: bool) -> None:
+    """Generate additional report artifacts for an already-written run
+    directory (currently: the backend-less static-site HTML viewer bundle).
+
+    Reads only artifacts a previous ``real-benchmark``/``analyze``/
+    ``cohort-scan`` run already wrote to RUN_DIRECTORY (results.json /
+    cohort_scan/summary.json / the existing SVG figures) -- no network
+    access, no re-running any algorithm, nothing about the run's own
+    numbers is touched."""
+    if not html:
+        click.echo("Nothing to do (--no-html).")
+        return
+    viewer_path = build_run_viewer(run_directory)
+    if viewer_path is None:
+        raise click.ClickException(
+            f"{run_directory} has neither results.json nor cohort_scan/summary.json "
+            "-- nothing to build a viewer from."
+        )
+    click.echo(f"viewer: {viewer_path}")
 
 
 if __name__ == "__main__":

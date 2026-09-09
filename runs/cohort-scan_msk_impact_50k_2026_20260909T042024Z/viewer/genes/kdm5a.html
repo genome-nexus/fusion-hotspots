@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KDM5A fusion-hotspot report</title>
+<style>
+:root { color-scheme: light; }
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 24px 20px 60px; background: #f7f7f8; color: #1a1a1a;
+  font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+.wrap { max-width: 1080px; margin: 0 auto; }
+h1 { font-size: 22px; margin: 0 0 4px; }
+h2 {
+  font-size: 16px; margin: 32px 0 10px;
+  border-bottom: 1px solid #ddd; padding-bottom: 6px;
+}
+.subtitle { color: #555; font-size: 13px; margin: 0 0 20px; }
+.back-link {
+  display: inline-block; margin-bottom: 14px; font-size: 13px;
+  color: #2878b5; text-decoration: none;
+}
+.back-link:hover { text-decoration: underline; }
+.card {
+  background: #fff; border: 1px solid #e2e2e2;
+  border-radius: 8px; padding: 16px 18px;
+}
+.stat-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px;
+}
+.stat {
+  background: #fff; border: 1px solid #e2e2e2;
+  border-radius: 8px; padding: 10px 12px;
+}
+.stat .label {
+  font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.02em;
+}
+.stat .value { font-size: 18px; font-weight: 600; margin-top: 2px; }
+.svg-frame {
+  width: 100%; overflow-x: auto; background: #fff;
+  border: 1px solid #e2e2e2; border-radius: 8px; padding: 8px;
+}
+.svg-frame svg { display: block; max-width: 100%; height: auto; }
+.controls {
+  display: flex; flex-wrap: wrap; gap: 20px; align-items: center;
+  margin: 12px 0 16px; padding: 12px 14px; background: #fff;
+  border: 1px solid #e2e2e2; border-radius: 8px;
+}
+.control-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.control-group label.title { font-size: 12px; font-weight: 600; color: #333; }
+.control-group select { font-size: 13px; padding: 4px 6px; }
+.status-toggle { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; }
+#events-summary { font-size: 12px; color: #555; margin-left: auto; }
+table.events { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+table.events th, table.events td {
+  text-align: left; padding: 5px 8px;
+  border-bottom: 1px solid #eee; white-space: nowrap;
+}
+table.events th { position: sticky; top: 0; background: #fafafa; }
+.events-table-frame {
+  max-height: 420px; overflow: auto;
+  border: 1px solid #e2e2e2; border-radius: 8px; background: #fff;
+}
+.gene-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.gene-links a {
+  font-size: 12.5px; padding: 4px 9px; border-radius: 999px; text-decoration: none;
+  border: 1px solid #ccc; color: #1a1a1a; background: #fff;
+}
+.gene-links a:hover { background: #f0f0f0; }
+.gene-links a.significant { border-color: #d62728; color: #d62728; }
+.note { font-size: 12px; color: #777; margin-top: 8px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back-link" href="../index.html">&larr; Back to cohort-scan summary</a>
+  <h1>KDM5A</h1>
+  <p class="subtitle">msk_impact_50k_2026</p>
+  <div class="stat-grid"><div class="stat"><div class="label">Raw Structural Variant Count</div><div class="value">45</div></div><div class="stat"><div class="label">Total Fusions</div><div class="value">10</div></div><div class="stat"><div class="label">Mapped Fusions</div><div class="value">9</div></div><div class="stat"><div class="label">Skipped Fusions</div><div class="value">1</div></div><div class="stat"><div class="label">In Frame Count</div><div class="value">3</div></div><div class="stat"><div class="label">In Frame Percent</div><div class="value">30</div></div><div class="stat"><div class="label">Kinase Retained Count</div><div class="value">5</div></div><div class="stat"><div class="label">Kinase Retained Percent</div><div class="value">50</div></div><div class="stat"><div class="label">In Frame Kinase Retained Count</div><div class="value">3</div></div><div class="stat"><div class="label">Fisher Odds Ratio</div><div class="value">inf</div></div><div class="stat"><div class="label">Fisher P Value</div><div class="value">0.119</div></div><div class="stat"><div class="label">Permutation P Value</div><div class="value">0.2376</div></div><div class="stat"><div class="label">Domain Accession</div><div class="value">PF08429</div></div><div class="stat"><div class="label">Domain Start Aa</div><div class="value">740</div></div><div class="stat"><div class="label">Domain End Aa</div><div class="value">1072</div></div></div>
+  <h2>Domain retention / outlier lollipop track</h2><div class="svg-frame"><svg xmlns="http://www.w3.org/2000/svg" width="920" height="200" viewBox="0 0 920 200">
+<rect width="920" height="200" fill="white"/>
+<text x="60" y="28" font-family="sans-serif" font-size="16">KDM5A domain-retention track</text>
+<rect x="410.3" y="34.0" width="157.2" height="16.0" fill="#62b36f" opacity="0.55"/>
+<text x="410.3" y="46.0" font-family="sans-serif" font-size="9.5">PLU-1-like protein (740-1072)</text>
+<line x1="60.0" y1="63.0" x2="860.0" y2="63.0" stroke="#444444" stroke-width="4"/>
+<circle cx="680.6" cy="71.0" r="3" fill="#777777" stroke="none" stroke-width="0"><title>event EVT-P-0021409-T01-IM6-1; sample P-0021409-T01-IM6; partner COLGALT1; breakpoint aa 1311; domain lost</title></circle>
+<circle cx="374.3" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0030719-T01-IM6-4; sample P-0030719-T01-IM6; partner BMAL2; breakpoint aa 664; domain retained</title></circle>
+<circle cx="166.5" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0030473-T01-IM6-5; sample P-0030473-T01-IM6; partner CACNA1C; breakpoint aa 225; domain retained</title></circle>
+<circle cx="763.0" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0064343-T01-IM7-8; sample P-0064343-T01-IM7; partner DHX37; breakpoint aa 1485; domain retained</title></circle>
+<circle cx="702.8" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0065027-T03-IM7-9; sample P-0065027-T03-IM7; partner DIPK1A; breakpoint aa 1358; domain retained</title></circle>
+<circle cx="827.8" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0060766-T02-IM7-41; sample P-0060766-T02-IM7; partner NINJ2; breakpoint aa 1622; domain retained</title></circle>
+<circle cx="419.3" cy="78.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0"><title>event EVT-P-0030430-T03-IM7-42; sample P-0030430-T03-IM7; partner NINJ2; breakpoint aa 759; domain truncated</title></circle>
+<circle cx="149.5" cy="85.0" r="3" fill="#777777" stroke="none" stroke-width="0"><title>event EVT-P-0022798-T01-IM6-43; sample P-0022798-T01-IM6; partner OSBPL8; breakpoint aa 189; domain lost</title></circle>
+<circle cx="166.0" cy="92.0" r="3" fill="#777777" stroke="none" stroke-width="0"><title>event EVT-P-0039045-T01-IM6-44; sample P-0039045-T01-IM6; partner STAT5A; breakpoint aa 224; domain lost</title></circle>
+<line x1="60.0" y1="114.0" x2="860.0" y2="114.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="860.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
+<text x="60.0" y="128.0" font-family="sans-serif" font-size="9">1</text>
+<text x="860.0" y="128.0" font-family="sans-serif" font-size="9" text-anchor="end">1690 aa</text>
+<line x1="60.5" y1="132.0" x2="60.5" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="60.5" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 60.5 137.0)">E1</text>
+<line x1="86.5" y1="132.0" x2="86.5" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="86.5" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 86.5 137.0)">E2</text>
+<line x1="98.8" y1="132.0" x2="98.8" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="98.8" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 98.8 137.0)">E3</text>
+<line x1="118.2" y1="132.0" x2="118.2" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="118.2" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 118.2 137.0)">E4</text>
+<line x1="145.2" y1="132.0" x2="145.2" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="145.2" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 145.2 137.0)">E5</text>
+<line x1="166.5" y1="132.0" x2="166.5" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="166.5" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 166.5 137.0)">E6</text>
+<line x1="183.1" y1="132.0" x2="183.1" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="183.1" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 183.1 137.0)">E7</text>
+<line x1="197.8" y1="132.0" x2="197.8" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="197.8" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 197.8 137.0)">E8</text>
+<line x1="222.8" y1="132.0" x2="222.8" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="222.8" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 222.8 137.0)">E9</text>
+<line x1="241.8" y1="132.0" x2="241.8" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="241.8" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 241.8 137.0)">E10</text>
+<line x1="266.9" y1="132.0" x2="266.9" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="266.9" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 266.9 137.0)">E11</text>
+<line x1="295.3" y1="132.0" x2="295.3" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="295.3" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 295.3 137.0)">E12</text>
+<line x1="321.3" y1="132.0" x2="321.3" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="321.3" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 321.3 137.0)">E13</text>
+<line x1="340.2" y1="132.0" x2="340.2" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="340.2" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 340.2 137.0)">E14</text>
+<line x1="371.0" y1="132.0" x2="371.0" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="371.0" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 371.0 137.0)">E15</text>
+<line x1="399.4" y1="132.0" x2="399.4" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="399.4" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 399.4 137.0)">E16</text>
+<line x1="419.3" y1="132.0" x2="419.3" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="419.3" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 419.3 137.0)">E17</text>
+<line x1="443.0" y1="132.0" x2="443.0" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="443.0" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 443.0 137.0)">E18</text>
+<line x1="461.4" y1="132.0" x2="461.4" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="461.4" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 461.4 137.0)">E19</text>
+<line x1="517.3" y1="132.0" x2="517.3" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="517.3" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 517.3 137.0)">E20</text>
+<line x1="539.5" y1="132.0" x2="539.5" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="539.5" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 539.5 137.0)">E21</text>
+<line x1="567.9" y1="132.0" x2="567.9" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="567.9" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 567.9 137.0)">E22</text>
+<line x1="593.5" y1="132.0" x2="593.5" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="593.5" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 593.5 137.0)">E23</text>
+<line x1="680.6" y1="132.0" x2="680.6" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="680.6" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 680.6 137.0)">E24</text>
+<line x1="703.3" y1="132.0" x2="703.3" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="703.3" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 703.3 137.0)">E25</text>
+<line x1="728.4" y1="132.0" x2="728.4" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="728.4" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 728.4 137.0)">E26</text>
+<line x1="763.4" y1="132.0" x2="763.4" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="763.4" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 763.4 137.0)">E27</text>
+<line x1="828.3" y1="132.0" x2="828.3" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="828.3" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 828.3 137.0)">E28</text>
+<line x1="107.3" y1="114.0" x2="107.3" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="107.3" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">100</text>
+<line x1="154.7" y1="114.0" x2="154.7" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="154.7" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">200</text>
+<line x1="202.0" y1="114.0" x2="202.0" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="202.0" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">300</text>
+<line x1="249.3" y1="114.0" x2="249.3" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="249.3" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">400</text>
+<line x1="296.7" y1="114.0" x2="296.7" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="296.7" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">500</text>
+<line x1="344.0" y1="114.0" x2="344.0" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="344.0" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">600</text>
+<line x1="391.4" y1="114.0" x2="391.4" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="391.4" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">700</text>
+<line x1="438.7" y1="114.0" x2="438.7" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="438.7" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">800</text>
+<line x1="486.0" y1="114.0" x2="486.0" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="486.0" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">900</text>
+<line x1="533.4" y1="114.0" x2="533.4" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="533.4" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">1000</text>
+<line x1="580.7" y1="114.0" x2="580.7" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="580.7" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">1100</text>
+<line x1="628.0" y1="114.0" x2="628.0" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="628.0" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">1200</text>
+<line x1="675.4" y1="114.0" x2="675.4" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="675.4" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">1300</text>
+<line x1="722.7" y1="114.0" x2="722.7" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="722.7" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">1400</text>
+<line x1="770.1" y1="114.0" x2="770.1" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="770.1" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">1500</text>
+<line x1="817.4" y1="114.0" x2="817.4" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="817.4" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">1600</text>
+<circle cx="60" cy="167.0" r="4" fill="#2878b5"/><text x="70" y="172.0" font-family="sans-serif" font-size="12">fully retained</text>
+<circle cx="180" cy="167.0" r="4" fill="#f2a93b"/><text x="190" y="172.0" font-family="sans-serif" font-size="12">truncated</text>
+<circle cx="275" cy="167.0" r="4" fill="#777777"/><text x="285" y="172.0" font-family="sans-serif" font-size="12">fully lost</text>
+<circle cx="365" cy="167.0" r="4" fill="white" stroke="#d62728" stroke-width="1.5"/><text x="375" y="172.0" font-family="sans-serif" font-size="12">reference discrepancy</text>
+<rect x="60" y="180.0" width="12" height="10" fill="#62b36f" opacity="0.55"/><text x="80" y="189.0" font-family="sans-serif" font-size="12">configured key-domain span (name/range labeled above; a second or later configured domain gets its own distinct shade)</text>
+</svg>
+</div><h2>Fusion-transcript schematic</h2>
+<div class="controls">
+  <div class="control-group">
+    <label class="title" for="tumor-type-filter">Tumor type</label>
+    <select id="tumor-type-filter"><option value="">All tumor types</option></select>
+  </div>
+  <div class="control-group">
+    <span class="title">Domain status</span>
+    <span id="status-filter"></span>
+  </div>
+  <span id="events-summary"></span>
+</div>
+<div class="svg-frame" id="fusion-schematic-svg"><svg xmlns="http://www.w3.org/2000/svg" width="1000" height="380" viewBox="0 0 1000 380">
+<rect width="1000" height="380" fill="white"/>
+<text x="60" y="24" font-family="sans-serif" font-size="15">KDM5A fusion-transcript schematic</text>
+<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555555">Fusion order varies by row; follow each row's 5' and 3' labels (KDM5A portion is domain-colored, exon ticks). Partner-gene blocks share one color; row labels identify each partner.</text>
+<rect x="122.6" y="56.0" width="497.4" height="22" fill="#8064a2"><title>Partner gene OSBPL8; KDM5A–OSBPL8 fusion, breakpoint KDM5A aa 189; sample P-0022798-T01-IM6</title></rect>
+<rect x="60.0" y="56.0" width="62.6" height="22" fill="#e2e2e2"><title>KDM5A backbone (0-189 aa, no domain); domain status lost; KDM5A–OSBPL8 fusion, breakpoint KDM5A aa 189; sample P-0022798-T01-IM6</title></rect>
+<rect x="66.6" y="56.0" width="10.9" height="22" fill="#2878b5"><title>jmjN domain retained (20-53 aa); KDM5A–OSBPL8 fusion, breakpoint KDM5A aa 189; sample P-0022798-T01-IM6</title></rect>
+<rect x="87.2" y="56.0" width="29.2" height="22" fill="#2878b5"><title>ARID/BRIGHT DNA binding domain retained (82-170 aa); KDM5A–OSBPL8 fusion, breakpoint KDM5A aa 189; sample P-0022798-T01-IM6</title></rect>
+<text x="101.8" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">ARID/B…</text>
+<line x1="60.3" y1="56.0" x2="60.3" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="78.6" y1="56.0" x2="78.6" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="87.2" y1="56.0" x2="87.2" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="100.8" y1="56.0" x2="100.8" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="119.6" y1="56.0" x2="119.6" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="122.6" y1="55.0" x2="122.6" y2="79.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; KDM5A–OSBPL8 fusion, breakpoint KDM5A aa 189; sample P-0022798-T01-IM6</title></line>
+<text x="64.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="70.5" font-family="sans-serif" font-size="9.5">OSBPL8 – PLU-1-like protein lost – Prostate Cancer</text>
+<rect x="134.2" y="82.0" width="485.8" height="22" fill="#8064a2"><title>Partner gene STAT5A; KDM5A–STAT5A fusion, breakpoint KDM5A aa 224; sample P-0039045-T01-IM6</title></rect>
+<rect x="60.0" y="82.0" width="74.2" height="22" fill="#e2e2e2"><title>KDM5A backbone (0-224 aa, no domain); domain status lost; KDM5A–STAT5A fusion, breakpoint KDM5A aa 224; sample P-0039045-T01-IM6</title></rect>
+<rect x="66.6" y="82.0" width="10.9" height="22" fill="#2878b5"><title>jmjN domain retained (20-53 aa); KDM5A–STAT5A fusion, breakpoint KDM5A aa 224; sample P-0039045-T01-IM6</title></rect>
+<rect x="87.2" y="82.0" width="29.2" height="22" fill="#2878b5"><title>ARID/BRIGHT DNA binding domain retained (82-170 aa); KDM5A–STAT5A fusion, breakpoint KDM5A aa 224; sample P-0039045-T01-IM6</title></rect>
+<text x="101.8" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">ARID/B…</text>
+<line x1="60.3" y1="82.0" x2="60.3" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="78.6" y1="82.0" x2="78.6" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="87.2" y1="82.0" x2="87.2" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="100.8" y1="82.0" x2="100.8" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="119.6" y1="82.0" x2="119.6" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="134.2" y1="81.0" x2="134.2" y2="105.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; KDM5A–STAT5A fusion, breakpoint KDM5A aa 224; sample P-0039045-T01-IM6</title></line>
+<text x="64.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="96.5" font-family="sans-serif" font-size="9.5">STAT5A – PLU-1-like protein lost – Ovarian Cancer</text>
+<rect x="60.0" y="108.0" width="74.6" height="22" fill="#8064a2"><title>Partner gene CACNA1C; KDM5A–CACNA1C fusion, breakpoint KDM5A aa 225; sample P-0030473-T01-IM6</title></rect>
+<rect x="134.6" y="108.0" width="485.4" height="22" fill="#e2e2e2"><title>KDM5A backbone (225-1690 aa, no domain); domain status retained; KDM5A–CACNA1C fusion, breakpoint KDM5A aa 225; sample P-0030473-T01-IM6</title></rect>
+<rect x="305.2" y="108.0" width="110.0" height="22" fill="#2878b5"><title>PLU-1-like protein retained (740-1072 aa); KDM5A–CACNA1C fusion, breakpoint KDM5A aa 225; sample P-0030473-T01-IM6</title></rect>
+<text x="360.2" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PLU-1-like protein</text>
+<rect x="284.0" y="108.0" width="17.6" height="22" fill="#2878b5"><title>C5HC2 zinc finger retained (676-729 aa); KDM5A–CACNA1C fusion, breakpoint KDM5A aa 225; sample P-0030473-T01-IM6</title></rect>
+<text x="292.8" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">C5H…</text>
+<rect x="445.4" y="108.0" width="17.9" height="22" fill="#2878b5"><title>PHD-finger retained (1163-1217 aa); KDM5A–CACNA1C fusion, breakpoint KDM5A aa 225; sample P-0030473-T01-IM6</title></rect>
+<text x="454.3" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PHD…</text>
+<rect x="157.8" y="108.0" width="15.6" height="22" fill="#2878b5"><title>PHD-finger retained (295-342 aa); KDM5A–CACNA1C fusion, breakpoint KDM5A aa 225; sample P-0030473-T01-IM6</title></rect>
+<text x="165.5" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PH…</text>
+<rect x="215.7" y="108.0" width="38.4" height="22" fill="#2878b5"><title>JmjC domain, hydroxylase retained (470-586 aa); KDM5A–CACNA1C fusion, breakpoint KDM5A aa 225; sample P-0030473-T01-IM6</title></rect>
+<text x="235.0" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">JmjC dom…</text>
+<line x1="146.2" y1="108.0" x2="146.2" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="156.4" y1="108.0" x2="156.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="174.0" y1="108.0" x2="174.0" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="187.2" y1="108.0" x2="187.2" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="204.8" y1="108.0" x2="204.8" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="224.7" y1="108.0" x2="224.7" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="242.9" y1="108.0" x2="242.9" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="256.2" y1="108.0" x2="256.2" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="277.7" y1="108.0" x2="277.7" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="297.6" y1="108.0" x2="297.6" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="311.5" y1="108.0" x2="311.5" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="328.1" y1="108.0" x2="328.1" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="341.0" y1="108.0" x2="341.0" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="380.1" y1="108.0" x2="380.1" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="395.7" y1="108.0" x2="395.7" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="415.6" y1="108.0" x2="415.6" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="433.4" y1="108.0" x2="433.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="494.4" y1="108.0" x2="494.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="510.3" y1="108.0" x2="510.3" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="527.9" y1="108.0" x2="527.9" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="552.4" y1="108.0" x2="552.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="597.8" y1="108.0" x2="597.8" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="134.6" y1="107.0" x2="134.6" y2="131.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KDM5A–CACNA1C fusion, breakpoint KDM5A aa 225; sample P-0030473-T01-IM6</title></line>
+<text x="64.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="122.5" font-family="sans-serif" font-size="9.5">CACNA1C – PLU-1-like protein retained – Breast Cancer</text>
+<rect x="60.0" y="134.0" width="220.0" height="22" fill="#8064a2"><title>Partner gene BMAL2; KDM5A–BMAL2 fusion, breakpoint KDM5A aa 664; sample P-0030719-T01-IM6</title></rect>
+<rect x="280.0" y="134.0" width="340.0" height="22" fill="#e2e2e2"><title>KDM5A backbone (664-1690 aa, no domain); domain status retained; KDM5A–BMAL2 fusion, breakpoint KDM5A aa 664; sample P-0030719-T01-IM6</title></rect>
+<rect x="305.2" y="134.0" width="110.0" height="22" fill="#2878b5"><title>PLU-1-like protein retained (740-1072 aa); KDM5A–BMAL2 fusion, breakpoint KDM5A aa 664; sample P-0030719-T01-IM6</title></rect>
+<text x="360.2" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PLU-1-like protein</text>
+<rect x="284.0" y="134.0" width="17.6" height="22" fill="#2878b5"><title>C5HC2 zinc finger retained (676-729 aa); KDM5A–BMAL2 fusion, breakpoint KDM5A aa 664; sample P-0030719-T01-IM6</title></rect>
+<text x="292.8" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">C5H…</text>
+<rect x="445.4" y="134.0" width="17.9" height="22" fill="#2878b5"><title>PHD-finger retained (1163-1217 aa); KDM5A–BMAL2 fusion, breakpoint KDM5A aa 664; sample P-0030719-T01-IM6</title></rect>
+<text x="454.3" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PHD…</text>
+<line x1="297.6" y1="134.0" x2="297.6" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="311.5" y1="134.0" x2="311.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="328.1" y1="134.0" x2="328.1" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="341.0" y1="134.0" x2="341.0" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="380.1" y1="134.0" x2="380.1" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="395.7" y1="134.0" x2="395.7" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="415.6" y1="134.0" x2="415.6" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="433.4" y1="134.0" x2="433.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="494.4" y1="134.0" x2="494.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="510.3" y1="134.0" x2="510.3" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="527.9" y1="134.0" x2="527.9" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="552.4" y1="134.0" x2="552.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="597.8" y1="134.0" x2="597.8" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="280.0" y1="133.0" x2="280.0" y2="157.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KDM5A–BMAL2 fusion, breakpoint KDM5A aa 664; sample P-0030719-T01-IM6</title></line>
+<text x="64.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="148.5" font-family="sans-serif" font-size="9.5">BMAL2 – PLU-1-like protein retained – Non-Small Cell Lung Cancer</text>
+<rect x="311.5" y="160.0" width="308.5" height="22" fill="#8064a2"><title>Partner gene NINJ2; KDM5A–NINJ2 fusion, breakpoint KDM5A aa 759; sample P-0030430-T03-IM7</title></rect>
+<rect x="60.0" y="160.0" width="251.5" height="22" fill="#e2e2e2"><title>KDM5A backbone (0-759 aa, no domain); domain status truncated; KDM5A–NINJ2 fusion, breakpoint KDM5A aa 759; sample P-0030430-T03-IM7</title></rect>
+<rect x="66.6" y="160.0" width="10.9" height="22" fill="#2878b5"><title>jmjN domain retained (20-53 aa); KDM5A–NINJ2 fusion, breakpoint KDM5A aa 759; sample P-0030430-T03-IM7</title></rect>
+<rect x="87.2" y="160.0" width="29.2" height="22" fill="#2878b5"><title>ARID/BRIGHT DNA binding domain retained (82-170 aa); KDM5A–NINJ2 fusion, breakpoint KDM5A aa 759; sample P-0030430-T03-IM7</title></rect>
+<text x="101.8" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">ARID/B…</text>
+<rect x="305.2" y="160.0" width="6.3" height="22" fill="#f2a93b"><title>PLU-1-like protein truncated (740-759 aa); KDM5A–NINJ2 fusion, breakpoint KDM5A aa 759; sample P-0030430-T03-IM7</title></rect>
+<rect x="284.0" y="160.0" width="17.6" height="22" fill="#2878b5"><title>C5HC2 zinc finger retained (676-729 aa); KDM5A–NINJ2 fusion, breakpoint KDM5A aa 759; sample P-0030430-T03-IM7</title></rect>
+<text x="292.8" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">C5H…</text>
+<rect x="157.8" y="160.0" width="15.6" height="22" fill="#2878b5"><title>PHD-finger retained (295-342 aa); KDM5A–NINJ2 fusion, breakpoint KDM5A aa 759; sample P-0030430-T03-IM7</title></rect>
+<text x="165.5" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PH…</text>
+<rect x="215.7" y="160.0" width="38.4" height="22" fill="#2878b5"><title>JmjC domain, hydroxylase retained (470-586 aa); KDM5A–NINJ2 fusion, breakpoint KDM5A aa 759; sample P-0030430-T03-IM7</title></rect>
+<text x="235.0" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">JmjC dom…</text>
+<line x1="60.3" y1="160.0" x2="60.3" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="78.6" y1="160.0" x2="78.6" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="87.2" y1="160.0" x2="87.2" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="100.8" y1="160.0" x2="100.8" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="119.6" y1="160.0" x2="119.6" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="134.6" y1="160.0" x2="134.6" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.2" y1="160.0" x2="146.2" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="156.4" y1="160.0" x2="156.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="174.0" y1="160.0" x2="174.0" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="187.2" y1="160.0" x2="187.2" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="204.8" y1="160.0" x2="204.8" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="224.7" y1="160.0" x2="224.7" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="242.9" y1="160.0" x2="242.9" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="256.2" y1="160.0" x2="256.2" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="277.7" y1="160.0" x2="277.7" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="297.6" y1="160.0" x2="297.6" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="311.5" y1="159.0" x2="311.5" y2="183.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; KDM5A–NINJ2 fusion, breakpoint KDM5A aa 759; sample P-0030430-T03-IM7</title></line>
+<text x="64.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="174.5" font-family="sans-serif" font-size="9.5">NINJ2 – PLU-1-like protein truncated – Non-Small Cell Lung Cancer</text>
+<rect x="60.0" y="186.0" width="434.4" height="22" fill="#8064a2"><title>Partner gene COLGALT1; KDM5A–COLGALT1 fusion, breakpoint KDM5A aa 1311; sample P-0021409-T01-IM6</title></rect>
+<rect x="494.4" y="186.0" width="125.6" height="22" fill="#e2e2e2"><title>KDM5A backbone (1311-1690 aa, no domain); domain status lost; KDM5A–COLGALT1 fusion, breakpoint KDM5A aa 1311; sample P-0021409-T01-IM6</title></rect>
+<line x1="510.3" y1="186.0" x2="510.3" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="527.9" y1="186.0" x2="527.9" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="552.4" y1="186.0" x2="552.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="597.8" y1="186.0" x2="597.8" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="494.4" y1="185.0" x2="494.4" y2="209.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; KDM5A–COLGALT1 fusion, breakpoint KDM5A aa 1311; sample P-0021409-T01-IM6</title></line>
+<text x="64.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="200.5" font-family="sans-serif" font-size="9.5">COLGALT1 – PLU-1-like protein lost – Ovarian Cancer</text>
+<rect x="510.0" y="212.0" width="110.0" height="22" fill="#8064a2"><title>Partner gene DIPK1A; KDM5A–DIPK1A fusion, breakpoint KDM5A aa 1358; sample P-0065027-T03-IM7</title></rect>
+<rect x="60.0" y="212.0" width="450.0" height="22" fill="#e2e2e2"><title>KDM5A backbone (0-1358 aa, no domain); domain status retained; KDM5A–DIPK1A fusion, breakpoint KDM5A aa 1358; sample P-0065027-T03-IM7</title></rect>
+<rect x="66.6" y="212.0" width="10.9" height="22" fill="#2878b5"><title>jmjN domain retained (20-53 aa); KDM5A–DIPK1A fusion, breakpoint KDM5A aa 1358; sample P-0065027-T03-IM7</title></rect>
+<rect x="87.2" y="212.0" width="29.2" height="22" fill="#2878b5"><title>ARID/BRIGHT DNA binding domain retained (82-170 aa); KDM5A–DIPK1A fusion, breakpoint KDM5A aa 1358; sample P-0065027-T03-IM7</title></rect>
+<text x="101.8" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">ARID/B…</text>
+<rect x="305.2" y="212.0" width="110.0" height="22" fill="#2878b5"><title>PLU-1-like protein retained (740-1072 aa); KDM5A–DIPK1A fusion, breakpoint KDM5A aa 1358; sample P-0065027-T03-IM7</title></rect>
+<text x="360.2" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PLU-1-like protein</text>
+<rect x="284.0" y="212.0" width="17.6" height="22" fill="#2878b5"><title>C5HC2 zinc finger retained (676-729 aa); KDM5A–DIPK1A fusion, breakpoint KDM5A aa 1358; sample P-0065027-T03-IM7</title></rect>
+<text x="292.8" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">C5H…</text>
+<rect x="445.4" y="212.0" width="17.9" height="22" fill="#2878b5"><title>PHD-finger retained (1163-1217 aa); KDM5A–DIPK1A fusion, breakpoint KDM5A aa 1358; sample P-0065027-T03-IM7</title></rect>
+<text x="454.3" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PHD…</text>
+<rect x="157.8" y="212.0" width="15.6" height="22" fill="#2878b5"><title>PHD-finger retained (295-342 aa); KDM5A–DIPK1A fusion, breakpoint KDM5A aa 1358; sample P-0065027-T03-IM7</title></rect>
+<text x="165.5" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PH…</text>
+<rect x="215.7" y="212.0" width="38.4" height="22" fill="#2878b5"><title>JmjC domain, hydroxylase retained (470-586 aa); KDM5A–DIPK1A fusion, breakpoint KDM5A aa 1358; sample P-0065027-T03-IM7</title></rect>
+<text x="235.0" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">JmjC dom…</text>
+<line x1="60.3" y1="212.0" x2="60.3" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="78.6" y1="212.0" x2="78.6" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="87.2" y1="212.0" x2="87.2" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="100.8" y1="212.0" x2="100.8" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="119.6" y1="212.0" x2="119.6" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="134.6" y1="212.0" x2="134.6" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.2" y1="212.0" x2="146.2" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="156.4" y1="212.0" x2="156.4" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="174.0" y1="212.0" x2="174.0" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="187.2" y1="212.0" x2="187.2" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="204.8" y1="212.0" x2="204.8" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="224.7" y1="212.0" x2="224.7" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="242.9" y1="212.0" x2="242.9" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="256.2" y1="212.0" x2="256.2" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="277.7" y1="212.0" x2="277.7" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="297.6" y1="212.0" x2="297.6" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="311.5" y1="212.0" x2="311.5" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="328.1" y1="212.0" x2="328.1" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="341.0" y1="212.0" x2="341.0" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="380.1" y1="212.0" x2="380.1" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="395.7" y1="212.0" x2="395.7" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="415.6" y1="212.0" x2="415.6" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="433.4" y1="212.0" x2="433.4" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="494.4" y1="212.0" x2="494.4" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="510.0" y1="211.0" x2="510.0" y2="235.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KDM5A–DIPK1A fusion, breakpoint KDM5A aa 1358; sample P-0065027-T03-IM7</title></line>
+<text x="64.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="226.5" font-family="sans-serif" font-size="9.5">DIPK1A – PLU-1-like protein retained – Esophagogastric Cancer</text>
+<rect x="552.1" y="238.0" width="67.9" height="22" fill="#8064a2"><title>Partner gene DHX37; KDM5A–DHX37 fusion, breakpoint KDM5A aa 1485; sample P-0064343-T01-IM7</title></rect>
+<rect x="60.0" y="238.0" width="492.1" height="22" fill="#e2e2e2"><title>KDM5A backbone (0-1485 aa, no domain); domain status retained; KDM5A–DHX37 fusion, breakpoint KDM5A aa 1485; sample P-0064343-T01-IM7</title></rect>
+<rect x="66.6" y="238.0" width="10.9" height="22" fill="#2878b5"><title>jmjN domain retained (20-53 aa); KDM5A–DHX37 fusion, breakpoint KDM5A aa 1485; sample P-0064343-T01-IM7</title></rect>
+<rect x="87.2" y="238.0" width="29.2" height="22" fill="#2878b5"><title>ARID/BRIGHT DNA binding domain retained (82-170 aa); KDM5A–DHX37 fusion, breakpoint KDM5A aa 1485; sample P-0064343-T01-IM7</title></rect>
+<text x="101.8" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">ARID/B…</text>
+<rect x="305.2" y="238.0" width="110.0" height="22" fill="#2878b5"><title>PLU-1-like protein retained (740-1072 aa); KDM5A–DHX37 fusion, breakpoint KDM5A aa 1485; sample P-0064343-T01-IM7</title></rect>
+<text x="360.2" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PLU-1-like protein</text>
+<rect x="284.0" y="238.0" width="17.6" height="22" fill="#2878b5"><title>C5HC2 zinc finger retained (676-729 aa); KDM5A–DHX37 fusion, breakpoint KDM5A aa 1485; sample P-0064343-T01-IM7</title></rect>
+<text x="292.8" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">C5H…</text>
+<rect x="445.4" y="238.0" width="17.9" height="22" fill="#2878b5"><title>PHD-finger retained (1163-1217 aa); KDM5A–DHX37 fusion, breakpoint KDM5A aa 1485; sample P-0064343-T01-IM7</title></rect>
+<text x="454.3" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PHD…</text>
+<rect x="157.8" y="238.0" width="15.6" height="22" fill="#2878b5"><title>PHD-finger retained (295-342 aa); KDM5A–DHX37 fusion, breakpoint KDM5A aa 1485; sample P-0064343-T01-IM7</title></rect>
+<text x="165.5" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PH…</text>
+<rect x="215.7" y="238.0" width="38.4" height="22" fill="#2878b5"><title>JmjC domain, hydroxylase retained (470-586 aa); KDM5A–DHX37 fusion, breakpoint KDM5A aa 1485; sample P-0064343-T01-IM7</title></rect>
+<text x="235.0" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">JmjC dom…</text>
+<line x1="60.3" y1="238.0" x2="60.3" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="78.6" y1="238.0" x2="78.6" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="87.2" y1="238.0" x2="87.2" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="100.8" y1="238.0" x2="100.8" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="119.6" y1="238.0" x2="119.6" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="134.6" y1="238.0" x2="134.6" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.2" y1="238.0" x2="146.2" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="156.4" y1="238.0" x2="156.4" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="174.0" y1="238.0" x2="174.0" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="187.2" y1="238.0" x2="187.2" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="204.8" y1="238.0" x2="204.8" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="224.7" y1="238.0" x2="224.7" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="242.9" y1="238.0" x2="242.9" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="256.2" y1="238.0" x2="256.2" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="277.7" y1="238.0" x2="277.7" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="297.6" y1="238.0" x2="297.6" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="311.5" y1="238.0" x2="311.5" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="328.1" y1="238.0" x2="328.1" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="341.0" y1="238.0" x2="341.0" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="380.1" y1="238.0" x2="380.1" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="395.7" y1="238.0" x2="395.7" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="415.6" y1="238.0" x2="415.6" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="433.4" y1="238.0" x2="433.4" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="494.4" y1="238.0" x2="494.4" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="510.3" y1="238.0" x2="510.3" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="527.9" y1="238.0" x2="527.9" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="552.1" y1="237.0" x2="552.1" y2="261.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KDM5A–DHX37 fusion, breakpoint KDM5A aa 1485; sample P-0064343-T01-IM7</title></line>
+<text x="64.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="252.5" font-family="sans-serif" font-size="9.5">DHX37 – PLU-1-like protein retained – Soft Tissue Sarcoma</text>
+<rect x="597.5" y="264.0" width="22.5" height="22" fill="#8064a2"><title>Partner gene NINJ2; KDM5A–NINJ2 fusion, breakpoint KDM5A aa 1622; sample P-0060766-T02-IM7</title></rect>
+<rect x="60.0" y="264.0" width="537.5" height="22" fill="#e2e2e2"><title>KDM5A backbone (0-1622 aa, no domain); domain status retained; KDM5A–NINJ2 fusion, breakpoint KDM5A aa 1622; sample P-0060766-T02-IM7</title></rect>
+<rect x="66.6" y="264.0" width="10.9" height="22" fill="#2878b5"><title>jmjN domain retained (20-53 aa); KDM5A–NINJ2 fusion, breakpoint KDM5A aa 1622; sample P-0060766-T02-IM7</title></rect>
+<rect x="87.2" y="264.0" width="29.2" height="22" fill="#2878b5"><title>ARID/BRIGHT DNA binding domain retained (82-170 aa); KDM5A–NINJ2 fusion, breakpoint KDM5A aa 1622; sample P-0060766-T02-IM7</title></rect>
+<text x="101.8" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">ARID/B…</text>
+<rect x="305.2" y="264.0" width="110.0" height="22" fill="#2878b5"><title>PLU-1-like protein retained (740-1072 aa); KDM5A–NINJ2 fusion, breakpoint KDM5A aa 1622; sample P-0060766-T02-IM7</title></rect>
+<text x="360.2" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PLU-1-like protein</text>
+<rect x="284.0" y="264.0" width="17.6" height="22" fill="#2878b5"><title>C5HC2 zinc finger retained (676-729 aa); KDM5A–NINJ2 fusion, breakpoint KDM5A aa 1622; sample P-0060766-T02-IM7</title></rect>
+<text x="292.8" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">C5H…</text>
+<rect x="445.4" y="264.0" width="17.9" height="22" fill="#2878b5"><title>PHD-finger retained (1163-1217 aa); KDM5A–NINJ2 fusion, breakpoint KDM5A aa 1622; sample P-0060766-T02-IM7</title></rect>
+<text x="454.3" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PHD…</text>
+<rect x="157.8" y="264.0" width="15.6" height="22" fill="#2878b5"><title>PHD-finger retained (295-342 aa); KDM5A–NINJ2 fusion, breakpoint KDM5A aa 1622; sample P-0060766-T02-IM7</title></rect>
+<text x="165.5" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PH…</text>
+<rect x="215.7" y="264.0" width="38.4" height="22" fill="#2878b5"><title>JmjC domain, hydroxylase retained (470-586 aa); KDM5A–NINJ2 fusion, breakpoint KDM5A aa 1622; sample P-0060766-T02-IM7</title></rect>
+<text x="235.0" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">JmjC dom…</text>
+<line x1="60.3" y1="264.0" x2="60.3" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="78.6" y1="264.0" x2="78.6" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="87.2" y1="264.0" x2="87.2" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="100.8" y1="264.0" x2="100.8" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="119.6" y1="264.0" x2="119.6" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="134.6" y1="264.0" x2="134.6" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.2" y1="264.0" x2="146.2" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="156.4" y1="264.0" x2="156.4" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="174.0" y1="264.0" x2="174.0" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="187.2" y1="264.0" x2="187.2" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="204.8" y1="264.0" x2="204.8" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="224.7" y1="264.0" x2="224.7" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="242.9" y1="264.0" x2="242.9" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="256.2" y1="264.0" x2="256.2" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="277.7" y1="264.0" x2="277.7" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="297.6" y1="264.0" x2="297.6" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="311.5" y1="264.0" x2="311.5" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="328.1" y1="264.0" x2="328.1" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="341.0" y1="264.0" x2="341.0" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="380.1" y1="264.0" x2="380.1" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="395.7" y1="264.0" x2="395.7" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="415.6" y1="264.0" x2="415.6" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="433.4" y1="264.0" x2="433.4" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="494.4" y1="264.0" x2="494.4" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="510.3" y1="264.0" x2="510.3" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="527.9" y1="264.0" x2="527.9" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="552.4" y1="264.0" x2="552.4" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="597.5" y1="263.0" x2="597.5" y2="287.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KDM5A–NINJ2 fusion, breakpoint KDM5A aa 1622; sample P-0060766-T02-IM7</title></line>
+<text x="64.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="278.5" font-family="sans-serif" font-size="9.5">NINJ2 – PLU-1-like protein retained – Soft Tissue Sarcoma</text>
+<line x1="60.0" y1="294.0" x2="620.0" y2="294.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="289.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="620.0" y="289.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
+<text x="60.0" y="308.0" font-family="sans-serif" font-size="9">1</text>
+<text x="620.0" y="308.0" font-family="sans-serif" font-size="9" text-anchor="end">1690 aa</text>
+<line x1="60.3" y1="312.0" x2="60.3" y2="316.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="60.3" y="317.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 60.3 317.0)">E1</text>
+<line x1="78.6" y1="312.0" x2="78.6" y2="316.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="78.6" y="317.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 78.6 317.0)">E2</text>
+<line x1="87.2" y1="312.0" x2="87.2" y2="316.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="87.2" y="317.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 87.2 317.0)">E3</text>
+<line x1="100.8" y1="312.0" x2="100.8" y2="316.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="100.8" y="317.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 100.8 317.0)">E4</text>
+<line x1="119.6" y1="312.0" x2="119.6" y2="316.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="119.6" y="317.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 119.6 317.0)">E5</text>
+<line x1="134.6" y1="312.0" x2="134.6" y2="316.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="134.6" y="317.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 134.6 317.0)">E6</text>
+<line x1="146.2" y1="312.0" x2="146.2" y2="316.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="146.2" y="317.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 146.2 317.0)">E7</text>
+<line x1="156.4" y1="312.0" x2="156.4" y2="316.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="156.4" y="317.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 156.4 317.0)">E8</text>
+<line x1="174.0" y1="312.0" x2="174.0" y2="316.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="174.0" y="317.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 174.0 317.0)">E9</text>
+<line x1="187.2" y1="312.0" x2="187.2" y2="316.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="187.2" y="317.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 187.2 317.0)">E10</text>
+<line x1="204.8" y1="312.0" x2="204.8" y2="316.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="204.8" y="317.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 204.8 317.0)">E11</text>
+<line x1="224.7" y1="312.0" x2="224.7" y2="316.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="224.7" y="317.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 224.7 317.0)">E12</text>
+<line x1="242.9" y1="312.0" x2="242.9" y2="316.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="242.9" y="317.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 242.9 317.0)">E13</text>
+<line x1="256.2" y1="312.0" x2="256.2" y2="316.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="256.2" y="317.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 256.2 317.0)">E14</text>
+<line x1="277.7" y1="312.0" x2="277.7" y2="316.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="277.7" y="317.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 277.7 317.0)">E15</text>
+<line x1="297.6" y1="312.0" x2="297.6" y2="316.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="297.6" y="317.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 297.6 317.0)">E16</text>
+<line x1="311.5" y1="312.0" x2="311.5" y2="316.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="311.5" y="317.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 311.5 317.0)">E17</text>
+<line x1="328.1" y1="312.0" x2="328.1" y2="316.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="328.1" y="317.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 328.1 317.0)">E18</text>
+<line x1="341.0" y1="312.0" x2="341.0" y2="316.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="341.0" y="317.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 341.0 317.0)">E19</text>
+<line x1="380.1" y1="312.0" x2="380.1" y2="316.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="380.1" y="317.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 380.1 317.0)">E20</text>
+<line x1="395.7" y1="312.0" x2="395.7" y2="316.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="395.7" y="317.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 395.7 317.0)">E21</text>
+<line x1="415.6" y1="312.0" x2="415.6" y2="316.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="415.6" y="317.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 415.6 317.0)">E22</text>
+<line x1="433.4" y1="312.0" x2="433.4" y2="316.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="433.4" y="317.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 433.4 317.0)">E23</text>
+<line x1="494.4" y1="312.0" x2="494.4" y2="316.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="494.4" y="317.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 494.4 317.0)">E24</text>
+<line x1="510.3" y1="312.0" x2="510.3" y2="316.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="510.3" y="317.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 510.3 317.0)">E25</text>
+<line x1="527.9" y1="312.0" x2="527.9" y2="316.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="527.9" y="317.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 527.9 317.0)">E26</text>
+<line x1="552.4" y1="312.0" x2="552.4" y2="316.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="552.4" y="317.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 552.4 317.0)">E27</text>
+<line x1="597.8" y1="312.0" x2="597.8" y2="316.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="597.8" y="317.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 597.8 317.0)">E28</text>
+<rect x="60.0" y="325.0" width="12" height="10" fill="#2878b5"/>
+<text x="76.0" y="334.0" font-family="sans-serif" font-size="9">domain retained</text>
+<rect x="227.0" y="325.0" width="12" height="10" fill="#f2a93b"/>
+<text x="243.0" y="334.0" font-family="sans-serif" font-size="9">domain truncated</text>
+<rect x="403.0" y="325.0" width="12" height="10" fill="#e2e2e2"/>
+<text x="419.0" y="334.0" font-family="sans-serif" font-size="9">target backbone (no domain)</text>
+<rect x="678.0" y="325.0" width="12" height="10" fill="#d62728"/>
+<text x="694.0" y="334.0" font-family="sans-serif" font-size="9">breakpoint</text>
+<text x="60" y="370.0" font-family="sans-serif" font-size="9" fill="#555555">Partner-block colors are decorative; row labels identify partners.</text>
+</svg>
+</div><h2>Events</h2><div class="events-table-frame"><table class="events" id="events-table"><thead><tr><th>Event</th><th>Sample</th><th>Tumor type</th><th>Oncotree</th><th>Partner gene</th><th>Role</th><th>Breakpoint (aa)</th><th>Domain status</th></tr></thead><tbody><tr data-tumor-type="Ovarian Cancer" data-domain-status="lost"><td>EVT-P-0021409-T01-IM6-1</td><td>P-0021409-T01-IM6</td><td>Ovarian Cancer</td><td>HGSOC</td><td>COLGALT1</td><td>three_prime</td><td>1311</td><td>Lost</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained"><td>EVT-P-0030719-T01-IM6-4</td><td>P-0030719-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>BMAL2</td><td>three_prime</td><td>664</td><td>Retained</td></tr><tr data-tumor-type="Breast Cancer" data-domain-status="retained"><td>EVT-P-0030473-T01-IM6-5</td><td>P-0030473-T01-IM6</td><td>Breast Cancer</td><td>IDC</td><td>CACNA1C</td><td>three_prime</td><td>225</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained"><td>EVT-P-0064343-T01-IM7-8</td><td>P-0064343-T01-IM7</td><td>Soft Tissue Sarcoma</td><td>MFH</td><td>DHX37</td><td>five_prime</td><td>1485</td><td>Retained</td></tr><tr data-tumor-type="Esophagogastric Cancer" data-domain-status="retained"><td>EVT-P-0065027-T03-IM7-9</td><td>P-0065027-T03-IM7</td><td>Esophagogastric Cancer</td><td>GEJ</td><td>DIPK1A</td><td>five_prime</td><td>1358</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained"><td>EVT-P-0060766-T02-IM7-41</td><td>P-0060766-T02-IM7</td><td>Soft Tissue Sarcoma</td><td>LMS</td><td>NINJ2</td><td>five_prime</td><td>1622</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="disrupted"><td>EVT-P-0030430-T03-IM7-42</td><td>P-0030430-T03-IM7</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>NINJ2</td><td>five_prime</td><td>759</td><td>Truncated</td></tr><tr data-tumor-type="Prostate Cancer" data-domain-status="lost"><td>EVT-P-0022798-T01-IM6-43</td><td>P-0022798-T01-IM6</td><td>Prostate Cancer</td><td>PRAD</td><td>OSBPL8</td><td>five_prime</td><td>189</td><td>Lost</td></tr><tr data-tumor-type="Ovarian Cancer" data-domain-status="lost"><td>EVT-P-0039045-T01-IM6-44</td><td>P-0039045-T01-IM6</td><td>Ovarian Cancer</td><td>CCOV</td><td>STAT5A</td><td>five_prime</td><td>224</td><td>Lost</td></tr></tbody></table></div>
+</div>
+<script type="application/json" id="events-data">[{"event_id": "EVT-P-0021409-T01-IM6-1", "sample_id": "P-0021409-T01-IM6", "tumor_type": "Ovarian Cancer", "oncotree_code": "HGSOC", "partner_gene": "COLGALT1", "target_role": "three_prime", "breakpoint_protein_position": 1311, "domain_status": "lost"}, {"event_id": "EVT-P-0030719-T01-IM6-4", "sample_id": "P-0030719-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "BMAL2", "target_role": "three_prime", "breakpoint_protein_position": 664, "domain_status": "retained"}, {"event_id": "EVT-P-0030473-T01-IM6-5", "sample_id": "P-0030473-T01-IM6", "tumor_type": "Breast Cancer", "oncotree_code": "IDC", "partner_gene": "CACNA1C", "target_role": "three_prime", "breakpoint_protein_position": 225, "domain_status": "retained"}, {"event_id": "EVT-P-0064343-T01-IM7-8", "sample_id": "P-0064343-T01-IM7", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "MFH", "partner_gene": "DHX37", "target_role": "five_prime", "breakpoint_protein_position": 1485, "domain_status": "retained"}, {"event_id": "EVT-P-0065027-T03-IM7-9", "sample_id": "P-0065027-T03-IM7", "tumor_type": "Esophagogastric Cancer", "oncotree_code": "GEJ", "partner_gene": "DIPK1A", "target_role": "five_prime", "breakpoint_protein_position": 1358, "domain_status": "retained"}, {"event_id": "EVT-P-0060766-T02-IM7-41", "sample_id": "P-0060766-T02-IM7", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "LMS", "partner_gene": "NINJ2", "target_role": "five_prime", "breakpoint_protein_position": 1622, "domain_status": "retained"}, {"event_id": "EVT-P-0030430-T03-IM7-42", "sample_id": "P-0030430-T03-IM7", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "NINJ2", "target_role": "five_prime", "breakpoint_protein_position": 759, "domain_status": "disrupted"}, {"event_id": "EVT-P-0022798-T01-IM6-43", "sample_id": "P-0022798-T01-IM6", "tumor_type": "Prostate Cancer", "oncotree_code": "PRAD", "partner_gene": "OSBPL8", "target_role": "five_prime", "breakpoint_protein_position": 189, "domain_status": "lost"}, {"event_id": "EVT-P-0039045-T01-IM6-44", "sample_id": "P-0039045-T01-IM6", "tumor_type": "Ovarian Cancer", "oncotree_code": "CCOV", "partner_gene": "STAT5A", "target_role": "five_prime", "breakpoint_protein_position": 224, "domain_status": "lost"}]</script>
+<script type="application/json" id="status-labels">{"retained": "Retained", "disrupted": "Truncated", "lost": "Lost"}</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var events = JSON.parse(document.getElementById("events-data").textContent);
+  var statusLabels = JSON.parse(document.getElementById("status-labels").textContent);
+
+  function distinctValues(field) {
+    var values = events.map(function (e) { return e[field]; }).filter(Boolean);
+    return Array.from(new Set(values)).sort();
+  }
+  var tumorTypes = distinctValues("tumor_type");
+  var domainStatuses = distinctValues("domain_status");
+
+  var tumorSelect = document.getElementById("tumor-type-filter");
+  tumorSelect.innerHTML = '<option value="">All tumor types</option>' + tumorTypes.map(
+    function (t) {
+      return '<option value="' + t.replace(/"/g, "&quot;") + '">' + t + "</option>";
+    }
+  ).join("");
+
+  var statusContainer = document.getElementById("status-filter");
+  statusContainer.innerHTML = domainStatuses.map(function (s) {
+    var label = statusLabels[s] || (s.charAt(0).toUpperCase() + s.slice(1));
+    var checkbox = '<input type="checkbox" value="' + s + '" checked> ';
+    return '<label class="status-toggle">' + checkbox + label + "</label>";
+  }).join("");
+
+  // Group fusion-schematic rows by the (partner, breakpoint-aa) key baked
+  // into every row shape's <title> text by cfh.reporting.fusion_schematic
+  // (e.g. "...BRAF–KIAA1549 fusion, breakpoint BRAF aa 381; ...") --
+  // read back here, never recomputed or duplicated from the algorithm side.
+  var schematicGroups = new Map();
+  events.forEach(function (e) {
+    if (!e.partner_gene || e.breakpoint_protein_position == null) { return; }
+    var key = e.partner_gene + "|" + e.breakpoint_protein_position;
+    var group = schematicGroups.get(key);
+    if (!group) {
+      group = { tumorTypes: new Set(), domainStatuses: new Set() };
+      schematicGroups.set(key, group);
+    }
+    if (e.tumor_type) { group.tumorTypes.add(e.tumor_type); }
+    if (e.domain_status) { group.domainStatuses.add(e.domain_status); }
+  });
+  var TITLE_RE = /–([^;]+?) fusion, breakpoint \S+ aa (\d+);/;
+  var schematicSvg = document.getElementById("fusion-schematic-svg");
+
+  var summaryEl = document.getElementById("events-summary");
+  var rows = Array.from(document.querySelectorAll("#events-table tbody tr"));
+
+  function applyFilters() {
+    var tumor = tumorSelect.value;
+    var checked = statusContainer.querySelectorAll("input:checked");
+    var activeStatuses = new Set(Array.from(checked).map(function (i) { return i.value; }));
+
+    var shown = 0;
+    rows.forEach(function (tr) {
+      var matchesTumor = !tumor || tr.dataset.tumorType === tumor;
+      var matchesStatus = !tr.dataset.domainStatus || activeStatuses.has(tr.dataset.domainStatus);
+      var visible = matchesTumor && matchesStatus;
+      tr.hidden = !visible;
+      if (visible) { shown += 1; }
+    });
+    if (summaryEl) {
+      summaryEl.textContent = "Showing " + shown + " of " + rows.length + " events";
+    }
+
+    if (schematicSvg) {
+      schematicSvg.querySelectorAll("title").forEach(function (titleEl) {
+        var match = TITLE_RE.exec(titleEl.textContent || "");
+        var shape = titleEl.parentElement;
+        if (!match) { return; }
+        var group = schematicGroups.get(match[1] + "|" + match[2]);
+        if (!group) { shape.style.opacity = ""; return; }
+        var groupMatchesTumor = !tumor || group.tumorTypes.has(tumor);
+        var groupMatchesStatus = Array.from(group.domainStatuses).some(function (s) {
+          return activeStatuses.has(s);
+        });
+        shape.style.opacity = (groupMatchesTumor && groupMatchesStatus) ? "1" : "0.12";
+      });
+    }
+  }
+
+  tumorSelect.addEventListener("change", applyFilters);
+  statusContainer.addEventListener("change", applyFilters);
+  applyFilters();
+});
+</script>
+</body>
+</html>
