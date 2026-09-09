@@ -147,3 +147,54 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
 ## License
 
 Apache License 2.0 — see [LICENSE](LICENSE).
+
+### Offline cross-cohort CMH comparison
+
+`cfh compare-cohorts RUN_DIR [RUN_DIR ...] --output cmh.json` reads the saved
+`summary.frame_domain_contingency_table` for one gene across distinct cohorts.
+It performs the uncorrected CMH chi-square test (one degree of freedom) and
+reports the Mantel-Haenszel common odds ratio, the original tables, informative
+strata, and sample-ID overlap. No ingestion or live algorithm execution occurs.
+The optional output file contains the same JSON printed to stdout. Counts must
+be nonnegative integers; empty/fixed-margin strata contribute no information.
+An entirely uninformative input returns null statistic/p-value; an undefined
+odds ratio is null and an infinite odds ratio is the string `"infinity"`.
+
+Reproduce the BRAF comparison using exactly the three committed gene runs:
+
+```bash
+cfh compare-cohorts \
+  runs/braf_msk-impact-50k-2026_20260909T181926Z \
+  runs/braf_msk-impact-2017_20260905T012645Z \
+  runs/braf_thca-tcga-pan-can-atlas-2018_20260909T034447Z \
+  --output /tmp/braf-cmh.json
+```
+
+Rows are domain retained/not retained, and columns are in-frame protein fusion/other:
+
+| Cohort | Saved table | Informative for CMH |
+| --- | --- | --- |
+| MSK IMPACT 50k 2026 | `[[142, 21], [9, 6]]` | Yes |
+| MSK IMPACT 2017 | `[[31, 2], [2, 5]]` | Yes |
+| TCGA thyroid 2018 | `[[9, 0], [6, 0]]` | No |
+
+The nominal result is **CMH χ²(1) = 21.36486008, p = 3.796664805 × 10⁻⁶,
+common OR = 7.455270793** (alpha = 0.05; no continuity correction). Both
+informative cohorts have a positive association. **This does not confirm
+concordance across all three cohorts:** thyroid has no comparison-column
+observations, and the MSK artifacts share 34 sample IDs, violating independence
+between strata. The p-value is therefore a nominal calculation, not valid
+evidence of independent replication. The saved tables are intentionally not
+deduplicated or recomputed.
+
+CMH tests conditional association; it does not test equality of cohort odds
+ratios or demonstrate significance within every cohort. It assumes independent
+observations within and between strata, consistent table orientation, and
+compatible domain definitions/counting units. The saved kinase boundaries are
+458–712 aa in MSK and 457–712 aa in thyroid; metadata is retained in the report.
+Sample IDs cannot rule out patient overlap or repeated observations. See the
+[StratifiedTable methodological notes](https://www.statsmodels.org/v0.12.2/generated/statsmodels.stats.contingency_tables.StratifiedTable.html)
+for independence assumptions. The implementation uses the standard formula and
+SciPy's chi-square survival function, with no additional dependency; its
+numerical regression uses the published
+[Berkeley admissions CMH example](https://www.markirwin.net/stat149/Lecture/Lecture8.pdf).
