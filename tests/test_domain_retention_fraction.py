@@ -217,9 +217,10 @@ def test_verified_live_benchmark_conclusions_are_unchanged(gene):
     assert sum(event.Frame_status == "in-frame" for event in events) == summary["in_frame_count"]
     retained = sum(feature.Domain_retention_flags["kinase"] == "retained" for feature in features)
     assert retained == summary["kinase_retained_count"]
-    # Unmapped records (one in BRAF) are absent from both event artifacts. Keep
-    # the original full-cohort denominator, without inventing an unmapped event.
-    assert 100.0 * retained / summary["total_fusions"] == summary["kinase_retained_percent"]
+    # Unmapped records (one in BRAF) are absent from both event artifacts, so
+    # percentages are denominated by the mapped population, not total_fusions
+    # (see #30).
+    assert 100.0 * retained / summary["mapped_fusions"] == summary["kinase_retained_percent"]
     assert (
         result.Tables["frame_domain_contingency_table"]
         == (summary["frame_domain_contingency_table"])

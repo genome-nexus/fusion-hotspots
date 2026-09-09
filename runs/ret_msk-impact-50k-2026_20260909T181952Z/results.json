@@ -2,7 +2,7 @@
   "gene_symbol": "RET",
   "study_id": "msk_impact_50k_2026",
   "molecular_profile_id": "msk_impact_50k_2026_structural_variants",
-  "retrieved_at": "2026-09-09T03:40:59.854712+00:00",
+  "retrieved_at": "2026-09-09T18:19:52.574981+00:00",
   "summary": {
     "raw_structural_variant_count": 230,
     "total_fusions": 194,
@@ -5268,7 +5268,7 @@
         "domain_retention_p_value_used": 0.000999000999000999,
         "domain_disruption_p_value_used": 0.034896510348965105,
         "inferred_cutpoint_aa": 712,
-        "Runtime_seconds": 0.00020924999989802018
+        "Runtime_seconds": 0.0004428330003065639
       },
       "Tables": {
         "composite_evidence_ranking": [
@@ -5869,7 +5869,7 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-09T03:40:59.854421Z",
+      "Created_at": "2026-09-09T18:19:52.574332Z",
       "Input_fingerprint": "5247f4f87a6619de86d5eaa05cb9f3d5d6a87ca6ede7b40656020dd3446fed69"
     },
     {
@@ -5935,11 +5935,11 @@
           "mean_a": 67.44134078212291,
           "mean_b": 49.266666666666666
         },
-        "Runtime_seconds": 0.003519000005326234
+        "Runtime_seconds": 0.004163665999840305
       },
       "Tables": null,
       "Warnings": [],
-      "Created_at": "2026-09-09T03:40:36.528108Z",
+      "Created_at": "2026-09-09T18:19:03.239001Z",
       "Input_fingerprint": "5247f4f87a6619de86d5eaa05cb9f3d5d6a87ca6ede7b40656020dd3446fed69"
     },
     {
@@ -5963,7 +5963,7 @@
           "nearest_known_domain_boundary_aa": 724,
           "distance_aa": -12
         },
-        "Runtime_seconds": 5.115923458994075
+        "Runtime_seconds": 8.88763095899958
       },
       "Tables": {
         "cutpoint_scan": [
@@ -6160,7 +6160,7 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-09T03:40:41.653490Z",
+      "Created_at": "2026-09-09T18:19:12.141312Z",
       "Input_fingerprint": "5247f4f87a6619de86d5eaa05cb9f3d5d6a87ca6ede7b40656020dd3446fed69"
     },
     {
@@ -6176,7 +6176,7 @@
         "fisher_p_value": 0.0017804552504953803,
         "permutation_empirical_p_value": 0.034896510348965105,
         "observed_in_frame_disruption_rate": 0.952054794520548,
-        "Runtime_seconds": 23.224370457995974
+        "Runtime_seconds": 49.12257295800009
       },
       "Tables": {
         "frame_domain_contingency_table": [
@@ -16204,7 +16204,7 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-09T03:40:59.849196Z",
+      "Created_at": "2026-09-09T18:19:52.564063Z",
       "Input_fingerprint": "5247f4f87a6619de86d5eaa05cb9f3d5d6a87ca6ede7b40656020dd3446fed69"
     },
     {
@@ -16220,7 +16220,7 @@
         "fisher_p_value": 0.00041966557652448966,
         "permutation_empirical_p_value": 0.000999000999000999,
         "observed_in_frame_retention_rate": 0.9657534246575342,
-        "Runtime_seconds": 1.1974369159943308
+        "Runtime_seconds": 2.1800660830003835
       },
       "Tables": {
         "frame_domain_contingency_table": [
@@ -16250,7 +16250,7 @@
         }
       },
       "Warnings": [],
-      "Created_at": "2026-09-09T03:40:36.517238Z",
+      "Created_at": "2026-09-09T18:19:03.219953Z",
       "Input_fingerprint": "5247f4f87a6619de86d5eaa05cb9f3d5d6a87ca6ede7b40656020dd3446fed69"
     },
     {
@@ -16264,7 +16264,7 @@
         "retained_event_count": 180,
         "total_event_count": 194,
         "retained_fraction": 0.9278350515463918,
-        "Runtime_seconds": 0.0001837499949033372
+        "Runtime_seconds": 0.0004073750005773036
       },
       "Tables": {
         "Exon_retention": [
@@ -16277,7 +16277,7 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-09T03:40:36.632971Z",
+      "Created_at": "2026-09-09T18:19:03.451207Z",
       "Input_fingerprint": "5247f4f87a6619de86d5eaa05cb9f3d5d6a87ca6ede7b40656020dd3446fed69"
     },
     {
@@ -16285,13 +16285,13 @@
       "Algorithm_version": "0.1.0",
       "Parameters": {},
       "Summary": {
-        "Runtime_seconds": 2.3999993572942913e-05
+        "Runtime_seconds": 5.0458000259823166e-05
       },
       "Tables": null,
       "Warnings": [
         "No mRNA expression data was available for RET in this cohort; expression-association analysis was skipped."
       ],
-      "Created_at": "2026-09-09T03:40:36.661775Z",
+      "Created_at": "2026-09-09T18:19:03.571034Z",
       "Input_fingerprint": "5247f4f87a6619de86d5eaa05cb9f3d5d6a87ca6ede7b40656020dd3446fed69"
     },
     {
@@ -16304,7 +16304,7 @@
         "input_event_count": 194,
         "analyzed_event_count": 194,
         "unique_partner_gene_count": 33,
-        "Runtime_seconds": 8.333299774676561e-05
+        "Runtime_seconds": 0.0001365409998470568
       },
       "Tables": {
         "Partner_gene_counts": [
@@ -16443,7 +16443,7 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-09T03:40:36.719187Z",
+      "Created_at": "2026-09-09T18:19:03.577907Z",
       "Input_fingerprint": "5247f4f87a6619de86d5eaa05cb9f3d5d6a87ca6ede7b40656020dd3446fed69"
     },
     {
@@ -16451,13 +16451,13 @@
       "Algorithm_version": "0.1.0",
       "Parameters": {},
       "Summary": {
-        "Runtime_seconds": 2.0874998881481588e-05
+        "Runtime_seconds": 3.5666000258061104e-05
       },
       "Tables": {},
       "Warnings": [
         "RET has no gene_pair configured; joint-partner analysis was skipped."
       ],
-      "Created_at": "2026-09-09T03:40:36.768064Z",
+      "Created_at": "2026-09-09T18:19:03.693891Z",
       "Input_fingerprint": "5247f4f87a6619de86d5eaa05cb9f3d5d6a87ca6ede7b40656020dd3446fed69"
     },
     {
@@ -16466,13 +16466,13 @@
       "Parameters": {},
       "Summary": {
         "targets": [],
-        "Runtime_seconds": 2.7166999643668532e-05
+        "Runtime_seconds": 3.595899943320546e-05
       },
       "Tables": {},
       "Warnings": [
         "RET has no mutual_exclusivity_targets configured; co-occurrence/mutual-exclusivity analysis was skipped."
       ],
-      "Created_at": "2026-09-09T03:40:36.904529Z",
+      "Created_at": "2026-09-09T18:19:03.730027Z",
       "Input_fingerprint": "5247f4f87a6619de86d5eaa05cb9f3d5d6a87ca6ede7b40656020dd3446fed69"
     },
     {
@@ -16538,7 +16538,7 @@
           "n_unknown": 0,
           "fraction_clamped_or_approximate": 1.0
         },
-        "Runtime_seconds": 20.9146980000005
+        "Runtime_seconds": 45.88521683300041
       },
       "Tables": {
         "window_scan": [
@@ -29611,7 +29611,7 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-09T03:40:57.819701Z",
+      "Created_at": "2026-09-09T18:19:49.690104Z",
       "Input_fingerprint": "5247f4f87a6619de86d5eaa05cb9f3d5d6a87ca6ede7b40656020dd3446fed69"
     }
   ],

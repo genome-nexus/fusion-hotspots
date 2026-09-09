@@ -8,8 +8,8 @@ Retrieved from public cBioPortal and Genome Nexus on 2026-09-09.
 - Protein-fusion records found: 179
 - Protein-fusion records mapped: 178
 - Malformed/unmappable fusion records skipped: 1
-- In-frame: 151/179 (84.4%)
-- Protein kinase domain (458-712 aa) retained: 163/179 (91.1%)
+- In-frame: 151/178 (84.8%)
+- Protein kinase domain (458-712 aa) retained: 163/178 (91.6%)
 - In-frame and Protein kinase domain-retained: 142/151
 - Fisher exact test (one-sided): odds ratio 4.50794, p=0.0133676
 - Breakpoint-permutation empirical p-value: 0.00699301
@@ -65,8 +65,8 @@ ABCC1 (1), ABCC2 (1), AGAP3 (6), AGK (14), AKAP9 (2), ATF7 (1), CAPZA2 (1), CARM
 
 | Metric | PMC5461196 | This run |
 |---|---:|---:|
-| In-frame | 100.0% | 84.4% |
-| Domain retained | 100.0% | 91.1% |
+| In-frame | 100.0% | 84.8% |
+| Domain retained | 100.0% | 91.6% |
 
 ![Reference comparison](visualizations/reference_comparison.svg)
 
@@ -74,6 +74,6 @@ ABCC1 (1), ABCC2 (1), AGAP3 (6), AGK (14), AKAP9 (2), ATF7 (1), CAPZA2 (1), CARM
 
 ## Interpretation
 
-This does **not** reproduce the Zehir et al. (PMC5461196) report of 33/33 BRAF fusions being in-frame with the kinase domain retained: this live successor cohort has 151/179 in-frame and 142/151 in-frame fusions retaining Protein kinase domain.
+This does **not** reproduce the Zehir et al. (PMC5461196) report of 33/33 BRAF fusions being in-frame with the kinase domain retained: this live successor cohort has 151/178 mapped fusions in-frame and 142/151 in-frame fusions retaining Protein kinase domain.
 
 `msk_impact_50k_2026` is a newer successor cohort, not the paper's original `msk_impact_2017` cohort. This is therefore replication in a related cohort, not a reanalysis of the paper's original 33 cases.
