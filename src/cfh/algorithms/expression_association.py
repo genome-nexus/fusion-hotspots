@@ -33,7 +33,20 @@ observations per group:
     map that
     :func:`cfh.algorithms.confidence_stats.default_confidence_stats_params`
     derives from ``gene_config.key_domains`` -- not a re-derived
-    domain-collapsing rule of this module's own.
+    domain-collapsing rule of this module's own. Grouped by SAMPLE, not by
+    fusion event: a sample can carry more than one fusion event for the
+    target gene (e.g. two independent breakpoints), and expression is a
+    per-sample measurement, so counting the same sample's expression value
+    once per event would let one sample contribute to both groups,
+    violating the independent-samples assumption both Welch's t-test and
+    Mann-Whitney U require. Each sample is assigned at most one
+    domain-retention label: when every one of its fusion events maps to the
+    same label ("retained" or "not_retained"), it joins that group; when a
+    sample's own events disagree (one retained, one not), the sample is
+    excluded from this comparison entirely rather than arbitrarily assigned
+    to either group -- there is no principled single answer for "this
+    sample's domain-retention status" when the sample itself contains
+    conflicting evidence.
 
 Statistical test choice
 ------------------------
@@ -262,8 +275,10 @@ class ExpressionAssociationAlgorithm(Algorithm):
         group_value_map = domain_params.get("group_value_map") or {}
 
         features_by_event = {feature.Event_id: feature for feature in features}
-        retained_values: list[float] = []
-        not_retained_values: list[float] = []
+        # Collect every applicable label per SAMPLE first (a sample can carry
+        # more than one fusion event for the target gene), so a sample is
+        # never counted into both groups below -- see the module docstring.
+        labels_by_sample: dict[str, set[str]] = {}
         for event in events:
             if not event.Sample_id or event.Sample_id not in expression_by_sample:
                 continue
@@ -274,26 +289,51 @@ class ExpressionAssociationAlgorithm(Algorithm):
             mapped_value = group_value_map.get(raw_value, raw_value)
             if mapped_value not in ("retained", "not_retained"):
                 continue
-            expression_value = expression_by_sample[event.Sample_id]
-            if mapped_value == "retained":
+            labels_by_sample.setdefault(event.Sample_id, set()).add(mapped_value)
+
+        retained_values: list[float] = []
+        not_retained_values: list[float] = []
+        ambiguous_sample_count = 0
+        for sample_id, labels in labels_by_sample.items():
+            if len(labels) > 1:
+                ambiguous_sample_count += 1
+                continue
+            expression_value = expression_by_sample[sample_id]
+            if next(iter(labels)) == "retained":
                 retained_values.append(expression_value)
             else:
                 not_retained_values.append(expression_value)
 
+        ambiguous_note = (
+            f" ({ambiguous_sample_count} sample(s) with both retained and not_retained "
+            "fusion events for this gene were excluded from this comparison.)"
+            if ambiguous_sample_count
+            else ""
+        )
         if len(retained_values) < _MIN_GROUP_N or len(not_retained_values) < _MIN_GROUP_N:
             return None, (
                 f"{gene_name}: domain-retention expression-split comparison skipped; "
                 f"each group needs >={_MIN_GROUP_N} fusion-positive samples with expression "
                 f"data (retained={len(retained_values)}, not_retained={len(not_retained_values)})."
+                f"{ambiguous_note}"
             )
         test_result = _run_two_group_test(retained_values, not_retained_values)
-        return {
+        summary = {
             "group_a_label": "retained",
             "group_b_label": "not_retained",
             "n_a": len(retained_values),
             "n_b": len(not_retained_values),
+            "ambiguous_samples_excluded": ambiguous_sample_count,
             **test_result,
-        }, None
+        }
+        warning = (
+            f"{gene_name}: {ambiguous_sample_count} sample(s) with both retained and "
+            "not_retained fusion events for this gene were excluded from the "
+            "domain-retention expression-split comparison."
+            if ambiguous_sample_count
+            else None
+        )
+        return summary, warning
 
     @staticmethod
     def _no_op_result(warning: str) -> AlgorithmResult:

@@ -1,6 +1,6 @@
 # RET real-data fusion benchmark: thca_tcga_pan_can_atlas_2018
 
-Retrieved from public cBioPortal and Genome Nexus on 2026-09-08.
+Retrieved from public cBioPortal and Genome Nexus on 2026-09-09.
 
 ## Results
 
@@ -40,7 +40,8 @@ For each fusion, breakpoint selection preferred the Genome Nexus canonical trans
 - Registered algorithms executed: composite_score, confidence_stats, cutpoint_detection, domain_disruption, domain_retention, exon_retention, expression_association, frequency, joint_partner, window_detection
 - Cutpoint detection: inferred breakpoint 712 aa (exon 11); corrected permutation p=0.000999001.
 - Top composite score: CCDC6 (22 events), 0.471918.
-- Expression association: RET mRNA expression is significantly higher in fusion-positive samples (n=33) than fusion-negative samples (n=465) (mann_whitney_u, p=2.12e-21). Among fusion-positive samples, RET expression is not significantly higher in kinase-domain-retained fusions (n=33) than not-retained fusions (n=3) (mann_whitney_u, p=0.71).
+- Expression association: RET mRNA expression is significantly higher in fusion-positive samples (n=33) than fusion-negative samples (n=465) (mann_whitney_u, p=2.12e-21).
+- Expression association: RET: domain-retention expression-split comparison skipped; each group needs >=2 fusion-positive samples with expression data (retained=30, not_retained=0). (3 sample(s) with both retained and not_retained fusion events for this gene were excluded from this comparison.)
 
 ## Partners
 

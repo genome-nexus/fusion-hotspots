@@ -150,6 +150,71 @@ def test_domain_retention_split_reuses_confidence_stats_default_grouping():
     assert split["mean_a"] > split["mean_b"]
 
 
+def test_domain_retention_split_excludes_samples_with_conflicting_events_not_double_counts():
+    """Regression: a sample with more than one fusion event for the target
+    gene must never land in both the retained and not_retained groups.
+
+    Before the fix, this algorithm grouped per fusion EVENT rather than per
+    SAMPLE, so a sample carrying one retained-domain event and one
+    not-retained-domain event contributed its single expression value to
+    BOTH groups -- violating the independent-samples assumption of both
+    Welch's t-test and Mann-Whitney U. S0 here has two events with opposite
+    domain status: it must be excluded from the comparison entirely, its
+    expression value (9.9, an outlier) must appear in neither group's mean,
+    and each remaining sample must still contribute exactly one value.
+    """
+    config = load_gene_config("RET")
+    # S0: two events, conflicting status (retained AND lost) -- ambiguous,
+    # must be excluded from both groups.
+    # S1, S2: single retained event each.
+    # S3, S4: single lost event each.
+    events = [
+        FusionEvent(Event_id="e0a", Cohort="c", Sample_id="S0"),
+        FusionEvent(Event_id="e0b", Cohort="c", Sample_id="S0"),
+        FusionEvent(Event_id="e1", Cohort="c", Sample_id="S1"),
+        FusionEvent(Event_id="e2", Cohort="c", Sample_id="S2"),
+        FusionEvent(Event_id="e3", Cohort="c", Sample_id="S3"),
+        FusionEvent(Event_id="e4", Cohort="c", Sample_id="S4"),
+    ]
+    statuses = {
+        "e0a": "retained",
+        "e0b": "lost",
+        "e1": "retained",
+        "e2": "retained",
+        "e3": "lost",
+        "e4": "lost",
+    }
+    features = [
+        FusionFeature(
+            Event_id=event.Event_id,
+            Gene="RET",
+            Domain_retention_flags={"kinase": statuses[event.Event_id]},
+        )
+        for event in events
+    ]
+    expression_by_sample = {
+        "S0": 9.9,  # ambiguous sample -- must appear in neither group
+        "S1": 3.0,
+        "S2": 3.2,  # retained group
+        "S3": 0.1,
+        "S4": -0.2,  # not_retained group
+    }
+
+    result = ExpressionAssociationAlgorithm().run(
+        events, features, config, {"expression_by_sample": expression_by_sample}
+    )
+
+    split = result.Summary["domain_retention_split"]
+    assert split["n_a"] == 2  # S1, S2 only -- not 3
+    assert split["n_b"] == 2  # S3, S4 only -- not 3
+    assert split["ambiguous_samples_excluded"] == 1
+    # The ambiguous sample's outlier value (9.9) must not have pulled either
+    # group's mean toward it.
+    assert split["mean_a"] == (3.0 + 3.2) / 2
+    assert split["mean_b"] == (0.1 + -0.2) / 2
+    assert any("1 sample(s)" in warning and "excluded" in warning for warning in result.Warnings)
+
+
 def test_domain_retention_split_skipped_when_gene_has_no_key_domains():
     from cfh.genes.registry import GeneConfig
 

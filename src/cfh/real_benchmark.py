@@ -1257,8 +1257,14 @@ def markdown_summary(
         )
         if expression_sentence:
             lines.append(f"- Expression association: {expression_sentence}")
-        elif expression_result.Warnings:
-            lines.append(f"- Expression association: {expression_result.Warnings[0]}")
+        # Every warning is surfaced (not just as a substitute for a missing
+        # sentence): one comparison can succeed (producing a sentence above)
+        # while the other is separately skipped -- e.g. domain-retention
+        # split excluded for having too few disjoint samples after removing
+        # ambiguous multi-event samples -- and that absence must still be
+        # stated explicitly, not silently dropped alongside a present sentence.
+        for warning in expression_result.Warnings:
+            lines.append(f"- Expression association: {warning}")
     lines.extend(
         [
             "",

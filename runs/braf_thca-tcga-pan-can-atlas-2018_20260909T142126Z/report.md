@@ -1,6 +1,6 @@
 # BRAF real-data fusion benchmark: thca_tcga_pan_can_atlas_2018
 
-Retrieved from public cBioPortal and Genome Nexus on 2026-09-08.
+Retrieved from public cBioPortal and Genome Nexus on 2026-09-09.
 
 ## Results
 
@@ -40,7 +40,8 @@ For each fusion, breakpoint selection preferred the Genome Nexus canonical trans
 - Registered algorithms executed: composite_score, confidence_stats, cutpoint_detection, domain_disruption, domain_retention, exon_retention, expression_association, frequency, joint_partner, window_detection
 - Cutpoint detection: inferred breakpoint 380 aa (exon 8); corrected permutation p=0.020979.
 - Top composite score: SND1 (5 events), 0.359734.
-- Expression association: BRAF mRNA expression is significantly higher in fusion-positive samples (n=10) than fusion-negative samples (n=488) (mann_whitney_u, p=0.00931). Among fusion-positive samples, BRAF expression is not significantly lower in kinase-domain-retained fusions (n=9) than not-retained fusions (n=6) (mann_whitney_u, p=0.906).
+- Expression association: BRAF mRNA expression is significantly higher in fusion-positive samples (n=10) than fusion-negative samples (n=488) (mann_whitney_u, p=0.00931).
+- Expression association: BRAF: domain-retention expression-split comparison skipped; each group needs >=2 fusion-positive samples with expression data (retained=4, not_retained=1). (5 sample(s) with both retained and not_retained fusion events for this gene were excluded from this comparison.)
 
 ## Partners
 

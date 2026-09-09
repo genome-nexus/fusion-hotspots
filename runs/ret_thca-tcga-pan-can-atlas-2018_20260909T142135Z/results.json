@@ -2,7 +2,7 @@
   "gene_symbol": "RET",
   "study_id": "thca_tcga_pan_can_atlas_2018",
   "molecular_profile_id": "thca_tcga_pan_can_atlas_2018_structural_variants",
-  "retrieved_at": "2026-09-08T18:29:18.461949+00:00",
+  "retrieved_at": "2026-09-09T14:21:35.414107+00:00",
   "summary": {
     "raw_structural_variant_count": 36,
     "total_fusions": 36,
@@ -996,7 +996,7 @@
         "domain_retention_p_value_used": 0.000999000999000999,
         "domain_disruption_p_value_used": 0.4363563643635636,
         "inferred_cutpoint_aa": 712,
-        "Runtime_seconds": 0.00022120799985714257
+        "Runtime_seconds": 0.00015720800729468465
       },
       "Tables": {
         "composite_evidence_ranking": [
@@ -1183,7 +1183,7 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-08T18:29:18.461609Z",
+      "Created_at": "2026-09-09T14:21:35.413841Z",
       "Input_fingerprint": "69c090348e2895cce20ed8edba32293fd26e0a76f5db4b959fcf7f159dd53b33"
     },
     {
@@ -1249,13 +1249,13 @@
           "mean_a": null,
           "mean_b": null
         },
-        "Runtime_seconds": 0.003463834000285715
+        "Runtime_seconds": 0.0007180409884313121
       },
       "Tables": null,
       "Warnings": [
         "Welch's t-test for 'Tumor_variant_count' was not applicable; each group requires at least two non-null observations."
       ],
-      "Created_at": "2026-09-08T18:29:15.655823Z",
+      "Created_at": "2026-09-09T14:21:33.117568Z",
       "Input_fingerprint": "69c090348e2895cce20ed8edba32293fd26e0a76f5db4b959fcf7f159dd53b33"
     },
     {
@@ -1279,7 +1279,7 @@
           "nearest_known_domain_boundary_aa": 725,
           "distance_aa": -13
         },
-        "Runtime_seconds": 0.6961357079999289
+        "Runtime_seconds": 1.4247822500037728
       },
       "Tables": {
         "cutpoint_scan": [
@@ -1316,7 +1316,7 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-08T18:29:16.359773Z",
+      "Created_at": "2026-09-09T14:21:34.545460Z",
       "Input_fingerprint": "69c090348e2895cce20ed8edba32293fd26e0a76f5db4b959fcf7f159dd53b33"
     },
     {
@@ -1332,7 +1332,7 @@
         "fisher_p_value": 0.08333333333333333,
         "permutation_empirical_p_value": 0.4363563643635636,
         "observed_in_frame_disruption_rate": 0.9428571428571428,
-        "Runtime_seconds": 2.751713749999908
+        "Runtime_seconds": 2.2867592919938033
       },
       "Tables": {
         "frame_domain_contingency_table": [
@@ -11360,7 +11360,7 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-08T18:29:18.459003Z",
+      "Created_at": "2026-09-09T14:21:35.411762Z",
       "Input_fingerprint": "69c090348e2895cce20ed8edba32293fd26e0a76f5db4b959fcf7f159dd53b33"
     },
     {
@@ -11376,7 +11376,7 @@
         "fisher_p_value": 0.08333333333333333,
         "permutation_empirical_p_value": 0.000999000999000999,
         "observed_in_frame_retention_rate": 0.9428571428571428,
-        "Runtime_seconds": 0.5633962920001068
+        "Runtime_seconds": 0.5054267499945126
       },
       "Tables": {
         "frame_domain_contingency_table": [
@@ -11406,7 +11406,7 @@
         }
       },
       "Warnings": [],
-      "Created_at": "2026-09-08T18:29:15.646905Z",
+      "Created_at": "2026-09-09T14:21:33.114233Z",
       "Input_fingerprint": "69c090348e2895cce20ed8edba32293fd26e0a76f5db4b959fcf7f159dd53b33"
     },
     {
@@ -11420,7 +11420,7 @@
         "retained_event_count": 33,
         "total_event_count": 36,
         "retained_fraction": 0.9166666666666666,
-        "Runtime_seconds": 0.00027033299920731224
+        "Runtime_seconds": 0.0001700830034678802
       },
       "Tables": {
         "Exon_retention": [
@@ -11433,7 +11433,7 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-08T18:29:15.710606Z",
+      "Created_at": "2026-09-09T14:21:33.142016Z",
       "Input_fingerprint": "69c090348e2895cce20ed8edba32293fd26e0a76f5db4b959fcf7f159dd53b33"
     },
     {
@@ -11453,22 +11453,13 @@
           "mean_a": 2.940830303030303,
           "mean_b": -0.197465376344086
         },
-        "domain_retention_split": {
-          "group_a_label": "retained",
-          "group_b_label": "not_retained",
-          "n_a": 33,
-          "n_b": 3,
-          "test": "mann_whitney_u",
-          "statistic": 56.5,
-          "p_value": 0.7098122041384005,
-          "mean_a": 2.940830303030303,
-          "mean_b": 2.4668
-        },
-        "Runtime_seconds": 0.004605041998729575
+        "Runtime_seconds": 0.009989500002120622
       },
       "Tables": null,
-      "Warnings": [],
-      "Created_at": "2026-09-08T18:29:15.715768Z",
+      "Warnings": [
+        "RET: domain-retention expression-split comparison skipped; each group needs >=2 fusion-positive samples with expression data (retained=30, not_retained=0). (3 sample(s) with both retained and not_retained fusion events for this gene were excluded from this comparison.)"
+      ],
+      "Created_at": "2026-09-09T14:21:33.182680Z",
       "Input_fingerprint": "69c090348e2895cce20ed8edba32293fd26e0a76f5db4b959fcf7f159dd53b33"
     },
     {
@@ -11481,7 +11472,7 @@
         "input_event_count": 36,
         "analyzed_event_count": 36,
         "unique_partner_gene_count": 10,
-        "Runtime_seconds": 0.00013870800103177316
+        "Runtime_seconds": 6.600000779144466e-05
       },
       "Tables": {
         "Partner_gene_counts": [
@@ -11528,7 +11519,7 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-08T18:29:15.736056Z",
+      "Created_at": "2026-09-09T14:21:33.173603Z",
       "Input_fingerprint": "69c090348e2895cce20ed8edba32293fd26e0a76f5db4b959fcf7f159dd53b33"
     },
     {
@@ -11536,13 +11527,13 @@
       "Algorithm_version": "0.1.0",
       "Parameters": {},
       "Summary": {
-        "Runtime_seconds": 1.9417002476984635e-05
+        "Runtime_seconds": 1.2917007552459836e-05
       },
       "Tables": {},
       "Warnings": [
         "RET has no gene_pair configured; joint-partner analysis was skipped."
       ],
-      "Created_at": "2026-09-08T18:29:15.736235Z",
+      "Created_at": "2026-09-09T14:21:33.186225Z",
       "Input_fingerprint": "69c090348e2895cce20ed8edba32293fd26e0a76f5db4b959fcf7f159dd53b33"
     },
     {
@@ -11608,7 +11599,7 @@
           "n_unknown": 0,
           "fraction_clamped_or_approximate": 0.0
         },
-        "Runtime_seconds": 1.6603175000018382
+        "Runtime_seconds": 1.2781971249933122
       },
       "Tables": {
         "window_scan": [
@@ -11901,7 +11892,7 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-08T18:29:17.458984Z",
+      "Created_at": "2026-09-09T14:21:34.464438Z",
       "Input_fingerprint": "69c090348e2895cce20ed8edba32293fd26e0a76f5db4b959fcf7f159dd53b33"
     }
   ],
