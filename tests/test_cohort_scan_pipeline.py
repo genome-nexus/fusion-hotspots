@@ -307,6 +307,17 @@ def test_cohort_scan_end_to_end_offline(mock_session, tmp_path):
         assert all(row["tumor_type"] == "Glioma" for row in payload["events"])
         assert all(row["oncotree_code"] == "PA" for row in payload["events"])
 
+    # Cohort scan writes the complete per-gene Markdown report, not only its
+    # JSON payload. Assert report content from the generated artifact so a
+    # future wiring regression cannot silently leave gene_reports/<gene>/report.md
+    # empty or stale.
+    braf_report = paths["gene_reports"]["BRAF"]["markdown"].read_text()
+    assert braf_report.startswith("# BRAF real-data fusion benchmark: test_cohort_study")
+    assert "- Protein-fusion records found: 7" in braf_report
+    assert (
+        "![Domain retention diagram](visualizations/domain_retention_outliers.svg)" in braf_report
+    )
+
 
 def test_cohort_scan_never_crashes_on_one_malformed_gene(mock_session, tmp_path):
     """A gene whose per-gene SV fetch raises must be recorded as a failed

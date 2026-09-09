@@ -12,12 +12,14 @@ from click.testing import CliRunner
 
 from cfh import cli
 from cfh import real_benchmark as benchmark_module
+from cfh.genes.registry import load_gene_config
 from cfh.ingestion import cbioportal_api
 from cfh.mapping.genome_nexus_source import GenomeNexusClient
 from cfh.real_benchmark import (
     RealBenchmarkNetworkError,
     _target_breakpoint,
     analyze_structural_variant_calls,
+    analyze_structural_variant_calls_with_config,
     run_real_benchmark,
     write_outputs,
 )
@@ -39,6 +41,32 @@ def test_target_breakpoint_uses_genome_nexus_locus_when_cbioportal_site_labels_a
     }
 
     assert _target_breakpoint(row, "ALK", (29415640, 30144432)) == 29446375
+
+
+def test_no_exon_coordinates_skip_target_locus_records_without_crashing(
+    genome_nexus_canonical_transcript_fixture_path,
+):
+    """Genome Nexus returned this shape for NCOA4 in a cohort-wide scan."""
+    client = _genome_nexus_client(genome_nexus_canonical_transcript_fixture_path)
+    transcript = json.loads(genome_nexus_canonical_transcript_fixture_path.read_text())
+    transcript["exons"] = []
+    client.fetch_canonical_transcript.return_value = transcript
+
+    run = analyze_structural_variant_calls(
+        [_call("NCOA4-NO-EXONS")],
+        "BRAF",
+        "msk_impact_50k_2026",
+        genome_nexus_client=client,
+        n_permutations=5,
+    )
+
+    assert run.summary["total_fusions"] == 1
+    assert run.summary["mapped_fusions"] == 0
+    assert run.summary["skipped_fusions"] == 1
+    assert any(
+        "Genome Nexus returned no exon coordinates for target-locus validation" in warning
+        for warning in run.warnings
+    )
 
 
 @pytest.mark.parametrize(
@@ -182,6 +210,31 @@ def test_real_benchmark_pipeline_writes_tsv_json_and_markdown(
         assert re.search(rf"!\[[^]]+\]\({re.escape(relative_path)}\)", report)
     assert "![Domain retention diagram](visualizations/domain_retention_outliers.svg)" in report
     assert "![Reference comparison](visualizations/reference_comparison.svg)" in report
+
+
+def test_outputs_without_benchmark_reference_omit_reference_svg_and_section(
+    tmp_path,
+    genome_nexus_canonical_transcript_fixture_path,
+):
+    client = _genome_nexus_client(genome_nexus_canonical_transcript_fixture_path)
+    config_without_reference = load_gene_config("BRAF").model_copy(
+        update={"benchmark_reference": None}
+    )
+    run = analyze_structural_variant_calls_with_config(
+        [_call("NO-REFERENCE")],
+        config_without_reference,
+        "msk_impact_50k_2026",
+        genome_nexus_client=client,
+        n_permutations=5,
+    )
+
+    paths = write_outputs(run, tmp_path, pdf=False)
+
+    report = paths["markdown"].read_text()
+    assert "## Reference comparison" not in report
+    assert "reference_comparison.svg" not in report
+    assert "comparison_svg" not in paths
+    assert not (paths["run_directory"] / "visualizations" / "reference_comparison.svg").exists()
 
 
 def test_markdown_cutpoint_line_states_the_exon_the_inferred_position_falls_in(

@@ -177,10 +177,15 @@ def _is_target_protein_fusion(event: FusionEvent, target_gene: str) -> bool:
     )
 
 
-def _target_locus(canonical: CanonicalTranscript) -> tuple[int, int]:
-    """Return the inclusive genomic footprint spanned by a target's exons."""
+def _target_locus(canonical: CanonicalTranscript) -> tuple[int, int] | None:
+    """Return the inclusive genomic footprint spanned by a target's exons.
+
+    Genome Nexus occasionally supplies a canonical transcript without exon
+    coordinates. There is no safe genomic locus to use in that case, so let
+    the normal per-record skip path handle the affected fusions.
+    """
     if not canonical.exons:
-        raise ValueError("Genome Nexus returned no exon coordinates for target-locus validation")
+        return None
     return (
         min(exon.start for exon in canonical.exons),
         max(exon.end for exon in canonical.exons),
@@ -764,8 +769,10 @@ def analyze_structural_variant_calls_with_config(
     for row, event in selected:
         try:
             role = _target_role(event, config.gene_symbol)
-            if target_locus is None:  # pragma: no cover - no selected records means no loop
-                raise ValueError("target locus was not resolved")
+            if target_locus is None:
+                raise ValueError(
+                    "Genome Nexus returned no exon coordinates for target-locus validation"
+                )
             breakpoint = _target_breakpoint(row, config.gene_symbol, target_locus)
             mapping = resolve_breakpoint_protein_position(
                 None,
@@ -1389,7 +1396,7 @@ def markdown_summary(
     run: RealBenchmarkRun,
     *,
     domain_svg_path: str = "visualizations/domain_retention_outliers.svg",
-    comparison_svg_path: str = "visualizations/reference_comparison.svg",
+    comparison_svg_path: str | None = "visualizations/reference_comparison.svg",
     fusion_schematic_svg_path: str | None = None,
     intragenic_deletion_svg_path: str | None = None,
 ) -> str:
@@ -1603,17 +1610,6 @@ def markdown_summary(
                 f"![Reference comparison]({comparison_svg_path})",
                 "",
                 "*Published reference percentages compared with this run.*",
-                "",
-            ]
-        )
-    else:
-        lines.extend(
-            [
-                "## Reference comparison",
-                "",
-                f"![Reference comparison]({comparison_svg_path})",
-                "",
-                "*Configured reference percentages compared with this run.*",
                 "",
             ]
         )
@@ -2197,12 +2193,14 @@ def write_outputs(
         if row["discrepancy_type"] == "reference_discrepancy"
     }
     domain_svg = visualization_dir / "domain_retention_outliers.svg"
-    comparison_svg = visualization_dir / "reference_comparison.svg"
+    comparison_svg = visualization_dir / "reference_comparison.svg" if run.reference else None
     markdown_path.write_text(
         markdown_summary(
             run,
             domain_svg_path=domain_svg.relative_to(destination).as_posix(),
-            comparison_svg_path=comparison_svg.relative_to(destination).as_posix(),
+            comparison_svg_path=(
+                comparison_svg.relative_to(destination).as_posix() if comparison_svg else None
+            ),
             fusion_schematic_svg_path=(
                 fusion_schematic_svg.relative_to(destination).as_posix()
                 if fusion_schematic_svg
@@ -2216,7 +2214,8 @@ def write_outputs(
         )
     )
     domain_svg.write_text(_domain_track_svg(run, reference_ids) + "\n")
-    comparison_svg.write_text(_comparison_svg(run) + "\n")
+    if comparison_svg:
+        comparison_svg.write_text(_comparison_svg(run) + "\n")
     manifest_path = destination / "manifest.json"
     manifest_path.write_text(
         json.dumps(
@@ -2240,8 +2239,9 @@ def write_outputs(
         "markdown": markdown_path,
         "outliers": outliers_path,
         "domain_svg": domain_svg,
-        "comparison_svg": comparison_svg,
     }
+    if comparison_svg:
+        paths["comparison_svg"] = comparison_svg
     if fusion_schematic_svg:
         paths["fusion_schematic_svg"] = fusion_schematic_svg
     if intragenic_deletion_svg:
