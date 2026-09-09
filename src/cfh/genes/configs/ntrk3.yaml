@@ -1,0 +1,22 @@
+# Live verified 2026-09-09 (Genome Nexus MSKCC canonical, GRCh37):
+# https://www.genomenexus.org/ensembl/canonical-transcript/hgnc/NTRK3?isoformOverrideSource=mskcc
+# ENST00000360948; ENSP00000354207; 839 aa.
+# PF07714: aa 539-824; https://www.ebi.ac.uk/interpro/api/entry/pfam/PF07714
+# ETV6-NTRK3 retains the NTRK3 kinase:
+# https://pmc.ncbi.nlm.nih.gov/articles/PMC416412/
+# N-terminal LRR/Ig annotations alone do not establish required autoinhibitory
+# disruption targets; disable coordinate-only inference.
+gene_symbol: NTRK3
+canonical_transcript_id: NM_001012338
+protein_id: Q16288
+entrez_gene_id: 4916
+key_domains:
+  - name: "Protein kinase domain"
+    source: genome_nexus
+    key: kinase
+    accession: PF07714
+disruption_required_domains: []
+expected_retained_exon_hint: null
+analysis_modes:
+  - breakpoint_hotspot
+  - domain_retention

@@ -1,0 +1,21 @@
+# Live verified 2026-09-09 (Genome Nexus MSKCC canonical, GRCh37):
+# https://www.genomenexus.org/ensembl/canonical-transcript/hgnc/ETV6?isoformOverrideSource=mskcc
+# ENST00000396373; ENSP00000379658; 452 aa.
+# PF02198: aa 40-123; https://www.ebi.ac.uk/interpro/api/entry/pfam/PF02198
+# SAM polymerization is required for ETV6-NTRK3 transformation:
+# https://pmc.ncbi.nlm.nih.gov/articles/PMC416412/
+# No supported N-terminal Pfam disruption target precedes the SAM domain.
+gene_symbol: ETV6
+canonical_transcript_id: NM_001987
+protein_id: P41212
+entrez_gene_id: 2120
+key_domains:
+  - name: "Sterile alpha motif (SAM)/Pointed domain"
+    source: genome_nexus
+    key: sam_pointed
+    accession: PF02198
+disruption_required_domains: []
+expected_retained_exon_hint: null
+analysis_modes:
+  - breakpoint_hotspot
+  - domain_retention

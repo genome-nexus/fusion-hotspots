@@ -1,0 +1,22 @@
+# Live verified 2026-09-09 (Genome Nexus MSKCC canonical, GRCh37):
+# https://www.genomenexus.org/ensembl/canonical-transcript/hgnc/FLI1?isoformOverrideSource=mskcc
+# ENST00000527786; ENSP00000433488; 452 aa.
+# PF00178: aa 280-362; https://www.ebi.ac.uk/interpro/api/entry/pfam/PF00178
+# EWS-FLI1 retains the FLI1 DNA-binding domain:
+# https://pubmed.ncbi.nlm.nih.gov/40377985/
+# The equally sized SAM/Pointed domain is not the retention target.
+# No established Pfam autoinhibitory disruption target is asserted.
+gene_symbol: FLI1
+canonical_transcript_id: NM_002017
+protein_id: Q01543
+entrez_gene_id: 2313
+key_domains:
+  - name: "ETS DNA-binding domain"
+    source: genome_nexus
+    key: ets
+    accession: PF00178
+disruption_required_domains: []
+expected_retained_exon_hint: null
+analysis_modes:
+  - breakpoint_hotspot
+  - domain_retention
