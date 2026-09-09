@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1000" height="890" viewBox="0 0 1000 890">
 <rect width="1000" height="890" fill="white"/>
 <text x="60" y="24" font-family="sans-serif" font-size="15">ALK fusion-transcript schematic</text>
-<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555">Fusion order varies by row; follow each row's 5' and 3' labels (ALK portion is domain-colored, exon ticks). Partner-gene blocks share one color; row labels identify each partner.</text>
+<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555555">Fusion order varies by row; follow each row's 5' and 3' labels (ALK portion is domain-colored, exon ticks). Partner-gene blocks share one color; row labels identify each partner.</text>
 <rect x="60.0" y="56.0" width="365.7" height="22" fill="#8064a2"><title>Partner gene EML4; ALK–EML4 fusion, breakpoint ALK aa 1058; samples P-0031827-T02-IM6, P-0028287-T01-IM6, P-0009301-T01-IM5, P-0009301-T02-IM6, P-0009339-T01-IM5 (+199 more)</title></rect>
 <rect x="425.7" y="56.0" width="194.3" height="22" fill="#e2e2e2"><title>ALK backbone (1058-1620 aa, no domain); domain status retained; ALK–EML4 fusion, breakpoint ALK aa 1058; samples P-0031827-T02-IM6, P-0028287-T01-IM6, P-0009301-T01-IM5, P-0009301-T02-IM6, P-0009339-T01-IM5 (+199 more)</title></rect>
 <rect x="446.1" y="56.0" width="91.6" height="22" fill="#2878b5"><title>Protein kinase domain retained (1117-1382 aa); ALK–EML4 fusion, breakpoint ALK aa 1058; samples P-0031827-T02-IM6, P-0028287-T01-IM6, P-0009301-T01-IM5, P-0009301-T02-IM6, P-0009339-T01-IM5 (+199 more)</title></rect>
@@ -528,63 +528,63 @@
 <text x="620.0" y="783.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
 <text x="60.0" y="802.0" font-family="sans-serif" font-size="9">1</text>
 <text x="620.0" y="802.0" font-family="sans-serif" font-size="9" text-anchor="end">1620 aa</text>
-<line x1="60.3" y1="806.0" x2="60.3" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<line x1="60.3" y1="806.0" x2="60.3" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
 <text x="60.3" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 60.3 811.0)">E1</text>
-<line x1="137.1" y1="806.0" x2="137.1" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<line x1="137.1" y1="806.0" x2="137.1" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
 <text x="137.1" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 137.1 811.0)">E2</text>
-<line x1="150.9" y1="806.0" x2="150.9" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<line x1="150.9" y1="806.0" x2="150.9" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
 <text x="150.9" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 150.9 811.0)">E3</text>
-<line x1="169.9" y1="806.0" x2="169.9" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<line x1="169.9" y1="806.0" x2="169.9" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
 <text x="169.9" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 169.9 811.0)">E4</text>
-<line x1="193.1" y1="806.0" x2="193.1" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<line x1="193.1" y1="806.0" x2="193.1" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
 <text x="193.1" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 193.1 811.0)">E5</text>
-<line x1="208.0" y1="806.0" x2="208.0" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<line x1="208.0" y1="806.0" x2="208.0" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
 <text x="208.0" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 208.0 811.0)">E6</text>
-<line x1="223.2" y1="806.0" x2="223.2" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<line x1="223.2" y1="806.0" x2="223.2" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
 <text x="223.2" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 223.2 811.0)">E7</text>
-<line x1="238.4" y1="806.0" x2="238.4" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<line x1="238.4" y1="806.0" x2="238.4" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
 <text x="238.4" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 238.4 811.0)">E8</text>
-<line x1="250.1" y1="806.0" x2="250.1" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<line x1="250.1" y1="806.0" x2="250.1" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
 <text x="250.1" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 250.1 811.0)">E9</text>
-<line x1="269.5" y1="806.0" x2="269.5" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<line x1="269.5" y1="806.0" x2="269.5" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
 <text x="269.5" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 269.5 811.0)">E10</text>
-<line x1="280.5" y1="806.0" x2="280.5" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<line x1="280.5" y1="806.0" x2="280.5" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
 <text x="280.5" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 280.5 811.0)">E11</text>
-<line x1="295.4" y1="806.0" x2="295.4" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<line x1="295.4" y1="806.0" x2="295.4" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
 <text x="295.4" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 295.4 811.0)">E12</text>
-<line x1="314.1" y1="806.0" x2="314.1" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<line x1="314.1" y1="806.0" x2="314.1" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
 <text x="314.1" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 314.1 811.0)">E13</text>
-<line x1="331.7" y1="806.0" x2="331.7" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<line x1="331.7" y1="806.0" x2="331.7" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
 <text x="331.7" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 331.7 811.0)">E14</text>
-<line x1="346.9" y1="806.0" x2="346.9" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<line x1="346.9" y1="806.0" x2="346.9" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
 <text x="346.9" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 346.9 811.0)">E15</text>
-<line x1="363.5" y1="806.0" x2="363.5" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<line x1="363.5" y1="806.0" x2="363.5" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
 <text x="363.5" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 363.5 811.0)">E16</text>
-<line x1="384.6" y1="806.0" x2="384.6" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<line x1="384.6" y1="806.0" x2="384.6" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
 <text x="384.6" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 384.6 811.0)">E17</text>
-<line x1="396.0" y1="806.0" x2="396.0" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<line x1="396.0" y1="806.0" x2="396.0" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
 <text x="396.0" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 396.0 811.0)">E18</text>
-<line x1="413.6" y1="806.0" x2="413.6" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<line x1="413.6" y1="806.0" x2="413.6" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
 <text x="413.6" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 413.6 811.0)">E19</text>
-<line x1="425.7" y1="806.0" x2="425.7" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<line x1="425.7" y1="806.0" x2="425.7" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
 <text x="425.7" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 425.7 811.0)">E20</text>
-<line x1="447.2" y1="806.0" x2="447.2" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<line x1="447.2" y1="806.0" x2="447.2" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
 <text x="447.2" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 447.2 811.0)">E21</text>
-<line x1="457.9" y1="806.0" x2="457.9" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<line x1="457.9" y1="806.0" x2="457.9" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
 <text x="457.9" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 457.9 811.0)">E22</text>
-<line x1="465.1" y1="806.0" x2="465.1" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<line x1="465.1" y1="806.0" x2="465.1" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
 <text x="465.1" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 465.1 811.0)">E23</text>
-<line x1="480.3" y1="806.0" x2="480.3" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<line x1="480.3" y1="806.0" x2="480.3" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
 <text x="480.3" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 480.3 811.0)">E24</text>
-<line x1="491.4" y1="806.0" x2="491.4" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<line x1="491.4" y1="806.0" x2="491.4" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
 <text x="491.4" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 491.4 811.0)">E25</text>
-<line x1="502.1" y1="806.0" x2="502.1" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<line x1="502.1" y1="806.0" x2="502.1" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
 <text x="502.1" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 502.1 811.0)">E26</text>
-<line x1="513.9" y1="806.0" x2="513.9" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<line x1="513.9" y1="806.0" x2="513.9" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
 <text x="513.9" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 513.9 811.0)">E27</text>
-<line x1="529.4" y1="806.0" x2="529.4" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<line x1="529.4" y1="806.0" x2="529.4" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
 <text x="529.4" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 529.4 811.0)">E28</text>
-<line x1="540.1" y1="806.0" x2="540.1" y2="810.0" stroke="#777777" stroke-width="0.7"/>
+<line x1="540.1" y1="806.0" x2="540.1" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
 <text x="540.1" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 540.1 811.0)">E29</text>
 <rect x="60.0" y="819.0" width="12" height="10" fill="#2878b5"/>
 <text x="76.0" y="828.0" font-family="sans-serif" font-size="9">domain retained</text>
@@ -594,5 +594,6 @@
 <text x="419.0" y="828.0" font-family="sans-serif" font-size="9">target backbone (no domain)</text>
 <rect x="678.0" y="819.0" width="12" height="10" fill="#d62728"/>
 <text x="694.0" y="828.0" font-family="sans-serif" font-size="9">breakpoint</text>
-<text x="60" y="864.0" font-family="sans-serif" font-size="9" fill="#555">Showing the top 28 of 50 partner/breakpoint groups by recurrence; see results.tsv for the complete list.</text>
+<text x="60" y="864.0" font-family="sans-serif" font-size="9" fill="#555555">Partner-block colors are decorative; row labels identify partners.</text>
+<text x="60" y="880.0" font-family="sans-serif" font-size="9" fill="#555555">Showing the top 28 of 50 partner/breakpoint groups by recurrence; see results.tsv for the complete list.</text>
 </svg>

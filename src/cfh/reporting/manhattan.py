@@ -61,6 +61,13 @@ from __future__ import annotations
 
 import math
 
+from cfh.reporting.palette import (
+    AXIS_COLOR,
+    BREAKPOINT_COLOR,
+    GRID_COLOR,
+    MUTED_TEXT_COLOR,
+    RETAINED_COLOR,
+)
 from cfh.reporting.svg_utils import escape_xml_text
 
 _WIDTH = 960
@@ -70,8 +77,8 @@ _MARGIN_RIGHT = 30
 _MARGIN_TOP = 50
 _MARGIN_BOTTOM = 70
 
-_SIGNIFICANT_COLOR = "#d62728"
-_NOT_SIGNIFICANT_COLOR = "#2878b5"
+_SIGNIFICANT_COLOR = BREAKPOINT_COLOR
+_NOT_SIGNIFICANT_COLOR = RETAINED_COLOR
 _LABEL_Y_OFFSETS = (-10, -22, -34)
 
 DEFAULT_MAX_LABELS = 15
@@ -169,9 +176,9 @@ def render_manhattan_svg(
         "Genome-wide fusion-hotspot summary: FDR significance vs. composite evidence rank"
         "</text>",
         f'<line x1="{plot_left}" y1="{plot_top}" x2="{plot_left}" y2="{plot_bottom}" '
-        'stroke="#444" stroke-width="1.5"/>',
+        f'stroke="{AXIS_COLOR}" stroke-width="1.5"/>',
         f'<line x1="{plot_left}" y1="{plot_bottom}" x2="{plot_right}" y2="{plot_bottom}" '
-        'stroke="#444" stroke-width="1.5"/>',
+        f'stroke="{AXIS_COLOR}" stroke-width="1.5"/>',
         f'<text x="{(plot_left + plot_right) / 2:.1f}" y="{_HEIGHT - 18}" '
         'font-family="sans-serif" font-size="12" text-anchor="middle">'
         "Genes ranked by composite evidence score (highest first)</text>",
@@ -184,19 +191,20 @@ def render_manhattan_svg(
     if not points:
         elements.append(
             f'<text x="{(plot_left + plot_right) / 2:.1f}" y="{(plot_top + plot_bottom) / 2:.1f}" '
-            'font-family="sans-serif" font-size="13" text-anchor="middle" fill="#888">'
+            f'font-family="sans-serif" font-size="13" text-anchor="middle" fill="{GRID_COLOR}">'
             "No scanned gene produced an FDR-adjusted q-value in this run.</text>"
         )
 
     threshold_y = y_for_value(threshold_neg_log_q)
     elements.append(
         f'<line id="fdr-threshold-line" x1="{plot_left}" y1="{threshold_y:.2f}" '
-        f'x2="{plot_right}" y2="{threshold_y:.2f}" stroke="#888" stroke-width="1.2" '
+        f'x2="{plot_right}" y2="{threshold_y:.2f}" stroke="{GRID_COLOR}" stroke-width="1.2" '
         'stroke-dasharray="6,4"/>'
     )
     elements.append(
         f'<text x="{plot_right}" y="{threshold_y - 5:.1f}" font-family="sans-serif" '
-        f'font-size="11" text-anchor="end" fill="#666">q = {significance_level:g} threshold</text>'
+        f'font-size="11" text-anchor="end" fill="{MUTED_TEXT_COLOR}">'
+        f"q = {significance_level:g} threshold</text>"
     )
 
     for index, point in enumerate(points):
