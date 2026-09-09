@@ -5,6 +5,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import MagicMock
 
+import pandas as pd
 import pytest
 import requests
 from click.testing import CliRunner
@@ -413,6 +414,14 @@ def test_cbioportal_network_failure_is_wrapped_with_actionable_context(monkeypat
         raise requests.Timeout("timed out")
 
     monkeypatch.setattr(cbioportal_api, "fetch_structural_variants", fail_fetch)
+    # BRAF's real config opts into mutual_exclusivity_targets (see
+    # genes/configs/braf.yaml), so run_real_benchmark also live-fetches that
+    # comparator's cohort sample list before the structural-variant fetch
+    # under test below -- mock it out so this stays a real-network-free test.
+    monkeypatch.setattr(
+        cbioportal_api, "fetch_sample_list_ids", MagicMock(return_value=["SAMPLE-1"])
+    )
+    monkeypatch.setattr(cbioportal_api, "fetch_mutations", MagicMock(return_value=[]))
 
     with pytest.raises(RealBenchmarkNetworkError) as caught:
         run_real_benchmark("BRAF", "some-study")
@@ -584,15 +593,33 @@ def test_run_analysis_requests_every_registered_algorithm(monkeypatch):
 
 
 def test_tcga_study_config_selects_profile_and_grch38_genome_nexus(monkeypatch):
+    """BRAF's real curated config now opts into ``mutual_exclusivity_targets``
+    (see genes/configs/braf.yaml), so ``run_real_benchmark`` also live-fetches
+    that comparator's data for ANY study, not just msk_impact_50k_2026 --
+    the cohort-sample-list/mutation fetches used for that must be mocked
+    here too, or this test would otherwise attempt a real network call.
+    """
     fetched_calls = [{"sampleId": "TCGA-SAMPLE"}]
     monkeypatch.setattr(
         cbioportal_api,
         "fetch_structural_variants",
         MagicMock(return_value=fetched_calls),
     )
+    clinical = pd.DataFrame()
+    monkeypatch.setattr(
+        cbioportal_api, "fetch_sample_tumor_types", MagicMock(return_value=clinical)
+    )
+    monkeypatch.setattr(
+        cbioportal_api,
+        "fetch_sample_list_ids",
+        MagicMock(return_value=["TCGA-SAMPLE", "TCGA-OTHER"]),
+    )
+    monkeypatch.setattr(cbioportal_api, "fetch_mutations", MagicMock(return_value=[]))
+    fetch_molecular_data_mock = MagicMock(return_value=[])
+    monkeypatch.setattr(cbioportal_api, "fetch_molecular_data", fetch_molecular_data_mock)
     client = MagicMock(spec=GenomeNexusClient)
     client_factory = MagicMock(return_value=client)
-    analyze_mock = MagicMock(return_value=object())
+    analyze_mock = MagicMock(return_value=SimpleNamespace(endpoints=[], warnings=[]))
     monkeypatch.setattr(benchmark_module, "GenomeNexusClient", client_factory)
     monkeypatch.setattr(benchmark_module, "analyze_structural_variant_calls", analyze_mock)
 
@@ -602,15 +629,41 @@ def test_tcga_study_config_selects_profile_and_grch38_genome_nexus(monkeypatch):
     profile_id = "thca_tcga_pan_can_atlas_2018_structural_variants"
     cbioportal_api.fetch_structural_variants.assert_called_once_with([673], [profile_id])
     client_factory.assert_called_once_with(base_url="https://grch38.genomenexus.org")
+    cbioportal_api.fetch_sample_list_ids.assert_called_once_with("thca_tcga_pan_can_atlas_2018_all")
+    cbioportal_api.fetch_mutations.assert_called_once_with(
+        [673], ["thca_tcga_pan_can_atlas_2018_mutations"]
+    )
+    # The expression-association fetch queries the study's configured mRNA
+    # z-score profile (distinct from the structural-variant profile above).
+    fetch_molecular_data_mock.assert_called_once_with(
+        [673],
+        "thca_tcga_pan_can_atlas_2018_rna_seq_v2_mrna_median_Zscores",
+        sample_list_id="thca_tcga_pan_can_atlas_2018_all",
+    )
     analyze_mock.assert_called_once_with(
         fetched_calls,
         "BRAF",
         "thca_tcga_pan_can_atlas_2018",
         molecular_profile_id=profile_id,
+        clinical_df=clinical,
         genome_nexus_client=client,
         n_permutations=7,
         algorithm_names=None,
+        algorithm_params={
+            "mutation_cooccurrence": {
+                "cohort_sample_ids": ["TCGA-SAMPLE", "TCGA-OTHER"],
+                "comparator_alterations": [],
+            }
+        },
+        extra_warnings=[],
     )
+    # No expression records were returned, so a warning was appended rather
+    # than the run failing -- expression evidence is optional, corroborating.
+    assert result.warnings == [
+        "No mRNA-expression records were returned for BRAF from "
+        "thca_tcga_pan_can_atlas_2018_rna_seq_v2_mrna_median_Zscores; "
+        "expression_association analysis was skipped."
+    ]
 
 
 def test_real_benchmark_click_command_explains_unknown_gene_without_traceback():
@@ -620,3 +673,52 @@ def test_real_benchmark_click_command_explains_unknown_gene_without_traceback():
     assert "Error: Unknown gene 'SOMEGENE'" in result.output
     assert "cfh list-genes" in result.output
     assert "Traceback" not in result.output
+
+
+@pytest.mark.parametrize("clinical_value", ["Glioma", None, float("nan")])
+def test_serialized_clinical_annotations_preserve_statistics(
+    tmp_path, genome_nexus_canonical_transcript_fixture_path, clinical_value
+):
+    client = _genome_nexus_client(genome_nexus_canonical_transcript_fixture_path)
+    calls = [_call("SAMPLE-1"), _call("MISSING")]
+    baseline = analyze_structural_variant_calls(
+        calls, "BRAF", "study", genome_nexus_client=client, n_permutations=5
+    )
+    enriched = analyze_structural_variant_calls(
+        calls,
+        "BRAF",
+        "study",
+        genome_nexus_client=client,
+        n_permutations=5,
+        clinical_df=pd.DataFrame(
+            [
+                {
+                    "Sample_id": "SAMPLE-1",
+                    "Tumor_type": clinical_value,
+                    "Oncotree_code": "PA",
+                    "Patient_id": "MUST-NOT-CHANGE-GROUPING",
+                }
+            ]
+        ),
+    )
+    before = json.loads(
+        write_outputs(baseline, tmp_path, run_id="before", pdf=False)["json"].read_text()
+    )
+    after = json.loads(
+        write_outputs(enriched, tmp_path, run_id="after", pdf=False)["json"].read_text()
+    )
+    assert after["events"][0]["tumor_type"] == ("Glioma" if clinical_value == "Glioma" else "")
+    assert after["events"][0]["oncotree_code"] == "PA"
+    assert after["events"][1]["tumor_type"] is None
+    assert after["events"][1]["oncotree_code"] is None
+    assert enriched.events[0].Tumor_type == after["events"][0]["tumor_type"]
+    for payload in (before, after):
+        payload.pop("retrieved_at")
+        for result in payload["algorithm_results"]:
+            result.pop("Created_at")
+            result.pop("Input_fingerprint")  # includes the newly populated annotations
+            result["Summary"].pop("Runtime_seconds", None)
+        for row in payload["events"]:
+            row.pop("tumor_type")
+            row.pop("oncotree_code")
+    assert json.dumps(before).encode() == json.dumps(after).encode()

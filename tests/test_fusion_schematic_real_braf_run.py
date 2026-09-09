@@ -199,3 +199,23 @@ def test_report_pdf_embeds_both_schematics(run_dir):
     text = "".join(page.extract_text() or "" for page in reader.pages)
     assert "fusion schematic" in text.lower()
     assert "intragenic deletion" in text.lower()
+
+
+@pytest.mark.parametrize("gene", ["braf", "ret"])
+def test_real_standalone_clinical_annotations_reach_existing_schematic_lookup(gene):
+    from cfh.reporting.fusion_schematic import _fusion_groups
+
+    payload = _payload_for(latest_run_dir(f"{gene}_msk-impact-50k-2026"))
+    assert all("tumor_type" in row and "oncotree_code" in row for row in payload["events"])
+    assert any(row["tumor_type"] and row["oncotree_code"] for row in payload["events"])
+    groups = _fusion_groups(payload)
+    assert any(group["tumor_types"] for group in groups)
+    for group in groups:
+        assert group["tumor_types"] == [
+            row["tumor_type"]
+            for row in payload["events"]
+            if row["partner_gene"] == group["partner_gene"]
+            and row["breakpoint_protein_position"] == group["breakpoint_aa"]
+            and row["target_role"] == group["role"]
+            and row["tumor_type"]
+        ]

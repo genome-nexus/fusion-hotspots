@@ -1,0 +1,300 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="484" viewBox="0 0 1000 484">
+<rect width="1000" height="484" fill="white"/>
+<text x="60" y="24" font-family="sans-serif" font-size="15">RET fusion-transcript schematic</text>
+<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555555">Fusion order varies by row; follow each row's 5' and 3' labels (RET portion is domain-colored, exon ticks). Partner-gene blocks share one color; row labels identify each partner.</text>
+<rect x="60.0" y="56.0" width="358.4" height="22" fill="#8064a2"><title>Partner gene CCDC6; RET–CCDC6 fusion, breakpoint RET aa 713; samples TCGA-BJ-A0ZJ-01, TCGA-EM-A3AN-01, TCGA-FK-A4UB-01, TCGA-BJ-A28Z-01, TCGA-FK-A3SE-01 (+15 more)</title></rect>
+<rect x="418.4" y="56.0" width="201.6" height="22" fill="#e2e2e2"><title>RET backbone (713-1114 aa, no domain); domain status retained; RET–CCDC6 fusion, breakpoint RET aa 713; samples TCGA-BJ-A0ZJ-01, TCGA-EM-A3AN-01, TCGA-FK-A4UB-01, TCGA-BJ-A28Z-01, TCGA-FK-A3SE-01 (+15 more)</title></rect>
+<rect x="424.5" y="56.0" width="140.8" height="22" fill="#2878b5"><title>Protein kinase domain retained (725-1005 aa); RET–CCDC6 fusion, breakpoint RET aa 713; samples TCGA-BJ-A0ZJ-01, TCGA-EM-A3AN-01, TCGA-FK-A4UB-01, TCGA-BJ-A28Z-01, TCGA-FK-A3SE-01 (+15 more)</title></rect>
+<text x="494.8" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="443.1" y1="56.0" x2="443.1" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="461.1" y1="56.0" x2="461.1" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="497.3" y1="56.0" x2="497.3" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="518.0" y1="56.0" x2="518.0" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="529.5" y1="56.0" x2="529.5" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="552.6" y1="56.0" x2="552.6" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="569.7" y1="56.0" x2="569.7" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="594.4" y1="56.0" x2="594.4" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="418.4" y1="55.0" x2="418.4" y2="79.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; RET–CCDC6 fusion, breakpoint RET aa 713; samples TCGA-BJ-A0ZJ-01, TCGA-EM-A3AN-01, TCGA-FK-A4UB-01, TCGA-BJ-A28Z-01, TCGA-FK-A3SE-01 (+15 more)</title></line>
+<text x="64.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="70.5" font-family="sans-serif" font-size="9.5">CCDC6 (x20) – Protein kinase domain retained – Thyroid Cancer</text>
+<rect x="60.0" y="82.0" width="358.4" height="22" fill="#8064a2"><title>Partner gene NCOA4; RET–NCOA4 fusion, breakpoint RET aa 713; samples TCGA-EM-A2CU-01, TCGA-DE-A3KN-01, TCGA-CE-A482-01, TCGA-EL-A3H3-01</title></rect>
+<rect x="418.4" y="82.0" width="201.6" height="22" fill="#e2e2e2"><title>RET backbone (713-1114 aa, no domain); domain status retained; RET–NCOA4 fusion, breakpoint RET aa 713; samples TCGA-EM-A2CU-01, TCGA-DE-A3KN-01, TCGA-CE-A482-01, TCGA-EL-A3H3-01</title></rect>
+<rect x="424.5" y="82.0" width="140.8" height="22" fill="#2878b5"><title>Protein kinase domain retained (725-1005 aa); RET–NCOA4 fusion, breakpoint RET aa 713; samples TCGA-EM-A2CU-01, TCGA-DE-A3KN-01, TCGA-CE-A482-01, TCGA-EL-A3H3-01</title></rect>
+<text x="494.8" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="443.1" y1="82.0" x2="443.1" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="461.1" y1="82.0" x2="461.1" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="497.3" y1="82.0" x2="497.3" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="518.0" y1="82.0" x2="518.0" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="529.5" y1="82.0" x2="529.5" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="552.6" y1="82.0" x2="552.6" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="569.7" y1="82.0" x2="569.7" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="594.4" y1="82.0" x2="594.4" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="418.4" y1="81.0" x2="418.4" y2="105.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; RET–NCOA4 fusion, breakpoint RET aa 713; samples TCGA-EM-A2CU-01, TCGA-DE-A3KN-01, TCGA-CE-A482-01, TCGA-EL-A3H3-01</title></line>
+<text x="64.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="96.5" font-family="sans-serif" font-size="9.5">NCOA4 (x4) – Protein kinase domain retained – Thyroid Cancer</text>
+<rect x="60.0" y="108.0" width="358.4" height="22" fill="#8064a2"><title>Partner gene ERC1; RET–ERC1 fusion, breakpoint RET aa 713; samples TCGA-EL-A3T9-01, TCGA-EM-A3FQ-01</title></rect>
+<rect x="418.4" y="108.0" width="201.6" height="22" fill="#e2e2e2"><title>RET backbone (713-1114 aa, no domain); domain status retained; RET–ERC1 fusion, breakpoint RET aa 713; samples TCGA-EL-A3T9-01, TCGA-EM-A3FQ-01</title></rect>
+<rect x="424.5" y="108.0" width="140.8" height="22" fill="#2878b5"><title>Protein kinase domain retained (725-1005 aa); RET–ERC1 fusion, breakpoint RET aa 713; samples TCGA-EL-A3T9-01, TCGA-EM-A3FQ-01</title></rect>
+<text x="494.8" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="443.1" y1="108.0" x2="443.1" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="461.1" y1="108.0" x2="461.1" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="497.3" y1="108.0" x2="497.3" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="518.0" y1="108.0" x2="518.0" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="529.5" y1="108.0" x2="529.5" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="552.6" y1="108.0" x2="552.6" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="569.7" y1="108.0" x2="569.7" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="594.4" y1="108.0" x2="594.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="418.4" y1="107.0" x2="418.4" y2="131.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; RET–ERC1 fusion, breakpoint RET aa 713; samples TCGA-EL-A3T9-01, TCGA-EM-A3FQ-01</title></line>
+<text x="64.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="122.5" font-family="sans-serif" font-size="9.5">ERC1 (x2) – Protein kinase domain retained – Thyroid Cancer</text>
+<rect x="375.2" y="134.0" width="244.8" height="22" fill="#8064a2"><title>Partner gene MRLN; RET–MRLN fusion, breakpoint RET aa 627; sample TCGA-CE-A13K-01</title></rect>
+<rect x="60.0" y="134.0" width="315.2" height="22" fill="#e2e2e2"><title>RET backbone (0-627 aa, no domain); domain status lost; RET–MRLN fusion, breakpoint RET aa 627; sample TCGA-CE-A13K-01</title></rect>
+<rect x="320.4" y="134.0" width="51.3" height="22" fill="#2878b5"><title>PF22540 retained (518-620 aa); RET–MRLN fusion, breakpoint RET aa 627; sample TCGA-CE-A13K-01</title></rect>
+<text x="346.0" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF22540</text>
+<rect x="263.6" y="134.0" width="50.8" height="22" fill="#2878b5"><title>PF17813 retained (405-506 aa); RET–MRLN fusion, breakpoint RET aa 627; sample TCGA-CE-A13K-01</title></rect>
+<text x="289.0" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF17813</text>
+<rect x="193.2" y="134.0" width="57.3" height="22" fill="#2878b5"><title>PF17812 retained (265-379 aa); RET–MRLN fusion, breakpoint RET aa 627; sample TCGA-CE-A13K-01</title></rect>
+<text x="221.9" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF17812</text>
+<rect x="147.0" y="134.0" width="43.7" height="22" fill="#2878b5"><title>Cadherin domain retained (173-260 aa); RET–MRLN fusion, breakpoint RET aa 627; sample TCGA-CE-A13K-01</title></rect>
+<text x="168.8" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Cadherin…</text>
+<rect x="74.6" y="134.0" width="62.3" height="22" fill="#2878b5"><title>PF17756 retained (29-153 aa); RET–MRLN fusion, breakpoint RET aa 627; sample TCGA-CE-A13K-01</title></rect>
+<text x="105.7" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF17756</text>
+<line x1="60.5" y1="134.0" x2="60.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="72.6" y1="134.0" x2="72.6" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="116.8" y1="134.0" x2="116.8" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="165.1" y1="134.0" x2="165.1" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="205.8" y1="134.0" x2="205.8" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="238.5" y1="134.0" x2="238.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="272.1" y1="134.0" x2="272.1" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="315.4" y1="134.0" x2="315.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="336.5" y1="134.0" x2="336.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="355.1" y1="134.0" x2="355.1" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="375.2" y1="133.0" x2="375.2" y2="157.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; RET–MRLN fusion, breakpoint RET aa 627; sample TCGA-CE-A13K-01</title></line>
+<text x="64.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="148.5" font-family="sans-serif" font-size="9.5">MRLN – Protein kinase domain lost – Thyroid Cancer</text>
+<rect x="60.0" y="160.0" width="333.3" height="22" fill="#8064a2"><title>Partner gene CCDC6; RET–CCDC6 fusion, breakpoint RET aa 663; sample TCGA-EL-A3ZP-01</title></rect>
+<rect x="393.3" y="160.0" width="226.7" height="22" fill="#e2e2e2"><title>RET backbone (663-1114 aa, no domain); domain status retained; RET–CCDC6 fusion, breakpoint RET aa 663; sample TCGA-EL-A3ZP-01</title></rect>
+<rect x="424.5" y="160.0" width="140.8" height="22" fill="#2878b5"><title>Protein kinase domain retained (725-1005 aa); RET–CCDC6 fusion, breakpoint RET aa 663; sample TCGA-EL-A3ZP-01</title></rect>
+<text x="494.8" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="418.4" y1="160.0" x2="418.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="443.1" y1="160.0" x2="443.1" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="461.1" y1="160.0" x2="461.1" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="497.3" y1="160.0" x2="497.3" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="518.0" y1="160.0" x2="518.0" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="529.5" y1="160.0" x2="529.5" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="552.6" y1="160.0" x2="552.6" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="569.7" y1="160.0" x2="569.7" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="594.4" y1="160.0" x2="594.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="393.3" y1="159.0" x2="393.3" y2="183.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; RET–CCDC6 fusion, breakpoint RET aa 663; sample TCGA-EL-A3ZP-01</title></line>
+<text x="64.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="174.5" font-family="sans-serif" font-size="9.5">CCDC6 – Protein kinase domain retained – Thyroid Cancer</text>
+<rect x="417.9" y="186.0" width="202.1" height="22" fill="#8064a2"><title>Partner gene CCDC6; RET–CCDC6 fusion, breakpoint RET aa 712; sample TCGA-DJ-A4V5-01</title></rect>
+<rect x="60.0" y="186.0" width="357.9" height="22" fill="#e2e2e2"><title>RET backbone (0-712 aa, no domain); domain status lost; RET–CCDC6 fusion, breakpoint RET aa 712; sample TCGA-DJ-A4V5-01</title></rect>
+<rect x="320.4" y="186.0" width="51.3" height="22" fill="#2878b5"><title>PF22540 retained (518-620 aa); RET–CCDC6 fusion, breakpoint RET aa 712; sample TCGA-DJ-A4V5-01</title></rect>
+<text x="346.0" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF22540</text>
+<rect x="263.6" y="186.0" width="50.8" height="22" fill="#2878b5"><title>PF17813 retained (405-506 aa); RET–CCDC6 fusion, breakpoint RET aa 712; sample TCGA-DJ-A4V5-01</title></rect>
+<text x="289.0" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF17813</text>
+<rect x="193.2" y="186.0" width="57.3" height="22" fill="#2878b5"><title>PF17812 retained (265-379 aa); RET–CCDC6 fusion, breakpoint RET aa 712; sample TCGA-DJ-A4V5-01</title></rect>
+<text x="221.9" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF17812</text>
+<rect x="147.0" y="186.0" width="43.7" height="22" fill="#2878b5"><title>Cadherin domain retained (173-260 aa); RET–CCDC6 fusion, breakpoint RET aa 712; sample TCGA-DJ-A4V5-01</title></rect>
+<text x="168.8" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Cadherin…</text>
+<rect x="74.6" y="186.0" width="62.3" height="22" fill="#2878b5"><title>PF17756 retained (29-153 aa); RET–CCDC6 fusion, breakpoint RET aa 712; sample TCGA-DJ-A4V5-01</title></rect>
+<text x="105.7" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF17756</text>
+<line x1="60.5" y1="186.0" x2="60.5" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="72.6" y1="186.0" x2="72.6" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="116.8" y1="186.0" x2="116.8" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="165.1" y1="186.0" x2="165.1" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="205.8" y1="186.0" x2="205.8" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="238.5" y1="186.0" x2="238.5" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="272.1" y1="186.0" x2="272.1" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="315.4" y1="186.0" x2="315.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="336.5" y1="186.0" x2="336.5" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="355.1" y1="186.0" x2="355.1" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="375.2" y1="186.0" x2="375.2" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="417.9" y1="185.0" x2="417.9" y2="209.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; RET–CCDC6 fusion, breakpoint RET aa 712; sample TCGA-DJ-A4V5-01</title></line>
+<text x="64.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="200.5" font-family="sans-serif" font-size="9.5">CCDC6 – Protein kinase domain lost – Thyroid Cancer</text>
+<rect x="417.9" y="212.0" width="202.1" height="22" fill="#8064a2"><title>Partner gene NCOA4; RET–NCOA4 fusion, breakpoint RET aa 712; sample TCGA-CE-A482-01</title></rect>
+<rect x="60.0" y="212.0" width="357.9" height="22" fill="#e2e2e2"><title>RET backbone (0-712 aa, no domain); domain status lost; RET–NCOA4 fusion, breakpoint RET aa 712; sample TCGA-CE-A482-01</title></rect>
+<rect x="320.4" y="212.0" width="51.3" height="22" fill="#2878b5"><title>PF22540 retained (518-620 aa); RET–NCOA4 fusion, breakpoint RET aa 712; sample TCGA-CE-A482-01</title></rect>
+<text x="346.0" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF22540</text>
+<rect x="263.6" y="212.0" width="50.8" height="22" fill="#2878b5"><title>PF17813 retained (405-506 aa); RET–NCOA4 fusion, breakpoint RET aa 712; sample TCGA-CE-A482-01</title></rect>
+<text x="289.0" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF17813</text>
+<rect x="193.2" y="212.0" width="57.3" height="22" fill="#2878b5"><title>PF17812 retained (265-379 aa); RET–NCOA4 fusion, breakpoint RET aa 712; sample TCGA-CE-A482-01</title></rect>
+<text x="221.9" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF17812</text>
+<rect x="147.0" y="212.0" width="43.7" height="22" fill="#2878b5"><title>Cadherin domain retained (173-260 aa); RET–NCOA4 fusion, breakpoint RET aa 712; sample TCGA-CE-A482-01</title></rect>
+<text x="168.8" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Cadherin…</text>
+<rect x="74.6" y="212.0" width="62.3" height="22" fill="#2878b5"><title>PF17756 retained (29-153 aa); RET–NCOA4 fusion, breakpoint RET aa 712; sample TCGA-CE-A482-01</title></rect>
+<text x="105.7" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF17756</text>
+<line x1="60.5" y1="212.0" x2="60.5" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="72.6" y1="212.0" x2="72.6" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="116.8" y1="212.0" x2="116.8" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="165.1" y1="212.0" x2="165.1" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="205.8" y1="212.0" x2="205.8" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="238.5" y1="212.0" x2="238.5" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="272.1" y1="212.0" x2="272.1" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="315.4" y1="212.0" x2="315.4" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="336.5" y1="212.0" x2="336.5" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="355.1" y1="212.0" x2="355.1" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="375.2" y1="212.0" x2="375.2" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="417.9" y1="211.0" x2="417.9" y2="235.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; RET–NCOA4 fusion, breakpoint RET aa 712; sample TCGA-CE-A482-01</title></line>
+<text x="64.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="226.5" font-family="sans-serif" font-size="9.5">NCOA4 – Protein kinase domain lost – Thyroid Cancer</text>
+<rect x="60.0" y="238.0" width="358.4" height="22" fill="#8064a2"><title>Partner gene AKAP13; RET–AKAP13 fusion, breakpoint RET aa 713; sample TCGA-FK-A3SG-01</title></rect>
+<rect x="418.4" y="238.0" width="201.6" height="22" fill="#e2e2e2"><title>RET backbone (713-1114 aa, no domain); domain status retained; RET–AKAP13 fusion, breakpoint RET aa 713; sample TCGA-FK-A3SG-01</title></rect>
+<rect x="424.5" y="238.0" width="140.8" height="22" fill="#2878b5"><title>Protein kinase domain retained (725-1005 aa); RET–AKAP13 fusion, breakpoint RET aa 713; sample TCGA-FK-A3SG-01</title></rect>
+<text x="494.8" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="443.1" y1="238.0" x2="443.1" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="461.1" y1="238.0" x2="461.1" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="497.3" y1="238.0" x2="497.3" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="518.0" y1="238.0" x2="518.0" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="529.5" y1="238.0" x2="529.5" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="552.6" y1="238.0" x2="552.6" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="569.7" y1="238.0" x2="569.7" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="594.4" y1="238.0" x2="594.4" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="418.4" y1="237.0" x2="418.4" y2="261.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; RET–AKAP13 fusion, breakpoint RET aa 713; sample TCGA-FK-A3SG-01</title></line>
+<text x="64.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="252.5" font-family="sans-serif" font-size="9.5">AKAP13 – Protein kinase domain retained – Thyroid Cancer</text>
+<rect x="60.0" y="264.0" width="358.4" height="22" fill="#8064a2"><title>Partner gene DLG5; RET–DLG5 fusion, breakpoint RET aa 713; sample TCGA-DE-A69K-01</title></rect>
+<rect x="418.4" y="264.0" width="201.6" height="22" fill="#e2e2e2"><title>RET backbone (713-1114 aa, no domain); domain status retained; RET–DLG5 fusion, breakpoint RET aa 713; sample TCGA-DE-A69K-01</title></rect>
+<rect x="424.5" y="264.0" width="140.8" height="22" fill="#2878b5"><title>Protein kinase domain retained (725-1005 aa); RET–DLG5 fusion, breakpoint RET aa 713; sample TCGA-DE-A69K-01</title></rect>
+<text x="494.8" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="443.1" y1="264.0" x2="443.1" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="461.1" y1="264.0" x2="461.1" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="497.3" y1="264.0" x2="497.3" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="518.0" y1="264.0" x2="518.0" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="529.5" y1="264.0" x2="529.5" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="552.6" y1="264.0" x2="552.6" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="569.7" y1="264.0" x2="569.7" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="594.4" y1="264.0" x2="594.4" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="418.4" y1="263.0" x2="418.4" y2="287.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; RET–DLG5 fusion, breakpoint RET aa 713; sample TCGA-DE-A69K-01</title></line>
+<text x="64.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="278.5" font-family="sans-serif" font-size="9.5">DLG5 – Protein kinase domain retained – Thyroid Cancer</text>
+<rect x="60.0" y="290.0" width="358.4" height="22" fill="#8064a2"><title>Partner gene FKBP15; RET–FKBP15 fusion, breakpoint RET aa 713; sample TCGA-ET-A3DQ-01</title></rect>
+<rect x="418.4" y="290.0" width="201.6" height="22" fill="#e2e2e2"><title>RET backbone (713-1114 aa, no domain); domain status retained; RET–FKBP15 fusion, breakpoint RET aa 713; sample TCGA-ET-A3DQ-01</title></rect>
+<rect x="424.5" y="290.0" width="140.8" height="22" fill="#2878b5"><title>Protein kinase domain retained (725-1005 aa); RET–FKBP15 fusion, breakpoint RET aa 713; sample TCGA-ET-A3DQ-01</title></rect>
+<text x="494.8" y="304.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="443.1" y1="290.0" x2="443.1" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="461.1" y1="290.0" x2="461.1" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="497.3" y1="290.0" x2="497.3" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="518.0" y1="290.0" x2="518.0" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="529.5" y1="290.0" x2="529.5" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="552.6" y1="290.0" x2="552.6" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="569.7" y1="290.0" x2="569.7" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="594.4" y1="290.0" x2="594.4" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="418.4" y1="289.0" x2="418.4" y2="313.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; RET–FKBP15 fusion, breakpoint RET aa 713; sample TCGA-ET-A3DQ-01</title></line>
+<text x="64.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="304.5" font-family="sans-serif" font-size="9.5">FKBP15 – Protein kinase domain retained – Thyroid Cancer</text>
+<rect x="60.0" y="316.0" width="358.4" height="22" fill="#8064a2"><title>Partner gene SPECC1L; RET–SPECC1L fusion, breakpoint RET aa 713; sample TCGA-CE-A485-01</title></rect>
+<rect x="418.4" y="316.0" width="201.6" height="22" fill="#e2e2e2"><title>RET backbone (713-1114 aa, no domain); domain status retained; RET–SPECC1L fusion, breakpoint RET aa 713; sample TCGA-CE-A485-01</title></rect>
+<rect x="424.5" y="316.0" width="140.8" height="22" fill="#2878b5"><title>Protein kinase domain retained (725-1005 aa); RET–SPECC1L fusion, breakpoint RET aa 713; sample TCGA-CE-A485-01</title></rect>
+<text x="494.8" y="330.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="443.1" y1="316.0" x2="443.1" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="461.1" y1="316.0" x2="461.1" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="497.3" y1="316.0" x2="497.3" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="518.0" y1="316.0" x2="518.0" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="529.5" y1="316.0" x2="529.5" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="552.6" y1="316.0" x2="552.6" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="569.7" y1="316.0" x2="569.7" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="594.4" y1="316.0" x2="594.4" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="418.4" y1="315.0" x2="418.4" y2="339.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; RET–SPECC1L fusion, breakpoint RET aa 713; sample TCGA-CE-A485-01</title></line>
+<text x="64.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="330.5" font-family="sans-serif" font-size="9.5">SPECC1L – Protein kinase domain retained – Thyroid Cancer</text>
+<rect x="60.0" y="342.0" width="358.4" height="22" fill="#8064a2"><title>Partner gene TBL1XR1; RET–TBL1XR1 fusion, breakpoint RET aa 713; sample TCGA-ET-A40R-01</title></rect>
+<rect x="418.4" y="342.0" width="201.6" height="22" fill="#e2e2e2"><title>RET backbone (713-1114 aa, no domain); domain status retained; RET–TBL1XR1 fusion, breakpoint RET aa 713; sample TCGA-ET-A40R-01</title></rect>
+<rect x="424.5" y="342.0" width="140.8" height="22" fill="#2878b5"><title>Protein kinase domain retained (725-1005 aa); RET–TBL1XR1 fusion, breakpoint RET aa 713; sample TCGA-ET-A40R-01</title></rect>
+<text x="494.8" y="356.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="443.1" y1="342.0" x2="443.1" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="461.1" y1="342.0" x2="461.1" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="497.3" y1="342.0" x2="497.3" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="518.0" y1="342.0" x2="518.0" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="529.5" y1="342.0" x2="529.5" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="552.6" y1="342.0" x2="552.6" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="569.7" y1="342.0" x2="569.7" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="594.4" y1="342.0" x2="594.4" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="418.4" y1="341.0" x2="418.4" y2="365.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; RET–TBL1XR1 fusion, breakpoint RET aa 713; sample TCGA-ET-A40R-01</title></line>
+<text x="64.0" y="356.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="356.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="356.5" font-family="sans-serif" font-size="9.5">TBL1XR1 – Protein kinase domain retained – Thyroid Cancer</text>
+<rect x="60.0" y="368.0" width="358.4" height="22" fill="#8064a2"><title>Partner gene TRIM27; RET–TRIM27 fusion, breakpoint RET aa 713; sample TCGA-CE-A481-01</title></rect>
+<rect x="418.4" y="368.0" width="201.6" height="22" fill="#e2e2e2"><title>RET backbone (713-1114 aa, no domain); domain status retained; RET–TRIM27 fusion, breakpoint RET aa 713; sample TCGA-CE-A481-01</title></rect>
+<rect x="424.5" y="368.0" width="140.8" height="22" fill="#2878b5"><title>Protein kinase domain retained (725-1005 aa); RET–TRIM27 fusion, breakpoint RET aa 713; sample TCGA-CE-A481-01</title></rect>
+<text x="494.8" y="382.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="443.1" y1="368.0" x2="443.1" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="461.1" y1="368.0" x2="461.1" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="497.3" y1="368.0" x2="497.3" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="518.0" y1="368.0" x2="518.0" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="529.5" y1="368.0" x2="529.5" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="552.6" y1="368.0" x2="552.6" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="569.7" y1="368.0" x2="569.7" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="594.4" y1="368.0" x2="594.4" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="418.4" y1="367.0" x2="418.4" y2="391.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; RET–TRIM27 fusion, breakpoint RET aa 713; sample TCGA-CE-A481-01</title></line>
+<text x="64.0" y="382.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="382.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="382.5" font-family="sans-serif" font-size="9.5">TRIM27 – Protein kinase domain retained – Thyroid Cancer</text>
+<line x1="60.0" y1="398.0" x2="620.0" y2="398.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="393.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="620.0" y="393.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
+<text x="60.0" y="412.0" font-family="sans-serif" font-size="9">1</text>
+<text x="620.0" y="412.0" font-family="sans-serif" font-size="9" text-anchor="end">1114 aa</text>
+<line x1="60.5" y1="416.0" x2="60.5" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="60.5" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 60.5 421.0)">E1</text>
+<line x1="72.6" y1="416.0" x2="72.6" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="72.6" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 72.6 421.0)">E2</text>
+<line x1="116.8" y1="416.0" x2="116.8" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="116.8" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 116.8 421.0)">E3</text>
+<line x1="165.1" y1="416.0" x2="165.1" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="165.1" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 165.1 421.0)">E4</text>
+<line x1="205.8" y1="416.0" x2="205.8" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="205.8" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 205.8 421.0)">E5</text>
+<line x1="238.5" y1="416.0" x2="238.5" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="238.5" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 238.5 421.0)">E6</text>
+<line x1="272.1" y1="416.0" x2="272.1" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="272.1" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 272.1 421.0)">E7</text>
+<line x1="315.4" y1="416.0" x2="315.4" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="315.4" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 315.4 421.0)">E8</text>
+<line x1="336.5" y1="416.0" x2="336.5" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="336.5" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 336.5 421.0)">E9</text>
+<line x1="355.1" y1="416.0" x2="355.1" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="355.1" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 355.1 421.0)">E10</text>
+<line x1="375.2" y1="416.0" x2="375.2" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="375.2" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 375.2 421.0)">E11</text>
+<line x1="418.4" y1="416.0" x2="418.4" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="418.4" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 418.4 421.0)">E12</text>
+<line x1="443.1" y1="416.0" x2="443.1" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="443.1" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 443.1 421.0)">E13</text>
+<line x1="461.1" y1="416.0" x2="461.1" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="461.1" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 461.1 421.0)">E14</text>
+<line x1="497.3" y1="416.0" x2="497.3" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="497.3" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 497.3 421.0)">E15</text>
+<line x1="518.0" y1="416.0" x2="518.0" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="518.0" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 518.0 421.0)">E16</text>
+<line x1="529.5" y1="416.0" x2="529.5" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="529.5" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 529.5 421.0)">E17</text>
+<line x1="552.6" y1="416.0" x2="552.6" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="552.6" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 552.6 421.0)">E18</text>
+<line x1="569.7" y1="416.0" x2="569.7" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="569.7" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 569.7 421.0)">E19</text>
+<line x1="594.4" y1="416.0" x2="594.4" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="594.4" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 594.4 421.0)">E20</text>
+<rect x="60.0" y="429.0" width="12" height="10" fill="#2878b5"/>
+<text x="76.0" y="438.0" font-family="sans-serif" font-size="9">domain retained</text>
+<rect x="227.0" y="429.0" width="12" height="10" fill="#f2a93b"/>
+<text x="243.0" y="438.0" font-family="sans-serif" font-size="9">domain truncated</text>
+<rect x="403.0" y="429.0" width="12" height="10" fill="#e2e2e2"/>
+<text x="419.0" y="438.0" font-family="sans-serif" font-size="9">target backbone (no domain)</text>
+<rect x="678.0" y="429.0" width="12" height="10" fill="#d62728"/>
+<text x="694.0" y="438.0" font-family="sans-serif" font-size="9">breakpoint</text>
+<text x="60" y="474.0" font-family="sans-serif" font-size="9" fill="#555555">Partner-block colors are decorative; row labels identify partners.</text>
+</svg>

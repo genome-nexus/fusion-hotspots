@@ -141,6 +141,85 @@ def test_structural_variant_api_rows_are_adapted_to_production_normalizer_schema
     assert rows.loc[0, "Extra_fields"]["patientId"] == "PATIENT-001"
 
 
+def test_fetch_molecular_data_posts_expected_body_with_sample_list_id():
+    mock_session = MagicMock()
+    mock_response = MagicMock()
+    mock_response.json.return_value = [{"sampleId": "SAMPLE-001", "value": 1.23}]
+    mock_response.raise_for_status.return_value = None
+    mock_session.post.return_value = mock_response
+
+    result = cbioportal_api.fetch_molecular_data(
+        [673],
+        "thca_tcga_pan_can_atlas_2018_rna_seq_v2_mrna_median_Zscores",
+        sample_list_id="thca_tcga_pan_can_atlas_2018_all",
+        session=mock_session,
+    )
+
+    assert result == [{"sampleId": "SAMPLE-001", "value": 1.23}]
+    called_url = mock_session.post.call_args.args[0]
+    assert called_url == (
+        f"{cbioportal_api.DEFAULT_BASE_URL}/molecular-profiles/"
+        "thca_tcga_pan_can_atlas_2018_rna_seq_v2_mrna_median_Zscores/molecular-data/fetch"
+    )
+    _, kwargs = mock_session.post.call_args
+    assert kwargs["json"] == {
+        "entrezGeneIds": [673],
+        "sampleListId": "thca_tcga_pan_can_atlas_2018_all",
+    }
+
+
+def test_fetch_molecular_data_supports_explicit_sample_ids_instead_of_a_sample_list():
+    mock_session = MagicMock()
+    mock_session.post.return_value.json.return_value = []
+
+    cbioportal_api.fetch_molecular_data(
+        [5979],
+        "some_profile",
+        sample_ids=["S1", "S2"],
+        session=mock_session,
+    )
+
+    _, kwargs = mock_session.post.call_args
+    assert kwargs["json"] == {"entrezGeneIds": [5979], "sampleIds": ["S1", "S2"]}
+
+
+def test_fetch_molecular_data_requires_exactly_one_of_sample_list_id_or_sample_ids():
+    with pytest.raises(ValueError, match="exactly one of"):
+        cbioportal_api.fetch_molecular_data([673], "profile")
+    with pytest.raises(ValueError, match="exactly one of"):
+        cbioportal_api.fetch_molecular_data([673], "profile", sample_list_id="a", sample_ids=["b"])
+
+
+def test_molecular_data_to_expression_by_sample_adapts_real_shape():
+    records = [
+        {"sampleId": "TCGA-1", "value": 0.5},
+        {"sampleId": "TCGA-2", "value": -1.25},
+    ]
+    assert cbioportal_api.molecular_data_to_expression_by_sample(records) == {
+        "TCGA-1": 0.5,
+        "TCGA-2": -1.25,
+    }
+
+
+@pytest.mark.parametrize(
+    "malformed_record",
+    [
+        {"sampleId": "TCGA-1"},  # missing value
+        {"value": 1.0},  # missing sampleId
+        {"sampleId": "TCGA-1", "value": None},
+        {"sampleId": "TCGA-1", "value": "not-a-number"},
+        {"sampleId": "TCGA-1", "value": float("nan")},
+        "not-a-dict",
+    ],
+)
+def test_molecular_data_to_expression_by_sample_skips_malformed_rows_without_raising(
+    malformed_record,
+):
+    records = [malformed_record, {"sampleId": "TCGA-GOOD", "value": 2.0}]
+    result = cbioportal_api.molecular_data_to_expression_by_sample(records)
+    assert result == {"TCGA-GOOD": 2.0}
+
+
 @pytest.mark.network
 def test_fetch_structural_variants_real_network_call():
     """Excluded from default `pytest -m "not network"` runs."""
@@ -150,3 +229,175 @@ def test_fetch_structural_variants_real_network_call():
         [cbioportal_api.DEFAULT_SV_MOLECULAR_PROFILE_ID],
     )
     assert isinstance(result, list)
+
+
+@pytest.mark.parametrize("value", ["Glioma", None])
+def test_fetch_sample_tumor_types_joins_by_sample_and_handles_null(value):
+    session = MagicMock()
+    session.post.return_value.json.return_value = [
+        {"sampleId": "S1", "clinicalAttributeId": "CANCER_TYPE", "value": value},
+        {"sampleId": "S1", "clinicalAttributeId": "ONCOTREE_CODE", "value": "PA"},
+        {"sampleId": "OTHER", "clinicalAttributeId": "CANCER_TYPE", "value": "Lung Cancer"},
+    ]
+    result = cbioportal_api.fetch_sample_tumor_types("study", ["S1", "S1"], session=session)
+    assert result.to_dict("records") == [
+        {"Sample_id": "S1", "Tumor_type": value, "Oncotree_code": "PA"}
+    ]
+    assert session.post.call_args.kwargs["json"] == {
+        "ids": ["S1"],
+        "attributeIds": ["CANCER_TYPE", "ONCOTREE_CODE"],
+    }
+
+
+def test_fetch_sample_tumor_types_unavailable_and_empty():
+    import requests
+
+    session = MagicMock()
+    assert cbioportal_api.fetch_sample_tumor_types("study", [], session=session).empty
+    session.post.assert_not_called()
+    session.post.side_effect = requests.Timeout("offline")
+    with pytest.warns(UserWarning, match="Sample tumor annotations unavailable"):
+        result = cbioportal_api.fetch_sample_tumor_types("study", ["S1"], session=session)
+    assert result.empty
+    assert list(result.columns) == ["Sample_id", "Tumor_type", "Oncotree_code"]
+
+
+def test_fetch_mutations_posts_expected_body_without_real_network():
+    mock_session = MagicMock()
+    mock_response = MagicMock()
+    mock_response.json.return_value = [{"sampleId": "SAMPLE-001", "proteinChange": "V600E"}]
+    mock_response.raise_for_status.return_value = None
+    mock_session.post.return_value = mock_response
+
+    gene_config = load_gene_config("braf")
+    result = cbioportal_api.fetch_mutations(
+        [gene_config.entrez_gene_id],
+        [cbioportal_api.DEFAULT_MUTATION_MOLECULAR_PROFILE_ID],
+        session=mock_session,
+    )
+
+    assert result == [{"sampleId": "SAMPLE-001", "proteinChange": "V600E"}]
+    called_url = mock_session.post.call_args.args[0]
+    assert called_url == f"{cbioportal_api.DEFAULT_BASE_URL}/mutations/fetch"
+    _, kwargs = mock_session.post.call_args
+    assert kwargs["json"] == {
+        "entrezGeneIds": [673],
+        "molecularProfileIds": [cbioportal_api.DEFAULT_MUTATION_MOLECULAR_PROFILE_ID],
+    }
+
+
+def test_fetch_mutations_supports_arbitrary_genes_without_real_network():
+    mock_session = MagicMock()
+    mock_session.post.return_value.json.return_value = []
+
+    cbioportal_api.fetch_mutations(
+        [7157, 673],  # TP53, BRAF -- arbitrary, not special-cased
+        ["some_other_study_mutations"],
+        session=mock_session,
+    )
+
+    _, kwargs = mock_session.post.call_args
+    assert kwargs["json"]["entrezGeneIds"] == [7157, 673]
+    assert kwargs["json"]["molecularProfileIds"] == ["some_other_study_mutations"]
+
+
+def test_fetch_mutations_retries_transient_service_failure(monkeypatch):
+    monkeypatch.setattr(cbioportal_api.time, "sleep", lambda _seconds: None)
+    mock_session = MagicMock()
+    unavailable = MagicMock(status_code=503)
+    recovered = MagicMock(status_code=200)
+    recovered.json.return_value = [{"sampleId": "RECOVERED"}]
+    mock_session.post.side_effect = [unavailable, recovered]
+
+    result = cbioportal_api.fetch_mutations([673], ["study_mutations"], session=mock_session)
+
+    assert result == [{"sampleId": "RECOVERED"}]
+    assert mock_session.post.call_count == 2
+
+
+def test_fetch_discrete_copy_number_posts_expected_body_and_query_without_real_network():
+    mock_session = MagicMock()
+    mock_response = MagicMock()
+    mock_response.json.return_value = [{"sampleId": "SAMPLE-001", "alteration": 2}]
+    mock_response.raise_for_status.return_value = None
+    mock_session.post.return_value = mock_response
+
+    result = cbioportal_api.fetch_discrete_copy_number(
+        [673],
+        "msk_impact_50k_2026_gistic",
+        "msk_impact_50k_2026_all",
+        session=mock_session,
+    )
+
+    assert result == [{"sampleId": "SAMPLE-001", "alteration": 2}]
+    called_url = mock_session.post.call_args.args[0]
+    assert called_url == (
+        f"{cbioportal_api.DEFAULT_BASE_URL}/molecular-profiles/msk_impact_50k_2026_gistic"
+        "/discrete-copy-number/fetch"
+    )
+    _, kwargs = mock_session.post.call_args
+    assert kwargs["json"] == {"sampleListId": "msk_impact_50k_2026_all", "entrezGeneIds": [673]}
+    assert kwargs["params"] == {"discreteCopyNumberEventType": "ALL"}
+
+
+def test_fetch_discrete_copy_number_honors_event_type_override():
+    mock_session = MagicMock()
+    mock_session.post.return_value.json.return_value = []
+
+    cbioportal_api.fetch_discrete_copy_number(
+        [673],
+        "study_gistic",
+        "study_all",
+        event_type="HOMDEL_AND_AMP",
+        session=mock_session,
+    )
+
+    _, kwargs = mock_session.post.call_args
+    assert kwargs["params"] == {"discreteCopyNumberEventType": "HOMDEL_AND_AMP"}
+
+
+def test_fetch_sample_list_ids_gets_expected_url_without_real_network():
+    mock_session = MagicMock()
+    mock_response = MagicMock()
+    mock_response.json.return_value = ["S1", "S2", "S3"]
+    mock_response.raise_for_status.return_value = None
+    mock_session.get.return_value = mock_response
+
+    result = cbioportal_api.fetch_sample_list_ids("msk_impact_50k_2026_all", session=mock_session)
+
+    assert result == ["S1", "S2", "S3"]
+    called_url = mock_session.get.call_args.args[0]
+    assert called_url == (
+        f"{cbioportal_api.DEFAULT_BASE_URL}/sample-lists/msk_impact_50k_2026_all/sample-ids"
+    )
+
+
+@pytest.mark.network
+def test_fetch_mutations_real_network_call():
+    """Excluded from default `pytest -m "not network"` runs."""
+    gene_config = load_gene_config("braf")
+    result = cbioportal_api.fetch_mutations(
+        [gene_config.entrez_gene_id],
+        [cbioportal_api.DEFAULT_MUTATION_MOLECULAR_PROFILE_ID],
+    )
+    assert isinstance(result, list)
+
+
+@pytest.mark.network
+def test_fetch_discrete_copy_number_real_network_call():
+    """Excluded from default `pytest -m "not network"` runs."""
+    gene_config = load_gene_config("braf")
+    result = cbioportal_api.fetch_discrete_copy_number(
+        [gene_config.entrez_gene_id],
+        cbioportal_api.DEFAULT_CNA_MOLECULAR_PROFILE_ID,
+        cbioportal_api.DEFAULT_SAMPLE_LIST_ID,
+    )
+    assert isinstance(result, list)
+
+
+@pytest.mark.network
+def test_fetch_sample_list_ids_real_network_call():
+    """Excluded from default `pytest -m "not network"` runs."""
+    result = cbioportal_api.fetch_sample_list_ids(cbioportal_api.DEFAULT_SAMPLE_LIST_ID)
+    assert isinstance(result, list)
+    assert len(result) > 0

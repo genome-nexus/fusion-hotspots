@@ -1,4 +1,6 @@
-"""Single source of truth for every reporting renderer's colors.
+"""Single source of truth for every reporting renderer's colors: semantic
+domain-retention/reference-comparison colors, the fixed decorative fill
+used for fusion partner-gene blocks, and neutral structural/chrome colors.
 
 The semantic colors below require an in-figure legend or explanatory key in
 every renderer that uses them. Neutral chrome colors are self-evident
@@ -29,6 +31,15 @@ LOST_COLOR = "#777777"
 BREAKPOINT_COLOR = "#d62728"
 """Breakpoint marker; also used as the lollipop track's
 reference-discrepancy outline color."""
+
+PARTNER_COLOR = "#8064a2"
+"""Fixed, non-semantic fill for every fusion partner-gene block in
+:mod:`cfh.reporting.fusion_schematic`. Every partner-gene block renders in
+this one color regardless of which gene it is -- it exists only to set the
+partner block visually apart from the domain-colored target-gene block
+sharing its row, not to distinguish one partner from another (row labels
+do that, and there is deliberately no legend entry mapping this color to
+any partner identity)."""
 
 DOMAIN_HIGHLIGHT_COLOR = "#62b36f"
 """Configured key-domain span in the domain-retention lollipop track."""
@@ -84,10 +95,14 @@ SEMANTIC_COLORS = (
 used. Test coverage (see ``tests/test_svg_legend_completeness.py``) checks
 that any of these appearing in a rendered SVG is matched by a legend entry
 in that same SVG. A gene-hash-derived per-domain highlight shade (see
-:func:`cfh.real_benchmark._domain_highlight_color`) or per-partner shade
-(:func:`cfh.reporting.fusion_schematic.partner_color`) is deliberately not
-listed here -- individually arbitrary, but the *scheme* they belong to is
-documented once by the corresponding legend/note text, not per hex value."""
+:func:`cfh.real_benchmark._domain_highlight_color`) is deliberately not
+listed here -- individually arbitrary, but the *scheme* it belongs to is
+documented once by a corresponding legend/note, not per hex value.
+``PARTNER_COLOR`` is filed under ``CHROME_COLORS`` instead (below): it is a
+single fixed, non-semantic fill shared by every fusion partner-gene block
+and never varies, so it needs no legend entry, but -- unlike the
+hash-derived shade -- it *is* one specific, known hex value, not an
+open-ended scheme."""
 
 CHROME_COLORS = (
     AXIS_COLOR,
@@ -98,6 +113,7 @@ CHROME_COLORS = (
     EXON_TICK_COLOR,
     CONNECTOR_COLOR,
     TABLE_HEADER_COLOR,
+    PARTNER_COLOR,
 )
 """Structural/decorative colors that need no legend entry (see the module
 docstring). Listed explicitly, alongside ``SEMANTIC_COLORS``, so the two
@@ -113,12 +129,13 @@ def deterministic_color(label: str, *, lightness: float = 0.55, saturation: floa
     per-process and would make the same label render a different color on
     every regeneration.
 
-    Used by :func:`cfh.reporting.fusion_schematic.partner_color` (each
-    fusion partner gene gets its own stable, decorative color -- see that
-    function's docstring for why partner colors need no legend) and by
-    :func:`cfh.real_benchmark._domain_highlight_color` (a second or later
-    configured key domain gets its own stable shade), so the two can't
-    silently diverge on how a stable color is derived from a name.
+    Used by :func:`cfh.real_benchmark._domain_highlight_color` for
+    per-domain highlight coloring when a gene configures more than one key
+    domain (each such domain gets its own legend entry, so distinct hues
+    are the point). Fusion partner-gene blocks do *not* use this function
+    -- see :func:`cfh.reporting.fusion_schematic.partner_color`, which is
+    the fixed ``PARTNER_COLOR`` instead, deliberately not derived from the
+    partner's name.
     """
     hue = (zlib.crc32(label.encode("utf-8")) % 360) / 360.0
     r, g, b = colorsys.hls_to_rgb(hue, lightness, saturation)

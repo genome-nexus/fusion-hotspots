@@ -9,6 +9,7 @@ beyond what the payload itself declares) -- see
 from __future__ import annotations
 
 import re
+import xml.etree.ElementTree as ET
 
 import pytest
 
@@ -27,7 +28,12 @@ from cfh.reporting.fusion_schematic import (
 # Imported from the shared palette module (not re-exported from
 # fusion_schematic) so these assertions catch the two renderers actually
 # drifting apart, not just a coincidental match today.
-from cfh.reporting.palette import BREAKPOINT_COLOR, RETAINED_COLOR, TRUNCATED_COLOR
+from cfh.reporting.palette import (
+    BREAKPOINT_COLOR,
+    PARTNER_COLOR,
+    RETAINED_COLOR,
+    TRUNCATED_COLOR,
+)
 
 _KINASE = {
     "name": "Protein kinase domain",
@@ -295,9 +301,12 @@ def test_partner_color_is_deterministic_and_a_valid_hex_color():
     assert re.fullmatch(r"#[0-9a-f]{6}", color1)
 
 
-def test_different_partners_usually_get_different_colors():
+def test_every_partner_gets_the_same_fixed_color():
+    """Partner-gene block color is decorative chrome, not a per-partner
+    identifier -- every partner must render in the one shared
+    ``PARTNER_COLOR``, not a color derived from its name."""
     colors = {partner_color(name) for name in ["AGK", "CUL1", "SND1", "KIAA1549", "TRIM24"]}
-    assert len(colors) >= 4  # allow for a rare hash collision, not a systemic one
+    assert colors == {PARTNER_COLOR}
 
 
 # --- intragenic deletion (panel-C style) schematic --------------------------
@@ -485,3 +494,127 @@ def test_deletion_schematic_domain_segment_carries_its_real_name():
     )
     svg = render_intragenic_deletion_schematic_svg(payload)
     assert "Protein kinase domain" in svg
+
+
+# --- <title> tooltips --------------------------------------------------------
+
+_SVG_NS = "{http://www.w3.org/2000/svg}"
+
+
+def _title_texts(svg: str) -> list[str]:
+    """Parse ``svg`` as real XML (raising ``ParseError`` if any embedded
+    text was left unescaped) and return every ``<title>`` element's text."""
+    root = ET.fromstring(svg)
+    return [el.text or "" for el in root.iter(f"{_SVG_NS}title")]
+
+
+def test_fusion_schematic_partner_rect_has_title_with_partner_and_breakpoint():
+    payload = _payload([_event("AGK", 380, "three_prime", sample_id="S1")])
+    svg = render_fusion_schematic_svg(payload)
+    titles = _title_texts(svg)
+    assert any(
+        "Partner gene AGK" in t and "breakpoint BRAF aa 380" in t and "sample S1" in t
+        for t in titles
+    )
+
+
+def test_fusion_schematic_breakpoint_marker_title_has_domain_status_and_sample():
+    payload = _payload([_event("AGK", 380, "three_prime", sample_id="S1", status="retained")])
+    svg = render_fusion_schematic_svg(payload)
+    titles = _title_texts(svg)
+    assert any(
+        t.startswith("Breakpoint; domain status retained;") and "sample S1" in t for t in titles
+    )
+
+
+def test_fusion_schematic_domain_segment_title_carries_name_status_and_bounds():
+    # Kinase domain (458-712) is fully inside the retained [400, 766] span.
+    payload = _payload([_event("AGK", 400, "three_prime", status="retained", sample_id="S9")])
+    svg = render_fusion_schematic_svg(payload)
+    titles = _title_texts(svg)
+    assert any(
+        "Protein kinase domain retained (458-712 aa)" in t and "sample S9" in t for t in titles
+    )
+
+
+def test_fusion_schematic_multiplicity_group_title_lists_every_sample_id():
+    events = [_event("AGK", 380, "three_prime", sample_id=f"S{i}") for i in range(3)]
+    svg = render_fusion_schematic_svg(_payload(events))
+    titles = _title_texts(svg)
+    assert any("S0" in t and "S1" in t and "S2" in t for t in titles)
+
+
+def test_fusion_schematic_title_tooltip_round_trips_xml_unsafe_sample_id():
+    """A sample ID with XML-significant characters must be escaped in the
+    tooltip -- otherwise the whole SVG document would not be well-formed
+    XML at all (a real correctness bug, not a cosmetic one). ``_title_texts``
+    parses the rendered SVG with a real XML parser, so an unescaped ``&``/
+    ``<`` here would raise ``xml.etree.ElementTree.ParseError`` rather than
+    just look wrong.
+    """
+    unsafe_sample_id = "S&1<2>samp"
+    payload = _payload([_event("AGK", 380, "three_prime", sample_id=unsafe_sample_id)])
+    svg = render_fusion_schematic_svg(payload)
+    titles = _title_texts(svg)
+    assert any(unsafe_sample_id in t for t in titles)
+
+
+def test_deletion_schematic_block_and_connector_titles_carry_real_content():
+    payload = _payload(
+        [],
+        intragenic_deletions=[
+            {
+                "retained_up_to_aa": 150,
+                "resumed_from_aa": 450,
+                "n_exons_deleted": 5,
+                "frame_status": "in-frame",
+                "sample_id": "S1",
+            }
+        ],
+    )
+    svg = render_intragenic_deletion_schematic_svg(payload)
+    titles = _title_texts(svg)
+    assert any("retained N-terminal block" in t and "sample S1" in t for t in titles)
+    assert any("resumed C-terminal block" in t and "sample S1" in t for t in titles)
+    assert any(
+        "Deleted span" in t and "5 exons deleted (in-frame)" in t and "sample S1" in t
+        for t in titles
+    )
+
+
+def test_deletion_schematic_domain_segment_title_carries_name_and_status():
+    # Kinase domain (458-712) sits inside the resumed [400, 766] block.
+    payload = _payload(
+        [],
+        intragenic_deletions=[
+            {
+                "retained_up_to_aa": 150,
+                "resumed_from_aa": 400,
+                "n_exons_deleted": 5,
+                "frame_status": "in-frame",
+                "sample_id": "S1",
+            }
+        ],
+    )
+    svg = render_intragenic_deletion_schematic_svg(payload)
+    titles = _title_texts(svg)
+    assert any("Protein kinase domain retained (458-712 aa)" in t for t in titles)
+
+
+def test_deletion_schematic_title_round_trips_xml_unsafe_sample_id():
+    unsafe_sample_id = "S&2<x>"
+    payload = _payload(
+        [],
+        intragenic_deletions=[
+            {
+                "retained_up_to_aa": 150,
+                "resumed_from_aa": 450,
+                "n_exons_deleted": 5,
+                "frame_status": "in-frame",
+                "sample_id": unsafe_sample_id,
+            }
+        ],
+    )
+    svg = render_intragenic_deletion_schematic_svg(payload)
+    titles = _title_texts(svg)  # ET.fromstring raises ParseError if unescaped
+    assert any(unsafe_sample_id in t for t in titles)

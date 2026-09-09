@@ -10,8 +10,10 @@ everything else in this module is plain, mockable request-building logic.
 
 from __future__ import annotations
 
+import math
 import random
 import time
+import warnings
 from typing import Any, Iterable
 
 import pandas as pd
@@ -22,6 +24,9 @@ from cfh.ingestion.sv_parser import OUTPUT_COLUMNS
 DEFAULT_BASE_URL = "https://www.cbioportal.org/api"
 DEFAULT_STUDY_ID = "msk_impact_50k_2026"
 DEFAULT_SV_MOLECULAR_PROFILE_ID = "msk_impact_50k_2026_structural_variants"
+DEFAULT_MUTATION_MOLECULAR_PROFILE_ID = "msk_impact_50k_2026_mutations"
+DEFAULT_CNA_MOLECULAR_PROFILE_ID = "msk_impact_50k_2026_gistic"
+DEFAULT_SAMPLE_LIST_ID = "msk_impact_50k_2026_all"
 _RETRYABLE_STATUS_CODES = {429, 500, 502, 503, 504}
 _MAX_BACKOFF_SECONDS = 30.0
 
@@ -103,6 +108,119 @@ def fetch_structural_variants(
     return response.json()
 
 
+def fetch_mutations(
+    entrez_gene_ids: Iterable[int],
+    molecular_profile_ids: Iterable[str],
+    *,
+    base_url: str = DEFAULT_BASE_URL,
+    session: "requests.Session | None" = None,
+    timeout: float = 30,
+    max_retries: int = 6,
+    backoff_seconds: float = 1.0,
+) -> list[dict]:
+    """POST to ``/mutations/fetch`` and return the parsed JSON body.
+
+    Mirrors :func:`fetch_structural_variants`'s request shape and retry
+    behavior -- ``molecularProfileIds`` + ``entrezGeneIds`` -- for the
+    point-mutation evidence layer. ``molecular_profile_ids`` has no default
+    for the same reason as the structural-variant fetch: which cohort's
+    mutation profile to query is always caller-supplied, never silently
+    defaulted to a specific study.
+    """
+    session = session or requests.Session()
+    url = f"{base_url.rstrip('/')}/mutations/fetch"
+    body: dict[str, Any] = {
+        "entrezGeneIds": list(entrez_gene_ids),
+        "molecularProfileIds": list(molecular_profile_ids),
+    }
+    attempt = 0
+    while True:
+        response = session.post(url, json=body, timeout=timeout)
+        if response.status_code not in _RETRYABLE_STATUS_CODES or attempt >= max_retries:
+            break
+        time.sleep(_retry_sleep_seconds(backoff_seconds, attempt))
+        attempt += 1
+    response.raise_for_status()
+    return response.json()
+
+
+def fetch_discrete_copy_number(
+    entrez_gene_ids: Iterable[int],
+    molecular_profile_id: str,
+    sample_list_id: str,
+    *,
+    event_type: str = "ALL",
+    base_url: str = DEFAULT_BASE_URL,
+    session: "requests.Session | None" = None,
+    timeout: float = 30,
+    max_retries: int = 6,
+    backoff_seconds: float = 1.0,
+) -> list[dict]:
+    """POST to ``/molecular-profiles/{molecularProfileId}/discrete-copy-number/fetch``.
+
+    Unlike mutations/structural-variants, this cBioPortal endpoint is
+    per-molecular-profile (not multi-profile) and requires a
+    ``sampleListId`` -- both ``molecular_profile_id`` and ``sample_list_id``
+    are always caller-supplied, never defaulted to a specific study or
+    gene. ``event_type`` follows cBioPortal's ``DiscreteCopyNumberEventType``
+    enum (``AMP``, ``HOMDEL``, ``GAIN``, ``HETLOSS``, ``DIPLOID``,
+    ``HOMDEL_AND_AMP``, ``ALL``); ``"ALL"`` returns every alteration state
+    so the caller -- not this client -- decides which states count as a
+    "hit" (see ``cfh.normalization.alteration_normalizer``).
+    """
+    session = session or requests.Session()
+    url = (
+        f"{base_url.rstrip('/')}/molecular-profiles/{molecular_profile_id}"
+        "/discrete-copy-number/fetch"
+    )
+    body: dict[str, Any] = {
+        "sampleListId": sample_list_id,
+        "entrezGeneIds": list(entrez_gene_ids),
+    }
+    attempt = 0
+    while True:
+        response = session.post(
+            url,
+            json=body,
+            params={"discreteCopyNumberEventType": event_type},
+            timeout=timeout,
+        )
+        if response.status_code not in _RETRYABLE_STATUS_CODES or attempt >= max_retries:
+            break
+        time.sleep(_retry_sleep_seconds(backoff_seconds, attempt))
+        attempt += 1
+    response.raise_for_status()
+    return response.json()
+
+
+def fetch_sample_list_ids(
+    sample_list_id: str,
+    *,
+    base_url: str = DEFAULT_BASE_URL,
+    session: "requests.Session | None" = None,
+    timeout: float = 30,
+    max_retries: int = 6,
+    backoff_seconds: float = 1.0,
+) -> list[str]:
+    """GET ``/sample-lists/{sampleListId}/sample-ids``: every sample ID in a
+    named cBioPortal sample list (e.g. a study's "_all" list). Used as the
+    cohort-wide 2x2 background universe for the mutation/CNA co-occurrence
+    test -- gene-agnostic and study-agnostic, ``sample_list_id`` is always
+    caller-supplied.
+    """
+    session = session or requests.Session()
+    url = f"{base_url.rstrip('/')}/sample-lists/{sample_list_id}/sample-ids"
+    attempt = 0
+    while True:
+        response = session.get(url, timeout=timeout)
+        if response.status_code not in _RETRYABLE_STATUS_CODES or attempt >= max_retries:
+            break
+        time.sleep(_retry_sleep_seconds(backoff_seconds, attempt))
+        attempt += 1
+    response.raise_for_status()
+    return response.json()
+
+
 def fetch_structural_variant_genes(
     study_ids: Iterable[str],
     *,
@@ -148,6 +266,81 @@ warn about it.
 """
 
 
+def fetch_molecular_data(
+    entrez_gene_ids: Iterable[int],
+    molecular_profile_id: str,
+    *,
+    sample_list_id: str | None = None,
+    sample_ids: Iterable[str] | None = None,
+    base_url: str = DEFAULT_BASE_URL,
+    session: "requests.Session | None" = None,
+    timeout: float = 30,
+    max_retries: int = 6,
+    backoff_seconds: float = 1.0,
+) -> list[dict]:
+    """POST to ``/molecular-profiles/{id}/molecular-data/fetch`` and return raw records.
+
+    Gene-agnostic, same as :func:`fetch_structural_variants`: which genes and
+    which molecular profile (e.g. an mRNA expression z-score profile) to
+    query are always caller-supplied. ``molecular_profile_id`` has no
+    default -- a caller must resolve it explicitly (e.g. via
+    ``StudyConfig.mrna_expression_profile_id``) rather than have it silently
+    guessed from a study id, since not every cohort even has an
+    MRNA_EXPRESSION profile (a targeted DNA panel like
+    ``msk_impact_50k_2026`` has none at all).
+
+    Exactly one of ``sample_list_id``/``sample_ids`` must be given, mirroring
+    cBioPortal's own ``MolecularDataFilter`` contract for this endpoint.
+    """
+    if (sample_list_id is None) == (sample_ids is None):
+        raise ValueError("exactly one of sample_list_id or sample_ids must be given")
+    session = session or requests.Session()
+    url = f"{base_url.rstrip('/')}/molecular-profiles/{molecular_profile_id}/molecular-data/fetch"
+    body: dict[str, Any] = {"entrezGeneIds": list(entrez_gene_ids)}
+    if sample_list_id is not None:
+        body["sampleListId"] = sample_list_id
+    else:
+        body["sampleIds"] = list(sample_ids)  # type: ignore[arg-type]
+    params = {"projection": "SUMMARY"}
+    attempt = 0
+    while True:
+        response = session.post(url, json=body, params=params, timeout=timeout)
+        if response.status_code not in _RETRYABLE_STATUS_CODES or attempt >= max_retries:
+            break
+        time.sleep(_retry_sleep_seconds(backoff_seconds, attempt))
+        attempt += 1
+    response.raise_for_status()
+    return response.json()
+
+
+def molecular_data_to_expression_by_sample(records: Iterable[dict]) -> dict[str, float]:
+    """Adapt cBioPortal molecular-data API objects to ``{Sample_id: value}``.
+
+    Never raises on a malformed record: one missing ``sampleId``, a missing
+    or non-numeric ``value`` (cBioPortal represents an unavailable
+    measurement in various ways depending on datatype), or any other
+    unexpected shape is simply skipped rather than crashing the whole
+    fetch -- the same tolerant-of-malformed-rows convention already used by
+    :func:`structural_variants_to_dataframe`.
+    """
+    expression_by_sample: dict[str, float] = {}
+    for record in records:
+        if not isinstance(record, dict):
+            continue
+        sample_id = record.get("sampleId")
+        value = record.get("value")
+        if sample_id is None or value is None:
+            continue
+        try:
+            numeric_value = float(value)
+        except (TypeError, ValueError):
+            continue
+        if not math.isfinite(numeric_value):
+            continue
+        expression_by_sample[str(sample_id)] = numeric_value
+    return expression_by_sample
+
+
 def structural_variants_to_dataframe(calls: Iterable[dict]) -> pd.DataFrame:
     """Adapt cBioPortal camelCase API objects to the production SV schema."""
     records = []
@@ -163,3 +356,41 @@ def structural_variants_to_dataframe(calls: Iterable[dict]) -> pd.DataFrame:
         record["Parse_warnings"] = None
         records.append(record)
     return pd.DataFrame.from_records(records, columns=_API_OUTPUT_COLUMNS)
+
+
+def fetch_sample_tumor_types(
+    study_id: str,
+    sample_ids: Iterable[str],
+    *,
+    base_url: str = DEFAULT_BASE_URL,
+    session: requests.Session | None = None,
+    timeout: float = 30,
+) -> pd.DataFrame:
+    """Fetch optional sample annotations without changing patient/grouping metadata."""
+    columns = ["Sample_id", "Tumor_type", "Oncotree_code"]
+    ids = sorted(set(sample_ids))
+    if not ids:
+        return pd.DataFrame(columns=columns)
+    session = session or requests.Session()
+    try:
+        response = session.post(
+            f"{base_url.rstrip('/')}/studies/{study_id}/clinical-data/fetch",
+            params={"clinicalDataType": "SAMPLE"},
+            json={"ids": ids, "attributeIds": ["CANCER_TYPE", "ONCOTREE_CODE"]},
+            timeout=timeout,
+        )
+        response.raise_for_status()
+        records = response.json()
+    except (requests.RequestException, ValueError) as exc:
+        warnings.warn(f"Sample tumor annotations unavailable for {study_id}: {exc}", stacklevel=2)
+        return pd.DataFrame(columns=columns)
+    fields = {"CANCER_TYPE": "Tumor_type", "ONCOTREE_CODE": "Oncotree_code"}
+    rows: dict[str, dict] = {}
+    for record in records:
+        sample_id = record.get("sampleId")
+        field = fields.get(record.get("clinicalAttributeId"))
+        if sample_id in ids and field:
+            row = rows.setdefault(sample_id, dict.fromkeys(columns))
+            row["Sample_id"] = sample_id
+            row[field] = record.get("value") or None
+    return pd.DataFrame(rows.values(), columns=columns)

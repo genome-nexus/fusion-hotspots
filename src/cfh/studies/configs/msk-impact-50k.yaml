@@ -1,0 +1,11 @@
+study_ids:
+  - msk_impact_50k_2026
+# structural_variant_profile_template, mutation_profile_template, and
+# all_sample_list_template all match this study's own pipeline-default
+# templates ("{study_id}_structural_variants"/"_mutations"/"_all"), verified
+# live against https://www.cbioportal.org/api. Only the discrete
+# copy-number profile deviates from the generic "{study_id}_cna" default --
+# this study's DISCRETE copy-number molecular profile is actually named
+# "msk_impact_50k_2026_gistic" (confirmed via
+# GET /api/studies/msk_impact_50k_2026/molecular-profiles).
+discrete_cna_profile_template: "{study_id}_gistic"

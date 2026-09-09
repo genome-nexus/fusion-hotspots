@@ -59,14 +59,15 @@ def _documented_colors(svg: str) -> set[str]:
     return {match.group(1) for match in _SWATCH_WITH_LABEL_RE.finditer(svg)}
 
 
-# fusion_schematic.svg draws one arbitrary hash-derived shade per fusion
-# partner (see partner_color) -- by construction not any fixed hex value,
-# so it can't be listed in SEMANTIC_COLORS/CHROME_COLORS. The renderer
-# documents that whole *scheme* via an explanatory note (checked in
-# test_semantic_colors_used_in_fusion_schematic_are_all_legended), not a
-# legend entry per shade, so it's exempted from the "every color is a
-# known palette constant" check below.
-_HASH_COLOR_SVG_NAMES = {"fusion_schematic.svg"}
+# No SVG currently draws an arbitrary hash-derived shade outside the known
+# palette constants: fusion_schematic.svg's partner-gene blocks all render
+# in the single fixed PARTNER_COLOR (see partner_color), not a per-name
+# hash, so every color it draws is already a known SEMANTIC_COLORS/
+# CHROME_COLORS constant. This set exists for a renderer that draws a
+# genuinely open-ended, per-label hash-derived color (e.g. a second-or-
+# later configured key domain via deterministic_color) that by
+# construction can't be filed under a fixed hex constant.
+_HASH_COLOR_SVG_NAMES: set[str] = set()
 
 
 def test_every_committed_svg_has_at_least_one_swatch_and_uses_only_known_colors():

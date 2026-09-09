@@ -1,0 +1,201 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="200" viewBox="0 0 920 200">
+<rect width="920" height="200" fill="white"/>
+<text x="60" y="28" font-family="sans-serif" font-size="16">FGFR2 domain-retention track</text>
+<rect x="528.7" y="34.0" width="268.9" height="16.0" fill="#62b36f" opacity="0.55"/>
+<text x="797.6" y="46.0" font-family="sans-serif" font-size="9.5" text-anchor="end">Protein tyrosine and serine/threonine kinase (481-757)</text>
+<line x1="60.0" y1="63.0" x2="860.0" y2="63.0" stroke="#444444" stroke-width="4"/>
+<circle cx="773.3" cy="71.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0"><title>event EVT-P-0021826-T01-IM6-1; sample P-0021826-T01-IM6; partner ANKRD11; breakpoint aa 732; domain truncated</title></circle>
+<circle cx="807.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0013241-T01-IM5-2; sample P-0013241-T01-IM5; partner ATP6V1D; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0009512-T01-IM5-3; sample P-0009512-T01-IM5; partner BICC1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0002675-T01-IM3-4; sample P-0002675-T01-IM3; partner BICC1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0029067-T01-IM6-5; sample P-0029067-T01-IM6; partner BICC1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0003177-T01-IM5-6; sample P-0003177-T01-IM5; partner BICC1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0025807-T01-IM6-7; sample P-0025807-T01-IM6; partner BICC1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="808.4" cy="85.0" r="3" fill="#777777" stroke="none" stroke-width="0"><title>event EVT-P-0025250-T01-IM6-8; sample P-0025250-T01-IM6; partner BICC1; breakpoint aa 768; domain lost</title></circle>
+<circle cx="807.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0032033-T01-IM6-9; sample P-0032033-T01-IM6; partner BICC1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0005538-T01-IM5-10; sample P-0005538-T01-IM5; partner BICC1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0020186-T01-IM6-11; sample P-0020186-T01-IM6; partner BICC1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0020025-T01-IM6-12; sample P-0020025-T01-IM6; partner BICC1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0018115-T01-IM6-13; sample P-0018115-T01-IM6; partner BICC1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0015942-T01-IM6-14; sample P-0015942-T01-IM6; partner BICC1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0008146-T01-IM5-15; sample P-0008146-T01-IM5; partner BICC1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="808.4" cy="71.0" r="3" fill="#777777" stroke="none" stroke-width="0"><title>event EVT-P-0037617-T01-IM6-16; sample P-0037617-T01-IM6; partner BICC1; breakpoint aa 768; domain lost</title></circle>
+<circle cx="807.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0015432-T01-IM6-17; sample P-0015432-T01-IM6; partner CAT; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0027305-T01-IM6-18; sample P-0027305-T01-IM6; partner CCDC6; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0027741-T01-IM6-19; sample P-0027741-T01-IM6; partner CEACAM7; breakpoint aa 767; domain retained</title></circle>
+<circle cx="808.4" cy="99.0" r="3" fill="#777777" stroke="none" stroke-width="0"><title>event EVT-P-0003724-T01-IM5-20; sample P-0003724-T01-IM5; partner CEP112; breakpoint aa 768; domain lost</title></circle>
+<circle cx="807.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0019723-T01-IM6-22; sample P-0019723-T01-IM6; partner CTNNA3; breakpoint aa 767; domain retained</title></circle>
+<circle cx="808.4" cy="78.0" r="3" fill="#777777" stroke="none" stroke-width="0"><title>event EVT-P-0011516-T01-IM5-23; sample P-0011516-T01-IM5; partner CTNNA3; breakpoint aa 768; domain lost</title></circle>
+<circle cx="807.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0020410-T01-IM6-24; sample P-0020410-T01-IM6; partner DDX21; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0018869-T03-IM6-26; sample P-0018869-T03-IM6; partner ABLIM1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="718.7" cy="99.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0"><title>event EVT-P-0026275-T01-IM6-27; sample P-0026275-T01-IM6; partner ADAM12; breakpoint aa 676; domain truncated</title></circle>
+<circle cx="807.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0020164-T01-IM6-28; sample P-0020164-T01-IM6; partner ADAM9; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0018920-T01-IM6-29; sample P-0018920-T01-IM6; partner AHCYL1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="808.4" cy="85.0" r="3" fill="#777777" stroke="none" stroke-width="0"><title>event EVT-P-0000644-T01-IM3-30; sample P-0000644-T01-IM3; partner AHCYL1; breakpoint aa 768; domain lost</title></circle>
+<circle cx="807.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0012666-T01-IM5-31; sample P-0012666-T01-IM5; partner AMOT; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0047504-T01-IM6-32; sample P-0047504-T01-IM6; partner ATAD1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0017424-T01-IM6-33; sample P-0017424-T01-IM6; partner ATE1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="517.0" cy="78.0" r="3" fill="#777777" stroke="none" stroke-width="0"><title>event EVT-P-0063512-T01-IM7-35; sample P-0063512-T01-IM7; partner ATE1; breakpoint aa 469; domain lost</title></circle>
+<circle cx="807.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0063625-T01-IM7-36; sample P-0063625-T01-IM7; partner ATE1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0052794-T01-IM6-38; sample P-0052794-T01-IM6; partner BAIAP2L1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0059296-T01-IM7-39; sample P-0059296-T01-IM7; partner BAIAP2L1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0004520-T01-IM5-41; sample P-0004520-T01-IM5; partner BICC1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0013174-T01-IM5-42; sample P-0013174-T01-IM5; partner BICC1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0049135-T07-IM7-43; sample P-0049135-T07-IM7; partner BICC1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0068640-T01-IM7-44; sample P-0068640-T01-IM7; partner BICC1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0049135-T03-IM6-45; sample P-0049135-T03-IM6; partner BICC1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0049133-T04-IM6-46; sample P-0049133-T04-IM6; partner BICC1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0006885-T01-IM5-48; sample P-0006885-T01-IM5; partner BICC1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0051773-T01-IM6-49; sample P-0051773-T01-IM6; partner BICC1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0049133-T02-IM6-50; sample P-0049133-T02-IM6; partner BICC1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0053822-T01-IM6-51; sample P-0053822-T01-IM6; partner BICC1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0021327-T01-IM6-52; sample P-0021327-T01-IM6; partner BICC1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="859.0" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0060245-T01-IM7-53; sample P-0060245-T01-IM7; partner BICC1; breakpoint aa 820; domain retained</title></circle>
+<circle cx="807.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0068033-T01-IM7-54; sample P-0068033-T01-IM7; partner BICC1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0039087-T01-IM6-55; sample P-0039087-T01-IM6; partner BICC1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0054191-T01-IM6-56; sample P-0054191-T01-IM6; partner BICD1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0061764-T01-IM7-57; sample P-0061764-T01-IM7; partner BNIP2; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0020135-T01-IM6-58; sample P-0020135-T01-IM6; partner BTBD16; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0033652-T01-IM6-59; sample P-0033652-T01-IM6; partner CCDC186; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0060582-T01-IM7-60; sample P-0060582-T01-IM7; partner CCDC73; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0037574-T01-IM6-61; sample P-0037574-T01-IM6; partner CTNNA3; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0044768-T01-IM6-63; sample P-0044768-T01-IM6; partner DIABLO; breakpoint aa 767; domain retained</title></circle>
+<circle cx="840.5" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0058539-T01-IM6-101; sample P-0058539-T01-IM6; partner FOXP1; breakpoint aa 801; domain retained</title></circle>
+<circle cx="807.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0061783-T01-IM7-102; sample P-0061783-T01-IM7; partner FOXP1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="208.1" cy="92.0" r="3" fill="#777777" stroke="none" stroke-width="0"><title>event EVT-P-0055215-T01-IM6-103; sample P-0055215-T01-IM6; partner GRID1; breakpoint aa 152; domain lost</title></circle>
+<circle cx="807.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0015437-T01-IM6-104; sample P-0015437-T01-IM6; partner HSPA12A; breakpoint aa 767; domain retained</title></circle>
+<circle cx="837.6" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0009701-T01-IM5-105; sample P-0009701-T01-IM5; partner KCNH7; breakpoint aa 798; domain retained</title></circle>
+<circle cx="807.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0008658-T01-IM5-107; sample P-0008658-T01-IM5; partner KIAA1217; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0034784-T01-IM6-108; sample P-0034784-T01-IM6; partner KIAA1217; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0013405-T01-IM5-109; sample P-0013405-T01-IM5; partner KIAA1217; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0003660-T01-IM5-110; sample P-0003660-T01-IM5; partner KIF14; breakpoint aa 767; domain retained</title></circle>
+<circle cx="808.4" cy="71.0" r="3" fill="#777777" stroke="none" stroke-width="0"><title>event EVT-P-0013241-T01-IM5-111; sample P-0013241-T01-IM5; partner KLHL29; breakpoint aa 768; domain lost</title></circle>
+<circle cx="807.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0019439-T02-IM6-112; sample P-0019439-T02-IM6; partner L3MBTL3; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0011394-T01-IM5-113; sample P-0011394-T01-IM5; partner LAMC1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0064855-T01-IM7-115; sample P-0064855-T01-IM7; partner MBIP; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0030844-T01-IM6-116; sample P-0030844-T01-IM6; partner MYH15; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0027623-T01-IM6-117; sample P-0027623-T01-IM6; partner MYLK; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0038235-T01-IM6-118; sample P-0038235-T01-IM6; partner NOL4; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0012423-T02-IM6-119; sample P-0012423-T02-IM6; partner NOL4; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0006328-T02-IM6-120; sample P-0006328-T02-IM6; partner NRBF2; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0058339-T01-IM6-121; sample P-0058339-T01-IM6; partner PAH; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0015500-T01-IM6-122; sample P-0015500-T01-IM6; partner PALLD; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0021448-T03-IM6-123; sample P-0021448-T03-IM6; partner PKP4; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0059669-T01-IM7-125; sample P-0059669-T01-IM7; partner POC1B; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0008657-T01-IM5-126; sample P-0008657-T01-IM5; partner PPP1R21; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0057247-T02-IM7-127; sample P-0057247-T02-IM7; partner PRDX3; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0011394-T01-IM5-129; sample P-0011394-T01-IM5; partner RABGAP1L; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0012639-T01-IM5-130; sample P-0012639-T01-IM5; partner SEPTIN10; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0055202-T01-IM6-131; sample P-0055202-T01-IM6; partner SH3GLB1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0011516-T01-IM5-132; sample P-0011516-T01-IM5; partner SHC2; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0032152-T01-IM6-133; sample P-0032152-T01-IM6; partner SHTN1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0057005-T01-IM6-134; sample P-0057005-T01-IM6; partner SHTN1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0064573-T01-IM7-135; sample P-0064573-T01-IM7; partner SKI; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0054244-T01-IM6-136; sample P-0054244-T01-IM6; partner SORBS1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0057277-T01-IM6-137; sample P-0057277-T01-IM6; partner SRRT; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0055975-T01-IM6-139; sample P-0055975-T01-IM6; partner STAT4; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0045185-T01-IM6-141; sample P-0045185-T01-IM6; partner TACC2; breakpoint aa 767; domain retained</title></circle>
+<circle cx="841.5" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0031242-T01-IM6-142; sample P-0031242-T01-IM6; partner TACC2; breakpoint aa 802; domain retained</title></circle>
+<circle cx="807.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0023364-T03-IM6-143; sample P-0023364-T03-IM6; partner TACC2; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0024187-T01-IM6-144; sample P-0024187-T01-IM6; partner TACC2; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0050962-T01-IM6-145; sample P-0050962-T01-IM6; partner TACC2; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0036358-T01-IM6-146; sample P-0036358-T01-IM6; partner TACC2; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0057746-T01-IM6-149; sample P-0057746-T01-IM6; partner TACC2; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0057746-T02-IM6-150; sample P-0057746-T02-IM6; partner TACC2; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0022337-T06-IM6-151; sample P-0022337-T06-IM6; partner TBC1D4; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0022337-T04-IM6-152; sample P-0022337-T04-IM6; partner TBC1D4; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0005291-T01-IM5-153; sample P-0005291-T01-IM5; partner TFEC; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0016640-T01-IM6-154; sample P-0016640-T01-IM6; partner TTC28; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0051558-T01-IM6-155; sample P-0051558-T01-IM6; partner TTC28; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0029726-T01-IM6-156; sample P-0029726-T01-IM6; partner UBP1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0004089-T01-IM5-158; sample P-0004089-T01-IM5; partner VCL; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0059238-T02-IM7-159; sample P-0059238-T02-IM7; partner WAC; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0058031-T01-IM6-160; sample P-0058031-T01-IM6; partner WAC; breakpoint aa 767; domain retained</title></circle>
+<circle cx="808.4" cy="85.0" r="3" fill="#777777" stroke="none" stroke-width="0"><title>event EVT-P-0025807-T01-IM6-161; sample P-0025807-T01-IM6; partner YTHDF3; breakpoint aa 768; domain lost</title></circle>
+<circle cx="807.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0056399-T01-IM6-162; sample P-0056399-T01-IM6; partner ZFAT; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0042241-T01-IM6-163; sample P-0042241-T01-IM6; partner ZMYM4; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0016195-T01-IM6-164; sample P-0016195-T01-IM6; partner GAB2; breakpoint aa 767; domain retained</title></circle>
+<circle cx="808.4" cy="78.0" r="3" fill="#777777" stroke="none" stroke-width="0"><title>event EVT-P-0013756-T01-IM5-165; sample P-0013756-T01-IM5; partner INA; breakpoint aa 768; domain lost</title></circle>
+<circle cx="808.4" cy="85.0" r="3" fill="#777777" stroke="none" stroke-width="0"><title>event EVT-P-0013756-T03-IM6-166; sample P-0013756-T03-IM6; partner INA; breakpoint aa 768; domain lost</title></circle>
+<circle cx="807.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0002810-T01-IM3-169; sample P-0002810-T01-IM3; partner KIAA1217; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0000386-T02-IM5-170; sample P-0000386-T02-IM5; partner MARVELD3; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0024094-T01-IM6-172; sample P-0024094-T01-IM6; partner MYH9; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0032208-T01-IM6-173; sample P-0032208-T01-IM6; partner MYO18B; breakpoint aa 767; domain retained</title></circle>
+<circle cx="808.4" cy="85.0" r="3" fill="#777777" stroke="none" stroke-width="0"><title>event EVT-P-0021975-T01-IM6-175; sample P-0021975-T01-IM6; partner NID2; breakpoint aa 768; domain lost</title></circle>
+<circle cx="807.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0012423-T01-IM5-176; sample P-0012423-T01-IM5; partner NOL4; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0023103-T01-IM6-177; sample P-0023103-T01-IM6; partner NOL4; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0008693-T01-IM5-178; sample P-0008693-T01-IM5; partner NRAP; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0006328-T01-IM5-179; sample P-0006328-T01-IM5; partner NRBF2; breakpoint aa 767; domain retained</title></circle>
+<circle cx="773.3" cy="85.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0"><title>event EVT-P-0049071-T01-IM6-180; sample P-0049071-T01-IM6; partner NRG3; breakpoint aa 732; domain truncated</title></circle>
+<circle cx="808.4" cy="92.0" r="3" fill="#777777" stroke="none" stroke-width="0"><title>event EVT-P-0022337-T01-IM6-181; sample P-0022337-T01-IM6; partner NRG3; breakpoint aa 768; domain lost</title></circle>
+<circle cx="807.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0032171-T03-IM6-182; sample P-0032171-T03-IM6; partner OPTN; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0032171-T01-IM6-183; sample P-0032171-T01-IM6; partner OPTN; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0022781-T01-IM6-184; sample P-0022781-T01-IM6; partner PDZRN4; breakpoint aa 767; domain retained</title></circle>
+<circle cx="808.4" cy="85.0" r="3" fill="#777777" stroke="none" stroke-width="0"><title>event EVT-P-0044768-T01-IM6-187; sample P-0044768-T01-IM6; partner RNF145; breakpoint aa 768; domain lost</title></circle>
+<circle cx="807.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0006235-T01-IM5-188; sample P-0006235-T01-IM5; partner ROCK1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="808.4" cy="99.0" r="3" fill="#777777" stroke="none" stroke-width="0"><title>event EVT-P-0039370-T01-IM6-189; sample P-0039370-T01-IM6; partner RPAP3; breakpoint aa 768; domain lost</title></circle>
+<circle cx="807.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0025074-T01-IM6-190; sample P-0025074-T01-IM6; partner SHTN1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0032507-T01-IM6-191; sample P-0032507-T01-IM6; partner SORBS1; breakpoint aa 767; domain retained</title></circle>
+<circle cx="807.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0022337-T01-IM6-192; sample P-0022337-T01-IM6; partner TBC1D4; breakpoint aa 767; domain retained</title></circle>
+<circle cx="808.4" cy="92.0" r="3" fill="#777777" stroke="none" stroke-width="0"><title>event EVT-P-0021788-T01-IM6-193; sample P-0021788-T01-IM6; partner VPS26A; breakpoint aa 768; domain lost</title></circle>
+<line x1="60.0" y1="114.0" x2="860.0" y2="114.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="860.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
+<text x="60.0" y="128.0" font-family="sans-serif" font-size="9">1</text>
+<text x="860.0" y="128.0" font-family="sans-serif" font-size="9" text-anchor="end">821 aa</text>
+<line x1="61.0" y1="132.0" x2="61.0" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="61.0" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 61.0 137.0)">E2</text>
+<line x1="96.1" y1="132.0" x2="96.1" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="96.1" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 96.1 137.0)">E3</text>
+<line x1="182.8" y1="132.0" x2="182.8" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="182.8" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 182.8 137.0)">E4</text>
+<line x1="208.1" y1="132.0" x2="208.1" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="208.1" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 208.1 137.0)">E5</text>
+<line x1="263.7" y1="132.0" x2="263.7" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="263.7" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 263.7 137.0)">E6</text>
+<line x1="303.6" y1="132.0" x2="303.6" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="303.6" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 303.6 137.0)">E7</text>
+<line x1="366.0" y1="132.0" x2="366.0" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="366.0" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 366.0 137.0)">E8</text>
+<line x1="412.7" y1="132.0" x2="412.7" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="412.7" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 412.7 137.0)">E9</text>
+<line x1="479.0" y1="132.0" x2="479.0" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="479.0" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 479.0 137.0)">E10</text>
+<line x1="527.7" y1="132.0" x2="527.7" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="527.7" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 527.7 137.0)">E11</text>
+<line x1="567.7" y1="132.0" x2="567.7" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="567.7" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 567.7 137.0)">E12</text>
+<line x1="603.7" y1="132.0" x2="603.7" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="603.7" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 603.7 137.0)">E13</text>
+<line x1="666.1" y1="132.0" x2="666.1" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="666.1" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 666.1 137.0)">E14</text>
+<line x1="706.0" y1="132.0" x2="706.0" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="706.0" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 706.0 137.0)">E15</text>
+<line x1="728.5" y1="132.0" x2="728.5" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="728.5" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 728.5 137.0)">E16</text>
+<line x1="773.3" y1="132.0" x2="773.3" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="773.3" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 773.3 137.0)">E17</text>
+<line x1="808.4" y1="132.0" x2="808.4" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="808.4" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 808.4 137.0)">E18</text>
+<line x1="157.4" y1="114.0" x2="157.4" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="157.4" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">100</text>
+<line x1="254.9" y1="114.0" x2="254.9" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="254.9" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">200</text>
+<line x1="352.3" y1="114.0" x2="352.3" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="352.3" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">300</text>
+<line x1="449.8" y1="114.0" x2="449.8" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="449.8" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">400</text>
+<line x1="547.2" y1="114.0" x2="547.2" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="547.2" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">500</text>
+<line x1="644.7" y1="114.0" x2="644.7" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="644.7" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">600</text>
+<line x1="742.1" y1="114.0" x2="742.1" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="742.1" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">700</text>
+<line x1="839.5" y1="114.0" x2="839.5" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="839.5" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">800</text>
+<circle cx="60" cy="167.0" r="4" fill="#2878b5"/><text x="70" y="172.0" font-family="sans-serif" font-size="12">fully retained</text>
+<circle cx="180" cy="167.0" r="4" fill="#f2a93b"/><text x="190" y="172.0" font-family="sans-serif" font-size="12">truncated</text>
+<circle cx="275" cy="167.0" r="4" fill="#777777"/><text x="285" y="172.0" font-family="sans-serif" font-size="12">fully lost</text>
+<circle cx="365" cy="167.0" r="4" fill="white" stroke="#d62728" stroke-width="1.5"/><text x="375" y="172.0" font-family="sans-serif" font-size="12">reference discrepancy</text>
+<rect x="60" y="180.0" width="12" height="10" fill="#62b36f" opacity="0.55"/><text x="80" y="189.0" font-family="sans-serif" font-size="12">configured key-domain span (name/range labeled above; a second or later configured domain gets its own distinct shade)</text>
+</svg>

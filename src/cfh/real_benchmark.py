@@ -10,6 +10,7 @@ import subprocess
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Any
 
 import pandas as pd
 import requests
@@ -39,6 +40,10 @@ from cfh.mapping.transcript_source import resolve_breakpoint_protein_position
 from cfh.model.algorithm_result import AlgorithmResult
 from cfh.model.fusion_event import FusionEvent
 from cfh.model.fusion_feature import FusionFeature
+from cfh.normalization.alteration_normalizer import (
+    normalize_discrete_copy_number,
+    normalize_mutations,
+)
 from cfh.normalization.event_normalizer import normalize
 from cfh.orchestrator.run import run_algorithms
 from cfh.reporting.domain_names import (
@@ -47,11 +52,13 @@ from cfh.reporting.domain_names import (
     format_domain_names,
 )
 from cfh.reporting.exon_labels import exon_label_for_protein_position
+from cfh.reporting.expression_association_text import expression_association_sentence
 from cfh.reporting.fusion_schematic import (
     render_fusion_schematic_svg,
     render_intragenic_deletion_schematic_svg,
     render_position_axis_svg,
 )
+from cfh.reporting.mutual_exclusivity_text import mutual_exclusivity_report_lines
 from cfh.reporting.palette import (
     AXIS_COLOR,
     BREAKPOINT_COLOR,
@@ -63,8 +70,9 @@ from cfh.reporting.palette import (
     deterministic_color,
 )
 from cfh.reporting.pdf import render_pdf_report
+from cfh.reporting.svg_utils import escape_xml_text
 from cfh.stats.breakpoint_tests import build_frame_domain_contingency_table
-from cfh.studies.registry import load_study_config
+from cfh.studies.registry import StudyConfig, load_study_config
 
 _DELETION_EVENT_INFO_PATTERN = re.compile(
     r"deletion of (\d+) exons?\s*:\s*(in frame|out of frame)", re.IGNORECASE
@@ -479,10 +487,12 @@ def analyze_structural_variant_calls_with_config(
     study_id: str,
     *,
     molecular_profile_id: str | None = None,
+    clinical_df: pd.DataFrame | None = None,
     genome_nexus_client: GenomeNexusClient | None = None,
     n_permutations: int = 1_000,
     algorithm_names: list[str] | None = None,
     algorithm_params: dict[str, dict] | None = None,
+    extra_warnings: list[str] | None = None,
 ) -> RealBenchmarkRun:
     """Normalize and analyze already-fetched cBioPortal SV API objects
     against an already-resolved ``GeneConfig``.
@@ -499,8 +509,13 @@ def analyze_structural_variant_calls_with_config(
     ``expected_retained_exon_hint``, and ``gene_pair``.
 
     ``algorithm_params`` lets a caller pass through additional per-algorithm
-    parameters (e.g. adaptive-permutation knobs) merged under each
-    algorithm's existing defaults below.
+    parameters (e.g. adaptive-permutation knobs, or the
+    ``mutation_cooccurrence`` live-fetch data assembled by
+    :func:`run_real_benchmark`) merged under each algorithm's existing
+    defaults below. ``extra_warnings`` lets a caller (e.g. a live-fetch step
+    that happened before this function was called) seed the returned run's
+    ``warnings`` with messages of its own -- both default to ``None``/empty
+    and change nothing for a caller that doesn't pass them.
     """
     if n_permutations <= 0:
         raise RealBenchmarkInputError("n_permutations must be positive")
@@ -514,14 +529,22 @@ def analyze_structural_variant_calls_with_config(
     client = genome_nexus_client or GenomeNexusClient()
 
     raw = cbioportal_api.structural_variants_to_dataframe(calls)
-    normalized = normalize(raw, None, study_id)
+    # Restrict enrichment to annotations: patient IDs/panel metadata must not
+    # change the existing statistical inputs or grouping.
+    clinical_annotations = None
+    if clinical_df is not None:
+        clinical_annotations = clinical_df.reindex(
+            columns=["Sample_id", "Tumor_type", "Oncotree_code"]
+        ).astype(object)
+        clinical_annotations = clinical_annotations.fillna("")
+    normalized = normalize(raw, clinical_annotations, study_id)
     selected = [
         (row.to_dict(), event)
         for (_, row), event in zip(raw.iterrows(), normalized, strict=True)
         if _is_target_protein_fusion(event, config.gene_symbol)
     ]
 
-    warnings: list[str] = []
+    warnings: list[str] = list(extra_warnings or [])
     target_canonical = None
     needs_domain_lookup = bool(config.key_domains or config.disruption_required_domains)
     if selected and needs_domain_lookup:
@@ -675,6 +698,8 @@ def analyze_structural_variant_calls_with_config(
                 "event_id": event.Event_id,
                 "sample_id": event.Sample_id,
                 "patient_id": event.Patient_id,
+                "tumor_type": event.Tumor_type,
+                "oncotree_code": event.Oncotree_code,
                 "fusion_name": event.Fusion_name,
                 "partner_gene": _partner(event, config.gene_symbol),
                 "frame_status": event.Frame_status,
@@ -920,9 +945,12 @@ def analyze_structural_variant_calls(
     study_id: str,
     *,
     molecular_profile_id: str | None = None,
+    clinical_df: pd.DataFrame | None = None,
     genome_nexus_client: GenomeNexusClient | None = None,
     n_permutations: int = 1_000,
     algorithm_names: list[str] | None = None,
+    algorithm_params: dict[str, dict] | None = None,
+    extra_warnings: list[str] | None = None,
 ) -> RealBenchmarkRun:
     """Normalize and analyze already-fetched cBioPortal SV API objects.
 
@@ -937,10 +965,140 @@ def analyze_structural_variant_calls(
         config,
         study_id,
         molecular_profile_id=molecular_profile_id,
+        clinical_df=clinical_df,
         genome_nexus_client=genome_nexus_client,
         n_permutations=n_permutations,
         algorithm_names=algorithm_names,
+        algorithm_params=algorithm_params,
+        extra_warnings=extra_warnings,
     )
+
+
+def _fetch_mutual_exclusivity_params(
+    config: GeneConfig, study_id: str, study_config: StudyConfig | None
+) -> tuple[dict[str, dict] | None, list[str]]:
+    """Best-effort live fetch of the comparator alteration + cohort-sample-
+    universe data ``mutation_cooccurrence`` needs, for a gene that opts in
+    via ``GeneConfig.mutual_exclusivity_targets``.
+
+    Never raises: a network or lookup failure here only produces a warning
+    and (for a target it applies to) fewer comparator_alterations -- this
+    evidence layer is additive, and must never take down an otherwise
+    successful domain-retention benchmark run over a failure fetching its
+    own, separate data.
+    """
+    warnings: list[str] = []
+    sample_list_id = (
+        study_config.all_sample_list_id(study_id) if study_config else f"{study_id}_all"
+    )
+    try:
+        cohort_sample_ids = cbioportal_api.fetch_sample_list_ids(sample_list_id)
+    except requests.RequestException as exc:
+        warnings.append(
+            f"Could not fetch cohort sample universe {sample_list_id!r} for "
+            f"mutation_cooccurrence: {type(exc).__name__}: {exc}. Co-occurrence/"
+            "mutual-exclusivity analysis was skipped for this run."
+        )
+        return None, warnings
+
+    comparator_alterations: list[dict] = []
+    for target in config.mutual_exclusivity_targets:
+        if target.entrez_gene_id is None:
+            warnings.append(
+                f"mutual_exclusivity_targets entry for {target.gene} has no "
+                "entrez_gene_id configured; it cannot be live-fetched and was skipped."
+            )
+            continue
+        try:
+            if target.alteration_type == "point_mutation":
+                mutation_profile_id = (
+                    study_config.mutation_profile_id(study_id)
+                    if study_config
+                    else f"{study_id}_mutations"
+                )
+                calls = cbioportal_api.fetch_mutations(
+                    [target.entrez_gene_id], [mutation_profile_id]
+                )
+                events, row_warnings = normalize_mutations(calls, target.gene, study_id)
+            elif target.alteration_type.startswith("cna_"):
+                cna_profile_id = (
+                    study_config.discrete_cna_profile_id(study_id)
+                    if study_config
+                    else f"{study_id}_cna"
+                )
+                calls = cbioportal_api.fetch_discrete_copy_number(
+                    [target.entrez_gene_id], cna_profile_id, sample_list_id
+                )
+                events, row_warnings = normalize_discrete_copy_number(calls, target.gene, study_id)
+            else:
+                warnings.append(
+                    "Unrecognized mutual_exclusivity_targets alteration_type "
+                    f"{target.alteration_type!r} for {target.gene}; skipped."
+                )
+                continue
+        except requests.RequestException as exc:
+            warnings.append(
+                f"Could not fetch {target.alteration_type} data for {target.gene} "
+                f"(mutation_cooccurrence comparator): {type(exc).__name__}: {exc}."
+            )
+            continue
+        warnings.extend(row_warnings)
+        comparator_alterations.extend(event.model_dump() for event in events)
+
+    return (
+        {
+            "mutation_cooccurrence": {
+                "cohort_sample_ids": cohort_sample_ids,
+                "comparator_alterations": comparator_alterations,
+            }
+        },
+        warnings,
+    )
+
+
+def _fetch_expression_association_params(
+    config: GeneConfig, study_config: StudyConfig | None, study_id: str
+) -> tuple[dict[str, Any], str | None]:
+    """Best-effort live mRNA-expression fetch feeding the
+    ``expression_association`` algorithm.
+
+    Returns an empty params dict (never a crash) when this cohort has no
+    configured mRNA-expression molecular profile at all -- e.g. a targeted
+    DNA panel like ``msk_impact_50k_2026``, which carries no
+    ``MRNA_EXPRESSION`` profile in the first place, so
+    ``load_study_config`` returns ``None`` for it and this never even
+    attempts a request. A transient network failure fetching an
+    otherwise-configured profile degrades the same way, surfaced as a
+    warning rather than a raised exception, since expression-association
+    evidence is optional corroborating evidence, not required for the run.
+    """
+    if study_config is None:
+        return {}, None
+    profile_id = study_config.mrna_expression_profile_id(study_id)
+    if profile_id is None:
+        return {}, None
+    try:
+        records = cbioportal_api.fetch_molecular_data(
+            [config.entrez_gene_id],
+            profile_id,
+            sample_list_id=f"{study_id}_all",
+        )
+    except requests.RequestException as exc:
+        return {}, (
+            f"mRNA-expression fetch failed for {config.gene_symbol} in {profile_id}: "
+            f"{type(exc).__name__}: {exc}. expression_association analysis was skipped."
+        )
+    expression_by_sample = cbioportal_api.molecular_data_to_expression_by_sample(records)
+    if not expression_by_sample:
+        return {}, (
+            f"No mRNA-expression records were returned for {config.gene_symbol} from "
+            f"{profile_id}; expression_association analysis was skipped."
+        )
+    return {
+        "expression_by_sample": expression_by_sample,
+        "cohort_sample_ids": list(expression_by_sample.keys()),
+        "expression_field": "mRNA expression z-score",
+    }, None
 
 
 def run_real_benchmark(
@@ -949,8 +1107,17 @@ def run_real_benchmark(
     *,
     n_permutations: int = 1_000,
     algorithm_names: list[str] | None = None,
+    algorithm_params: dict[str, dict] | None = None,
 ) -> RealBenchmarkRun:
-    """Fetch and analyze a gene's structural variants from cBioPortal."""
+    """Fetch and analyze a gene's structural variants from cBioPortal.
+
+    When the resolved gene config opts into ``mutual_exclusivity_targets``,
+    this also live-fetches the comparator alteration(s) and the cohort's
+    full sample universe (see :func:`_fetch_mutual_exclusivity_params`) and
+    passes them through to the ``mutation_cooccurrence`` algorithm -- a
+    gene that doesn't configure this makes no additional network calls and
+    is completely unaffected.
+    """
     config = _load_benchmark_config(gene_symbol)
     study_config = load_study_config(study_id)
     profile_id = (
@@ -963,6 +1130,21 @@ def run_real_benchmark(
             study_config.genome_nexus_base_url if study_config else "https://www.genomenexus.org"
         )
     )
+    caller_algorithm_params: dict[str, dict] = {
+        name: dict(value) for name, value in (algorithm_params or {}).items()
+    }
+    extra_warnings: list[str] = []
+    if config.mutual_exclusivity_targets:
+        mutual_exclusivity_params, fetch_warnings = _fetch_mutual_exclusivity_params(
+            config, study_id, study_config
+        )
+        extra_warnings.extend(fetch_warnings)
+        if mutual_exclusivity_params:
+            for name, value in mutual_exclusivity_params.items():
+                caller_algorithm_params[name] = {
+                    **value,
+                    **caller_algorithm_params.get(name, {}),
+                }
     try:
         calls = cbioportal_api.fetch_structural_variants(
             [config.entrez_gene_id],
@@ -974,15 +1156,37 @@ def run_real_benchmark(
             f"{profile_id}: {exc}. Check the study ID, network access, and "
             "https://www.cbioportal.org availability, then retry."
         ) from exc
-    return analyze_structural_variant_calls(
+
+    resolved_algorithm_params: dict[str, dict] = dict(caller_algorithm_params)
+    expression_params, expression_warning = _fetch_expression_association_params(
+        config, study_config, study_id
+    )
+    if expression_params:
+        resolved_algorithm_params["expression_association"] = {
+            **expression_params,
+            **resolved_algorithm_params.get("expression_association", {}),
+        }
+
+    run = analyze_structural_variant_calls(
         calls,
         gene_symbol,
         study_id,
         molecular_profile_id=profile_id,
+        clinical_df=cbioportal_api.fetch_sample_tumor_types(
+            study_id, [call["sampleId"] for call in calls if call.get("sampleId")]
+        ),
         genome_nexus_client=genome_nexus_client,
         n_permutations=n_permutations,
         algorithm_names=algorithm_names,
+        algorithm_params=resolved_algorithm_params,
+        extra_warnings=extra_warnings,
     )
+    if expression_warning:
+        run.warnings.append(expression_warning)
+    run.endpoints.append(
+        f"{cbioportal_api.DEFAULT_BASE_URL}/studies/{study_id}/clinical-data/fetch"
+    )
+    return run
 
 
 def run_analysis(
@@ -1094,6 +1298,14 @@ def markdown_summary(
     )
     if retention_interpretation or disruption_interpretation:
         lines.append("")
+    cooccurrence_result = results_by_name.get("mutation_cooccurrence")
+    cooccurrence_lines = mutual_exclusivity_report_lines(
+        cooccurrence_result.model_dump(mode="json") if cooccurrence_result else None,
+        run.gene_symbol,
+    )
+    if cooccurrence_lines:
+        lines.extend(cooccurrence_lines)
+        lines.append("")
     lines.extend(
         [
             "### Domain retention and discrepancies",
@@ -1186,6 +1398,15 @@ def markdown_summary(
             f"{top['Partner_gene']} ({top['Event_count']} events), "
             f"{top['Composite_score']:.6g}."
         )
+    expression_result = results_by_name.get("expression_association")
+    if expression_result is not None:
+        expression_sentence = expression_association_sentence(
+            run.gene_symbol, expression_result.Summary
+        )
+        if expression_sentence:
+            lines.append(f"- Expression association: {expression_sentence}")
+        elif expression_result.Warnings:
+            lines.append(f"- Expression association: {expression_result.Warnings[0]}")
     lines.extend(
         [
             "",
@@ -1469,6 +1690,7 @@ def _domain_track_svg(run: RealBenchmarkRun, outlier_ids: set[str]) -> str:
             continue
         fraction = row.get("domain_retained_fraction")
         status = row.get("domain_status")
+        is_outlier = row["event_id"] in outlier_ids
         # `domain_is_truncated` is derived as exactly `0.0 < fraction < 1.0`
         # (cfh.mapping.feature_mapper.calculate_domain_retention), so a
         # fraction strictly between 0 and 1 always implies truncated and
@@ -1476,10 +1698,13 @@ def _domain_track_svg(run: RealBenchmarkRun, outlier_ids: set[str]) -> str:
         # truncated" case to separately color.
         if row.get("domain_is_truncated") or status == "disrupted":
             color = TRUNCATED_COLOR
+            status_word = "truncated"
         elif fraction == 0.0 or status == "lost":
             color = LOST_COLOR
+            status_word = "lost"
         elif fraction == 1.0 or status == "retained":
             color = RETAINED_COLOR
+            status_word = "retained"
         else:
             # domain_status == "unknown": no resolvable domain/breakpoint
             # coordinates for this event's target domain (see
@@ -1491,12 +1716,22 @@ def _domain_track_svg(run: RealBenchmarkRun, outlier_ids: set[str]) -> str:
             # a dot instead of implying a retention outcome that was never
             # actually determined.
             continue
-        stroke = BREAKPOINT_COLOR if row["event_id"] in outlier_ids else "none"
-        stroke_width = "1.5" if row["event_id"] in outlier_ids else "0"
+        stroke = BREAKPOINT_COLOR if is_outlier else "none"
+        stroke_width = "1.5" if is_outlier else "0"
         y = dots_top + (index % 5) * 7
+        title_parts = [f"event {row['event_id']}"]
+        if row.get("sample_id"):
+            title_parts.append(f"sample {row['sample_id']}")
+        if row.get("partner_gene"):
+            title_parts.append(f"partner {row['partner_gene']}")
+        title_parts.append(f"breakpoint aa {position}")
+        title_parts.append(f"domain {status_word}")
+        if is_outlier:
+            title_parts.append("reference discrepancy")
+        title = escape_xml_text("; ".join(title_parts))
         dots.append(
             f'<circle cx="{axis_left + position * scale:.1f}" cy="{y:.1f}" r="3" fill="{color}" '
-            f'stroke="{stroke}" stroke-width="{stroke_width}"/>'
+            f'stroke="{stroke}" stroke-width="{stroke_width}"><title>{title}</title></circle>'
         )
     dots_bottom = dots_top + 4 * 7 + 3
 
@@ -1738,11 +1973,28 @@ def write_outputs(
         paths["intragenic_deletion_svg"] = intragenic_deletion_svg
     if pdf:
         pdf_path = destination / "report.pdf"
-        render_pdf_report(
-            payload,
-            pdf_path,
-            results_tsv_path=tsv_path,
-            visualizations_dir=visualization_dir,
-        )
-        paths["pdf"] = pdf_path
+        try:
+            render_pdf_report(
+                payload,
+                pdf_path,
+                results_tsv_path=tsv_path,
+                visualizations_dir=visualization_dir,
+            )
+        except Exception as exc:
+            # report.pdf is a convenience rendering of data already fully
+            # captured in results.json/results.tsv/report.md -- a failure
+            # here (e.g. a reportlab table-layout edge case for a
+            # many-domain gene's wide per-event table) must not take down
+            # an otherwise-successful benchmark run, especially inside a
+            # genome-wide cohort scan where one gene's PDF failing would
+            # otherwise abort every other gene's already-completed results.
+            run.warnings.append(
+                f"report.pdf could not be rendered ({type(exc).__name__}: {exc}); "
+                "all other outputs (results.json/results.tsv/report.md) were written "
+                "successfully and are unaffected."
+            )
+            if pdf_path.exists():
+                pdf_path.unlink()
+        else:
+            paths["pdf"] = pdf_path
     return paths

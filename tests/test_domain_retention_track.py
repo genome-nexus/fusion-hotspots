@@ -11,6 +11,7 @@ drops a label (as the pre-fix version of this renderer did) is caught.
 from __future__ import annotations
 
 import re
+import xml.etree.ElementTree as ET
 from types import SimpleNamespace
 
 from cfh.real_benchmark import _domain_track_svg
@@ -42,13 +43,24 @@ def _gene_track(*, domains=None, protein_length=766):
     }
 
 
-def _row(event_id, position, *, status="retained", fraction=1.0, truncated=False):
+def _row(
+    event_id,
+    position,
+    *,
+    status="retained",
+    fraction=1.0,
+    truncated=False,
+    sample_id=None,
+    partner_gene=None,
+):
     return {
         "event_id": event_id,
         "breakpoint_protein_position": position,
         "domain_status": status,
         "domain_retained_fraction": fraction,
         "domain_is_truncated": truncated,
+        "sample_id": sample_id,
+        "partner_gene": partner_gene,
     }
 
 
@@ -159,3 +171,76 @@ def test_outlier_events_keep_reference_discrepancy_stroke():
     )
     svg = _domain_track_svg(run, {"E1"})
     assert 'stroke="#d62728" stroke-width="1.5"' in svg
+
+
+# --- <title> tooltips --------------------------------------------------------
+
+_SVG_NS = "{http://www.w3.org/2000/svg}"
+
+
+def _title_texts(svg: str) -> list[str]:
+    """Parse ``svg`` as real XML (raising ``ParseError`` if any embedded
+    text was left unescaped) and return every ``<title>`` element's text."""
+    root = ET.fromstring(svg)
+    return [el.text or "" for el in root.iter(f"{_SVG_NS}title")]
+
+
+def test_dot_title_carries_event_sample_partner_position_and_status():
+    run = _run(
+        summary={"domain_accession": "PF07714", "domain_start_aa": 458, "domain_end_aa": 712},
+        rows=[_row("E1", 400, status="retained", sample_id="S1", partner_gene="AGK")],
+    )
+    svg = _domain_track_svg(run, set())
+    titles = _title_texts(svg)
+    assert any(
+        "event E1" in t
+        and "sample S1" in t
+        and "partner AGK" in t
+        and "breakpoint aa 400" in t
+        and "domain retained" in t
+        for t in titles
+    )
+
+
+def test_dot_title_notes_reference_discrepancy_for_outlier_events():
+    run = _run(
+        summary={"domain_accession": "PF07714", "domain_start_aa": 458, "domain_end_aa": 712},
+        rows=[_row("E1", 400, sample_id="S1")],
+    )
+    svg = _domain_track_svg(run, {"E1"})
+    titles = _title_texts(svg)
+    assert any("reference discrepancy" in t for t in titles)
+    svg_no_outlier = _domain_track_svg(run, set())
+    titles_no_outlier = _title_texts(svg_no_outlier)
+    assert not any("reference discrepancy" in t for t in titles_no_outlier)
+
+
+def test_dot_title_reflects_truncated_and_lost_status():
+    run = _run(
+        summary={"domain_accession": "PF07714", "domain_start_aa": 458, "domain_end_aa": 712},
+        rows=[
+            _row("E1", 400, status="disrupted", truncated=True, fraction=0.5, sample_id="S1"),
+            _row("E2", 420, status="lost", fraction=0.0, sample_id="S2"),
+        ],
+    )
+    svg = _domain_track_svg(run, set())
+    titles = _title_texts(svg)
+    assert any("event E1" in t and "domain truncated" in t for t in titles)
+    assert any("event E2" in t and "domain lost" in t for t in titles)
+
+
+def test_dot_title_round_trips_xml_unsafe_sample_id():
+    """A sample ID with XML-significant characters must be escaped in the
+    tooltip -- otherwise the whole SVG document would not be well-formed
+    XML at all. ``_title_texts`` parses the rendered SVG with a real XML
+    parser, so an unescaped ``&``/``<`` here raises
+    ``xml.etree.ElementTree.ParseError`` rather than just looking wrong.
+    """
+    unsafe_sample_id = "S&1<2>samp"
+    run = _run(
+        summary={"domain_accession": "PF07714", "domain_start_aa": 458, "domain_end_aa": 712},
+        rows=[_row("E1", 400, sample_id=unsafe_sample_id)],
+    )
+    svg = _domain_track_svg(run, set())
+    titles = _title_texts(svg)
+    assert any(unsafe_sample_id in t for t in titles)

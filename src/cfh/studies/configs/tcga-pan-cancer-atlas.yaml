@@ -34,3 +34,5 @@ study_ids:
 structural_variant_profile_template: "{study_id}_structural_variants"
 # PanCancer Atlas fusion breakpoints align to GRCh38 transcript coordinates.
 genome_nexus_base_url: https://grch38.genomenexus.org
+# Per-gene mRNA expression z-scores relative to diploid samples (RNA Seq V2 RSEM).
+mrna_expression_profile_template: "{study_id}_rna_seq_v2_mrna_median_Zscores"

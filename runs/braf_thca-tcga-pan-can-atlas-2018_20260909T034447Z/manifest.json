@@ -1,0 +1,20 @@
+{
+  "gene": "BRAF",
+  "study_id": "thca_tcga_pan_can_atlas_2018",
+  "endpoints_used": [
+    "https://www.cbioportal.org/api/structural-variant/fetch",
+    "https://grch38.genomenexus.org/ensembl/canonical-transcript/hgnc/BRAF",
+    "https://www.cbioportal.org/api/studies/thca_tcga_pan_can_atlas_2018/clinical-data/fetch"
+  ],
+  "git_sha": "3a4bed77a1c780a8d118913f58ccd1b9bb4be0f3",
+  "cli_args": [
+    "analyze",
+    "BRAF",
+    "thca_tcga_pan_can_atlas_2018",
+    "--output-dir",
+    "runs",
+    "--n-permutations",
+    "1000"
+  ],
+  "timestamp": "2026-09-09T03:44:47.821733+00:00"
+}
