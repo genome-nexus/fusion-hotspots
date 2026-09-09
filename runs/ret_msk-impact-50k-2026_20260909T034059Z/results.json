@@ -193,9 +193,7 @@
       }
     ]
   },
-  "warnings": [
-    "report.pdf could not be rendered (reportlab LayoutError: a per-event results table with this many columns and rows occasionally hits a pagination edge case in reportlab's Table splitting; see PR discussion). All other outputs (results.json/results.tsv/report.md/visualizations) were generated successfully and are unaffected."
-  ],
+  "warnings": [],
   "events": [
     {
       "event_id": "EVT-P-0051781-T03-IM6-3",
