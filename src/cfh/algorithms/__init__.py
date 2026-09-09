@@ -12,6 +12,7 @@ from cfh.algorithms.domain_retention import DomainRetentionAlgorithm
 from cfh.algorithms.exon_retention import ExonRetentionAnalysis
 from cfh.algorithms.expression_association import ExpressionAssociationAlgorithm
 from cfh.algorithms.frequency import FrequencyAnalysis
+from cfh.algorithms.genomic_position_recurrence import GenomicPositionRecurrenceAlgorithm
 from cfh.algorithms.joint_partner import JointPartnerMode
 from cfh.algorithms.mutation_cooccurrence import MutationCooccurrenceAlgorithm
 from cfh.algorithms.window_detection import WindowDetectionAlgorithm
@@ -25,6 +26,7 @@ __all__ = [
     "ExonRetentionAnalysis",
     "ExpressionAssociationAlgorithm",
     "FrequencyAnalysis",
+    "GenomicPositionRecurrenceAlgorithm",
     "JointPartnerMode",
     "MutationCooccurrenceAlgorithm",
     "WindowDetectionAlgorithm",

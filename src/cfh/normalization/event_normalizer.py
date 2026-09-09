@@ -180,6 +180,24 @@ def _as_int(value: Any) -> int | None:
     return int(numeric)
 
 
+def _as_chromosome(value: Any) -> str | None:
+    """Coerce a raw chromosome/build scalar to a plain string, or ``None``.
+
+    Mirrors :func:`_as_int`'s missing-value handling for a non-numeric
+    field: the row's own ``None``-normalization already catches most cases,
+    but a stray ``NaN`` (e.g. from a DataFrame column upcast) must still
+    become ``None`` rather than the literal string ``"nan"``.
+    """
+    if value is None:
+        return None
+    try:
+        if pd.isna(value):
+            return None
+    except (TypeError, ValueError):
+        pass
+    return str(value)
+
+
 def _clinical_lookup(clinical_df: pd.DataFrame | None) -> dict[str, dict[str, Any]]:
     if clinical_df is None or "Sample_id" not in clinical_df.columns:
         return {}
@@ -265,6 +283,11 @@ def normalize(
                 Patient_id=patient_id,
                 Site1_gene=gene1,
                 Site2_gene=gene2,
+                Site1_chromosome=_as_chromosome(row.get("Site1_Chromosome")),
+                Site1_position=_as_int(row.get("Site1_Position")),
+                Site2_chromosome=_as_chromosome(row.get("Site2_Chromosome")),
+                Site2_position=_as_int(row.get("Site2_Position")),
+                Reference_build=_as_chromosome(row.get("NCBI_Build")),
                 Five_prime_gene=classification["Five_prime_gene"],
                 Three_prime_gene=classification["Three_prime_gene"],
                 Fusion_name=classification["Fusion_name"],
