@@ -115,6 +115,51 @@ def test_eml4_alk_and_a_synthetic_tmprss2_erg_pair_leave_disruption_domains_unse
     assert tmprss2_erg.disruption_required_domains == []
 
 
+def test_loads_tmprss2_erg_yaml_as_a_curated_gene_pair_config():
+    """TMPRSS2-ERG is a second worked ``gene_pair`` example alongside
+    EML4-ALK, but a genuinely different oncogenic mechanism: a promoter-swap/
+    expression-driven fusion rather than a domain-retention story. The
+    curated config must configure only ``joint_partner_dependency`` (no
+    ``disruption_required_domains``/``key_domains``, which don't apply)."""
+    config = load_gene_config("tmprss2-erg")
+
+    assert isinstance(config, GeneConfig)
+    assert config.gene_symbol is None
+    assert config.gene_pair == ("TMPRSS2", "ERG")
+    assert config.disruption_required_domains == []
+    assert config.key_domains == []
+    assert "joint_partner_dependency" in config.analysis_modes
+    assert config.mechanism_note is not None
+    assert "promoter-swap" in config.mechanism_note.lower()
+    assert "not domain-retention" in config.mechanism_note.lower()
+
+
+def test_loads_erg_yaml_with_live_genome_nexus_identifiers():
+    """ERG is TMPRSS2-ERG's curated single-gene component -- mirroring how
+    EML4-ALK curates only ALK (its 3' partner) -- so the pair benchmark can
+    live-fetch real structural-variant data for the pair (see
+    ``_partner_component_configs``). Curating ERG's real Ets-domain here
+    does not imply domain retention drives the TMPRSS2-ERG *pair*'s
+    oncogenicity -- that config deliberately leaves key_domains unset."""
+    config = load_gene_config("erg")
+
+    assert isinstance(config, GeneConfig)
+    assert config.gene_symbol == "ERG"
+    assert config.canonical_transcript_id == "NM_001136154"
+    assert config.protein_id == "P11308"
+    assert config.entrez_gene_id == 2078
+    assert config.key_domains[0].accession == "PF00178"
+    assert "ets" in config.key_domains[0].name.lower()
+
+
+def test_mechanism_note_defaults_to_none_and_is_opt_in():
+    """Opt-in field: EML4-ALK's real config never sets it, so the field
+    must default to ``None`` rather than requiring every gene_pair config
+    to supply one."""
+    config = load_gene_config("eml4-alk")
+    assert config.mechanism_note is None
+
+
 def test_derive_defaults_uses_most_n_terminal_key_domain_and_complete_pfam_list():
     config = GeneConfig(
         gene_symbol="FAKE",

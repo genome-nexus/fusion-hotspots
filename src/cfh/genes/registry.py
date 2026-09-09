@@ -90,6 +90,13 @@ class GeneConfig(BaseModel):
     algorithm. Empty by default; the algorithm gracefully no-ops for genes
     that don't configure this, the same opt-in pattern as
     ``disruption_required_domains``/``gene_pair``."""
+    mechanism_note: Optional[str] = None
+    """Opt-in free-text description of *why* this fusion is oncogenic, surfaced
+    verbatim in a ``gene_pair`` run's report (see ``_gene_pair_markdown_summary``)
+    so the report never has to guess at or default to a mechanism (e.g.
+    domain-retention) that this gene/pair's algorithm results don't actually
+    support. Left unset by default -- the same opt-in, no-op-when-absent
+    pattern as every other field above."""
 
     @model_validator(mode="after")
     def _validate_config_target(self) -> "GeneConfig":

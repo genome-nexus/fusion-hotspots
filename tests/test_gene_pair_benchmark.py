@@ -54,10 +54,36 @@ def _eml4_alk_call(sample_id, *, partner="EML4", breakpoint=140493152):
     }
 
 
+def _tmprss2_erg_call(sample_id, *, partner="TMPRSS2", breakpoint=140493152):
+    """A protein-fusion SV record with ``partner`` as the 5' gene and ERG
+    as the target/3' gene, mirroring the ``{FIVE:THREE}`` transcript-order
+    annotation real cBioPortal protein-fusion records carry.
+
+    ``breakpoint`` reuses the same value as :func:`_eml4_alk_call`: both
+    mock ``GenomeNexusClient.fetch_canonical_transcript`` to always return
+    the shared BRAF canonical-transcript fixture regardless of which gene
+    is requested (see ``_genome_nexus_client``), so the breakpoint must
+    fall inside *that* fixture's exon locus for the target-locus validation
+    to accept it, whichever gene the test is nominally about.
+    """
+    return {
+        "sampleId": sample_id,
+        "site1HugoSymbol": partner,
+        "site2HugoSymbol": "ERG",
+        "site2Position": breakpoint,
+        "site2EffectOnFrame": "NA",
+        "connectionType": "3to5",
+        "eventInfo": f"Protein Fusion: in frame  {{{partner}:ERG}}",
+    }
+
+
 def test_maybe_load_gene_pair_config_detects_pair_configs_only():
     assert _maybe_load_gene_pair_config("eml4-alk") is not None
     assert _maybe_load_gene_pair_config("EML4-ALK") is not None
+    assert _maybe_load_gene_pair_config("tmprss2-erg") is not None
+    assert _maybe_load_gene_pair_config("TMPRSS2-ERG") is not None
     assert _maybe_load_gene_pair_config("ALK") is None
+    assert _maybe_load_gene_pair_config("ERG") is None
     assert _maybe_load_gene_pair_config("NOT-A-REAL-GENE") is None
 
 
@@ -82,6 +108,17 @@ def test_partner_component_configs_uses_only_the_curated_partner():
     configs = _partner_component_configs(pair_config)
 
     assert [config.gene_symbol for config in configs] == ["ALK"]
+
+
+def test_partner_component_configs_uses_only_the_curated_partner_for_tmprss2_erg():
+    """TMPRSS2-ERG mirrors EML4-ALK's curation shape: only the 3' partner
+    (ERG, the recurrently-hub gene fused to several 5' promoter donors, the
+    same role ALK plays for EML4-ALK) has a curated single-gene config."""
+    pair_config = load_gene_config("tmprss2-erg")
+
+    configs = _partner_component_configs(pair_config)
+
+    assert [config.gene_symbol for config in configs] == ["ERG"]
 
 
 def test_partner_component_configs_raises_actionable_error_with_no_curated_partner():
@@ -118,6 +155,47 @@ def test_gene_pair_benchmark_pools_component_events_and_computes_enrichment(
     # Events are deduplicated by Event_id when pooling component runs.
     assert len({event.Event_id for event in run.events}) == 10
     assert run.results[0].Algorithm == "joint_partner"
+    # EML4-ALK's real config sets no mechanism_note, so the summary must not
+    # gain one -- the field is purely opt-in/additive.
+    assert "mechanism_note" not in run.summary
+
+
+def test_gene_pair_benchmark_pools_component_events_for_tmprss2_erg_and_surfaces_mechanism_note(
+    genome_nexus_canonical_transcript_fixture_path, monkeypatch
+):
+    """TMPRSS2-ERG mirrors the EML4-ALK pooling/enrichment mechanics exactly
+    -- JointPartnerMode's co-occurrence machinery is mechanism-agnostic --
+    but, unlike EML4-ALK, its config opts into ``mechanism_note`` so the
+    report can state the promoter-swap mechanism honestly instead of
+    defaulting to (or omitting) domain-retention language."""
+    client = _genome_nexus_client(genome_nexus_canonical_transcript_fixture_path)
+    monkeypatch.setattr(benchmark_module, "GenomeNexusClient", MagicMock(return_value=client))
+    calls = [_tmprss2_erg_call(f"TMPRSS2-{i}") for i in range(8)] + [
+        _tmprss2_erg_call(f"OTHER-{i}", partner="OTHERGENE") for i in range(2)
+    ]
+    monkeypatch.setattr(cbioportal_api, "fetch_structural_variants", MagicMock(return_value=calls))
+    monkeypatch.setattr(
+        cbioportal_api, "fetch_sample_tumor_types", MagicMock(return_value=pd.DataFrame())
+    )
+
+    pair_config = load_gene_config("tmprss2-erg")
+    run = run_gene_pair_benchmark(pair_config, "msk_impact_50k_2026", n_permutations=5)
+
+    assert run.is_gene_pair is True
+    assert run.gene_symbol == "TMPRSS2-ERG"
+    assert run.summary["gene_pair"] == ["TMPRSS2", "ERG"]
+    assert run.summary["component_genes"] == ["ERG"]
+    assert run.summary["eligible_event_count"] == 10
+    assert run.summary["observed_count"] == 8
+    assert run.summary["fisher_p_value"] is not None
+    assert run.results[0].Algorithm == "joint_partner"
+
+    assert run.summary["mechanism_note"] == pair_config.mechanism_note
+    assert "promoter-swap" in run.summary["mechanism_note"].lower()
+
+    report = benchmark_module._gene_pair_markdown_summary(run)
+    assert "## Mechanism" in report
+    assert pair_config.mechanism_note in report
 
 
 def test_run_real_benchmark_routes_a_gene_pair_symbol_automatically(

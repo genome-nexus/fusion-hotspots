@@ -1,0 +1,20 @@
+{
+  "gene": "TMPRSS2-ERG",
+  "study_id": "msk_impact_50k_2026",
+  "endpoints_used": [
+    "https://www.cbioportal.org/api/structural-variant/fetch",
+    "https://www.genomenexus.org/ensembl/canonical-transcript/hgnc/ERG",
+    "https://www.cbioportal.org/api/studies/msk_impact_50k_2026/clinical-data/fetch"
+  ],
+  "git_sha": "9614cb65fa7de894b1a8f1075660039e9420e486",
+  "cli_args": [
+    "analyze",
+    "TMPRSS2-ERG",
+    "msk_impact_50k_2026",
+    "--output-dir",
+    "runs",
+    "--n-permutations",
+    "1000"
+  ],
+  "timestamp": "2026-09-09T21:01:27.874183+00:00"
+}

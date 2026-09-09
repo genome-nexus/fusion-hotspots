@@ -1,0 +1,14 @@
+gene_symbol: ERG
+canonical_transcript_id: NM_001136154
+protein_id: P11308
+entrez_gene_id: 2078
+key_domains:
+  - name: "Ets-domain"
+    source: genome_nexus
+    key: ets
+    accession: PF00178
+disruption_required_domains: []
+expected_retained_exon_hint: null
+analysis_modes:
+  - breakpoint_hotspot
+  - domain_retention

@@ -1,0 +1,17 @@
+gene_pair:
+  - TMPRSS2
+  - ERG
+analysis_modes:
+  - joint_partner_dependency
+  - promoter_swap
+mechanism_note: >-
+  Promoter-swap/expression-driven fusion, not domain-retention: neither
+  TMPRSS2 nor ERG is oncogenic alone. TMPRSS2's androgen-responsive promoter
+  drives ERG overexpression; there is no catalytic/kinase domain whose
+  retention determines oncogenicity here, unlike the domain-retention
+  mechanism BRAF/RET/ALK/NTRK1 (and EML4-ALK) fusions rely on.
+# disruption_required_domains is deliberately left unset (defaults to []):
+# this pair has no N-terminal-disruption mechanism to model, so
+# domain_disruption gracefully no-ops (see
+# test_no_op_for_tmprss2_erg_negative_control and
+# test_eml4_alk_and_a_synthetic_tmprss2_erg_pair_leave_disruption_domains_unset).
