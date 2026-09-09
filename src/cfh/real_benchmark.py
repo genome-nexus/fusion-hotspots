@@ -763,6 +763,7 @@ def analyze_structural_variant_calls_with_config(
     features: list[FusionFeature] = []
     rows: list[dict] = []
     mapping_sensitivity: dict[str, bool | None] = {}
+    genomic_breakpoints: dict[str, dict[str, Any]] = {}
     has_key_domain = bool(config.key_domains)
     target_key = (
         (config.key_domains[0].key or config.key_domains[0].name) if has_key_domain else None
@@ -851,6 +852,20 @@ def analyze_structural_variant_calls_with_config(
         events.append(event)
         features.append(feature)
         mapping_sensitivity[event.Event_id] = mapping.is_intronic_breakpoint
+        # ``breakpoint`` is already locus-validated against this gene's own
+        # canonical-transcript span (see ``_target_breakpoint``), unlike a
+        # raw Site1/Site2 label -- so it, not a label-based guess, is the
+        # genomic position that produced this event's Junction_position_aa,
+        # and the only one safe to feed genomic_position_recurrence.
+        genomic_breakpoints[event.Event_id] = {
+            "chromosome": (
+                event.Site1_chromosome
+                if event.Site1_position == breakpoint
+                else event.Site2_chromosome
+            ),
+            "position": breakpoint,
+            "build": event.Reference_build,
+        }
         domain_detail = (
             (feature.Domain_retention_details or {}).get(target_key) if target_key else None
         )
@@ -968,6 +983,10 @@ def analyze_structural_variant_calls_with_config(
                 "mapping_sensitivity": mapping_sensitivity,
                 **algorithm_params.get("window_detection", {}),
             },
+            "genomic_position_recurrence": {
+                "genomic_breakpoints": genomic_breakpoints,
+                **algorithm_params.get("genomic_position_recurrence", {}),
+            },
             **{
                 name: value
                 for name, value in algorithm_params.items()
@@ -977,6 +996,7 @@ def analyze_structural_variant_calls_with_config(
                     "frequency",
                     "cutpoint_detection",
                     "window_detection",
+                    "genomic_position_recurrence",
                     "domain_retention",
                 }
             },
@@ -1564,6 +1584,17 @@ def markdown_summary(
         lines.append(
             "- Cutpoint detection: not determinable "
             f"({cutpoint.Summary.get('reason') or 'no reason reported'})."
+        )
+    genomic_recurrence = results_by_name.get("genomic_position_recurrence")
+    if genomic_recurrence and genomic_recurrence.Summary.get("determinable"):
+        lines.append(
+            "- Genomic-position recurrence: "
+            f"{genomic_recurrence.Summary['genomic_vs_protein_clustering_note']}"
+        )
+    elif genomic_recurrence:
+        lines.append(
+            "- Genomic-position recurrence: not determinable "
+            f"({genomic_recurrence.Summary.get('reason') or 'no reason reported'})."
         )
     composite = results_by_name.get("composite_score")
     ranking = (composite.Tables or {}).get("composite_evidence_ranking", []) if composite else []
