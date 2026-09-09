@@ -1,3 +1,4 @@
+import csv
 import json
 from unittest.mock import MagicMock
 
@@ -9,7 +10,7 @@ from cfh.mapping.domain_source import ProteinDomain
 from cfh.mapping.feature_mapper import calculate_domain_retention, map_event
 from cfh.model.fusion_event import FusionEvent
 from cfh.model.fusion_feature import FusionFeature
-from conftest import latest_run_dir
+from conftest import RUNS_DIR, latest_run_dir
 
 
 @pytest.mark.parametrize(
@@ -139,77 +140,105 @@ def test_committed_benchmark_binary_results_are_unchanged_with_quantitative_deta
     assert result.Summary["fisher_p_value"] == pytest.approx(expected_p)
 
 
-@pytest.mark.parametrize(
-    ("gene", "bounds", "table", "total_records", "retained_count", "retained_percent", "p"),
-    [
-        (
-            "BRAF",
-            (458, 712),
-            [[142, 21], [9, 6]],
-            179,
-            163,
-            91.06145251396649,
-            0.013367557978153668,
-        ),
-    ],
-)
-def test_verified_live_benchmark_conclusions_are_unchanged(
-    gene, bounds, table, total_records, retained_count, retained_percent, p
-):
-    """Lock the reviewed full-cohort BRAF/RET binary benchmark conclusions."""
+@pytest.mark.parametrize("gene", ["braf", "ret"])
+def test_verified_live_benchmark_conclusions_are_unchanged(gene):
+    """Replay real mapped inputs through domain mapping and the statistical pipeline.
+
+    The committed runs preserve mapped event rows, not the raw API responses or
+    canonical genomic transcripts. This regression therefore starts at the real
+    protein breakpoints; it does not replay ingestion or genomic mapping.
+    """
+    candidates = sorted(RUNS_DIR.glob(f"{gene}_msk-impact-50k-2026_*"))
+    assert candidates, f"Missing committed {gene.upper()} benchmark run"
+    run_dir = candidates[-1]
+    payload = json.loads((run_dir / "results.json").read_text())
+    with (run_dir / "results.tsv").open(newline="") as handle:
+        rows = list(csv.DictReader(handle, delimiter="\t"))
+    assert payload["gene_symbol"] == gene.upper()
+    assert payload["study_id"] == "msk_impact_50k_2026"
+    assert rows
+    assert len(rows) == len(payload["events"])
+    config = load_gene_config(gene)
+    source = MagicMock()
+    source.fetch.return_value = [
+        ProteinDomain(**domain, source="genome_nexus")
+        for domain in payload["gene_track"]["domains"]
+    ]
     events = []
     features = []
-    index = 0
-    for status_index, status in enumerate(("retained", "lost")):
-        for frame_index, frame_status in enumerate(("in-frame", "unknown")):
-            for _ in range(table[status_index][frame_index]):
-                event_id = f"{gene}-{index}"
-                index += 1
-                events.append(
-                    FusionEvent(
-                        Event_id=event_id,
-                        Cohort="verified-live-benchmark",
-                        Frame_status=frame_status,
-                        Is_protein_fusion=True,
-                    )
-                )
-                breakpoint = bounds[0] if status == "retained" else bounds[1] + 1
-                features.append(
-                    FusionFeature(
-                        Event_id=event_id,
-                        Gene=gene,
-                        Role="three_prime",
-                        Junction_position_aa=breakpoint,
-                        Domain_retention_flags={"kinase": status},
-                        Domain_retention_details={
-                            "kinase": calculate_domain_retention(*bounds, breakpoint, "three_prime")
-                        },
-                    )
-                )
-    while len(events) < total_records:
-        events.append(
-            FusionEvent(
-                Event_id=f"{gene}-unmapped-{len(events)}",
-                Cohort="verified-live-benchmark",
-                Frame_status="unknown",
-                Is_protein_fusion=True,
-            )
+    for row, json_row in zip(rows, payload["events"], strict=True):
+        event = FusionEvent(
+            Event_id=row["event_id"],
+            Cohort=payload["study_id"],
+            Sample_id=row["sample_id"],
+            Fusion_name=row["fusion_name"],
+            Frame_status=row["frame_status"],
+            Is_protein_fusion=True,
         )
+        feature = map_event(
+            event,
+            config,
+            role=row["target_role"],
+            junction_position_aa=int(row["breakpoint_protein_position"]),
+            domain_source=source,
+        )
+        # Expected domain calls are outputs only: never feed them into map_event.
+        assert event.Event_id == json_row["event_id"]
+        assert event.Frame_status == json_row["frame_status"]
+        assert feature.Role == json_row["target_role"]
+        assert feature.Junction_position_aa == json_row["breakpoint_protein_position"]
+        assert (
+            feature.Domain_retention_flags["kinase"]
+            == (row["domain_status"])
+            == json_row["domain_status"]
+        )
+        detail = feature.Domain_retention_details["kinase"]
+        assert (
+            detail.Retained_fraction
+            == (float(row["domain_retained_fraction"]))
+            == json_row["domain_retained_fraction"]
+        )
+        assert (
+            detail.Is_truncated
+            == (row["domain_is_truncated"] == "True")
+            == json_row["domain_is_truncated"]
+        )
+        events.append(event)
+        features.append(feature)
 
-    result = DomainRetentionAlgorithm().run(
-        events,
-        features,
-        load_gene_config(gene.lower()),
-        {"seed": 42, "n_permutations": 10},
+    expected = next(
+        result
+        for result in payload["algorithm_results"]
+        if result["Algorithm"] == "domain_retention"
     )
-
-    assert len(events) == total_records
-    assert sum(f.Domain_retention_flags["kinase"] == "retained" for f in features) == (
-        retained_count
+    result = DomainRetentionAlgorithm().run(events, features, config, expected["Parameters"])
+    summary = payload["summary"]
+    assert len(features) == summary["mapped_fusions"]
+    assert sum(event.Frame_status == "in-frame" for event in events) == summary["in_frame_count"]
+    retained = sum(feature.Domain_retention_flags["kinase"] == "retained" for feature in features)
+    assert retained == summary["kinase_retained_count"]
+    # Unmapped records (one in BRAF) are absent from both event artifacts. Keep
+    # the original full-cohort denominator, without inventing an unmapped event.
+    assert 100.0 * retained / summary["total_fusions"] == summary["kinase_retained_percent"]
+    assert (
+        result.Tables["frame_domain_contingency_table"]
+        == (summary["frame_domain_contingency_table"])
+        == expected["Tables"]["frame_domain_contingency_table"]
     )
-    assert retained_count / total_records * 100 == pytest.approx(retained_percent)
-    assert result.Tables["frame_domain_contingency_table"] == table
-    assert result.Summary["fisher_p_value"] == pytest.approx(p)
+    assert (
+        result.Tables["domain_retention_descriptives"]
+        == (expected["Tables"]["domain_retention_descriptives"])
+    )
+    for key in ("fisher_p_value", "fisher_odds_ratio"):
+        assert result.Summary[key] == summary[key] == expected["Summary"][key]
+    assert (
+        result.Summary["observed_in_frame_retention_rate"]
+        == (expected["Summary"]["observed_in_frame_retention_rate"])
+    )
+    # Do not compare permutation p-values: live runs sample genomic breakpoints
+    # using transcripts not persisted here; offline replay resamples observed
+    # protein positions. These are different null models, not rounding error
+    # that a pytest.approx tolerance could legitimately accommodate.
 
 
 def test_corrected_ret_live_artifact_summary():
