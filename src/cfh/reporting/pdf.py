@@ -51,6 +51,22 @@ multi-thousand-point-tall cell that overflows the page layout; the full
 list is still available verbatim in ``results.json``/``results.tsv``, this
 is a display-only summary."""
 
+_MAX_CELL_TEXT_LENGTH = 300
+"""Hard cap on a single table cell's rendered text length, applied to
+every cell regardless of source column. A gene with several configured or
+auto-derived domains (e.g. a multi-domain receptor auto-configured from
+several Pfam hits, vs. a curated single-kinase-domain gene) produces a
+``retained_domains``/``lost_domains`` cell many times longer than a
+single-domain gene's -- and reportlab's Paragraph wrapping in an
+already-narrow multi-column table degrades catastrophically past a
+certain length (observed: a table needing enough page splits for a
+runaway, multi-thousand-point cell height to appear on a later page and
+crash layout entirely, even though the same renderer handles a
+single-domain gene's much larger event count fine). Truncating
+defensively keeps every cell's height bounded regardless of how many
+domains a gene has; the untruncated value is still available verbatim in
+``results.json``/``results.tsv``."""
+
 
 def _format_cell_value(value: object) -> object:
     """Summarize a list/tuple cell value for display; pass everything else through."""
@@ -60,6 +76,13 @@ def _format_cell_value(value: object) -> object:
         shown = ", ".join(str(item) for item in value[:_MAX_LIST_CELL_ITEMS])
         return f"{shown}, ... ({len(value)} total)"
     return value
+
+
+def _truncate_cell_text(text: str) -> str:
+    """Bound a single cell's rendered text length (see ``_MAX_CELL_TEXT_LENGTH``)."""
+    if len(text) <= _MAX_CELL_TEXT_LENGTH:
+        return text
+    return f"{text[:_MAX_CELL_TEXT_LENGTH]}... ({len(text)} chars total)"
 
 
 def _styles() -> dict[str, ParagraphStyle]:
@@ -89,14 +112,33 @@ def _load_svg_drawing(path: Path, max_width: float):
     return drawing
 
 
-def _generic_table_flowable(rows: list[list], styles: dict, header: bool = True) -> Table:
+def _generic_table_flowable(
+    rows: list[list], styles: dict, header: bool = True, *, total_width: float | None = None
+) -> Table:
+    """Build a bordered, striped table of ``Paragraph`` cells.
+
+    ``total_width``, when given, forces every column to the same explicit
+    width (``total_width`` divided evenly) instead of reportlab's default
+    natural-width auto-sizing. A many-column table (e.g. the 24-column
+    per-event results table) mixing several free-text columns can, left to
+    auto-sizing, get a different implicit width distribution on each
+    re-layout pass during pagination -- observed to occasionally produce a
+    pathological, multi-thousand-point cell height and crash layout
+    entirely, for a specific combination of adjacent row heights, even
+    though no single row or cell is individually oversized. An explicit,
+    fixed ``colWidths`" removes that ambiguity: widths can no longer drift
+    between reportlab's wrap and split passes.
+    """
     cell_style = styles["Cell"]
     header_style = styles["CellHeader"]
     formatted = []
     for row_index, row in enumerate(rows):
         style = header_style if header and row_index == 0 else cell_style
-        formatted.append([Paragraph(str(value), style) for value in row])
-    table = Table(formatted, repeatRows=1 if header else 0)
+        formatted.append([Paragraph(_truncate_cell_text(str(value)), style) for value in row])
+    col_widths = None
+    if total_width is not None and formatted:
+        col_widths = [total_width / len(formatted[0])] * len(formatted[0])
+    table = Table(formatted, colWidths=col_widths, repeatRows=1 if header else 0)
     table_style = [
         ("GRID", (0, 0), (-1, -1), 0.4, colors.grey),
         ("VALIGN", (0, 0), (-1, -1), "TOP"),
@@ -110,7 +152,7 @@ def _generic_table_flowable(rows: list[list], styles: dict, header: bool = True)
     return table
 
 
-def _results_tsv_table(tsv_path: Path, styles: dict) -> list:
+def _results_tsv_table(tsv_path: Path, styles: dict, *, total_width: float | None = None) -> list:
     if not tsv_path.exists():
         return []
     with tsv_path.open(newline="") as handle:
@@ -122,7 +164,7 @@ def _results_tsv_table(tsv_path: Path, styles: dict) -> list:
     body_rows = rows[1:]
     truncated = len(body_rows) > _MAX_TABLE_ROWS
     display_rows = [rows[0]] + body_rows[:_MAX_TABLE_ROWS]
-    flowables.append(_generic_table_flowable(display_rows, styles))
+    flowables.append(_generic_table_flowable(display_rows, styles, total_width=total_width))
     if truncated:
         flowables.append(
             Paragraph(
@@ -271,7 +313,11 @@ def render_pdf_report(
     story.append(PageBreak())
     story.append(Paragraph("Tables", styles["Heading1"]))
     story.extend(_algorithm_tables(payload, styles))
-    story.extend(_results_tsv_table(tsv_path, styles))
+    story.extend(
+        _results_tsv_table(
+            tsv_path, styles, total_width=landscape_size[0] - doc.leftMargin - doc.rightMargin
+        )
+    )
 
     story.append(NextPageTemplate(_PORTRAIT_TEMPLATE))
     story.append(PageBreak())

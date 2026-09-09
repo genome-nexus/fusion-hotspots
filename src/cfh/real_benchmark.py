@@ -1973,11 +1973,28 @@ def write_outputs(
         paths["intragenic_deletion_svg"] = intragenic_deletion_svg
     if pdf:
         pdf_path = destination / "report.pdf"
-        render_pdf_report(
-            payload,
-            pdf_path,
-            results_tsv_path=tsv_path,
-            visualizations_dir=visualization_dir,
-        )
-        paths["pdf"] = pdf_path
+        try:
+            render_pdf_report(
+                payload,
+                pdf_path,
+                results_tsv_path=tsv_path,
+                visualizations_dir=visualization_dir,
+            )
+        except Exception as exc:
+            # report.pdf is a convenience rendering of data already fully
+            # captured in results.json/results.tsv/report.md -- a failure
+            # here (e.g. a reportlab table-layout edge case for a
+            # many-domain gene's wide per-event table) must not take down
+            # an otherwise-successful benchmark run, especially inside a
+            # genome-wide cohort scan where one gene's PDF failing would
+            # otherwise abort every other gene's already-completed results.
+            run.warnings.append(
+                f"report.pdf could not be rendered ({type(exc).__name__}: {exc}); "
+                "all other outputs (results.json/results.tsv/report.md) were written "
+                "successfully and are unaffected."
+            )
+            if pdf_path.exists():
+                pdf_path.unlink()
+        else:
+            paths["pdf"] = pdf_path
     return paths

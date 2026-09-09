@@ -1,0 +1,15 @@
+{
+  "gene": "KDM5A",
+  "study_id": "msk_impact_50k_2026",
+  "endpoints_used": [
+    "https://www.cbioportal.org/api/structural-variant/fetch",
+    "https://www.genomenexus.org/ensembl/canonical-transcript/hgnc/KDM5A",
+    "https://www.cbioportal.org/api/studies/msk_impact_50k_2026/clinical-data/fetch"
+  ],
+  "git_sha": "3a4bed77a1c780a8d118913f58ccd1b9bb4be0f3",
+  "cli_args": [
+    "cohort-scan",
+    "msk_impact_50k_2026"
+  ],
+  "timestamp": "2026-09-09T04:15:46.936191+00:00"
+}

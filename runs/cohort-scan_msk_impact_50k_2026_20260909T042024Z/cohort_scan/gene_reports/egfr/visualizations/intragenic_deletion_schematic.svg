@@ -1,0 +1,522 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="458" viewBox="0 0 1000 458">
+<rect width="1000" height="458" fill="white"/>
+<text x="60" y="24" font-family="sans-serif" font-size="15">EGFR intragenic-deletion schematic</text>
+<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555555">retained N-terminal block → deleted span (plain connector) → resumed C-terminal block</text>
+<rect x="60.0" y="56.0" width="13.9" height="22" fill="#e2e2e2"><title>retained N-terminal block (0-30 aa); EGFR intragenic deletion, 6 exons deleted (in-frame), retained up to aa 30, resumed from aa 297; samples P-0058400-T01-IM6, P-0015194-T02-IM6, P-0015369-T01-IM6, P-0002265-T04-IM5, P-0002647-T02-IM5 (+271 more)</title></rect>
+<line x1="60.5" y1="56.0" x2="60.5" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<rect x="197.5" y="56.0" width="422.5" height="22" fill="#e2e2e2"><title>resumed C-terminal block (297-1210 aa); EGFR intragenic deletion, 6 exons deleted (in-frame), retained up to aa 30, resumed from aa 297; samples P-0058400-T01-IM6, P-0015194-T02-IM6, P-0015369-T01-IM6, P-0002265-T04-IM5, P-0002647-T02-IM5 (+271 more)</title></rect>
+<rect x="197.5" y="56.0" width="19.0" height="22" fill="#f2a93b"><title>Furin-like cysteine rich region truncated (297-338 aa); EGFR intragenic deletion, 6 exons deleted (in-frame), retained up to aa 30, resumed from aa 297; samples P-0058400-T01-IM6, P-0015194-T02-IM6, P-0015369-T01-IM6, P-0002265-T04-IM5, P-0002647-T02-IM5 (+271 more)</title></rect>
+<text x="206.9" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Fur…</text>
+<rect x="390.0" y="56.0" width="116.6" height="22" fill="#2878b5"><title>Protein tyrosine and serine/threonine kinase retained (713-965 aa); EGFR intragenic deletion, 6 exons deleted (in-frame), retained up to aa 30, resumed from aa 297; samples P-0058400-T01-IM6, P-0015194-T02-IM6, P-0015369-T01-IM6, P-0002265-T04-IM5, P-0002647-T02-IM5 (+271 more)</title></rect>
+<text x="448.3" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein tyrosine and serine…</text>
+<rect x="293.7" y="56.0" width="60.6" height="22" fill="#2878b5"><title>Growth factor receptor domain IV retained (505-636 aa); EGFR intragenic deletion, 6 exons deleted (in-frame), retained up to aa 30, resumed from aa 297; samples P-0058400-T01-IM6, P-0015194-T02-IM6, P-0015369-T01-IM6, P-0002265-T04-IM5, P-0002647-T02-IM5 (+271 more)</title></rect>
+<text x="324.0" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Growth factor…</text>
+<rect x="227.1" y="56.0" width="55.1" height="22" fill="#2878b5"><title>Receptor L domain retained (361-480 aa); EGFR intragenic deletion, 6 exons deleted (in-frame), retained up to aa 30, resumed from aa 297; samples P-0058400-T01-IM6, P-0015194-T02-IM6, P-0015369-T01-IM6, P-0002265-T04-IM5, P-0002647-T02-IM5 (+271 more)</title></rect>
+<text x="254.6" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Receptor L d…</text>
+<line x1="215.5" y1="56.0" x2="215.5" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="234.9" y1="56.0" x2="234.9" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="246.5" y1="56.0" x2="246.5" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="260.4" y1="56.0" x2="260.4" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="291.4" y1="56.0" x2="291.4" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="311.8" y1="56.0" x2="311.8" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="326.1" y1="56.0" x2="326.1" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="350.2" y1="56.0" x2="350.2" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="356.2" y1="56.0" x2="356.2" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="378.4" y1="56.0" x2="378.4" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="397.4" y1="56.0" x2="397.4" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.7" y1="56.0" x2="412.7" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="441.4" y1="56.0" x2="441.4" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="465.4" y1="56.0" x2="465.4" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="477.0" y1="56.0" x2="477.0" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="499.7" y1="56.0" x2="499.7" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.9" y1="56.0" x2="514.9" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.9" y1="56.0" x2="540.9" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="548.3" y1="56.0" x2="548.3" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="564.9" y1="56.0" x2="564.9" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="73.9" y1="67.0" x2="197.5" y2="67.0" stroke="#a3a3a3" stroke-width="1.5" stroke-dasharray="3,2"><title>Deleted span; EGFR intragenic deletion, 6 exons deleted (in-frame), retained up to aa 30, resumed from aa 297; samples P-0058400-T01-IM6, P-0015194-T02-IM6, P-0015369-T01-IM6, P-0002265-T04-IM5, P-0002647-T02-IM5 (+271 more)</title></line>
+<text x="660" y="70.5" font-family="sans-serif" font-size="9.5">6-exon deletion (in-frame) (x279)</text>
+<rect x="60.0" y="82.0" width="454.5" height="22" fill="#e2e2e2"><title>retained N-terminal block (0-982 aa); EGFR intragenic deletion, 3 exons deleted (out-of-frame), retained up to aa 982, resumed from aa 1091; samples P-0030203-T01-IM6, P-0002265-T04-IM5, P-0004245-T01-IM5, P-0043525-T01-IM6, P-0007880-T01-IM5 (+38 more)</title></rect>
+<rect x="145.6" y="82.0" width="70.8" height="22" fill="#2878b5"><title>Furin-like cysteine rich region retained (185-338 aa); EGFR intragenic deletion, 3 exons deleted (out-of-frame), retained up to aa 982, resumed from aa 1091; samples P-0030203-T01-IM6, P-0002265-T04-IM5, P-0004245-T01-IM5, P-0043525-T01-IM6, P-0007880-T01-IM5 (+38 more)</title></rect>
+<text x="181.0" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Furin-like cyste…</text>
+<rect x="390.0" y="82.0" width="116.6" height="22" fill="#2878b5"><title>Protein tyrosine and serine/threonine kinase retained (713-965 aa); EGFR intragenic deletion, 3 exons deleted (out-of-frame), retained up to aa 982, resumed from aa 1091; samples P-0030203-T01-IM6, P-0002265-T04-IM5, P-0004245-T01-IM5, P-0043525-T01-IM6, P-0007880-T01-IM5 (+38 more)</title></rect>
+<text x="448.3" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein tyrosine and serine…</text>
+<rect x="293.7" y="82.0" width="60.6" height="22" fill="#2878b5"><title>Growth factor receptor domain IV retained (505-636 aa); EGFR intragenic deletion, 3 exons deleted (out-of-frame), retained up to aa 982, resumed from aa 1091; samples P-0030203-T01-IM6, P-0002265-T04-IM5, P-0004245-T01-IM5, P-0043525-T01-IM6, P-0007880-T01-IM5 (+38 more)</title></rect>
+<text x="324.0" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Growth factor…</text>
+<rect x="86.4" y="82.0" width="50.9" height="22" fill="#2878b5"><title>Receptor L domain retained (57-167 aa); EGFR intragenic deletion, 3 exons deleted (out-of-frame), retained up to aa 982, resumed from aa 1091; samples P-0030203-T01-IM6, P-0002265-T04-IM5, P-0004245-T01-IM5, P-0043525-T01-IM6, P-0007880-T01-IM5 (+38 more)</title></rect>
+<text x="111.8" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Receptor L…</text>
+<rect x="227.1" y="82.0" width="55.1" height="22" fill="#2878b5"><title>Receptor L domain retained (361-480 aa); EGFR intragenic deletion, 3 exons deleted (out-of-frame), retained up to aa 982, resumed from aa 1091; samples P-0030203-T01-IM6, P-0002265-T04-IM5, P-0004245-T01-IM5, P-0043525-T01-IM6, P-0007880-T01-IM5 (+38 more)</title></rect>
+<text x="254.6" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Receptor L d…</text>
+<line x1="60.5" y1="82.0" x2="60.5" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="73.9" y1="82.0" x2="73.9" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="97.5" y1="82.0" x2="97.5" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="125.7" y1="82.0" x2="125.7" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.5" y1="82.0" x2="146.5" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="157.2" y1="82.0" x2="157.2" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="175.7" y1="82.0" x2="175.7" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="197.5" y1="82.0" x2="197.5" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="215.5" y1="82.0" x2="215.5" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="234.9" y1="82.0" x2="234.9" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="246.5" y1="82.0" x2="246.5" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="260.4" y1="82.0" x2="260.4" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="291.4" y1="82.0" x2="291.4" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="311.8" y1="82.0" x2="311.8" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="326.1" y1="82.0" x2="326.1" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="350.2" y1="82.0" x2="350.2" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="356.2" y1="82.0" x2="356.2" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="378.4" y1="82.0" x2="378.4" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="397.4" y1="82.0" x2="397.4" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.7" y1="82.0" x2="412.7" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="441.4" y1="82.0" x2="441.4" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="465.4" y1="82.0" x2="465.4" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="477.0" y1="82.0" x2="477.0" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="499.7" y1="82.0" x2="499.7" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<rect x="564.9" y="82.0" width="55.1" height="22" fill="#e2e2e2"><title>resumed C-terminal block (1091-1210 aa); EGFR intragenic deletion, 3 exons deleted (out-of-frame), retained up to aa 982, resumed from aa 1091; samples P-0030203-T01-IM6, P-0002265-T04-IM5, P-0004245-T01-IM5, P-0043525-T01-IM6, P-0007880-T01-IM5 (+38 more)</title></rect>
+<line x1="514.5" y1="93.0" x2="564.9" y2="93.0" stroke="#a3a3a3" stroke-width="1.5" stroke-dasharray="3,2"><title>Deleted span; EGFR intragenic deletion, 3 exons deleted (out-of-frame), retained up to aa 982, resumed from aa 1091; samples P-0030203-T01-IM6, P-0002265-T04-IM5, P-0004245-T01-IM5, P-0043525-T01-IM6, P-0007880-T01-IM5 (+38 more)</title></line>
+<text x="660" y="96.5" font-family="sans-serif" font-size="9.5">3-exon deletion (out-of-frame) (x43)</text>
+<rect x="60.0" y="108.0" width="454.5" height="22" fill="#e2e2e2"><title>retained N-terminal block (0-982 aa); EGFR intragenic deletion, 2 exons deleted (in-frame), retained up to aa 982, resumed from aa 1055; samples P-0020033-T02-IM6, P-0028976-T01-IM6, P-0037328-T01-IM6, P-0037514-T01-IM6, P-0069722-T01-IM7 (+5 more)</title></rect>
+<rect x="145.6" y="108.0" width="70.8" height="22" fill="#2878b5"><title>Furin-like cysteine rich region retained (185-338 aa); EGFR intragenic deletion, 2 exons deleted (in-frame), retained up to aa 982, resumed from aa 1055; samples P-0020033-T02-IM6, P-0028976-T01-IM6, P-0037328-T01-IM6, P-0037514-T01-IM6, P-0069722-T01-IM7 (+5 more)</title></rect>
+<text x="181.0" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Furin-like cyste…</text>
+<rect x="390.0" y="108.0" width="116.6" height="22" fill="#2878b5"><title>Protein tyrosine and serine/threonine kinase retained (713-965 aa); EGFR intragenic deletion, 2 exons deleted (in-frame), retained up to aa 982, resumed from aa 1055; samples P-0020033-T02-IM6, P-0028976-T01-IM6, P-0037328-T01-IM6, P-0037514-T01-IM6, P-0069722-T01-IM7 (+5 more)</title></rect>
+<text x="448.3" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein tyrosine and serine…</text>
+<rect x="293.7" y="108.0" width="60.6" height="22" fill="#2878b5"><title>Growth factor receptor domain IV retained (505-636 aa); EGFR intragenic deletion, 2 exons deleted (in-frame), retained up to aa 982, resumed from aa 1055; samples P-0020033-T02-IM6, P-0028976-T01-IM6, P-0037328-T01-IM6, P-0037514-T01-IM6, P-0069722-T01-IM7 (+5 more)</title></rect>
+<text x="324.0" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Growth factor…</text>
+<rect x="86.4" y="108.0" width="50.9" height="22" fill="#2878b5"><title>Receptor L domain retained (57-167 aa); EGFR intragenic deletion, 2 exons deleted (in-frame), retained up to aa 982, resumed from aa 1055; samples P-0020033-T02-IM6, P-0028976-T01-IM6, P-0037328-T01-IM6, P-0037514-T01-IM6, P-0069722-T01-IM7 (+5 more)</title></rect>
+<text x="111.8" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Receptor L…</text>
+<rect x="227.1" y="108.0" width="55.1" height="22" fill="#2878b5"><title>Receptor L domain retained (361-480 aa); EGFR intragenic deletion, 2 exons deleted (in-frame), retained up to aa 982, resumed from aa 1055; samples P-0020033-T02-IM6, P-0028976-T01-IM6, P-0037328-T01-IM6, P-0037514-T01-IM6, P-0069722-T01-IM7 (+5 more)</title></rect>
+<text x="254.6" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Receptor L d…</text>
+<line x1="60.5" y1="108.0" x2="60.5" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="73.9" y1="108.0" x2="73.9" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="97.5" y1="108.0" x2="97.5" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="125.7" y1="108.0" x2="125.7" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.5" y1="108.0" x2="146.5" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="157.2" y1="108.0" x2="157.2" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="175.7" y1="108.0" x2="175.7" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="197.5" y1="108.0" x2="197.5" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="215.5" y1="108.0" x2="215.5" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="234.9" y1="108.0" x2="234.9" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="246.5" y1="108.0" x2="246.5" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="260.4" y1="108.0" x2="260.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="291.4" y1="108.0" x2="291.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="311.8" y1="108.0" x2="311.8" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="326.1" y1="108.0" x2="326.1" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="350.2" y1="108.0" x2="350.2" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="356.2" y1="108.0" x2="356.2" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="378.4" y1="108.0" x2="378.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="397.4" y1="108.0" x2="397.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.7" y1="108.0" x2="412.7" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="441.4" y1="108.0" x2="441.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="465.4" y1="108.0" x2="465.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="477.0" y1="108.0" x2="477.0" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="499.7" y1="108.0" x2="499.7" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<rect x="548.3" y="108.0" width="71.7" height="22" fill="#e2e2e2"><title>resumed C-terminal block (1055-1210 aa); EGFR intragenic deletion, 2 exons deleted (in-frame), retained up to aa 982, resumed from aa 1055; samples P-0020033-T02-IM6, P-0028976-T01-IM6, P-0037328-T01-IM6, P-0037514-T01-IM6, P-0069722-T01-IM7 (+5 more)</title></rect>
+<line x1="564.9" y1="108.0" x2="564.9" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.5" y1="119.0" x2="548.3" y2="119.0" stroke="#a3a3a3" stroke-width="1.5" stroke-dasharray="3,2"><title>Deleted span; EGFR intragenic deletion, 2 exons deleted (in-frame), retained up to aa 982, resumed from aa 1055; samples P-0020033-T02-IM6, P-0028976-T01-IM6, P-0037328-T01-IM6, P-0037514-T01-IM6, P-0069722-T01-IM7 (+5 more)</title></line>
+<text x="660" y="122.5" font-family="sans-serif" font-size="9.5">2-exon deletion (in-frame) (x10)</text>
+<rect x="60.0" y="134.0" width="487.8" height="22" fill="#e2e2e2"><title>retained N-terminal block (0-1054 aa); EGFR intragenic deletion, 1 exons deleted (out-of-frame), retained up to aa 1054, resumed from aa 1091; samples P-0063437-T02-IM7, P-0012794-T01-IM5, P-0022938-T01-IM6, P-0026239-T01-IM6, P-0028241-T01-IM6 (+3 more)</title></rect>
+<rect x="145.6" y="134.0" width="70.8" height="22" fill="#2878b5"><title>Furin-like cysteine rich region retained (185-338 aa); EGFR intragenic deletion, 1 exons deleted (out-of-frame), retained up to aa 1054, resumed from aa 1091; samples P-0063437-T02-IM7, P-0012794-T01-IM5, P-0022938-T01-IM6, P-0026239-T01-IM6, P-0028241-T01-IM6 (+3 more)</title></rect>
+<text x="181.0" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Furin-like cyste…</text>
+<rect x="390.0" y="134.0" width="116.6" height="22" fill="#2878b5"><title>Protein tyrosine and serine/threonine kinase retained (713-965 aa); EGFR intragenic deletion, 1 exons deleted (out-of-frame), retained up to aa 1054, resumed from aa 1091; samples P-0063437-T02-IM7, P-0012794-T01-IM5, P-0022938-T01-IM6, P-0026239-T01-IM6, P-0028241-T01-IM6 (+3 more)</title></rect>
+<text x="448.3" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein tyrosine and serine…</text>
+<rect x="293.7" y="134.0" width="60.6" height="22" fill="#2878b5"><title>Growth factor receptor domain IV retained (505-636 aa); EGFR intragenic deletion, 1 exons deleted (out-of-frame), retained up to aa 1054, resumed from aa 1091; samples P-0063437-T02-IM7, P-0012794-T01-IM5, P-0022938-T01-IM6, P-0026239-T01-IM6, P-0028241-T01-IM6 (+3 more)</title></rect>
+<text x="324.0" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Growth factor…</text>
+<rect x="86.4" y="134.0" width="50.9" height="22" fill="#2878b5"><title>Receptor L domain retained (57-167 aa); EGFR intragenic deletion, 1 exons deleted (out-of-frame), retained up to aa 1054, resumed from aa 1091; samples P-0063437-T02-IM7, P-0012794-T01-IM5, P-0022938-T01-IM6, P-0026239-T01-IM6, P-0028241-T01-IM6 (+3 more)</title></rect>
+<text x="111.8" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Receptor L…</text>
+<rect x="227.1" y="134.0" width="55.1" height="22" fill="#2878b5"><title>Receptor L domain retained (361-480 aa); EGFR intragenic deletion, 1 exons deleted (out-of-frame), retained up to aa 1054, resumed from aa 1091; samples P-0063437-T02-IM7, P-0012794-T01-IM5, P-0022938-T01-IM6, P-0026239-T01-IM6, P-0028241-T01-IM6 (+3 more)</title></rect>
+<text x="254.6" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Receptor L d…</text>
+<line x1="60.5" y1="134.0" x2="60.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="73.9" y1="134.0" x2="73.9" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="97.5" y1="134.0" x2="97.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="125.7" y1="134.0" x2="125.7" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.5" y1="134.0" x2="146.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="157.2" y1="134.0" x2="157.2" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="175.7" y1="134.0" x2="175.7" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="197.5" y1="134.0" x2="197.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="215.5" y1="134.0" x2="215.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="234.9" y1="134.0" x2="234.9" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="246.5" y1="134.0" x2="246.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="260.4" y1="134.0" x2="260.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="291.4" y1="134.0" x2="291.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="311.8" y1="134.0" x2="311.8" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="326.1" y1="134.0" x2="326.1" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="350.2" y1="134.0" x2="350.2" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="356.2" y1="134.0" x2="356.2" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="378.4" y1="134.0" x2="378.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="397.4" y1="134.0" x2="397.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.7" y1="134.0" x2="412.7" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="441.4" y1="134.0" x2="441.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="465.4" y1="134.0" x2="465.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="477.0" y1="134.0" x2="477.0" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="499.7" y1="134.0" x2="499.7" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.9" y1="134.0" x2="514.9" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.9" y1="134.0" x2="540.9" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<rect x="564.9" y="134.0" width="55.1" height="22" fill="#e2e2e2"><title>resumed C-terminal block (1091-1210 aa); EGFR intragenic deletion, 1 exons deleted (out-of-frame), retained up to aa 1054, resumed from aa 1091; samples P-0063437-T02-IM7, P-0012794-T01-IM5, P-0022938-T01-IM6, P-0026239-T01-IM6, P-0028241-T01-IM6 (+3 more)</title></rect>
+<line x1="547.8" y1="145.0" x2="564.9" y2="145.0" stroke="#a3a3a3" stroke-width="1.5" stroke-dasharray="3,2"><title>Deleted span; EGFR intragenic deletion, 1 exons deleted (out-of-frame), retained up to aa 1054, resumed from aa 1091; samples P-0063437-T02-IM7, P-0012794-T01-IM5, P-0022938-T01-IM6, P-0026239-T01-IM6, P-0028241-T01-IM6 (+3 more)</title></line>
+<text x="660" y="148.5" font-family="sans-serif" font-size="9.5">1-exon deletion (out-of-frame) (x8)</text>
+<rect x="60.0" y="160.0" width="251.8" height="22" fill="#e2e2e2"><title>retained N-terminal block (0-544 aa); EGFR intragenic deletion, 2 exons deleted (in-frame), retained up to aa 544, resumed from aa 627; samples P-0013580-T02-IM6, P-0017482-T01-IM6, P-0022322-T01-IM6, P-0030547-T01-IM6, P-0041195-T01-IM6</title></rect>
+<rect x="145.6" y="160.0" width="70.8" height="22" fill="#2878b5"><title>Furin-like cysteine rich region retained (185-338 aa); EGFR intragenic deletion, 2 exons deleted (in-frame), retained up to aa 544, resumed from aa 627; samples P-0013580-T02-IM6, P-0017482-T01-IM6, P-0022322-T01-IM6, P-0030547-T01-IM6, P-0041195-T01-IM6</title></rect>
+<text x="181.0" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Furin-like cyste…</text>
+<rect x="293.7" y="160.0" width="18.0" height="22" fill="#f2a93b"><title>Growth factor receptor domain IV truncated (505-544 aa); EGFR intragenic deletion, 2 exons deleted (in-frame), retained up to aa 544, resumed from aa 627; samples P-0013580-T02-IM6, P-0017482-T01-IM6, P-0022322-T01-IM6, P-0030547-T01-IM6, P-0041195-T01-IM6</title></rect>
+<text x="302.7" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Gro…</text>
+<rect x="86.4" y="160.0" width="50.9" height="22" fill="#2878b5"><title>Receptor L domain retained (57-167 aa); EGFR intragenic deletion, 2 exons deleted (in-frame), retained up to aa 544, resumed from aa 627; samples P-0013580-T02-IM6, P-0017482-T01-IM6, P-0022322-T01-IM6, P-0030547-T01-IM6, P-0041195-T01-IM6</title></rect>
+<text x="111.8" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Receptor L…</text>
+<rect x="227.1" y="160.0" width="55.1" height="22" fill="#2878b5"><title>Receptor L domain retained (361-480 aa); EGFR intragenic deletion, 2 exons deleted (in-frame), retained up to aa 544, resumed from aa 627; samples P-0013580-T02-IM6, P-0017482-T01-IM6, P-0022322-T01-IM6, P-0030547-T01-IM6, P-0041195-T01-IM6</title></rect>
+<text x="254.6" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Receptor L d…</text>
+<line x1="60.5" y1="160.0" x2="60.5" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="73.9" y1="160.0" x2="73.9" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="97.5" y1="160.0" x2="97.5" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="125.7" y1="160.0" x2="125.7" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.5" y1="160.0" x2="146.5" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="157.2" y1="160.0" x2="157.2" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="175.7" y1="160.0" x2="175.7" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="197.5" y1="160.0" x2="197.5" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="215.5" y1="160.0" x2="215.5" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="234.9" y1="160.0" x2="234.9" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="246.5" y1="160.0" x2="246.5" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="260.4" y1="160.0" x2="260.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="291.4" y1="160.0" x2="291.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<rect x="350.2" y="160.0" width="269.8" height="22" fill="#e2e2e2"><title>resumed C-terminal block (627-1210 aa); EGFR intragenic deletion, 2 exons deleted (in-frame), retained up to aa 544, resumed from aa 627; samples P-0013580-T02-IM6, P-0017482-T01-IM6, P-0022322-T01-IM6, P-0030547-T01-IM6, P-0041195-T01-IM6</title></rect>
+<rect x="390.0" y="160.0" width="116.6" height="22" fill="#2878b5"><title>Protein tyrosine and serine/threonine kinase retained (713-965 aa); EGFR intragenic deletion, 2 exons deleted (in-frame), retained up to aa 544, resumed from aa 627; samples P-0013580-T02-IM6, P-0017482-T01-IM6, P-0022322-T01-IM6, P-0030547-T01-IM6, P-0041195-T01-IM6</title></rect>
+<text x="448.3" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein tyrosine and serine…</text>
+<rect x="350.2" y="160.0" width="4.2" height="22" fill="#f2a93b"><title>Growth factor receptor domain IV truncated (627-636 aa); EGFR intragenic deletion, 2 exons deleted (in-frame), retained up to aa 544, resumed from aa 627; samples P-0013580-T02-IM6, P-0017482-T01-IM6, P-0022322-T01-IM6, P-0030547-T01-IM6, P-0041195-T01-IM6</title></rect>
+<line x1="356.2" y1="160.0" x2="356.2" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="378.4" y1="160.0" x2="378.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="397.4" y1="160.0" x2="397.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.7" y1="160.0" x2="412.7" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="441.4" y1="160.0" x2="441.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="465.4" y1="160.0" x2="465.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="477.0" y1="160.0" x2="477.0" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="499.7" y1="160.0" x2="499.7" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.9" y1="160.0" x2="514.9" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.9" y1="160.0" x2="540.9" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="548.3" y1="160.0" x2="548.3" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="564.9" y1="160.0" x2="564.9" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="311.8" y1="171.0" x2="350.2" y2="171.0" stroke="#a3a3a3" stroke-width="1.5" stroke-dasharray="3,2"><title>Deleted span; EGFR intragenic deletion, 2 exons deleted (in-frame), retained up to aa 544, resumed from aa 627; samples P-0013580-T02-IM6, P-0017482-T01-IM6, P-0022322-T01-IM6, P-0030547-T01-IM6, P-0041195-T01-IM6</title></line>
+<text x="660" y="174.5" font-family="sans-serif" font-size="9.5">2-exon deletion (in-frame) (x5)</text>
+<rect x="60.0" y="186.0" width="86.5" height="22" fill="#e2e2e2"><title>retained N-terminal block (0-187 aa); EGFR intragenic deletion, 3 exons deleted (in-frame), retained up to aa 187, resumed from aa 297; samples P-0005240-T01-IM5, P-0005539-T01-IM5</title></rect>
+<rect x="145.6" y="186.0" width="0.9" height="22" fill="#f2a93b"><title>Furin-like cysteine rich region truncated (185-187 aa); EGFR intragenic deletion, 3 exons deleted (in-frame), retained up to aa 187, resumed from aa 297; samples P-0005240-T01-IM5, P-0005539-T01-IM5</title></rect>
+<rect x="86.4" y="186.0" width="50.9" height="22" fill="#2878b5"><title>Receptor L domain retained (57-167 aa); EGFR intragenic deletion, 3 exons deleted (in-frame), retained up to aa 187, resumed from aa 297; samples P-0005240-T01-IM5, P-0005539-T01-IM5</title></rect>
+<text x="111.8" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Receptor L…</text>
+<line x1="60.5" y1="186.0" x2="60.5" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="73.9" y1="186.0" x2="73.9" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="97.5" y1="186.0" x2="97.5" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="125.7" y1="186.0" x2="125.7" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<rect x="197.5" y="186.0" width="422.5" height="22" fill="#e2e2e2"><title>resumed C-terminal block (297-1210 aa); EGFR intragenic deletion, 3 exons deleted (in-frame), retained up to aa 187, resumed from aa 297; samples P-0005240-T01-IM5, P-0005539-T01-IM5</title></rect>
+<rect x="197.5" y="186.0" width="19.0" height="22" fill="#f2a93b"><title>Furin-like cysteine rich region truncated (297-338 aa); EGFR intragenic deletion, 3 exons deleted (in-frame), retained up to aa 187, resumed from aa 297; samples P-0005240-T01-IM5, P-0005539-T01-IM5</title></rect>
+<text x="206.9" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Fur…</text>
+<rect x="390.0" y="186.0" width="116.6" height="22" fill="#2878b5"><title>Protein tyrosine and serine/threonine kinase retained (713-965 aa); EGFR intragenic deletion, 3 exons deleted (in-frame), retained up to aa 187, resumed from aa 297; samples P-0005240-T01-IM5, P-0005539-T01-IM5</title></rect>
+<text x="448.3" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein tyrosine and serine…</text>
+<rect x="293.7" y="186.0" width="60.6" height="22" fill="#2878b5"><title>Growth factor receptor domain IV retained (505-636 aa); EGFR intragenic deletion, 3 exons deleted (in-frame), retained up to aa 187, resumed from aa 297; samples P-0005240-T01-IM5, P-0005539-T01-IM5</title></rect>
+<text x="324.0" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Growth factor…</text>
+<rect x="227.1" y="186.0" width="55.1" height="22" fill="#2878b5"><title>Receptor L domain retained (361-480 aa); EGFR intragenic deletion, 3 exons deleted (in-frame), retained up to aa 187, resumed from aa 297; samples P-0005240-T01-IM5, P-0005539-T01-IM5</title></rect>
+<text x="254.6" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Receptor L d…</text>
+<line x1="215.5" y1="186.0" x2="215.5" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="234.9" y1="186.0" x2="234.9" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="246.5" y1="186.0" x2="246.5" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="260.4" y1="186.0" x2="260.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="291.4" y1="186.0" x2="291.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="311.8" y1="186.0" x2="311.8" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="326.1" y1="186.0" x2="326.1" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="350.2" y1="186.0" x2="350.2" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="356.2" y1="186.0" x2="356.2" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="378.4" y1="186.0" x2="378.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="397.4" y1="186.0" x2="397.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.7" y1="186.0" x2="412.7" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="441.4" y1="186.0" x2="441.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="465.4" y1="186.0" x2="465.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="477.0" y1="186.0" x2="477.0" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="499.7" y1="186.0" x2="499.7" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.9" y1="186.0" x2="514.9" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.9" y1="186.0" x2="540.9" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="548.3" y1="186.0" x2="548.3" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="564.9" y1="186.0" x2="564.9" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.5" y1="197.0" x2="197.5" y2="197.0" stroke="#a3a3a3" stroke-width="1.5" stroke-dasharray="3,2"><title>Deleted span; EGFR intragenic deletion, 3 exons deleted (in-frame), retained up to aa 187, resumed from aa 297; samples P-0005240-T01-IM5, P-0005539-T01-IM5</title></line>
+<text x="660" y="200.5" font-family="sans-serif" font-size="9.5">3-exon deletion (in-frame) (x2)</text>
+<rect x="60.0" y="212.0" width="137.5" height="22" fill="#e2e2e2"><title>retained N-terminal block (0-297 aa); EGFR intragenic deletion, 6 exons deleted (out-of-frame), retained up to aa 297, resumed from aa 544; samples P-0011247-T01-IM5, P-0011247-T02-IM6</title></rect>
+<rect x="145.6" y="212.0" width="51.8" height="22" fill="#f2a93b"><title>Furin-like cysteine rich region truncated (185-297 aa); EGFR intragenic deletion, 6 exons deleted (out-of-frame), retained up to aa 297, resumed from aa 544; samples P-0011247-T01-IM5, P-0011247-T02-IM6</title></rect>
+<text x="171.5" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Furin-like…</text>
+<rect x="86.4" y="212.0" width="50.9" height="22" fill="#2878b5"><title>Receptor L domain retained (57-167 aa); EGFR intragenic deletion, 6 exons deleted (out-of-frame), retained up to aa 297, resumed from aa 544; samples P-0011247-T01-IM5, P-0011247-T02-IM6</title></rect>
+<text x="111.8" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Receptor L…</text>
+<line x1="60.5" y1="212.0" x2="60.5" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="73.9" y1="212.0" x2="73.9" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="97.5" y1="212.0" x2="97.5" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="125.7" y1="212.0" x2="125.7" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.5" y1="212.0" x2="146.5" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="157.2" y1="212.0" x2="157.2" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="175.7" y1="212.0" x2="175.7" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<rect x="311.8" y="212.0" width="308.2" height="22" fill="#e2e2e2"><title>resumed C-terminal block (544-1210 aa); EGFR intragenic deletion, 6 exons deleted (out-of-frame), retained up to aa 297, resumed from aa 544; samples P-0011247-T01-IM5, P-0011247-T02-IM6</title></rect>
+<rect x="390.0" y="212.0" width="116.6" height="22" fill="#2878b5"><title>Protein tyrosine and serine/threonine kinase retained (713-965 aa); EGFR intragenic deletion, 6 exons deleted (out-of-frame), retained up to aa 297, resumed from aa 544; samples P-0011247-T01-IM5, P-0011247-T02-IM6</title></rect>
+<text x="448.3" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein tyrosine and serine…</text>
+<rect x="311.8" y="212.0" width="42.6" height="22" fill="#f2a93b"><title>Growth factor receptor domain IV truncated (544-636 aa); EGFR intragenic deletion, 6 exons deleted (out-of-frame), retained up to aa 297, resumed from aa 544; samples P-0011247-T01-IM5, P-0011247-T02-IM6</title></rect>
+<text x="333.1" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Growth fa…</text>
+<line x1="326.1" y1="212.0" x2="326.1" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="350.2" y1="212.0" x2="350.2" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="356.2" y1="212.0" x2="356.2" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="378.4" y1="212.0" x2="378.4" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="397.4" y1="212.0" x2="397.4" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.7" y1="212.0" x2="412.7" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="441.4" y1="212.0" x2="441.4" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="465.4" y1="212.0" x2="465.4" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="477.0" y1="212.0" x2="477.0" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="499.7" y1="212.0" x2="499.7" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.9" y1="212.0" x2="514.9" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.9" y1="212.0" x2="540.9" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="548.3" y1="212.0" x2="548.3" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="564.9" y1="212.0" x2="564.9" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="197.5" y1="223.0" x2="311.8" y2="223.0" stroke="#a3a3a3" stroke-width="1.5" stroke-dasharray="3,2"><title>Deleted span; EGFR intragenic deletion, 6 exons deleted (out-of-frame), retained up to aa 297, resumed from aa 544; samples P-0011247-T01-IM5, P-0011247-T02-IM6</title></line>
+<text x="660" y="226.5" font-family="sans-serif" font-size="9.5">6-exon deletion (out-of-frame) (x2)</text>
+<rect x="60.0" y="238.0" width="13.9" height="22" fill="#e2e2e2"><title>retained N-terminal block (0-30 aa); EGFR intragenic deletion, 4 exons deleted (in-frame), retained up to aa 30, resumed from aa 210; sample P-0012536-T01-IM5</title></rect>
+<line x1="60.5" y1="238.0" x2="60.5" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<rect x="157.2" y="238.0" width="462.8" height="22" fill="#e2e2e2"><title>resumed C-terminal block (210-1210 aa); EGFR intragenic deletion, 4 exons deleted (in-frame), retained up to aa 30, resumed from aa 210; sample P-0012536-T01-IM5</title></rect>
+<rect x="157.2" y="238.0" width="59.2" height="22" fill="#f2a93b"><title>Furin-like cysteine rich region truncated (210-338 aa); EGFR intragenic deletion, 4 exons deleted (in-frame), retained up to aa 30, resumed from aa 210; sample P-0012536-T01-IM5</title></rect>
+<text x="186.8" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Furin-like cy…</text>
+<rect x="390.0" y="238.0" width="116.6" height="22" fill="#2878b5"><title>Protein tyrosine and serine/threonine kinase retained (713-965 aa); EGFR intragenic deletion, 4 exons deleted (in-frame), retained up to aa 30, resumed from aa 210; sample P-0012536-T01-IM5</title></rect>
+<text x="448.3" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein tyrosine and serine…</text>
+<rect x="293.7" y="238.0" width="60.6" height="22" fill="#2878b5"><title>Growth factor receptor domain IV retained (505-636 aa); EGFR intragenic deletion, 4 exons deleted (in-frame), retained up to aa 30, resumed from aa 210; sample P-0012536-T01-IM5</title></rect>
+<text x="324.0" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Growth factor…</text>
+<rect x="227.1" y="238.0" width="55.1" height="22" fill="#2878b5"><title>Receptor L domain retained (361-480 aa); EGFR intragenic deletion, 4 exons deleted (in-frame), retained up to aa 30, resumed from aa 210; sample P-0012536-T01-IM5</title></rect>
+<text x="254.6" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Receptor L d…</text>
+<line x1="175.7" y1="238.0" x2="175.7" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="197.5" y1="238.0" x2="197.5" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="215.5" y1="238.0" x2="215.5" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="234.9" y1="238.0" x2="234.9" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="246.5" y1="238.0" x2="246.5" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="260.4" y1="238.0" x2="260.4" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="291.4" y1="238.0" x2="291.4" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="311.8" y1="238.0" x2="311.8" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="326.1" y1="238.0" x2="326.1" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="350.2" y1="238.0" x2="350.2" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="356.2" y1="238.0" x2="356.2" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="378.4" y1="238.0" x2="378.4" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="397.4" y1="238.0" x2="397.4" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.7" y1="238.0" x2="412.7" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="441.4" y1="238.0" x2="441.4" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="465.4" y1="238.0" x2="465.4" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="477.0" y1="238.0" x2="477.0" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="499.7" y1="238.0" x2="499.7" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.9" y1="238.0" x2="514.9" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.9" y1="238.0" x2="540.9" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="548.3" y1="238.0" x2="548.3" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="564.9" y1="238.0" x2="564.9" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="73.9" y1="249.0" x2="157.2" y2="249.0" stroke="#a3a3a3" stroke-width="1.5" stroke-dasharray="3,2"><title>Deleted span; EGFR intragenic deletion, 4 exons deleted (in-frame), retained up to aa 30, resumed from aa 210; sample P-0012536-T01-IM5</title></line>
+<text x="660" y="252.5" font-family="sans-serif" font-size="9.5">4-exon deletion (in-frame)</text>
+<rect x="60.0" y="264.0" width="174.9" height="22" fill="#e2e2e2"><title>retained N-terminal block (0-378 aa); EGFR intragenic deletion, 2 exons deleted (in-frame), retained up to aa 378, resumed from aa 433; sample P-0013544-T02-IM6</title></rect>
+<rect x="145.6" y="264.0" width="70.8" height="22" fill="#2878b5"><title>Furin-like cysteine rich region retained (185-338 aa); EGFR intragenic deletion, 2 exons deleted (in-frame), retained up to aa 378, resumed from aa 433; sample P-0013544-T02-IM6</title></rect>
+<text x="181.0" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Furin-like cyste…</text>
+<rect x="86.4" y="264.0" width="50.9" height="22" fill="#2878b5"><title>Receptor L domain retained (57-167 aa); EGFR intragenic deletion, 2 exons deleted (in-frame), retained up to aa 378, resumed from aa 433; sample P-0013544-T02-IM6</title></rect>
+<text x="111.8" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Receptor L…</text>
+<rect x="227.1" y="264.0" width="7.9" height="22" fill="#f2a93b"><title>Receptor L domain truncated (361-378 aa); EGFR intragenic deletion, 2 exons deleted (in-frame), retained up to aa 378, resumed from aa 433; sample P-0013544-T02-IM6</title></rect>
+<line x1="60.5" y1="264.0" x2="60.5" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="73.9" y1="264.0" x2="73.9" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="97.5" y1="264.0" x2="97.5" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="125.7" y1="264.0" x2="125.7" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.5" y1="264.0" x2="146.5" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="157.2" y1="264.0" x2="157.2" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="175.7" y1="264.0" x2="175.7" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="197.5" y1="264.0" x2="197.5" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="215.5" y1="264.0" x2="215.5" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<rect x="260.4" y="264.0" width="359.6" height="22" fill="#e2e2e2"><title>resumed C-terminal block (433-1210 aa); EGFR intragenic deletion, 2 exons deleted (in-frame), retained up to aa 378, resumed from aa 433; sample P-0013544-T02-IM6</title></rect>
+<rect x="390.0" y="264.0" width="116.6" height="22" fill="#2878b5"><title>Protein tyrosine and serine/threonine kinase retained (713-965 aa); EGFR intragenic deletion, 2 exons deleted (in-frame), retained up to aa 378, resumed from aa 433; sample P-0013544-T02-IM6</title></rect>
+<text x="448.3" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein tyrosine and serine…</text>
+<rect x="293.7" y="264.0" width="60.6" height="22" fill="#2878b5"><title>Growth factor receptor domain IV retained (505-636 aa); EGFR intragenic deletion, 2 exons deleted (in-frame), retained up to aa 378, resumed from aa 433; sample P-0013544-T02-IM6</title></rect>
+<text x="324.0" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Growth factor…</text>
+<rect x="260.4" y="264.0" width="21.8" height="22" fill="#f2a93b"><title>Receptor L domain truncated (433-480 aa); EGFR intragenic deletion, 2 exons deleted (in-frame), retained up to aa 378, resumed from aa 433; sample P-0013544-T02-IM6</title></rect>
+<text x="271.3" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Rece…</text>
+<line x1="291.4" y1="264.0" x2="291.4" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="311.8" y1="264.0" x2="311.8" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="326.1" y1="264.0" x2="326.1" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="350.2" y1="264.0" x2="350.2" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="356.2" y1="264.0" x2="356.2" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="378.4" y1="264.0" x2="378.4" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="397.4" y1="264.0" x2="397.4" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.7" y1="264.0" x2="412.7" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="441.4" y1="264.0" x2="441.4" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="465.4" y1="264.0" x2="465.4" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="477.0" y1="264.0" x2="477.0" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="499.7" y1="264.0" x2="499.7" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.9" y1="264.0" x2="514.9" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.9" y1="264.0" x2="540.9" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="548.3" y1="264.0" x2="548.3" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="564.9" y1="264.0" x2="564.9" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="234.9" y1="275.0" x2="260.4" y2="275.0" stroke="#a3a3a3" stroke-width="1.5" stroke-dasharray="3,2"><title>Deleted span; EGFR intragenic deletion, 2 exons deleted (in-frame), retained up to aa 378, resumed from aa 433; sample P-0013544-T02-IM6</title></line>
+<text x="660" y="278.5" font-family="sans-serif" font-size="9.5">2-exon deletion (in-frame)</text>
+<rect x="60.0" y="290.0" width="200.4" height="22" fill="#e2e2e2"><title>retained N-terminal block (0-433 aa); EGFR intragenic deletion, 5 exons deleted (in-frame), retained up to aa 433, resumed from aa 640; sample P-0040338-T01-IM6</title></rect>
+<rect x="145.6" y="290.0" width="70.8" height="22" fill="#2878b5"><title>Furin-like cysteine rich region retained (185-338 aa); EGFR intragenic deletion, 5 exons deleted (in-frame), retained up to aa 433, resumed from aa 640; sample P-0040338-T01-IM6</title></rect>
+<text x="181.0" y="304.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Furin-like cyste…</text>
+<rect x="86.4" y="290.0" width="50.9" height="22" fill="#2878b5"><title>Receptor L domain retained (57-167 aa); EGFR intragenic deletion, 5 exons deleted (in-frame), retained up to aa 433, resumed from aa 640; sample P-0040338-T01-IM6</title></rect>
+<text x="111.8" y="304.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Receptor L…</text>
+<rect x="227.1" y="290.0" width="33.3" height="22" fill="#f2a93b"><title>Receptor L domain truncated (361-433 aa); EGFR intragenic deletion, 5 exons deleted (in-frame), retained up to aa 433, resumed from aa 640; sample P-0040338-T01-IM6</title></rect>
+<text x="243.7" y="304.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Recepto…</text>
+<line x1="60.5" y1="290.0" x2="60.5" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="73.9" y1="290.0" x2="73.9" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="97.5" y1="290.0" x2="97.5" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="125.7" y1="290.0" x2="125.7" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.5" y1="290.0" x2="146.5" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="157.2" y1="290.0" x2="157.2" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="175.7" y1="290.0" x2="175.7" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="197.5" y1="290.0" x2="197.5" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="215.5" y1="290.0" x2="215.5" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="234.9" y1="290.0" x2="234.9" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="246.5" y1="290.0" x2="246.5" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<rect x="356.2" y="290.0" width="263.8" height="22" fill="#e2e2e2"><title>resumed C-terminal block (640-1210 aa); EGFR intragenic deletion, 5 exons deleted (in-frame), retained up to aa 433, resumed from aa 640; sample P-0040338-T01-IM6</title></rect>
+<rect x="390.0" y="290.0" width="116.6" height="22" fill="#2878b5"><title>Protein tyrosine and serine/threonine kinase retained (713-965 aa); EGFR intragenic deletion, 5 exons deleted (in-frame), retained up to aa 433, resumed from aa 640; sample P-0040338-T01-IM6</title></rect>
+<text x="448.3" y="304.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein tyrosine and serine…</text>
+<line x1="378.4" y1="290.0" x2="378.4" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="397.4" y1="290.0" x2="397.4" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.7" y1="290.0" x2="412.7" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="441.4" y1="290.0" x2="441.4" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="465.4" y1="290.0" x2="465.4" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="477.0" y1="290.0" x2="477.0" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="499.7" y1="290.0" x2="499.7" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.9" y1="290.0" x2="514.9" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.9" y1="290.0" x2="540.9" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="548.3" y1="290.0" x2="548.3" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="564.9" y1="290.0" x2="564.9" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="260.4" y1="301.0" x2="356.2" y2="301.0" stroke="#a3a3a3" stroke-width="1.5" stroke-dasharray="3,2"><title>Deleted span; EGFR intragenic deletion, 5 exons deleted (in-frame), retained up to aa 433, resumed from aa 640; sample P-0040338-T01-IM6</title></line>
+<text x="660" y="304.5" font-family="sans-serif" font-size="9.5">5-exon deletion (in-frame)</text>
+<rect x="60.0" y="316.0" width="251.8" height="22" fill="#e2e2e2"><title>retained N-terminal block (0-544 aa); EGFR intragenic deletion, 3 exons deleted (in-frame), retained up to aa 544, resumed from aa 640; sample P-0010483-T01-IM5</title></rect>
+<rect x="145.6" y="316.0" width="70.8" height="22" fill="#2878b5"><title>Furin-like cysteine rich region retained (185-338 aa); EGFR intragenic deletion, 3 exons deleted (in-frame), retained up to aa 544, resumed from aa 640; sample P-0010483-T01-IM5</title></rect>
+<text x="181.0" y="330.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Furin-like cyste…</text>
+<rect x="293.7" y="316.0" width="18.0" height="22" fill="#f2a93b"><title>Growth factor receptor domain IV truncated (505-544 aa); EGFR intragenic deletion, 3 exons deleted (in-frame), retained up to aa 544, resumed from aa 640; sample P-0010483-T01-IM5</title></rect>
+<text x="302.7" y="330.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Gro…</text>
+<rect x="86.4" y="316.0" width="50.9" height="22" fill="#2878b5"><title>Receptor L domain retained (57-167 aa); EGFR intragenic deletion, 3 exons deleted (in-frame), retained up to aa 544, resumed from aa 640; sample P-0010483-T01-IM5</title></rect>
+<text x="111.8" y="330.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Receptor L…</text>
+<rect x="227.1" y="316.0" width="55.1" height="22" fill="#2878b5"><title>Receptor L domain retained (361-480 aa); EGFR intragenic deletion, 3 exons deleted (in-frame), retained up to aa 544, resumed from aa 640; sample P-0010483-T01-IM5</title></rect>
+<text x="254.6" y="330.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Receptor L d…</text>
+<line x1="60.5" y1="316.0" x2="60.5" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="73.9" y1="316.0" x2="73.9" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="97.5" y1="316.0" x2="97.5" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="125.7" y1="316.0" x2="125.7" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.5" y1="316.0" x2="146.5" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="157.2" y1="316.0" x2="157.2" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="175.7" y1="316.0" x2="175.7" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="197.5" y1="316.0" x2="197.5" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="215.5" y1="316.0" x2="215.5" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="234.9" y1="316.0" x2="234.9" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="246.5" y1="316.0" x2="246.5" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="260.4" y1="316.0" x2="260.4" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="291.4" y1="316.0" x2="291.4" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<rect x="356.2" y="316.0" width="263.8" height="22" fill="#e2e2e2"><title>resumed C-terminal block (640-1210 aa); EGFR intragenic deletion, 3 exons deleted (in-frame), retained up to aa 544, resumed from aa 640; sample P-0010483-T01-IM5</title></rect>
+<rect x="390.0" y="316.0" width="116.6" height="22" fill="#2878b5"><title>Protein tyrosine and serine/threonine kinase retained (713-965 aa); EGFR intragenic deletion, 3 exons deleted (in-frame), retained up to aa 544, resumed from aa 640; sample P-0010483-T01-IM5</title></rect>
+<text x="448.3" y="330.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein tyrosine and serine…</text>
+<line x1="378.4" y1="316.0" x2="378.4" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="397.4" y1="316.0" x2="397.4" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.7" y1="316.0" x2="412.7" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="441.4" y1="316.0" x2="441.4" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="465.4" y1="316.0" x2="465.4" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="477.0" y1="316.0" x2="477.0" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="499.7" y1="316.0" x2="499.7" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.9" y1="316.0" x2="514.9" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.9" y1="316.0" x2="540.9" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="548.3" y1="316.0" x2="548.3" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="564.9" y1="316.0" x2="564.9" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="311.8" y1="327.0" x2="356.2" y2="327.0" stroke="#a3a3a3" stroke-width="1.5" stroke-dasharray="3,2"><title>Deleted span; EGFR intragenic deletion, 3 exons deleted (in-frame), retained up to aa 544, resumed from aa 640; sample P-0010483-T01-IM5</title></line>
+<text x="660" y="330.5" font-family="sans-serif" font-size="9.5">3-exon deletion (in-frame)</text>
+<rect x="60.0" y="342.0" width="380.9" height="22" fill="#e2e2e2"><title>retained N-terminal block (0-823 aa); EGFR intragenic deletion, 3 exons deleted (out-of-frame), retained up to aa 823, resumed from aa 950; sample P-0066287-T01-IM7</title></rect>
+<rect x="145.6" y="342.0" width="70.8" height="22" fill="#2878b5"><title>Furin-like cysteine rich region retained (185-338 aa); EGFR intragenic deletion, 3 exons deleted (out-of-frame), retained up to aa 823, resumed from aa 950; sample P-0066287-T01-IM7</title></rect>
+<text x="181.0" y="356.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Furin-like cyste…</text>
+<rect x="390.0" y="342.0" width="50.9" height="22" fill="#f2a93b"><title>Protein tyrosine and serine/threonine kinase truncated (713-823 aa); EGFR intragenic deletion, 3 exons deleted (out-of-frame), retained up to aa 823, resumed from aa 950; sample P-0066287-T01-IM7</title></rect>
+<text x="415.4" y="356.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein tyr…</text>
+<rect x="293.7" y="342.0" width="60.6" height="22" fill="#2878b5"><title>Growth factor receptor domain IV retained (505-636 aa); EGFR intragenic deletion, 3 exons deleted (out-of-frame), retained up to aa 823, resumed from aa 950; sample P-0066287-T01-IM7</title></rect>
+<text x="324.0" y="356.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Growth factor…</text>
+<rect x="86.4" y="342.0" width="50.9" height="22" fill="#2878b5"><title>Receptor L domain retained (57-167 aa); EGFR intragenic deletion, 3 exons deleted (out-of-frame), retained up to aa 823, resumed from aa 950; sample P-0066287-T01-IM7</title></rect>
+<text x="111.8" y="356.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Receptor L…</text>
+<rect x="227.1" y="342.0" width="55.1" height="22" fill="#2878b5"><title>Receptor L domain retained (361-480 aa); EGFR intragenic deletion, 3 exons deleted (out-of-frame), retained up to aa 823, resumed from aa 950; sample P-0066287-T01-IM7</title></rect>
+<text x="254.6" y="356.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Receptor L d…</text>
+<line x1="60.5" y1="342.0" x2="60.5" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="73.9" y1="342.0" x2="73.9" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="97.5" y1="342.0" x2="97.5" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="125.7" y1="342.0" x2="125.7" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.5" y1="342.0" x2="146.5" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="157.2" y1="342.0" x2="157.2" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="175.7" y1="342.0" x2="175.7" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="197.5" y1="342.0" x2="197.5" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="215.5" y1="342.0" x2="215.5" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="234.9" y1="342.0" x2="234.9" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="246.5" y1="342.0" x2="246.5" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="260.4" y1="342.0" x2="260.4" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="291.4" y1="342.0" x2="291.4" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="311.8" y1="342.0" x2="311.8" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="326.1" y1="342.0" x2="326.1" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="350.2" y1="342.0" x2="350.2" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="356.2" y1="342.0" x2="356.2" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="378.4" y1="342.0" x2="378.4" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="397.4" y1="342.0" x2="397.4" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.7" y1="342.0" x2="412.7" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<rect x="499.7" y="342.0" width="120.3" height="22" fill="#e2e2e2"><title>resumed C-terminal block (950-1210 aa); EGFR intragenic deletion, 3 exons deleted (out-of-frame), retained up to aa 823, resumed from aa 950; sample P-0066287-T01-IM7</title></rect>
+<rect x="499.7" y="342.0" width="6.9" height="22" fill="#f2a93b"><title>Protein tyrosine and serine/threonine kinase truncated (950-965 aa); EGFR intragenic deletion, 3 exons deleted (out-of-frame), retained up to aa 823, resumed from aa 950; sample P-0066287-T01-IM7</title></rect>
+<line x1="514.9" y1="342.0" x2="514.9" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.9" y1="342.0" x2="540.9" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="548.3" y1="342.0" x2="548.3" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="564.9" y1="342.0" x2="564.9" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="440.9" y1="353.0" x2="499.7" y2="353.0" stroke="#a3a3a3" stroke-width="1.5" stroke-dasharray="3,2"><title>Deleted span; EGFR intragenic deletion, 3 exons deleted (out-of-frame), retained up to aa 823, resumed from aa 950; sample P-0066287-T01-IM7</title></line>
+<text x="660" y="356.5" font-family="sans-serif" font-size="9.5">3-exon deletion (out-of-frame)</text>
+<line x1="60.0" y1="372.0" x2="620.0" y2="372.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="367.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="620.0" y="367.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
+<text x="60.0" y="386.0" font-family="sans-serif" font-size="9">1</text>
+<text x="620.0" y="386.0" font-family="sans-serif" font-size="9" text-anchor="end">1210 aa</text>
+<line x1="60.5" y1="390.0" x2="60.5" y2="394.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="60.5" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 60.5 395.0)">E1</text>
+<line x1="73.9" y1="390.0" x2="73.9" y2="394.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="73.9" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 73.9 395.0)">E2</text>
+<line x1="97.5" y1="390.0" x2="97.5" y2="394.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="97.5" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 97.5 395.0)">E3</text>
+<line x1="125.7" y1="390.0" x2="125.7" y2="394.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="125.7" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 125.7 395.0)">E4</text>
+<line x1="146.5" y1="390.0" x2="146.5" y2="394.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="146.5" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 146.5 395.0)">E5</text>
+<line x1="157.2" y1="390.0" x2="157.2" y2="394.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="157.2" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 157.2 395.0)">E6</text>
+<line x1="175.7" y1="390.0" x2="175.7" y2="394.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="175.7" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 175.7 395.0)">E7</text>
+<line x1="197.5" y1="390.0" x2="197.5" y2="394.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="197.5" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 197.5 395.0)">E8</text>
+<line x1="215.5" y1="390.0" x2="215.5" y2="394.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="215.5" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 215.5 395.0)">E9</text>
+<line x1="234.9" y1="390.0" x2="234.9" y2="394.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="234.9" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 234.9 395.0)">E10</text>
+<line x1="246.5" y1="390.0" x2="246.5" y2="394.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="246.5" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 246.5 395.0)">E11</text>
+<line x1="260.4" y1="390.0" x2="260.4" y2="394.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="260.4" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 260.4 395.0)">E12</text>
+<line x1="291.4" y1="390.0" x2="291.4" y2="394.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="291.4" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 291.4 395.0)">E13</text>
+<line x1="311.8" y1="390.0" x2="311.8" y2="394.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="311.8" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 311.8 395.0)">E14</text>
+<line x1="326.1" y1="390.0" x2="326.1" y2="394.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="326.1" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 326.1 395.0)">E15</text>
+<line x1="350.2" y1="390.0" x2="350.2" y2="394.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="350.2" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 350.2 395.0)">E16</text>
+<line x1="356.2" y1="390.0" x2="356.2" y2="394.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="356.2" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 356.2 395.0)">E17</text>
+<line x1="378.4" y1="390.0" x2="378.4" y2="394.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="378.4" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 378.4 395.0)">E18</text>
+<line x1="397.4" y1="390.0" x2="397.4" y2="394.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="397.4" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 397.4 395.0)">E19</text>
+<line x1="412.7" y1="390.0" x2="412.7" y2="394.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="412.7" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 412.7 395.0)">E20</text>
+<line x1="441.4" y1="390.0" x2="441.4" y2="394.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="441.4" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 441.4 395.0)">E21</text>
+<line x1="465.4" y1="390.0" x2="465.4" y2="394.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="465.4" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 465.4 395.0)">E22</text>
+<line x1="477.0" y1="390.0" x2="477.0" y2="394.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="477.0" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 477.0 395.0)">E23</text>
+<line x1="499.7" y1="390.0" x2="499.7" y2="394.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="499.7" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 499.7 395.0)">E24</text>
+<line x1="514.9" y1="390.0" x2="514.9" y2="394.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="514.9" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 514.9 395.0)">E25</text>
+<line x1="540.9" y1="390.0" x2="540.9" y2="394.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="540.9" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 540.9 395.0)">E26</text>
+<line x1="548.3" y1="390.0" x2="548.3" y2="394.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="548.3" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 548.3 395.0)">E27</text>
+<line x1="564.9" y1="390.0" x2="564.9" y2="394.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="564.9" y="395.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 564.9 395.0)">E28</text>
+<rect x="60.0" y="403.0" width="12" height="10" fill="#2878b5"/>
+<text x="76.0" y="412.0" font-family="sans-serif" font-size="9">domain retained</text>
+<rect x="227.0" y="403.0" width="12" height="10" fill="#f2a93b"/>
+<text x="243.0" y="412.0" font-family="sans-serif" font-size="9">domain truncated</text>
+<rect x="403.0" y="403.0" width="12" height="10" fill="#e2e2e2"/>
+<text x="419.0" y="412.0" font-family="sans-serif" font-size="9">target backbone (no domain)</text>
+<rect x="678.0" y="403.0" width="12" height="10" fill="#d62728"/>
+<text x="694.0" y="412.0" font-family="sans-serif" font-size="9">breakpoint</text>
+</svg>

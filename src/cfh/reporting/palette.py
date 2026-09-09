@@ -94,14 +94,15 @@ SEMANTIC_COLORS = (
 """Every color that requires a legend or explanatory key wherever it's
 used. Test coverage (see ``tests/test_svg_legend_completeness.py``) checks
 that any of these appearing in a rendered SVG is matched by a legend entry
-in that same SVG. Two colors are deliberately not listed here, for two
-different reasons: a gene-hash-derived per-domain highlight shade (see
-:func:`cfh.real_benchmark._domain_highlight_color`) is individually
-arbitrary, but the *scheme* it belongs to is documented once by a
-corresponding legend/note, not per hex value; ``PARTNER_COLOR`` is a single
-fixed, non-semantic fill shared by every fusion partner-gene block (see
-its own docstring above) and never varies, so it carries no meaning a
-legend entry could usefully document."""
+in that same SVG. A gene-hash-derived per-domain highlight shade (see
+:func:`cfh.real_benchmark._domain_highlight_color`) is deliberately not
+listed here -- individually arbitrary, but the *scheme* it belongs to is
+documented once by a corresponding legend/note, not per hex value.
+``PARTNER_COLOR`` is filed under ``CHROME_COLORS`` instead (below): it is a
+single fixed, non-semantic fill shared by every fusion partner-gene block
+and never varies, so it needs no legend entry, but -- unlike the
+hash-derived shade -- it *is* one specific, known hex value, not an
+open-ended scheme."""
 
 CHROME_COLORS = (
     AXIS_COLOR,
@@ -112,6 +113,7 @@ CHROME_COLORS = (
     EXON_TICK_COLOR,
     CONNECTOR_COLOR,
     TABLE_HEADER_COLOR,
+    PARTNER_COLOR,
 )
 """Structural/decorative colors that need no legend entry (see the module
 docstring). Listed explicitly, alongside ``SEMANTIC_COLORS``, so the two

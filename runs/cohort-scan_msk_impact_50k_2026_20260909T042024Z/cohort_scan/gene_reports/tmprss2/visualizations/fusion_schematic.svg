@@ -1,0 +1,428 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="890" viewBox="0 0 1000 890">
+<rect width="1000" height="890" fill="white"/>
+<text x="60" y="24" font-family="sans-serif" font-size="15">TMPRSS2 fusion-transcript schematic</text>
+<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555555">Fusion order varies by row; follow each row's 5' and 3' labels (TMPRSS2 portion is domain-colored, exon ticks). Partner-gene blocks share one color; row labels identify each partner.</text>
+<rect x="80.1" y="56.0" width="539.9" height="22" fill="#8064a2"><title>Partner gene ERG; TMPRSS2–ERG fusion, breakpoint TMPRSS2 aa 19; samples P-0036545-T01-IM6, P-0006815-T01-IM5, P-0001697-T02-IM3, P-0001698-T01-IM3, P-0018798-T01-IM6 (+488 more)</title></rect>
+<rect x="60.0" y="56.0" width="20.1" height="22" fill="#e2e2e2"><title>TMPRSS2 backbone (0-19 aa, no domain); domain status lost; TMPRSS2–ERG fusion, breakpoint TMPRSS2 aa 19; samples P-0036545-T01-IM6, P-0006815-T01-IM5, P-0001697-T02-IM3, P-0001698-T01-IM3, P-0018798-T01-IM6 (+488 more)</title></rect>
+<line x1="61.1" y1="56.0" x2="61.1" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="80.1" y1="55.0" x2="80.1" y2="79.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; TMPRSS2–ERG fusion, breakpoint TMPRSS2 aa 19; samples P-0036545-T01-IM6, P-0006815-T01-IM5, P-0001697-T02-IM3, P-0001698-T01-IM3, P-0018798-T01-IM6 (+488 more)</title></line>
+<text x="64.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="70.5" font-family="sans-serif" font-size="9.5">ERG (x493) – Trypsin lost – Prostate Cancer, Cancer of Unknown Primary</text>
+<rect x="104.5" y="82.0" width="515.5" height="22" fill="#8064a2"><title>Partner gene ERG; TMPRSS2–ERG fusion, breakpoint TMPRSS2 aa 42; samples P-0012132-T02-IM6, P-0017312-T01-IM6, P-0001242-T05-IM6, P-0001845-T01-IM3, P-0001242-T04-IM6 (+229 more)</title></rect>
+<rect x="60.0" y="82.0" width="44.5" height="22" fill="#e2e2e2"><title>TMPRSS2 backbone (0-42 aa, no domain); domain status lost; TMPRSS2–ERG fusion, breakpoint TMPRSS2 aa 42; samples P-0012132-T02-IM6, P-0017312-T01-IM6, P-0001242-T05-IM6, P-0001845-T01-IM3, P-0001242-T04-IM6 (+229 more)</title></rect>
+<line x1="61.1" y1="82.0" x2="61.1" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="80.1" y1="82.0" x2="80.1" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="104.5" y1="81.0" x2="104.5" y2="105.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; TMPRSS2–ERG fusion, breakpoint TMPRSS2 aa 42; samples P-0012132-T02-IM6, P-0017312-T01-IM6, P-0001242-T05-IM6, P-0001845-T01-IM3, P-0001242-T04-IM6 (+229 more)</title></line>
+<text x="64.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="96.5" font-family="sans-serif" font-size="9.5">ERG (x234) – Trypsin lost – Prostate Cancer, Cancer of Unknown Primary, Gastrointestinal Neuroendocrine Tumor</text>
+<rect x="80.1" y="108.0" width="539.9" height="22" fill="#8064a2"><title>Partner gene ETV1; TMPRSS2–ETV1 fusion, breakpoint TMPRSS2 aa 19; samples P-0049966-T01-IM6, P-0021254-T01-IM6, P-0065149-T01-IM7, P-0001449-T01-IM3, P-0001449-T02-IM5 (+4 more)</title></rect>
+<rect x="60.0" y="108.0" width="20.1" height="22" fill="#e2e2e2"><title>TMPRSS2 backbone (0-19 aa, no domain); domain status lost; TMPRSS2–ETV1 fusion, breakpoint TMPRSS2 aa 19; samples P-0049966-T01-IM6, P-0021254-T01-IM6, P-0065149-T01-IM7, P-0001449-T01-IM3, P-0001449-T02-IM5 (+4 more)</title></rect>
+<line x1="61.1" y1="108.0" x2="61.1" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="80.1" y1="107.0" x2="80.1" y2="131.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; TMPRSS2–ETV1 fusion, breakpoint TMPRSS2 aa 19; samples P-0049966-T01-IM6, P-0021254-T01-IM6, P-0065149-T01-IM7, P-0001449-T01-IM3, P-0001449-T02-IM5 (+4 more)</title></line>
+<text x="64.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="122.5" font-family="sans-serif" font-size="9.5">ETV1 (x9) – Trypsin lost – Prostate Cancer</text>
+<rect x="60.0" y="134.0" width="45.5" height="22" fill="#8064a2"><title>Partner gene ERG; TMPRSS2–ERG fusion, breakpoint TMPRSS2 aa 43; samples P-0001776-T01-IM3, P-0013844-T01-IM5, P-0013844-T02-IM6, P-0030086-T01-IM6, P-0020750-T01-IM6 (+2 more)</title></rect>
+<rect x="105.5" y="134.0" width="514.5" height="22" fill="#e2e2e2"><title>TMPRSS2 backbone (43-529 aa, no domain); domain status retained; TMPRSS2–ERG fusion, breakpoint TMPRSS2 aa 43; samples P-0001776-T01-IM3, P-0013844-T01-IM5, P-0013844-T02-IM6, P-0030086-T01-IM6, P-0020750-T01-IM6 (+2 more)</title></rect>
+<rect x="261.1" y="134.0" width="98.4" height="22" fill="#2878b5"><title>Scavenger receptor cysteine-rich domain retained (190-283 aa); TMPRSS2–ERG fusion, breakpoint TMPRSS2 aa 43; samples P-0001776-T01-IM3, P-0013844-T01-IM5, P-0013844-T02-IM6, P-0030086-T01-IM6, P-0020750-T01-IM6 (+2 more)</title></rect>
+<text x="310.4" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Scavenger receptor cyst…</text>
+<rect x="370.2" y="134.0" width="241.4" height="22" fill="#2878b5"><title>Trypsin retained (293-521 aa); TMPRSS2–ERG fusion, breakpoint TMPRSS2 aa 43; samples P-0001776-T01-IM3, P-0013844-T01-IM5, P-0013844-T02-IM6, P-0030086-T01-IM6, P-0020750-T01-IM6 (+2 more)</title></rect>
+<text x="490.9" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Trypsin</text>
+<line x1="183.9" y1="134.0" x2="183.9" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="214.6" y1="134.0" x2="214.6" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="256.9" y1="134.0" x2="256.9" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="301.4" y1="134.0" x2="301.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="340.5" y1="134.0" x2="340.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="356.4" y1="134.0" x2="356.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="416.7" y1="134.0" x2="416.7" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="479.2" y1="134.0" x2="479.2" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="513.1" y1="134.0" x2="513.1" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="563.9" y1="134.0" x2="563.9" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="617.9" y1="134.0" x2="617.9" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="105.5" y1="133.0" x2="105.5" y2="157.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; TMPRSS2–ERG fusion, breakpoint TMPRSS2 aa 43; samples P-0001776-T01-IM3, P-0013844-T01-IM5, P-0013844-T02-IM6, P-0030086-T01-IM6, P-0020750-T01-IM6 (+2 more)</title></line>
+<text x="64.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="148.5" font-family="sans-serif" font-size="9.5">ERG (x7) – Trypsin retained – Prostate Cancer</text>
+<rect x="104.5" y="160.0" width="515.5" height="22" fill="#8064a2"><title>Partner gene ETV1; TMPRSS2–ETV1 fusion, breakpoint TMPRSS2 aa 42; samples P-0009640-T01-IM5, P-0002398-T01-IM3, P-0002398-T03-IM6, P-0002398-T02-IM3, P-0009640-T02-IM6</title></rect>
+<rect x="60.0" y="160.0" width="44.5" height="22" fill="#e2e2e2"><title>TMPRSS2 backbone (0-42 aa, no domain); domain status lost; TMPRSS2–ETV1 fusion, breakpoint TMPRSS2 aa 42; samples P-0009640-T01-IM5, P-0002398-T01-IM3, P-0002398-T03-IM6, P-0002398-T02-IM3, P-0009640-T02-IM6</title></rect>
+<line x1="61.1" y1="160.0" x2="61.1" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="80.1" y1="160.0" x2="80.1" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="104.5" y1="159.0" x2="104.5" y2="183.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; TMPRSS2–ETV1 fusion, breakpoint TMPRSS2 aa 42; samples P-0009640-T01-IM5, P-0002398-T01-IM3, P-0002398-T03-IM6, P-0002398-T02-IM3, P-0009640-T02-IM6</title></line>
+<text x="64.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="174.5" font-family="sans-serif" font-size="9.5">ETV1 (x5) – Trypsin lost – Prostate Cancer</text>
+<rect x="60.0" y="186.0" width="20.1" height="22" fill="#8064a2"><title>Partner gene ERG; TMPRSS2–ERG fusion, breakpoint TMPRSS2 aa 19; samples P-0051756-T01-IM6, P-0035506-T01-IM6, P-0012046-T01-IM5, P-0014414-T01-IM6</title></rect>
+<rect x="80.1" y="186.0" width="539.9" height="22" fill="#e2e2e2"><title>TMPRSS2 backbone (19-529 aa, no domain); domain status retained; TMPRSS2–ERG fusion, breakpoint TMPRSS2 aa 19; samples P-0051756-T01-IM6, P-0035506-T01-IM6, P-0012046-T01-IM5, P-0014414-T01-IM6</title></rect>
+<rect x="261.1" y="186.0" width="98.4" height="22" fill="#2878b5"><title>Scavenger receptor cysteine-rich domain retained (190-283 aa); TMPRSS2–ERG fusion, breakpoint TMPRSS2 aa 19; samples P-0051756-T01-IM6, P-0035506-T01-IM6, P-0012046-T01-IM5, P-0014414-T01-IM6</title></rect>
+<text x="310.4" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Scavenger receptor cyst…</text>
+<rect x="370.2" y="186.0" width="241.4" height="22" fill="#2878b5"><title>Trypsin retained (293-521 aa); TMPRSS2–ERG fusion, breakpoint TMPRSS2 aa 19; samples P-0051756-T01-IM6, P-0035506-T01-IM6, P-0012046-T01-IM5, P-0014414-T01-IM6</title></rect>
+<text x="490.9" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Trypsin</text>
+<line x1="105.5" y1="186.0" x2="105.5" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="183.9" y1="186.0" x2="183.9" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="214.6" y1="186.0" x2="214.6" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="256.9" y1="186.0" x2="256.9" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="301.4" y1="186.0" x2="301.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="340.5" y1="186.0" x2="340.5" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="356.4" y1="186.0" x2="356.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="416.7" y1="186.0" x2="416.7" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="479.2" y1="186.0" x2="479.2" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="513.1" y1="186.0" x2="513.1" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="563.9" y1="186.0" x2="563.9" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="617.9" y1="186.0" x2="617.9" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="80.1" y1="185.0" x2="80.1" y2="209.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; TMPRSS2–ERG fusion, breakpoint TMPRSS2 aa 19; samples P-0051756-T01-IM6, P-0035506-T01-IM6, P-0012046-T01-IM5, P-0014414-T01-IM6</title></line>
+<text x="64.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="200.5" font-family="sans-serif" font-size="9.5">ERG (x4) – Trypsin retained – Prostate Cancer</text>
+<rect x="60.0" y="212.0" width="123.9" height="22" fill="#8064a2"><title>Partner gene ERG; TMPRSS2–ERG fusion, breakpoint TMPRSS2 aa 117; samples P-0059191-T01-IM7, P-0013457-T01-IM5, P-0022060-T01-IM6</title></rect>
+<rect x="183.9" y="212.0" width="436.1" height="22" fill="#e2e2e2"><title>TMPRSS2 backbone (117-529 aa, no domain); domain status retained; TMPRSS2–ERG fusion, breakpoint TMPRSS2 aa 117; samples P-0059191-T01-IM7, P-0013457-T01-IM5, P-0022060-T01-IM6</title></rect>
+<rect x="261.1" y="212.0" width="98.4" height="22" fill="#2878b5"><title>Scavenger receptor cysteine-rich domain retained (190-283 aa); TMPRSS2–ERG fusion, breakpoint TMPRSS2 aa 117; samples P-0059191-T01-IM7, P-0013457-T01-IM5, P-0022060-T01-IM6</title></rect>
+<text x="310.4" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Scavenger receptor cyst…</text>
+<rect x="370.2" y="212.0" width="241.4" height="22" fill="#2878b5"><title>Trypsin retained (293-521 aa); TMPRSS2–ERG fusion, breakpoint TMPRSS2 aa 117; samples P-0059191-T01-IM7, P-0013457-T01-IM5, P-0022060-T01-IM6</title></rect>
+<text x="490.9" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Trypsin</text>
+<line x1="214.6" y1="212.0" x2="214.6" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="256.9" y1="212.0" x2="256.9" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="301.4" y1="212.0" x2="301.4" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="340.5" y1="212.0" x2="340.5" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="356.4" y1="212.0" x2="356.4" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="416.7" y1="212.0" x2="416.7" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="479.2" y1="212.0" x2="479.2" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="513.1" y1="212.0" x2="513.1" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="563.9" y1="212.0" x2="563.9" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="617.9" y1="212.0" x2="617.9" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="183.9" y1="211.0" x2="183.9" y2="235.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; TMPRSS2–ERG fusion, breakpoint TMPRSS2 aa 117; samples P-0059191-T01-IM7, P-0013457-T01-IM5, P-0022060-T01-IM6</title></line>
+<text x="64.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="226.5" font-family="sans-serif" font-size="9.5">ERG (x3) – Trypsin retained – Prostate Cancer</text>
+<rect x="80.1" y="238.0" width="539.9" height="22" fill="#8064a2"><title>Partner gene BRAF; TMPRSS2–BRAF fusion, breakpoint TMPRSS2 aa 19; samples P-0018524-T01-IM6, P-0022778-T01-IM6</title></rect>
+<rect x="60.0" y="238.0" width="20.1" height="22" fill="#e2e2e2"><title>TMPRSS2 backbone (0-19 aa, no domain); domain status lost; TMPRSS2–BRAF fusion, breakpoint TMPRSS2 aa 19; samples P-0018524-T01-IM6, P-0022778-T01-IM6</title></rect>
+<line x1="61.1" y1="238.0" x2="61.1" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="80.1" y1="237.0" x2="80.1" y2="261.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; TMPRSS2–BRAF fusion, breakpoint TMPRSS2 aa 19; samples P-0018524-T01-IM6, P-0022778-T01-IM6</title></line>
+<text x="64.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="252.5" font-family="sans-serif" font-size="9.5">BRAF (x2) – Trypsin lost – Prostate Cancer</text>
+<rect x="80.1" y="264.0" width="539.9" height="22" fill="#8064a2"><title>Partner gene CHD3; TMPRSS2–CHD3 fusion, breakpoint TMPRSS2 aa 19; samples P-0017882-T02-IM6, P-0017882-T01-IM6</title></rect>
+<rect x="60.0" y="264.0" width="20.1" height="22" fill="#e2e2e2"><title>TMPRSS2 backbone (0-19 aa, no domain); domain status lost; TMPRSS2–CHD3 fusion, breakpoint TMPRSS2 aa 19; samples P-0017882-T02-IM6, P-0017882-T01-IM6</title></rect>
+<line x1="61.1" y1="264.0" x2="61.1" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="80.1" y1="263.0" x2="80.1" y2="287.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; TMPRSS2–CHD3 fusion, breakpoint TMPRSS2 aa 19; samples P-0017882-T02-IM6, P-0017882-T01-IM6</title></line>
+<text x="64.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="278.5" font-family="sans-serif" font-size="9.5">CHD3 (x2) – Trypsin lost – Prostate Cancer</text>
+<rect x="80.1" y="290.0" width="539.9" height="22" fill="#8064a2"><title>Partner gene ETV5; TMPRSS2–ETV5 fusion, breakpoint TMPRSS2 aa 19; samples P-0050644-T01-IM6, P-0061363-T01-IM7</title></rect>
+<rect x="60.0" y="290.0" width="20.1" height="22" fill="#e2e2e2"><title>TMPRSS2 backbone (0-19 aa, no domain); domain status lost; TMPRSS2–ETV5 fusion, breakpoint TMPRSS2 aa 19; samples P-0050644-T01-IM6, P-0061363-T01-IM7</title></rect>
+<line x1="61.1" y1="290.0" x2="61.1" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="80.1" y1="289.0" x2="80.1" y2="313.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; TMPRSS2–ETV5 fusion, breakpoint TMPRSS2 aa 19; samples P-0050644-T01-IM6, P-0061363-T01-IM7</title></line>
+<text x="64.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="304.5" font-family="sans-serif" font-size="9.5">ETV5 (x2) – Trypsin lost – Prostate Cancer</text>
+<rect x="60.0" y="316.0" width="20.1" height="22" fill="#8064a2"><title>Partner gene MAD1L1; TMPRSS2–MAD1L1 fusion, breakpoint TMPRSS2 aa 19; samples P-0049188-T02-IM7, P-0049188-T01-IM6</title></rect>
+<rect x="80.1" y="316.0" width="539.9" height="22" fill="#e2e2e2"><title>TMPRSS2 backbone (19-529 aa, no domain); domain status retained; TMPRSS2–MAD1L1 fusion, breakpoint TMPRSS2 aa 19; samples P-0049188-T02-IM7, P-0049188-T01-IM6</title></rect>
+<rect x="261.1" y="316.0" width="98.4" height="22" fill="#2878b5"><title>Scavenger receptor cysteine-rich domain retained (190-283 aa); TMPRSS2–MAD1L1 fusion, breakpoint TMPRSS2 aa 19; samples P-0049188-T02-IM7, P-0049188-T01-IM6</title></rect>
+<text x="310.4" y="330.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Scavenger receptor cyst…</text>
+<rect x="370.2" y="316.0" width="241.4" height="22" fill="#2878b5"><title>Trypsin retained (293-521 aa); TMPRSS2–MAD1L1 fusion, breakpoint TMPRSS2 aa 19; samples P-0049188-T02-IM7, P-0049188-T01-IM6</title></rect>
+<text x="490.9" y="330.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Trypsin</text>
+<line x1="105.5" y1="316.0" x2="105.5" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="183.9" y1="316.0" x2="183.9" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="214.6" y1="316.0" x2="214.6" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="256.9" y1="316.0" x2="256.9" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="301.4" y1="316.0" x2="301.4" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="340.5" y1="316.0" x2="340.5" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="356.4" y1="316.0" x2="356.4" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="416.7" y1="316.0" x2="416.7" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="479.2" y1="316.0" x2="479.2" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="513.1" y1="316.0" x2="513.1" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="563.9" y1="316.0" x2="563.9" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="617.9" y1="316.0" x2="617.9" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="80.1" y1="315.0" x2="80.1" y2="339.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; TMPRSS2–MAD1L1 fusion, breakpoint TMPRSS2 aa 19; samples P-0049188-T02-IM7, P-0049188-T01-IM6</title></line>
+<text x="64.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="330.5" font-family="sans-serif" font-size="9.5">MAD1L1 (x2) – Trypsin retained – Prostate Cancer</text>
+<rect x="60.0" y="342.0" width="20.1" height="22" fill="#8064a2"><title>Partner gene MX1; TMPRSS2–MX1 fusion, breakpoint TMPRSS2 aa 19; samples P-0004283-T01-IM5, P-0030872-T01-IM6</title></rect>
+<rect x="80.1" y="342.0" width="539.9" height="22" fill="#e2e2e2"><title>TMPRSS2 backbone (19-529 aa, no domain); domain status retained; TMPRSS2–MX1 fusion, breakpoint TMPRSS2 aa 19; samples P-0004283-T01-IM5, P-0030872-T01-IM6</title></rect>
+<rect x="261.1" y="342.0" width="98.4" height="22" fill="#2878b5"><title>Scavenger receptor cysteine-rich domain retained (190-283 aa); TMPRSS2–MX1 fusion, breakpoint TMPRSS2 aa 19; samples P-0004283-T01-IM5, P-0030872-T01-IM6</title></rect>
+<text x="310.4" y="356.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Scavenger receptor cyst…</text>
+<rect x="370.2" y="342.0" width="241.4" height="22" fill="#2878b5"><title>Trypsin retained (293-521 aa); TMPRSS2–MX1 fusion, breakpoint TMPRSS2 aa 19; samples P-0004283-T01-IM5, P-0030872-T01-IM6</title></rect>
+<text x="490.9" y="356.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Trypsin</text>
+<line x1="105.5" y1="342.0" x2="105.5" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="183.9" y1="342.0" x2="183.9" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="214.6" y1="342.0" x2="214.6" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="256.9" y1="342.0" x2="256.9" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="301.4" y1="342.0" x2="301.4" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="340.5" y1="342.0" x2="340.5" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="356.4" y1="342.0" x2="356.4" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="416.7" y1="342.0" x2="416.7" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="479.2" y1="342.0" x2="479.2" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="513.1" y1="342.0" x2="513.1" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="563.9" y1="342.0" x2="563.9" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="617.9" y1="342.0" x2="617.9" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="80.1" y1="341.0" x2="80.1" y2="365.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; TMPRSS2–MX1 fusion, breakpoint TMPRSS2 aa 19; samples P-0004283-T01-IM5, P-0030872-T01-IM6</title></line>
+<text x="64.0" y="356.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="356.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="356.5" font-family="sans-serif" font-size="9.5">MX1 (x2) – Trypsin retained – Prostate Cancer</text>
+<rect x="60.0" y="368.0" width="20.1" height="22" fill="#8064a2"><title>Partner gene NLGN1; TMPRSS2–NLGN1 fusion, breakpoint TMPRSS2 aa 19; samples P-0006837-T01-IM5, P-0006837-T02-IM5</title></rect>
+<rect x="80.1" y="368.0" width="539.9" height="22" fill="#e2e2e2"><title>TMPRSS2 backbone (19-529 aa, no domain); domain status retained; TMPRSS2–NLGN1 fusion, breakpoint TMPRSS2 aa 19; samples P-0006837-T01-IM5, P-0006837-T02-IM5</title></rect>
+<rect x="261.1" y="368.0" width="98.4" height="22" fill="#2878b5"><title>Scavenger receptor cysteine-rich domain retained (190-283 aa); TMPRSS2–NLGN1 fusion, breakpoint TMPRSS2 aa 19; samples P-0006837-T01-IM5, P-0006837-T02-IM5</title></rect>
+<text x="310.4" y="382.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Scavenger receptor cyst…</text>
+<rect x="370.2" y="368.0" width="241.4" height="22" fill="#2878b5"><title>Trypsin retained (293-521 aa); TMPRSS2–NLGN1 fusion, breakpoint TMPRSS2 aa 19; samples P-0006837-T01-IM5, P-0006837-T02-IM5</title></rect>
+<text x="490.9" y="382.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Trypsin</text>
+<line x1="105.5" y1="368.0" x2="105.5" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="183.9" y1="368.0" x2="183.9" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="214.6" y1="368.0" x2="214.6" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="256.9" y1="368.0" x2="256.9" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="301.4" y1="368.0" x2="301.4" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="340.5" y1="368.0" x2="340.5" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="356.4" y1="368.0" x2="356.4" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="416.7" y1="368.0" x2="416.7" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="479.2" y1="368.0" x2="479.2" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="513.1" y1="368.0" x2="513.1" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="563.9" y1="368.0" x2="563.9" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="617.9" y1="368.0" x2="617.9" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="80.1" y1="367.0" x2="80.1" y2="391.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; TMPRSS2–NLGN1 fusion, breakpoint TMPRSS2 aa 19; samples P-0006837-T01-IM5, P-0006837-T02-IM5</title></line>
+<text x="64.0" y="382.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="382.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="382.5" font-family="sans-serif" font-size="9.5">NLGN1 (x2) – Trypsin retained – Prostate Cancer</text>
+<rect x="104.5" y="394.0" width="515.5" height="22" fill="#8064a2"><title>Partner gene DSCAM; TMPRSS2–DSCAM fusion, breakpoint TMPRSS2 aa 42; samples P-0005459-T01-IM5, P-0005459-T02-IM6</title></rect>
+<rect x="60.0" y="394.0" width="44.5" height="22" fill="#e2e2e2"><title>TMPRSS2 backbone (0-42 aa, no domain); domain status lost; TMPRSS2–DSCAM fusion, breakpoint TMPRSS2 aa 42; samples P-0005459-T01-IM5, P-0005459-T02-IM6</title></rect>
+<line x1="61.1" y1="394.0" x2="61.1" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="80.1" y1="394.0" x2="80.1" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="104.5" y1="393.0" x2="104.5" y2="417.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; TMPRSS2–DSCAM fusion, breakpoint TMPRSS2 aa 42; samples P-0005459-T01-IM5, P-0005459-T02-IM6</title></line>
+<text x="64.0" y="408.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="408.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="408.5" font-family="sans-serif" font-size="9.5">DSCAM (x2) – Trypsin lost – Prostate Cancer</text>
+<rect x="104.5" y="420.0" width="515.5" height="22" fill="#8064a2"><title>Partner gene ETV5; TMPRSS2–ETV5 fusion, breakpoint TMPRSS2 aa 42; samples P-0011198-T01-IM5, P-0011198-T02-IM6</title></rect>
+<rect x="60.0" y="420.0" width="44.5" height="22" fill="#e2e2e2"><title>TMPRSS2 backbone (0-42 aa, no domain); domain status lost; TMPRSS2–ETV5 fusion, breakpoint TMPRSS2 aa 42; samples P-0011198-T01-IM5, P-0011198-T02-IM6</title></rect>
+<line x1="61.1" y1="420.0" x2="61.1" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="80.1" y1="420.0" x2="80.1" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="104.5" y1="419.0" x2="104.5" y2="443.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; TMPRSS2–ETV5 fusion, breakpoint TMPRSS2 aa 42; samples P-0011198-T01-IM5, P-0011198-T02-IM6</title></line>
+<text x="64.0" y="434.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="434.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="434.5" font-family="sans-serif" font-size="9.5">ETV5 (x2) – Trypsin lost – Prostate Cancer</text>
+<rect x="60.0" y="446.0" width="45.5" height="22" fill="#8064a2"><title>Partner gene NR3C2; TMPRSS2–NR3C2 fusion, breakpoint TMPRSS2 aa 43; samples P-0002901-T03-IM5, P-0002901-T01-IM3</title></rect>
+<rect x="105.5" y="446.0" width="514.5" height="22" fill="#e2e2e2"><title>TMPRSS2 backbone (43-529 aa, no domain); domain status retained; TMPRSS2–NR3C2 fusion, breakpoint TMPRSS2 aa 43; samples P-0002901-T03-IM5, P-0002901-T01-IM3</title></rect>
+<rect x="261.1" y="446.0" width="98.4" height="22" fill="#2878b5"><title>Scavenger receptor cysteine-rich domain retained (190-283 aa); TMPRSS2–NR3C2 fusion, breakpoint TMPRSS2 aa 43; samples P-0002901-T03-IM5, P-0002901-T01-IM3</title></rect>
+<text x="310.4" y="460.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Scavenger receptor cyst…</text>
+<rect x="370.2" y="446.0" width="241.4" height="22" fill="#2878b5"><title>Trypsin retained (293-521 aa); TMPRSS2–NR3C2 fusion, breakpoint TMPRSS2 aa 43; samples P-0002901-T03-IM5, P-0002901-T01-IM3</title></rect>
+<text x="490.9" y="460.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Trypsin</text>
+<line x1="183.9" y1="446.0" x2="183.9" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="214.6" y1="446.0" x2="214.6" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="256.9" y1="446.0" x2="256.9" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="301.4" y1="446.0" x2="301.4" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="340.5" y1="446.0" x2="340.5" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="356.4" y1="446.0" x2="356.4" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="416.7" y1="446.0" x2="416.7" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="479.2" y1="446.0" x2="479.2" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="513.1" y1="446.0" x2="513.1" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="563.9" y1="446.0" x2="563.9" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="617.9" y1="446.0" x2="617.9" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="105.5" y1="445.0" x2="105.5" y2="469.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; TMPRSS2–NR3C2 fusion, breakpoint TMPRSS2 aa 43; samples P-0002901-T03-IM5, P-0002901-T01-IM3</title></line>
+<text x="64.0" y="460.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="460.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="460.5" font-family="sans-serif" font-size="9.5">NR3C2 (x2) – Trypsin retained – Prostate Cancer</text>
+<rect x="153.2" y="472.0" width="466.8" height="22" fill="#8064a2"><title>Partner gene ERG; TMPRSS2–ERG fusion, breakpoint TMPRSS2 aa 88; samples P-0003139-T01-IM5, P-0003139-T02-IM5</title></rect>
+<rect x="60.0" y="472.0" width="93.2" height="22" fill="#e2e2e2"><title>TMPRSS2 backbone (0-88 aa, no domain); domain status lost; TMPRSS2–ERG fusion, breakpoint TMPRSS2 aa 88; samples P-0003139-T01-IM5, P-0003139-T02-IM5</title></rect>
+<line x1="61.1" y1="472.0" x2="61.1" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="80.1" y1="472.0" x2="80.1" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="105.5" y1="472.0" x2="105.5" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="153.2" y1="471.0" x2="153.2" y2="495.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; TMPRSS2–ERG fusion, breakpoint TMPRSS2 aa 88; samples P-0003139-T01-IM5, P-0003139-T02-IM5</title></line>
+<text x="64.0" y="486.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="486.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="486.5" font-family="sans-serif" font-size="9.5">ERG (x2) – Trypsin lost – Prostate Cancer</text>
+<rect x="168.0" y="498.0" width="452.0" height="22" fill="#8064a2"><title>Partner gene ERG; TMPRSS2–ERG fusion, breakpoint TMPRSS2 aa 102; samples P-0022117-T01-IM6, P-0022117-T04-IM7</title></rect>
+<rect x="60.0" y="498.0" width="108.0" height="22" fill="#e2e2e2"><title>TMPRSS2 backbone (0-102 aa, no domain); domain status lost; TMPRSS2–ERG fusion, breakpoint TMPRSS2 aa 102; samples P-0022117-T01-IM6, P-0022117-T04-IM7</title></rect>
+<line x1="61.1" y1="498.0" x2="61.1" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="80.1" y1="498.0" x2="80.1" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="105.5" y1="498.0" x2="105.5" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="168.0" y1="497.0" x2="168.0" y2="521.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; TMPRSS2–ERG fusion, breakpoint TMPRSS2 aa 102; samples P-0022117-T01-IM6, P-0022117-T04-IM7</title></line>
+<text x="64.0" y="512.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="512.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="512.5" font-family="sans-serif" font-size="9.5">ERG (x2) – Trypsin lost – Prostate Cancer</text>
+<rect x="536.4" y="524.0" width="83.6" height="22" fill="#8064a2"><title>Partner gene ETV4; TMPRSS2–ETV4 fusion, breakpoint TMPRSS2 aa 450; samples P-0024686-T01-IM6, P-0024686-T02-IM6</title></rect>
+<rect x="60.0" y="524.0" width="476.4" height="22" fill="#e2e2e2"><title>TMPRSS2 backbone (0-450 aa, no domain); domain status truncated; TMPRSS2–ETV4 fusion, breakpoint TMPRSS2 aa 450; samples P-0024686-T01-IM6, P-0024686-T02-IM6</title></rect>
+<rect x="261.1" y="524.0" width="98.4" height="22" fill="#2878b5"><title>Scavenger receptor cysteine-rich domain retained (190-283 aa); TMPRSS2–ETV4 fusion, breakpoint TMPRSS2 aa 450; samples P-0024686-T01-IM6, P-0024686-T02-IM6</title></rect>
+<text x="310.4" y="538.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Scavenger receptor cyst…</text>
+<rect x="370.2" y="524.0" width="166.2" height="22" fill="#f2a93b"><title>Trypsin truncated (293-450 aa); TMPRSS2–ETV4 fusion, breakpoint TMPRSS2 aa 450; samples P-0024686-T01-IM6, P-0024686-T02-IM6</title></rect>
+<text x="453.3" y="538.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Trypsin</text>
+<line x1="61.1" y1="524.0" x2="61.1" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="80.1" y1="524.0" x2="80.1" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="105.5" y1="524.0" x2="105.5" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="183.9" y1="524.0" x2="183.9" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="214.6" y1="524.0" x2="214.6" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="256.9" y1="524.0" x2="256.9" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="301.4" y1="524.0" x2="301.4" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="340.5" y1="524.0" x2="340.5" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="356.4" y1="524.0" x2="356.4" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="416.7" y1="524.0" x2="416.7" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="479.2" y1="524.0" x2="479.2" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="513.1" y1="524.0" x2="513.1" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="536.4" y1="523.0" x2="536.4" y2="547.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; TMPRSS2–ETV4 fusion, breakpoint TMPRSS2 aa 450; samples P-0024686-T01-IM6, P-0024686-T02-IM6</title></line>
+<text x="64.0" y="538.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="538.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="538.5" font-family="sans-serif" font-size="9.5">ETV4 (x2) – Trypsin truncated – Prostate Cancer</text>
+<rect x="60.0" y="550.0" width="20.1" height="22" fill="#8064a2"><title>Partner gene ABCC4; TMPRSS2–ABCC4 fusion, breakpoint TMPRSS2 aa 19; sample P-0014522-T01-IM6</title></rect>
+<rect x="80.1" y="550.0" width="539.9" height="22" fill="#e2e2e2"><title>TMPRSS2 backbone (19-529 aa, no domain); domain status retained; TMPRSS2–ABCC4 fusion, breakpoint TMPRSS2 aa 19; sample P-0014522-T01-IM6</title></rect>
+<rect x="261.1" y="550.0" width="98.4" height="22" fill="#2878b5"><title>Scavenger receptor cysteine-rich domain retained (190-283 aa); TMPRSS2–ABCC4 fusion, breakpoint TMPRSS2 aa 19; sample P-0014522-T01-IM6</title></rect>
+<text x="310.4" y="564.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Scavenger receptor cyst…</text>
+<rect x="370.2" y="550.0" width="241.4" height="22" fill="#2878b5"><title>Trypsin retained (293-521 aa); TMPRSS2–ABCC4 fusion, breakpoint TMPRSS2 aa 19; sample P-0014522-T01-IM6</title></rect>
+<text x="490.9" y="564.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Trypsin</text>
+<line x1="105.5" y1="550.0" x2="105.5" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="183.9" y1="550.0" x2="183.9" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="214.6" y1="550.0" x2="214.6" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="256.9" y1="550.0" x2="256.9" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="301.4" y1="550.0" x2="301.4" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="340.5" y1="550.0" x2="340.5" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="356.4" y1="550.0" x2="356.4" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="416.7" y1="550.0" x2="416.7" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="479.2" y1="550.0" x2="479.2" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="513.1" y1="550.0" x2="513.1" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="563.9" y1="550.0" x2="563.9" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="617.9" y1="550.0" x2="617.9" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="80.1" y1="549.0" x2="80.1" y2="573.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; TMPRSS2–ABCC4 fusion, breakpoint TMPRSS2 aa 19; sample P-0014522-T01-IM6</title></line>
+<text x="64.0" y="564.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="564.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="564.5" font-family="sans-serif" font-size="9.5">ABCC4 – Trypsin retained – Prostate Cancer</text>
+<rect x="60.0" y="576.0" width="20.1" height="22" fill="#8064a2"><title>Partner gene ADHFE1; TMPRSS2–ADHFE1 fusion, breakpoint TMPRSS2 aa 19; sample P-0043583-T01-IM6</title></rect>
+<rect x="80.1" y="576.0" width="539.9" height="22" fill="#e2e2e2"><title>TMPRSS2 backbone (19-529 aa, no domain); domain status retained; TMPRSS2–ADHFE1 fusion, breakpoint TMPRSS2 aa 19; sample P-0043583-T01-IM6</title></rect>
+<rect x="261.1" y="576.0" width="98.4" height="22" fill="#2878b5"><title>Scavenger receptor cysteine-rich domain retained (190-283 aa); TMPRSS2–ADHFE1 fusion, breakpoint TMPRSS2 aa 19; sample P-0043583-T01-IM6</title></rect>
+<text x="310.4" y="590.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Scavenger receptor cyst…</text>
+<rect x="370.2" y="576.0" width="241.4" height="22" fill="#2878b5"><title>Trypsin retained (293-521 aa); TMPRSS2–ADHFE1 fusion, breakpoint TMPRSS2 aa 19; sample P-0043583-T01-IM6</title></rect>
+<text x="490.9" y="590.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Trypsin</text>
+<line x1="105.5" y1="576.0" x2="105.5" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="183.9" y1="576.0" x2="183.9" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="214.6" y1="576.0" x2="214.6" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="256.9" y1="576.0" x2="256.9" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="301.4" y1="576.0" x2="301.4" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="340.5" y1="576.0" x2="340.5" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="356.4" y1="576.0" x2="356.4" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="416.7" y1="576.0" x2="416.7" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="479.2" y1="576.0" x2="479.2" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="513.1" y1="576.0" x2="513.1" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="563.9" y1="576.0" x2="563.9" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="617.9" y1="576.0" x2="617.9" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="80.1" y1="575.0" x2="80.1" y2="599.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; TMPRSS2–ADHFE1 fusion, breakpoint TMPRSS2 aa 19; sample P-0043583-T01-IM6</title></line>
+<text x="64.0" y="590.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="590.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="590.5" font-family="sans-serif" font-size="9.5">ADHFE1 – Trypsin retained – Prostate Cancer</text>
+<rect x="80.1" y="602.0" width="539.9" height="22" fill="#8064a2"><title>Partner gene AFDN; TMPRSS2–AFDN fusion, breakpoint TMPRSS2 aa 19; sample P-0006689-T01-IM5</title></rect>
+<rect x="60.0" y="602.0" width="20.1" height="22" fill="#e2e2e2"><title>TMPRSS2 backbone (0-19 aa, no domain); domain status lost; TMPRSS2–AFDN fusion, breakpoint TMPRSS2 aa 19; sample P-0006689-T01-IM5</title></rect>
+<line x1="61.1" y1="602.0" x2="61.1" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="80.1" y1="601.0" x2="80.1" y2="625.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; TMPRSS2–AFDN fusion, breakpoint TMPRSS2 aa 19; sample P-0006689-T01-IM5</title></line>
+<text x="64.0" y="616.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="616.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="616.5" font-family="sans-serif" font-size="9.5">AFDN – Trypsin lost – Prostate Cancer</text>
+<rect x="80.1" y="628.0" width="539.9" height="22" fill="#8064a2"><title>Partner gene ARRB1; TMPRSS2–ARRB1 fusion, breakpoint TMPRSS2 aa 19; sample P-0064697-T01-IM7</title></rect>
+<rect x="60.0" y="628.0" width="20.1" height="22" fill="#e2e2e2"><title>TMPRSS2 backbone (0-19 aa, no domain); domain status lost; TMPRSS2–ARRB1 fusion, breakpoint TMPRSS2 aa 19; sample P-0064697-T01-IM7</title></rect>
+<line x1="61.1" y1="628.0" x2="61.1" y2="650.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="80.1" y1="627.0" x2="80.1" y2="651.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; TMPRSS2–ARRB1 fusion, breakpoint TMPRSS2 aa 19; sample P-0064697-T01-IM7</title></line>
+<text x="64.0" y="642.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="642.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="642.5" font-family="sans-serif" font-size="9.5">ARRB1 – Trypsin lost – Pancreatic Cancer</text>
+<rect x="80.1" y="654.0" width="539.9" height="22" fill="#8064a2"><title>Partner gene CCN6; TMPRSS2–CCN6 fusion, breakpoint TMPRSS2 aa 19; sample P-0026514-T01-IM6</title></rect>
+<rect x="60.0" y="654.0" width="20.1" height="22" fill="#e2e2e2"><title>TMPRSS2 backbone (0-19 aa, no domain); domain status lost; TMPRSS2–CCN6 fusion, breakpoint TMPRSS2 aa 19; sample P-0026514-T01-IM6</title></rect>
+<line x1="61.1" y1="654.0" x2="61.1" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="80.1" y1="653.0" x2="80.1" y2="677.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; TMPRSS2–CCN6 fusion, breakpoint TMPRSS2 aa 19; sample P-0026514-T01-IM6</title></line>
+<text x="64.0" y="668.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="668.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="668.5" font-family="sans-serif" font-size="9.5">CCN6 – Trypsin lost – Ovarian Cancer</text>
+<rect x="80.1" y="680.0" width="539.9" height="22" fill="#8064a2"><title>Partner gene CERS6; TMPRSS2–CERS6 fusion, breakpoint TMPRSS2 aa 19; sample P-0022953-T01-IM6</title></rect>
+<rect x="60.0" y="680.0" width="20.1" height="22" fill="#e2e2e2"><title>TMPRSS2 backbone (0-19 aa, no domain); domain status lost; TMPRSS2–CERS6 fusion, breakpoint TMPRSS2 aa 19; sample P-0022953-T01-IM6</title></rect>
+<line x1="61.1" y1="680.0" x2="61.1" y2="702.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="80.1" y1="679.0" x2="80.1" y2="703.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; TMPRSS2–CERS6 fusion, breakpoint TMPRSS2 aa 19; sample P-0022953-T01-IM6</title></line>
+<text x="64.0" y="694.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="694.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="694.5" font-family="sans-serif" font-size="9.5">CERS6 – Trypsin lost – Prostate Cancer</text>
+<rect x="60.0" y="706.0" width="20.1" height="22" fill="#8064a2"><title>Partner gene CHAF1B; TMPRSS2–CHAF1B fusion, breakpoint TMPRSS2 aa 19; sample P-0058455-T01-IM6</title></rect>
+<rect x="80.1" y="706.0" width="539.9" height="22" fill="#e2e2e2"><title>TMPRSS2 backbone (19-529 aa, no domain); domain status retained; TMPRSS2–CHAF1B fusion, breakpoint TMPRSS2 aa 19; sample P-0058455-T01-IM6</title></rect>
+<rect x="261.1" y="706.0" width="98.4" height="22" fill="#2878b5"><title>Scavenger receptor cysteine-rich domain retained (190-283 aa); TMPRSS2–CHAF1B fusion, breakpoint TMPRSS2 aa 19; sample P-0058455-T01-IM6</title></rect>
+<text x="310.4" y="720.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Scavenger receptor cyst…</text>
+<rect x="370.2" y="706.0" width="241.4" height="22" fill="#2878b5"><title>Trypsin retained (293-521 aa); TMPRSS2–CHAF1B fusion, breakpoint TMPRSS2 aa 19; sample P-0058455-T01-IM6</title></rect>
+<text x="490.9" y="720.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Trypsin</text>
+<line x1="105.5" y1="706.0" x2="105.5" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="183.9" y1="706.0" x2="183.9" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="214.6" y1="706.0" x2="214.6" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="256.9" y1="706.0" x2="256.9" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="301.4" y1="706.0" x2="301.4" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="340.5" y1="706.0" x2="340.5" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="356.4" y1="706.0" x2="356.4" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="416.7" y1="706.0" x2="416.7" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="479.2" y1="706.0" x2="479.2" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="513.1" y1="706.0" x2="513.1" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="563.9" y1="706.0" x2="563.9" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="617.9" y1="706.0" x2="617.9" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="80.1" y1="705.0" x2="80.1" y2="729.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; TMPRSS2–CHAF1B fusion, breakpoint TMPRSS2 aa 19; sample P-0058455-T01-IM6</title></line>
+<text x="64.0" y="720.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="720.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="720.5" font-family="sans-serif" font-size="9.5">CHAF1B – Trypsin retained – Prostate Cancer</text>
+<rect x="60.0" y="732.0" width="20.1" height="22" fill="#8064a2"><title>Partner gene CHD3; TMPRSS2–CHD3 fusion, breakpoint TMPRSS2 aa 19; sample P-0002971-T02-IM5</title></rect>
+<rect x="80.1" y="732.0" width="539.9" height="22" fill="#e2e2e2"><title>TMPRSS2 backbone (19-529 aa, no domain); domain status retained; TMPRSS2–CHD3 fusion, breakpoint TMPRSS2 aa 19; sample P-0002971-T02-IM5</title></rect>
+<rect x="261.1" y="732.0" width="98.4" height="22" fill="#2878b5"><title>Scavenger receptor cysteine-rich domain retained (190-283 aa); TMPRSS2–CHD3 fusion, breakpoint TMPRSS2 aa 19; sample P-0002971-T02-IM5</title></rect>
+<text x="310.4" y="746.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Scavenger receptor cyst…</text>
+<rect x="370.2" y="732.0" width="241.4" height="22" fill="#2878b5"><title>Trypsin retained (293-521 aa); TMPRSS2–CHD3 fusion, breakpoint TMPRSS2 aa 19; sample P-0002971-T02-IM5</title></rect>
+<text x="490.9" y="746.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Trypsin</text>
+<line x1="105.5" y1="732.0" x2="105.5" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="183.9" y1="732.0" x2="183.9" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="214.6" y1="732.0" x2="214.6" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="256.9" y1="732.0" x2="256.9" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="301.4" y1="732.0" x2="301.4" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="340.5" y1="732.0" x2="340.5" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="356.4" y1="732.0" x2="356.4" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="416.7" y1="732.0" x2="416.7" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="479.2" y1="732.0" x2="479.2" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="513.1" y1="732.0" x2="513.1" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="563.9" y1="732.0" x2="563.9" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="617.9" y1="732.0" x2="617.9" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="80.1" y1="731.0" x2="80.1" y2="755.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; TMPRSS2–CHD3 fusion, breakpoint TMPRSS2 aa 19; sample P-0002971-T02-IM5</title></line>
+<text x="64.0" y="746.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="746.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="746.5" font-family="sans-serif" font-size="9.5">CHD3 – Trypsin retained – Prostate Cancer</text>
+<rect x="80.1" y="758.0" width="539.9" height="22" fill="#8064a2"><title>Partner gene CHST12; TMPRSS2–CHST12 fusion, breakpoint TMPRSS2 aa 19; sample P-0016386-T01-IM6</title></rect>
+<rect x="60.0" y="758.0" width="20.1" height="22" fill="#e2e2e2"><title>TMPRSS2 backbone (0-19 aa, no domain); domain status lost; TMPRSS2–CHST12 fusion, breakpoint TMPRSS2 aa 19; sample P-0016386-T01-IM6</title></rect>
+<line x1="61.1" y1="758.0" x2="61.1" y2="780.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="80.1" y1="757.0" x2="80.1" y2="781.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; TMPRSS2–CHST12 fusion, breakpoint TMPRSS2 aa 19; sample P-0016386-T01-IM6</title></line>
+<text x="64.0" y="772.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="772.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="772.5" font-family="sans-serif" font-size="9.5">CHST12 – Trypsin lost – Prostate Cancer</text>
+<line x1="60.0" y1="788.0" x2="620.0" y2="788.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="783.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="620.0" y="783.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
+<text x="60.0" y="802.0" font-family="sans-serif" font-size="9">1</text>
+<text x="620.0" y="802.0" font-family="sans-serif" font-size="9" text-anchor="end">529 aa</text>
+<line x1="61.1" y1="806.0" x2="61.1" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="61.1" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 61.1 811.0)">E1</text>
+<line x1="80.1" y1="806.0" x2="80.1" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="80.1" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 80.1 811.0)">E2</text>
+<line x1="105.5" y1="806.0" x2="105.5" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="105.5" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 105.5 811.0)">E3</text>
+<line x1="183.9" y1="806.0" x2="183.9" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="183.9" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 183.9 811.0)">E4</text>
+<line x1="214.6" y1="806.0" x2="214.6" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="214.6" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 214.6 811.0)">E5</text>
+<line x1="256.9" y1="806.0" x2="256.9" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="256.9" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 256.9 811.0)">E6</text>
+<line x1="301.4" y1="806.0" x2="301.4" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="301.4" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 301.4 811.0)">E7</text>
+<line x1="340.5" y1="806.0" x2="340.5" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="340.5" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 340.5 811.0)">E8</text>
+<line x1="356.4" y1="806.0" x2="356.4" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="356.4" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 356.4 811.0)">E9</text>
+<line x1="416.7" y1="806.0" x2="416.7" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="416.7" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 416.7 811.0)">E10</text>
+<line x1="479.2" y1="806.0" x2="479.2" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="479.2" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 479.2 811.0)">E11</text>
+<line x1="513.1" y1="806.0" x2="513.1" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="513.1" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 513.1 811.0)">E12</text>
+<line x1="563.9" y1="806.0" x2="563.9" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="563.9" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 563.9 811.0)">E13</text>
+<line x1="617.9" y1="806.0" x2="617.9" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="617.9" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 617.9 811.0)">E14</text>
+<rect x="60.0" y="819.0" width="12" height="10" fill="#2878b5"/>
+<text x="76.0" y="828.0" font-family="sans-serif" font-size="9">domain retained</text>
+<rect x="227.0" y="819.0" width="12" height="10" fill="#f2a93b"/>
+<text x="243.0" y="828.0" font-family="sans-serif" font-size="9">domain truncated</text>
+<rect x="403.0" y="819.0" width="12" height="10" fill="#e2e2e2"/>
+<text x="419.0" y="828.0" font-family="sans-serif" font-size="9">target backbone (no domain)</text>
+<rect x="678.0" y="819.0" width="12" height="10" fill="#d62728"/>
+<text x="694.0" y="828.0" font-family="sans-serif" font-size="9">breakpoint</text>
+<text x="60" y="864.0" font-family="sans-serif" font-size="9" fill="#555555">Partner-block colors are decorative; row labels identify partners.</text>
+<text x="60" y="880.0" font-family="sans-serif" font-size="9" fill="#555555">Showing the top 28 of 89 partner/breakpoint groups by recurrence; see results.tsv for the complete list.</text>
+</svg>
