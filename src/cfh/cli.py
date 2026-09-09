@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import click
 
+from cfh.algorithms.cross_cohort_concordance import compare_cohort_runs
 from cfh.cohort.outputs import DEFAULT_HONORABLE_MENTION_COUNT, write_cohort_scan_outputs
 from cfh.cohort.recurrence import DEFAULT_MIN_DISTINCT_PATIENTS
 from cfh.cohort.scan import DEFAULT_N_PERMUTATIONS_SMALL, run_cohort_scan
@@ -59,6 +61,29 @@ def compare_genes(run_artifacts: tuple[Path, ...], output_path: Path) -> None:
         raise click.ClickException(str(exc)) from None
     click.echo(f"Adjusted {len(rows)} p-values across {len(run_artifacts)} run artifacts")
     click.echo(f"report: {output_path}")
+
+
+@main.command("compare-cohorts")
+@click.argument(
+    "run_artifacts", nargs=-1, required=True, type=click.Path(path_type=Path, exists=True)
+)
+@click.option(
+    "--output",
+    "output_path",
+    type=click.Path(path_type=Path, dir_okay=False),
+    help="Optional JSON report path; the report is always printed to stdout.",
+)
+def compare_cohorts(run_artifacts: tuple[Path, ...], output_path: Path | None) -> None:
+    """CMH-test saved frame/domain tables for one gene across cohorts (offline)."""
+    try:
+        report = compare_cohort_runs(list(run_artifacts))
+        rendered = json.dumps(report, indent=2, allow_nan=False) + "\n"
+        if output_path is not None:
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+            output_path.write_text(rendered)
+    except (ValueError, OSError) as exc:
+        raise click.ClickException(str(exc)) from None
+    click.echo(rendered, nl=False)
 
 
 @main.command("real-benchmark")
