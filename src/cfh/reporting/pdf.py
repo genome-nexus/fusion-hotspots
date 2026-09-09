@@ -31,6 +31,7 @@ from reportlab.platypus.doctemplate import BaseDocTemplate
 from reportlab.platypus.frames import Frame
 from svglib.svglib import svg2rlg
 
+from cfh.reporting.palette import TABLE_HEADER_COLOR
 from cfh.reporting.text import render_abstract, render_results_summary
 
 _PORTRAIT_TEMPLATE = "portrait"
@@ -102,7 +103,9 @@ def _generic_table_flowable(rows: list[list], styles: dict, header: bool = True)
         ("ROWBACKGROUNDS", (0, 1 if header else 0), (-1, -1), [colors.white, colors.whitesmoke]),
     ]
     if header:
-        table_style.append(("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#2878b5")))
+        # Decorative header accent, not a domain-retention indicator (see
+        # TABLE_HEADER_COLOR's docstring) -- needs no legend.
+        table_style.append(("BACKGROUND", (0, 0), (-1, 0), colors.HexColor(TABLE_HEADER_COLOR)))
     table.setStyle(TableStyle(table_style))
     return table
 

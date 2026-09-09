@@ -28,8 +28,15 @@ from __future__ import annotations
 
 from cfh.reporting.domain_names import domain_label_for_accession
 from cfh.reporting.palette import (
+    AXIS_COLOR,
+    BACKBONE_COLOR,
     BREAKPOINT_COLOR,
+    CONNECTOR_COLOR,
+    EXON_TICK_COLOR,
+    MUTED_TEXT_COLOR,
     RETAINED_COLOR,
+    SECONDARY_TEXT_COLOR,
+    TEXT_COLOR,
     TRUNCATED_COLOR,
     deterministic_color,
 )
@@ -47,11 +54,6 @@ __all__ = [
     "render_fusion_schematic_svg",
     "render_intragenic_deletion_schematic_svg",
 ]
-
-# New to this module (the lollipop track has no backbone/partner fill).
-BACKBONE_COLOR = "#e2e2e2"
-AXIS_COLOR = "#444444"
-CONNECTOR_COLOR = "#999999"
 
 _MAX_ROWS_DEFAULT = 28
 """Matches the source paper's own Figure 4B row count (~28 rows) rather
@@ -76,10 +78,12 @@ def partner_color(partner_gene: str) -> str:
 
     Same partner always gets the same color within a run and across runs
     (a pure function of the name), so a reader can visually track one
-    partner across rows. Thin wrapper around the shared
-    :func:`cfh.reporting.palette.deterministic_color` hash so this
-    module's own hue-from-name formula can't silently diverge from
-    :mod:`cfh.real_benchmark`'s per-domain highlight coloring.
+    partner across rows -- purely decorative row-order/identity coloring,
+    not a semantic status. It carries no domain-retention meaning and
+    needs no legend entry; row labels (not color) identify which partner
+    each row is (see the explanatory note rendered alongside the legend in
+    both schematics). Thin wrapper around the shared
+    :func:`cfh.reporting.palette.deterministic_color` hash.
     """
     return deterministic_color(partner_gene)
 
@@ -170,12 +174,12 @@ def exon_boundary_ticks_svg(
         x = axis_left + start * scale
         elements.append(
             f'<line x1="{x:.1f}" y1="{y:.1f}" x2="{x:.1f}" y2="{y + tick_length:.1f}" '
-            'stroke="#777777" stroke-width="0.7"/>'
+            f'stroke="{EXON_TICK_COLOR}" stroke-width="0.7"/>'
         )
         label_y = y + tick_length + 1
         elements.append(
             f'<text x="{x:.1f}" y="{label_y:.1f}" font-family="sans-serif" font-size="5.5" '
-            f'fill="#666666" transform="rotate(55 {x:.1f} {label_y:.1f})">E{rank}</text>'
+            f'fill="{MUTED_TEXT_COLOR}" transform="rotate(55 {x:.1f} {label_y:.1f})">E{rank}</text>'
         )
     return elements
 
@@ -389,7 +393,8 @@ def render_fusion_schematic_svg(payload: dict, *, max_rows: int = _MAX_ROWS_DEFA
         f"{gene_symbol} fusion-transcript schematic</text>"
     )
     elements.append(
-        f'<text x="{_AXIS_LEFT}" y="40" font-family="sans-serif" font-size="10" fill="#555">'
+        f'<text x="{_AXIS_LEFT}" y="40" font-family="sans-serif" font-size="10" '
+        f'fill="{SECONDARY_TEXT_COLOR}">'
         "Fusion order varies by row; follow each row's 5' and 3' labels "
         f"({gene_symbol} portion is domain-colored, exon ticks)</text>"
     )
@@ -436,7 +441,7 @@ def render_fusion_schematic_svg(payload: dict, *, max_rows: int = _MAX_ROWS_DEFA
                 elements.append(
                     f'<text x="{(sx0 + sx1) / 2:.1f}" y="{row_mid + 3:.1f}" '
                     'font-family="sans-serif" font-size="7" text-anchor="middle" '
-                    'fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">'
+                    f'fill="{TEXT_COLOR}" stroke="white" stroke-width="2" paint-order="stroke">'
                     f"{seg_label}</text>"
                 )
         for tick_aa in _exon_ticks(exon_boundaries, target_span[0], target_span[1]):
@@ -444,7 +449,7 @@ def render_fusion_schematic_svg(payload: dict, *, max_rows: int = _MAX_ROWS_DEFA
             tick_bottom = row_top + _ROW_HEIGHT
             elements.append(
                 f'<line x1="{tx:.1f}" y1="{row_top:.1f}" x2="{tx:.1f}" y2="{tick_bottom:.1f}" '
-                'stroke="#555555" stroke-width="0.6" opacity="0.6"/>'
+                f'stroke="{SECONDARY_TEXT_COLOR}" stroke-width="0.6" opacity="0.6"/>'
             )
 
         bx = _AXIS_LEFT + breakpoint_aa * scale
@@ -464,12 +469,12 @@ def render_fusion_schematic_svg(payload: dict, *, max_rows: int = _MAX_ROWS_DEFA
             [
                 f'<text x="{_AXIS_LEFT + 4:.1f}" y="{end_label_y:.1f}" '
                 'font-family="sans-serif" font-size="8" font-weight="bold" '
-                'text-anchor="start" fill="#111111" stroke="white" stroke-width="2" '
+                f'text-anchor="start" fill="{TEXT_COLOR}" stroke="white" stroke-width="2" '
                 f'paint-order="stroke" data-fusion-end="5-prime" '
                 f'data-block="{five_prime_block}">5\'</text>',
                 f'<text x="{_AXIS_LEFT + _AXIS_WIDTH - 4:.1f}" y="{end_label_y:.1f}" '
                 'font-family="sans-serif" font-size="8" font-weight="bold" '
-                'text-anchor="end" fill="#111111" stroke="white" stroke-width="2" '
+                f'text-anchor="end" fill="{TEXT_COLOR}" stroke="white" stroke-width="2" '
                 f'paint-order="stroke" data-fusion-end="3-prime" '
                 f'data-block="{three_prime_block}">3\'</text>',
             ]
@@ -488,11 +493,18 @@ def render_fusion_schematic_svg(payload: dict, *, max_rows: int = _MAX_ROWS_DEFA
     y += 24 + _EXON_TICK_LABEL_HEIGHT
     elements.extend(_legend_svg(y))
     y += _LEGEND_HEIGHT - 6
+    elements.append(
+        f'<text x="{_AXIS_LEFT}" y="{y + 12:.1f}" font-family="sans-serif" font-size="9" '
+        f'fill="{SECONDARY_TEXT_COLOR}">Partner-block colors are decorative; row labels '
+        "identify partners.</text>"
+    )
+    y += 16
     if truncated_count:
         elements.append(
             f'<text x="{_AXIS_LEFT}" y="{y + 12:.1f}" font-family="sans-serif" font-size="9" '
-            f'fill="#555">Showing the top {len(shown)} of {total_groups} partner/breakpoint '
-            "groups by recurrence; see results.tsv for the complete list.</text>"
+            f'fill="{SECONDARY_TEXT_COLOR}">Showing the top {len(shown)} of {total_groups} '
+            "partner/breakpoint groups by recurrence; see results.tsv for the complete "
+            "list.</text>"
         )
     elements.append("</svg>")
     return "\n".join(elements)
@@ -568,7 +580,8 @@ def render_intragenic_deletion_schematic_svg(
         f"{gene_symbol} intragenic-deletion schematic</text>"
     )
     elements.append(
-        f'<text x="{_AXIS_LEFT}" y="40" font-family="sans-serif" font-size="10" fill="#555">'
+        f'<text x="{_AXIS_LEFT}" y="40" font-family="sans-serif" font-size="10" '
+        f'fill="{SECONDARY_TEXT_COLOR}">'
         "retained N-terminal block → deleted span (plain connector) → resumed "
         "C-terminal block</text>"
     )
@@ -602,15 +615,15 @@ def render_intragenic_deletion_schematic_svg(
                     elements.append(
                         f'<text x="{(sx0 + sx1) / 2:.1f}" y="{row_mid + 3:.1f}" '
                         'font-family="sans-serif" font-size="7" text-anchor="middle" '
-                        'fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">'
+                        f'fill="{TEXT_COLOR}" stroke="white" stroke-width="2" paint-order="stroke">'
                         f"{seg_label}</text>"
                     )
             for tick_aa in _exon_ticks(exon_boundaries, interval_start, interval_end):
                 tx = _AXIS_LEFT + tick_aa * scale
                 elements.append(
                     f'<line x1="{tx:.1f}" y1="{row_top:.1f}" x2="{tx:.1f}" '
-                    f'y2="{row_top + _ROW_HEIGHT:.1f}" stroke="#555555" stroke-width="0.6" '
-                    'opacity="0.6"/>'
+                    f'y2="{row_top + _ROW_HEIGHT:.1f}" stroke="{SECONDARY_TEXT_COLOR}" '
+                    'stroke-width="0.6" opacity="0.6"/>'
                 )
 
         connector_x0 = _AXIS_LEFT + retained_up_to * scale
@@ -641,8 +654,9 @@ def render_intragenic_deletion_schematic_svg(
     if truncated_count:
         elements.append(
             f'<text x="{_AXIS_LEFT}" y="{y + 12:.1f}" font-family="sans-serif" font-size="9" '
-            f'fill="#555">Showing the top {len(shown)} of {total_groups} distinct deletion '
-            "breakpoint groups by recurrence; see results.tsv for the complete list.</text>"
+            f'fill="{SECONDARY_TEXT_COLOR}">Showing the top {len(shown)} of {total_groups} '
+            "distinct deletion breakpoint groups by recurrence; see results.tsv for the "
+            "complete list.</text>"
         )
     elements.append("</svg>")
     return "\n".join(elements)
