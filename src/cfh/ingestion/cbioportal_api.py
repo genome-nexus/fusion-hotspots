@@ -10,6 +10,7 @@ everything else in this module is plain, mockable request-building logic.
 
 from __future__ import annotations
 
+import math
 import random
 import time
 import warnings
@@ -263,6 +264,81 @@ describes, so it must be added here rather than in ``sv_parser`` -- adding it
 there would make every offline SV fixture missing that column (all of them)
 warn about it.
 """
+
+
+def fetch_molecular_data(
+    entrez_gene_ids: Iterable[int],
+    molecular_profile_id: str,
+    *,
+    sample_list_id: str | None = None,
+    sample_ids: Iterable[str] | None = None,
+    base_url: str = DEFAULT_BASE_URL,
+    session: "requests.Session | None" = None,
+    timeout: float = 30,
+    max_retries: int = 6,
+    backoff_seconds: float = 1.0,
+) -> list[dict]:
+    """POST to ``/molecular-profiles/{id}/molecular-data/fetch`` and return raw records.
+
+    Gene-agnostic, same as :func:`fetch_structural_variants`: which genes and
+    which molecular profile (e.g. an mRNA expression z-score profile) to
+    query are always caller-supplied. ``molecular_profile_id`` has no
+    default -- a caller must resolve it explicitly (e.g. via
+    ``StudyConfig.mrna_expression_profile_id``) rather than have it silently
+    guessed from a study id, since not every cohort even has an
+    MRNA_EXPRESSION profile (a targeted DNA panel like
+    ``msk_impact_50k_2026`` has none at all).
+
+    Exactly one of ``sample_list_id``/``sample_ids`` must be given, mirroring
+    cBioPortal's own ``MolecularDataFilter`` contract for this endpoint.
+    """
+    if (sample_list_id is None) == (sample_ids is None):
+        raise ValueError("exactly one of sample_list_id or sample_ids must be given")
+    session = session or requests.Session()
+    url = f"{base_url.rstrip('/')}/molecular-profiles/{molecular_profile_id}/molecular-data/fetch"
+    body: dict[str, Any] = {"entrezGeneIds": list(entrez_gene_ids)}
+    if sample_list_id is not None:
+        body["sampleListId"] = sample_list_id
+    else:
+        body["sampleIds"] = list(sample_ids)  # type: ignore[arg-type]
+    params = {"projection": "SUMMARY"}
+    attempt = 0
+    while True:
+        response = session.post(url, json=body, params=params, timeout=timeout)
+        if response.status_code not in _RETRYABLE_STATUS_CODES or attempt >= max_retries:
+            break
+        time.sleep(_retry_sleep_seconds(backoff_seconds, attempt))
+        attempt += 1
+    response.raise_for_status()
+    return response.json()
+
+
+def molecular_data_to_expression_by_sample(records: Iterable[dict]) -> dict[str, float]:
+    """Adapt cBioPortal molecular-data API objects to ``{Sample_id: value}``.
+
+    Never raises on a malformed record: one missing ``sampleId``, a missing
+    or non-numeric ``value`` (cBioPortal represents an unavailable
+    measurement in various ways depending on datatype), or any other
+    unexpected shape is simply skipped rather than crashing the whole
+    fetch -- the same tolerant-of-malformed-rows convention already used by
+    :func:`structural_variants_to_dataframe`.
+    """
+    expression_by_sample: dict[str, float] = {}
+    for record in records:
+        if not isinstance(record, dict):
+            continue
+        sample_id = record.get("sampleId")
+        value = record.get("value")
+        if sample_id is None or value is None:
+            continue
+        try:
+            numeric_value = float(value)
+        except (TypeError, ValueError):
+            continue
+        if not math.isfinite(numeric_value):
+            continue
+        expression_by_sample[str(sample_id)] = numeric_value
+    return expression_by_sample
 
 
 def structural_variants_to_dataframe(calls: Iterable[dict]) -> pd.DataFrame:

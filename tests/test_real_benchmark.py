@@ -615,9 +615,11 @@ def test_tcga_study_config_selects_profile_and_grch38_genome_nexus(monkeypatch):
         MagicMock(return_value=["TCGA-SAMPLE", "TCGA-OTHER"]),
     )
     monkeypatch.setattr(cbioportal_api, "fetch_mutations", MagicMock(return_value=[]))
+    fetch_molecular_data_mock = MagicMock(return_value=[])
+    monkeypatch.setattr(cbioportal_api, "fetch_molecular_data", fetch_molecular_data_mock)
     client = MagicMock(spec=GenomeNexusClient)
     client_factory = MagicMock(return_value=client)
-    analyze_mock = MagicMock(return_value=SimpleNamespace(endpoints=[]))
+    analyze_mock = MagicMock(return_value=SimpleNamespace(endpoints=[], warnings=[]))
     monkeypatch.setattr(benchmark_module, "GenomeNexusClient", client_factory)
     monkeypatch.setattr(benchmark_module, "analyze_structural_variant_calls", analyze_mock)
 
@@ -630,6 +632,13 @@ def test_tcga_study_config_selects_profile_and_grch38_genome_nexus(monkeypatch):
     cbioportal_api.fetch_sample_list_ids.assert_called_once_with("thca_tcga_pan_can_atlas_2018_all")
     cbioportal_api.fetch_mutations.assert_called_once_with(
         [673], ["thca_tcga_pan_can_atlas_2018_mutations"]
+    )
+    # The expression-association fetch queries the study's configured mRNA
+    # z-score profile (distinct from the structural-variant profile above).
+    fetch_molecular_data_mock.assert_called_once_with(
+        [673],
+        "thca_tcga_pan_can_atlas_2018_rna_seq_v2_mrna_median_Zscores",
+        sample_list_id="thca_tcga_pan_can_atlas_2018_all",
     )
     analyze_mock.assert_called_once_with(
         fetched_calls,
@@ -648,6 +657,13 @@ def test_tcga_study_config_selects_profile_and_grch38_genome_nexus(monkeypatch):
         },
         extra_warnings=[],
     )
+    # No expression records were returned, so a warning was appended rather
+    # than the run failing -- expression evidence is optional, corroborating.
+    assert result.warnings == [
+        "No mRNA-expression records were returned for BRAF from "
+        "thca_tcga_pan_can_atlas_2018_rna_seq_v2_mrna_median_Zscores; "
+        "expression_association analysis was skipped."
+    ]
 
 
 def test_real_benchmark_click_command_explains_unknown_gene_without_traceback():

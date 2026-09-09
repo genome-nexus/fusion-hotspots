@@ -1,6 +1,6 @@
 # BRAF real-data fusion benchmark: thca_tcga_pan_can_atlas_2018
 
-Retrieved from public cBioPortal and Genome Nexus on 2026-09-05.
+Retrieved from public cBioPortal and Genome Nexus on 2026-09-08.
 
 ## Results
 
@@ -9,8 +9,8 @@ Retrieved from public cBioPortal and Genome Nexus on 2026-09-05.
 - Protein-fusion records mapped: 15
 - Malformed/unmappable fusion records skipped: 0
 - In-frame: 15/15 (100.0%)
-- PF07714 (457-712 aa) retained: 9/15 (60.0%)
-- In-frame and PF07714-retained: 9/15
+- Protein kinase domain (457-712 aa) retained: 9/15 (60.0%)
+- In-frame and Protein kinase domain-retained: 9/15
 - Fisher exact test (one-sided): odds ratio unavailable, p=1
 - Breakpoint-permutation empirical p-value: 0.015984
 - Contingency table `[[retained/in-frame, retained/other], [not-retained/in-frame, not-retained/other]]`: `[[9, 0], [6, 0]]`
@@ -31,13 +31,16 @@ Retrieved from public cBioPortal and Genome Nexus on 2026-09-05.
 
 The cBioPortal `thca_tcga_pan_can_atlas_2018_structural_variants` structural-variant profile was queried by the configured Entrez gene ID. Fusion-annotated records were adapted to the production SV schema and normalized; when `site2EffectOnFrame=NA`, frame status was resolved from `Event_Info`, not copied into `FusionEvent.Frame_status`.
 
-BRAF genomic breakpoints were mapped against the Genome Nexus canonical transcript, and retention was classified against its returned PF07714 coordinates. Counts are event-level with no patient deduplication. The Fisher comparison's `other` column combines out-of-frame and unknown-frame events, as pre-specified by the domain-retention algorithm.
+BRAF genomic breakpoints were mapped against the Genome Nexus canonical transcript, and retention was classified against its returned Protein kinase domain coordinates. Counts are event-level with no patient deduplication. The Fisher comparison's `other` column combines out-of-frame and unknown-frame events, as pre-specified by the domain-retention algorithm.
 
 For each fusion, breakpoint selection preferred the Genome Nexus canonical transcript's exon-spanned target locus over cBioPortal site labels; malformed rows with no unambiguous target-locus coordinate were skipped and listed in Warnings.
 
 ## Full-suite highlights
 
-- Registered algorithms executed: domain_retention, frequency
+- Registered algorithms executed: composite_score, confidence_stats, cutpoint_detection, domain_disruption, domain_retention, exon_retention, expression_association, frequency, joint_partner, window_detection
+- Cutpoint detection: inferred breakpoint 380 aa (exon 8); corrected permutation p=0.020979.
+- Top composite score: SND1 (5 events), 0.359734.
+- Expression association: BRAF mRNA expression is significantly higher in fusion-positive samples (n=10) than fusion-negative samples (n=488) (mann_whitney_u, p=0.00931). Among fusion-positive samples, BRAF expression is not significantly lower in kinase-domain-retained fusions (n=9) than not-retained fusions (n=6) (mann_whitney_u, p=0.906).
 
 ## Partners
 

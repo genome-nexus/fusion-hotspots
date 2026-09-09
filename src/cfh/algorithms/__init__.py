@@ -10,6 +10,7 @@ from cfh.algorithms.cutpoint_detection import CutpointDetectionAlgorithm
 from cfh.algorithms.domain_disruption import DomainDisruptionAlgorithm
 from cfh.algorithms.domain_retention import DomainRetentionAlgorithm
 from cfh.algorithms.exon_retention import ExonRetentionAnalysis
+from cfh.algorithms.expression_association import ExpressionAssociationAlgorithm
 from cfh.algorithms.frequency import FrequencyAnalysis
 from cfh.algorithms.joint_partner import JointPartnerMode
 from cfh.algorithms.mutation_cooccurrence import MutationCooccurrenceAlgorithm
@@ -22,6 +23,7 @@ __all__ = [
     "DomainDisruptionAlgorithm",
     "DomainRetentionAlgorithm",
     "ExonRetentionAnalysis",
+    "ExpressionAssociationAlgorithm",
     "FrequencyAnalysis",
     "JointPartnerMode",
     "MutationCooccurrenceAlgorithm",

@@ -21,6 +21,14 @@ class StudyConfig(BaseModel):
     discrete_cna_profile_template: str = "{study_id}_cna"
     all_sample_list_template: str = "{study_id}_all"
     genome_nexus_base_url: str = "https://www.genomenexus.org"
+    mrna_expression_profile_template: str | None = None
+    """Molecular-profile-id template for an mRNA expression assay (e.g. TCGA
+    PanCancer Atlas's per-gene z-score profile), or ``None`` when this
+    cohort has no such profile at all -- e.g. a targeted DNA panel like
+    ``msk_impact_50k_2026`` (which has no study config entry here in the
+    first place, so this never even applies). Opt-in, mirroring
+    ``structural_variant_profile_template``; a cohort without it makes
+    :meth:`mrna_expression_profile_id` return ``None`` rather than guess."""
 
     def molecular_profile_id(self, study_id: str) -> str:
         if study_id not in self.study_ids:
@@ -41,6 +49,13 @@ class StudyConfig(BaseModel):
         if study_id not in self.study_ids:
             raise ValueError(f"Study {study_id!r} is not covered by this config")
         return self.all_sample_list_template.format(study_id=study_id)
+
+    def mrna_expression_profile_id(self, study_id: str) -> str | None:
+        if study_id not in self.study_ids:
+            raise ValueError(f"Study {study_id!r} is not covered by this config")
+        if self.mrna_expression_profile_template is None:
+            return None
+        return self.mrna_expression_profile_template.format(study_id=study_id)
 
 
 def load_study_config(study_id: str) -> StudyConfig | None:
