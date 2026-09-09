@@ -1,0 +1,27 @@
+# Live verified 2026-09-09 (Genome Nexus MSKCC canonical, GRCh37):
+# https://www.genomenexus.org/ensembl/canonical-transcript/hgnc/ROS1?isoformOverrideSource=mskcc
+# ENST00000368508; ENSP00000357494; 2347 aa.
+# PF07714: aa 1947-2215; https://www.ebi.ac.uk/interpro/api/entry/pfam/PF07714
+# PF00041: aa 202-274, 1061-1138, 1668-1738, 102-169; https://www.ebi.ac.uk/interpro/api/entry/pfam/PF00041
+# Extracellular-domain loss activates ROS1; PF00041 marks its FNIII repeats:
+# https://pmc.ncbi.nlm.nih.gov/articles/PMC11437283/
+# This is an extracellular disruption check, not proof of loss of the entire ECD.
+gene_symbol: ROS1
+canonical_transcript_id: NM_002944
+protein_id: P08922
+entrez_gene_id: 6098
+key_domains:
+  - name: "Protein kinase domain"
+    source: genome_nexus
+    key: kinase
+    accession: PF07714
+disruption_required_domains:
+  - name: "Fibronectin type III domain"
+    source: genome_nexus
+    key: fibronectin
+    accession: PF00041
+expected_retained_exon_hint: null
+analysis_modes:
+  - breakpoint_hotspot
+  - domain_retention
+  - domain_disruption

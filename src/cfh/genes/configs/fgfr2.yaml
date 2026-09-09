@@ -1,0 +1,29 @@
+# Live verified 2026-09-09 (Genome Nexus MSKCC canonical, GRCh37):
+# https://www.genomenexus.org/ensembl/canonical-transcript/hgnc/FGFR2?isoformOverrideSource=mskcc
+# ENST00000358487; ENSP00000351276; 821 aa.
+# PF07714: aa 481-757; https://www.ebi.ac.uk/interpro/api/entry/pfam/PF07714
+# PF13895: aa 43-115; https://www.ebi.ac.uk/interpro/api/entry/pfam/PF13895
+# D1 participates in FGFR2 autoinhibition:
+# https://www.jci.org/articles/view/182417
+# Check D1 disruption without asserting it is necessary for FGFR2 fusion activity:
+# FGFR2 fusions can retain the extracellular domains. The acid box has no
+# separate Pfam annotation here, so it is not configured.
+gene_symbol: FGFR2
+canonical_transcript_id: NM_000141
+protein_id: P21802
+entrez_gene_id: 2263
+key_domains:
+  - name: "Protein kinase domain"
+    source: genome_nexus
+    key: kinase
+    accession: PF07714
+disruption_required_domains:
+  - name: "Immunoglobulin D1 domain"
+    source: genome_nexus
+    key: ig_d1
+    accession: PF13895
+expected_retained_exon_hint: null
+analysis_modes:
+  - breakpoint_hotspot
+  - domain_retention
+  - domain_disruption
