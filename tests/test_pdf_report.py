@@ -9,6 +9,7 @@ results.json, not just that "a PDF was produced".
 
 from __future__ import annotations
 
+import csv
 import json
 
 from pypdf import PdfReader
@@ -150,3 +151,38 @@ def test_pdf_report_does_not_overflow_on_a_table_with_a_long_list_column(tmp_pat
     reader = PdfReader(str(output_path))
     text = "".join(page.extract_text() or "" for page in reader.pages)
     assert "150 total" in text
+
+
+def test_pdf_report_paginates_many_tall_narrow_results_rows(tmp_path):
+    """Long 24-column result tables do not enter ReportLab's split failure.
+
+    A tall source annotation is still individually shorter than a landscape
+    page, but its repeated header made ReportLab fail when it appeared late in
+    a large table.  This is deliberately synthetic so it protects every gene,
+    rather than just the RET/FGFR2 artifacts that exposed the issue.
+    """
+    payload = json.loads((BRAF_RUN_DIR / "results.json").read_text())
+    payload = {**payload, "gene_symbol": "PAGINATION_TEST", "algorithm_results": []}
+    header = [f"column_{index}" for index in range(24)]
+    header[22] = "source_annotation_text"
+    annotation = "synthetic annotation " * 16
+    rows = [header]
+    for index in range(180):
+        row = [f"value-{index}" for _ in header]
+        row[0] = f"event-{index:03d}"
+        row[22] = annotation if index in {31, 87, 151} else "short annotation"
+        rows.append(row)
+
+    tsv_path = tmp_path / "results.tsv"
+    with tsv_path.open("w", newline="") as handle:
+        csv.writer(handle, delimiter="\t").writerows(rows)
+
+    output_path = tmp_path / "report.pdf"
+    render_pdf_report(payload, output_path, results_tsv_path=tsv_path, visualizations_dir=tmp_path)
+
+    reader = PdfReader(str(output_path))
+    text = "".join(page.extract_text() or "" for page in reader.pages)
+    assert len(reader.pages) > 10
+    assert "PAGINATION_TEST fusion-hotspot benchmark report" in text
+    assert "event-179" in "".join(text.split())
+    assert "syntheticannotation" in "".join(text.split())

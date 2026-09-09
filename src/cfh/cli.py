@@ -110,13 +110,21 @@ def real_benchmark(
         raise click.ClickException(f"Benchmark failed: {type(exc).__name__}: {exc}") from None
     fisher_p_value = run.summary["fisher_p_value"]
     fisher_display = "unavailable" if fisher_p_value is None else f"{fisher_p_value:.6g}"
-    click.echo(
-        f"Analyzed {run.summary['total_fusions']} {run.gene_symbol} fusions; "
-        f"mapped={run.summary['mapped_fusions']}, "
-        f"in-frame={run.summary['in_frame_count']}, "
-        f"domain-retained={run.summary['kinase_retained_count']}, "
-        f"Fisher p={fisher_display}"
-    )
+    if run.is_gene_pair:
+        gene5, gene3 = run.summary["gene_pair"]
+        click.echo(
+            f"Analyzed {run.summary['eligible_event_count']} {run.gene_symbol} pair-eligible "
+            f"fusions; observed {gene5}->{gene3}={run.summary['observed_count']}, "
+            f"expected={run.summary['expected_count']:.2f}, Fisher p={fisher_display}"
+        )
+    else:
+        click.echo(
+            f"Analyzed {run.summary['total_fusions']} {run.gene_symbol} fusions; "
+            f"mapped={run.summary['mapped_fusions']}, "
+            f"in-frame={run.summary['in_frame_count']}, "
+            f"domain-retained={run.summary['kinase_retained_count']}, "
+            f"Fisher p={fisher_display}"
+        )
     for warning in run.warnings:
         click.echo(f"Warning: {warning}", err=True)
     for kind, path in paths.items():
@@ -163,10 +171,18 @@ def analyze(
         raise click.ClickException(str(exc)) from None
     except Exception as exc:
         raise click.ClickException(f"Analysis failed: {type(exc).__name__}: {exc}") from None
-    click.echo(
-        f"Analyzed {run.summary['total_fusions']} {run.gene_symbol} fusions with "
-        f"{len(run.results)} registered algorithms"
-    )
+    if run.is_gene_pair:
+        gene5, gene3 = run.summary["gene_pair"]
+        click.echo(
+            f"Analyzed {run.summary['eligible_event_count']} {run.gene_symbol} pair-eligible "
+            f"fusion events; observed {gene5}->{gene3}={run.summary['observed_count']}, "
+            f"expected={run.summary['expected_count']:.2f}"
+        )
+    else:
+        click.echo(
+            f"Analyzed {run.summary['total_fusions']} {run.gene_symbol} fusions with "
+            f"{len(run.results)} registered algorithms"
+        )
     for warning in run.warnings:
         click.echo(f"Warning: {warning}", err=True)
     for kind, path in paths.items():
