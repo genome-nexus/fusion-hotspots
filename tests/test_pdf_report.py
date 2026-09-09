@@ -160,12 +160,22 @@ def test_pdf_report_paginates_many_tall_narrow_results_rows(tmp_path):
     page, but its repeated header made ReportLab fail when it appeared late in
     a large table.  This is deliberately synthetic so it protects every gene,
     rather than just the RET/FGFR2 artifacts that exposed the issue.
+
+    The annotation text is a single unbroken 300-char run (no spaces) rather
+    than repeated short words: ReportLab can only line-wrap at word
+    boundaries, so a long *space-separated* value wraps into many short lines
+    and never actually gets tall enough to reproduce the original
+    ``LayoutError`` -- confirmed by running this exact scenario against
+    ``pdf.py`` as of commit 4f9db8c (the merge-base before this pagination
+    fix existed): with space-separated text it passes even on that
+    unpatched code, i.e. it protects nothing. The unbroken variant below
+    does reproduce the crash on 4f9db8c and only passes with the fix.
     """
     payload = json.loads((BRAF_RUN_DIR / "results.json").read_text())
     payload = {**payload, "gene_symbol": "PAGINATION_TEST", "algorithm_results": []}
     header = [f"column_{index}" for index in range(24)]
     header[22] = "source_annotation_text"
-    annotation = "synthetic annotation " * 16
+    annotation = "syntheticannotation" + "x" * (300 - len("syntheticannotation"))
     rows = [header]
     for index in range(180):
         row = [f"value-{index}" for _ in header]
@@ -186,3 +196,44 @@ def test_pdf_report_paginates_many_tall_narrow_results_rows(tmp_path):
     assert "PAGINATION_TEST fusion-hotspot benchmark report" in text
     assert "event-179" in "".join(text.split())
     assert "syntheticannotation" in "".join(text.split())
+
+
+def test_pdf_report_paginates_table_with_long_unbroken_header_text(tmp_path):
+    """A long, unbroken header value must not overflow the page either.
+
+    ``_generic_table_flowable`` bounds body-cell height, but before this
+    fix the header row (row 0) only ever went through the old
+    character-count-only ``_truncate_cell_text`` -- unbounded in rendered
+    height. ``_page_sized_table_flowables`` also never validated a bare
+    ``header + first row`` candidate before accepting it (its overflow
+    guard was skipped whenever ``current_rows`` was still empty), so an
+    over-tall header combined with even one sufficiently tall body row was
+    silently handed to ReportLab as a raw ``Table`` and crashed with a
+    ``LayoutError`` -- reproduced live against commit 81b7e32 (this PR's
+    prior state) using the exact scenario below.
+    """
+    payload = json.loads((BRAF_RUN_DIR / "results.json").read_text())
+    payload = {**payload, "gene_symbol": "PAGINATION_TEST", "algorithm_results": []}
+    header = [f"column_{index}" for index in range(24)]
+    long_header = "fusion_annotation_crosscheck_protein_position"
+    header[22] = long_header + "z" * (300 - len(long_header))
+    annotation = "tallfirstrowannotation" + "w" * (300 - len("tallfirstrowannotation"))
+    rows = [header]
+    for index in range(180):
+        row = [f"value-{index}" for _ in header]
+        row[0] = f"event-{index:03d}"
+        row[23] = annotation if index == 0 else "short"
+        rows.append(row)
+
+    tsv_path = tmp_path / "results.tsv"
+    with tsv_path.open("w", newline="") as handle:
+        csv.writer(handle, delimiter="\t").writerows(rows)
+
+    output_path = tmp_path / "report.pdf"
+    render_pdf_report(payload, output_path, results_tsv_path=tsv_path, visualizations_dir=tmp_path)
+
+    reader = PdfReader(str(output_path))
+    text = "".join(page.extract_text() or "" for page in reader.pages)
+    assert len(reader.pages) > 5
+    assert long_header in "".join(text.split())
+    assert "event-179" in "".join(text.split())
