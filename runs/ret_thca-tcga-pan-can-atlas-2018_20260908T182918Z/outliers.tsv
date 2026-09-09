@@ -1,4 +1,0 @@
-discrepancy_type	event_id	partner_gene	frame_status	breakpoint_protein_position	breakpoint_exon	is_intronic_breakpoint	retained_domains	lost_domains	disrupted_domains	source_annotation_text	source_site2_effect_on_frame
-reference_discrepancy	EVT-TCGA-DJ-A4V5-01-31	CCDC6	in-frame	712	11	False	Cadherin domain	Protein kinase domain		NA | RET-CCDC6 Fusion	in-frame
-reference_discrepancy	EVT-TCGA-CE-A13K-01-32	MRLN	unknown	627	10	False	Cadherin domain	Protein kinase domain		NA | RET-MRLN Fusion	NA
-reference_discrepancy	EVT-TCGA-CE-A482-01-33	NCOA4	in-frame	712	11	False	Cadherin domain	Protein kinase domain		NA | RET-NCOA4 Fusion	in-frame

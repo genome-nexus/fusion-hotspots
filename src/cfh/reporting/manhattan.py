@@ -61,6 +61,8 @@ from __future__ import annotations
 
 import math
 
+from cfh.reporting.svg_utils import escape_xml_text
+
 _WIDTH = 960
 _HEIGHT = 520
 _MARGIN_LEFT = 70
@@ -86,10 +88,6 @@ def _plottable_points(rows: list[dict]) -> list[dict]:
     ]
     plottable.sort(key=lambda row: row["top_composite_score"], reverse=True)
     return plottable
-
-
-def _escape_xml_text(text: str) -> str:
-    return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
 def _label_indices(
@@ -214,7 +212,7 @@ def render_manhattan_svg(
             f'data-significant="{"true" if point["significant"] else "false"}"'
         )
         if point["partner_gene"]:
-            title = _escape_xml_text(
+            title = escape_xml_text(
                 f"{point['gene_symbol']}: top composite-evidence partner gene "
                 f"{point['partner_gene']}"
             )

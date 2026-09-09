@@ -33,6 +33,7 @@ from cfh.reporting.palette import (
     TRUNCATED_COLOR,
     deterministic_color,
 )
+from cfh.reporting.svg_utils import escape_xml_text
 
 __all__ = [
     "RETAINED_COLOR",
@@ -202,6 +203,28 @@ def _status_word(status: str | None) -> str:
         "disrupted": "truncated",
         "lost": "lost",
     }.get(status or "", "unknown")
+
+
+def _segment_status_word(seg_color: str) -> str:
+    """Per-segment retention word matching the fill color chosen by
+    :func:`_domain_color_segments` (fully-inside-the-interval segments are
+    ``RETAINED_COLOR``; segments truncated by the interval edge are
+    ``TRUNCATED_COLOR`` -- see that function's docstring)."""
+    return "retained" if seg_color == RETAINED_COLOR else "truncated"
+
+
+def _sample_ids_clause(sample_ids: list[str], *, max_shown: int = 5) -> str:
+    """Human-readable clause naming the real sample(s)/event(s) a tooltip
+    describes, truncated (with a count) rather than dumped in full when a
+    recurrent group collapses many identical events into one row."""
+    unique = list(dict.fromkeys(sample_id for sample_id in sample_ids if sample_id))
+    if not unique:
+        return "sample unknown"
+    label = "sample" if len(unique) == 1 else "samples"
+    if len(unique) <= max_shown:
+        return f"{label} {', '.join(unique)}"
+    shown = ", ".join(unique[:max_shown])
+    return f"{label} {shown} (+{len(unique) - max_shown} more)"
 
 
 def _fusion_groups(payload: dict) -> list[dict]:
@@ -406,19 +429,32 @@ def render_fusion_schematic_svg(payload: dict, *, max_rows: int = _MAX_ROWS_DEFA
             target_span = (0, breakpoint_aa)
             partner_span = (breakpoint_aa, protein_length)
 
-        color = partner_color(group["partner_gene"])
+        partner = group["partner_gene"]
+        sample_clause = _sample_ids_clause(group["sample_ids"])
+        domain_status_word = _status_word(group.get("domain_status"))
+        event_context = (
+            f"{gene_symbol}–{partner} fusion, breakpoint {gene_symbol} aa "
+            f"{breakpoint_aa}; {sample_clause}"
+        )
+
+        color = partner_color(partner)
         p_x0 = _AXIS_LEFT + partner_span[0] * scale
         p_x1 = _AXIS_LEFT + partner_span[1] * scale
+        partner_title = escape_xml_text(f"Partner gene {partner}; {event_context}")
         elements.append(
             f'<rect x="{p_x0:.1f}" y="{row_top:.1f}" width="{max(0.5, p_x1 - p_x0):.1f}" '
-            f'height="{_ROW_HEIGHT}" fill="{color}"/>'
+            f'height="{_ROW_HEIGHT}" fill="{color}"><title>{partner_title}</title></rect>'
         )
 
         t_x0 = _AXIS_LEFT + target_span[0] * scale
         t_x1 = _AXIS_LEFT + target_span[1] * scale
+        backbone_title = escape_xml_text(
+            f"{gene_symbol} backbone ({target_span[0]:.0f}-{target_span[1]:.0f} aa, no "
+            f"domain); domain status {domain_status_word}; {event_context}"
+        )
         elements.append(
             f'<rect x="{t_x0:.1f}" y="{row_top:.1f}" width="{max(0.5, t_x1 - t_x0):.1f}" '
-            f'height="{_ROW_HEIGHT}" fill="{BACKBONE_COLOR}"/>'
+            f'height="{_ROW_HEIGHT}" fill="{BACKBONE_COLOR}"><title>{backbone_title}</title></rect>'
         )
 
         for seg_start, seg_end, seg_color, seg_name in _domain_color_segments(
@@ -427,9 +463,13 @@ def render_fusion_schematic_svg(payload: dict, *, max_rows: int = _MAX_ROWS_DEFA
             sx0 = _AXIS_LEFT + seg_start * scale
             sx1 = _AXIS_LEFT + seg_end * scale
             seg_width = max(0.5, sx1 - sx0)
+            seg_status_word = _segment_status_word(seg_color)
+            seg_title = escape_xml_text(
+                f"{seg_name} {seg_status_word} ({seg_start:.0f}-{seg_end:.0f} aa); {event_context}"
+            )
             elements.append(
                 f'<rect x="{sx0:.1f}" y="{row_top:.1f}" width="{seg_width:.1f}" '
-                f'height="{_ROW_HEIGHT}" fill="{seg_color}"/>'
+                f'height="{_ROW_HEIGHT}" fill="{seg_color}"><title>{seg_title}</title></rect>'
             )
             seg_label = _fit_domain_label(seg_name, seg_width)
             if seg_label:
@@ -449,9 +489,13 @@ def render_fusion_schematic_svg(payload: dict, *, max_rows: int = _MAX_ROWS_DEFA
 
         bx = _AXIS_LEFT + breakpoint_aa * scale
         breakpoint_top, breakpoint_bottom = row_top - 1, row_top + _ROW_HEIGHT + 1
+        breakpoint_title = escape_xml_text(
+            f"Breakpoint; domain status {domain_status_word}; {event_context}"
+        )
         elements.append(
             f'<line x1="{bx:.1f}" y1="{breakpoint_top:.1f}" x2="{bx:.1f}" '
-            f'y2="{breakpoint_bottom:.1f}" stroke="{BREAKPOINT_COLOR}" stroke-width="1.6"/>'
+            f'y2="{breakpoint_bottom:.1f}" stroke="{BREAKPOINT_COLOR}" stroke-width="1.6">'
+            f"<title>{breakpoint_title}</title></line>"
         )
 
         # Append the end tags after every colored segment/tick so they are
@@ -514,9 +558,12 @@ def _deletion_groups(payload: dict) -> list[dict]:
                 "count": 0,
                 "n_exons_deleted": record.get("n_exons_deleted"),
                 "frame_status": record.get("frame_status"),
+                "sample_ids": [],
             },
         )
         group["count"] += 1
+        if record.get("sample_id"):
+            group["sample_ids"].append(record["sample_id"])
     return list(groups.values())
 
 
@@ -579,13 +626,29 @@ def render_intragenic_deletion_schematic_svg(
         row_mid = y + _ROW_HEIGHT / 2
         retained_up_to = _clip(group["retained_up_to_aa"], 0, protein_length)
         resumed_from = _clip(group["resumed_from_aa"], 0, protein_length)
+        n_exons = group.get("n_exons_deleted")
+        frame_status = group.get("frame_status") or "unknown frame"
+        sample_clause = _sample_ids_clause(group["sample_ids"])
+        deletion_context = (
+            f"{gene_symbol} intragenic deletion, {n_exons if n_exons is not None else '?'} "
+            f"exons deleted ({frame_status}), retained up to aa {retained_up_to:.0f}, "
+            f"resumed from aa {resumed_from:.0f}; {sample_clause}"
+        )
 
-        for interval_start, interval_end in ((0, retained_up_to), (resumed_from, protein_length)):
+        blocks = (
+            (0, retained_up_to, "retained N-terminal block"),
+            (resumed_from, protein_length, "resumed C-terminal block"),
+        )
+        for interval_start, interval_end, block_name in blocks:
             ix0 = _AXIS_LEFT + interval_start * scale
             ix1 = _AXIS_LEFT + interval_end * scale
+            block_title = escape_xml_text(
+                f"{block_name} ({interval_start:.0f}-{interval_end:.0f} aa); {deletion_context}"
+            )
             elements.append(
                 f'<rect x="{ix0:.1f}" y="{row_top:.1f}" width="{max(0.5, ix1 - ix0):.1f}" '
-                f'height="{_ROW_HEIGHT}" fill="{BACKBONE_COLOR}"/>'
+                f'height="{_ROW_HEIGHT}" fill="{BACKBONE_COLOR}">'
+                f"<title>{block_title}</title></rect>"
             )
             for seg_start, seg_end, seg_color, seg_name in _domain_color_segments(
                 domains, interval_start, interval_end
@@ -593,9 +656,14 @@ def render_intragenic_deletion_schematic_svg(
                 sx0 = _AXIS_LEFT + seg_start * scale
                 sx1 = _AXIS_LEFT + seg_end * scale
                 seg_width = max(0.5, sx1 - sx0)
+                seg_status_word = _segment_status_word(seg_color)
+                seg_title = escape_xml_text(
+                    f"{seg_name} {seg_status_word} ({seg_start:.0f}-{seg_end:.0f} aa); "
+                    f"{deletion_context}"
+                )
                 elements.append(
                     f'<rect x="{sx0:.1f}" y="{row_top:.1f}" width="{seg_width:.1f}" '
-                    f'height="{_ROW_HEIGHT}" fill="{seg_color}"/>'
+                    f'height="{_ROW_HEIGHT}" fill="{seg_color}"><title>{seg_title}</title></rect>'
                 )
                 seg_label = _fit_domain_label(seg_name, seg_width)
                 if seg_label:
@@ -615,15 +683,14 @@ def render_intragenic_deletion_schematic_svg(
 
         connector_x0 = _AXIS_LEFT + retained_up_to * scale
         connector_x1 = _AXIS_LEFT + resumed_from * scale
+        connector_title = escape_xml_text(f"Deleted span; {deletion_context}")
         elements.append(
             f'<line x1="{connector_x0:.1f}" y1="{row_mid:.1f}" x2="{connector_x1:.1f}" '
             f'y2="{row_mid:.1f}" stroke="{CONNECTOR_COLOR}" stroke-width="1.5" '
-            'stroke-dasharray="3,2"/>'
+            f'stroke-dasharray="3,2"><title>{connector_title}</title></line>'
         )
 
         count = group["count"]
-        n_exons = group.get("n_exons_deleted")
-        frame_status = group.get("frame_status") or "unknown frame"
         base_label = f"{n_exons}-exon deletion ({frame_status})" if n_exons else "deletion"
         label = base_label if count == 1 else f"{base_label} (x{count})"
         elements.append(
