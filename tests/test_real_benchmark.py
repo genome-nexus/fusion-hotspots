@@ -464,6 +464,7 @@ def test_real_benchmark_click_command_wires_arguments_and_echoes_summary(
             "fisher_p_value": 0.012345,
         },
         warnings=["Skipped one malformed row"],
+        is_gene_pair=False,
     )
     run_mock = MagicMock(return_value=fake_run)
     output_paths = {
@@ -524,6 +525,7 @@ def test_real_benchmark_click_command_no_pdf_flag_disables_pdf_rendering(monkeyp
             "fisher_p_value": 0.5,
         },
         warnings=[],
+        is_gene_pair=False,
     )
     run_mock = MagicMock(return_value=fake_run)
     write_mock = MagicMock(return_value={"markdown": Path("out.md")})
@@ -559,6 +561,7 @@ def test_analyze_click_command_runs_registered_orchestrator_path(monkeypatch, tm
         summary={"total_fusions": 3},
         results=[object(), object(), object()],
         warnings=[],
+        is_gene_pair=False,
     )
     analyze_mock = MagicMock(return_value=fake_run)
     write_mock = MagicMock(return_value={"run_directory": Path("runs/example")})

@@ -126,6 +126,13 @@ class RealBenchmarkRun:
     records (e.g. ``"Deletion of N exons"`` annotations), analogous to a
     panel-C schematic. Distinct from ``events``/``features``: these never
     feed any algorithm's statistics, they are visualization-only."""
+    is_gene_pair: bool = False
+    """``True`` for a run produced by :func:`run_gene_pair_benchmark` (a
+    ``gene_pair``-configured joint-partner analysis, e.g. EML4-ALK) rather
+    than the default single-gene domain-retention pipeline. ``write_outputs``
+    uses this to route to the gene-pair-shaped artifact writer instead of
+    the domain-retention report writer, which assumes fields (domain
+    accessions, breakpoint positions, ...) a gene-pair run never has."""
 
 
 class _ResolvedDomainSource:
@@ -419,6 +426,151 @@ def _load_benchmark_config(gene_symbol: str) -> GeneConfig:
             f"Gene {gene_symbol!r} has no key domain configured for domain-retention analysis."
         )
     return config
+
+
+def _maybe_load_gene_pair_config(gene_symbol: str) -> GeneConfig | None:
+    """Return the loaded ``GeneConfig`` if ``gene_symbol`` resolves to a
+    ``gene_pair`` config (e.g. ``EML4-ALK``), else ``None``.
+
+    An unknown gene symbol is left to :func:`_load_benchmark_config`'s
+    existing, actionable ``RealBenchmarkInputError`` -- this only ever
+    short-circuits a config that loads successfully and opts into
+    ``gene_pair``, so a single-gene lookup failure surfaces the same error
+    it always has.
+    """
+    try:
+        config = load_gene_config(gene_symbol)
+    except FileNotFoundError:
+        return None
+    return config if config.gene_pair is not None else None
+
+
+def _partner_component_configs(pair_config: GeneConfig) -> list[GeneConfig]:
+    """Curated single-gene configs among ``pair_config.gene_pair`` that can
+    be live-fetched (i.e. have their own curated YAML with a
+    ``gene_symbol`` and ``entrez_gene_id``).
+
+    A pair member with no curated single-gene config (e.g. EML4, which has
+    no standalone YAML in this registry) is simply not fetched -- this
+    mirrors PR #62's manual EML4-ALK workaround, which tested the
+    configured pair against only the live-fetched events of the pair
+    member that already had a curated config (ALK).
+    """
+    if pair_config.gene_pair is None:
+        raise RealBenchmarkInputError("gene_pair config has no configured gene_pair")
+    configs = []
+    for symbol in pair_config.gene_pair:
+        try:
+            candidate = load_gene_config(symbol)
+        except FileNotFoundError:
+            continue
+        if candidate.gene_symbol is not None and candidate.entrez_gene_id is not None:
+            configs.append(candidate)
+    if not configs:
+        raise RealBenchmarkInputError(
+            f"Gene pair {pair_config.gene_pair!r} has no partner with a curated "
+            "single-gene config (gene_symbol + entrez_gene_id) to live-fetch structural "
+            "variants from. Add one under src/cfh/genes/configs/ for at least one partner."
+        )
+    return configs
+
+
+def run_gene_pair_benchmark(
+    pair_config: GeneConfig,
+    study_id: str,
+    *,
+    n_permutations: int = 1_000,
+    algorithm_params: dict[str, dict] | None = None,
+) -> RealBenchmarkRun:
+    """Live joint-partner benchmark for a ``gene_pair`` config (e.g. EML4-ALK).
+
+    Before this, a ``gene_pair`` config could not run through
+    ``cfh analyze``/``cfh real-benchmark`` at all: the single-gene
+    ``_load_benchmark_config`` path requires ``gene_symbol``/
+    ``entrez_gene_id``/``key_domains``, none of which a ``gene_pair``
+    config declares by design (see PR #62). This is the dedicated
+    gene-pair path those CLI commands now route to instead of erroring.
+
+    Reuses the existing single-gene ingestion/normalization pipeline --
+    :func:`run_real_benchmark` itself -- once per curated partner gene (see
+    :func:`_partner_component_configs`), pools their already-mapped
+    ``events`` (deduplicated by ``Event_id``, since a fusion between two
+    curated partners would otherwise be fetched twice), and tests the
+    configured ordered pair for enrichment via
+    :class:`~cfh.algorithms.joint_partner.JointPartnerMode`, which
+    deliberately only needs gene-pair identities, not domain/breakpoint
+    data. No breakpoint mapping, domain classification, or PDF report is
+    produced here -- those are single-gene-domain concepts that don't apply
+    to a pair-enrichment result.
+    """
+    if pair_config.gene_pair is None:
+        raise RealBenchmarkInputError("run_gene_pair_benchmark requires a gene_pair GeneConfig")
+    gene5, gene3 = pair_config.gene_pair
+    component_configs = _partner_component_configs(pair_config)
+
+    pooled_events: dict[str, FusionEvent] = {}
+    pooled_rows: list[dict] = []
+    warnings: list[str] = []
+    endpoints: list[str] = []
+    raw_count_total = 0
+    profile_ids: list[str] = []
+    for component in component_configs:
+        component_run = run_real_benchmark(
+            component.gene_symbol, study_id, n_permutations=n_permutations
+        )
+        for event in component_run.events:
+            pooled_events[event.Event_id] = event
+        pooled_rows.extend(component_run.rows)
+        warnings.extend(
+            f"[{component.gene_symbol}] {warning}" for warning in component_run.warnings
+        )
+        endpoints.extend(
+            endpoint for endpoint in component_run.endpoints if endpoint not in endpoints
+        )
+        raw_count_total += component_run.raw_structural_variant_count
+        profile_ids.append(component_run.molecular_profile_id)
+
+    events = list(pooled_events.values())
+    joint_partner_params = {
+        "joint_partner": dict((algorithm_params or {}).get("joint_partner", {}))
+    }
+    joint_result = run_algorithms(["joint_partner"], events, [], pair_config, joint_partner_params)[
+        0
+    ]
+    pair_results = (joint_result.Tables or {}).get("pair_results") or []
+    pair_stats = pair_results[0] if pair_results else {}
+    if joint_result.Warnings:
+        warnings.extend(joint_result.Warnings)
+
+    summary = {
+        "gene_pair": [gene5, gene3],
+        "component_genes": [component.gene_symbol for component in component_configs],
+        "raw_structural_variant_count": raw_count_total,
+        "total_fusions": len(events),
+        "mapped_fusions": len(events),
+        "in_frame_count": sum(event.Frame_status == "in-frame" for event in events),
+        "eligible_event_count": pair_stats.get("eligible_event_count", 0),
+        "observed_count": pair_stats.get("observed_count", 0),
+        "expected_count": pair_stats.get("expected_count", 0.0),
+        "fisher_p_value": pair_stats.get("p_value"),
+        "fisher_odds_ratio": pair_stats.get("odds_ratio"),
+        "is_enriched": joint_result.Summary.get("is_enriched"),
+    }
+    return RealBenchmarkRun(
+        gene_symbol=f"{gene5}-{gene3}",
+        study_id=study_id,
+        molecular_profile_id=",".join(dict.fromkeys(profile_ids)),
+        retrieved_at=datetime.now(timezone.utc),
+        raw_structural_variant_count=raw_count_total,
+        events=events,
+        features=[],
+        rows=pooled_rows,
+        results=[joint_result],
+        summary=summary,
+        warnings=warnings,
+        endpoints=endpoints,
+        is_gene_pair=True,
+    )
 
 
 def _unavailable_domain_result(
@@ -1117,7 +1269,20 @@ def run_real_benchmark(
     passes them through to the ``mutation_cooccurrence`` algorithm -- a
     gene that doesn't configure this makes no additional network calls and
     is completely unaffected.
+
+    A ``gene_symbol`` that resolves to a ``gene_pair`` config (e.g.
+    ``EML4-ALK``) is routed to :func:`run_gene_pair_benchmark` instead --
+    see that function's docstring for why the single-gene path below
+    cannot handle it.
     """
+    pair_config = _maybe_load_gene_pair_config(gene_symbol)
+    if pair_config is not None:
+        return run_gene_pair_benchmark(
+            pair_config,
+            study_id,
+            n_permutations=n_permutations,
+            algorithm_params=algorithm_params,
+        )
     config = _load_benchmark_config(gene_symbol)
     study_config = load_study_config(study_id)
     profile_id = (
@@ -1839,6 +2004,112 @@ def _comparison_svg(run: RealBenchmarkRun) -> str:
     return "\n".join(elements)
 
 
+def _gene_pair_markdown_summary(run: RealBenchmarkRun) -> str:
+    """Concise, checked-in-friendly report for a ``gene_pair`` (joint-partner)
+    run -- the pair-enrichment counterpart to :func:`markdown_summary`, which
+    assumes single-gene domain-retention fields this kind of run never has.
+    """
+    summary = run.summary
+    gene5, gene3 = summary["gene_pair"]
+    lines = [
+        f"# {gene5}-{gene3} joint-partner fusion benchmark: {run.study_id}",
+        "",
+        f"Retrieved from public cBioPortal on {run.retrieved_at.date().isoformat()}.",
+        "",
+        "## Method",
+        "",
+        "Structural-variant records were live-fetched for "
+        f"{', '.join(summary['component_genes'])} (the pair member(s) with a curated "
+        "single-gene config) through the same cBioPortal/Genome Nexus ingestion, "
+        "normalization, and breakpoint-mapping pipeline used for single-gene analysis "
+        "(see `run_real_benchmark`), then pooled (deduplicated by event id) and tested "
+        f"via `JointPartnerMode` for whether the configured ordered pair {gene5}->{gene3} "
+        "is enriched relative to a marginal-independence null.",
+        "",
+        "## Results",
+        "",
+        f"- Structural variants returned: {summary['raw_structural_variant_count']}",
+        "- Eligible fusion events (determinable 5'/3' orientation): "
+        f"{summary['eligible_event_count']}",
+        f"- Observed {gene5}->{gene3} count: {summary['observed_count']}",
+        f"- Expected under independence: {summary['expected_count']:.2f}",
+        "- Fisher exact test (one-sided, greater): odds ratio "
+        f"{_format_stat(summary['fisher_odds_ratio'])}, "
+        f"p={_format_stat(summary['fisher_p_value'])}",
+        f"- Enriched (p < 0.05): {summary['is_enriched']}",
+        "",
+    ]
+    if run.warnings:
+        lines.extend(["## Warnings", ""])
+        lines.extend(f"- {warning}" for warning in run.warnings)
+        lines.append("")
+    return "\n".join(lines)
+
+
+def _write_gene_pair_outputs(
+    run: RealBenchmarkRun,
+    output_dir: str | Path,
+    *,
+    cli_args: list[str] | None = None,
+    run_id: str | None = None,
+) -> dict[str, Path]:
+    """Write a run directory for a ``gene_pair`` (joint-partner) benchmark.
+
+    Distinct from :func:`write_outputs`: a gene-pair run has no domain data,
+    breakpoint-retention classification, or PDF report -- it is the
+    pair-enrichment result computed directly by ``JointPartnerMode``, so
+    this writes only the artifacts meaningful for it (results.tsv/json,
+    report.md, manifest.json), following the same
+    ``runs/<type>_<ISO8601-timestamp>/`` naming convention as every other
+    run type.
+    """
+    destination = Path(output_dir) / (run_id or _run_id(run))
+    destination.mkdir(parents=True, exist_ok=True)
+    tsv_path = destination / "results.tsv"
+    json_path = destination / "results.json"
+    markdown_path = destination / "report.md"
+    manifest_path = destination / "manifest.json"
+
+    _write_tsv(tsv_path, run.rows)
+
+    algorithm_results = [result.model_dump(mode="json") for result in run.results]
+    payload = _json_safe(
+        {
+            "gene_symbol": run.gene_symbol,
+            "study_id": run.study_id,
+            "molecular_profile_id": run.molecular_profile_id,
+            "retrieved_at": run.retrieved_at.isoformat(),
+            "summary": run.summary,
+            "warnings": run.warnings,
+            "events": run.rows,
+            "algorithm_results": algorithm_results,
+        }
+    )
+    json_path.write_text(json.dumps(payload, indent=2, allow_nan=False) + "\n")
+    markdown_path.write_text(_gene_pair_markdown_summary(run))
+    manifest_path.write_text(
+        json.dumps(
+            {
+                "gene": run.gene_symbol,
+                "study_id": run.study_id,
+                "endpoints_used": run.endpoints,
+                "git_sha": _git_sha(),
+                "cli_args": cli_args or [],
+                "timestamp": run.retrieved_at.isoformat(),
+            },
+            indent=2,
+        )
+        + "\n"
+    )
+    return {
+        "run_directory": destination,
+        "manifest": manifest_path,
+        "tsv": tsv_path,
+        "json": json_path,
+        "markdown": markdown_path,
+    }
+
+
 def write_outputs(
     run: RealBenchmarkRun,
     output_dir: str | Path,
@@ -1850,6 +2121,8 @@ def write_outputs(
 ) -> dict[str, Path]:
     """Write a complete, provenance-bearing run directory."""
     del output_stem  # retained as a compatibility-only keyword for older callers
+    if run.is_gene_pair:
+        return _write_gene_pair_outputs(run, output_dir, cli_args=cli_args, run_id=run_id)
     destination = Path(output_dir) / (run_id or _run_id(run))
     visualization_dir = destination / "visualizations"
     visualization_dir.mkdir(parents=True, exist_ok=True)
