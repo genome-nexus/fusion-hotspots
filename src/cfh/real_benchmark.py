@@ -556,6 +556,8 @@ def run_gene_pair_benchmark(
         "fisher_odds_ratio": pair_stats.get("odds_ratio"),
         "is_enriched": joint_result.Summary.get("is_enriched"),
     }
+    if pair_config.mechanism_note:
+        summary["mechanism_note"] = pair_config.mechanism_note
     return RealBenchmarkRun(
         gene_symbol=f"{gene5}-{gene3}",
         study_id=study_id,
@@ -2018,6 +2020,11 @@ def _gene_pair_markdown_summary(run: RealBenchmarkRun) -> str:
         "",
         f"Retrieved from public cBioPortal on {run.retrieved_at.date().isoformat()}.",
         "",
+    ]
+    mechanism_note = summary.get("mechanism_note")
+    if mechanism_note:
+        lines.extend(["## Mechanism", "", mechanism_note, ""])
+    lines += [
         "## Method",
         "",
         "Structural-variant records were live-fetched for "
