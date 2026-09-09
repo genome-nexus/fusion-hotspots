@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1000" height="890" viewBox="0 0 1000 890">
 <rect width="1000" height="890" fill="white"/>
 <text x="60" y="24" font-family="sans-serif" font-size="15">BRAF fusion-transcript schematic</text>
-<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555">Fusion order varies by row; follow each row's 5' and 3' labels (BRAF portion is domain-colored, exon ticks)</text>
-<rect x="60.0" y="56.0" width="278.5" height="22" fill="#90cb4d"><title>Partner gene KIAA1549; BRAF–KIAA1549 fusion, breakpoint BRAF aa 381; samples P-0056952-T01-IM6, P-0044270-T02-IM6, P-0027592-T01-IM6, P-0055099-T03-IM6, P-0058584-T01-IM7 (+30 more)</title></rect>
+<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555">Fusion order varies by row; follow each row's 5' and 3' labels (BRAF portion is domain-colored, exon ticks). Partner-gene blocks share one color; row labels identify each partner.</text>
+<rect x="60.0" y="56.0" width="278.5" height="22" fill="#8064a2"><title>Partner gene KIAA1549; BRAF–KIAA1549 fusion, breakpoint BRAF aa 381; samples P-0056952-T01-IM6, P-0044270-T02-IM6, P-0027592-T01-IM6, P-0055099-T03-IM6, P-0058584-T01-IM7 (+30 more)</title></rect>
 <rect x="338.5" y="56.0" width="281.5" height="22" fill="#e2e2e2"><title>BRAF backbone (381-766 aa, no domain); domain status retained; BRAF–KIAA1549 fusion, breakpoint BRAF aa 381; samples P-0056952-T01-IM6, P-0044270-T02-IM6, P-0027592-T01-IM6, P-0055099-T03-IM6, P-0058584-T01-IM7 (+30 more)</title></rect>
 <rect x="394.8" y="56.0" width="185.7" height="22" fill="#2878b5"><title>Protein kinase domain retained (458-712 aa); BRAF–KIAA1549 fusion, breakpoint BRAF aa 381; samples P-0056952-T01-IM6, P-0044270-T02-IM6, P-0027592-T01-IM6, P-0055099-T03-IM6, P-0058584-T01-IM7 (+30 more)</title></rect>
 <text x="487.7" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
@@ -19,7 +19,7 @@
 <text x="64.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="70.5" font-family="sans-serif" font-size="9.5">KIAA1549 (x35) – Protein kinase domain retained</text>
-<rect x="60.0" y="82.0" width="239.1" height="22" fill="#cbc04d"><title>Partner gene AGK; BRAF–AGK fusion, breakpoint BRAF aa 327; samples P-0050931-T01-IM6, P-0042835-T03-IM6, P-0042835-T02-IM6, P-0036886-T01-IM6, P-0025561-T03-IM6 (+6 more)</title></rect>
+<rect x="60.0" y="82.0" width="239.1" height="22" fill="#8064a2"><title>Partner gene AGK; BRAF–AGK fusion, breakpoint BRAF aa 327; samples P-0050931-T01-IM6, P-0042835-T03-IM6, P-0042835-T02-IM6, P-0036886-T01-IM6, P-0025561-T03-IM6 (+6 more)</title></rect>
 <rect x="299.1" y="82.0" width="320.9" height="22" fill="#e2e2e2"><title>BRAF backbone (327-766 aa, no domain); domain status retained; BRAF–AGK fusion, breakpoint BRAF aa 327; samples P-0050931-T01-IM6, P-0042835-T03-IM6, P-0042835-T02-IM6, P-0036886-T01-IM6, P-0025561-T03-IM6 (+6 more)</title></rect>
 <rect x="394.8" y="82.0" width="185.7" height="22" fill="#2878b5"><title>Protein kinase domain retained (458-712 aa); BRAF–AGK fusion, breakpoint BRAF aa 327; samples P-0050931-T01-IM6, P-0042835-T03-IM6, P-0042835-T02-IM6, P-0036886-T01-IM6, P-0025561-T03-IM6 (+6 more)</title></rect>
 <text x="487.7" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
@@ -37,7 +37,7 @@
 <text x="64.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="96.5" font-family="sans-serif" font-size="9.5">AGK (x11) – Protein kinase domain retained</text>
-<rect x="60.0" y="108.0" width="278.5" height="22" fill="#cb4d5b"><title>Partner gene SND1; BRAF–SND1 fusion, breakpoint BRAF aa 381; samples P-0048950-T01-IM6, P-0012395-T01-IM5, P-0001687-T01-IM3, P-0068194-T01-IM7, P-0008140-T01-IM5 (+5 more)</title></rect>
+<rect x="60.0" y="108.0" width="278.5" height="22" fill="#8064a2"><title>Partner gene SND1; BRAF–SND1 fusion, breakpoint BRAF aa 381; samples P-0048950-T01-IM6, P-0012395-T01-IM5, P-0001687-T01-IM3, P-0068194-T01-IM7, P-0008140-T01-IM5 (+5 more)</title></rect>
 <rect x="338.5" y="108.0" width="281.5" height="22" fill="#e2e2e2"><title>BRAF backbone (381-766 aa, no domain); domain status retained; BRAF–SND1 fusion, breakpoint BRAF aa 381; samples P-0048950-T01-IM6, P-0012395-T01-IM5, P-0001687-T01-IM3, P-0068194-T01-IM7, P-0008140-T01-IM5 (+5 more)</title></rect>
 <rect x="394.8" y="108.0" width="185.7" height="22" fill="#2878b5"><title>Protein kinase domain retained (458-712 aa); BRAF–SND1 fusion, breakpoint BRAF aa 381; samples P-0048950-T01-IM6, P-0012395-T01-IM5, P-0001687-T01-IM3, P-0068194-T01-IM7, P-0008140-T01-IM5 (+5 more)</title></rect>
 <text x="487.7" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
@@ -54,7 +54,7 @@
 <text x="64.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="122.5" font-family="sans-serif" font-size="9.5">SND1 (x10) – Protein kinase domain retained</text>
-<rect x="60.0" y="134.0" width="320.9" height="22" fill="#90cb4d"><title>Partner gene KIAA1549; BRAF–KIAA1549 fusion, breakpoint BRAF aa 439; samples P-0066030-T01-IM7, P-0062963-T01-IM7, P-0013777-T01-IM5, P-0040760-T01-IM6, P-0028611-T01-IM6 (+2 more)</title></rect>
+<rect x="60.0" y="134.0" width="320.9" height="22" fill="#8064a2"><title>Partner gene KIAA1549; BRAF–KIAA1549 fusion, breakpoint BRAF aa 439; samples P-0066030-T01-IM7, P-0062963-T01-IM7, P-0013777-T01-IM5, P-0040760-T01-IM6, P-0028611-T01-IM6 (+2 more)</title></rect>
 <rect x="380.9" y="134.0" width="239.1" height="22" fill="#e2e2e2"><title>BRAF backbone (439-766 aa, no domain); domain status retained; BRAF–KIAA1549 fusion, breakpoint BRAF aa 439; samples P-0066030-T01-IM7, P-0062963-T01-IM7, P-0013777-T01-IM5, P-0040760-T01-IM6, P-0028611-T01-IM6 (+2 more)</title></rect>
 <rect x="394.8" y="134.0" width="185.7" height="22" fill="#2878b5"><title>Protein kinase domain retained (458-712 aa); BRAF–KIAA1549 fusion, breakpoint BRAF aa 439; samples P-0066030-T01-IM7, P-0062963-T01-IM7, P-0013777-T01-IM5, P-0040760-T01-IM6, P-0028611-T01-IM6 (+2 more)</title></rect>
 <text x="487.7" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
@@ -69,7 +69,7 @@
 <text x="64.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="148.5" font-family="sans-serif" font-size="9.5">KIAA1549 (x7) – Protein kinase domain retained</text>
-<rect x="60.0" y="160.0" width="278.5" height="22" fill="#cb4db0"><title>Partner gene TRIM24; BRAF–TRIM24 fusion, breakpoint BRAF aa 381; samples P-0054430-T02-IM6, P-0045111-T01-IM6, P-0066835-T01-IM7, P-0030988-T01-IM6, P-0032569-T01-IM6 (+1 more)</title></rect>
+<rect x="60.0" y="160.0" width="278.5" height="22" fill="#8064a2"><title>Partner gene TRIM24; BRAF–TRIM24 fusion, breakpoint BRAF aa 381; samples P-0054430-T02-IM6, P-0045111-T01-IM6, P-0066835-T01-IM7, P-0030988-T01-IM6, P-0032569-T01-IM6 (+1 more)</title></rect>
 <rect x="338.5" y="160.0" width="281.5" height="22" fill="#e2e2e2"><title>BRAF backbone (381-766 aa, no domain); domain status retained; BRAF–TRIM24 fusion, breakpoint BRAF aa 381; samples P-0054430-T02-IM6, P-0045111-T01-IM6, P-0066835-T01-IM7, P-0030988-T01-IM6, P-0032569-T01-IM6 (+1 more)</title></rect>
 <rect x="394.8" y="160.0" width="185.7" height="22" fill="#2878b5"><title>Protein kinase domain retained (458-712 aa); BRAF–TRIM24 fusion, breakpoint BRAF aa 381; samples P-0054430-T02-IM6, P-0045111-T01-IM6, P-0066835-T01-IM7, P-0030988-T01-IM6, P-0032569-T01-IM6 (+1 more)</title></rect>
 <text x="487.7" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
@@ -86,7 +86,7 @@
 <text x="64.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="174.5" font-family="sans-serif" font-size="9.5">TRIM24 (x6) – Protein kinase domain retained</text>
-<rect x="60.0" y="186.0" width="278.5" height="22" fill="#7d4dcb"><title>Partner gene CUL1; BRAF–CUL1 fusion, breakpoint BRAF aa 381; samples P-0004795-T01-IM5, P-0039648-T01-IM6, P-0039648-T03-IM6, P-0064088-T01-IM7, P-0068173-T01-IM7</title></rect>
+<rect x="60.0" y="186.0" width="278.5" height="22" fill="#8064a2"><title>Partner gene CUL1; BRAF–CUL1 fusion, breakpoint BRAF aa 381; samples P-0004795-T01-IM5, P-0039648-T01-IM6, P-0039648-T03-IM6, P-0064088-T01-IM7, P-0068173-T01-IM7</title></rect>
 <rect x="338.5" y="186.0" width="281.5" height="22" fill="#e2e2e2"><title>BRAF backbone (381-766 aa, no domain); domain status retained; BRAF–CUL1 fusion, breakpoint BRAF aa 381; samples P-0004795-T01-IM5, P-0039648-T01-IM6, P-0039648-T03-IM6, P-0064088-T01-IM7, P-0068173-T01-IM7</title></rect>
 <rect x="394.8" y="186.0" width="185.7" height="22" fill="#2878b5"><title>Protein kinase domain retained (458-712 aa); BRAF–CUL1 fusion, breakpoint BRAF aa 381; samples P-0004795-T01-IM5, P-0039648-T01-IM6, P-0039648-T03-IM6, P-0064088-T01-IM7, P-0068173-T01-IM7</title></rect>
 <text x="487.7" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
@@ -103,7 +103,7 @@
 <text x="64.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="200.5" font-family="sans-serif" font-size="9.5">CUL1 (x5) – Protein kinase domain retained</text>
-<rect x="60.0" y="212.0" width="278.5" height="22" fill="#bc4dcb"><title>Partner gene AGAP3; BRAF–AGAP3 fusion, breakpoint BRAF aa 381; samples P-0050574-T02-IM6, P-0007861-T01-IM5, P-0021519-T02-IM6, P-0009757-T01-IM5</title></rect>
+<rect x="60.0" y="212.0" width="278.5" height="22" fill="#8064a2"><title>Partner gene AGAP3; BRAF–AGAP3 fusion, breakpoint BRAF aa 381; samples P-0050574-T02-IM6, P-0007861-T01-IM5, P-0021519-T02-IM6, P-0009757-T01-IM5</title></rect>
 <rect x="338.5" y="212.0" width="281.5" height="22" fill="#e2e2e2"><title>BRAF backbone (381-766 aa, no domain); domain status retained; BRAF–AGAP3 fusion, breakpoint BRAF aa 381; samples P-0050574-T02-IM6, P-0007861-T01-IM5, P-0021519-T02-IM6, P-0009757-T01-IM5</title></rect>
 <rect x="394.8" y="212.0" width="185.7" height="22" fill="#2878b5"><title>Protein kinase domain retained (458-712 aa); BRAF–AGAP3 fusion, breakpoint BRAF aa 381; samples P-0050574-T02-IM6, P-0007861-T01-IM5, P-0021519-T02-IM6, P-0009757-T01-IM5</title></rect>
 <text x="487.7" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
@@ -120,7 +120,7 @@
 <text x="64.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="226.5" font-family="sans-serif" font-size="9.5">AGAP3 (x4) – Protein kinase domain retained</text>
-<rect x="60.0" y="238.0" width="278.5" height="22" fill="#cb8c4d"><title>Partner gene MKRN1; BRAF–MKRN1 fusion, breakpoint BRAF aa 381; samples P-0035393-T02-IM6, P-0009024-T01-IM5, P-0047135-T01-IM6, P-0009024-T02-IM6</title></rect>
+<rect x="60.0" y="238.0" width="278.5" height="22" fill="#8064a2"><title>Partner gene MKRN1; BRAF–MKRN1 fusion, breakpoint BRAF aa 381; samples P-0035393-T02-IM6, P-0009024-T01-IM5, P-0047135-T01-IM6, P-0009024-T02-IM6</title></rect>
 <rect x="338.5" y="238.0" width="281.5" height="22" fill="#e2e2e2"><title>BRAF backbone (381-766 aa, no domain); domain status retained; BRAF–MKRN1 fusion, breakpoint BRAF aa 381; samples P-0035393-T02-IM6, P-0009024-T01-IM5, P-0047135-T01-IM6, P-0009024-T02-IM6</title></rect>
 <rect x="394.8" y="238.0" width="185.7" height="22" fill="#2878b5"><title>Protein kinase domain retained (458-712 aa); BRAF–MKRN1 fusion, breakpoint BRAF aa 381; samples P-0035393-T02-IM6, P-0009024-T01-IM5, P-0047135-T01-IM6, P-0009024-T02-IM6</title></rect>
 <text x="487.7" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
@@ -137,7 +137,7 @@
 <text x="64.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="252.5" font-family="sans-serif" font-size="9.5">MKRN1 (x4) – Protein kinase domain retained</text>
-<rect x="60.0" y="264.0" width="320.9" height="22" fill="#cb4d5b"><title>Partner gene SND1; BRAF–SND1 fusion, breakpoint BRAF aa 439; samples P-0009619-T01-IM5, P-0004103-T01-IM5, P-0029727-T01-IM6, P-0007533-T01-IM5</title></rect>
+<rect x="60.0" y="264.0" width="320.9" height="22" fill="#8064a2"><title>Partner gene SND1; BRAF–SND1 fusion, breakpoint BRAF aa 439; samples P-0009619-T01-IM5, P-0004103-T01-IM5, P-0029727-T01-IM6, P-0007533-T01-IM5</title></rect>
 <rect x="380.9" y="264.0" width="239.1" height="22" fill="#e2e2e2"><title>BRAF backbone (439-766 aa, no domain); domain status retained; BRAF–SND1 fusion, breakpoint BRAF aa 439; samples P-0009619-T01-IM5, P-0004103-T01-IM5, P-0029727-T01-IM6, P-0007533-T01-IM5</title></rect>
 <rect x="394.8" y="264.0" width="185.7" height="22" fill="#2878b5"><title>Protein kinase domain retained (458-712 aa); BRAF–SND1 fusion, breakpoint BRAF aa 439; samples P-0009619-T01-IM5, P-0004103-T01-IM5, P-0029727-T01-IM6, P-0007533-T01-IM5</title></rect>
 <text x="487.7" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
@@ -152,7 +152,7 @@
 <text x="64.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="278.5" font-family="sans-serif" font-size="9.5">SND1 (x4) – Protein kinase domain retained</text>
-<rect x="60.0" y="290.0" width="278.5" height="22" fill="#4d4fcb"><title>Partner gene FAM131B; BRAF–FAM131B fusion, breakpoint BRAF aa 381; samples P-0001988-T01-IM3, P-0047918-T04-IM7, P-0047918-T02-IM6</title></rect>
+<rect x="60.0" y="290.0" width="278.5" height="22" fill="#8064a2"><title>Partner gene FAM131B; BRAF–FAM131B fusion, breakpoint BRAF aa 381; samples P-0001988-T01-IM3, P-0047918-T04-IM7, P-0047918-T02-IM6</title></rect>
 <rect x="338.5" y="290.0" width="281.5" height="22" fill="#e2e2e2"><title>BRAF backbone (381-766 aa, no domain); domain status retained; BRAF–FAM131B fusion, breakpoint BRAF aa 381; samples P-0001988-T01-IM3, P-0047918-T04-IM7, P-0047918-T02-IM6</title></rect>
 <rect x="394.8" y="290.0" width="185.7" height="22" fill="#2878b5"><title>Protein kinase domain retained (458-712 aa); BRAF–FAM131B fusion, breakpoint BRAF aa 381; samples P-0001988-T01-IM3, P-0047918-T04-IM7, P-0047918-T02-IM6</title></rect>
 <text x="487.7" y="304.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
@@ -169,7 +169,7 @@
 <text x="64.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="304.5" font-family="sans-serif" font-size="9.5">FAM131B (x3) – Protein kinase domain retained</text>
-<rect x="60.0" y="316.0" width="287.3" height="22" fill="#cb8c4d"><title>Partner gene MKRN1; BRAF–MKRN1 fusion, breakpoint BRAF aa 393; samples P-0008083-T03-IM6, P-0008083-T02-IM6, P-0013536-T01-IM5</title></rect>
+<rect x="60.0" y="316.0" width="287.3" height="22" fill="#8064a2"><title>Partner gene MKRN1; BRAF–MKRN1 fusion, breakpoint BRAF aa 393; samples P-0008083-T03-IM6, P-0008083-T02-IM6, P-0013536-T01-IM5</title></rect>
 <rect x="347.3" y="316.0" width="272.7" height="22" fill="#e2e2e2"><title>BRAF backbone (393-766 aa, no domain); domain status retained; BRAF–MKRN1 fusion, breakpoint BRAF aa 393; samples P-0008083-T03-IM6, P-0008083-T02-IM6, P-0013536-T01-IM5</title></rect>
 <rect x="394.8" y="316.0" width="185.7" height="22" fill="#2878b5"><title>Protein kinase domain retained (458-712 aa); BRAF–MKRN1 fusion, breakpoint BRAF aa 393; samples P-0008083-T03-IM6, P-0008083-T02-IM6, P-0013536-T01-IM5</title></rect>
 <text x="487.7" y="330.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
@@ -185,7 +185,7 @@
 <text x="64.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="330.5" font-family="sans-serif" font-size="9.5">MKRN1 (x3) – Protein kinase domain retained</text>
-<rect x="299.1" y="342.0" width="320.9" height="22" fill="#cbc04d"><title>Partner gene AGK; BRAF–AGK fusion, breakpoint BRAF aa 327; samples P-0025561-T01-IM6, P-0023378-T01-IM6</title></rect>
+<rect x="299.1" y="342.0" width="320.9" height="22" fill="#8064a2"><title>Partner gene AGK; BRAF–AGK fusion, breakpoint BRAF aa 327; samples P-0025561-T01-IM6, P-0023378-T01-IM6</title></rect>
 <rect x="60.0" y="342.0" width="239.1" height="22" fill="#e2e2e2"><title>BRAF backbone (0-327 aa, no domain); domain status lost; BRAF–AGK fusion, breakpoint BRAF aa 327; samples P-0025561-T01-IM6, P-0023378-T01-IM6</title></rect>
 <rect x="174.0" y="342.0" width="51.9" height="22" fill="#2878b5"><title>RAS-binding domain retained (156-227 aa); BRAF–AGK fusion, breakpoint BRAF aa 327; samples P-0025561-T01-IM6, P-0023378-T01-IM6</title></rect>
 <text x="200.0" y="356.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">RAS-binding…</text>
@@ -202,7 +202,7 @@
 <text x="64.0" y="356.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="356.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="356.5" font-family="sans-serif" font-size="9.5">AGK (x2) – Protein kinase domain lost</text>
-<rect x="337.8" y="368.0" width="282.2" height="22" fill="#cb4d5b"><title>Partner gene SND1; BRAF–SND1 fusion, breakpoint BRAF aa 380; samples P-0064764-T01-IM7, P-0002197-T01-IM3</title></rect>
+<rect x="337.8" y="368.0" width="282.2" height="22" fill="#8064a2"><title>Partner gene SND1; BRAF–SND1 fusion, breakpoint BRAF aa 380; samples P-0064764-T01-IM7, P-0002197-T01-IM3</title></rect>
 <rect x="60.0" y="368.0" width="277.8" height="22" fill="#e2e2e2"><title>BRAF backbone (0-380 aa, no domain); domain status lost; BRAF–SND1 fusion, breakpoint BRAF aa 380; samples P-0064764-T01-IM7, P-0002197-T01-IM3</title></rect>
 <rect x="174.0" y="368.0" width="51.9" height="22" fill="#2878b5"><title>RAS-binding domain retained (156-227 aa); BRAF–SND1 fusion, breakpoint BRAF aa 380; samples P-0064764-T01-IM7, P-0002197-T01-IM3</title></rect>
 <text x="200.0" y="382.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">RAS-binding…</text>
@@ -220,7 +220,7 @@
 <text x="64.0" y="382.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="382.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="382.5" font-family="sans-serif" font-size="9.5">SND1 (x2) – Protein kinase domain lost</text>
-<rect x="60.0" y="394.0" width="278.5" height="22" fill="#b84dcb"><title>Partner gene AKAP9; BRAF–AKAP9 fusion, breakpoint BRAF aa 381; samples P-0050635-T01-IM6, P-0030237-T03-IM6</title></rect>
+<rect x="60.0" y="394.0" width="278.5" height="22" fill="#8064a2"><title>Partner gene AKAP9; BRAF–AKAP9 fusion, breakpoint BRAF aa 381; samples P-0050635-T01-IM6, P-0030237-T03-IM6</title></rect>
 <rect x="338.5" y="394.0" width="281.5" height="22" fill="#e2e2e2"><title>BRAF backbone (381-766 aa, no domain); domain status retained; BRAF–AKAP9 fusion, breakpoint BRAF aa 381; samples P-0050635-T01-IM6, P-0030237-T03-IM6</title></rect>
 <rect x="394.8" y="394.0" width="185.7" height="22" fill="#2878b5"><title>Protein kinase domain retained (458-712 aa); BRAF–AKAP9 fusion, breakpoint BRAF aa 381; samples P-0050635-T01-IM6, P-0030237-T03-IM6</title></rect>
 <text x="487.7" y="408.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
@@ -237,7 +237,7 @@
 <text x="64.0" y="408.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="408.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="408.5" font-family="sans-serif" font-size="9.5">AKAP9 (x2) – Protein kinase domain retained</text>
-<rect x="60.0" y="420.0" width="278.5" height="22" fill="#a94dcb"><title>Partner gene CARMIL1; BRAF–CARMIL1 fusion, breakpoint BRAF aa 381; samples P-0033764-T04-IM6, P-0030796-T01-IM6</title></rect>
+<rect x="60.0" y="420.0" width="278.5" height="22" fill="#8064a2"><title>Partner gene CARMIL1; BRAF–CARMIL1 fusion, breakpoint BRAF aa 381; samples P-0033764-T04-IM6, P-0030796-T01-IM6</title></rect>
 <rect x="338.5" y="420.0" width="281.5" height="22" fill="#e2e2e2"><title>BRAF backbone (381-766 aa, no domain); domain status retained; BRAF–CARMIL1 fusion, breakpoint BRAF aa 381; samples P-0033764-T04-IM6, P-0030796-T01-IM6</title></rect>
 <rect x="394.8" y="420.0" width="185.7" height="22" fill="#2878b5"><title>Protein kinase domain retained (458-712 aa); BRAF–CARMIL1 fusion, breakpoint BRAF aa 381; samples P-0033764-T04-IM6, P-0030796-T01-IM6</title></rect>
 <text x="487.7" y="434.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
@@ -254,7 +254,7 @@
 <text x="64.0" y="434.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="434.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="434.5" font-family="sans-serif" font-size="9.5">CARMIL1 (x2) – Protein kinase domain retained</text>
-<rect x="60.0" y="446.0" width="278.5" height="22" fill="#4d4fcb"><title>Partner gene EXOC4; BRAF–EXOC4 fusion, breakpoint BRAF aa 381; samples P-0036937-T01-IM6, P-0024206-T01-IM6</title></rect>
+<rect x="60.0" y="446.0" width="278.5" height="22" fill="#8064a2"><title>Partner gene EXOC4; BRAF–EXOC4 fusion, breakpoint BRAF aa 381; samples P-0036937-T01-IM6, P-0024206-T01-IM6</title></rect>
 <rect x="338.5" y="446.0" width="281.5" height="22" fill="#e2e2e2"><title>BRAF backbone (381-766 aa, no domain); domain status retained; BRAF–EXOC4 fusion, breakpoint BRAF aa 381; samples P-0036937-T01-IM6, P-0024206-T01-IM6</title></rect>
 <rect x="394.8" y="446.0" width="185.7" height="22" fill="#2878b5"><title>Protein kinase domain retained (458-712 aa); BRAF–EXOC4 fusion, breakpoint BRAF aa 381; samples P-0036937-T01-IM6, P-0024206-T01-IM6</title></rect>
 <text x="487.7" y="460.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
@@ -271,7 +271,7 @@
 <text x="64.0" y="460.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="460.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="460.5" font-family="sans-serif" font-size="9.5">EXOC4 (x2) – Protein kinase domain retained</text>
-<rect x="60.0" y="472.0" width="278.5" height="22" fill="#cb4db6"><title>Partner gene MAD1L1; BRAF–MAD1L1 fusion, breakpoint BRAF aa 381; samples P-0026158-T04-IM6, P-0026158-T01-IM6</title></rect>
+<rect x="60.0" y="472.0" width="278.5" height="22" fill="#8064a2"><title>Partner gene MAD1L1; BRAF–MAD1L1 fusion, breakpoint BRAF aa 381; samples P-0026158-T04-IM6, P-0026158-T01-IM6</title></rect>
 <rect x="338.5" y="472.0" width="281.5" height="22" fill="#e2e2e2"><title>BRAF backbone (381-766 aa, no domain); domain status retained; BRAF–MAD1L1 fusion, breakpoint BRAF aa 381; samples P-0026158-T04-IM6, P-0026158-T01-IM6</title></rect>
 <rect x="394.8" y="472.0" width="185.7" height="22" fill="#2878b5"><title>Protein kinase domain retained (458-712 aa); BRAF–MAD1L1 fusion, breakpoint BRAF aa 381; samples P-0026158-T04-IM6, P-0026158-T01-IM6</title></rect>
 <text x="487.7" y="486.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
@@ -288,7 +288,7 @@
 <text x="64.0" y="486.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="486.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="486.5" font-family="sans-serif" font-size="9.5">MAD1L1 (x2) – Protein kinase domain retained</text>
-<rect x="347.3" y="498.0" width="272.7" height="22" fill="#88cb4d"><title>Partner gene GTF2IRD1; BRAF–GTF2IRD1 fusion, breakpoint BRAF aa 393; samples P-0054046-T01-IM6, P-0000828-T03-IM6</title></rect>
+<rect x="347.3" y="498.0" width="272.7" height="22" fill="#8064a2"><title>Partner gene GTF2IRD1; BRAF–GTF2IRD1 fusion, breakpoint BRAF aa 393; samples P-0054046-T01-IM6, P-0000828-T03-IM6</title></rect>
 <rect x="60.0" y="498.0" width="287.3" height="22" fill="#e2e2e2"><title>BRAF backbone (0-393 aa, no domain); domain status lost; BRAF–GTF2IRD1 fusion, breakpoint BRAF aa 393; samples P-0054046-T01-IM6, P-0000828-T03-IM6</title></rect>
 <rect x="174.0" y="498.0" width="51.9" height="22" fill="#2878b5"><title>RAS-binding domain retained (156-227 aa); BRAF–GTF2IRD1 fusion, breakpoint BRAF aa 393; samples P-0054046-T01-IM6, P-0000828-T03-IM6</title></rect>
 <text x="200.0" y="512.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">RAS-binding…</text>
@@ -307,7 +307,7 @@
 <text x="64.0" y="512.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="512.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="512.5" font-family="sans-serif" font-size="9.5">GTF2IRD1 (x2) – Protein kinase domain lost</text>
-<rect x="60.0" y="524.0" width="320.9" height="22" fill="#cb8c4d"><title>Partner gene MKRN1; BRAF–MKRN1 fusion, breakpoint BRAF aa 439; samples P-0001036-T01-IM3, P-0031896-T02-IM6</title></rect>
+<rect x="60.0" y="524.0" width="320.9" height="22" fill="#8064a2"><title>Partner gene MKRN1; BRAF–MKRN1 fusion, breakpoint BRAF aa 439; samples P-0001036-T01-IM3, P-0031896-T02-IM6</title></rect>
 <rect x="380.9" y="524.0" width="239.1" height="22" fill="#e2e2e2"><title>BRAF backbone (439-766 aa, no domain); domain status retained; BRAF–MKRN1 fusion, breakpoint BRAF aa 439; samples P-0001036-T01-IM3, P-0031896-T02-IM6</title></rect>
 <rect x="394.8" y="524.0" width="185.7" height="22" fill="#2878b5"><title>Protein kinase domain retained (458-712 aa); BRAF–MKRN1 fusion, breakpoint BRAF aa 439; samples P-0001036-T01-IM3, P-0031896-T02-IM6</title></rect>
 <text x="487.7" y="538.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
@@ -322,7 +322,7 @@
 <text x="64.0" y="538.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="538.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="538.5" font-family="sans-serif" font-size="9.5">MKRN1 (x2) – Protein kinase domain retained</text>
-<rect x="60.0" y="550.0" width="174.0" height="22" fill="#4dcb66"><title>Partner gene TMPRSS2; BRAF–TMPRSS2 fusion, breakpoint BRAF aa 238; sample P-0051214-T01-IM6</title></rect>
+<rect x="60.0" y="550.0" width="174.0" height="22" fill="#8064a2"><title>Partner gene TMPRSS2; BRAF–TMPRSS2 fusion, breakpoint BRAF aa 238; sample P-0051214-T01-IM6</title></rect>
 <rect x="234.0" y="550.0" width="386.0" height="22" fill="#e2e2e2"><title>BRAF backbone (238-766 aa, no domain); domain status retained; BRAF–TMPRSS2 fusion, breakpoint BRAF aa 238; sample P-0051214-T01-IM6</title></rect>
 <rect x="394.8" y="550.0" width="185.7" height="22" fill="#2878b5"><title>Protein kinase domain retained (458-712 aa); BRAF–TMPRSS2 fusion, breakpoint BRAF aa 238; sample P-0051214-T01-IM6</title></rect>
 <text x="487.7" y="564.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
@@ -344,7 +344,7 @@
 <text x="64.0" y="564.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="564.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="564.5" font-family="sans-serif" font-size="9.5">TMPRSS2 – Protein kinase domain retained</text>
-<rect x="269.8" y="576.0" width="350.2" height="22" fill="#cb5d4d"><title>Partner gene LUC7L2; BRAF–LUC7L2 fusion, breakpoint BRAF aa 287; sample P-0006412-T01-IM5</title></rect>
+<rect x="269.8" y="576.0" width="350.2" height="22" fill="#8064a2"><title>Partner gene LUC7L2; BRAF–LUC7L2 fusion, breakpoint BRAF aa 287; sample P-0006412-T01-IM5</title></rect>
 <rect x="60.0" y="576.0" width="209.8" height="22" fill="#e2e2e2"><title>BRAF backbone (0-287 aa, no domain); domain status lost; BRAF–LUC7L2 fusion, breakpoint BRAF aa 287; sample P-0006412-T01-IM5</title></rect>
 <rect x="174.0" y="576.0" width="51.9" height="22" fill="#2878b5"><title>RAS-binding domain retained (156-227 aa); BRAF–LUC7L2 fusion, breakpoint BRAF aa 287; sample P-0006412-T01-IM5</title></rect>
 <text x="200.0" y="590.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">RAS-binding…</text>
@@ -360,7 +360,7 @@
 <text x="64.0" y="590.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="590.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="590.5" font-family="sans-serif" font-size="9.5">LUC7L2 – Protein kinase domain lost</text>
-<rect x="60.0" y="602.0" width="221.5" height="22" fill="#cbc04d"><title>Partner gene AGK; BRAF–AGK fusion, breakpoint BRAF aa 303; sample P-0029531-T01-IM6</title></rect>
+<rect x="60.0" y="602.0" width="221.5" height="22" fill="#8064a2"><title>Partner gene AGK; BRAF–AGK fusion, breakpoint BRAF aa 303; sample P-0029531-T01-IM6</title></rect>
 <rect x="281.5" y="602.0" width="338.5" height="22" fill="#e2e2e2"><title>BRAF backbone (303-766 aa, no domain); domain status retained; BRAF–AGK fusion, breakpoint BRAF aa 303; sample P-0029531-T01-IM6</title></rect>
 <rect x="394.8" y="602.0" width="185.7" height="22" fill="#2878b5"><title>Protein kinase domain retained (458-712 aa); BRAF–AGK fusion, breakpoint BRAF aa 303; sample P-0029531-T01-IM6</title></rect>
 <text x="487.7" y="616.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
@@ -379,7 +379,7 @@
 <text x="64.0" y="616.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="616.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="616.5" font-family="sans-serif" font-size="9.5">AGK – Protein kinase domain retained</text>
-<rect x="60.0" y="628.0" width="239.1" height="22" fill="#cb4d75"><title>Partner gene ABCC2; BRAF–ABCC2 fusion, breakpoint BRAF aa 327; sample P-0034621-T01-IM6</title></rect>
+<rect x="60.0" y="628.0" width="239.1" height="22" fill="#8064a2"><title>Partner gene ABCC2; BRAF–ABCC2 fusion, breakpoint BRAF aa 327; sample P-0034621-T01-IM6</title></rect>
 <rect x="299.1" y="628.0" width="320.9" height="22" fill="#e2e2e2"><title>BRAF backbone (327-766 aa, no domain); domain status retained; BRAF–ABCC2 fusion, breakpoint BRAF aa 327; sample P-0034621-T01-IM6</title></rect>
 <rect x="394.8" y="628.0" width="185.7" height="22" fill="#2878b5"><title>Protein kinase domain retained (458-712 aa); BRAF–ABCC2 fusion, breakpoint BRAF aa 327; sample P-0034621-T01-IM6</title></rect>
 <text x="487.7" y="642.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
@@ -397,7 +397,7 @@
 <text x="64.0" y="642.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="642.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="642.5" font-family="sans-serif" font-size="9.5">ABCC2 – Protein kinase domain retained</text>
-<rect x="60.0" y="654.0" width="239.1" height="22" fill="#5dcb4d"><title>Partner gene CLIP1; BRAF–CLIP1 fusion, breakpoint BRAF aa 327; sample P-0007266-T02-IM6</title></rect>
+<rect x="60.0" y="654.0" width="239.1" height="22" fill="#8064a2"><title>Partner gene CLIP1; BRAF–CLIP1 fusion, breakpoint BRAF aa 327; sample P-0007266-T02-IM6</title></rect>
 <rect x="299.1" y="654.0" width="320.9" height="22" fill="#e2e2e2"><title>BRAF backbone (327-766 aa, no domain); domain status retained; BRAF–CLIP1 fusion, breakpoint BRAF aa 327; sample P-0007266-T02-IM6</title></rect>
 <rect x="394.8" y="654.0" width="185.7" height="22" fill="#2878b5"><title>Protein kinase domain retained (458-712 aa); BRAF–CLIP1 fusion, breakpoint BRAF aa 327; sample P-0007266-T02-IM6</title></rect>
 <text x="487.7" y="668.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
@@ -415,7 +415,7 @@
 <text x="64.0" y="668.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="668.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="668.5" font-family="sans-serif" font-size="9.5">CLIP1 – Protein kinase domain retained</text>
-<rect x="299.1" y="680.0" width="320.9" height="22" fill="#7dcb4d"><title>Partner gene ITGB5; BRAF–ITGB5 fusion, breakpoint BRAF aa 327; sample P-0015847-T02-IM6</title></rect>
+<rect x="299.1" y="680.0" width="320.9" height="22" fill="#8064a2"><title>Partner gene ITGB5; BRAF–ITGB5 fusion, breakpoint BRAF aa 327; sample P-0015847-T02-IM6</title></rect>
 <rect x="60.0" y="680.0" width="239.1" height="22" fill="#e2e2e2"><title>BRAF backbone (0-327 aa, no domain); domain status lost; BRAF–ITGB5 fusion, breakpoint BRAF aa 327; sample P-0015847-T02-IM6</title></rect>
 <rect x="174.0" y="680.0" width="51.9" height="22" fill="#2878b5"><title>RAS-binding domain retained (156-227 aa); BRAF–ITGB5 fusion, breakpoint BRAF aa 327; sample P-0015847-T02-IM6</title></rect>
 <text x="200.0" y="694.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">RAS-binding…</text>
@@ -432,7 +432,7 @@
 <text x="64.0" y="694.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="694.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="694.5" font-family="sans-serif" font-size="9.5">ITGB5 – Protein kinase domain lost</text>
-<rect x="60.0" y="706.0" width="239.1" height="22" fill="#98cb4d"><title>Partner gene MKLN1; BRAF–MKLN1 fusion, breakpoint BRAF aa 327; sample P-0023220-T01-IM6</title></rect>
+<rect x="60.0" y="706.0" width="239.1" height="22" fill="#8064a2"><title>Partner gene MKLN1; BRAF–MKLN1 fusion, breakpoint BRAF aa 327; sample P-0023220-T01-IM6</title></rect>
 <rect x="299.1" y="706.0" width="320.9" height="22" fill="#e2e2e2"><title>BRAF backbone (327-766 aa, no domain); domain status retained; BRAF–MKLN1 fusion, breakpoint BRAF aa 327; sample P-0023220-T01-IM6</title></rect>
 <rect x="394.8" y="706.0" width="185.7" height="22" fill="#2878b5"><title>Protein kinase domain retained (458-712 aa); BRAF–MKLN1 fusion, breakpoint BRAF aa 327; sample P-0023220-T01-IM6</title></rect>
 <text x="487.7" y="720.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
@@ -450,7 +450,7 @@
 <text x="64.0" y="720.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="720.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="720.5" font-family="sans-serif" font-size="9.5">MKLN1 – Protein kinase domain retained</text>
-<rect x="60.0" y="732.0" width="239.1" height="22" fill="#cbc54d"><title>Partner gene NEO1; BRAF–NEO1 fusion, breakpoint BRAF aa 327; sample P-0048036-T01-IM6</title></rect>
+<rect x="60.0" y="732.0" width="239.1" height="22" fill="#8064a2"><title>Partner gene NEO1; BRAF–NEO1 fusion, breakpoint BRAF aa 327; sample P-0048036-T01-IM6</title></rect>
 <rect x="299.1" y="732.0" width="320.9" height="22" fill="#e2e2e2"><title>BRAF backbone (327-766 aa, no domain); domain status retained; BRAF–NEO1 fusion, breakpoint BRAF aa 327; sample P-0048036-T01-IM6</title></rect>
 <rect x="394.8" y="732.0" width="185.7" height="22" fill="#2878b5"><title>Protein kinase domain retained (458-712 aa); BRAF–NEO1 fusion, breakpoint BRAF aa 327; sample P-0048036-T01-IM6</title></rect>
 <text x="487.7" y="746.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
@@ -468,7 +468,7 @@
 <text x="64.0" y="746.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="746.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="746.5" font-family="sans-serif" font-size="9.5">NEO1 – Protein kinase domain retained</text>
-<rect x="60.0" y="758.0" width="239.1" height="22" fill="#4dcb96"><title>Partner gene PWWP2A; BRAF–PWWP2A fusion, breakpoint BRAF aa 327; sample P-0012884-T01-IM5</title></rect>
+<rect x="60.0" y="758.0" width="239.1" height="22" fill="#8064a2"><title>Partner gene PWWP2A; BRAF–PWWP2A fusion, breakpoint BRAF aa 327; sample P-0012884-T01-IM5</title></rect>
 <rect x="299.1" y="758.0" width="320.9" height="22" fill="#e2e2e2"><title>BRAF backbone (327-766 aa, no domain); domain status retained; BRAF–PWWP2A fusion, breakpoint BRAF aa 327; sample P-0012884-T01-IM5</title></rect>
 <rect x="394.8" y="758.0" width="185.7" height="22" fill="#2878b5"><title>Protein kinase domain retained (458-712 aa); BRAF–PWWP2A fusion, breakpoint BRAF aa 327; sample P-0012884-T01-IM5</title></rect>
 <text x="487.7" y="772.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>

@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1000" height="406" viewBox="0 0 1000 406">
 <rect width="1000" height="406" fill="white"/>
 <text x="60" y="24" font-family="sans-serif" font-size="15">INPPL1 fusion-transcript schematic</text>
-<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555">Fusion order varies by row; follow each row's 5' and 3' labels (INPPL1 portion is domain-colored, exon ticks)</text>
-<rect x="418.3" y="56.0" width="201.7" height="22" fill="#c54dcb"/>
-<rect x="60.0" y="56.0" width="358.3" height="22" fill="#e2e2e2"/>
-<rect x="69.3" y="56.0" width="36.1" height="22" fill="#2878b5"/>
+<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555">Fusion order varies by row; follow each row's 5' and 3' labels (INPPL1 portion is domain-colored, exon ticks). Partner-gene blocks share one color; row labels identify each partner.</text>
+<rect x="418.3" y="56.0" width="201.7" height="22" fill="#8064a2"><title>Partner gene FCHSD2; INPPL1–FCHSD2 fusion, breakpoint INPPL1 aa 805; samples P-0004226-T08-IM7, P-0004226-T04-IM6, P-0004226-T03-IM6, P-0004226-T07-IM7</title></rect>
+<rect x="60.0" y="56.0" width="358.3" height="22" fill="#e2e2e2"><title>INPPL1 backbone (0-805 aa, no domain); domain status retained; INPPL1–FCHSD2 fusion, breakpoint INPPL1 aa 805; samples P-0004226-T08-IM7, P-0004226-T04-IM6, P-0004226-T03-IM6, P-0004226-T07-IM7</title></rect>
+<rect x="69.3" y="56.0" width="36.1" height="22" fill="#2878b5"><title>SH2 domain retained (21-102 aa); INPPL1–FCHSD2 fusion, breakpoint INPPL1 aa 805; samples P-0004226-T08-IM7, P-0004226-T04-IM6, P-0004226-T03-IM6, P-0004226-T07-IM7</title></rect>
 <text x="87.4" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">SH2 dom…</text>
-<rect x="251.0" y="56.0" width="128.6" height="22" fill="#2878b5"/>
+<rect x="251.0" y="56.0" width="128.6" height="22" fill="#2878b5"><title>Endonuclease/Exonuclease/phosphatase family retained (429-718 aa); INPPL1–FCHSD2 fusion, breakpoint INPPL1 aa 805; samples P-0004226-T08-IM7, P-0004226-T04-IM6, P-0004226-T03-IM6, P-0004226-T07-IM7</title></rect>
 <text x="315.3" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Endonuclease/Exonuclease/phosp…</text>
 <line x1="60.4" y1="56.0" x2="60.4" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="87.2" y1="56.0" x2="87.2" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -29,37 +29,37 @@
 <line x1="375.2" y1="56.0" x2="375.2" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="388.5" y1="56.0" x2="388.5" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="405.4" y1="56.0" x2="405.4" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="418.3" y1="55.0" x2="418.3" y2="79.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="418.3" y1="55.0" x2="418.3" y2="79.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; INPPL1–FCHSD2 fusion, breakpoint INPPL1 aa 805; samples P-0004226-T08-IM7, P-0004226-T04-IM6, P-0004226-T03-IM6, P-0004226-T07-IM7</title></line>
 <text x="64.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="70.5" font-family="sans-serif" font-size="9.5">FCHSD2 (x4) – Endonuclease/Exonuclease/phosphatase family retained</text>
-<rect x="110.7" y="82.0" width="509.3" height="22" fill="#4dcbba"/>
-<rect x="60.0" y="82.0" width="50.7" height="22" fill="#e2e2e2"/>
-<rect x="69.3" y="82.0" width="36.1" height="22" fill="#2878b5"/>
+<rect x="110.7" y="82.0" width="509.3" height="22" fill="#8064a2"><title>Partner gene FAT3; INPPL1–FAT3 fusion, breakpoint INPPL1 aa 114; sample P-0042110-T02-IM7</title></rect>
+<rect x="60.0" y="82.0" width="50.7" height="22" fill="#e2e2e2"><title>INPPL1 backbone (0-114 aa, no domain); domain status lost; INPPL1–FAT3 fusion, breakpoint INPPL1 aa 114; sample P-0042110-T02-IM7</title></rect>
+<rect x="69.3" y="82.0" width="36.1" height="22" fill="#2878b5"><title>SH2 domain retained (21-102 aa); INPPL1–FAT3 fusion, breakpoint INPPL1 aa 114; sample P-0042110-T02-IM7</title></rect>
 <text x="87.4" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">SH2 dom…</text>
 <line x1="60.4" y1="82.0" x2="60.4" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="87.2" y1="82.0" x2="87.2" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="96.9" y1="82.0" x2="96.9" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="110.7" y1="81.0" x2="110.7" y2="105.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="110.7" y1="81.0" x2="110.7" y2="105.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; INPPL1–FAT3 fusion, breakpoint INPPL1 aa 114; sample P-0042110-T02-IM7</title></line>
 <text x="64.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="96.5" font-family="sans-serif" font-size="9.5">FAT3 – Endonuclease/Exonuclease/phosphatase family lost</text>
-<rect x="119.2" y="108.0" width="500.8" height="22" fill="#4dcb9a"/>
-<rect x="60.0" y="108.0" width="59.2" height="22" fill="#e2e2e2"/>
-<rect x="69.3" y="108.0" width="36.1" height="22" fill="#2878b5"/>
+<rect x="119.2" y="108.0" width="500.8" height="22" fill="#8064a2"><title>Partner gene FOLR2; INPPL1–FOLR2 fusion, breakpoint INPPL1 aa 133; sample P-0045578-T01-IM6</title></rect>
+<rect x="60.0" y="108.0" width="59.2" height="22" fill="#e2e2e2"><title>INPPL1 backbone (0-133 aa, no domain); domain status lost; INPPL1–FOLR2 fusion, breakpoint INPPL1 aa 133; sample P-0045578-T01-IM6</title></rect>
+<rect x="69.3" y="108.0" width="36.1" height="22" fill="#2878b5"><title>SH2 domain retained (21-102 aa); INPPL1–FOLR2 fusion, breakpoint INPPL1 aa 133; sample P-0045578-T01-IM6</title></rect>
 <text x="87.4" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">SH2 dom…</text>
 <line x1="60.4" y1="108.0" x2="60.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="87.2" y1="108.0" x2="87.2" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="96.9" y1="108.0" x2="96.9" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="119.2" y1="107.0" x2="119.2" y2="131.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="119.2" y1="107.0" x2="119.2" y2="131.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; INPPL1–FOLR2 fusion, breakpoint INPPL1 aa 133; sample P-0045578-T01-IM6</title></line>
 <text x="64.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="122.5" font-family="sans-serif" font-size="9.5">FOLR2 – Endonuclease/Exonuclease/phosphatase family lost</text>
-<rect x="60.0" y="134.0" width="81.5" height="22" fill="#cbc94d"/>
-<rect x="141.5" y="134.0" width="478.5" height="22" fill="#e2e2e2"/>
-<rect x="595.5" y="134.0" width="23.1" height="22" fill="#2878b5"/>
+<rect x="60.0" y="134.0" width="81.5" height="22" fill="#8064a2"><title>Partner gene CLPB; INPPL1–CLPB fusion, breakpoint INPPL1 aa 183; sample P-0031523-T02-IM6</title></rect>
+<rect x="141.5" y="134.0" width="478.5" height="22" fill="#e2e2e2"><title>INPPL1 backbone (183-1258 aa, no domain); domain status retained; INPPL1–CLPB fusion, breakpoint INPPL1 aa 183; sample P-0031523-T02-IM6</title></rect>
+<rect x="595.5" y="134.0" width="23.1" height="22" fill="#2878b5"><title>PF00536 retained (1203-1255 aa); INPPL1–CLPB fusion, breakpoint INPPL1 aa 183; sample P-0031523-T02-IM6</title></rect>
 <text x="607.1" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF00…</text>
-<rect x="251.0" y="134.0" width="128.6" height="22" fill="#2878b5"/>
+<rect x="251.0" y="134.0" width="128.6" height="22" fill="#2878b5"><title>Endonuclease/Exonuclease/phosphatase family retained (429-718 aa); INPPL1–CLPB fusion, breakpoint INPPL1 aa 183; sample P-0031523-T02-IM6</title></rect>
 <text x="315.3" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Endonuclease/Exonuclease/phosp…</text>
 <line x1="157.9" y1="134.0" x2="157.9" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="172.2" y1="134.0" x2="172.2" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -84,41 +84,41 @@
 <line x1="487.3" y1="134.0" x2="487.3" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="587.5" y1="134.0" x2="587.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="607.1" y1="134.0" x2="607.1" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="141.5" y1="133.0" x2="141.5" y2="157.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="141.5" y1="133.0" x2="141.5" y2="157.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; INPPL1–CLPB fusion, breakpoint INPPL1 aa 183; sample P-0031523-T02-IM6</title></line>
 <text x="64.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="148.5" font-family="sans-serif" font-size="9.5">CLPB – Endonuclease/Exonuclease/phosphatase family retained</text>
-<rect x="151.7" y="160.0" width="468.3" height="22" fill="#4dcb75"/>
-<rect x="60.0" y="160.0" width="91.7" height="22" fill="#e2e2e2"/>
-<rect x="69.3" y="160.0" width="36.1" height="22" fill="#2878b5"/>
+<rect x="151.7" y="160.0" width="468.3" height="22" fill="#8064a2"><title>Partner gene NLRP6; INPPL1–NLRP6 fusion, breakpoint INPPL1 aa 206; sample P-0024858-T01-IM6</title></rect>
+<rect x="60.0" y="160.0" width="91.7" height="22" fill="#e2e2e2"><title>INPPL1 backbone (0-206 aa, no domain); domain status lost; INPPL1–NLRP6 fusion, breakpoint INPPL1 aa 206; sample P-0024858-T01-IM6</title></rect>
+<rect x="69.3" y="160.0" width="36.1" height="22" fill="#2878b5"><title>SH2 domain retained (21-102 aa); INPPL1–NLRP6 fusion, breakpoint INPPL1 aa 206; sample P-0024858-T01-IM6</title></rect>
 <text x="87.4" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">SH2 dom…</text>
 <line x1="60.4" y1="160.0" x2="60.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="87.2" y1="160.0" x2="87.2" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="96.9" y1="160.0" x2="96.9" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="119.2" y1="160.0" x2="119.2" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="137.0" y1="160.0" x2="137.0" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="151.7" y1="159.0" x2="151.7" y2="183.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="151.7" y1="159.0" x2="151.7" y2="183.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; INPPL1–NLRP6 fusion, breakpoint INPPL1 aa 206; sample P-0024858-T01-IM6</title></line>
 <text x="64.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="174.5" font-family="sans-serif" font-size="9.5">NLRP6 – Endonuclease/Exonuclease/phosphatase family lost</text>
-<rect x="157.9" y="186.0" width="462.1" height="22" fill="#b24dcb"/>
-<rect x="60.0" y="186.0" width="97.9" height="22" fill="#e2e2e2"/>
-<rect x="69.3" y="186.0" width="36.1" height="22" fill="#2878b5"/>
+<rect x="157.9" y="186.0" width="462.1" height="22" fill="#8064a2"><title>Partner gene GAB2; INPPL1–GAB2 fusion, breakpoint INPPL1 aa 220; sample P-0009791-T02-IM6</title></rect>
+<rect x="60.0" y="186.0" width="97.9" height="22" fill="#e2e2e2"><title>INPPL1 backbone (0-220 aa, no domain); domain status lost; INPPL1–GAB2 fusion, breakpoint INPPL1 aa 220; sample P-0009791-T02-IM6</title></rect>
+<rect x="69.3" y="186.0" width="36.1" height="22" fill="#2878b5"><title>SH2 domain retained (21-102 aa); INPPL1–GAB2 fusion, breakpoint INPPL1 aa 220; sample P-0009791-T02-IM6</title></rect>
 <text x="87.4" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">SH2 dom…</text>
 <line x1="60.4" y1="186.0" x2="60.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="87.2" y1="186.0" x2="87.2" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="96.9" y1="186.0" x2="96.9" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="119.2" y1="186.0" x2="119.2" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="137.0" y1="186.0" x2="137.0" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="157.9" y1="185.0" x2="157.9" y2="209.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="157.9" y1="185.0" x2="157.9" y2="209.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; INPPL1–GAB2 fusion, breakpoint INPPL1 aa 220; sample P-0009791-T02-IM6</title></line>
 <text x="64.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="200.5" font-family="sans-serif" font-size="9.5">GAB2 – Endonuclease/Exonuclease/phosphatase family lost</text>
-<rect x="60.0" y="212.0" width="162.0" height="22" fill="#4d96cb"/>
-<rect x="222.0" y="212.0" width="398.0" height="22" fill="#e2e2e2"/>
-<rect x="595.5" y="212.0" width="23.1" height="22" fill="#2878b5"/>
+<rect x="60.0" y="212.0" width="162.0" height="22" fill="#8064a2"><title>Partner gene PTCH1; INPPL1–PTCH1 fusion, breakpoint INPPL1 aa 364; sample P-0005693-T03-IM6</title></rect>
+<rect x="222.0" y="212.0" width="398.0" height="22" fill="#e2e2e2"><title>INPPL1 backbone (364-1258 aa, no domain); domain status retained; INPPL1–PTCH1 fusion, breakpoint INPPL1 aa 364; sample P-0005693-T03-IM6</title></rect>
+<rect x="595.5" y="212.0" width="23.1" height="22" fill="#2878b5"><title>PF00536 retained (1203-1255 aa); INPPL1–PTCH1 fusion, breakpoint INPPL1 aa 364; sample P-0005693-T03-IM6</title></rect>
 <text x="607.1" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF00…</text>
-<rect x="251.0" y="212.0" width="128.6" height="22" fill="#2878b5"/>
+<rect x="251.0" y="212.0" width="128.6" height="22" fill="#2878b5"><title>Endonuclease/Exonuclease/phosphatase family retained (429-718 aa); INPPL1–PTCH1 fusion, breakpoint INPPL1 aa 364; sample P-0005693-T03-IM6</title></rect>
 <text x="315.3" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Endonuclease/Exonuclease/phosp…</text>
 <line x1="238.1" y1="212.0" x2="238.1" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="253.2" y1="212.0" x2="253.2" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -138,15 +138,15 @@
 <line x1="487.3" y1="212.0" x2="487.3" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="587.5" y1="212.0" x2="587.5" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="607.1" y1="212.0" x2="607.1" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="222.0" y1="211.0" x2="222.0" y2="235.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="222.0" y1="211.0" x2="222.0" y2="235.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; INPPL1–PTCH1 fusion, breakpoint INPPL1 aa 364; sample P-0005693-T03-IM6</title></line>
 <text x="64.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="226.5" font-family="sans-serif" font-size="9.5">PTCH1 – Endonuclease/Exonuclease/phosphatase family retained</text>
-<rect x="60.0" y="238.0" width="239.5" height="22" fill="#4db6cb"/>
-<rect x="299.5" y="238.0" width="320.5" height="22" fill="#e2e2e2"/>
-<rect x="595.5" y="238.0" width="23.1" height="22" fill="#2878b5"/>
+<rect x="60.0" y="238.0" width="239.5" height="22" fill="#8064a2"><title>Partner gene SHANK2; INPPL1–SHANK2 fusion, breakpoint INPPL1 aa 538; sample P-0031882-T01-IM6</title></rect>
+<rect x="299.5" y="238.0" width="320.5" height="22" fill="#e2e2e2"><title>INPPL1 backbone (538-1258 aa, no domain); domain status truncated; INPPL1–SHANK2 fusion, breakpoint INPPL1 aa 538; sample P-0031882-T01-IM6</title></rect>
+<rect x="595.5" y="238.0" width="23.1" height="22" fill="#2878b5"><title>PF00536 retained (1203-1255 aa); INPPL1–SHANK2 fusion, breakpoint INPPL1 aa 538; sample P-0031882-T01-IM6</title></rect>
 <text x="607.1" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF00…</text>
-<rect x="299.5" y="238.0" width="80.1" height="22" fill="#f2a93b"/>
+<rect x="299.5" y="238.0" width="80.1" height="22" fill="#f2a93b"><title>Endonuclease/Exonuclease/phosphatase family truncated (538-718 aa); INPPL1–SHANK2 fusion, breakpoint INPPL1 aa 538; sample P-0031882-T01-IM6</title></rect>
 <text x="339.6" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Endonuclease/Exonu…</text>
 <line x1="299.9" y1="238.0" x2="299.9" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="314.2" y1="238.0" x2="314.2" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -163,15 +163,15 @@
 <line x1="487.3" y1="238.0" x2="487.3" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="587.5" y1="238.0" x2="587.5" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="607.1" y1="238.0" x2="607.1" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="299.5" y1="237.0" x2="299.5" y2="261.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="299.5" y1="237.0" x2="299.5" y2="261.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; INPPL1–SHANK2 fusion, breakpoint INPPL1 aa 538; sample P-0031882-T01-IM6</title></line>
 <text x="64.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="252.5" font-family="sans-serif" font-size="9.5">SHANK2 – Endonuclease/Exonuclease/phosphatase family truncated</text>
-<rect x="309.3" y="264.0" width="310.7" height="22" fill="#cb5d4d"/>
-<rect x="60.0" y="264.0" width="249.3" height="22" fill="#e2e2e2"/>
-<rect x="69.3" y="264.0" width="36.1" height="22" fill="#2878b5"/>
+<rect x="309.3" y="264.0" width="310.7" height="22" fill="#8064a2"><title>Partner gene ANK2; INPPL1–ANK2 fusion, breakpoint INPPL1 aa 560; sample P-0007343-T02-IM6</title></rect>
+<rect x="60.0" y="264.0" width="249.3" height="22" fill="#e2e2e2"><title>INPPL1 backbone (0-560 aa, no domain); domain status truncated; INPPL1–ANK2 fusion, breakpoint INPPL1 aa 560; sample P-0007343-T02-IM6</title></rect>
+<rect x="69.3" y="264.0" width="36.1" height="22" fill="#2878b5"><title>SH2 domain retained (21-102 aa); INPPL1–ANK2 fusion, breakpoint INPPL1 aa 560; sample P-0007343-T02-IM6</title></rect>
 <text x="87.4" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">SH2 dom…</text>
-<rect x="251.0" y="264.0" width="58.3" height="22" fill="#f2a93b"/>
+<rect x="251.0" y="264.0" width="58.3" height="22" fill="#f2a93b"><title>Endonuclease/Exonuclease/phosphatase family truncated (429-560 aa); INPPL1–ANK2 fusion, breakpoint INPPL1 aa 560; sample P-0007343-T02-IM6</title></rect>
 <text x="280.1" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Endonuclease/…</text>
 <line x1="60.4" y1="264.0" x2="60.4" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="87.2" y1="264.0" x2="87.2" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -187,15 +187,15 @@
 <line x1="253.2" y1="264.0" x2="253.2" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="282.6" y1="264.0" x2="282.6" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="299.9" y1="264.0" x2="299.9" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="309.3" y1="263.0" x2="309.3" y2="287.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="309.3" y1="263.0" x2="309.3" y2="287.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; INPPL1–ANK2 fusion, breakpoint INPPL1 aa 560; sample P-0007343-T02-IM6</title></line>
 <text x="64.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="278.5" font-family="sans-serif" font-size="9.5">ANK2 – Endonuclease/Exonuclease/phosphatase family truncated</text>
-<rect x="531.9" y="290.0" width="88.1" height="22" fill="#59cb4d"/>
-<rect x="60.0" y="290.0" width="471.9" height="22" fill="#e2e2e2"/>
-<rect x="69.3" y="290.0" width="36.1" height="22" fill="#2878b5"/>
+<rect x="531.9" y="290.0" width="88.1" height="22" fill="#8064a2"><title>Partner gene LRTOMT; INPPL1–LRTOMT fusion, breakpoint INPPL1 aa 1060; sample P-0048151-T01-IM6</title></rect>
+<rect x="60.0" y="290.0" width="471.9" height="22" fill="#e2e2e2"><title>INPPL1 backbone (0-1060 aa, no domain); domain status retained; INPPL1–LRTOMT fusion, breakpoint INPPL1 aa 1060; sample P-0048151-T01-IM6</title></rect>
+<rect x="69.3" y="290.0" width="36.1" height="22" fill="#2878b5"><title>SH2 domain retained (21-102 aa); INPPL1–LRTOMT fusion, breakpoint INPPL1 aa 1060; sample P-0048151-T01-IM6</title></rect>
 <text x="87.4" y="304.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">SH2 dom…</text>
-<rect x="251.0" y="290.0" width="128.6" height="22" fill="#2878b5"/>
+<rect x="251.0" y="290.0" width="128.6" height="22" fill="#2878b5"><title>Endonuclease/Exonuclease/phosphatase family retained (429-718 aa); INPPL1–LRTOMT fusion, breakpoint INPPL1 aa 1060; sample P-0048151-T01-IM6</title></rect>
 <text x="315.3" y="304.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Endonuclease/Exonuclease/phosp…</text>
 <line x1="60.4" y1="290.0" x2="60.4" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="87.2" y1="290.0" x2="87.2" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -223,7 +223,7 @@
 <line x1="454.8" y1="290.0" x2="454.8" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="466.4" y1="290.0" x2="466.4" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="487.3" y1="290.0" x2="487.3" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="531.9" y1="289.0" x2="531.9" y2="313.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="531.9" y1="289.0" x2="531.9" y2="313.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; INPPL1–LRTOMT fusion, breakpoint INPPL1 aa 1060; sample P-0048151-T01-IM6</title></line>
 <text x="64.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="304.5" font-family="sans-serif" font-size="9.5">LRTOMT – Endonuclease/Exonuclease/phosphatase family retained</text>

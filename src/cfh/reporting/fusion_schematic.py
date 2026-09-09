@@ -12,16 +12,18 @@ Gene-agnostic by construction: nothing below references a gene symbol
 literally; every gene-specific fact (protein length, domain boundaries,
 exon boundaries, partner names, breakpoints) comes from the payload.
 
-Colors for domain-retention status (``RETAINED_COLOR``/``TRUNCATED_COLOR``)
-and the breakpoint marker (``BREAKPOINT_COLOR``) are imported from
+Colors for domain-retention status (``RETAINED_COLOR``/``TRUNCATED_COLOR``),
+the breakpoint marker (``BREAKPOINT_COLOR``), and the fusion partner-gene
+block fill (``PARTNER_COLOR``) are imported from
 :mod:`cfh.reporting.palette`, the single source of truth also used by the
 existing per-event domain-retention lollipop track
 (``cfh.real_benchmark._domain_track_svg``) -- this module does not define
 its own copies of those hex values, so the two renderers cannot drift
-apart on what a color means. Partner-gene colors and the neutral domain
-backbone are new (the lollipop track has neither per-partner nor
-backbone-fill colors to reuse), computed deterministically so a given
-partner always renders the same color within and across runs.
+apart on what a color means. The neutral domain backbone is new to this
+module (the lollipop track has no backbone-fill color to reuse). Every
+partner-gene block shares the one fixed ``PARTNER_COLOR`` -- it is purely
+decorative chrome (there is no legend entry for it and it does not vary by
+partner); row labels, not color, identify which partner a given row is.
 """
 
 from __future__ import annotations
@@ -29,9 +31,9 @@ from __future__ import annotations
 from cfh.reporting.domain_names import domain_label_for_accession
 from cfh.reporting.palette import (
     BREAKPOINT_COLOR,
+    PARTNER_COLOR,
     RETAINED_COLOR,
     TRUNCATED_COLOR,
-    deterministic_color,
 )
 from cfh.reporting.svg_utils import escape_xml_text
 
@@ -73,16 +75,19 @@ _BOTTOM_MARGIN = 40
 
 
 def partner_color(partner_gene: str) -> str:
-    """Deterministic, arbitrary-but-stable color for a partner gene name.
+    """Fixed color for a partner-gene block, the same for every partner.
 
-    Same partner always gets the same color within a run and across runs
-    (a pure function of the name), so a reader can visually track one
-    partner across rows. Thin wrapper around the shared
-    :func:`cfh.reporting.palette.deterministic_color` hash so this
-    module's own hue-from-name formula can't silently diverge from
-    :mod:`cfh.real_benchmark`'s per-domain highlight coloring.
+    This is deliberately *not* derived from ``partner_gene`` -- every
+    fusion partner renders in the same :data:`cfh.reporting.palette.PARTNER_COLOR`
+    regardless of which gene it is. The color carries no meaning (there is
+    no legend entry for it); it exists only to visually set the partner
+    block apart from the domain-colored target-gene block sharing its row.
+    Row labels, not color, identify which partner a given row is. Thin
+    wrapper around the shared palette constant so this module never
+    hardcodes its own copy of the hex value.
     """
-    return deterministic_color(partner_gene)
+    del partner_gene  # Intentionally ignored: every partner gets the same color.
+    return PARTNER_COLOR
 
 
 def _clip(value: float, low: float, high: float) -> float:
@@ -414,7 +419,8 @@ def render_fusion_schematic_svg(payload: dict, *, max_rows: int = _MAX_ROWS_DEFA
     elements.append(
         f'<text x="{_AXIS_LEFT}" y="40" font-family="sans-serif" font-size="10" fill="#555">'
         "Fusion order varies by row; follow each row's 5' and 3' labels "
-        f"({gene_symbol} portion is domain-colored, exon ticks)</text>"
+        f"({gene_symbol} portion is domain-colored, exon ticks). Partner-gene blocks share "
+        "one color; row labels identify each partner.</text>"
     )
 
     y = _TOP_MARGIN

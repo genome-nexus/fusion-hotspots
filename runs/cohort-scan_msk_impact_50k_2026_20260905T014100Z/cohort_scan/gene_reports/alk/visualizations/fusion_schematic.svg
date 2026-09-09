@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1000" height="890" viewBox="0 0 1000 890">
 <rect width="1000" height="890" fill="white"/>
 <text x="60" y="24" font-family="sans-serif" font-size="15">ALK fusion-transcript schematic</text>
-<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555">Fusion order varies by row; follow each row's 5' and 3' labels (ALK portion is domain-colored, exon ticks)</text>
-<rect x="60.0" y="56.0" width="365.7" height="22" fill="#bacb4d"/>
-<rect x="425.7" y="56.0" width="194.3" height="22" fill="#e2e2e2"/>
-<rect x="446.1" y="56.0" width="91.6" height="22" fill="#2878b5"/>
+<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555">Fusion order varies by row; follow each row's 5' and 3' labels (ALK portion is domain-colored, exon ticks). Partner-gene blocks share one color; row labels identify each partner.</text>
+<rect x="60.0" y="56.0" width="365.7" height="22" fill="#8064a2"><title>Partner gene EML4; ALK–EML4 fusion, breakpoint ALK aa 1058; samples P-0031827-T02-IM6, P-0028287-T01-IM6, P-0009301-T01-IM5, P-0009301-T02-IM6, P-0009339-T01-IM5 (+199 more)</title></rect>
+<rect x="425.7" y="56.0" width="194.3" height="22" fill="#e2e2e2"><title>ALK backbone (1058-1620 aa, no domain); domain status retained; ALK–EML4 fusion, breakpoint ALK aa 1058; samples P-0031827-T02-IM6, P-0028287-T01-IM6, P-0009301-T01-IM5, P-0009301-T02-IM6, P-0009339-T01-IM5 (+199 more)</title></rect>
+<rect x="446.1" y="56.0" width="91.6" height="22" fill="#2878b5"><title>Protein kinase domain retained (1117-1382 aa); ALK–EML4 fusion, breakpoint ALK aa 1058; samples P-0031827-T02-IM6, P-0028287-T01-IM6, P-0009301-T01-IM5, P-0009301-T02-IM6, P-0009339-T01-IM5 (+199 more)</title></rect>
 <text x="491.9" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
 <line x1="447.2" y1="56.0" x2="447.2" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="457.9" y1="56.0" x2="457.9" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -15,13 +15,13 @@
 <line x1="513.9" y1="56.0" x2="513.9" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="529.4" y1="56.0" x2="529.4" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="540.1" y1="56.0" x2="540.1" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="425.7" y1="55.0" x2="425.7" y2="79.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="425.7" y1="55.0" x2="425.7" y2="79.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; ALK–EML4 fusion, breakpoint ALK aa 1058; samples P-0031827-T02-IM6, P-0028287-T01-IM6, P-0009301-T01-IM5, P-0009301-T02-IM6, P-0009339-T01-IM5 (+199 more)</title></line>
 <text x="64.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="70.5" font-family="sans-serif" font-size="9.5">EML4 (x204) – Protein kinase domain retained</text>
-<rect x="60.0" y="82.0" width="365.7" height="22" fill="#4dcbbc"/>
-<rect x="425.7" y="82.0" width="194.3" height="22" fill="#e2e2e2"/>
-<rect x="446.1" y="82.0" width="91.6" height="22" fill="#2878b5"/>
+<rect x="60.0" y="82.0" width="365.7" height="22" fill="#8064a2"><title>Partner gene STRN; ALK–STRN fusion, breakpoint ALK aa 1058; samples P-0016193-T05-IM6, P-0016193-T02-IM6, P-0016193-T01-IM6, P-0048102-T03-IM6, P-0048102-T02-IM6</title></rect>
+<rect x="425.7" y="82.0" width="194.3" height="22" fill="#e2e2e2"><title>ALK backbone (1058-1620 aa, no domain); domain status retained; ALK–STRN fusion, breakpoint ALK aa 1058; samples P-0016193-T05-IM6, P-0016193-T02-IM6, P-0016193-T01-IM6, P-0048102-T03-IM6, P-0048102-T02-IM6</title></rect>
+<rect x="446.1" y="82.0" width="91.6" height="22" fill="#2878b5"><title>Protein kinase domain retained (1117-1382 aa); ALK–STRN fusion, breakpoint ALK aa 1058; samples P-0016193-T05-IM6, P-0016193-T02-IM6, P-0016193-T01-IM6, P-0048102-T03-IM6, P-0048102-T02-IM6</title></rect>
 <text x="491.9" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
 <line x1="447.2" y1="82.0" x2="447.2" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="457.9" y1="82.0" x2="457.9" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -32,13 +32,13 @@
 <line x1="513.9" y1="82.0" x2="513.9" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="529.4" y1="82.0" x2="529.4" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="540.1" y1="82.0" x2="540.1" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="425.7" y1="81.0" x2="425.7" y2="105.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="425.7" y1="81.0" x2="425.7" y2="105.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; ALK–STRN fusion, breakpoint ALK aa 1058; samples P-0016193-T05-IM6, P-0016193-T02-IM6, P-0016193-T01-IM6, P-0048102-T03-IM6, P-0048102-T02-IM6</title></line>
 <text x="64.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="96.5" font-family="sans-serif" font-size="9.5">STRN (x5) – Protein kinase domain retained</text>
-<rect x="60.0" y="108.0" width="365.7" height="22" fill="#b64dcb"/>
-<rect x="425.7" y="108.0" width="194.3" height="22" fill="#e2e2e2"/>
-<rect x="446.1" y="108.0" width="91.6" height="22" fill="#2878b5"/>
+<rect x="60.0" y="108.0" width="365.7" height="22" fill="#8064a2"><title>Partner gene KIF5B; ALK–KIF5B fusion, breakpoint ALK aa 1058; samples P-0062804-T03-IM7, P-0008764-T01-IM5, P-0017924-T01-IM6, P-0008764-T02-IM6</title></rect>
+<rect x="425.7" y="108.0" width="194.3" height="22" fill="#e2e2e2"><title>ALK backbone (1058-1620 aa, no domain); domain status retained; ALK–KIF5B fusion, breakpoint ALK aa 1058; samples P-0062804-T03-IM7, P-0008764-T01-IM5, P-0017924-T01-IM6, P-0008764-T02-IM6</title></rect>
+<rect x="446.1" y="108.0" width="91.6" height="22" fill="#2878b5"><title>Protein kinase domain retained (1117-1382 aa); ALK–KIF5B fusion, breakpoint ALK aa 1058; samples P-0062804-T03-IM7, P-0008764-T01-IM5, P-0017924-T01-IM6, P-0008764-T02-IM6</title></rect>
 <text x="491.9" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
 <line x1="447.2" y1="108.0" x2="447.2" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="457.9" y1="108.0" x2="457.9" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -49,17 +49,17 @@
 <line x1="513.9" y1="108.0" x2="513.9" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="529.4" y1="108.0" x2="529.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="540.1" y1="108.0" x2="540.1" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="425.7" y1="107.0" x2="425.7" y2="131.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="425.7" y1="107.0" x2="425.7" y2="131.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; ALK–KIF5B fusion, breakpoint ALK aa 1058; samples P-0062804-T03-IM7, P-0008764-T01-IM5, P-0017924-T01-IM6, P-0008764-T02-IM6</title></line>
 <text x="64.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="122.5" font-family="sans-serif" font-size="9.5">KIF5B (x4) – Protein kinase domain retained</text>
-<rect x="425.7" y="134.0" width="194.3" height="22" fill="#bacb4d"/>
-<rect x="60.0" y="134.0" width="365.7" height="22" fill="#e2e2e2"/>
-<rect x="313.4" y="134.0" width="78.5" height="22" fill="#2878b5"/>
+<rect x="425.7" y="134.0" width="194.3" height="22" fill="#8064a2"><title>Partner gene EML4; ALK–EML4 fusion, breakpoint ALK aa 1058; samples P-0008332-T01-IM5, P-0002266-T01-IM3, P-0026650-T02-IM6</title></rect>
+<rect x="60.0" y="134.0" width="365.7" height="22" fill="#e2e2e2"><title>ALK backbone (0-1058 aa, no domain); domain status lost; ALK–EML4 fusion, breakpoint ALK aa 1058; samples P-0008332-T01-IM5, P-0002266-T01-IM3, P-0026650-T02-IM6</title></rect>
+<rect x="313.4" y="134.0" width="78.5" height="22" fill="#2878b5"><title>PF12810 retained (733-960 aa); ALK–EML4 fusion, breakpoint ALK aa 1058; samples P-0008332-T01-IM5, P-0002266-T01-IM3, P-0026650-T02-IM6</title></rect>
 <text x="352.6" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF12810</text>
-<rect x="158.5" y="134.0" width="48.7" height="22" fill="#2878b5"/>
+<rect x="158.5" y="134.0" width="48.7" height="22" fill="#2878b5"><title>PF00629 retained (285-426 aa); ALK–EML4 fusion, breakpoint ALK aa 1058; samples P-0008332-T01-IM5, P-0002266-T01-IM3, P-0026650-T02-IM6</title></rect>
 <text x="182.9" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF00629</text>
-<rect x="225.9" y="134.0" width="53.2" height="22" fill="#2878b5"/>
+<rect x="225.9" y="134.0" width="53.2" height="22" fill="#2878b5"><title>PF00629 retained (480-634 aa); ALK–EML4 fusion, breakpoint ALK aa 1058; samples P-0008332-T01-IM5, P-0002266-T01-IM3, P-0026650-T02-IM6</title></rect>
 <text x="252.5" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF00629</text>
 <line x1="60.3" y1="134.0" x2="60.3" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="137.1" y1="134.0" x2="137.1" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -80,13 +80,13 @@
 <line x1="384.6" y1="134.0" x2="384.6" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="396.0" y1="134.0" x2="396.0" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="413.6" y1="134.0" x2="413.6" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="425.7" y1="133.0" x2="425.7" y2="157.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="425.7" y1="133.0" x2="425.7" y2="157.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; ALK–EML4 fusion, breakpoint ALK aa 1058; samples P-0008332-T01-IM5, P-0002266-T01-IM3, P-0026650-T02-IM6</title></line>
 <text x="64.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="148.5" font-family="sans-serif" font-size="9.5">EML4 (x3) – Protein kinase domain lost</text>
-<rect x="60.0" y="160.0" width="366.8" height="22" fill="#cb884d"/>
-<rect x="426.8" y="160.0" width="193.2" height="22" fill="#e2e2e2"/>
-<rect x="446.1" y="160.0" width="91.6" height="22" fill="#2878b5"/>
+<rect x="60.0" y="160.0" width="366.8" height="22" fill="#8064a2"><title>Partner gene PICALM; ALK–PICALM fusion, breakpoint ALK aa 1061; samples P-0055667-T06-IM7, P-0055667-T02-IM6, P-0055667-T04-IM6</title></rect>
+<rect x="426.8" y="160.0" width="193.2" height="22" fill="#e2e2e2"><title>ALK backbone (1061-1620 aa, no domain); domain status retained; ALK–PICALM fusion, breakpoint ALK aa 1061; samples P-0055667-T06-IM7, P-0055667-T02-IM6, P-0055667-T04-IM6</title></rect>
+<rect x="446.1" y="160.0" width="91.6" height="22" fill="#2878b5"><title>Protein kinase domain retained (1117-1382 aa); ALK–PICALM fusion, breakpoint ALK aa 1061; samples P-0055667-T06-IM7, P-0055667-T02-IM6, P-0055667-T04-IM6</title></rect>
 <text x="491.9" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
 <line x1="447.2" y1="160.0" x2="447.2" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="457.9" y1="160.0" x2="457.9" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -97,13 +97,13 @@
 <line x1="513.9" y1="160.0" x2="513.9" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="529.4" y1="160.0" x2="529.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="540.1" y1="160.0" x2="540.1" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="426.8" y1="159.0" x2="426.8" y2="183.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="426.8" y1="159.0" x2="426.8" y2="183.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; ALK–PICALM fusion, breakpoint ALK aa 1061; samples P-0055667-T06-IM7, P-0055667-T02-IM6, P-0055667-T04-IM6</title></line>
 <text x="64.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="174.5" font-family="sans-serif" font-size="9.5">PICALM (x3) – Protein kinase domain retained</text>
-<rect x="60.0" y="186.0" width="353.6" height="22" fill="#cb4f4d"/>
-<rect x="413.6" y="186.0" width="206.4" height="22" fill="#e2e2e2"/>
-<rect x="446.1" y="186.0" width="91.6" height="22" fill="#2878b5"/>
+<rect x="60.0" y="186.0" width="353.6" height="22" fill="#8064a2"><title>Partner gene CLTC; ALK–CLTC fusion, breakpoint ALK aa 1023; samples P-0062994-T02-IM7, P-0051864-T01-IM6</title></rect>
+<rect x="413.6" y="186.0" width="206.4" height="22" fill="#e2e2e2"><title>ALK backbone (1023-1620 aa, no domain); domain status retained; ALK–CLTC fusion, breakpoint ALK aa 1023; samples P-0062994-T02-IM7, P-0051864-T01-IM6</title></rect>
+<rect x="446.1" y="186.0" width="91.6" height="22" fill="#2878b5"><title>Protein kinase domain retained (1117-1382 aa); ALK–CLTC fusion, breakpoint ALK aa 1023; samples P-0062994-T02-IM7, P-0051864-T01-IM6</title></rect>
 <text x="491.9" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
 <line x1="425.7" y1="186.0" x2="425.7" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="447.2" y1="186.0" x2="447.2" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -115,13 +115,13 @@
 <line x1="513.9" y1="186.0" x2="513.9" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="529.4" y1="186.0" x2="529.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="540.1" y1="186.0" x2="540.1" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="413.6" y1="185.0" x2="413.6" y2="209.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="413.6" y1="185.0" x2="413.6" y2="209.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; ALK–CLTC fusion, breakpoint ALK aa 1023; samples P-0062994-T02-IM7, P-0051864-T01-IM6</title></line>
 <text x="64.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="200.5" font-family="sans-serif" font-size="9.5">CLTC (x2) – Protein kinase domain retained</text>
-<rect x="60.0" y="212.0" width="353.6" height="22" fill="#bacb4d"/>
-<rect x="413.6" y="212.0" width="206.4" height="22" fill="#e2e2e2"/>
-<rect x="446.1" y="212.0" width="91.6" height="22" fill="#2878b5"/>
+<rect x="60.0" y="212.0" width="353.6" height="22" fill="#8064a2"><title>Partner gene EML4; ALK–EML4 fusion, breakpoint ALK aa 1023; samples P-0023962-T01-IM6, P-0001766-T04-IM6</title></rect>
+<rect x="413.6" y="212.0" width="206.4" height="22" fill="#e2e2e2"><title>ALK backbone (1023-1620 aa, no domain); domain status retained; ALK–EML4 fusion, breakpoint ALK aa 1023; samples P-0023962-T01-IM6, P-0001766-T04-IM6</title></rect>
+<rect x="446.1" y="212.0" width="91.6" height="22" fill="#2878b5"><title>Protein kinase domain retained (1117-1382 aa); ALK–EML4 fusion, breakpoint ALK aa 1023; samples P-0023962-T01-IM6, P-0001766-T04-IM6</title></rect>
 <text x="491.9" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
 <line x1="425.7" y1="212.0" x2="425.7" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="447.2" y1="212.0" x2="447.2" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -133,13 +133,13 @@
 <line x1="513.9" y1="212.0" x2="513.9" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="529.4" y1="212.0" x2="529.4" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="540.1" y1="212.0" x2="540.1" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="413.6" y1="211.0" x2="413.6" y2="235.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="413.6" y1="211.0" x2="413.6" y2="235.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; ALK–EML4 fusion, breakpoint ALK aa 1023; samples P-0023962-T01-IM6, P-0001766-T04-IM6</title></line>
 <text x="64.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="226.5" font-family="sans-serif" font-size="9.5">EML4 (x2) – Protein kinase domain retained</text>
-<rect x="60.0" y="238.0" width="360.2" height="22" fill="#bacb4d"/>
-<rect x="420.2" y="238.0" width="199.8" height="22" fill="#e2e2e2"/>
-<rect x="446.1" y="238.0" width="91.6" height="22" fill="#2878b5"/>
+<rect x="60.0" y="238.0" width="360.2" height="22" fill="#8064a2"><title>Partner gene EML4; ALK–EML4 fusion, breakpoint ALK aa 1042; samples P-0061297-T03-IM7, P-0061297-T02-IM7</title></rect>
+<rect x="420.2" y="238.0" width="199.8" height="22" fill="#e2e2e2"><title>ALK backbone (1042-1620 aa, no domain); domain status retained; ALK–EML4 fusion, breakpoint ALK aa 1042; samples P-0061297-T03-IM7, P-0061297-T02-IM7</title></rect>
+<rect x="446.1" y="238.0" width="91.6" height="22" fill="#2878b5"><title>Protein kinase domain retained (1117-1382 aa); ALK–EML4 fusion, breakpoint ALK aa 1042; samples P-0061297-T03-IM7, P-0061297-T02-IM7</title></rect>
 <text x="491.9" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
 <line x1="425.7" y1="238.0" x2="425.7" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="447.2" y1="238.0" x2="447.2" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -151,13 +151,13 @@
 <line x1="513.9" y1="238.0" x2="513.9" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="529.4" y1="238.0" x2="529.4" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="540.1" y1="238.0" x2="540.1" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="420.2" y1="237.0" x2="420.2" y2="261.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="420.2" y1="237.0" x2="420.2" y2="261.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; ALK–EML4 fusion, breakpoint ALK aa 1042; samples P-0061297-T03-IM7, P-0061297-T02-IM7</title></line>
 <text x="64.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="252.5" font-family="sans-serif" font-size="9.5">EML4 (x2) – Protein kinase domain retained</text>
-<rect x="60.0" y="264.0" width="365.7" height="22" fill="#834dcb"/>
-<rect x="425.7" y="264.0" width="194.3" height="22" fill="#e2e2e2"/>
-<rect x="446.1" y="264.0" width="91.6" height="22" fill="#2878b5"/>
+<rect x="60.0" y="264.0" width="365.7" height="22" fill="#8064a2"><title>Partner gene RANBP2; ALK–RANBP2 fusion, breakpoint ALK aa 1058; samples P-0027363-T02-IM6, P-0008843-T01-IM5</title></rect>
+<rect x="425.7" y="264.0" width="194.3" height="22" fill="#e2e2e2"><title>ALK backbone (1058-1620 aa, no domain); domain status retained; ALK–RANBP2 fusion, breakpoint ALK aa 1058; samples P-0027363-T02-IM6, P-0008843-T01-IM5</title></rect>
+<rect x="446.1" y="264.0" width="91.6" height="22" fill="#2878b5"><title>Protein kinase domain retained (1117-1382 aa); ALK–RANBP2 fusion, breakpoint ALK aa 1058; samples P-0027363-T02-IM6, P-0008843-T01-IM5</title></rect>
 <text x="491.9" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
 <line x1="447.2" y1="264.0" x2="447.2" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="457.9" y1="264.0" x2="457.9" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -168,13 +168,13 @@
 <line x1="513.9" y1="264.0" x2="513.9" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="529.4" y1="264.0" x2="529.4" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="540.1" y1="264.0" x2="540.1" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="425.7" y1="263.0" x2="425.7" y2="287.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="425.7" y1="263.0" x2="425.7" y2="287.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; ALK–RANBP2 fusion, breakpoint ALK aa 1058; samples P-0027363-T02-IM6, P-0008843-T01-IM5</title></line>
 <text x="64.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="278.5" font-family="sans-serif" font-size="9.5">RANBP2 (x2) – Protein kinase domain retained</text>
-<rect x="60.0" y="290.0" width="365.7" height="22" fill="#cb4d8a"/>
-<rect x="425.7" y="290.0" width="194.3" height="22" fill="#e2e2e2"/>
-<rect x="446.1" y="290.0" width="91.6" height="22" fill="#2878b5"/>
+<rect x="60.0" y="290.0" width="365.7" height="22" fill="#8064a2"><title>Partner gene SPTBN1; ALK–SPTBN1 fusion, breakpoint ALK aa 1058; samples P-0015699-T01-IM6, P-0045724-T01-IM6</title></rect>
+<rect x="425.7" y="290.0" width="194.3" height="22" fill="#e2e2e2"><title>ALK backbone (1058-1620 aa, no domain); domain status retained; ALK–SPTBN1 fusion, breakpoint ALK aa 1058; samples P-0015699-T01-IM6, P-0045724-T01-IM6</title></rect>
+<rect x="446.1" y="290.0" width="91.6" height="22" fill="#2878b5"><title>Protein kinase domain retained (1117-1382 aa); ALK–SPTBN1 fusion, breakpoint ALK aa 1058; samples P-0015699-T01-IM6, P-0045724-T01-IM6</title></rect>
 <text x="491.9" y="304.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
 <line x1="447.2" y1="290.0" x2="447.2" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="457.9" y1="290.0" x2="457.9" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -185,13 +185,13 @@
 <line x1="513.9" y1="290.0" x2="513.9" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="529.4" y1="290.0" x2="529.4" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="540.1" y1="290.0" x2="540.1" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="425.7" y1="289.0" x2="425.7" y2="313.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="425.7" y1="289.0" x2="425.7" y2="313.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; ALK–SPTBN1 fusion, breakpoint ALK aa 1058; samples P-0015699-T01-IM6, P-0045724-T01-IM6</title></line>
 <text x="64.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="304.5" font-family="sans-serif" font-size="9.5">SPTBN1 (x2) – Protein kinase domain retained</text>
-<rect x="60.0" y="316.0" width="365.7" height="22" fill="#4d57cb"/>
-<rect x="425.7" y="316.0" width="194.3" height="22" fill="#e2e2e2"/>
-<rect x="446.1" y="316.0" width="91.6" height="22" fill="#2878b5"/>
+<rect x="60.0" y="316.0" width="365.7" height="22" fill="#8064a2"><title>Partner gene SQSTM1; ALK–SQSTM1 fusion, breakpoint ALK aa 1058; samples P-0042596-T02-IM6, P-0042596-T01-IM6</title></rect>
+<rect x="425.7" y="316.0" width="194.3" height="22" fill="#e2e2e2"><title>ALK backbone (1058-1620 aa, no domain); domain status retained; ALK–SQSTM1 fusion, breakpoint ALK aa 1058; samples P-0042596-T02-IM6, P-0042596-T01-IM6</title></rect>
+<rect x="446.1" y="316.0" width="91.6" height="22" fill="#2878b5"><title>Protein kinase domain retained (1117-1382 aa); ALK–SQSTM1 fusion, breakpoint ALK aa 1058; samples P-0042596-T02-IM6, P-0042596-T01-IM6</title></rect>
 <text x="491.9" y="330.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
 <line x1="447.2" y1="316.0" x2="447.2" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="457.9" y1="316.0" x2="457.9" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -202,13 +202,13 @@
 <line x1="513.9" y1="316.0" x2="513.9" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="529.4" y1="316.0" x2="529.4" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="540.1" y1="316.0" x2="540.1" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="425.7" y1="315.0" x2="425.7" y2="339.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="425.7" y1="315.0" x2="425.7" y2="339.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; ALK–SQSTM1 fusion, breakpoint ALK aa 1058; samples P-0042596-T02-IM6, P-0042596-T01-IM6</title></line>
 <text x="64.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="330.5" font-family="sans-serif" font-size="9.5">SQSTM1 (x2) – Protein kinase domain retained</text>
-<rect x="60.0" y="342.0" width="365.7" height="22" fill="#534dcb"/>
-<rect x="425.7" y="342.0" width="194.3" height="22" fill="#e2e2e2"/>
-<rect x="446.1" y="342.0" width="91.6" height="22" fill="#2878b5"/>
+<rect x="60.0" y="342.0" width="365.7" height="22" fill="#8064a2"><title>Partner gene TPM1; ALK–TPM1 fusion, breakpoint ALK aa 1058; samples P-0045363-T02-IM6, P-0045363-T01-IM6</title></rect>
+<rect x="425.7" y="342.0" width="194.3" height="22" fill="#e2e2e2"><title>ALK backbone (1058-1620 aa, no domain); domain status retained; ALK–TPM1 fusion, breakpoint ALK aa 1058; samples P-0045363-T02-IM6, P-0045363-T01-IM6</title></rect>
+<rect x="446.1" y="342.0" width="91.6" height="22" fill="#2878b5"><title>Protein kinase domain retained (1117-1382 aa); ALK–TPM1 fusion, breakpoint ALK aa 1058; samples P-0045363-T02-IM6, P-0045363-T01-IM6</title></rect>
 <text x="491.9" y="356.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
 <line x1="447.2" y1="342.0" x2="447.2" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="457.9" y1="342.0" x2="457.9" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -219,22 +219,22 @@
 <line x1="513.9" y1="342.0" x2="513.9" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="529.4" y1="342.0" x2="529.4" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="540.1" y1="342.0" x2="540.1" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="425.7" y1="341.0" x2="425.7" y2="365.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="425.7" y1="341.0" x2="425.7" y2="365.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; ALK–TPM1 fusion, breakpoint ALK aa 1058; samples P-0045363-T02-IM6, P-0045363-T01-IM6</title></line>
 <text x="64.0" y="356.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="356.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="356.5" font-family="sans-serif" font-size="9.5">TPM1 (x2) – Protein kinase domain retained</text>
-<rect x="137.1" y="368.0" width="482.9" height="22" fill="#4d8acb"/>
-<rect x="60.0" y="368.0" width="77.1" height="22" fill="#e2e2e2"/>
+<rect x="137.1" y="368.0" width="482.9" height="22" fill="#8064a2"><title>Partner gene ASAP2; ALK–ASAP2 fusion, breakpoint ALK aa 223; sample P-0006617-T01-IM5</title></rect>
+<rect x="60.0" y="368.0" width="77.1" height="22" fill="#e2e2e2"><title>ALK backbone (0-223 aa, no domain); domain status lost; ALK–ASAP2 fusion, breakpoint ALK aa 223; sample P-0006617-T01-IM5</title></rect>
 <line x1="60.3" y1="368.0" x2="60.3" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="137.1" y1="367.0" x2="137.1" y2="391.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="137.1" y1="367.0" x2="137.1" y2="391.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; ALK–ASAP2 fusion, breakpoint ALK aa 223; sample P-0006617-T01-IM5</title></line>
 <text x="64.0" y="382.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="382.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="382.5" font-family="sans-serif" font-size="9.5">ASAP2 – Protein kinase domain lost</text>
-<rect x="238.4" y="394.0" width="381.6" height="22" fill="#964dcb"/>
-<rect x="60.0" y="394.0" width="178.4" height="22" fill="#e2e2e2"/>
-<rect x="158.5" y="394.0" width="48.7" height="22" fill="#2878b5"/>
+<rect x="238.4" y="394.0" width="381.6" height="22" fill="#8064a2"><title>Partner gene CTSE; ALK–CTSE fusion, breakpoint ALK aa 516; sample P-0024679-T01-IM6</title></rect>
+<rect x="60.0" y="394.0" width="178.4" height="22" fill="#e2e2e2"><title>ALK backbone (0-516 aa, no domain); domain status lost; ALK–CTSE fusion, breakpoint ALK aa 516; sample P-0024679-T01-IM6</title></rect>
+<rect x="158.5" y="394.0" width="48.7" height="22" fill="#2878b5"><title>PF00629 retained (285-426 aa); ALK–CTSE fusion, breakpoint ALK aa 516; sample P-0024679-T01-IM6</title></rect>
 <text x="182.9" y="408.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF00629</text>
-<rect x="225.9" y="394.0" width="12.4" height="22" fill="#f2a93b"/>
+<rect x="225.9" y="394.0" width="12.4" height="22" fill="#f2a93b"><title>PF00629 truncated (480-516 aa); ALK–CTSE fusion, breakpoint ALK aa 516; sample P-0024679-T01-IM6</title></rect>
 <text x="232.1" y="408.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF…</text>
 <line x1="60.3" y1="394.0" x2="60.3" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="137.1" y1="394.0" x2="137.1" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -243,17 +243,17 @@
 <line x1="193.1" y1="394.0" x2="193.1" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="208.0" y1="394.0" x2="208.0" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="223.2" y1="394.0" x2="223.2" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="238.4" y1="393.0" x2="238.4" y2="417.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="238.4" y1="393.0" x2="238.4" y2="417.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; ALK–CTSE fusion, breakpoint ALK aa 516; sample P-0024679-T01-IM6</title></line>
 <text x="64.0" y="408.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="408.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="408.5" font-family="sans-serif" font-size="9.5">CTSE – Protein kinase domain lost</text>
-<rect x="331.4" y="420.0" width="288.6" height="22" fill="#4d5bcb"/>
-<rect x="60.0" y="420.0" width="271.4" height="22" fill="#e2e2e2"/>
-<rect x="313.4" y="420.0" width="18.0" height="22" fill="#f2a93b"/>
+<rect x="331.4" y="420.0" width="288.6" height="22" fill="#8064a2"><title>Partner gene H6PD; ALK–H6PD fusion, breakpoint ALK aa 785; sample P-0035712-T01-IM6</title></rect>
+<rect x="60.0" y="420.0" width="271.4" height="22" fill="#e2e2e2"><title>ALK backbone (0-785 aa, no domain); domain status lost; ALK–H6PD fusion, breakpoint ALK aa 785; sample P-0035712-T01-IM6</title></rect>
+<rect x="313.4" y="420.0" width="18.0" height="22" fill="#f2a93b"><title>PF12810 truncated (733-785 aa); ALK–H6PD fusion, breakpoint ALK aa 785; sample P-0035712-T01-IM6</title></rect>
 <text x="322.4" y="434.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF1…</text>
-<rect x="158.5" y="420.0" width="48.7" height="22" fill="#2878b5"/>
+<rect x="158.5" y="420.0" width="48.7" height="22" fill="#2878b5"><title>PF00629 retained (285-426 aa); ALK–H6PD fusion, breakpoint ALK aa 785; sample P-0035712-T01-IM6</title></rect>
 <text x="182.9" y="434.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF00629</text>
-<rect x="225.9" y="420.0" width="53.2" height="22" fill="#2878b5"/>
+<rect x="225.9" y="420.0" width="53.2" height="22" fill="#2878b5"><title>PF00629 retained (480-634 aa); ALK–H6PD fusion, breakpoint ALK aa 785; sample P-0035712-T01-IM6</title></rect>
 <text x="252.5" y="434.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF00629</text>
 <line x1="60.3" y1="420.0" x2="60.3" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="137.1" y1="420.0" x2="137.1" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -268,15 +268,15 @@
 <line x1="280.5" y1="420.0" x2="280.5" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="295.4" y1="420.0" x2="295.4" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="314.1" y1="420.0" x2="314.1" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="331.4" y1="419.0" x2="331.4" y2="443.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="331.4" y1="419.0" x2="331.4" y2="443.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; ALK–H6PD fusion, breakpoint ALK aa 785; sample P-0035712-T01-IM6</title></line>
 <text x="64.0" y="434.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="434.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="434.5" font-family="sans-serif" font-size="9.5">H6PD – Protein kinase domain lost</text>
-<rect x="60.0" y="446.0" width="324.6" height="22" fill="#cb4d7d"/>
-<rect x="384.6" y="446.0" width="235.4" height="22" fill="#e2e2e2"/>
-<rect x="446.1" y="446.0" width="91.6" height="22" fill="#2878b5"/>
+<rect x="60.0" y="446.0" width="324.6" height="22" fill="#8064a2"><title>Partner gene EMILIN1; ALK–EMILIN1 fusion, breakpoint ALK aa 939; sample P-0005759-T02-IM6</title></rect>
+<rect x="384.6" y="446.0" width="235.4" height="22" fill="#e2e2e2"><title>ALK backbone (939-1620 aa, no domain); domain status retained; ALK–EMILIN1 fusion, breakpoint ALK aa 939; sample P-0005759-T02-IM6</title></rect>
+<rect x="446.1" y="446.0" width="91.6" height="22" fill="#2878b5"><title>Protein kinase domain retained (1117-1382 aa); ALK–EMILIN1 fusion, breakpoint ALK aa 939; sample P-0005759-T02-IM6</title></rect>
 <text x="491.9" y="460.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
-<rect x="384.6" y="446.0" width="7.3" height="22" fill="#f2a93b"/>
+<rect x="384.6" y="446.0" width="7.3" height="22" fill="#f2a93b"><title>PF12810 truncated (939-960 aa); ALK–EMILIN1 fusion, breakpoint ALK aa 939; sample P-0005759-T02-IM6</title></rect>
 <line x1="396.0" y1="446.0" x2="396.0" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="413.6" y1="446.0" x2="413.6" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="425.7" y1="446.0" x2="425.7" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -289,15 +289,15 @@
 <line x1="513.9" y1="446.0" x2="513.9" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="529.4" y1="446.0" x2="529.4" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="540.1" y1="446.0" x2="540.1" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="384.6" y1="445.0" x2="384.6" y2="469.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="384.6" y1="445.0" x2="384.6" y2="469.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; ALK–EMILIN1 fusion, breakpoint ALK aa 939; sample P-0005759-T02-IM6</title></line>
 <text x="64.0" y="460.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="460.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="460.5" font-family="sans-serif" font-size="9.5">EMILIN1 – Protein kinase domain retained</text>
-<rect x="60.0" y="472.0" width="324.6" height="22" fill="#bacb4d"/>
-<rect x="384.6" y="472.0" width="235.4" height="22" fill="#e2e2e2"/>
-<rect x="446.1" y="472.0" width="91.6" height="22" fill="#2878b5"/>
+<rect x="60.0" y="472.0" width="324.6" height="22" fill="#8064a2"><title>Partner gene EML4; ALK–EML4 fusion, breakpoint ALK aa 939; sample P-0031824-T01-IM6</title></rect>
+<rect x="384.6" y="472.0" width="235.4" height="22" fill="#e2e2e2"><title>ALK backbone (939-1620 aa, no domain); domain status retained; ALK–EML4 fusion, breakpoint ALK aa 939; sample P-0031824-T01-IM6</title></rect>
+<rect x="446.1" y="472.0" width="91.6" height="22" fill="#2878b5"><title>Protein kinase domain retained (1117-1382 aa); ALK–EML4 fusion, breakpoint ALK aa 939; sample P-0031824-T01-IM6</title></rect>
 <text x="491.9" y="486.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
-<rect x="384.6" y="472.0" width="7.3" height="22" fill="#f2a93b"/>
+<rect x="384.6" y="472.0" width="7.3" height="22" fill="#f2a93b"><title>PF12810 truncated (939-960 aa); ALK–EML4 fusion, breakpoint ALK aa 939; sample P-0031824-T01-IM6</title></rect>
 <line x1="396.0" y1="472.0" x2="396.0" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="413.6" y1="472.0" x2="413.6" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="425.7" y1="472.0" x2="425.7" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -310,17 +310,17 @@
 <line x1="513.9" y1="472.0" x2="513.9" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="529.4" y1="472.0" x2="529.4" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="540.1" y1="472.0" x2="540.1" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="384.6" y1="471.0" x2="384.6" y2="495.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="384.6" y1="471.0" x2="384.6" y2="495.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; ALK–EML4 fusion, breakpoint ALK aa 939; sample P-0031824-T01-IM6</title></line>
 <text x="64.0" y="486.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="486.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="486.5" font-family="sans-serif" font-size="9.5">EML4 – Protein kinase domain retained</text>
-<rect x="396.0" y="498.0" width="224.0" height="22" fill="#cb944d"/>
-<rect x="60.0" y="498.0" width="336.0" height="22" fill="#e2e2e2"/>
-<rect x="313.4" y="498.0" width="78.5" height="22" fill="#2878b5"/>
+<rect x="396.0" y="498.0" width="224.0" height="22" fill="#8064a2"><title>Partner gene LRP1B; ALK–LRP1B fusion, breakpoint ALK aa 972; sample P-0018541-T01-IM6</title></rect>
+<rect x="60.0" y="498.0" width="336.0" height="22" fill="#e2e2e2"><title>ALK backbone (0-972 aa, no domain); domain status lost; ALK–LRP1B fusion, breakpoint ALK aa 972; sample P-0018541-T01-IM6</title></rect>
+<rect x="313.4" y="498.0" width="78.5" height="22" fill="#2878b5"><title>PF12810 retained (733-960 aa); ALK–LRP1B fusion, breakpoint ALK aa 972; sample P-0018541-T01-IM6</title></rect>
 <text x="352.6" y="512.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF12810</text>
-<rect x="158.5" y="498.0" width="48.7" height="22" fill="#2878b5"/>
+<rect x="158.5" y="498.0" width="48.7" height="22" fill="#2878b5"><title>PF00629 retained (285-426 aa); ALK–LRP1B fusion, breakpoint ALK aa 972; sample P-0018541-T01-IM6</title></rect>
 <text x="182.9" y="512.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF00629</text>
-<rect x="225.9" y="498.0" width="53.2" height="22" fill="#2878b5"/>
+<rect x="225.9" y="498.0" width="53.2" height="22" fill="#2878b5"><title>PF00629 retained (480-634 aa); ALK–LRP1B fusion, breakpoint ALK aa 972; sample P-0018541-T01-IM6</title></rect>
 <text x="252.5" y="512.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF00629</text>
 <line x1="60.3" y1="498.0" x2="60.3" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="137.1" y1="498.0" x2="137.1" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -339,13 +339,13 @@
 <line x1="346.9" y1="498.0" x2="346.9" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="363.5" y1="498.0" x2="363.5" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="384.6" y1="498.0" x2="384.6" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="396.0" y1="497.0" x2="396.0" y2="521.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="396.0" y1="497.0" x2="396.0" y2="521.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; ALK–LRP1B fusion, breakpoint ALK aa 972; sample P-0018541-T01-IM6</title></line>
 <text x="64.0" y="512.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="512.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="512.5" font-family="sans-serif" font-size="9.5">LRP1B – Protein kinase domain lost</text>
-<rect x="60.0" y="524.0" width="353.6" height="22" fill="#7dcb4d"/>
-<rect x="413.6" y="524.0" width="206.4" height="22" fill="#e2e2e2"/>
-<rect x="446.1" y="524.0" width="91.6" height="22" fill="#2878b5"/>
+<rect x="60.0" y="524.0" width="353.6" height="22" fill="#8064a2"><title>Partner gene FN1; ALK–FN1 fusion, breakpoint ALK aa 1023; sample P-0044526-T02-IM6</title></rect>
+<rect x="413.6" y="524.0" width="206.4" height="22" fill="#e2e2e2"><title>ALK backbone (1023-1620 aa, no domain); domain status retained; ALK–FN1 fusion, breakpoint ALK aa 1023; sample P-0044526-T02-IM6</title></rect>
+<rect x="446.1" y="524.0" width="91.6" height="22" fill="#2878b5"><title>Protein kinase domain retained (1117-1382 aa); ALK–FN1 fusion, breakpoint ALK aa 1023; sample P-0044526-T02-IM6</title></rect>
 <text x="491.9" y="538.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
 <line x1="425.7" y1="524.0" x2="425.7" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="447.2" y1="524.0" x2="447.2" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -357,13 +357,13 @@
 <line x1="513.9" y1="524.0" x2="513.9" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="529.4" y1="524.0" x2="529.4" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="540.1" y1="524.0" x2="540.1" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="413.6" y1="523.0" x2="413.6" y2="547.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="413.6" y1="523.0" x2="413.6" y2="547.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; ALK–FN1 fusion, breakpoint ALK aa 1023; sample P-0044526-T02-IM6</title></line>
 <text x="64.0" y="538.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="538.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="538.5" font-family="sans-serif" font-size="9.5">FN1 – Protein kinase domain retained</text>
-<rect x="60.0" y="550.0" width="353.6" height="22" fill="#b64dcb"/>
-<rect x="413.6" y="550.0" width="206.4" height="22" fill="#e2e2e2"/>
-<rect x="446.1" y="550.0" width="91.6" height="22" fill="#2878b5"/>
+<rect x="60.0" y="550.0" width="353.6" height="22" fill="#8064a2"><title>Partner gene KIF5B; ALK–KIF5B fusion, breakpoint ALK aa 1023; sample P-0005711-T02-IM6</title></rect>
+<rect x="413.6" y="550.0" width="206.4" height="22" fill="#e2e2e2"><title>ALK backbone (1023-1620 aa, no domain); domain status retained; ALK–KIF5B fusion, breakpoint ALK aa 1023; sample P-0005711-T02-IM6</title></rect>
+<rect x="446.1" y="550.0" width="91.6" height="22" fill="#2878b5"><title>Protein kinase domain retained (1117-1382 aa); ALK–KIF5B fusion, breakpoint ALK aa 1023; sample P-0005711-T02-IM6</title></rect>
 <text x="491.9" y="564.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
 <line x1="425.7" y1="550.0" x2="425.7" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="447.2" y1="550.0" x2="447.2" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -375,13 +375,13 @@
 <line x1="513.9" y1="550.0" x2="513.9" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="529.4" y1="550.0" x2="529.4" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="540.1" y1="550.0" x2="540.1" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="413.6" y1="549.0" x2="413.6" y2="573.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="413.6" y1="549.0" x2="413.6" y2="573.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; ALK–KIF5B fusion, breakpoint ALK aa 1023; sample P-0005711-T02-IM6</title></line>
 <text x="64.0" y="564.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="564.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="564.5" font-family="sans-serif" font-size="9.5">KIF5B – Protein kinase domain retained</text>
-<rect x="60.0" y="576.0" width="353.6" height="22" fill="#cb984d"/>
-<rect x="413.6" y="576.0" width="206.4" height="22" fill="#e2e2e2"/>
-<rect x="446.1" y="576.0" width="91.6" height="22" fill="#2878b5"/>
+<rect x="60.0" y="576.0" width="353.6" height="22" fill="#8064a2"><title>Partner gene NOTCH1; ALK–NOTCH1 fusion, breakpoint ALK aa 1023; sample P-0067512-T01-IM7</title></rect>
+<rect x="413.6" y="576.0" width="206.4" height="22" fill="#e2e2e2"><title>ALK backbone (1023-1620 aa, no domain); domain status retained; ALK–NOTCH1 fusion, breakpoint ALK aa 1023; sample P-0067512-T01-IM7</title></rect>
+<rect x="446.1" y="576.0" width="91.6" height="22" fill="#2878b5"><title>Protein kinase domain retained (1117-1382 aa); ALK–NOTCH1 fusion, breakpoint ALK aa 1023; sample P-0067512-T01-IM7</title></rect>
 <text x="491.9" y="590.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
 <line x1="425.7" y1="576.0" x2="425.7" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="447.2" y1="576.0" x2="447.2" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -393,13 +393,13 @@
 <line x1="513.9" y1="576.0" x2="513.9" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="529.4" y1="576.0" x2="529.4" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="540.1" y1="576.0" x2="540.1" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="413.6" y1="575.0" x2="413.6" y2="599.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="413.6" y1="575.0" x2="413.6" y2="599.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; ALK–NOTCH1 fusion, breakpoint ALK aa 1023; sample P-0067512-T01-IM7</title></line>
 <text x="64.0" y="590.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="590.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="590.5" font-family="sans-serif" font-size="9.5">NOTCH1 – Protein kinase domain retained</text>
-<rect x="60.0" y="602.0" width="353.6" height="22" fill="#cb4da1"/>
-<rect x="413.6" y="602.0" width="206.4" height="22" fill="#e2e2e2"/>
-<rect x="446.1" y="602.0" width="91.6" height="22" fill="#2878b5"/>
+<rect x="60.0" y="602.0" width="353.6" height="22" fill="#8064a2"><title>Partner gene NRP2; ALK–NRP2 fusion, breakpoint ALK aa 1023; sample P-0034044-T01-IM6</title></rect>
+<rect x="413.6" y="602.0" width="206.4" height="22" fill="#e2e2e2"><title>ALK backbone (1023-1620 aa, no domain); domain status retained; ALK–NRP2 fusion, breakpoint ALK aa 1023; sample P-0034044-T01-IM6</title></rect>
+<rect x="446.1" y="602.0" width="91.6" height="22" fill="#2878b5"><title>Protein kinase domain retained (1117-1382 aa); ALK–NRP2 fusion, breakpoint ALK aa 1023; sample P-0034044-T01-IM6</title></rect>
 <text x="491.9" y="616.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
 <line x1="425.7" y1="602.0" x2="425.7" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="447.2" y1="602.0" x2="447.2" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -411,13 +411,13 @@
 <line x1="513.9" y1="602.0" x2="513.9" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="529.4" y1="602.0" x2="529.4" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="540.1" y1="602.0" x2="540.1" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="413.6" y1="601.0" x2="413.6" y2="625.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="413.6" y1="601.0" x2="413.6" y2="625.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; ALK–NRP2 fusion, breakpoint ALK aa 1023; sample P-0034044-T01-IM6</title></line>
 <text x="64.0" y="616.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="616.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="616.5" font-family="sans-serif" font-size="9.5">NRP2 – Protein kinase domain retained</text>
-<rect x="60.0" y="628.0" width="355.4" height="22" fill="#bacb4d"/>
-<rect x="415.4" y="628.0" width="204.6" height="22" fill="#e2e2e2"/>
-<rect x="446.1" y="628.0" width="91.6" height="22" fill="#2878b5"/>
+<rect x="60.0" y="628.0" width="355.4" height="22" fill="#8064a2"><title>Partner gene EML4; ALK–EML4 fusion, breakpoint ALK aa 1028; sample P-0018969-T01-IM6</title></rect>
+<rect x="415.4" y="628.0" width="204.6" height="22" fill="#e2e2e2"><title>ALK backbone (1028-1620 aa, no domain); domain status retained; ALK–EML4 fusion, breakpoint ALK aa 1028; sample P-0018969-T01-IM6</title></rect>
+<rect x="446.1" y="628.0" width="91.6" height="22" fill="#2878b5"><title>Protein kinase domain retained (1117-1382 aa); ALK–EML4 fusion, breakpoint ALK aa 1028; sample P-0018969-T01-IM6</title></rect>
 <text x="491.9" y="642.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
 <line x1="425.7" y1="628.0" x2="425.7" y2="650.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="447.2" y1="628.0" x2="447.2" y2="650.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -429,13 +429,13 @@
 <line x1="513.9" y1="628.0" x2="513.9" y2="650.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="529.4" y1="628.0" x2="529.4" y2="650.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="540.1" y1="628.0" x2="540.1" y2="650.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="415.4" y1="627.0" x2="415.4" y2="651.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="415.4" y1="627.0" x2="415.4" y2="651.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; ALK–EML4 fusion, breakpoint ALK aa 1028; sample P-0018969-T01-IM6</title></line>
 <text x="64.0" y="642.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="642.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="642.5" font-family="sans-serif" font-size="9.5">EML4 – Protein kinase domain retained</text>
-<rect x="60.0" y="654.0" width="356.7" height="22" fill="#bacb4d"/>
-<rect x="416.7" y="654.0" width="203.3" height="22" fill="#e2e2e2"/>
-<rect x="446.1" y="654.0" width="91.6" height="22" fill="#2878b5"/>
+<rect x="60.0" y="654.0" width="356.7" height="22" fill="#8064a2"><title>Partner gene EML4; ALK–EML4 fusion, breakpoint ALK aa 1032; sample P-0019513-T01-IM6</title></rect>
+<rect x="416.7" y="654.0" width="203.3" height="22" fill="#e2e2e2"><title>ALK backbone (1032-1620 aa, no domain); domain status retained; ALK–EML4 fusion, breakpoint ALK aa 1032; sample P-0019513-T01-IM6</title></rect>
+<rect x="446.1" y="654.0" width="91.6" height="22" fill="#2878b5"><title>Protein kinase domain retained (1117-1382 aa); ALK–EML4 fusion, breakpoint ALK aa 1032; sample P-0019513-T01-IM6</title></rect>
 <text x="491.9" y="668.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
 <line x1="425.7" y1="654.0" x2="425.7" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="447.2" y1="654.0" x2="447.2" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -447,13 +447,13 @@
 <line x1="513.9" y1="654.0" x2="513.9" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="529.4" y1="654.0" x2="529.4" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="540.1" y1="654.0" x2="540.1" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="416.7" y1="653.0" x2="416.7" y2="677.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="416.7" y1="653.0" x2="416.7" y2="677.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; ALK–EML4 fusion, breakpoint ALK aa 1032; sample P-0019513-T01-IM6</title></line>
 <text x="64.0" y="668.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="668.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="668.5" font-family="sans-serif" font-size="9.5">EML4 – Protein kinase domain retained</text>
-<rect x="60.0" y="680.0" width="357.8" height="22" fill="#4d90cb"/>
-<rect x="417.8" y="680.0" width="202.2" height="22" fill="#e2e2e2"/>
-<rect x="446.1" y="680.0" width="91.6" height="22" fill="#2878b5"/>
+<rect x="60.0" y="680.0" width="357.8" height="22" fill="#8064a2"><title>Partner gene PLEKHA7; ALK–PLEKHA7 fusion, breakpoint ALK aa 1035; sample P-0054253-T01-IM6</title></rect>
+<rect x="417.8" y="680.0" width="202.2" height="22" fill="#e2e2e2"><title>ALK backbone (1035-1620 aa, no domain); domain status retained; ALK–PLEKHA7 fusion, breakpoint ALK aa 1035; sample P-0054253-T01-IM6</title></rect>
+<rect x="446.1" y="680.0" width="91.6" height="22" fill="#2878b5"><title>Protein kinase domain retained (1117-1382 aa); ALK–PLEKHA7 fusion, breakpoint ALK aa 1035; sample P-0054253-T01-IM6</title></rect>
 <text x="491.9" y="694.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
 <line x1="425.7" y1="680.0" x2="425.7" y2="702.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="447.2" y1="680.0" x2="447.2" y2="702.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -465,13 +465,13 @@
 <line x1="513.9" y1="680.0" x2="513.9" y2="702.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="529.4" y1="680.0" x2="529.4" y2="702.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="540.1" y1="680.0" x2="540.1" y2="702.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="417.8" y1="679.0" x2="417.8" y2="703.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="417.8" y1="679.0" x2="417.8" y2="703.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; ALK–PLEKHA7 fusion, breakpoint ALK aa 1035; sample P-0054253-T01-IM6</title></line>
 <text x="64.0" y="694.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="694.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="694.5" font-family="sans-serif" font-size="9.5">PLEKHA7 – Protein kinase domain retained</text>
-<rect x="60.0" y="706.0" width="359.5" height="22" fill="#bacb4d"/>
-<rect x="419.5" y="706.0" width="200.5" height="22" fill="#e2e2e2"/>
-<rect x="446.1" y="706.0" width="91.6" height="22" fill="#2878b5"/>
+<rect x="60.0" y="706.0" width="359.5" height="22" fill="#8064a2"><title>Partner gene EML4; ALK–EML4 fusion, breakpoint ALK aa 1040; sample P-0043594-T01-IM6</title></rect>
+<rect x="419.5" y="706.0" width="200.5" height="22" fill="#e2e2e2"><title>ALK backbone (1040-1620 aa, no domain); domain status retained; ALK–EML4 fusion, breakpoint ALK aa 1040; sample P-0043594-T01-IM6</title></rect>
+<rect x="446.1" y="706.0" width="91.6" height="22" fill="#2878b5"><title>Protein kinase domain retained (1117-1382 aa); ALK–EML4 fusion, breakpoint ALK aa 1040; sample P-0043594-T01-IM6</title></rect>
 <text x="491.9" y="720.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
 <line x1="425.7" y1="706.0" x2="425.7" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="447.2" y1="706.0" x2="447.2" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -483,13 +483,13 @@
 <line x1="513.9" y1="706.0" x2="513.9" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="529.4" y1="706.0" x2="529.4" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="540.1" y1="706.0" x2="540.1" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="419.5" y1="705.0" x2="419.5" y2="729.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="419.5" y1="705.0" x2="419.5" y2="729.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; ALK–EML4 fusion, breakpoint ALK aa 1040; sample P-0043594-T01-IM6</title></line>
 <text x="64.0" y="720.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="720.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="720.5" font-family="sans-serif" font-size="9.5">EML4 – Protein kinase domain retained</text>
-<rect x="60.0" y="732.0" width="361.2" height="22" fill="#bacb4d"/>
-<rect x="421.2" y="732.0" width="198.8" height="22" fill="#e2e2e2"/>
-<rect x="446.1" y="732.0" width="91.6" height="22" fill="#2878b5"/>
+<rect x="60.0" y="732.0" width="361.2" height="22" fill="#8064a2"><title>Partner gene EML4; ALK–EML4 fusion, breakpoint ALK aa 1045; sample P-0003206-T01-IM5</title></rect>
+<rect x="421.2" y="732.0" width="198.8" height="22" fill="#e2e2e2"><title>ALK backbone (1045-1620 aa, no domain); domain status retained; ALK–EML4 fusion, breakpoint ALK aa 1045; sample P-0003206-T01-IM5</title></rect>
+<rect x="446.1" y="732.0" width="91.6" height="22" fill="#2878b5"><title>Protein kinase domain retained (1117-1382 aa); ALK–EML4 fusion, breakpoint ALK aa 1045; sample P-0003206-T01-IM5</title></rect>
 <text x="491.9" y="746.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
 <line x1="425.7" y1="732.0" x2="425.7" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="447.2" y1="732.0" x2="447.2" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -501,13 +501,13 @@
 <line x1="513.9" y1="732.0" x2="513.9" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="529.4" y1="732.0" x2="529.4" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="540.1" y1="732.0" x2="540.1" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="421.2" y1="731.0" x2="421.2" y2="755.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="421.2" y1="731.0" x2="421.2" y2="755.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; ALK–EML4 fusion, breakpoint ALK aa 1045; sample P-0003206-T01-IM5</title></line>
 <text x="64.0" y="746.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="746.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="746.5" font-family="sans-serif" font-size="9.5">EML4 – Protein kinase domain retained</text>
-<rect x="60.0" y="758.0" width="361.2" height="22" fill="#4dcbbc"/>
-<rect x="421.2" y="758.0" width="198.8" height="22" fill="#e2e2e2"/>
-<rect x="446.1" y="758.0" width="91.6" height="22" fill="#2878b5"/>
+<rect x="60.0" y="758.0" width="361.2" height="22" fill="#8064a2"><title>Partner gene STRN; ALK–STRN fusion, breakpoint ALK aa 1045; sample P-0033066-T01-IM6</title></rect>
+<rect x="421.2" y="758.0" width="198.8" height="22" fill="#e2e2e2"><title>ALK backbone (1045-1620 aa, no domain); domain status retained; ALK–STRN fusion, breakpoint ALK aa 1045; sample P-0033066-T01-IM6</title></rect>
+<rect x="446.1" y="758.0" width="91.6" height="22" fill="#2878b5"><title>Protein kinase domain retained (1117-1382 aa); ALK–STRN fusion, breakpoint ALK aa 1045; sample P-0033066-T01-IM6</title></rect>
 <text x="491.9" y="772.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
 <line x1="425.7" y1="758.0" x2="425.7" y2="780.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="447.2" y1="758.0" x2="447.2" y2="780.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -519,7 +519,7 @@
 <line x1="513.9" y1="758.0" x2="513.9" y2="780.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="529.4" y1="758.0" x2="529.4" y2="780.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="540.1" y1="758.0" x2="540.1" y2="780.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="421.2" y1="757.0" x2="421.2" y2="781.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="421.2" y1="757.0" x2="421.2" y2="781.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; ALK–STRN fusion, breakpoint ALK aa 1045; sample P-0033066-T01-IM6</title></line>
 <text x="64.0" y="772.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="772.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="772.5" font-family="sans-serif" font-size="9.5">STRN – Protein kinase domain retained</text>

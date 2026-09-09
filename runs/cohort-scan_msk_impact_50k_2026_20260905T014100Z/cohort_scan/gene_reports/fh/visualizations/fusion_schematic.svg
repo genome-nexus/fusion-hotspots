@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1000" height="458" viewBox="0 0 1000 458">
 <rect width="1000" height="458" fill="white"/>
 <text x="60" y="24" font-family="sans-serif" font-size="15">FH fusion-transcript schematic</text>
-<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555">Fusion order varies by row; follow each row's 5' and 3' labels (FH portion is domain-colored, exon ticks)</text>
-<rect x="466.3" y="56.0" width="153.7" height="22" fill="#cb9f4d"/>
-<rect x="60.0" y="56.0" width="406.3" height="22" fill="#e2e2e2"/>
-<rect x="123.7" y="56.0" width="342.6" height="22" fill="#f2a93b"/>
+<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555">Fusion order varies by row; follow each row's 5' and 3' labels (FH portion is domain-colored, exon ticks). Partner-gene blocks share one color; row labels identify each partner.</text>
+<rect x="466.3" y="56.0" width="153.7" height="22" fill="#8064a2"><title>Partner gene DGKH; FH–DGKH fusion, breakpoint FH aa 370; samples P-0018108-T01-IM6, P-0018108-T02-IM6, P-0064901-T01-IM7, P-0059293-T01-IM7</title></rect>
+<rect x="60.0" y="56.0" width="406.3" height="22" fill="#e2e2e2"><title>FH backbone (0-370 aa, no domain); domain status truncated; FH–DGKH fusion, breakpoint FH aa 370; samples P-0018108-T01-IM6, P-0018108-T02-IM6, P-0064901-T01-IM7, P-0059293-T01-IM7</title></rect>
+<rect x="123.7" y="56.0" width="342.6" height="22" fill="#f2a93b"><title>Lyase truncated (58-370 aa); FH–DGKH fusion, breakpoint FH aa 370; samples P-0018108-T01-IM6, P-0018108-T02-IM6, P-0064901-T01-IM7, P-0059293-T01-IM7</title></rect>
 <text x="295.0" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Lyase</text>
 <line x1="61.1" y1="56.0" x2="61.1" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="109.4" y1="56.0" x2="109.4" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -13,22 +13,22 @@
 <line x1="264.2" y1="56.0" x2="264.2" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="331.2" y1="56.0" x2="331.2" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="391.6" y1="56.0" x2="391.6" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="466.3" y1="55.0" x2="466.3" y2="79.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="466.3" y1="55.0" x2="466.3" y2="79.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; FH–DGKH fusion, breakpoint FH aa 370; samples P-0018108-T01-IM6, P-0018108-T02-IM6, P-0064901-T01-IM7, P-0059293-T01-IM7</title></line>
 <text x="64.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="70.5" font-family="sans-serif" font-size="9.5">DGKH (x4) – Lyase truncated</text>
-<rect x="108.3" y="82.0" width="511.7" height="22" fill="#cb4da3"/>
-<rect x="60.0" y="82.0" width="48.3" height="22" fill="#e2e2e2"/>
+<rect x="108.3" y="82.0" width="511.7" height="22" fill="#8064a2"><title>Partner gene PDE1C; FH–PDE1C fusion, breakpoint FH aa 44; sample P-0000532-T02-IM5</title></rect>
+<rect x="60.0" y="82.0" width="48.3" height="22" fill="#e2e2e2"><title>FH backbone (0-44 aa, no domain); domain status lost; FH–PDE1C fusion, breakpoint FH aa 44; sample P-0000532-T02-IM5</title></rect>
 <line x1="61.1" y1="82.0" x2="61.1" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="108.3" y1="81.0" x2="108.3" y2="105.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="108.3" y1="81.0" x2="108.3" y2="105.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; FH–PDE1C fusion, breakpoint FH aa 44; sample P-0000532-T02-IM5</title></line>
 <text x="64.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="96.5" font-family="sans-serif" font-size="9.5">PDE1C – Lyase lost</text>
-<rect x="60.0" y="108.0" width="49.4" height="22" fill="#4dcb55"/>
-<rect x="109.4" y="108.0" width="510.6" height="22" fill="#e2e2e2"/>
-<rect x="559.6" y="108.0" width="59.3" height="22" fill="#2878b5"/>
+<rect x="60.0" y="108.0" width="49.4" height="22" fill="#8064a2"><title>Partner gene RYR2; FH–RYR2 fusion, breakpoint FH aa 45; sample P-0015961-T03-IM6</title></rect>
+<rect x="109.4" y="108.0" width="510.6" height="22" fill="#e2e2e2"><title>FH backbone (45-510 aa, no domain); domain status retained; FH–RYR2 fusion, breakpoint FH aa 45; sample P-0015961-T03-IM6</title></rect>
+<rect x="559.6" y="108.0" width="59.3" height="22" fill="#2878b5"><title>PF10415 retained (455-509 aa); FH–RYR2 fusion, breakpoint FH aa 45; sample P-0015961-T03-IM6</title></rect>
 <text x="589.3" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF10415</text>
-<rect x="123.7" y="108.0" width="363.5" height="22" fill="#2878b5"/>
+<rect x="123.7" y="108.0" width="363.5" height="22" fill="#2878b5"><title>Lyase retained (58-389 aa); FH–RYR2 fusion, breakpoint FH aa 45; sample P-0015961-T03-IM6</title></rect>
 <text x="305.4" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Lyase</text>
 <line x1="158.8" y1="108.0" x2="158.8" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="199.5" y1="108.0" x2="199.5" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -38,15 +38,15 @@
 <line x1="466.3" y1="108.0" x2="466.3" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="513.5" y1="108.0" x2="513.5" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="569.5" y1="108.0" x2="569.5" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="109.4" y1="107.0" x2="109.4" y2="131.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="109.4" y1="107.0" x2="109.4" y2="131.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; FH–RYR2 fusion, breakpoint FH aa 45; sample P-0015961-T03-IM6</title></line>
 <text x="64.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="122.5" font-family="sans-serif" font-size="9.5">RYR2 – Lyase retained</text>
-<rect x="60.0" y="134.0" width="49.4" height="22" fill="#4dcb5b"/>
-<rect x="109.4" y="134.0" width="510.6" height="22" fill="#e2e2e2"/>
-<rect x="559.6" y="134.0" width="59.3" height="22" fill="#2878b5"/>
+<rect x="60.0" y="134.0" width="49.4" height="22" fill="#8064a2"><title>Partner gene unknown; FH–unknown fusion, breakpoint FH aa 45; sample P-0048392-T01-IM6</title></rect>
+<rect x="109.4" y="134.0" width="510.6" height="22" fill="#e2e2e2"><title>FH backbone (45-510 aa, no domain); domain status retained; FH–unknown fusion, breakpoint FH aa 45; sample P-0048392-T01-IM6</title></rect>
+<rect x="559.6" y="134.0" width="59.3" height="22" fill="#2878b5"><title>PF10415 retained (455-509 aa); FH–unknown fusion, breakpoint FH aa 45; sample P-0048392-T01-IM6</title></rect>
 <text x="589.3" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF10415</text>
-<rect x="123.7" y="134.0" width="363.5" height="22" fill="#2878b5"/>
+<rect x="123.7" y="134.0" width="363.5" height="22" fill="#2878b5"><title>Lyase retained (58-389 aa); FH–unknown fusion, breakpoint FH aa 45; sample P-0048392-T01-IM6</title></rect>
 <text x="305.4" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Lyase</text>
 <line x1="158.8" y1="134.0" x2="158.8" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="199.5" y1="134.0" x2="199.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -56,41 +56,41 @@
 <line x1="466.3" y1="134.0" x2="466.3" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="513.5" y1="134.0" x2="513.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="569.5" y1="134.0" x2="569.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="109.4" y1="133.0" x2="109.4" y2="157.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="109.4" y1="133.0" x2="109.4" y2="157.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; FH–unknown fusion, breakpoint FH aa 45; sample P-0048392-T01-IM6</title></line>
 <text x="64.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="148.5" font-family="sans-serif" font-size="9.5">unknown – Lyase retained</text>
-<rect x="60.0" y="160.0" width="204.2" height="22" fill="#cb984d"/>
-<rect x="264.2" y="160.0" width="355.8" height="22" fill="#e2e2e2"/>
-<rect x="559.6" y="160.0" width="59.3" height="22" fill="#2878b5"/>
+<rect x="60.0" y="160.0" width="204.2" height="22" fill="#8064a2"><title>Partner gene NOTCH1; FH–NOTCH1 fusion, breakpoint FH aa 186; sample P-0040956-T01-IM6</title></rect>
+<rect x="264.2" y="160.0" width="355.8" height="22" fill="#e2e2e2"><title>FH backbone (186-510 aa, no domain); domain status truncated; FH–NOTCH1 fusion, breakpoint FH aa 186; sample P-0040956-T01-IM6</title></rect>
+<rect x="559.6" y="160.0" width="59.3" height="22" fill="#2878b5"><title>PF10415 retained (455-509 aa); FH–NOTCH1 fusion, breakpoint FH aa 186; sample P-0040956-T01-IM6</title></rect>
 <text x="589.3" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF10415</text>
-<rect x="264.2" y="160.0" width="222.9" height="22" fill="#f2a93b"/>
+<rect x="264.2" y="160.0" width="222.9" height="22" fill="#f2a93b"><title>Lyase truncated (186-389 aa); FH–NOTCH1 fusion, breakpoint FH aa 186; sample P-0040956-T01-IM6</title></rect>
 <text x="375.7" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Lyase</text>
 <line x1="331.2" y1="160.0" x2="331.2" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="391.6" y1="160.0" x2="391.6" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="466.3" y1="160.0" x2="466.3" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="513.5" y1="160.0" x2="513.5" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="569.5" y1="160.0" x2="569.5" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="264.2" y1="159.0" x2="264.2" y2="183.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="264.2" y1="159.0" x2="264.2" y2="183.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; FH–NOTCH1 fusion, breakpoint FH aa 186; sample P-0040956-T01-IM6</title></line>
 <text x="64.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="174.5" font-family="sans-serif" font-size="9.5">NOTCH1 – Lyase truncated</text>
-<rect x="330.1" y="186.0" width="289.9" height="22" fill="#cba14d"/>
-<rect x="60.0" y="186.0" width="270.1" height="22" fill="#e2e2e2"/>
-<rect x="123.7" y="186.0" width="206.4" height="22" fill="#f2a93b"/>
+<rect x="330.1" y="186.0" width="289.9" height="22" fill="#8064a2"><title>Partner gene RGS7; FH–RGS7 fusion, breakpoint FH aa 246; sample P-0032745-T01-IM6</title></rect>
+<rect x="60.0" y="186.0" width="270.1" height="22" fill="#e2e2e2"><title>FH backbone (0-246 aa, no domain); domain status truncated; FH–RGS7 fusion, breakpoint FH aa 246; sample P-0032745-T01-IM6</title></rect>
+<rect x="123.7" y="186.0" width="206.4" height="22" fill="#f2a93b"><title>Lyase truncated (58-246 aa); FH–RGS7 fusion, breakpoint FH aa 246; sample P-0032745-T01-IM6</title></rect>
 <text x="226.9" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Lyase</text>
 <line x1="61.1" y1="186.0" x2="61.1" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="109.4" y1="186.0" x2="109.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="158.8" y1="186.0" x2="158.8" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="199.5" y1="186.0" x2="199.5" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="264.2" y1="186.0" x2="264.2" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="330.1" y1="185.0" x2="330.1" y2="209.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="330.1" y1="185.0" x2="330.1" y2="209.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; FH–RGS7 fusion, breakpoint FH aa 246; sample P-0032745-T01-IM6</title></line>
 <text x="64.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="200.5" font-family="sans-serif" font-size="9.5">RGS7 – Lyase truncated</text>
-<rect x="438.8" y="212.0" width="181.2" height="22" fill="#ab4dcb"/>
-<rect x="60.0" y="212.0" width="378.8" height="22" fill="#e2e2e2"/>
-<rect x="123.7" y="212.0" width="315.1" height="22" fill="#f2a93b"/>
+<rect x="438.8" y="212.0" width="181.2" height="22" fill="#8064a2"><title>Partner gene FMN2; FH–FMN2 fusion, breakpoint FH aa 345; sample P-0066922-T02-IM7</title></rect>
+<rect x="60.0" y="212.0" width="378.8" height="22" fill="#e2e2e2"><title>FH backbone (0-345 aa, no domain); domain status truncated; FH–FMN2 fusion, breakpoint FH aa 345; sample P-0066922-T02-IM7</title></rect>
+<rect x="123.7" y="212.0" width="315.1" height="22" fill="#f2a93b"><title>Lyase truncated (58-345 aa); FH–FMN2 fusion, breakpoint FH aa 345; sample P-0066922-T02-IM7</title></rect>
 <text x="281.3" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Lyase</text>
 <line x1="61.1" y1="212.0" x2="61.1" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="109.4" y1="212.0" x2="109.4" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -99,55 +99,55 @@
 <line x1="264.2" y1="212.0" x2="264.2" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="331.2" y1="212.0" x2="331.2" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="391.6" y1="212.0" x2="391.6" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="438.8" y1="211.0" x2="438.8" y2="235.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="438.8" y1="211.0" x2="438.8" y2="235.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; FH–FMN2 fusion, breakpoint FH aa 345; sample P-0066922-T02-IM7</title></line>
 <text x="64.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="226.5" font-family="sans-serif" font-size="9.5">FMN2 – Lyase truncated</text>
-<rect x="60.0" y="238.0" width="406.3" height="22" fill="#8ecb4d"/>
-<rect x="466.3" y="238.0" width="153.7" height="22" fill="#e2e2e2"/>
-<rect x="559.6" y="238.0" width="59.3" height="22" fill="#2878b5"/>
+<rect x="60.0" y="238.0" width="406.3" height="22" fill="#8064a2"><title>Partner gene ARID4B; FH–ARID4B fusion, breakpoint FH aa 370; sample P-0062340-T01-IM7</title></rect>
+<rect x="466.3" y="238.0" width="153.7" height="22" fill="#e2e2e2"><title>FH backbone (370-510 aa, no domain); domain status truncated; FH–ARID4B fusion, breakpoint FH aa 370; sample P-0062340-T01-IM7</title></rect>
+<rect x="559.6" y="238.0" width="59.3" height="22" fill="#2878b5"><title>PF10415 retained (455-509 aa); FH–ARID4B fusion, breakpoint FH aa 370; sample P-0062340-T01-IM7</title></rect>
 <text x="589.3" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF10415</text>
-<rect x="466.3" y="238.0" width="20.9" height="22" fill="#f2a93b"/>
+<rect x="466.3" y="238.0" width="20.9" height="22" fill="#f2a93b"><title>Lyase truncated (370-389 aa); FH–ARID4B fusion, breakpoint FH aa 370; sample P-0062340-T01-IM7</title></rect>
 <text x="476.7" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Lyase</text>
 <line x1="513.5" y1="238.0" x2="513.5" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="569.5" y1="238.0" x2="569.5" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="466.3" y1="237.0" x2="466.3" y2="261.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="466.3" y1="237.0" x2="466.3" y2="261.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; FH–ARID4B fusion, breakpoint FH aa 370; sample P-0062340-T01-IM7</title></line>
 <text x="64.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="252.5" font-family="sans-serif" font-size="9.5">ARID4B – Lyase truncated</text>
-<rect x="60.0" y="264.0" width="406.3" height="22" fill="#cba14d"/>
-<rect x="466.3" y="264.0" width="153.7" height="22" fill="#e2e2e2"/>
-<rect x="559.6" y="264.0" width="59.3" height="22" fill="#2878b5"/>
+<rect x="60.0" y="264.0" width="406.3" height="22" fill="#8064a2"><title>Partner gene RGS7; FH–RGS7 fusion, breakpoint FH aa 370; sample P-0004918-T02-IM6</title></rect>
+<rect x="466.3" y="264.0" width="153.7" height="22" fill="#e2e2e2"><title>FH backbone (370-510 aa, no domain); domain status truncated; FH–RGS7 fusion, breakpoint FH aa 370; sample P-0004918-T02-IM6</title></rect>
+<rect x="559.6" y="264.0" width="59.3" height="22" fill="#2878b5"><title>PF10415 retained (455-509 aa); FH–RGS7 fusion, breakpoint FH aa 370; sample P-0004918-T02-IM6</title></rect>
 <text x="589.3" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF10415</text>
-<rect x="466.3" y="264.0" width="20.9" height="22" fill="#f2a93b"/>
+<rect x="466.3" y="264.0" width="20.9" height="22" fill="#f2a93b"><title>Lyase truncated (370-389 aa); FH–RGS7 fusion, breakpoint FH aa 370; sample P-0004918-T02-IM6</title></rect>
 <text x="476.7" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Lyase</text>
 <line x1="513.5" y1="264.0" x2="513.5" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="569.5" y1="264.0" x2="569.5" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="466.3" y1="263.0" x2="466.3" y2="287.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="466.3" y1="263.0" x2="466.3" y2="287.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; FH–RGS7 fusion, breakpoint FH aa 370; sample P-0004918-T02-IM6</title></line>
 <text x="64.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="278.5" font-family="sans-serif" font-size="9.5">RGS7 – Lyase truncated</text>
-<rect x="60.0" y="290.0" width="509.5" height="22" fill="#cb9f4d"/>
-<rect x="569.5" y="290.0" width="50.5" height="22" fill="#e2e2e2"/>
-<rect x="569.5" y="290.0" width="49.4" height="22" fill="#f2a93b"/>
+<rect x="60.0" y="290.0" width="509.5" height="22" fill="#8064a2"><title>Partner gene DGKH; FH–DGKH fusion, breakpoint FH aa 464; sample P-0059435-T01-IM7</title></rect>
+<rect x="569.5" y="290.0" width="50.5" height="22" fill="#e2e2e2"><title>FH backbone (464-510 aa, no domain); domain status lost; FH–DGKH fusion, breakpoint FH aa 464; sample P-0059435-T01-IM7</title></rect>
+<rect x="569.5" y="290.0" width="49.4" height="22" fill="#f2a93b"><title>PF10415 truncated (464-509 aa); FH–DGKH fusion, breakpoint FH aa 464; sample P-0059435-T01-IM7</title></rect>
 <text x="594.2" y="304.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF10415</text>
-<line x1="569.5" y1="289.0" x2="569.5" y2="313.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="569.5" y1="289.0" x2="569.5" y2="313.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; FH–DGKH fusion, breakpoint FH aa 464; sample P-0059435-T01-IM7</title></line>
 <text x="64.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="304.5" font-family="sans-serif" font-size="9.5">DGKH – Lyase lost</text>
-<rect x="60.0" y="316.0" width="512.8" height="22" fill="#cb4d57"/>
-<rect x="572.8" y="316.0" width="47.2" height="22" fill="#e2e2e2"/>
-<rect x="572.8" y="316.0" width="46.1" height="22" fill="#f2a93b"/>
+<rect x="60.0" y="316.0" width="512.8" height="22" fill="#8064a2"><title>Partner gene MAFTRR; FH–MAFTRR fusion, breakpoint FH aa 467; sample P-0060877-T01-IM7</title></rect>
+<rect x="572.8" y="316.0" width="47.2" height="22" fill="#e2e2e2"><title>FH backbone (467-510 aa, no domain); domain status lost; FH–MAFTRR fusion, breakpoint FH aa 467; sample P-0060877-T01-IM7</title></rect>
+<rect x="572.8" y="316.0" width="46.1" height="22" fill="#f2a93b"><title>PF10415 truncated (467-509 aa); FH–MAFTRR fusion, breakpoint FH aa 467; sample P-0060877-T01-IM7</title></rect>
 <text x="595.8" y="330.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF10415</text>
-<line x1="572.8" y1="315.0" x2="572.8" y2="339.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="572.8" y1="315.0" x2="572.8" y2="339.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; FH–MAFTRR fusion, breakpoint FH aa 467; sample P-0060877-T01-IM7</title></line>
 <text x="64.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="330.5" font-family="sans-serif" font-size="9.5">MAFTRR – Lyase lost</text>
-<rect x="60.0" y="342.0" width="523.8" height="22" fill="#cb534d"/>
-<rect x="583.8" y="342.0" width="36.2" height="22" fill="#e2e2e2"/>
-<rect x="583.8" y="342.0" width="35.1" height="22" fill="#f2a93b"/>
+<rect x="60.0" y="342.0" width="523.8" height="22" fill="#8064a2"><title>Partner gene SLC35F3; FH–SLC35F3 fusion, breakpoint FH aa 477; sample P-0051358-T01-IM6</title></rect>
+<rect x="583.8" y="342.0" width="36.2" height="22" fill="#e2e2e2"><title>FH backbone (477-510 aa, no domain); domain status lost; FH–SLC35F3 fusion, breakpoint FH aa 477; sample P-0051358-T01-IM6</title></rect>
+<rect x="583.8" y="342.0" width="35.1" height="22" fill="#f2a93b"><title>PF10415 truncated (477-509 aa); FH–SLC35F3 fusion, breakpoint FH aa 477; sample P-0051358-T01-IM6</title></rect>
 <text x="601.3" y="356.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF10415</text>
-<line x1="583.8" y1="341.0" x2="583.8" y2="365.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="583.8" y1="341.0" x2="583.8" y2="365.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; FH–SLC35F3 fusion, breakpoint FH aa 477; sample P-0051358-T01-IM6</title></line>
 <text x="64.0" y="356.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="356.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="356.5" font-family="sans-serif" font-size="9.5">SLC35F3 – Lyase lost</text>

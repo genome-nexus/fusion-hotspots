@@ -1,46 +1,46 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1000" height="380" viewBox="0 0 1000 380">
 <rect width="1000" height="380" fill="white"/>
 <text x="60" y="24" font-family="sans-serif" font-size="15">KDM5A fusion-transcript schematic</text>
-<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555">Fusion order varies by row; follow each row's 5' and 3' labels (KDM5A portion is domain-colored, exon ticks)</text>
-<rect x="122.6" y="56.0" width="497.4" height="22" fill="#4dcba1"/>
-<rect x="60.0" y="56.0" width="62.6" height="22" fill="#e2e2e2"/>
-<rect x="66.6" y="56.0" width="10.9" height="22" fill="#2878b5"/>
-<rect x="87.2" y="56.0" width="29.2" height="22" fill="#2878b5"/>
+<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555">Fusion order varies by row; follow each row's 5' and 3' labels (KDM5A portion is domain-colored, exon ticks). Partner-gene blocks share one color; row labels identify each partner.</text>
+<rect x="122.6" y="56.0" width="497.4" height="22" fill="#8064a2"><title>Partner gene OSBPL8; KDM5A–OSBPL8 fusion, breakpoint KDM5A aa 189; sample P-0022798-T01-IM6</title></rect>
+<rect x="60.0" y="56.0" width="62.6" height="22" fill="#e2e2e2"><title>KDM5A backbone (0-189 aa, no domain); domain status lost; KDM5A–OSBPL8 fusion, breakpoint KDM5A aa 189; sample P-0022798-T01-IM6</title></rect>
+<rect x="66.6" y="56.0" width="10.9" height="22" fill="#2878b5"><title>jmjN domain retained (20-53 aa); KDM5A–OSBPL8 fusion, breakpoint KDM5A aa 189; sample P-0022798-T01-IM6</title></rect>
+<rect x="87.2" y="56.0" width="29.2" height="22" fill="#2878b5"><title>ARID/BRIGHT DNA binding domain retained (82-170 aa); KDM5A–OSBPL8 fusion, breakpoint KDM5A aa 189; sample P-0022798-T01-IM6</title></rect>
 <text x="101.8" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">ARID/B…</text>
 <line x1="60.3" y1="56.0" x2="60.3" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="78.6" y1="56.0" x2="78.6" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="87.2" y1="56.0" x2="87.2" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="100.8" y1="56.0" x2="100.8" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="119.6" y1="56.0" x2="119.6" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="122.6" y1="55.0" x2="122.6" y2="79.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="122.6" y1="55.0" x2="122.6" y2="79.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; KDM5A–OSBPL8 fusion, breakpoint KDM5A aa 189; sample P-0022798-T01-IM6</title></line>
 <text x="64.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="70.5" font-family="sans-serif" font-size="9.5">OSBPL8 – PLU-1-like protein lost</text>
-<rect x="134.2" y="82.0" width="485.8" height="22" fill="#4dcbbc"/>
-<rect x="60.0" y="82.0" width="74.2" height="22" fill="#e2e2e2"/>
-<rect x="66.6" y="82.0" width="10.9" height="22" fill="#2878b5"/>
-<rect x="87.2" y="82.0" width="29.2" height="22" fill="#2878b5"/>
+<rect x="134.2" y="82.0" width="485.8" height="22" fill="#8064a2"><title>Partner gene STAT5A; KDM5A–STAT5A fusion, breakpoint KDM5A aa 224; sample P-0039045-T01-IM6</title></rect>
+<rect x="60.0" y="82.0" width="74.2" height="22" fill="#e2e2e2"><title>KDM5A backbone (0-224 aa, no domain); domain status lost; KDM5A–STAT5A fusion, breakpoint KDM5A aa 224; sample P-0039045-T01-IM6</title></rect>
+<rect x="66.6" y="82.0" width="10.9" height="22" fill="#2878b5"><title>jmjN domain retained (20-53 aa); KDM5A–STAT5A fusion, breakpoint KDM5A aa 224; sample P-0039045-T01-IM6</title></rect>
+<rect x="87.2" y="82.0" width="29.2" height="22" fill="#2878b5"><title>ARID/BRIGHT DNA binding domain retained (82-170 aa); KDM5A–STAT5A fusion, breakpoint KDM5A aa 224; sample P-0039045-T01-IM6</title></rect>
 <text x="101.8" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">ARID/B…</text>
 <line x1="60.3" y1="82.0" x2="60.3" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="78.6" y1="82.0" x2="78.6" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="87.2" y1="82.0" x2="87.2" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="100.8" y1="82.0" x2="100.8" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="119.6" y1="82.0" x2="119.6" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="134.2" y1="81.0" x2="134.2" y2="105.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="134.2" y1="81.0" x2="134.2" y2="105.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; KDM5A–STAT5A fusion, breakpoint KDM5A aa 224; sample P-0039045-T01-IM6</title></line>
 <text x="64.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="96.5" font-family="sans-serif" font-size="9.5">STAT5A – PLU-1-like protein lost</text>
-<rect x="60.0" y="108.0" width="74.6" height="22" fill="#4dcb96"/>
-<rect x="134.6" y="108.0" width="485.4" height="22" fill="#e2e2e2"/>
-<rect x="305.2" y="108.0" width="110.0" height="22" fill="#2878b5"/>
+<rect x="60.0" y="108.0" width="74.6" height="22" fill="#8064a2"><title>Partner gene CACNA1C; KDM5A–CACNA1C fusion, breakpoint KDM5A aa 225; sample P-0030473-T01-IM6</title></rect>
+<rect x="134.6" y="108.0" width="485.4" height="22" fill="#e2e2e2"><title>KDM5A backbone (225-1690 aa, no domain); domain status retained; KDM5A–CACNA1C fusion, breakpoint KDM5A aa 225; sample P-0030473-T01-IM6</title></rect>
+<rect x="305.2" y="108.0" width="110.0" height="22" fill="#2878b5"><title>PLU-1-like protein retained (740-1072 aa); KDM5A–CACNA1C fusion, breakpoint KDM5A aa 225; sample P-0030473-T01-IM6</title></rect>
 <text x="360.2" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PLU-1-like protein</text>
-<rect x="284.0" y="108.0" width="17.6" height="22" fill="#2878b5"/>
+<rect x="284.0" y="108.0" width="17.6" height="22" fill="#2878b5"><title>C5HC2 zinc finger retained (676-729 aa); KDM5A–CACNA1C fusion, breakpoint KDM5A aa 225; sample P-0030473-T01-IM6</title></rect>
 <text x="292.8" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">C5H…</text>
-<rect x="445.4" y="108.0" width="17.9" height="22" fill="#2878b5"/>
+<rect x="445.4" y="108.0" width="17.9" height="22" fill="#2878b5"><title>PHD-finger retained (1163-1217 aa); KDM5A–CACNA1C fusion, breakpoint KDM5A aa 225; sample P-0030473-T01-IM6</title></rect>
 <text x="454.3" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PHD…</text>
-<rect x="157.8" y="108.0" width="15.6" height="22" fill="#2878b5"/>
+<rect x="157.8" y="108.0" width="15.6" height="22" fill="#2878b5"><title>PHD-finger retained (295-342 aa); KDM5A–CACNA1C fusion, breakpoint KDM5A aa 225; sample P-0030473-T01-IM6</title></rect>
 <text x="165.5" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PH…</text>
-<rect x="215.7" y="108.0" width="38.4" height="22" fill="#2878b5"/>
+<rect x="215.7" y="108.0" width="38.4" height="22" fill="#2878b5"><title>JmjC domain, hydroxylase retained (470-586 aa); KDM5A–CACNA1C fusion, breakpoint KDM5A aa 225; sample P-0030473-T01-IM6</title></rect>
 <text x="235.0" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">JmjC dom…</text>
 <line x1="146.2" y1="108.0" x2="146.2" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="156.4" y1="108.0" x2="156.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -64,17 +64,17 @@
 <line x1="527.9" y1="108.0" x2="527.9" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="552.4" y1="108.0" x2="552.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="597.8" y1="108.0" x2="597.8" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="134.6" y1="107.0" x2="134.6" y2="131.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="134.6" y1="107.0" x2="134.6" y2="131.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KDM5A–CACNA1C fusion, breakpoint KDM5A aa 225; sample P-0030473-T01-IM6</title></line>
 <text x="64.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="122.5" font-family="sans-serif" font-size="9.5">CACNA1C – PLU-1-like protein retained</text>
-<rect x="60.0" y="134.0" width="220.0" height="22" fill="#4dcb62"/>
-<rect x="280.0" y="134.0" width="340.0" height="22" fill="#e2e2e2"/>
-<rect x="305.2" y="134.0" width="110.0" height="22" fill="#2878b5"/>
+<rect x="60.0" y="134.0" width="220.0" height="22" fill="#8064a2"><title>Partner gene BMAL2; KDM5A–BMAL2 fusion, breakpoint KDM5A aa 664; sample P-0030719-T01-IM6</title></rect>
+<rect x="280.0" y="134.0" width="340.0" height="22" fill="#e2e2e2"><title>KDM5A backbone (664-1690 aa, no domain); domain status retained; KDM5A–BMAL2 fusion, breakpoint KDM5A aa 664; sample P-0030719-T01-IM6</title></rect>
+<rect x="305.2" y="134.0" width="110.0" height="22" fill="#2878b5"><title>PLU-1-like protein retained (740-1072 aa); KDM5A–BMAL2 fusion, breakpoint KDM5A aa 664; sample P-0030719-T01-IM6</title></rect>
 <text x="360.2" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PLU-1-like protein</text>
-<rect x="284.0" y="134.0" width="17.6" height="22" fill="#2878b5"/>
+<rect x="284.0" y="134.0" width="17.6" height="22" fill="#2878b5"><title>C5HC2 zinc finger retained (676-729 aa); KDM5A–BMAL2 fusion, breakpoint KDM5A aa 664; sample P-0030719-T01-IM6</title></rect>
 <text x="292.8" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">C5H…</text>
-<rect x="445.4" y="134.0" width="17.9" height="22" fill="#2878b5"/>
+<rect x="445.4" y="134.0" width="17.9" height="22" fill="#2878b5"><title>PHD-finger retained (1163-1217 aa); KDM5A–BMAL2 fusion, breakpoint KDM5A aa 664; sample P-0030719-T01-IM6</title></rect>
 <text x="454.3" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PHD…</text>
 <line x1="297.6" y1="134.0" x2="297.6" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="311.5" y1="134.0" x2="311.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -89,21 +89,21 @@
 <line x1="527.9" y1="134.0" x2="527.9" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="552.4" y1="134.0" x2="552.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="597.8" y1="134.0" x2="597.8" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="280.0" y1="133.0" x2="280.0" y2="157.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="280.0" y1="133.0" x2="280.0" y2="157.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KDM5A–BMAL2 fusion, breakpoint KDM5A aa 664; sample P-0030719-T01-IM6</title></line>
 <text x="64.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="148.5" font-family="sans-serif" font-size="9.5">BMAL2 – PLU-1-like protein retained</text>
-<rect x="311.5" y="160.0" width="308.5" height="22" fill="#92cb4d"/>
-<rect x="60.0" y="160.0" width="251.5" height="22" fill="#e2e2e2"/>
-<rect x="66.6" y="160.0" width="10.9" height="22" fill="#2878b5"/>
-<rect x="87.2" y="160.0" width="29.2" height="22" fill="#2878b5"/>
+<rect x="311.5" y="160.0" width="308.5" height="22" fill="#8064a2"><title>Partner gene NINJ2; KDM5A–NINJ2 fusion, breakpoint KDM5A aa 759; sample P-0030430-T03-IM7</title></rect>
+<rect x="60.0" y="160.0" width="251.5" height="22" fill="#e2e2e2"><title>KDM5A backbone (0-759 aa, no domain); domain status truncated; KDM5A–NINJ2 fusion, breakpoint KDM5A aa 759; sample P-0030430-T03-IM7</title></rect>
+<rect x="66.6" y="160.0" width="10.9" height="22" fill="#2878b5"><title>jmjN domain retained (20-53 aa); KDM5A–NINJ2 fusion, breakpoint KDM5A aa 759; sample P-0030430-T03-IM7</title></rect>
+<rect x="87.2" y="160.0" width="29.2" height="22" fill="#2878b5"><title>ARID/BRIGHT DNA binding domain retained (82-170 aa); KDM5A–NINJ2 fusion, breakpoint KDM5A aa 759; sample P-0030430-T03-IM7</title></rect>
 <text x="101.8" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">ARID/B…</text>
-<rect x="305.2" y="160.0" width="6.3" height="22" fill="#f2a93b"/>
-<rect x="284.0" y="160.0" width="17.6" height="22" fill="#2878b5"/>
+<rect x="305.2" y="160.0" width="6.3" height="22" fill="#f2a93b"><title>PLU-1-like protein truncated (740-759 aa); KDM5A–NINJ2 fusion, breakpoint KDM5A aa 759; sample P-0030430-T03-IM7</title></rect>
+<rect x="284.0" y="160.0" width="17.6" height="22" fill="#2878b5"><title>C5HC2 zinc finger retained (676-729 aa); KDM5A–NINJ2 fusion, breakpoint KDM5A aa 759; sample P-0030430-T03-IM7</title></rect>
 <text x="292.8" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">C5H…</text>
-<rect x="157.8" y="160.0" width="15.6" height="22" fill="#2878b5"/>
+<rect x="157.8" y="160.0" width="15.6" height="22" fill="#2878b5"><title>PHD-finger retained (295-342 aa); KDM5A–NINJ2 fusion, breakpoint KDM5A aa 759; sample P-0030430-T03-IM7</title></rect>
 <text x="165.5" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PH…</text>
-<rect x="215.7" y="160.0" width="38.4" height="22" fill="#2878b5"/>
+<rect x="215.7" y="160.0" width="38.4" height="22" fill="#2878b5"><title>JmjC domain, hydroxylase retained (470-586 aa); KDM5A–NINJ2 fusion, breakpoint KDM5A aa 759; sample P-0030430-T03-IM7</title></rect>
 <text x="235.0" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">JmjC dom…</text>
 <line x1="60.3" y1="160.0" x2="60.3" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="78.6" y1="160.0" x2="78.6" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -121,34 +121,34 @@
 <line x1="256.2" y1="160.0" x2="256.2" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="277.7" y1="160.0" x2="277.7" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="297.6" y1="160.0" x2="297.6" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="311.5" y1="159.0" x2="311.5" y2="183.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="311.5" y1="159.0" x2="311.5" y2="183.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; KDM5A–NINJ2 fusion, breakpoint KDM5A aa 759; sample P-0030430-T03-IM7</title></line>
 <text x="64.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="174.5" font-family="sans-serif" font-size="9.5">NINJ2 – PLU-1-like protein truncated</text>
-<rect x="60.0" y="186.0" width="434.4" height="22" fill="#4da3cb"/>
-<rect x="494.4" y="186.0" width="125.6" height="22" fill="#e2e2e2"/>
+<rect x="60.0" y="186.0" width="434.4" height="22" fill="#8064a2"><title>Partner gene COLGALT1; KDM5A–COLGALT1 fusion, breakpoint KDM5A aa 1311; sample P-0021409-T01-IM6</title></rect>
+<rect x="494.4" y="186.0" width="125.6" height="22" fill="#e2e2e2"><title>KDM5A backbone (1311-1690 aa, no domain); domain status lost; KDM5A–COLGALT1 fusion, breakpoint KDM5A aa 1311; sample P-0021409-T01-IM6</title></rect>
 <line x1="510.3" y1="186.0" x2="510.3" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="527.9" y1="186.0" x2="527.9" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="552.4" y1="186.0" x2="552.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="597.8" y1="186.0" x2="597.8" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="494.4" y1="185.0" x2="494.4" y2="209.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="494.4" y1="185.0" x2="494.4" y2="209.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; KDM5A–COLGALT1 fusion, breakpoint KDM5A aa 1311; sample P-0021409-T01-IM6</title></line>
 <text x="64.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="200.5" font-family="sans-serif" font-size="9.5">COLGALT1 – PLU-1-like protein lost</text>
-<rect x="510.0" y="212.0" width="110.0" height="22" fill="#4dcbad"/>
-<rect x="60.0" y="212.0" width="450.0" height="22" fill="#e2e2e2"/>
-<rect x="66.6" y="212.0" width="10.9" height="22" fill="#2878b5"/>
-<rect x="87.2" y="212.0" width="29.2" height="22" fill="#2878b5"/>
+<rect x="510.0" y="212.0" width="110.0" height="22" fill="#8064a2"><title>Partner gene DIPK1A; KDM5A–DIPK1A fusion, breakpoint KDM5A aa 1358; sample P-0065027-T03-IM7</title></rect>
+<rect x="60.0" y="212.0" width="450.0" height="22" fill="#e2e2e2"><title>KDM5A backbone (0-1358 aa, no domain); domain status retained; KDM5A–DIPK1A fusion, breakpoint KDM5A aa 1358; sample P-0065027-T03-IM7</title></rect>
+<rect x="66.6" y="212.0" width="10.9" height="22" fill="#2878b5"><title>jmjN domain retained (20-53 aa); KDM5A–DIPK1A fusion, breakpoint KDM5A aa 1358; sample P-0065027-T03-IM7</title></rect>
+<rect x="87.2" y="212.0" width="29.2" height="22" fill="#2878b5"><title>ARID/BRIGHT DNA binding domain retained (82-170 aa); KDM5A–DIPK1A fusion, breakpoint KDM5A aa 1358; sample P-0065027-T03-IM7</title></rect>
 <text x="101.8" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">ARID/B…</text>
-<rect x="305.2" y="212.0" width="110.0" height="22" fill="#2878b5"/>
+<rect x="305.2" y="212.0" width="110.0" height="22" fill="#2878b5"><title>PLU-1-like protein retained (740-1072 aa); KDM5A–DIPK1A fusion, breakpoint KDM5A aa 1358; sample P-0065027-T03-IM7</title></rect>
 <text x="360.2" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PLU-1-like protein</text>
-<rect x="284.0" y="212.0" width="17.6" height="22" fill="#2878b5"/>
+<rect x="284.0" y="212.0" width="17.6" height="22" fill="#2878b5"><title>C5HC2 zinc finger retained (676-729 aa); KDM5A–DIPK1A fusion, breakpoint KDM5A aa 1358; sample P-0065027-T03-IM7</title></rect>
 <text x="292.8" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">C5H…</text>
-<rect x="445.4" y="212.0" width="17.9" height="22" fill="#2878b5"/>
+<rect x="445.4" y="212.0" width="17.9" height="22" fill="#2878b5"><title>PHD-finger retained (1163-1217 aa); KDM5A–DIPK1A fusion, breakpoint KDM5A aa 1358; sample P-0065027-T03-IM7</title></rect>
 <text x="454.3" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PHD…</text>
-<rect x="157.8" y="212.0" width="15.6" height="22" fill="#2878b5"/>
+<rect x="157.8" y="212.0" width="15.6" height="22" fill="#2878b5"><title>PHD-finger retained (295-342 aa); KDM5A–DIPK1A fusion, breakpoint KDM5A aa 1358; sample P-0065027-T03-IM7</title></rect>
 <text x="165.5" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PH…</text>
-<rect x="215.7" y="212.0" width="38.4" height="22" fill="#2878b5"/>
+<rect x="215.7" y="212.0" width="38.4" height="22" fill="#2878b5"><title>JmjC domain, hydroxylase retained (470-586 aa); KDM5A–DIPK1A fusion, breakpoint KDM5A aa 1358; sample P-0065027-T03-IM7</title></rect>
 <text x="235.0" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">JmjC dom…</text>
 <line x1="60.3" y1="212.0" x2="60.3" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="78.6" y1="212.0" x2="78.6" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -174,24 +174,24 @@
 <line x1="415.6" y1="212.0" x2="415.6" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="433.4" y1="212.0" x2="433.4" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="494.4" y1="212.0" x2="494.4" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="510.0" y1="211.0" x2="510.0" y2="235.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="510.0" y1="211.0" x2="510.0" y2="235.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KDM5A–DIPK1A fusion, breakpoint KDM5A aa 1358; sample P-0065027-T03-IM7</title></line>
 <text x="64.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="226.5" font-family="sans-serif" font-size="9.5">DIPK1A – PLU-1-like protein retained</text>
-<rect x="552.1" y="238.0" width="67.9" height="22" fill="#4dcb60"/>
-<rect x="60.0" y="238.0" width="492.1" height="22" fill="#e2e2e2"/>
-<rect x="66.6" y="238.0" width="10.9" height="22" fill="#2878b5"/>
-<rect x="87.2" y="238.0" width="29.2" height="22" fill="#2878b5"/>
+<rect x="552.1" y="238.0" width="67.9" height="22" fill="#8064a2"><title>Partner gene DHX37; KDM5A–DHX37 fusion, breakpoint KDM5A aa 1485; sample P-0064343-T01-IM7</title></rect>
+<rect x="60.0" y="238.0" width="492.1" height="22" fill="#e2e2e2"><title>KDM5A backbone (0-1485 aa, no domain); domain status retained; KDM5A–DHX37 fusion, breakpoint KDM5A aa 1485; sample P-0064343-T01-IM7</title></rect>
+<rect x="66.6" y="238.0" width="10.9" height="22" fill="#2878b5"><title>jmjN domain retained (20-53 aa); KDM5A–DHX37 fusion, breakpoint KDM5A aa 1485; sample P-0064343-T01-IM7</title></rect>
+<rect x="87.2" y="238.0" width="29.2" height="22" fill="#2878b5"><title>ARID/BRIGHT DNA binding domain retained (82-170 aa); KDM5A–DHX37 fusion, breakpoint KDM5A aa 1485; sample P-0064343-T01-IM7</title></rect>
 <text x="101.8" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">ARID/B…</text>
-<rect x="305.2" y="238.0" width="110.0" height="22" fill="#2878b5"/>
+<rect x="305.2" y="238.0" width="110.0" height="22" fill="#2878b5"><title>PLU-1-like protein retained (740-1072 aa); KDM5A–DHX37 fusion, breakpoint KDM5A aa 1485; sample P-0064343-T01-IM7</title></rect>
 <text x="360.2" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PLU-1-like protein</text>
-<rect x="284.0" y="238.0" width="17.6" height="22" fill="#2878b5"/>
+<rect x="284.0" y="238.0" width="17.6" height="22" fill="#2878b5"><title>C5HC2 zinc finger retained (676-729 aa); KDM5A–DHX37 fusion, breakpoint KDM5A aa 1485; sample P-0064343-T01-IM7</title></rect>
 <text x="292.8" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">C5H…</text>
-<rect x="445.4" y="238.0" width="17.9" height="22" fill="#2878b5"/>
+<rect x="445.4" y="238.0" width="17.9" height="22" fill="#2878b5"><title>PHD-finger retained (1163-1217 aa); KDM5A–DHX37 fusion, breakpoint KDM5A aa 1485; sample P-0064343-T01-IM7</title></rect>
 <text x="454.3" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PHD…</text>
-<rect x="157.8" y="238.0" width="15.6" height="22" fill="#2878b5"/>
+<rect x="157.8" y="238.0" width="15.6" height="22" fill="#2878b5"><title>PHD-finger retained (295-342 aa); KDM5A–DHX37 fusion, breakpoint KDM5A aa 1485; sample P-0064343-T01-IM7</title></rect>
 <text x="165.5" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PH…</text>
-<rect x="215.7" y="238.0" width="38.4" height="22" fill="#2878b5"/>
+<rect x="215.7" y="238.0" width="38.4" height="22" fill="#2878b5"><title>JmjC domain, hydroxylase retained (470-586 aa); KDM5A–DHX37 fusion, breakpoint KDM5A aa 1485; sample P-0064343-T01-IM7</title></rect>
 <text x="235.0" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">JmjC dom…</text>
 <line x1="60.3" y1="238.0" x2="60.3" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="78.6" y1="238.0" x2="78.6" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -219,24 +219,24 @@
 <line x1="494.4" y1="238.0" x2="494.4" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="510.3" y1="238.0" x2="510.3" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="527.9" y1="238.0" x2="527.9" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="552.1" y1="237.0" x2="552.1" y2="261.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="552.1" y1="237.0" x2="552.1" y2="261.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KDM5A–DHX37 fusion, breakpoint KDM5A aa 1485; sample P-0064343-T01-IM7</title></line>
 <text x="64.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="252.5" font-family="sans-serif" font-size="9.5">DHX37 – PLU-1-like protein retained</text>
-<rect x="597.5" y="264.0" width="22.5" height="22" fill="#92cb4d"/>
-<rect x="60.0" y="264.0" width="537.5" height="22" fill="#e2e2e2"/>
-<rect x="66.6" y="264.0" width="10.9" height="22" fill="#2878b5"/>
-<rect x="87.2" y="264.0" width="29.2" height="22" fill="#2878b5"/>
+<rect x="597.5" y="264.0" width="22.5" height="22" fill="#8064a2"><title>Partner gene NINJ2; KDM5A–NINJ2 fusion, breakpoint KDM5A aa 1622; sample P-0060766-T02-IM7</title></rect>
+<rect x="60.0" y="264.0" width="537.5" height="22" fill="#e2e2e2"><title>KDM5A backbone (0-1622 aa, no domain); domain status retained; KDM5A–NINJ2 fusion, breakpoint KDM5A aa 1622; sample P-0060766-T02-IM7</title></rect>
+<rect x="66.6" y="264.0" width="10.9" height="22" fill="#2878b5"><title>jmjN domain retained (20-53 aa); KDM5A–NINJ2 fusion, breakpoint KDM5A aa 1622; sample P-0060766-T02-IM7</title></rect>
+<rect x="87.2" y="264.0" width="29.2" height="22" fill="#2878b5"><title>ARID/BRIGHT DNA binding domain retained (82-170 aa); KDM5A–NINJ2 fusion, breakpoint KDM5A aa 1622; sample P-0060766-T02-IM7</title></rect>
 <text x="101.8" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">ARID/B…</text>
-<rect x="305.2" y="264.0" width="110.0" height="22" fill="#2878b5"/>
+<rect x="305.2" y="264.0" width="110.0" height="22" fill="#2878b5"><title>PLU-1-like protein retained (740-1072 aa); KDM5A–NINJ2 fusion, breakpoint KDM5A aa 1622; sample P-0060766-T02-IM7</title></rect>
 <text x="360.2" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PLU-1-like protein</text>
-<rect x="284.0" y="264.0" width="17.6" height="22" fill="#2878b5"/>
+<rect x="284.0" y="264.0" width="17.6" height="22" fill="#2878b5"><title>C5HC2 zinc finger retained (676-729 aa); KDM5A–NINJ2 fusion, breakpoint KDM5A aa 1622; sample P-0060766-T02-IM7</title></rect>
 <text x="292.8" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">C5H…</text>
-<rect x="445.4" y="264.0" width="17.9" height="22" fill="#2878b5"/>
+<rect x="445.4" y="264.0" width="17.9" height="22" fill="#2878b5"><title>PHD-finger retained (1163-1217 aa); KDM5A–NINJ2 fusion, breakpoint KDM5A aa 1622; sample P-0060766-T02-IM7</title></rect>
 <text x="454.3" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PHD…</text>
-<rect x="157.8" y="264.0" width="15.6" height="22" fill="#2878b5"/>
+<rect x="157.8" y="264.0" width="15.6" height="22" fill="#2878b5"><title>PHD-finger retained (295-342 aa); KDM5A–NINJ2 fusion, breakpoint KDM5A aa 1622; sample P-0060766-T02-IM7</title></rect>
 <text x="165.5" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PH…</text>
-<rect x="215.7" y="264.0" width="38.4" height="22" fill="#2878b5"/>
+<rect x="215.7" y="264.0" width="38.4" height="22" fill="#2878b5"><title>JmjC domain, hydroxylase retained (470-586 aa); KDM5A–NINJ2 fusion, breakpoint KDM5A aa 1622; sample P-0060766-T02-IM7</title></rect>
 <text x="235.0" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">JmjC dom…</text>
 <line x1="60.3" y1="264.0" x2="60.3" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="78.6" y1="264.0" x2="78.6" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -265,7 +265,7 @@
 <line x1="510.3" y1="264.0" x2="510.3" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="527.9" y1="264.0" x2="527.9" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="552.4" y1="264.0" x2="552.4" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="597.5" y1="263.0" x2="597.5" y2="287.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="597.5" y1="263.0" x2="597.5" y2="287.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KDM5A–NINJ2 fusion, breakpoint KDM5A aa 1622; sample P-0060766-T02-IM7</title></line>
 <text x="64.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="278.5" font-family="sans-serif" font-size="9.5">NINJ2 – PLU-1-like protein retained</text>

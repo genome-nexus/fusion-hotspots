@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1000" height="406" viewBox="0 0 1000 406">
 <rect width="1000" height="406" fill="white"/>
 <text x="60" y="24" font-family="sans-serif" font-size="15">IKBKE fusion-transcript schematic</text>
-<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555">Fusion order varies by row; follow each row's 5' and 3' labels (IKBKE portion is domain-colored, exon ticks)</text>
-<rect x="409.6" y="56.0" width="210.4" height="22" fill="#4da7cb"/>
-<rect x="60.0" y="56.0" width="349.6" height="22" fill="#e2e2e2"/>
-<rect x="67.8" y="56.0" width="183.0" height="22" fill="#2878b5"/>
+<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555">Fusion order varies by row; follow each row's 5' and 3' labels (IKBKE portion is domain-colored, exon ticks). Partner-gene blocks share one color; row labels identify each partner.</text>
+<rect x="409.6" y="56.0" width="210.4" height="22" fill="#8064a2"><title>Partner gene NAV1; IKBKE–NAV1 fusion, breakpoint IKBKE aa 447; samples P-0051760-T01-IM6, P-0051760-T02-IM6</title></rect>
+<rect x="60.0" y="56.0" width="349.6" height="22" fill="#e2e2e2"><title>IKBKE backbone (0-447 aa, no domain); domain status retained; IKBKE–NAV1 fusion, breakpoint IKBKE aa 447; samples P-0051760-T01-IM6, P-0051760-T02-IM6</title></rect>
+<rect x="67.8" y="56.0" width="183.0" height="22" fill="#2878b5"><title>Protein kinase domain retained (10-244 aa); IKBKE–NAV1 fusion, breakpoint IKBKE aa 447; samples P-0051760-T01-IM6, P-0051760-T02-IM6</title></rect>
 <text x="159.3" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
 <line x1="60.8" y1="56.0" x2="60.8" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="83.5" y1="56.0" x2="83.5" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -16,34 +16,34 @@
 <line x1="318.9" y1="56.0" x2="318.9" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="368.9" y1="56.0" x2="368.9" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="386.1" y1="56.0" x2="386.1" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="409.6" y1="55.0" x2="409.6" y2="79.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="409.6" y1="55.0" x2="409.6" y2="79.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; IKBKE–NAV1 fusion, breakpoint IKBKE aa 447; samples P-0051760-T01-IM6, P-0051760-T02-IM6</title></line>
 <text x="64.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="70.5" font-family="sans-serif" font-size="9.5">NAV1 (x2) – Protein kinase domain retained</text>
-<rect x="119.4" y="82.0" width="500.6" height="22" fill="#4dbccb"/>
-<rect x="60.0" y="82.0" width="59.4" height="22" fill="#e2e2e2"/>
-<rect x="67.8" y="82.0" width="51.6" height="22" fill="#f2a93b"/>
+<rect x="119.4" y="82.0" width="500.6" height="22" fill="#8064a2"><title>Partner gene THBS3; IKBKE–THBS3 fusion, breakpoint IKBKE aa 76; sample P-0058226-T01-IM6</title></rect>
+<rect x="60.0" y="82.0" width="59.4" height="22" fill="#e2e2e2"><title>IKBKE backbone (0-76 aa, no domain); domain status truncated; IKBKE–THBS3 fusion, breakpoint IKBKE aa 76; sample P-0058226-T01-IM6</title></rect>
+<rect x="67.8" y="82.0" width="51.6" height="22" fill="#f2a93b"><title>Protein kinase domain truncated (10-76 aa); IKBKE–THBS3 fusion, breakpoint IKBKE aa 76; sample P-0058226-T01-IM6</title></rect>
 <text x="93.6" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kin…</text>
 <line x1="60.8" y1="82.0" x2="60.8" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="83.5" y1="82.0" x2="83.5" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="119.4" y1="81.0" x2="119.4" y2="105.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="119.4" y1="81.0" x2="119.4" y2="105.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; IKBKE–THBS3 fusion, breakpoint IKBKE aa 76; sample P-0058226-T01-IM6</title></line>
 <text x="64.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="96.5" font-family="sans-serif" font-size="9.5">THBS3 – Protein kinase domain truncated</text>
-<rect x="153.9" y="108.0" width="466.1" height="22" fill="#4db0cb"/>
-<rect x="60.0" y="108.0" width="93.9" height="22" fill="#e2e2e2"/>
-<rect x="67.8" y="108.0" width="86.0" height="22" fill="#f2a93b"/>
+<rect x="153.9" y="108.0" width="466.1" height="22" fill="#8064a2"><title>Partner gene RBBP5; IKBKE–RBBP5 fusion, breakpoint IKBKE aa 120; sample P-0052992-T01-IM6</title></rect>
+<rect x="60.0" y="108.0" width="93.9" height="22" fill="#e2e2e2"><title>IKBKE backbone (0-120 aa, no domain); domain status truncated; IKBKE–RBBP5 fusion, breakpoint IKBKE aa 120; sample P-0052992-T01-IM6</title></rect>
+<rect x="67.8" y="108.0" width="86.0" height="22" fill="#f2a93b"><title>Protein kinase domain truncated (10-120 aa); IKBKE–RBBP5 fusion, breakpoint IKBKE aa 120; sample P-0052992-T01-IM6</title></rect>
 <text x="110.8" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
 <line x1="60.8" y1="108.0" x2="60.8" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="83.5" y1="108.0" x2="83.5" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="120.2" y1="108.0" x2="120.2" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="153.9" y1="107.0" x2="153.9" y2="131.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="153.9" y1="107.0" x2="153.9" y2="131.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; IKBKE–RBBP5 fusion, breakpoint IKBKE aa 120; sample P-0052992-T01-IM6</title></line>
 <text x="64.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="122.5" font-family="sans-serif" font-size="9.5">RBBP5 – Protein kinase domain truncated</text>
-<rect x="60.0" y="134.0" width="161.1" height="22" fill="#cb774d"/>
-<rect x="221.1" y="134.0" width="398.9" height="22" fill="#e2e2e2"/>
-<rect x="221.1" y="134.0" width="29.7" height="22" fill="#f2a93b"/>
+<rect x="60.0" y="134.0" width="161.1" height="22" fill="#8064a2"><title>Partner gene TCEA3; IKBKE–TCEA3 fusion, breakpoint IKBKE aa 206; sample P-0054307-T01-IM6</title></rect>
+<rect x="221.1" y="134.0" width="398.9" height="22" fill="#e2e2e2"><title>IKBKE backbone (206-716 aa, no domain); domain status truncated; IKBKE–TCEA3 fusion, breakpoint IKBKE aa 206; sample P-0054307-T01-IM6</title></rect>
+<rect x="221.1" y="134.0" width="29.7" height="22" fill="#f2a93b"><title>Protein kinase domain truncated (206-244 aa); IKBKE–TCEA3 fusion, breakpoint IKBKE aa 206; sample P-0054307-T01-IM6</title></rect>
 <text x="236.0" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protei…</text>
 <line x1="243.0" y1="134.0" x2="243.0" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="272.0" y1="134.0" x2="272.0" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -60,12 +60,12 @@
 <line x1="564.5" y1="134.0" x2="564.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="593.4" y1="134.0" x2="593.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="612.2" y1="134.0" x2="612.2" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="221.1" y1="133.0" x2="221.1" y2="157.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="221.1" y1="133.0" x2="221.1" y2="157.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; IKBKE–TCEA3 fusion, breakpoint IKBKE aa 206; sample P-0054307-T01-IM6</title></line>
 <text x="64.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="148.5" font-family="sans-serif" font-size="9.5">TCEA3 – Protein kinase domain truncated</text>
-<rect x="60.0" y="160.0" width="280.8" height="22" fill="#554dcb"/>
-<rect x="340.8" y="160.0" width="279.2" height="22" fill="#e2e2e2"/>
+<rect x="60.0" y="160.0" width="280.8" height="22" fill="#8064a2"><title>Partner gene RASAL2; IKBKE–RASAL2 fusion, breakpoint IKBKE aa 359; sample P-0019364-T01-IM6</title></rect>
+<rect x="340.8" y="160.0" width="279.2" height="22" fill="#e2e2e2"><title>IKBKE backbone (359-716 aa, no domain); domain status lost; IKBKE–RASAL2 fusion, breakpoint IKBKE aa 359; sample P-0019364-T01-IM6</title></rect>
 <line x1="368.9" y1="160.0" x2="368.9" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="386.1" y1="160.0" x2="386.1" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="409.6" y1="160.0" x2="409.6" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -78,13 +78,13 @@
 <line x1="564.5" y1="160.0" x2="564.5" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="593.4" y1="160.0" x2="593.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="612.2" y1="160.0" x2="612.2" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="340.8" y1="159.0" x2="340.8" y2="183.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="340.8" y1="159.0" x2="340.8" y2="183.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; IKBKE–RASAL2 fusion, breakpoint IKBKE aa 359; sample P-0019364-T01-IM6</title></line>
 <text x="64.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="174.5" font-family="sans-serif" font-size="9.5">RASAL2 – Protein kinase domain lost</text>
-<rect x="368.9" y="186.0" width="251.1" height="22" fill="#6a4dcb"/>
-<rect x="60.0" y="186.0" width="308.9" height="22" fill="#e2e2e2"/>
-<rect x="67.8" y="186.0" width="183.0" height="22" fill="#2878b5"/>
+<rect x="368.9" y="186.0" width="251.1" height="22" fill="#8064a2"><title>Partner gene NFASC; IKBKE–NFASC fusion, breakpoint IKBKE aa 395; sample P-0001902-T01-IM3</title></rect>
+<rect x="60.0" y="186.0" width="308.9" height="22" fill="#e2e2e2"><title>IKBKE backbone (0-395 aa, no domain); domain status retained; IKBKE–NFASC fusion, breakpoint IKBKE aa 395; sample P-0001902-T01-IM3</title></rect>
+<rect x="67.8" y="186.0" width="183.0" height="22" fill="#2878b5"><title>Protein kinase domain retained (10-244 aa); IKBKE–NFASC fusion, breakpoint IKBKE aa 395; sample P-0001902-T01-IM3</title></rect>
 <text x="159.3" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
 <line x1="60.8" y1="186.0" x2="60.8" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="83.5" y1="186.0" x2="83.5" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -94,43 +94,43 @@
 <line x1="243.0" y1="186.0" x2="243.0" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="272.0" y1="186.0" x2="272.0" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="318.9" y1="186.0" x2="318.9" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="368.9" y1="185.0" x2="368.9" y2="209.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="368.9" y1="185.0" x2="368.9" y2="209.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; IKBKE–NFASC fusion, breakpoint IKBKE aa 395; sample P-0001902-T01-IM3</title></line>
 <text x="64.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="200.5" font-family="sans-serif" font-size="9.5">NFASC – Protein kinase domain retained</text>
-<rect x="60.0" y="212.0" width="421.6" height="22" fill="#4dcb64"/>
-<rect x="481.6" y="212.0" width="138.4" height="22" fill="#e2e2e2"/>
+<rect x="60.0" y="212.0" width="421.6" height="22" fill="#8064a2"><title>Partner gene RASSF5; IKBKE–RASSF5 fusion, breakpoint IKBKE aa 539; sample P-0067348-T01-IM7</title></rect>
+<rect x="481.6" y="212.0" width="138.4" height="22" fill="#e2e2e2"><title>IKBKE backbone (539-716 aa, no domain); domain status lost; IKBKE–RASSF5 fusion, breakpoint IKBKE aa 539; sample P-0067348-T01-IM7</title></rect>
 <line x1="501.9" y1="212.0" x2="501.9" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="512.1" y1="212.0" x2="512.1" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="538.7" y1="212.0" x2="538.7" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="564.5" y1="212.0" x2="564.5" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="593.4" y1="212.0" x2="593.4" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="612.2" y1="212.0" x2="612.2" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="481.6" y1="211.0" x2="481.6" y2="235.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="481.6" y1="211.0" x2="481.6" y2="235.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; IKBKE–RASSF5 fusion, breakpoint IKBKE aa 539; sample P-0067348-T01-IM7</title></line>
 <text x="64.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="226.5" font-family="sans-serif" font-size="9.5">RASSF5 – Protein kinase domain lost</text>
-<rect x="60.0" y="238.0" width="447.4" height="22" fill="#ad4dcb"/>
-<rect x="507.4" y="238.0" width="112.6" height="22" fill="#e2e2e2"/>
+<rect x="60.0" y="238.0" width="447.4" height="22" fill="#8064a2"><title>Partner gene SRGAP2; IKBKE–SRGAP2 fusion, breakpoint IKBKE aa 572; sample P-0022004-T02-IM6</title></rect>
+<rect x="507.4" y="238.0" width="112.6" height="22" fill="#e2e2e2"><title>IKBKE backbone (572-716 aa, no domain); domain status lost; IKBKE–SRGAP2 fusion, breakpoint IKBKE aa 572; sample P-0022004-T02-IM6</title></rect>
 <line x1="512.1" y1="238.0" x2="512.1" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="538.7" y1="238.0" x2="538.7" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="564.5" y1="238.0" x2="564.5" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="593.4" y1="238.0" x2="593.4" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="612.2" y1="238.0" x2="612.2" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="507.4" y1="237.0" x2="507.4" y2="261.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="507.4" y1="237.0" x2="507.4" y2="261.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; IKBKE–SRGAP2 fusion, breakpoint IKBKE aa 572; sample P-0022004-T02-IM6</title></line>
 <text x="64.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="252.5" font-family="sans-serif" font-size="9.5">SRGAP2 – Protein kinase domain lost</text>
-<rect x="60.0" y="264.0" width="533.4" height="22" fill="#4dcb83"/>
-<rect x="593.4" y="264.0" width="26.6" height="22" fill="#e2e2e2"/>
+<rect x="60.0" y="264.0" width="533.4" height="22" fill="#8064a2"><title>Partner gene IL20; IKBKE–IL20 fusion, breakpoint IKBKE aa 682; sample P-0027193-T03-IM6</title></rect>
+<rect x="593.4" y="264.0" width="26.6" height="22" fill="#e2e2e2"><title>IKBKE backbone (682-716 aa, no domain); domain status lost; IKBKE–IL20 fusion, breakpoint IKBKE aa 682; sample P-0027193-T03-IM6</title></rect>
 <line x1="612.2" y1="264.0" x2="612.2" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="593.4" y1="263.0" x2="593.4" y2="287.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="593.4" y1="263.0" x2="593.4" y2="287.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; IKBKE–IL20 fusion, breakpoint IKBKE aa 682; sample P-0027193-T03-IM6</title></line>
 <text x="64.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
 <text x="616.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
 <text x="660" y="278.5" font-family="sans-serif" font-size="9.5">IL20 – Protein kinase domain lost</text>
-<rect x="593.4" y="290.0" width="26.6" height="22" fill="#cb6e4d"/>
-<rect x="60.0" y="290.0" width="533.4" height="22" fill="#e2e2e2"/>
-<rect x="67.8" y="290.0" width="183.0" height="22" fill="#2878b5"/>
+<rect x="593.4" y="290.0" width="26.6" height="22" fill="#8064a2"><title>Partner gene RABGAP1L; IKBKE–RABGAP1L fusion, breakpoint IKBKE aa 682; sample P-0053124-T01-IM6</title></rect>
+<rect x="60.0" y="290.0" width="533.4" height="22" fill="#e2e2e2"><title>IKBKE backbone (0-682 aa, no domain); domain status retained; IKBKE–RABGAP1L fusion, breakpoint IKBKE aa 682; sample P-0053124-T01-IM6</title></rect>
+<rect x="67.8" y="290.0" width="183.0" height="22" fill="#2878b5"><title>Protein kinase domain retained (10-244 aa); IKBKE–RABGAP1L fusion, breakpoint IKBKE aa 682; sample P-0053124-T01-IM6</title></rect>
 <text x="159.3" y="304.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
 <line x1="60.8" y1="290.0" x2="60.8" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="83.5" y1="290.0" x2="83.5" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
@@ -150,7 +150,7 @@
 <line x1="512.1" y1="290.0" x2="512.1" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="538.7" y1="290.0" x2="538.7" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
 <line x1="564.5" y1="290.0" x2="564.5" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
-<line x1="593.4" y1="289.0" x2="593.4" y2="313.0" stroke="#d62728" stroke-width="1.6"/>
+<line x1="593.4" y1="289.0" x2="593.4" y2="313.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; IKBKE–RABGAP1L fusion, breakpoint IKBKE aa 682; sample P-0053124-T01-IM6</title></line>
 <text x="64.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
 <text x="616.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
 <text x="660" y="304.5" font-family="sans-serif" font-size="9.5">RABGAP1L – Protein kinase domain retained</text>
