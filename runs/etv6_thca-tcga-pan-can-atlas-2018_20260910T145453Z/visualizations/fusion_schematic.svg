@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="198" viewBox="0 0 1000 198">
+<rect width="1000" height="198" fill="white"/>
+<text x="60" y="24" font-family="sans-serif" font-size="15">ETV6 fusion-transcript schematic</text>
+<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555555">Fusion order varies by row; follow each row's 5' and 3' labels (ETV6 portion is domain-colored, exon ticks). Partner-gene blocks share one color; row labels identify each partner.</text>
+<rect x="252.0" y="56.0" width="368.0" height="22" fill="#8064a2"><title>Partner gene NTRK3; ETV6–NTRK3 fusion, breakpoint ETV6 aa 155; samples TCGA-CE-A27D-01, TCGA-DJ-A4V0-01, TCGA-E8-A438-01, TCGA-EL-A3ZN-01, TCGA-FE-A3PD-01</title></rect>
+<rect x="60.0" y="56.0" width="192.0" height="22" fill="#e2e2e2"><title>ETV6 backbone (0-155 aa, no domain); domain status retained; ETV6–NTRK3 fusion, breakpoint ETV6 aa 155; samples TCGA-CE-A27D-01, TCGA-DJ-A4V0-01, TCGA-E8-A438-01, TCGA-EL-A3ZN-01, TCGA-FE-A3PD-01</title></rect>
+<rect x="109.6" y="56.0" width="102.8" height="22" fill="#2878b5"><title>Sterile alpha motif (SAM)/Pointed domain retained (40-123 aa); ETV6–NTRK3 fusion, breakpoint ETV6 aa 155; samples TCGA-CE-A27D-01, TCGA-DJ-A4V0-01, TCGA-E8-A438-01, TCGA-EL-A3ZN-01, TCGA-FE-A3PD-01</title></rect>
+<text x="161.0" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Sterile alpha motif (SAM…</text>
+<line x1="61.2" y1="56.0" x2="61.2" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="74.9" y1="56.0" x2="74.9" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="128.1" y1="56.0" x2="128.1" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="196.3" y1="56.0" x2="196.3" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="252.0" y1="55.0" x2="252.0" y2="79.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; ETV6–NTRK3 fusion, breakpoint ETV6 aa 155; samples TCGA-CE-A27D-01, TCGA-DJ-A4V0-01, TCGA-E8-A438-01, TCGA-EL-A3ZN-01, TCGA-FE-A3PD-01</title></line>
+<text x="64.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="70.5" font-family="sans-serif" font-size="9.5">NTRK3 (x5) – Sterile alpha motif (SAM)/Pointed domain retained – Thyroid Cancer</text>
+<rect x="60.0" y="82.0" width="192.0" height="22" fill="#8064a2"><title>Partner gene NTRK3; ETV6–NTRK3 fusion, breakpoint ETV6 aa 155; sample TCGA-E8-A438-01</title></rect>
+<rect x="252.0" y="82.0" width="368.0" height="22" fill="#e2e2e2"><title>ETV6 backbone (155-452 aa, no domain); domain status lost; ETV6–NTRK3 fusion, breakpoint ETV6 aa 155; sample TCGA-E8-A438-01</title></rect>
+<rect x="482.5" y="82.0" width="97.9" height="22" fill="#2878b5"><title>PF00178 retained (341-420 aa); ETV6–NTRK3 fusion, breakpoint ETV6 aa 155; sample TCGA-E8-A438-01</title></rect>
+<text x="531.4" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF00178</text>
+<line x1="477.5" y1="82.0" x2="477.5" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="537.0" y1="82.0" x2="537.0" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.9" y1="82.0" x2="577.9" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="252.0" y1="81.0" x2="252.0" y2="105.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; ETV6–NTRK3 fusion, breakpoint ETV6 aa 155; sample TCGA-E8-A438-01</title></line>
+<text x="64.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="96.5" font-family="sans-serif" font-size="9.5">NTRK3 – Sterile alpha motif (SAM)/Pointed domain lost – Thyroid Cancer</text>
+<line x1="60.0" y1="112.0" x2="620.0" y2="112.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="107.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="620.0" y="107.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
+<text x="60.0" y="126.0" font-family="sans-serif" font-size="9">1</text>
+<text x="620.0" y="126.0" font-family="sans-serif" font-size="9" text-anchor="end">452 aa</text>
+<line x1="61.2" y1="130.0" x2="61.2" y2="134.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="61.2" y="135.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 61.2 135.0)">E1</text>
+<line x1="74.9" y1="130.0" x2="74.9" y2="134.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="74.9" y="135.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 74.9 135.0)">E2</text>
+<line x1="128.1" y1="130.0" x2="128.1" y2="134.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="128.1" y="135.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 128.1 135.0)">E3</text>
+<line x1="196.3" y1="130.0" x2="196.3" y2="134.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="196.3" y="135.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 196.3 135.0)">E4</text>
+<line x1="252.0" y1="130.0" x2="252.0" y2="134.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="252.0" y="135.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 252.0 135.0)">E5</text>
+<line x1="477.5" y1="130.0" x2="477.5" y2="134.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="477.5" y="135.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 477.5 135.0)">E6</text>
+<line x1="537.0" y1="130.0" x2="537.0" y2="134.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="537.0" y="135.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 537.0 135.0)">E7</text>
+<line x1="577.9" y1="130.0" x2="577.9" y2="134.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="577.9" y="135.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 577.9 135.0)">E8</text>
+<rect x="60.0" y="143.0" width="12" height="10" fill="#2878b5"/>
+<text x="76.0" y="152.0" font-family="sans-serif" font-size="9">domain retained</text>
+<rect x="227.0" y="143.0" width="12" height="10" fill="#f2a93b"/>
+<text x="243.0" y="152.0" font-family="sans-serif" font-size="9">domain truncated</text>
+<rect x="403.0" y="143.0" width="12" height="10" fill="#e2e2e2"/>
+<text x="419.0" y="152.0" font-family="sans-serif" font-size="9">target backbone (no domain)</text>
+<rect x="678.0" y="143.0" width="12" height="10" fill="#d62728"/>
+<text x="694.0" y="152.0" font-family="sans-serif" font-size="9">breakpoint</text>
+<text x="60" y="188.0" font-family="sans-serif" font-size="9" fill="#555555">Partner-block colors are decorative; row labels identify partners.</text>
+</svg>

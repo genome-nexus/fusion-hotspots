@@ -1,0 +1,753 @@
+{
+  "gene_symbol": "ETV6",
+  "study_id": "thca_tcga_pan_can_atlas_2018",
+  "molecular_profile_id": "thca_tcga_pan_can_atlas_2018_structural_variants",
+  "retrieved_at": "2026-09-10T14:54:53.071076+00:00",
+  "summary": {
+    "raw_structural_variant_count": 6,
+    "total_fusions": 6,
+    "mapped_fusions": 6,
+    "skipped_fusions": 0,
+    "in_frame_count": 6,
+    "in_frame_percent": 100.0,
+    "kinase_retained_count": 5,
+    "kinase_retained_percent": 83.33333333333333,
+    "in_frame_kinase_retained_count": 5,
+    "fisher_odds_ratio": "nan",
+    "fisher_p_value": 1.0,
+    "permutation_p_value": 1.0,
+    "frame_domain_contingency_table": [
+      [
+        5,
+        0
+      ],
+      [
+        1,
+        0
+      ]
+    ],
+    "partner_counts": [
+      {
+        "Partner_gene": "NTRK3",
+        "Event_count": 6
+      }
+    ],
+    "domain_accession": "PF02198",
+    "domain_start_aa": 40,
+    "domain_end_aa": 123,
+    "key_domains": [
+      {
+        "name": "Sterile alpha motif (SAM)/Pointed domain",
+        "accession": "PF02198",
+        "start_aa": 40,
+        "end_aa": 123
+      }
+    ],
+    "fusion_annotation_crosscheck": {
+      "agree": 6,
+      "disagree": 0,
+      "unavailable": 0
+    },
+    "configured_key_domains": [
+      {
+        "name": "Sterile alpha motif (SAM)/Pointed domain",
+        "source": "genome_nexus",
+        "key": "sam_pointed",
+        "accession": "PF02198"
+      }
+    ],
+    "configured_disruption_required_domains": []
+  },
+  "warnings": [],
+  "events": [
+    {
+      "event_id": "EVT-TCGA-CE-A27D-01-1",
+      "sample_id": "TCGA-CE-A27D-01",
+      "patient_id": null,
+      "tumor_type": "Thyroid Cancer",
+      "oncotree_code": "THPA",
+      "fusion_name": "ETV6-NTRK3",
+      "partner_gene": "NTRK3",
+      "frame_status": "in-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 11853561,
+      "breakpoint_exon": 4,
+      "breakpoint_protein_position": 155,
+      "is_intronic_breakpoint": false,
+      "fusion_annotation_crosscheck_protein_position": 154,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "hybrid junction codon: fusion-annotation reports the last complete 5-prime residue, exactly one less than this project's hybrid-junction-inclusive residue; expected convention difference, not a disagreement",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Sterile alpha motif (SAM)/Pointed domain",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "NA | ETV6-NTRK3 Fusion",
+      "source_site2_effect_on_frame": "in-frame"
+    },
+    {
+      "event_id": "EVT-TCGA-DJ-A4V0-01-2",
+      "sample_id": "TCGA-DJ-A4V0-01",
+      "patient_id": null,
+      "tumor_type": "Thyroid Cancer",
+      "oncotree_code": "THPA",
+      "fusion_name": "ETV6-NTRK3",
+      "partner_gene": "NTRK3",
+      "frame_status": "in-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 11853561,
+      "breakpoint_exon": 4,
+      "breakpoint_protein_position": 155,
+      "is_intronic_breakpoint": false,
+      "fusion_annotation_crosscheck_protein_position": 154,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "hybrid junction codon: fusion-annotation reports the last complete 5-prime residue, exactly one less than this project's hybrid-junction-inclusive residue; expected convention difference, not a disagreement",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Sterile alpha motif (SAM)/Pointed domain",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "NA | ETV6-NTRK3 Fusion",
+      "source_site2_effect_on_frame": "in-frame"
+    },
+    {
+      "event_id": "EVT-TCGA-E8-A438-01-3",
+      "sample_id": "TCGA-E8-A438-01",
+      "patient_id": null,
+      "tumor_type": "Thyroid Cancer",
+      "oncotree_code": "THPA",
+      "fusion_name": "ETV6-NTRK3",
+      "partner_gene": "NTRK3",
+      "frame_status": "in-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 11853561,
+      "breakpoint_exon": 4,
+      "breakpoint_protein_position": 155,
+      "is_intronic_breakpoint": false,
+      "fusion_annotation_crosscheck_protein_position": 154,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "hybrid junction codon: fusion-annotation reports the last complete 5-prime residue, exactly one less than this project's hybrid-junction-inclusive residue; expected convention difference, not a disagreement",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Sterile alpha motif (SAM)/Pointed domain",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "NA | ETV6-NTRK3 Fusion",
+      "source_site2_effect_on_frame": "in-frame"
+    },
+    {
+      "event_id": "EVT-TCGA-EL-A3ZN-01-4",
+      "sample_id": "TCGA-EL-A3ZN-01",
+      "patient_id": null,
+      "tumor_type": "Thyroid Cancer",
+      "oncotree_code": "THPA",
+      "fusion_name": "ETV6-NTRK3",
+      "partner_gene": "NTRK3",
+      "frame_status": "in-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 11853561,
+      "breakpoint_exon": 4,
+      "breakpoint_protein_position": 155,
+      "is_intronic_breakpoint": false,
+      "fusion_annotation_crosscheck_protein_position": 154,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "hybrid junction codon: fusion-annotation reports the last complete 5-prime residue, exactly one less than this project's hybrid-junction-inclusive residue; expected convention difference, not a disagreement",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Sterile alpha motif (SAM)/Pointed domain",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "NA | ETV6-NTRK3 Fusion",
+      "source_site2_effect_on_frame": "in-frame"
+    },
+    {
+      "event_id": "EVT-TCGA-FE-A3PD-01-5",
+      "sample_id": "TCGA-FE-A3PD-01",
+      "patient_id": null,
+      "tumor_type": "Thyroid Cancer",
+      "oncotree_code": "THPA",
+      "fusion_name": "ETV6-NTRK3",
+      "partner_gene": "NTRK3",
+      "frame_status": "in-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 11853561,
+      "breakpoint_exon": 4,
+      "breakpoint_protein_position": 155,
+      "is_intronic_breakpoint": false,
+      "fusion_annotation_crosscheck_protein_position": 154,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "hybrid junction codon: fusion-annotation reports the last complete 5-prime residue, exactly one less than this project's hybrid-junction-inclusive residue; expected convention difference, not a disagreement",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Sterile alpha motif (SAM)/Pointed domain",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "NA | ETV6-NTRK3 Fusion",
+      "source_site2_effect_on_frame": "in-frame"
+    },
+    {
+      "event_id": "EVT-TCGA-E8-A438-01-6",
+      "sample_id": "TCGA-E8-A438-01",
+      "patient_id": null,
+      "tumor_type": "Thyroid Cancer",
+      "oncotree_code": "THPA",
+      "fusion_name": "NTRK3-ETV6",
+      "partner_gene": "NTRK3",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 11869424,
+      "breakpoint_exon": 5,
+      "breakpoint_protein_position": 155,
+      "is_intronic_breakpoint": false,
+      "fusion_annotation_crosscheck_protein_position": 155,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "retained_domains": "",
+      "lost_domains": "Sterile alpha motif (SAM)/Pointed domain",
+      "disrupted_domains": "",
+      "source_annotation_text": "NA | NTRK3-ETV6 Fusion",
+      "source_site2_effect_on_frame": "in-frame"
+    }
+  ],
+  "algorithm_results": [
+    {
+      "Algorithm": "composite_score",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "weights": {
+          "recurrence": 0.3,
+          "domain_retention": 0.25,
+          "domain_disruption": 0.2,
+          "cutpoint_proximity": 0.15,
+          "confidence_certainty": 0.1
+        },
+        "neg_log10_p_cap": 10.0
+      },
+      "Summary": {
+        "gene_symbol": "ETV6",
+        "n_partners_ranked": 1,
+        "total_events": 6,
+        "components_applicable": {
+          "recurrence": true,
+          "domain_retention": true,
+          "domain_disruption": false,
+          "cutpoint_proximity": false,
+          "confidence_certainty": true
+        },
+        "domain_retention_p_value_used": 1.0,
+        "domain_disruption_p_value_used": null,
+        "inferred_cutpoint_aa": null,
+        "Runtime_seconds": 0.00013487499745679088
+      },
+      "Tables": {
+        "composite_evidence_ranking": [
+          {
+            "Partner_gene": "NTRK3",
+            "Event_count": 6,
+            "Recurrence_score": 1.0,
+            "Domain_retention_score": 0.0,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.3860334247970313,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.5209282191995432,
+            "Rank": 1
+          }
+        ]
+      },
+      "Warnings": [
+        "domain_disruption sub-score excluded: the supplied result had no applicable p-value (e.g. disruption_required_domains not configured for this gene).",
+        "cutpoint_proximity sub-score excluded: no determinable cutpoint_detection result (or no mapped breakpoints) was supplied."
+      ],
+      "Created_at": "2026-09-10T14:54:53.069744Z",
+      "Input_fingerprint": "0106452110989b83174828a541aa7c32b1011d096efbdd5ff9cc0ae8bb9b4a0d"
+    },
+    {
+      "Algorithm": "confidence_stats",
+      "Algorithm_version": "1.0.0",
+      "Parameters": {
+        "group_field": "Domain_retention_flags",
+        "group_key": "sam_pointed",
+        "group_value_map": {
+          "retained": "retained",
+          "lost": "not_retained",
+          "disrupted": "not_retained",
+          "unknown": null
+        },
+        "group_values": [
+          "retained",
+          "not_retained"
+        ],
+        "outcome_field": "Frame_status",
+        "outcome_success_value": "in-frame",
+        "outcome_valid_values": [
+          "in-frame",
+          "out-of-frame"
+        ],
+        "numeric_field": "Tumor_variant_count"
+      },
+      "Summary": {
+        "group_field": "Domain_retention_flags",
+        "group_a_label": "retained",
+        "group_b_label": "not_retained",
+        "n_group_a": 5,
+        "n_group_b": 1,
+        "mle": {
+          "outcome_field": "Frame_status",
+          "groups": {
+            "retained": {
+              "n": 5,
+              "successes": 5,
+              "point_estimate": 1.0,
+              "ci_low": 0.5655175352168251,
+              "ci_high": 1.0,
+              "method": "wilson"
+            },
+            "not_retained": {
+              "n": 1,
+              "successes": 1,
+              "point_estimate": 1.0,
+              "ci_low": 0.20654931437723745,
+              "ci_high": 1.0,
+              "method": "wilson"
+            }
+          }
+        },
+        "ttest": {
+          "numeric_field": "Tumor_variant_count",
+          "group_a_label": "retained",
+          "group_b_label": "not_retained",
+          "n_a": 0,
+          "n_b": 0,
+          "t_statistic": null,
+          "p_value": null,
+          "df": null,
+          "mean_a": null,
+          "mean_b": null
+        },
+        "Runtime_seconds": 0.0012812919994757976
+      },
+      "Tables": null,
+      "Warnings": [
+        "Welch's t-test for 'Tumor_variant_count' was not applicable; each group requires at least two non-null observations."
+      ],
+      "Created_at": "2026-09-10T14:54:53.053644Z",
+      "Input_fingerprint": "0106452110989b83174828a541aa7c32b1011d096efbdd5ff9cc0ae8bb9b4a0d"
+    },
+    {
+      "Algorithm": "cutpoint_detection",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 1000,
+        "adaptive": false
+      },
+      "Summary": {
+        "determinable": false,
+        "reason": "fewer than 2 distinct breakpoint positions to scan",
+        "n_events_analyzed": 6,
+        "inferred_cutpoint_aa": null,
+        "observed_statistic_neg_log10_p": null,
+        "observed_p_value": null,
+        "observed_odds_ratio": null,
+        "corrected_p_value": null,
+        "known_domain_boundary_comparison": null,
+        "Runtime_seconds": 8.012499893084168e-05
+      },
+      "Tables": {
+        "cutpoint_scan": []
+      },
+      "Warnings": [
+        "fewer than 2 distinct breakpoint positions to scan"
+      ],
+      "Created_at": "2026-09-10T14:54:53.055091Z",
+      "Input_fingerprint": "0106452110989b83174828a541aa7c32b1011d096efbdd5ff9cc0ae8bb9b4a0d"
+    },
+    {
+      "Algorithm": "domain_disruption",
+      "Algorithm_version": "0.2.0",
+      "Parameters": {},
+      "Summary": {
+        "fisher_odds_ratio": null,
+        "fisher_p_value": null,
+        "permutation_empirical_p_value": null,
+        "observed_in_frame_disruption_rate": null,
+        "Runtime_seconds": 1.799999881768599e-05
+      },
+      "Tables": {},
+      "Warnings": [
+        "ETV6 has no disruption_required_domains configured; domain-disruption analysis was skipped."
+      ],
+      "Created_at": "2026-09-10T14:54:53.055167Z",
+      "Input_fingerprint": "0106452110989b83174828a541aa7c32b1011d096efbdd5ff9cc0ae8bb9b4a0d"
+    },
+    {
+      "Algorithm": "domain_retention",
+      "Algorithm_version": "0.2.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 1000,
+        "adaptive": false
+      },
+      "Summary": {
+        "fisher_odds_ratio": null,
+        "fisher_p_value": 1.0,
+        "permutation_empirical_p_value": 1.0,
+        "observed_in_frame_retention_rate": 0.8333333333333334,
+        "Runtime_seconds": 0.21977995800261851
+      },
+      "Tables": {
+        "frame_domain_contingency_table": [
+          [
+            5,
+            0
+          ],
+          [
+            1,
+            0
+          ]
+        ],
+        "domain_retention_descriptives": [
+          {
+            "Domain_key": "sam_pointed",
+            "Domain_name": "Sterile alpha motif (SAM)/Pointed domain",
+            "Quantitative_call_count": 6,
+            "Fully_retained_count": 5,
+            "Truncated_count": 0,
+            "Fully_lost_count": 1,
+            "Mean_retained_fraction_among_non_retained_calls": 0.0
+          }
+        ],
+        "permutation_null_retention_rates": {
+          "omitted_from_artifact": true,
+          "count": 1000
+        }
+      },
+      "Warnings": [],
+      "Created_at": "2026-09-10T14:54:53.051062Z",
+      "Input_fingerprint": "0106452110989b83174828a541aa7c32b1011d096efbdd5ff9cc0ae8bb9b4a0d"
+    },
+    {
+      "Algorithm": "exon_retention",
+      "Algorithm_version": "1.0.0",
+      "Parameters": {
+        "target_exon": 2
+      },
+      "Summary": {
+        "target_exon": 2,
+        "retained_event_count": 5,
+        "total_event_count": 6,
+        "retained_fraction": 0.8333333333333334,
+        "Runtime_seconds": 0.00019866699949488975
+      },
+      "Tables": {
+        "Exon_retention": [
+          {
+            "Exon": 2,
+            "Retained_event_count": 5,
+            "Total_event_count": 6,
+            "Retained_fraction": 0.8333333333333334
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-09-10T14:54:53.056566Z",
+      "Input_fingerprint": "0106452110989b83174828a541aa7c32b1011d096efbdd5ff9cc0ae8bb9b4a0d"
+    },
+    {
+      "Algorithm": "expression_association",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "expression_field": "mRNA expression z-score"
+      },
+      "Summary": {
+        "expression_field": "mRNA expression z-score",
+        "fusion_positive_vs_negative": {
+          "n_fusion_positive": 5,
+          "n_fusion_negative": 493,
+          "test": "mann_whitney_u",
+          "statistic": 1149.0,
+          "p_value": 0.8014786149533218,
+          "mean_a": -0.20309999999999997,
+          "mean_b": -0.01691338742393509
+        },
+        "Runtime_seconds": 0.01216358300007414
+      },
+      "Tables": null,
+      "Warnings": [
+        "ETV6: domain-retention expression-split comparison skipped; each group needs >=2 fusion-positive samples with expression data (retained=5, not_retained=1)."
+      ],
+      "Created_at": "2026-09-10T14:54:53.068761Z",
+      "Input_fingerprint": "0106452110989b83174828a541aa7c32b1011d096efbdd5ff9cc0ae8bb9b4a0d"
+    },
+    {
+      "Algorithm": "frequency",
+      "Algorithm_version": "1.0.0",
+      "Parameters": {
+        "dedup_by_patient": false
+      },
+      "Summary": {
+        "input_event_count": 6,
+        "analyzed_event_count": 6,
+        "unique_partner_gene_count": 1,
+        "Runtime_seconds": 8.404199979850091e-05
+      },
+      "Tables": {
+        "Partner_gene_counts": [
+          {
+            "Partner_gene": "NTRK3",
+            "Event_count": 6
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-09-10T14:54:53.058463Z",
+      "Input_fingerprint": "0106452110989b83174828a541aa7c32b1011d096efbdd5ff9cc0ae8bb9b4a0d"
+    },
+    {
+      "Algorithm": "genomic_position_recurrence",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "bin_size_bp": 1000
+      },
+      "Summary": {
+        "determinable": true,
+        "reason": null,
+        "n_events_analyzed": 6,
+        "n_events_excluded_missing_position": 0,
+        "n_events_excluded_other_build": 0,
+        "reference_build": "GRCh37",
+        "reference_build_counts": {
+          "GRCh37": 6
+        },
+        "bin_size_bp": 1000,
+        "n_distinct_genomic_positions": 2,
+        "top_genomic_bin": {
+          "chromosome": "12",
+          "bin_start": 11853000,
+          "bin_end": 11854000,
+          "n_events": 5,
+          "event_ids": [
+            "EVT-TCGA-CE-A27D-01-1",
+            "EVT-TCGA-DJ-A4V0-01-2",
+            "EVT-TCGA-E8-A438-01-3",
+            "EVT-TCGA-EL-A3ZN-01-4",
+            "EVT-TCGA-FE-A3PD-01-5"
+          ]
+        },
+        "n_positions_shared_by_multiple_events": 1,
+        "genomic_vs_protein_clustering_note": "The 6 events sharing protein position 155 aa use 2 distinct genomic positions spanning 15863 bp -- the protein-position recurrence is broader than any single genomic hotspot, consistent with independent intronic breakpoints mapped (or clamped) onto the same protein/exon boundary rather than one shared DNA lesion.",
+        "Runtime_seconds": 0.00015454199819942005
+      },
+      "Tables": {
+        "genomic_bin_recurrence": [
+          {
+            "chromosome": "12",
+            "bin_start": 11853000,
+            "bin_end": 11854000,
+            "n_events": 5,
+            "event_ids": [
+              "EVT-TCGA-CE-A27D-01-1",
+              "EVT-TCGA-DJ-A4V0-01-2",
+              "EVT-TCGA-E8-A438-01-3",
+              "EVT-TCGA-EL-A3ZN-01-4",
+              "EVT-TCGA-FE-A3PD-01-5"
+            ]
+          },
+          {
+            "chromosome": "12",
+            "bin_start": 11869000,
+            "bin_end": 11870000,
+            "n_events": 1,
+            "event_ids": [
+              "EVT-TCGA-E8-A438-01-6"
+            ]
+          }
+        ],
+        "exact_position_recurrence": [
+          {
+            "chromosome": "12",
+            "position": 11853561,
+            "n_events": 5,
+            "event_ids": [
+              "EVT-TCGA-CE-A27D-01-1",
+              "EVT-TCGA-DJ-A4V0-01-2",
+              "EVT-TCGA-E8-A438-01-3",
+              "EVT-TCGA-EL-A3ZN-01-4",
+              "EVT-TCGA-FE-A3PD-01-5"
+            ]
+          }
+        ],
+        "protein_position_genomic_spread": [
+          {
+            "protein_position_aa": 155,
+            "n_events": 6,
+            "n_distinct_genomic_positions": 2,
+            "genomic_span_bp": 15863,
+            "spans_multiple_chromosomes": false
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-09-10T14:54:53.070878Z",
+      "Input_fingerprint": "0106452110989b83174828a541aa7c32b1011d096efbdd5ff9cc0ae8bb9b4a0d"
+    },
+    {
+      "Algorithm": "joint_partner",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {},
+      "Summary": {
+        "Runtime_seconds": 2.870800017262809e-05
+      },
+      "Tables": {},
+      "Warnings": [
+        "ETV6 has no gene_pair configured; joint-partner analysis was skipped."
+      ],
+      "Created_at": "2026-09-10T14:54:53.059429Z",
+      "Input_fingerprint": "0106452110989b83174828a541aa7c32b1011d096efbdd5ff9cc0ae8bb9b4a0d"
+    },
+    {
+      "Algorithm": "mutation_cooccurrence",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {},
+      "Summary": {
+        "targets": [],
+        "Runtime_seconds": 1.7708000086713582e-05
+      },
+      "Tables": {},
+      "Warnings": [
+        "ETV6 has no mutual_exclusivity_targets configured; co-occurrence/mutual-exclusivity analysis was skipped."
+      ],
+      "Created_at": "2026-09-10T14:54:53.059484Z",
+      "Input_fingerprint": "0106452110989b83174828a541aa7c32b1011d096efbdd5ff9cc0ae8bb9b4a0d"
+    },
+    {
+      "Algorithm": "window_detection",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 1000,
+        "widths": [
+          25,
+          50,
+          100,
+          200
+        ],
+        "min_events_per_window": 4,
+        "adaptive": false
+      },
+      "Summary": {
+        "determinable": false,
+        "reason": "fewer than 2 distinct breakpoint positions to scan",
+        "n_events_analyzed": 6,
+        "widths_tested_aa": [
+          25,
+          50,
+          100,
+          200
+        ],
+        "min_events_per_window": 4,
+        "n_candidate_windows": 0,
+        "n_distinct_candidate_windows_by_event_mask": 0,
+        "best_window": null,
+        "observed_statistic_neg_log10_p": null,
+        "observed_p_value": null,
+        "observed_odds_ratio": null,
+        "corrected_p_value": null,
+        "known_domain_boundary_comparison": null,
+        "mapping_sensitivity": {
+          "available": true,
+          "n_events": 6,
+          "n_exact": 6,
+          "n_clamped_or_approximate": 0,
+          "n_unknown": 0,
+          "fraction_clamped_or_approximate": 0.0
+        },
+        "best_window_mapping_sensitivity": null,
+        "Runtime_seconds": 9.920900265569799e-05
+      },
+      "Tables": {
+        "window_scan": [],
+        "top_windows": []
+      },
+      "Warnings": [
+        "fewer than 2 distinct breakpoint positions to scan"
+      ],
+      "Created_at": "2026-09-10T14:54:53.064176Z",
+      "Input_fingerprint": "0106452110989b83174828a541aa7c32b1011d096efbdd5ff9cc0ae8bb9b4a0d"
+    }
+  ],
+  "reference": null,
+  "gene_track": {
+    "protein_length": 452,
+    "domains": [
+      {
+        "name": "PF00178",
+        "accession": "PF00178",
+        "start_aa": 341,
+        "end_aa": 420
+      },
+      {
+        "name": "Sterile alpha motif (SAM)/Pointed domain",
+        "accession": "PF02198",
+        "start_aa": 40,
+        "end_aa": 123
+      }
+    ],
+    "exon_boundaries_aa": [
+      {
+        "exon_rank": 1,
+        "start_aa": 1,
+        "end_aa": 11
+      },
+      {
+        "exon_rank": 2,
+        "start_aa": 12,
+        "end_aa": 55
+      },
+      {
+        "exon_rank": 3,
+        "start_aa": 55,
+        "end_aa": 110
+      },
+      {
+        "exon_rank": 4,
+        "start_aa": 110,
+        "end_aa": 155
+      },
+      {
+        "exon_rank": 5,
+        "start_aa": 155,
+        "end_aa": 337
+      },
+      {
+        "exon_rank": 6,
+        "start_aa": 337,
+        "end_aa": 384
+      },
+      {
+        "exon_rank": 7,
+        "start_aa": 385,
+        "end_aa": 418
+      },
+      {
+        "exon_rank": 8,
+        "start_aa": 418,
+        "end_aa": 453
+      }
+    ]
+  },
+  "intragenic_deletions": []
+}

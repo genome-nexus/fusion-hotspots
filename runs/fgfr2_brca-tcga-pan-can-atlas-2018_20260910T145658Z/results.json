@@ -1,0 +1,996 @@
+{
+  "gene_symbol": "FGFR2",
+  "study_id": "brca_tcga_pan_can_atlas_2018",
+  "molecular_profile_id": "brca_tcga_pan_can_atlas_2018_structural_variants",
+  "retrieved_at": "2026-09-10T14:56:58.354716+00:00",
+  "summary": {
+    "raw_structural_variant_count": 5,
+    "total_fusions": 5,
+    "mapped_fusions": 5,
+    "skipped_fusions": 0,
+    "in_frame_count": 4,
+    "in_frame_percent": 80.0,
+    "kinase_retained_count": 2,
+    "kinase_retained_percent": 40.0,
+    "in_frame_kinase_retained_count": 2,
+    "fisher_odds_ratio": "inf",
+    "fisher_p_value": 0.5999999999999999,
+    "permutation_p_value": 0.02097902097902098,
+    "frame_domain_contingency_table": [
+      [
+        2,
+        0
+      ],
+      [
+        2,
+        1
+      ]
+    ],
+    "partner_counts": [
+      {
+        "Partner_gene": "AP1M1",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "CASP7",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "CCDC6",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "CTNNA3",
+        "Event_count": 1
+      },
+      {
+        "Partner_gene": "ENPP2",
+        "Event_count": 1
+      }
+    ],
+    "domain_accession": "PF07714",
+    "domain_start_aa": 481,
+    "domain_end_aa": 757,
+    "key_domains": [
+      {
+        "name": "Protein kinase domain",
+        "accession": "PF07714",
+        "start_aa": 481,
+        "end_aa": 757
+      }
+    ],
+    "fusion_annotation_crosscheck": {
+      "agree": 5,
+      "disagree": 0,
+      "unavailable": 0
+    },
+    "configured_key_domains": [
+      {
+        "name": "Protein kinase domain",
+        "source": "genome_nexus",
+        "key": "kinase",
+        "accession": "PF07714"
+      }
+    ],
+    "configured_disruption_required_domains": [
+      {
+        "name": "Immunoglobulin D1 domain",
+        "source": "genome_nexus",
+        "key": "ig_d1",
+        "accession": "PF13895"
+      }
+    ]
+  },
+  "warnings": [],
+  "events": [
+    {
+      "event_id": "EVT-TCGA-AQ-A04L-01-1",
+      "sample_id": "TCGA-AQ-A04L-01",
+      "patient_id": null,
+      "tumor_type": "Breast Cancer",
+      "oncotree_code": "IDC",
+      "fusion_name": "FGFR2-AP1M1",
+      "partner_gene": "AP1M1",
+      "frame_status": "in-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 121496532,
+      "breakpoint_exon": 13,
+      "breakpoint_protein_position": 621,
+      "is_intronic_breakpoint": false,
+      "fusion_annotation_crosscheck_protein_position": 621,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "disrupted",
+      "domain_retained_fraction": 0.5090252707581228,
+      "domain_is_truncated": true,
+      "retained_domains": "",
+      "lost_domains": "",
+      "disrupted_domains": "Protein kinase domain",
+      "source_annotation_text": "NA | FGFR2-AP1M1 Fusion",
+      "source_site2_effect_on_frame": "in-frame"
+    },
+    {
+      "event_id": "EVT-TCGA-AN-A0AL-01-2",
+      "sample_id": "TCGA-AN-A0AL-01",
+      "patient_id": null,
+      "tumor_type": "Breast Cancer",
+      "oncotree_code": "IDC",
+      "fusion_name": "FGFR2-CASP7",
+      "partner_gene": "CASP7",
+      "frame_status": "in-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 121483698,
+      "breakpoint_exon": 17,
+      "breakpoint_protein_position": 767,
+      "is_intronic_breakpoint": false,
+      "fusion_annotation_crosscheck_protein_position": 767,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "NA | FGFR2-CASP7 Fusion",
+      "source_site2_effect_on_frame": "in-frame"
+    },
+    {
+      "event_id": "EVT-TCGA-D8-A13Z-01-3",
+      "sample_id": "TCGA-D8-A13Z-01",
+      "patient_id": null,
+      "tumor_type": "Breast Cancer",
+      "oncotree_code": "IDC",
+      "fusion_name": "FGFR2-CCDC6",
+      "partner_gene": "CCDC6",
+      "frame_status": "in-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 121483698,
+      "breakpoint_exon": 17,
+      "breakpoint_protein_position": 767,
+      "is_intronic_breakpoint": false,
+      "fusion_annotation_crosscheck_protein_position": 767,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "NA | FGFR2-CCDC6 Fusion",
+      "source_site2_effect_on_frame": "in-frame"
+    },
+    {
+      "event_id": "EVT-TCGA-AO-A03V-01-4",
+      "sample_id": "TCGA-AO-A03V-01",
+      "patient_id": null,
+      "tumor_type": "Breast Cancer",
+      "oncotree_code": "IDC",
+      "fusion_name": "FGFR2-CTNNA3",
+      "partner_gene": "CTNNA3",
+      "frame_status": "unknown",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 121503790,
+      "breakpoint_exon": 10,
+      "breakpoint_protein_position": 480,
+      "is_intronic_breakpoint": false,
+      "fusion_annotation_crosscheck_protein_position": 479,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "hybrid junction codon: fusion-annotation reports the last complete 5-prime residue, exactly one less than this project's hybrid-junction-inclusive residue; expected convention difference, not a disagreement",
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "retained_domains": "",
+      "lost_domains": "Protein kinase domain",
+      "disrupted_domains": "",
+      "source_annotation_text": "NA | FGFR2-CTNNA3 Fusion",
+      "source_site2_effect_on_frame": "frameshift"
+    },
+    {
+      "event_id": "EVT-TCGA-LD-A7W5-01-5",
+      "sample_id": "TCGA-LD-A7W5-01",
+      "patient_id": null,
+      "tumor_type": "Breast Cancer",
+      "oncotree_code": "IDC",
+      "fusion_name": "FGFR2-ENPP2",
+      "partner_gene": "ENPP2",
+      "frame_status": "in-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 121515123,
+      "breakpoint_exon": 9,
+      "breakpoint_protein_position": 427,
+      "is_intronic_breakpoint": false,
+      "fusion_annotation_crosscheck_protein_position": 427,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "retained_domains": "",
+      "lost_domains": "Protein kinase domain",
+      "disrupted_domains": "",
+      "source_annotation_text": "NA | FGFR2-ENPP2 Fusion",
+      "source_site2_effect_on_frame": "in-frame"
+    }
+  ],
+  "algorithm_results": [
+    {
+      "Algorithm": "composite_score",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "weights": {
+          "recurrence": 0.3,
+          "domain_retention": 0.25,
+          "domain_disruption": 0.2,
+          "cutpoint_proximity": 0.15,
+          "confidence_certainty": 0.1
+        },
+        "neg_log10_p_cap": 10.0
+      },
+      "Summary": {
+        "gene_symbol": "FGFR2",
+        "n_partners_ranked": 5,
+        "total_events": 5,
+        "components_applicable": {
+          "recurrence": true,
+          "domain_retention": true,
+          "domain_disruption": false,
+          "cutpoint_proximity": true,
+          "confidence_certainty": true
+        },
+        "domain_retention_p_value_used": 0.02097902097902098,
+        "domain_disruption_p_value_used": null,
+        "inferred_cutpoint_aa": 621,
+        "Runtime_seconds": 0.00017550000120536424
+      },
+      "Tables": {
+        "composite_evidence_ranking": [
+          {
+            "Partner_gene": "AP1M1",
+            "Event_count": 1,
+            "Recurrence_score": 0.2,
+            "Domain_retention_score": 0.16782147827453991,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": 1.0,
+            "Confidence_certainty_score": 0.342380227506653,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.35774174039912526,
+            "Rank": 1
+          },
+          {
+            "Partner_gene": "CTNNA3",
+            "Event_count": 1,
+            "Recurrence_score": 0.2,
+            "Domain_retention_score": 0.16782147827453991,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": 0.2731958762886598,
+            "Confidence_certainty_score": 0.342380227506653,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.22146596720324907,
+            "Rank": 2
+          },
+          {
+            "Partner_gene": "CASP7",
+            "Event_count": 1,
+            "Recurrence_score": 0.2,
+            "Domain_retention_score": 0.16782147827453991,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": 0.24742268041237114,
+            "Confidence_certainty_score": 0.342380227506653,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.2166334929764449,
+            "Rank": 3
+          },
+          {
+            "Partner_gene": "CCDC6",
+            "Event_count": 1,
+            "Recurrence_score": 0.2,
+            "Domain_retention_score": 0.16782147827453991,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": 0.24742268041237114,
+            "Confidence_certainty_score": 0.342380227506653,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.2166334929764449,
+            "Rank": 4
+          },
+          {
+            "Partner_gene": "ENPP2",
+            "Event_count": 1,
+            "Recurrence_score": 0.2,
+            "Domain_retention_score": 0.16782147827453991,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": 0.0,
+            "Confidence_certainty_score": 0.342380227506653,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.17024174039912535,
+            "Rank": 5
+          }
+        ]
+      },
+      "Warnings": [
+        "domain_disruption sub-score excluded: the supplied result had no applicable p-value (e.g. disruption_required_domains not configured for this gene)."
+      ],
+      "Created_at": "2026-09-10T14:56:58.353449Z",
+      "Input_fingerprint": "4bbbb3022e9cb1d196ba92b98cc6b9d5339e4e70e9ae4fb96a1460ea86d77c8c"
+    },
+    {
+      "Algorithm": "confidence_stats",
+      "Algorithm_version": "1.0.0",
+      "Parameters": {
+        "group_field": "Domain_retention_flags",
+        "group_key": "kinase",
+        "group_value_map": {
+          "retained": "retained",
+          "lost": "not_retained",
+          "disrupted": "not_retained",
+          "unknown": null
+        },
+        "group_values": [
+          "retained",
+          "not_retained"
+        ],
+        "outcome_field": "Frame_status",
+        "outcome_success_value": "in-frame",
+        "outcome_valid_values": [
+          "in-frame",
+          "out-of-frame"
+        ],
+        "numeric_field": "Tumor_variant_count"
+      },
+      "Summary": {
+        "group_field": "Domain_retention_flags",
+        "group_a_label": "retained",
+        "group_b_label": "not_retained",
+        "n_group_a": 2,
+        "n_group_b": 3,
+        "mle": {
+          "outcome_field": "Frame_status",
+          "groups": {
+            "retained": {
+              "n": 2,
+              "successes": 2,
+              "point_estimate": 1.0,
+              "ci_low": 0.34238022750665303,
+              "ci_high": 1.0,
+              "method": "wilson"
+            },
+            "not_retained": {
+              "n": 2,
+              "successes": 2,
+              "point_estimate": 1.0,
+              "ci_low": 0.34238022750665303,
+              "ci_high": 1.0,
+              "method": "wilson"
+            }
+          }
+        },
+        "ttest": {
+          "numeric_field": "Tumor_variant_count",
+          "group_a_label": "retained",
+          "group_b_label": "not_retained",
+          "n_a": 0,
+          "n_b": 0,
+          "t_statistic": null,
+          "p_value": null,
+          "df": null,
+          "mean_a": null,
+          "mean_b": null
+        },
+        "Runtime_seconds": 0.0004861250017711427
+      },
+      "Tables": null,
+      "Warnings": [
+        "Welch's t-test for 'Tumor_variant_count' was not applicable; each group requires at least two non-null observations."
+      ],
+      "Created_at": "2026-09-10T14:56:57.693668Z",
+      "Input_fingerprint": "4bbbb3022e9cb1d196ba92b98cc6b9d5339e4e70e9ae4fb96a1460ea86d77c8c"
+    },
+    {
+      "Algorithm": "cutpoint_detection",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 1000,
+        "adaptive": false
+      },
+      "Summary": {
+        "determinable": true,
+        "reason": null,
+        "n_events_analyzed": 5,
+        "inferred_cutpoint_aa": 621,
+        "observed_statistic_neg_log10_p": 0.9999999999999999,
+        "observed_p_value": 0.10000000000000002,
+        "observed_odds_ratio": 0.0,
+        "corrected_p_value": 0.2007992007992008,
+        "known_domain_boundary_comparison": {
+          "nearest_known_domain_boundary_aa": 757,
+          "distance_aa": -136
+        },
+        "Runtime_seconds": 0.6576484159995744
+      },
+      "Tables": {
+        "cutpoint_scan": [
+          {
+            "cutpoint": 427,
+            "n_positive_at_or_below": 0,
+            "n_positive_above": 2,
+            "n_negative_at_or_below": 1,
+            "n_negative_above": 2,
+            "odds_ratio": 0.0,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0
+          },
+          {
+            "cutpoint": 480,
+            "n_positive_at_or_below": 0,
+            "n_positive_above": 2,
+            "n_negative_at_or_below": 2,
+            "n_negative_above": 1,
+            "odds_ratio": 0.0,
+            "p_value": 0.4000000000000001,
+            "neg_log10_p_value": 0.39794000867203755
+          },
+          {
+            "cutpoint": 621,
+            "n_positive_at_or_below": 0,
+            "n_positive_above": 2,
+            "n_negative_at_or_below": 3,
+            "n_negative_above": 0,
+            "odds_ratio": 0.0,
+            "p_value": 0.10000000000000002,
+            "neg_log10_p_value": 0.9999999999999999
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-09-10T14:56:58.352233Z",
+      "Input_fingerprint": "4bbbb3022e9cb1d196ba92b98cc6b9d5339e4e70e9ae4fb96a1460ea86d77c8c"
+    },
+    {
+      "Algorithm": "domain_disruption",
+      "Algorithm_version": null,
+      "Parameters": {},
+      "Summary": {
+        "Runtime_seconds": 7.608399755554274e-05
+      },
+      "Tables": {},
+      "Warnings": [
+        "Algorithm failed: ValueError: no in-frame protein-fusion events have a known domain-retention state"
+      ],
+      "Created_at": "2026-09-10T14:56:57.706956Z",
+      "Input_fingerprint": "4bbbb3022e9cb1d196ba92b98cc6b9d5339e4e70e9ae4fb96a1460ea86d77c8c"
+    },
+    {
+      "Algorithm": "domain_retention",
+      "Algorithm_version": "0.2.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 1000,
+        "adaptive": false
+      },
+      "Summary": {
+        "fisher_odds_ratio": null,
+        "fisher_p_value": 0.5999999999999999,
+        "permutation_empirical_p_value": 0.02097902097902098,
+        "observed_in_frame_retention_rate": 0.5,
+        "Runtime_seconds": 0.12656425000022864
+      },
+      "Tables": {
+        "frame_domain_contingency_table": [
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "domain_retention_descriptives": [
+          {
+            "Domain_key": "kinase",
+            "Domain_name": "Protein kinase domain",
+            "Quantitative_call_count": 5,
+            "Fully_retained_count": 2,
+            "Truncated_count": 1,
+            "Fully_lost_count": 2,
+            "Mean_retained_fraction_among_non_retained_calls": 0.16967509025270758
+          }
+        ],
+        "permutation_null_retention_rates": {
+          "omitted_from_artifact": true,
+          "count": 1000
+        }
+      },
+      "Warnings": [],
+      "Created_at": "2026-09-10T14:56:57.691395Z",
+      "Input_fingerprint": "4bbbb3022e9cb1d196ba92b98cc6b9d5339e4e70e9ae4fb96a1460ea86d77c8c"
+    },
+    {
+      "Algorithm": "exon_retention",
+      "Algorithm_version": "1.0.0",
+      "Parameters": {
+        "target_exon": 11
+      },
+      "Summary": {
+        "target_exon": 11,
+        "retained_event_count": 3,
+        "total_event_count": 5,
+        "retained_fraction": 0.6,
+        "Runtime_seconds": 0.00020729200332425535
+      },
+      "Tables": {
+        "Exon_retention": [
+          {
+            "Exon": 11,
+            "Retained_event_count": 3,
+            "Total_event_count": 5,
+            "Retained_fraction": 0.6
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-09-10T14:56:57.720762Z",
+      "Input_fingerprint": "4bbbb3022e9cb1d196ba92b98cc6b9d5339e4e70e9ae4fb96a1460ea86d77c8c"
+    },
+    {
+      "Algorithm": "expression_association",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "expression_field": "mRNA expression z-score"
+      },
+      "Summary": {
+        "expression_field": "mRNA expression z-score",
+        "fusion_positive_vs_negative": {
+          "n_fusion_positive": 5,
+          "n_fusion_negative": 1077,
+          "test": "mann_whitney_u",
+          "statistic": 4320.0,
+          "p_value": 0.019604087715976555,
+          "mean_a": 30.81782,
+          "mean_b": 0.28085496750232125
+        },
+        "domain_retention_split": {
+          "group_a_label": "retained",
+          "group_b_label": "not_retained",
+          "n_a": 2,
+          "n_b": 3,
+          "test": "mann_whitney_u",
+          "statistic": 0.0,
+          "p_value": 0.2,
+          "mean_a": 0.27885,
+          "mean_b": 51.17713333333333
+        },
+        "Runtime_seconds": 0.016869416998815723
+      },
+      "Tables": null,
+      "Warnings": [],
+      "Created_at": "2026-09-10T14:56:57.737716Z",
+      "Input_fingerprint": "4bbbb3022e9cb1d196ba92b98cc6b9d5339e4e70e9ae4fb96a1460ea86d77c8c"
+    },
+    {
+      "Algorithm": "frequency",
+      "Algorithm_version": "1.0.0",
+      "Parameters": {
+        "dedup_by_patient": false
+      },
+      "Summary": {
+        "input_event_count": 5,
+        "analyzed_event_count": 5,
+        "unique_partner_gene_count": 5,
+        "Runtime_seconds": 9.387500176671892e-05
+      },
+      "Tables": {
+        "Partner_gene_counts": [
+          {
+            "Partner_gene": "AP1M1",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "CASP7",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "CCDC6",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "CTNNA3",
+            "Event_count": 1
+          },
+          {
+            "Partner_gene": "ENPP2",
+            "Event_count": 1
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-09-10T14:56:57.736045Z",
+      "Input_fingerprint": "4bbbb3022e9cb1d196ba92b98cc6b9d5339e4e70e9ae4fb96a1460ea86d77c8c"
+    },
+    {
+      "Algorithm": "genomic_position_recurrence",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "bin_size_bp": 1000
+      },
+      "Summary": {
+        "determinable": true,
+        "reason": null,
+        "n_events_analyzed": 5,
+        "n_events_excluded_missing_position": 0,
+        "n_events_excluded_other_build": 0,
+        "reference_build": "GRCh37",
+        "reference_build_counts": {
+          "GRCh37": 5
+        },
+        "bin_size_bp": 1000,
+        "n_distinct_genomic_positions": 4,
+        "top_genomic_bin": {
+          "chromosome": "10",
+          "bin_start": 121483000,
+          "bin_end": 121484000,
+          "n_events": 2,
+          "event_ids": [
+            "EVT-TCGA-AN-A0AL-01-2",
+            "EVT-TCGA-D8-A13Z-01-3"
+          ]
+        },
+        "n_positions_shared_by_multiple_events": 1,
+        "genomic_vs_protein_clustering_note": "All 2 events sharing protein position 767 aa share the exact same genomic breakpoint -- consistent with a real DNA-level recurrent breakpoint, not just a protein-coordinate coincidence.",
+        "Runtime_seconds": 0.00020829099958064035
+      },
+      "Tables": {
+        "genomic_bin_recurrence": [
+          {
+            "chromosome": "10",
+            "bin_start": 121483000,
+            "bin_end": 121484000,
+            "n_events": 2,
+            "event_ids": [
+              "EVT-TCGA-AN-A0AL-01-2",
+              "EVT-TCGA-D8-A13Z-01-3"
+            ]
+          },
+          {
+            "chromosome": "10",
+            "bin_start": 121496000,
+            "bin_end": 121497000,
+            "n_events": 1,
+            "event_ids": [
+              "EVT-TCGA-AQ-A04L-01-1"
+            ]
+          },
+          {
+            "chromosome": "10",
+            "bin_start": 121503000,
+            "bin_end": 121504000,
+            "n_events": 1,
+            "event_ids": [
+              "EVT-TCGA-AO-A03V-01-4"
+            ]
+          },
+          {
+            "chromosome": "10",
+            "bin_start": 121515000,
+            "bin_end": 121516000,
+            "n_events": 1,
+            "event_ids": [
+              "EVT-TCGA-LD-A7W5-01-5"
+            ]
+          }
+        ],
+        "exact_position_recurrence": [
+          {
+            "chromosome": "10",
+            "position": 121483698,
+            "n_events": 2,
+            "event_ids": [
+              "EVT-TCGA-AN-A0AL-01-2",
+              "EVT-TCGA-D8-A13Z-01-3"
+            ]
+          }
+        ],
+        "protein_position_genomic_spread": [
+          {
+            "protein_position_aa": 767,
+            "n_events": 2,
+            "n_distinct_genomic_positions": 1,
+            "genomic_span_bp": 0,
+            "spans_multiple_chromosomes": false
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-09-10T14:56:58.354373Z",
+      "Input_fingerprint": "4bbbb3022e9cb1d196ba92b98cc6b9d5339e4e70e9ae4fb96a1460ea86d77c8c"
+    },
+    {
+      "Algorithm": "joint_partner",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {},
+      "Summary": {
+        "Runtime_seconds": 2.5584002287359908e-05
+      },
+      "Tables": {},
+      "Warnings": [
+        "FGFR2 has no gene_pair configured; joint-partner analysis was skipped."
+      ],
+      "Created_at": "2026-09-10T14:56:57.739261Z",
+      "Input_fingerprint": "4bbbb3022e9cb1d196ba92b98cc6b9d5339e4e70e9ae4fb96a1460ea86d77c8c"
+    },
+    {
+      "Algorithm": "mutation_cooccurrence",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "configured_targets": [
+          {
+            "gene": "FGFR2",
+            "alteration_type": "point_mutation",
+            "entrez_gene_id": 2263,
+            "protein_change": "S252W"
+          }
+        ]
+      },
+      "Summary": {
+        "targets": [
+          {
+            "comparator_gene": "FGFR2",
+            "alteration_type": "point_mutation",
+            "protein_change": "S252W",
+            "label": "FGFR2 point_mutation (S252W)",
+            "contingency_table": [
+              [
+                0,
+                5
+              ],
+              [
+                0,
+                1079
+              ]
+            ],
+            "odds_ratio": null,
+            "p_value": 1.0,
+            "direction": "indeterminate",
+            "cohort_sample_count": 1084,
+            "fusion_positive_sample_count": 5,
+            "comparator_altered_sample_count": 0,
+            "both_altered_sample_count": 0
+          }
+        ],
+        "Runtime_seconds": 0.00027604099886957556
+      },
+      "Tables": {
+        "cooccurrence_results": [
+          {
+            "comparator_gene": "FGFR2",
+            "alteration_type": "point_mutation",
+            "protein_change": "S252W",
+            "label": "FGFR2 point_mutation (S252W)",
+            "contingency_table": [
+              [
+                0,
+                5
+              ],
+              [
+                0,
+                1079
+              ]
+            ],
+            "odds_ratio": null,
+            "p_value": 1.0,
+            "direction": "indeterminate",
+            "cohort_sample_count": 1084,
+            "fusion_positive_sample_count": 5,
+            "comparator_altered_sample_count": 0,
+            "both_altered_sample_count": 0
+          }
+        ]
+      },
+      "Warnings": [
+        "No cohort samples carried the configured comparator alteration (FGFR2 point_mutation (S252W)); its co-occurrence statistics reflect zero comparator-positive samples."
+      ],
+      "Created_at": "2026-09-10T14:56:57.739572Z",
+      "Input_fingerprint": "4bbbb3022e9cb1d196ba92b98cc6b9d5339e4e70e9ae4fb96a1460ea86d77c8c"
+    },
+    {
+      "Algorithm": "window_detection",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 1000,
+        "widths": [
+          25,
+          50,
+          100,
+          200
+        ],
+        "min_events_per_window": 4,
+        "adaptive": false
+      },
+      "Summary": {
+        "determinable": false,
+        "reason": "no candidate window of the configured widths (25, 50, 100, 200) met the minimum-event-count guard (min_events_per_window=4) on both sides of the split",
+        "n_events_analyzed": 5,
+        "widths_tested_aa": [
+          25,
+          50,
+          100,
+          200
+        ],
+        "min_events_per_window": 4,
+        "n_candidate_windows": 0,
+        "n_distinct_candidate_windows_by_event_mask": 0,
+        "best_window": null,
+        "observed_statistic_neg_log10_p": null,
+        "observed_p_value": null,
+        "observed_odds_ratio": null,
+        "corrected_p_value": null,
+        "known_domain_boundary_comparison": null,
+        "mapping_sensitivity": {
+          "available": true,
+          "n_events": 5,
+          "n_exact": 5,
+          "n_clamped_or_approximate": 0,
+          "n_unknown": 0,
+          "fraction_clamped_or_approximate": 0.0
+        },
+        "best_window_mapping_sensitivity": null,
+        "Runtime_seconds": 0.00015183299910859205
+      },
+      "Tables": {
+        "window_scan": [],
+        "top_windows": []
+      },
+      "Warnings": [
+        "no candidate window of the configured widths (25, 50, 100, 200) met the minimum-event-count guard (min_events_per_window=4) on both sides of the split"
+      ],
+      "Created_at": "2026-09-10T14:56:57.739759Z",
+      "Input_fingerprint": "4bbbb3022e9cb1d196ba92b98cc6b9d5339e4e70e9ae4fb96a1460ea86d77c8c"
+    }
+  ],
+  "reference": null,
+  "gene_track": {
+    "protein_length": 821,
+    "domains": [
+      {
+        "name": "PF13927",
+        "accession": "PF13927",
+        "start_aa": 45,
+        "end_aa": 110
+      },
+      {
+        "name": "PF13927",
+        "accession": "PF13927",
+        "start_aa": 266,
+        "end_aa": 346
+      },
+      {
+        "name": "Protein kinase domain",
+        "accession": "PF07714",
+        "start_aa": 481,
+        "end_aa": 757
+      },
+      {
+        "name": "PF07679",
+        "accession": "PF07679",
+        "start_aa": 171,
+        "end_aa": 248
+      }
+    ],
+    "exon_boundaries_aa": [
+      {
+        "exon_rank": 2,
+        "start_aa": 1,
+        "end_aa": 37
+      },
+      {
+        "exon_rank": 3,
+        "start_aa": 37,
+        "end_aa": 126
+      },
+      {
+        "exon_rank": 4,
+        "start_aa": 126,
+        "end_aa": 152
+      },
+      {
+        "exon_rank": 5,
+        "start_aa": 152,
+        "end_aa": 208
+      },
+      {
+        "exon_rank": 6,
+        "start_aa": 209,
+        "end_aa": 250
+      },
+      {
+        "exon_rank": 7,
+        "start_aa": 250,
+        "end_aa": 313
+      },
+      {
+        "exon_rank": 8,
+        "start_aa": 314,
+        "end_aa": 362
+      },
+      {
+        "exon_rank": 9,
+        "start_aa": 362,
+        "end_aa": 429
+      },
+      {
+        "exon_rank": 10,
+        "start_aa": 430,
+        "end_aa": 480
+      },
+      {
+        "exon_rank": 11,
+        "start_aa": 480,
+        "end_aa": 521
+      },
+      {
+        "exon_rank": 12,
+        "start_aa": 521,
+        "end_aa": 558
+      },
+      {
+        "exon_rank": 13,
+        "start_aa": 558,
+        "end_aa": 621
+      },
+      {
+        "exon_rank": 14,
+        "start_aa": 622,
+        "end_aa": 662
+      },
+      {
+        "exon_rank": 15,
+        "start_aa": 663,
+        "end_aa": 686
+      },
+      {
+        "exon_rank": 16,
+        "start_aa": 686,
+        "end_aa": 732
+      },
+      {
+        "exon_rank": 17,
+        "start_aa": 732,
+        "end_aa": 767
+      },
+      {
+        "exon_rank": 18,
+        "start_aa": 768,
+        "end_aa": 822
+      }
+    ]
+  },
+  "intragenic_deletions": []
+}
