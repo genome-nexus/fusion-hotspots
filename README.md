@@ -140,6 +140,24 @@ src/cfh/normalization/ Raw SV rows -> FusionEvent
 src/cfh/mapping/       Transcript/exon/domain mapping -> FusionFeature
 ```
 
+## Published viewer (GitHub Pages)
+
+Every run under `runs/` can be rendered as a backend-less, static-site HTML
+viewer (see `src/cfh/reporting/html_viewer.py`; also produced locally by
+`cfh analyze`/`cfh cohort-scan --html`). Once GitHub Pages is enabled for
+this repository (see below), `.github/workflows/pages-deploy.yml` publishes
+a live, shareable copy of that viewer automatically: on every push to `main`
+it regenerates the viewer bundle for each committed run directory — offline,
+from the already-committed `results.json`/`summary.json`/`*.svg` artifacts,
+with no network access — and deploys the result plus a landing page linking
+to every run to GitHub Pages. It can also be run manually from the Actions
+tab (`workflow_dispatch`).
+
+**One-time manual step required (this PR cannot do this itself):** a repo
+admin must enable Pages once, under **Settings > Pages > Source > GitHub
+Actions**. Until that setting is flipped, the workflow's deploy step will
+fail even though the workflow file itself is already merged.
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md).
