@@ -1,19 +1,21 @@
 """Offline artifact/CLI contract and regression on exactly three committed runs."""
 
 import json
-from pathlib import Path
 
 import pytest
 from click.testing import CliRunner
 
 from cfh.algorithms.cross_cohort_concordance import compare_cohort_runs
 from cfh.cli import main
+from conftest import latest_run_dir
 
-ROOT = Path(__file__).resolve().parents[1]
+# Never hardcode a specific run timestamp directly (see
+# ``conftest.latest_run_dir``'s docstring): regenerating one of these three
+# runs prunes its old timestamped directory and commits a new one.
 BRAF_RUNS = [
-    ROOT / "runs/braf_msk-impact-50k-2026_20260909T181926Z",
-    ROOT / "runs/braf_msk-impact-2017_20260905T012645Z",
-    ROOT / "runs/braf_thca-tcga-pan-can-atlas-2018_20260909T034447Z",
+    latest_run_dir("braf_msk-impact-50k-2026"),
+    latest_run_dir("braf_msk-impact-2017"),
+    latest_run_dir("braf_thca-tcga-pan-can-atlas-2018"),
 ]
 
 

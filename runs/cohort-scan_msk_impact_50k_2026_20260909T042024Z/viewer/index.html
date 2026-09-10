@@ -13,6 +13,7 @@ body {
 }
 .wrap { max-width: 1080px; margin: 0 auto; }
 h1 { font-size: 22px; margin: 0 0 4px; }
+h1 .badge { position: relative; top: -2px; }
 h2 {
   font-size: 16px; margin: 32px 0 10px;
   border-bottom: 1px solid #ddd; padding-bottom: 6px;
@@ -71,6 +72,31 @@ table.events th { position: sticky; top: 0; background: #fafafa; }
 .gene-links a:hover { background: #f0f0f0; }
 .gene-links a.significant { border-color: #d62728; color: #d62728; }
 .note { font-size: 12px; color: #777; margin-top: 8px; }
+.panel-note { font-size: 12px; color: #555; margin: 8px 0 0; padding-left: 18px; }
+.badge {
+  display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 9px;
+  border-radius: 999px; margin-left: 10px; vertical-align: middle;
+  text-transform: uppercase; letter-spacing: 0.03em;
+}
+.badge-curated { background: #e6f4ea; color: #1a7f37; border: 1px solid #b7e0c2; }
+.badge-auto { background: #fff4e5; color: #9a6700; border: 1px solid #f0dca6; }
+table.data-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+table.data-table th, table.data-table td {
+  text-align: left; padding: 5px 8px;
+  border-bottom: 1px solid #eee; white-space: nowrap;
+}
+table.data-table th { position: sticky; top: 0; background: #fafafa; }
+table.sortable th[data-sort-key] { cursor: pointer; user-select: none; }
+table.sortable th[data-sort-key]:hover { background: #f0f0f0; }
+table.sortable th[data-sort-key]::after { content: ""; margin-left: 4px; color: #999; }
+table.sortable th[data-sort-dir="asc"]::after { content: "\25B2"; margin-left: 4px; color: #555; }
+table.sortable th[data-sort-dir="desc"]::after { content: "\25BC"; margin-left: 4px; color: #555; }
+.data-table-frame {
+  max-height: 380px; overflow: auto;
+  border: 1px solid #e2e2e2; border-radius: 8px; background: #fff;
+}
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -468,7 +494,7 @@ table.events th { position: sticky; top: 0; background: #fafafa; }
 <text x="360" y="42" font-family="sans-serif" font-size="11">Not significant</text>
 </svg>
 </div>
-  <p class="note">Points are clickable only for genes with a full per-gene report generated (FDR-significant, curated, or an honorable mention); every other scanned gene still carries a hover tooltip on its point.</p>
+  <p class="note">Points are clickable only for genes with a full per-gene report generated (FDR-significant, curated, or an honorable mention); every other scanned gene still carries a hover tooltip on its point, but is left as plain (non-clickable) text/point rather than a dead link.</p>
   <h2>Genes with a full report (19)</h2>
   <div class="gene-links"><a class="gene-link" href="genes/alk.html">ALK</a><a class="gene-link" href="genes/braf.html">BRAF</a><a class="gene-link" href="genes/cdk12.html">CDK12</a><a class="gene-link" href="genes/cdkn2b.html">CDKN2B</a><a class="gene-link" href="genes/egfr.html">EGFR</a><a class="gene-link significant" href="genes/etv6.html">ETV6</a><a class="gene-link" href="genes/fgfr2.html">FGFR2</a><a class="gene-link" href="genes/fgfr3.html">FGFR3</a><a class="gene-link" href="genes/fh.html">FH</a><a class="gene-link significant" href="genes/fli1.html">FLI1</a><a class="gene-link" href="genes/ikbke.html">IKBKE</a><a class="gene-link" href="genes/inppl1.html">INPPL1</a><a class="gene-link" href="genes/kdm5a.html">KDM5A</a><a class="gene-link" href="genes/nab2.html">NAB2</a><a class="gene-link" href="genes/ntrk1.html">NTRK1</a><a class="gene-link significant" href="genes/ntrk3.html">NTRK3</a><a class="gene-link" href="genes/ret.html">RET</a><a class="gene-link significant" href="genes/ros1.html">ROS1</a><a class="gene-link" href="genes/tmprss2.html">TMPRSS2</a></div>
 </div>

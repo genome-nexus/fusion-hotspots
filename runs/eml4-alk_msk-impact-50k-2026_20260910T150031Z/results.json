@@ -2,7 +2,7 @@
   "gene_symbol": "EML4-ALK",
   "study_id": "msk_impact_50k_2026",
   "molecular_profile_id": "msk_impact_50k_2026_structural_variants",
-  "retrieved_at": "2026-09-09T18:36:20.503440+00:00",
+  "retrieved_at": "2026-09-10T15:00:31.244860+00:00",
   "summary": {
     "gene_pair": [
       "EML4",
@@ -7089,7 +7089,7 @@
         "expected_count": 209.95571955719558,
         "p_value": 3.9179394806030785e-08,
         "is_enriched": true,
-        "Runtime_seconds": 0.0004910839998046868
+        "Runtime_seconds": 0.0019139169999107253
       },
       "Tables": {
         "pair_results": [
@@ -7105,8 +7105,8 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-09T18:36:20.503137Z",
-      "Input_fingerprint": "3dbf59c226b3121cb5c49e39c72dd213b017da7421fcfce3006a2150bd9fb72c"
+      "Created_at": "2026-09-10T15:00:31.242540Z",
+      "Input_fingerprint": "a7cd40df9dbb9adc20d74cda891395fd728dcf9a7e6999135d664ee79e86da8a"
     }
   ]
 }

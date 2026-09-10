@@ -13,6 +13,7 @@ body {
 }
 .wrap { max-width: 1080px; margin: 0 auto; }
 h1 { font-size: 22px; margin: 0 0 4px; }
+h1 .badge { position: relative; top: -2px; }
 h2 {
   font-size: 16px; margin: 32px 0 10px;
   border-bottom: 1px solid #ddd; padding-bottom: 6px;
@@ -71,12 +72,37 @@ table.events th { position: sticky; top: 0; background: #fafafa; }
 .gene-links a:hover { background: #f0f0f0; }
 .gene-links a.significant { border-color: #d62728; color: #d62728; }
 .note { font-size: 12px; color: #777; margin-top: 8px; }
+.panel-note { font-size: 12px; color: #555; margin: 8px 0 0; padding-left: 18px; }
+.badge {
+  display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 9px;
+  border-radius: 999px; margin-left: 10px; vertical-align: middle;
+  text-transform: uppercase; letter-spacing: 0.03em;
+}
+.badge-curated { background: #e6f4ea; color: #1a7f37; border: 1px solid #b7e0c2; }
+.badge-auto { background: #fff4e5; color: #9a6700; border: 1px solid #f0dca6; }
+table.data-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+table.data-table th, table.data-table td {
+  text-align: left; padding: 5px 8px;
+  border-bottom: 1px solid #eee; white-space: nowrap;
+}
+table.data-table th { position: sticky; top: 0; background: #fafafa; }
+table.sortable th[data-sort-key] { cursor: pointer; user-select: none; }
+table.sortable th[data-sort-key]:hover { background: #f0f0f0; }
+table.sortable th[data-sort-key]::after { content: ""; margin-left: 4px; color: #999; }
+table.sortable th[data-sort-dir="asc"]::after { content: "\25B2"; margin-left: 4px; color: #555; }
+table.sortable th[data-sort-dir="desc"]::after { content: "\25BC"; margin-left: 4px; color: #555; }
+.data-table-frame {
+  max-height: 380px; overflow: auto;
+  border: 1px solid #e2e2e2; border-radius: 8px; background: #fff;
+}
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
 <div class="wrap">
   <a class="back-link" href="../index.html">&larr; Back to cohort-scan summary</a>
-  <h1>ETV6</h1>
+  <h1>ETV6<span class="badge badge-auto" title="Derived live from Genome Nexus, no curated YAML on file">Auto-configured</span></h1>
   <p class="subtitle">msk_impact_50k_2026</p>
   <div class="stat-grid"><div class="stat"><div class="label">Raw Structural Variant Count</div><div class="value">214</div></div><div class="stat"><div class="label">Total Fusions</div><div class="value">90</div></div><div class="stat"><div class="label">Mapped Fusions</div><div class="value">88</div></div><div class="stat"><div class="label">Skipped Fusions</div><div class="value">2</div></div><div class="stat"><div class="label">In Frame Count</div><div class="value">64</div></div><div class="stat"><div class="label">In Frame Percent</div><div class="value">71.11</div></div><div class="stat"><div class="label">Kinase Retained Count</div><div class="value">68</div></div><div class="stat"><div class="label">Kinase Retained Percent</div><div class="value">75.56</div></div><div class="stat"><div class="label">In Frame Kinase Retained Count</div><div class="value">58</div></div><div class="stat"><div class="label">Fisher Odds Ratio</div><div class="value">13.53</div></div><div class="stat"><div class="label">Fisher P Value</div><div class="value">5.123e-06</div></div><div class="stat"><div class="label">Permutation P Value</div><div class="value">0.009901</div></div><div class="stat"><div class="label">Domain Accession</div><div class="value">PF02198</div></div><div class="stat"><div class="label">Domain Start Aa</div><div class="value">40</div></div><div class="stat"><div class="label">Domain End Aa</div><div class="value">123</div></div></div>
   <h2>Domain retention / outlier lollipop track</h2><div class="svg-frame"><svg xmlns="http://www.w3.org/2000/svg" width="920" height="200" viewBox="0 0 920 200">
@@ -208,7 +234,7 @@ table.events th { position: sticky; top: 0; background: #fafafa; }
 <circle cx="365" cy="167.0" r="4" fill="white" stroke="#d62728" stroke-width="1.5"/><text x="375" y="172.0" font-family="sans-serif" font-size="12">reference discrepancy</text>
 <rect x="60" y="180.0" width="12" height="10" fill="#62b36f" opacity="0.55"/><text x="80" y="189.0" font-family="sans-serif" font-size="12">configured key-domain span (name/range labeled above; a second or later configured domain gets its own distinct shade)</text>
 </svg>
-</div><h2>Fusion-transcript schematic</h2>
+</div><h2>Composite evidence ranking (per partner gene)</h2><p class="panel-note">Click a column header to sort ascending/descending. 27 partner gene(s) ranked by <code>composite_score</code>.</p><div class="data-table-frame"><table class="data-table sortable" id="composite-score-table"><thead><tr><th data-sort-key="Rank">Rank</th><th data-sort-key="Partner_gene">Partner gene</th><th data-sort-key="Event_count">Events</th><th data-sort-key="Composite_score">Composite score</th><th data-sort-key="Recurrence_score">Recurrence</th><th data-sort-key="Domain_retention_score">Domain retention</th><th data-sort-key="Domain_disruption_score">Domain disruption</th><th data-sort-key="Cutpoint_proximity_score">Cutpoint proximity</th><th data-sort-key="Confidence_certainty_score">Confidence</th></tr></thead><tbody><tr><td data-sort="1">1</td><td data-sort="NTRK3">NTRK3</td><td data-sort="55">55</td><td data-sort="0.44885797730618165">0.4489</td><td data-sort="0.6111111111111112">0.6111</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.3826858607769671">0.3827</td><td data-sort="0.6824213505050083">0.6824</td></tr><tr><td data-sort="2">2</td><td data-sort="ABCC9">ABCC9</td><td data-sort="1">1</td><td data-sort="0.3396043784105003">0.3396</td><td data-sort="0.011111111111111112">0.01111</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="1.0">1</td><td data-sort="0.6824213505050083">0.6824</td></tr><tr><td data-sort="3">3</td><td data-sort="ANKS1B">ANKS1B</td><td data-sort="1">1</td><td data-sort="0.3396043784105003">0.3396</td><td data-sort="0.011111111111111112">0.01111</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="1.0">1</td><td data-sort="0.6824213505050083">0.6824</td></tr><tr><td data-sort="4">4</td><td data-sort="ARHGAP26">ARHGAP26</td><td data-sort="1">1</td><td data-sort="0.3396043784105003">0.3396</td><td data-sort="0.011111111111111112">0.01111</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="1.0">1</td><td data-sort="0.6824213505050083">0.6824</td></tr><tr><td data-sort="5">5</td><td data-sort="CUX2">CUX2</td><td data-sort="1">1</td><td data-sort="0.3396043784105003">0.3396</td><td data-sort="0.011111111111111112">0.01111</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="1.0">1</td><td data-sort="0.6824213505050083">0.6824</td></tr><tr><td data-sort="6">6</td><td data-sort="GALNT18">GALNT18</td><td data-sort="1">1</td><td data-sort="0.3396043784105003">0.3396</td><td data-sort="0.011111111111111112">0.01111</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="1.0">1</td><td data-sort="0.6824213505050083">0.6824</td></tr><tr><td data-sort="7">7</td><td data-sort="GNB1">GNB1</td><td data-sort="1">1</td><td data-sort="0.3396043784105003">0.3396</td><td data-sort="0.011111111111111112">0.01111</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="1.0">1</td><td data-sort="0.6824213505050083">0.6824</td></tr><tr><td data-sort="8">8</td><td data-sort="GRIN2B">GRIN2B</td><td data-sort="1">1</td><td data-sort="0.3396043784105003">0.3396</td><td data-sort="0.011111111111111112">0.01111</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="1.0">1</td><td data-sort="0.6824213505050083">0.6824</td></tr><tr><td data-sort="9">9</td><td data-sort="NOL4">NOL4</td><td data-sort="1">1</td><td data-sort="0.3396043784105003">0.3396</td><td data-sort="0.011111111111111112">0.01111</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="1.0">1</td><td data-sort="0.6824213505050083">0.6824</td></tr><tr><td data-sort="10">10</td><td data-sort="PLEKHG7">PLEKHG7</td><td data-sort="1">1</td><td data-sort="0.3396043784105003">0.3396</td><td data-sort="0.011111111111111112">0.01111</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="1.0">1</td><td data-sort="0.6824213505050083">0.6824</td></tr><tr><td data-sort="11">11</td><td data-sort="PTPRN2">PTPRN2</td><td data-sort="1">1</td><td data-sort="0.3396043784105003">0.3396</td><td data-sort="0.011111111111111112">0.01111</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="1.0">1</td><td data-sort="0.6824213505050083">0.6824</td></tr><tr><td data-sort="12">12</td><td data-sort="BORCS5">BORCS5</td><td data-sort="3">3</td><td data-sort="0.2492392301820115">0.2492</td><td data-sort="0.03333333333333333">0.03333</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.4736080983369487">0.4736</td><td data-sort="0.6824213505050083">0.6824</td></tr><tr><td data-sort="13">13</td><td data-sort="HCFC1">HCFC1</td><td data-sort="2">2</td><td data-sort="0.22744783466501944">0.2274</td><td data-sort="0.022222222222222223">0.02222</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.37960954446854667">0.3796</td><td data-sort="0.6824213505050083">0.6824</td></tr><tr><td data-sort="14">14</td><td data-sort="CDKN1B">CDKN1B</td><td data-sort="1">1</td><td data-sort="0.2224677189744916">0.2225</td><td data-sort="0.011111111111111112">0.01111</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.3752711496746204">0.3753</td><td data-sort="0.6824213505050083">0.6824</td></tr><tr><td data-sort="15">15</td><td data-sort="BCL2L14">BCL2L14</td><td data-sort="3">3</td><td data-sort="0.19988998940110045">0.1999</td><td data-sort="0.03333333333333333">0.03333</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.21041214750542303">0.2104</td><td data-sort="0.6824213505050083">0.6824</td></tr><tr><td data-sort="16">16</td><td data-sort="SGO2">SGO2</td><td data-sort="2">2</td><td data-sort="0.19572332273443377">0.1957</td><td data-sort="0.022222222222222223">0.02222</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.21041214750542303">0.2104</td><td data-sort="0.6824213505050083">0.6824</td></tr><tr><td data-sort="17">17</td><td data-sort="SLIT2">SLIT2</td><td data-sort="2">2</td><td data-sort="0.19572332273443377">0.1957</td><td data-sort="0.022222222222222223">0.02222</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.21041214750542303">0.2104</td><td data-sort="0.6824213505050083">0.6824</td></tr><tr><td data-sort="18">18</td><td data-sort="CCND2">CCND2</td><td data-sort="2">2</td><td data-sort="0.1923335939411286">0.1923</td><td data-sort="0.022222222222222223">0.02222</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort=""></td><td data-sort="0.6824213505050083">0.6824</td></tr><tr><td data-sort="19">19</td><td data-sort="AEBP2">AEBP2</td><td data-sort="1">1</td><td data-sort="0.1915566560677671">0.1916</td><td data-sort="0.011111111111111112">0.01111</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.21041214750542303">0.2104</td><td data-sort="0.6824213505050083">0.6824</td></tr><tr><td data-sort="20">20</td><td data-sort="APOLD1">APOLD1</td><td data-sort="1">1</td><td data-sort="0.1915566560677671">0.1916</td><td data-sort="0.011111111111111112">0.01111</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.21041214750542303">0.2104</td><td data-sort="0.6824213505050083">0.6824</td></tr><tr><td data-sort="21">21</td><td data-sort="FAM234B">FAM234B</td><td data-sort="1">1</td><td data-sort="0.1915566560677671">0.1916</td><td data-sort="0.011111111111111112">0.01111</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.21041214750542303">0.2104</td><td data-sort="0.6824213505050083">0.6824</td></tr><tr><td data-sort="22">22</td><td data-sort="FGFR1OP2">FGFR1OP2</td><td data-sort="1">1</td><td data-sort="0.1915566560677671">0.1916</td><td data-sort="0.011111111111111112">0.01111</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.21041214750542303">0.2104</td><td data-sort="0.6824213505050083">0.6824</td></tr><tr><td data-sort="23">23</td><td data-sort="IKZF3">IKZF3</td><td data-sort="1">1</td><td data-sort="0.1915566560677671">0.1916</td><td data-sort="0.011111111111111112">0.01111</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.21041214750542303">0.2104</td><td data-sort="0.6824213505050083">0.6824</td></tr><tr><td data-sort="24">24</td><td data-sort="LRP6">LRP6</td><td data-sort="1">1</td><td data-sort="0.1915566560677671">0.1916</td><td data-sort="0.011111111111111112">0.01111</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.21041214750542303">0.2104</td><td data-sort="0.6824213505050083">0.6824</td></tr><tr><td data-sort="25">25</td><td data-sort="PDE3A">PDE3A</td><td data-sort="1">1</td><td data-sort="0.1915566560677671">0.1916</td><td data-sort="0.011111111111111112">0.01111</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.21041214750542303">0.2104</td><td data-sort="0.6824213505050083">0.6824</td></tr><tr><td data-sort="26">26</td><td data-sort="SUFU">SUFU</td><td data-sort="1">1</td><td data-sort="0.1915566560677671">0.1916</td><td data-sort="0.011111111111111112">0.01111</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.21041214750542303">0.2104</td><td data-sort="0.6824213505050083">0.6824</td></tr><tr><td data-sort="27">27</td><td data-sort="PPIL2">PPIL2</td><td data-sort="2">2</td><td data-sort="0.15627104507716696">0.1563</td><td data-sort="0.022222222222222223">0.02222</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.0">0</td><td data-sort="0.6824213505050083">0.6824</td></tr></tbody></table></div><h2>Fusion-transcript schematic</h2>
 <div class="controls">
   <div class="control-group">
     <label class="title" for="tumor-type-filter">Tumor type</label>
@@ -666,6 +692,44 @@ document.addEventListener("DOMContentLoaded", function () {
   tumorSelect.addEventListener("change", applyFilters);
   statusContainer.addEventListener("change", applyFilters);
   applyFilters();
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll("table.sortable").forEach(function (table) {
+    var tbody = table.tBodies[0];
+    if (!tbody) { return; }
+    var headers = Array.from(table.querySelectorAll("thead th[data-sort-key]"));
+    var currentKey = null;
+    var currentDir = 1;
+    headers.forEach(function (th, index) {
+      th.addEventListener("click", function () {
+        var key = th.getAttribute("data-sort-key");
+        currentDir = (currentKey === key) ? -currentDir : 1;
+        currentKey = key;
+        headers.forEach(function (h) { h.removeAttribute("data-sort-dir"); });
+        th.setAttribute("data-sort-dir", currentDir === 1 ? "asc" : "desc");
+
+        var rows = Array.from(tbody.querySelectorAll("tr"));
+        rows.sort(function (a, b) {
+          var aCell = a.children[index];
+          var bCell = b.children[index];
+          var aRaw = aCell ? aCell.getAttribute("data-sort") : null;
+          var bRaw = bCell ? bCell.getAttribute("data-sort") : null;
+          var aNum = aRaw === null || aRaw === "" ? NaN : Number(aRaw);
+          var bNum = bRaw === null || bRaw === "" ? NaN : Number(bRaw);
+          var cmp;
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            cmp = aNum - bNum;
+          } else {
+            cmp = String(aRaw).localeCompare(String(bRaw));
+          }
+          return cmp * currentDir;
+        });
+        rows.forEach(function (row) { tbody.appendChild(row); });
+      });
+    });
+  });
 });
 </script>
 </body>

@@ -164,7 +164,7 @@ Reproduce the BRAF comparison using exactly the three committed gene runs:
 
 ```bash
 cfh compare-cohorts \
-  runs/braf_msk-impact-50k-2026_20260909T181926Z \
+  runs/braf_msk-impact-50k-2026_20260910T145723Z \
   runs/braf_msk-impact-2017_20260905T012645Z \
   runs/braf_thca-tcga-pan-can-atlas-2018_20260909T034447Z \
   --output /tmp/braf-cmh.json

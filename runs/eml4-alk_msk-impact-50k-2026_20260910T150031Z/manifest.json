@@ -6,7 +6,7 @@
     "https://www.genomenexus.org/ensembl/canonical-transcript/hgnc/ALK",
     "https://www.cbioportal.org/api/studies/msk_impact_50k_2026/clinical-data/fetch"
   ],
-  "git_sha": "4f9db8c838852f3de5ce4acc1bda7c4f863ba574",
+  "git_sha": "cce037590e38380ed010e0d346ddcfc7a3cd8b9f",
   "cli_args": [
     "analyze",
     "EML4-ALK",
@@ -16,5 +16,5 @@
     "--n-permutations",
     "1000"
   ],
-  "timestamp": "2026-09-09T18:36:20.503440+00:00"
+  "timestamp": "2026-09-10T15:00:31.244860+00:00"
 }
