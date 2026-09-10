@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="172" viewBox="0 0 1000 172">
+<rect width="1000" height="172" fill="white"/>
+<text x="60" y="24" font-family="sans-serif" font-size="15">ALK fusion-transcript schematic</text>
+<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555555">Fusion order varies by row; follow each row's 5' and 3' labels (ALK portion is domain-colored, exon ticks). Partner-gene blocks share one color; row labels identify each partner.</text>
+<rect x="60.0" y="56.0" width="365.7" height="22" fill="#8064a2"><title>Partner gene EML4; ALK–EML4 fusion, breakpoint ALK aa 1058; samples TCGA-50-8460-01, TCGA-67-6215-01, TCGA-67-6216-01, TCGA-78-7163-01, TCGA-86-A4P8-01</title></rect>
+<rect x="425.7" y="56.0" width="194.3" height="22" fill="#e2e2e2"><title>ALK backbone (1058-1620 aa, no domain); domain status retained; ALK–EML4 fusion, breakpoint ALK aa 1058; samples TCGA-50-8460-01, TCGA-67-6215-01, TCGA-67-6216-01, TCGA-78-7163-01, TCGA-86-A4P8-01</title></rect>
+<rect x="445.8" y="56.0" width="92.0" height="22" fill="#2878b5"><title>Protein kinase domain retained (1116-1382 aa); ALK–EML4 fusion, breakpoint ALK aa 1058; samples TCGA-50-8460-01, TCGA-67-6215-01, TCGA-67-6216-01, TCGA-78-7163-01, TCGA-86-A4P8-01</title></rect>
+<text x="491.8" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="447.2" y1="56.0" x2="447.2" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="457.9" y1="56.0" x2="457.9" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="465.1" y1="56.0" x2="465.1" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="480.3" y1="56.0" x2="480.3" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="491.4" y1="56.0" x2="491.4" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="502.1" y1="56.0" x2="502.1" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="513.9" y1="56.0" x2="513.9" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="529.4" y1="56.0" x2="529.4" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.1" y1="56.0" x2="540.1" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="425.7" y1="55.0" x2="425.7" y2="79.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; ALK–EML4 fusion, breakpoint ALK aa 1058; samples TCGA-50-8460-01, TCGA-67-6215-01, TCGA-67-6216-01, TCGA-78-7163-01, TCGA-86-A4P8-01</title></line>
+<text x="64.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="70.5" font-family="sans-serif" font-size="9.5">EML4 (x5) – Protein kinase domain retained – Non-Small Cell Lung Cancer</text>
+<line x1="60.0" y1="86.0" x2="620.0" y2="86.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="81.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="620.0" y="81.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
+<text x="60.0" y="100.0" font-family="sans-serif" font-size="9">1</text>
+<text x="620.0" y="100.0" font-family="sans-serif" font-size="9" text-anchor="end">1620 aa</text>
+<line x1="60.3" y1="104.0" x2="60.3" y2="108.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="60.3" y="109.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 60.3 109.0)">E1</text>
+<line x1="137.1" y1="104.0" x2="137.1" y2="108.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="137.1" y="109.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 137.1 109.0)">E2</text>
+<line x1="150.9" y1="104.0" x2="150.9" y2="108.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="150.9" y="109.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 150.9 109.0)">E3</text>
+<line x1="169.9" y1="104.0" x2="169.9" y2="108.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="169.9" y="109.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 169.9 109.0)">E4</text>
+<line x1="193.1" y1="104.0" x2="193.1" y2="108.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="193.1" y="109.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 193.1 109.0)">E5</text>
+<line x1="208.0" y1="104.0" x2="208.0" y2="108.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="208.0" y="109.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 208.0 109.0)">E6</text>
+<line x1="223.2" y1="104.0" x2="223.2" y2="108.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="223.2" y="109.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 223.2 109.0)">E7</text>
+<line x1="238.4" y1="104.0" x2="238.4" y2="108.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="238.4" y="109.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 238.4 109.0)">E8</text>
+<line x1="250.1" y1="104.0" x2="250.1" y2="108.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="250.1" y="109.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 250.1 109.0)">E9</text>
+<line x1="269.5" y1="104.0" x2="269.5" y2="108.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="269.5" y="109.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 269.5 109.0)">E10</text>
+<line x1="280.5" y1="104.0" x2="280.5" y2="108.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="280.5" y="109.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 280.5 109.0)">E11</text>
+<line x1="295.4" y1="104.0" x2="295.4" y2="108.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="295.4" y="109.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 295.4 109.0)">E12</text>
+<line x1="314.1" y1="104.0" x2="314.1" y2="108.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="314.1" y="109.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 314.1 109.0)">E13</text>
+<line x1="331.7" y1="104.0" x2="331.7" y2="108.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="331.7" y="109.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 331.7 109.0)">E14</text>
+<line x1="346.9" y1="104.0" x2="346.9" y2="108.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="346.9" y="109.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 346.9 109.0)">E15</text>
+<line x1="363.5" y1="104.0" x2="363.5" y2="108.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="363.5" y="109.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 363.5 109.0)">E16</text>
+<line x1="384.6" y1="104.0" x2="384.6" y2="108.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="384.6" y="109.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 384.6 109.0)">E17</text>
+<line x1="396.0" y1="104.0" x2="396.0" y2="108.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="396.0" y="109.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 396.0 109.0)">E18</text>
+<line x1="413.6" y1="104.0" x2="413.6" y2="108.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="413.6" y="109.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 413.6 109.0)">E19</text>
+<line x1="425.7" y1="104.0" x2="425.7" y2="108.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="425.7" y="109.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 425.7 109.0)">E20</text>
+<line x1="447.2" y1="104.0" x2="447.2" y2="108.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="447.2" y="109.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 447.2 109.0)">E21</text>
+<line x1="457.9" y1="104.0" x2="457.9" y2="108.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="457.9" y="109.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 457.9 109.0)">E22</text>
+<line x1="465.1" y1="104.0" x2="465.1" y2="108.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="465.1" y="109.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 465.1 109.0)">E23</text>
+<line x1="480.3" y1="104.0" x2="480.3" y2="108.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="480.3" y="109.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 480.3 109.0)">E24</text>
+<line x1="491.4" y1="104.0" x2="491.4" y2="108.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="491.4" y="109.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 491.4 109.0)">E25</text>
+<line x1="502.1" y1="104.0" x2="502.1" y2="108.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="502.1" y="109.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 502.1 109.0)">E26</text>
+<line x1="513.9" y1="104.0" x2="513.9" y2="108.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="513.9" y="109.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 513.9 109.0)">E27</text>
+<line x1="529.4" y1="104.0" x2="529.4" y2="108.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="529.4" y="109.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 529.4 109.0)">E28</text>
+<line x1="540.1" y1="104.0" x2="540.1" y2="108.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="540.1" y="109.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 540.1 109.0)">E29</text>
+<rect x="60.0" y="117.0" width="12" height="10" fill="#2878b5"/>
+<text x="76.0" y="126.0" font-family="sans-serif" font-size="9">domain retained</text>
+<rect x="227.0" y="117.0" width="12" height="10" fill="#f2a93b"/>
+<text x="243.0" y="126.0" font-family="sans-serif" font-size="9">domain truncated</text>
+<rect x="403.0" y="117.0" width="12" height="10" fill="#e2e2e2"/>
+<text x="419.0" y="126.0" font-family="sans-serif" font-size="9">target backbone (no domain)</text>
+<rect x="678.0" y="117.0" width="12" height="10" fill="#d62728"/>
+<text x="694.0" y="126.0" font-family="sans-serif" font-size="9">breakpoint</text>
+<text x="60" y="162.0" font-family="sans-serif" font-size="9" fill="#555555">Partner-block colors are decorative; row labels identify partners.</text>
+</svg>

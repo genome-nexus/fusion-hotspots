@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ETV6 fusion-hotspot report</title>
+<style>
+:root { color-scheme: light; }
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 24px 20px 60px; background: #f7f7f8; color: #1a1a1a;
+  font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+.wrap { max-width: 1080px; margin: 0 auto; }
+h1 { font-size: 22px; margin: 0 0 4px; }
+h2 {
+  font-size: 16px; margin: 32px 0 10px;
+  border-bottom: 1px solid #ddd; padding-bottom: 6px;
+}
+.subtitle { color: #555; font-size: 13px; margin: 0 0 20px; }
+.back-link {
+  display: inline-block; margin-bottom: 14px; font-size: 13px;
+  color: #2878b5; text-decoration: none;
+}
+.back-link:hover { text-decoration: underline; }
+.card {
+  background: #fff; border: 1px solid #e2e2e2;
+  border-radius: 8px; padding: 16px 18px;
+}
+.stat-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px;
+}
+.stat {
+  background: #fff; border: 1px solid #e2e2e2;
+  border-radius: 8px; padding: 10px 12px;
+}
+.stat .label {
+  font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.02em;
+}
+.stat .value { font-size: 18px; font-weight: 600; margin-top: 2px; }
+.svg-frame {
+  width: 100%; overflow-x: auto; background: #fff;
+  border: 1px solid #e2e2e2; border-radius: 8px; padding: 8px;
+}
+.svg-frame svg { display: block; max-width: 100%; height: auto; }
+.controls {
+  display: flex; flex-wrap: wrap; gap: 20px; align-items: center;
+  margin: 12px 0 16px; padding: 12px 14px; background: #fff;
+  border: 1px solid #e2e2e2; border-radius: 8px;
+}
+.control-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.control-group label.title { font-size: 12px; font-weight: 600; color: #333; }
+.control-group select { font-size: 13px; padding: 4px 6px; }
+.status-toggle { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; }
+#events-summary { font-size: 12px; color: #555; margin-left: auto; }
+table.events { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+table.events th, table.events td {
+  text-align: left; padding: 5px 8px;
+  border-bottom: 1px solid #eee; white-space: nowrap;
+}
+table.events th { position: sticky; top: 0; background: #fafafa; }
+.events-table-frame {
+  max-height: 420px; overflow: auto;
+  border: 1px solid #e2e2e2; border-radius: 8px; background: #fff;
+}
+.gene-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.gene-links a {
+  font-size: 12.5px; padding: 4px 9px; border-radius: 999px; text-decoration: none;
+  border: 1px solid #ccc; color: #1a1a1a; background: #fff;
+}
+.gene-links a:hover { background: #f0f0f0; }
+.gene-links a.significant { border-color: #d62728; color: #d62728; }
+.note { font-size: 12px; color: #777; margin-top: 8px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  
+  <h1>ETV6</h1>
+  <p class="subtitle">thca_tcga_pan_can_atlas_2018</p>
+  <div class="stat-grid"><div class="stat"><div class="label">Raw Structural Variant Count</div><div class="value">6</div></div><div class="stat"><div class="label">Total Fusions</div><div class="value">6</div></div><div class="stat"><div class="label">Mapped Fusions</div><div class="value">6</div></div><div class="stat"><div class="label">Skipped Fusions</div><div class="value">0</div></div><div class="stat"><div class="label">In Frame Count</div><div class="value">6</div></div><div class="stat"><div class="label">In Frame Percent</div><div class="value">100</div></div><div class="stat"><div class="label">Kinase Retained Count</div><div class="value">5</div></div><div class="stat"><div class="label">Kinase Retained Percent</div><div class="value">83.33</div></div><div class="stat"><div class="label">In Frame Kinase Retained Count</div><div class="value">5</div></div><div class="stat"><div class="label">Fisher Odds Ratio</div><div class="value">nan</div></div><div class="stat"><div class="label">Fisher P Value</div><div class="value">1</div></div><div class="stat"><div class="label">Permutation P Value</div><div class="value">1</div></div><div class="stat"><div class="label">Domain Accession</div><div class="value">PF02198</div></div><div class="stat"><div class="label">Domain Start Aa</div><div class="value">40</div></div><div class="stat"><div class="label">Domain End Aa</div><div class="value">123</div></div></div>
+  <h2>Domain retention / outlier lollipop track</h2><div class="svg-frame"><svg xmlns="http://www.w3.org/2000/svg" width="920" height="200" viewBox="0 0 920 200">
+<rect width="920" height="200" fill="white"/>
+<text x="60" y="28" font-family="sans-serif" font-size="16">ETV6 domain-retention track</text>
+<rect x="130.8" y="34.0" width="146.9" height="16.0" fill="#62b36f" opacity="0.55"/>
+<text x="130.8" y="46.0" font-family="sans-serif" font-size="9.5">Sterile alpha motif (SAM)/Pointed domain (40-123)</text>
+<line x1="60.0" y1="63.0" x2="860.0" y2="63.0" stroke="#444444" stroke-width="4"/>
+<circle cx="334.3" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-TCGA-CE-A27D-01-1; sample TCGA-CE-A27D-01; partner NTRK3; breakpoint aa 155; domain retained</title></circle>
+<circle cx="334.3" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-TCGA-DJ-A4V0-01-2; sample TCGA-DJ-A4V0-01; partner NTRK3; breakpoint aa 155; domain retained</title></circle>
+<circle cx="334.3" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-TCGA-E8-A438-01-3; sample TCGA-E8-A438-01; partner NTRK3; breakpoint aa 155; domain retained</title></circle>
+<circle cx="334.3" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-TCGA-EL-A3ZN-01-4; sample TCGA-EL-A3ZN-01; partner NTRK3; breakpoint aa 155; domain retained</title></circle>
+<circle cx="334.3" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-TCGA-FE-A3PD-01-5; sample TCGA-FE-A3PD-01; partner NTRK3; breakpoint aa 155; domain retained</title></circle>
+<circle cx="334.3" cy="71.0" r="3" fill="#777777" stroke="none" stroke-width="0"><title>event EVT-TCGA-E8-A438-01-6; sample TCGA-E8-A438-01; partner NTRK3; breakpoint aa 155; domain lost</title></circle>
+<line x1="60.0" y1="114.0" x2="860.0" y2="114.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="860.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
+<text x="60.0" y="128.0" font-family="sans-serif" font-size="9">1</text>
+<text x="860.0" y="128.0" font-family="sans-serif" font-size="9" text-anchor="end">452 aa</text>
+<line x1="61.8" y1="132.0" x2="61.8" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="61.8" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 61.8 137.0)">E1</text>
+<line x1="81.2" y1="132.0" x2="81.2" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="81.2" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 81.2 137.0)">E2</text>
+<line x1="157.3" y1="132.0" x2="157.3" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="157.3" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 157.3 137.0)">E3</text>
+<line x1="254.7" y1="132.0" x2="254.7" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="254.7" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 254.7 137.0)">E4</text>
+<line x1="334.3" y1="132.0" x2="334.3" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="334.3" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 334.3 137.0)">E5</text>
+<line x1="656.5" y1="132.0" x2="656.5" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="656.5" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 656.5 137.0)">E6</text>
+<line x1="741.4" y1="132.0" x2="741.4" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="741.4" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 741.4 137.0)">E7</text>
+<line x1="799.8" y1="132.0" x2="799.8" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="799.8" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 799.8 137.0)">E8</text>
+<line x1="237.0" y1="114.0" x2="237.0" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="237.0" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">100</text>
+<line x1="414.0" y1="114.0" x2="414.0" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="414.0" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">200</text>
+<line x1="591.0" y1="114.0" x2="591.0" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="591.0" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">300</text>
+<line x1="768.0" y1="114.0" x2="768.0" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="768.0" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">400</text>
+<circle cx="60" cy="167.0" r="4" fill="#2878b5"/><text x="70" y="172.0" font-family="sans-serif" font-size="12">fully retained</text>
+<circle cx="180" cy="167.0" r="4" fill="#f2a93b"/><text x="190" y="172.0" font-family="sans-serif" font-size="12">truncated</text>
+<circle cx="275" cy="167.0" r="4" fill="#777777"/><text x="285" y="172.0" font-family="sans-serif" font-size="12">fully lost</text>
+<circle cx="365" cy="167.0" r="4" fill="white" stroke="#d62728" stroke-width="1.5"/><text x="375" y="172.0" font-family="sans-serif" font-size="12">reference discrepancy</text>
+<rect x="60" y="180.0" width="12" height="10" fill="#62b36f" opacity="0.55"/><text x="80" y="189.0" font-family="sans-serif" font-size="12">configured key-domain span (name/range labeled above; a second or later configured domain gets its own distinct shade)</text>
+</svg>
+</div><h2>Fusion-transcript schematic</h2>
+<div class="controls">
+  <div class="control-group">
+    <label class="title" for="tumor-type-filter">Tumor type</label>
+    <select id="tumor-type-filter"><option value="">All tumor types</option></select>
+  </div>
+  <div class="control-group">
+    <span class="title">Domain status</span>
+    <span id="status-filter"></span>
+  </div>
+  <span id="events-summary"></span>
+</div>
+<div class="svg-frame" id="fusion-schematic-svg"><svg xmlns="http://www.w3.org/2000/svg" width="1000" height="198" viewBox="0 0 1000 198">
+<rect width="1000" height="198" fill="white"/>
+<text x="60" y="24" font-family="sans-serif" font-size="15">ETV6 fusion-transcript schematic</text>
+<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555555">Fusion order varies by row; follow each row's 5' and 3' labels (ETV6 portion is domain-colored, exon ticks). Partner-gene blocks share one color; row labels identify each partner.</text>
+<rect x="252.0" y="56.0" width="368.0" height="22" fill="#8064a2"><title>Partner gene NTRK3; ETV6–NTRK3 fusion, breakpoint ETV6 aa 155; samples TCGA-CE-A27D-01, TCGA-DJ-A4V0-01, TCGA-E8-A438-01, TCGA-EL-A3ZN-01, TCGA-FE-A3PD-01</title></rect>
+<rect x="60.0" y="56.0" width="192.0" height="22" fill="#e2e2e2"><title>ETV6 backbone (0-155 aa, no domain); domain status retained; ETV6–NTRK3 fusion, breakpoint ETV6 aa 155; samples TCGA-CE-A27D-01, TCGA-DJ-A4V0-01, TCGA-E8-A438-01, TCGA-EL-A3ZN-01, TCGA-FE-A3PD-01</title></rect>
+<rect x="109.6" y="56.0" width="102.8" height="22" fill="#2878b5"><title>Sterile alpha motif (SAM)/Pointed domain retained (40-123 aa); ETV6–NTRK3 fusion, breakpoint ETV6 aa 155; samples TCGA-CE-A27D-01, TCGA-DJ-A4V0-01, TCGA-E8-A438-01, TCGA-EL-A3ZN-01, TCGA-FE-A3PD-01</title></rect>
+<text x="161.0" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Sterile alpha motif (SAM…</text>
+<line x1="61.2" y1="56.0" x2="61.2" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="74.9" y1="56.0" x2="74.9" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="128.1" y1="56.0" x2="128.1" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="196.3" y1="56.0" x2="196.3" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="252.0" y1="55.0" x2="252.0" y2="79.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; ETV6–NTRK3 fusion, breakpoint ETV6 aa 155; samples TCGA-CE-A27D-01, TCGA-DJ-A4V0-01, TCGA-E8-A438-01, TCGA-EL-A3ZN-01, TCGA-FE-A3PD-01</title></line>
+<text x="64.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="70.5" font-family="sans-serif" font-size="9.5">NTRK3 (x5) – Sterile alpha motif (SAM)/Pointed domain retained – Thyroid Cancer</text>
+<rect x="60.0" y="82.0" width="192.0" height="22" fill="#8064a2"><title>Partner gene NTRK3; ETV6–NTRK3 fusion, breakpoint ETV6 aa 155; sample TCGA-E8-A438-01</title></rect>
+<rect x="252.0" y="82.0" width="368.0" height="22" fill="#e2e2e2"><title>ETV6 backbone (155-452 aa, no domain); domain status lost; ETV6–NTRK3 fusion, breakpoint ETV6 aa 155; sample TCGA-E8-A438-01</title></rect>
+<rect x="482.5" y="82.0" width="97.9" height="22" fill="#2878b5"><title>PF00178 retained (341-420 aa); ETV6–NTRK3 fusion, breakpoint ETV6 aa 155; sample TCGA-E8-A438-01</title></rect>
+<text x="531.4" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF00178</text>
+<line x1="477.5" y1="82.0" x2="477.5" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="537.0" y1="82.0" x2="537.0" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.9" y1="82.0" x2="577.9" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="252.0" y1="81.0" x2="252.0" y2="105.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; ETV6–NTRK3 fusion, breakpoint ETV6 aa 155; sample TCGA-E8-A438-01</title></line>
+<text x="64.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="96.5" font-family="sans-serif" font-size="9.5">NTRK3 – Sterile alpha motif (SAM)/Pointed domain lost – Thyroid Cancer</text>
+<line x1="60.0" y1="112.0" x2="620.0" y2="112.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="107.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="620.0" y="107.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
+<text x="60.0" y="126.0" font-family="sans-serif" font-size="9">1</text>
+<text x="620.0" y="126.0" font-family="sans-serif" font-size="9" text-anchor="end">452 aa</text>
+<line x1="61.2" y1="130.0" x2="61.2" y2="134.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="61.2" y="135.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 61.2 135.0)">E1</text>
+<line x1="74.9" y1="130.0" x2="74.9" y2="134.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="74.9" y="135.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 74.9 135.0)">E2</text>
+<line x1="128.1" y1="130.0" x2="128.1" y2="134.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="128.1" y="135.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 128.1 135.0)">E3</text>
+<line x1="196.3" y1="130.0" x2="196.3" y2="134.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="196.3" y="135.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 196.3 135.0)">E4</text>
+<line x1="252.0" y1="130.0" x2="252.0" y2="134.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="252.0" y="135.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 252.0 135.0)">E5</text>
+<line x1="477.5" y1="130.0" x2="477.5" y2="134.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="477.5" y="135.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 477.5 135.0)">E6</text>
+<line x1="537.0" y1="130.0" x2="537.0" y2="134.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="537.0" y="135.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 537.0 135.0)">E7</text>
+<line x1="577.9" y1="130.0" x2="577.9" y2="134.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="577.9" y="135.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 577.9 135.0)">E8</text>
+<rect x="60.0" y="143.0" width="12" height="10" fill="#2878b5"/>
+<text x="76.0" y="152.0" font-family="sans-serif" font-size="9">domain retained</text>
+<rect x="227.0" y="143.0" width="12" height="10" fill="#f2a93b"/>
+<text x="243.0" y="152.0" font-family="sans-serif" font-size="9">domain truncated</text>
+<rect x="403.0" y="143.0" width="12" height="10" fill="#e2e2e2"/>
+<text x="419.0" y="152.0" font-family="sans-serif" font-size="9">target backbone (no domain)</text>
+<rect x="678.0" y="143.0" width="12" height="10" fill="#d62728"/>
+<text x="694.0" y="152.0" font-family="sans-serif" font-size="9">breakpoint</text>
+<text x="60" y="188.0" font-family="sans-serif" font-size="9" fill="#555555">Partner-block colors are decorative; row labels identify partners.</text>
+</svg>
+</div><h2>Events</h2><div class="events-table-frame"><table class="events" id="events-table"><thead><tr><th>Event</th><th>Sample</th><th>Tumor type</th><th>Oncotree</th><th>Partner gene</th><th>Role</th><th>Breakpoint (aa)</th><th>Domain status</th></tr></thead><tbody><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained"><td>EVT-TCGA-CE-A27D-01-1</td><td>TCGA-CE-A27D-01</td><td>Thyroid Cancer</td><td>THPA</td><td>NTRK3</td><td>five_prime</td><td>155</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained"><td>EVT-TCGA-DJ-A4V0-01-2</td><td>TCGA-DJ-A4V0-01</td><td>Thyroid Cancer</td><td>THPA</td><td>NTRK3</td><td>five_prime</td><td>155</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained"><td>EVT-TCGA-E8-A438-01-3</td><td>TCGA-E8-A438-01</td><td>Thyroid Cancer</td><td>THPA</td><td>NTRK3</td><td>five_prime</td><td>155</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained"><td>EVT-TCGA-EL-A3ZN-01-4</td><td>TCGA-EL-A3ZN-01</td><td>Thyroid Cancer</td><td>THPA</td><td>NTRK3</td><td>five_prime</td><td>155</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained"><td>EVT-TCGA-FE-A3PD-01-5</td><td>TCGA-FE-A3PD-01</td><td>Thyroid Cancer</td><td>THPA</td><td>NTRK3</td><td>five_prime</td><td>155</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="lost"><td>EVT-TCGA-E8-A438-01-6</td><td>TCGA-E8-A438-01</td><td>Thyroid Cancer</td><td>THPA</td><td>NTRK3</td><td>three_prime</td><td>155</td><td>Lost</td></tr></tbody></table></div>
+</div>
+<script type="application/json" id="events-data">[{"event_id": "EVT-TCGA-CE-A27D-01-1", "sample_id": "TCGA-CE-A27D-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "NTRK3", "target_role": "five_prime", "breakpoint_protein_position": 155, "domain_status": "retained"}, {"event_id": "EVT-TCGA-DJ-A4V0-01-2", "sample_id": "TCGA-DJ-A4V0-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "NTRK3", "target_role": "five_prime", "breakpoint_protein_position": 155, "domain_status": "retained"}, {"event_id": "EVT-TCGA-E8-A438-01-3", "sample_id": "TCGA-E8-A438-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "NTRK3", "target_role": "five_prime", "breakpoint_protein_position": 155, "domain_status": "retained"}, {"event_id": "EVT-TCGA-EL-A3ZN-01-4", "sample_id": "TCGA-EL-A3ZN-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "NTRK3", "target_role": "five_prime", "breakpoint_protein_position": 155, "domain_status": "retained"}, {"event_id": "EVT-TCGA-FE-A3PD-01-5", "sample_id": "TCGA-FE-A3PD-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "NTRK3", "target_role": "five_prime", "breakpoint_protein_position": 155, "domain_status": "retained"}, {"event_id": "EVT-TCGA-E8-A438-01-6", "sample_id": "TCGA-E8-A438-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "NTRK3", "target_role": "three_prime", "breakpoint_protein_position": 155, "domain_status": "lost"}]</script>
+<script type="application/json" id="status-labels">{"retained": "Retained", "disrupted": "Truncated", "lost": "Lost"}</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var events = JSON.parse(document.getElementById("events-data").textContent);
+  var statusLabels = JSON.parse(document.getElementById("status-labels").textContent);
+
+  function distinctValues(field) {
+    var values = events.map(function (e) { return e[field]; }).filter(Boolean);
+    return Array.from(new Set(values)).sort();
+  }
+  var tumorTypes = distinctValues("tumor_type");
+  var domainStatuses = distinctValues("domain_status");
+
+  var tumorSelect = document.getElementById("tumor-type-filter");
+  tumorSelect.innerHTML = '<option value="">All tumor types</option>' + tumorTypes.map(
+    function (t) {
+      return '<option value="' + t.replace(/"/g, "&quot;") + '">' + t + "</option>";
+    }
+  ).join("");
+
+  var statusContainer = document.getElementById("status-filter");
+  statusContainer.innerHTML = domainStatuses.map(function (s) {
+    var label = statusLabels[s] || (s.charAt(0).toUpperCase() + s.slice(1));
+    var checkbox = '<input type="checkbox" value="' + s + '" checked> ';
+    return '<label class="status-toggle">' + checkbox + label + "</label>";
+  }).join("");
+
+  // Group fusion-schematic rows by the (partner, breakpoint-aa) key baked
+  // into every row shape's <title> text by cfh.reporting.fusion_schematic
+  // (e.g. "...BRAF–KIAA1549 fusion, breakpoint BRAF aa 381; ...") --
+  // read back here, never recomputed or duplicated from the algorithm side.
+  var schematicGroups = new Map();
+  events.forEach(function (e) {
+    if (!e.partner_gene || e.breakpoint_protein_position == null) { return; }
+    var key = e.partner_gene + "|" + e.breakpoint_protein_position;
+    var group = schematicGroups.get(key);
+    if (!group) {
+      group = { tumorTypes: new Set(), domainStatuses: new Set() };
+      schematicGroups.set(key, group);
+    }
+    if (e.tumor_type) { group.tumorTypes.add(e.tumor_type); }
+    if (e.domain_status) { group.domainStatuses.add(e.domain_status); }
+  });
+  var TITLE_RE = /–([^;]+?) fusion, breakpoint \S+ aa (\d+);/;
+  var schematicSvg = document.getElementById("fusion-schematic-svg");
+
+  var summaryEl = document.getElementById("events-summary");
+  var rows = Array.from(document.querySelectorAll("#events-table tbody tr"));
+
+  function applyFilters() {
+    var tumor = tumorSelect.value;
+    var checked = statusContainer.querySelectorAll("input:checked");
+    var activeStatuses = new Set(Array.from(checked).map(function (i) { return i.value; }));
+
+    var shown = 0;
+    rows.forEach(function (tr) {
+      var matchesTumor = !tumor || tr.dataset.tumorType === tumor;
+      var matchesStatus = !tr.dataset.domainStatus || activeStatuses.has(tr.dataset.domainStatus);
+      var visible = matchesTumor && matchesStatus;
+      tr.hidden = !visible;
+      if (visible) { shown += 1; }
+    });
+    if (summaryEl) {
+      summaryEl.textContent = "Showing " + shown + " of " + rows.length + " events";
+    }
+
+    if (schematicSvg) {
+      schematicSvg.querySelectorAll("title").forEach(function (titleEl) {
+        var match = TITLE_RE.exec(titleEl.textContent || "");
+        var shape = titleEl.parentElement;
+        if (!match) { return; }
+        var group = schematicGroups.get(match[1] + "|" + match[2]);
+        if (!group) { shape.style.opacity = ""; return; }
+        var groupMatchesTumor = !tumor || group.tumorTypes.has(tumor);
+        var groupMatchesStatus = Array.from(group.domainStatuses).some(function (s) {
+          return activeStatuses.has(s);
+        });
+        shape.style.opacity = (groupMatchesTumor && groupMatchesStatus) ? "1" : "0.12";
+      });
+    }
+  }
+
+  tumorSelect.addEventListener("change", applyFilters);
+  statusContainer.addEventListener("change", applyFilters);
+  applyFilters();
+});
+</script>
+</body>
+</html>

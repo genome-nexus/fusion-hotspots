@@ -1,0 +1,180 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="276" viewBox="0 0 1000 276">
+<rect width="1000" height="276" fill="white"/>
+<text x="60" y="24" font-family="sans-serif" font-size="15">FGFR2 fusion-transcript schematic</text>
+<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555555">Fusion order varies by row; follow each row's 5' and 3' labels (FGFR2 portion is domain-colored, exon ticks). Partner-gene blocks share one color; row labels identify each partner.</text>
+<rect x="351.3" y="56.0" width="268.7" height="22" fill="#8064a2"><title>Partner gene ENPP2; FGFR2–ENPP2 fusion, breakpoint FGFR2 aa 427; sample TCGA-LD-A7W5-01</title></rect>
+<rect x="60.0" y="56.0" width="291.3" height="22" fill="#e2e2e2"><title>FGFR2 backbone (0-427 aa, no domain); domain status lost; FGFR2–ENPP2 fusion, breakpoint FGFR2 aa 427; sample TCGA-LD-A7W5-01</title></rect>
+<rect x="90.7" y="56.0" width="44.3" height="22" fill="#2878b5"><title>PF13927 retained (45-110 aa); FGFR2–ENPP2 fusion, breakpoint FGFR2 aa 427; sample TCGA-LD-A7W5-01</title></rect>
+<text x="112.9" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF13927</text>
+<rect x="241.4" y="56.0" width="54.6" height="22" fill="#2878b5"><title>PF13927 retained (266-346 aa); FGFR2–ENPP2 fusion, breakpoint FGFR2 aa 427; sample TCGA-LD-A7W5-01</title></rect>
+<text x="268.7" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF13927</text>
+<rect x="176.6" y="56.0" width="52.5" height="22" fill="#2878b5"><title>PF07679 retained (171-248 aa); FGFR2–ENPP2 fusion, breakpoint FGFR2 aa 427; sample TCGA-LD-A7W5-01</title></rect>
+<text x="202.9" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF07679</text>
+<line x1="60.7" y1="56.0" x2="60.7" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="85.2" y1="56.0" x2="85.2" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="145.9" y1="56.0" x2="145.9" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="163.7" y1="56.0" x2="163.7" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="202.6" y1="56.0" x2="202.6" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="230.5" y1="56.0" x2="230.5" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="274.2" y1="56.0" x2="274.2" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="306.9" y1="56.0" x2="306.9" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="351.3" y1="55.0" x2="351.3" y2="79.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; FGFR2–ENPP2 fusion, breakpoint FGFR2 aa 427; sample TCGA-LD-A7W5-01</title></line>
+<text x="64.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="70.5" font-family="sans-serif" font-size="9.5">ENPP2 – Protein kinase domain lost – Breast Cancer</text>
+<rect x="387.4" y="82.0" width="232.6" height="22" fill="#8064a2"><title>Partner gene CTNNA3; FGFR2–CTNNA3 fusion, breakpoint FGFR2 aa 480; sample TCGA-AO-A03V-01</title></rect>
+<rect x="60.0" y="82.0" width="327.4" height="22" fill="#e2e2e2"><title>FGFR2 backbone (0-480 aa, no domain); domain status lost; FGFR2–CTNNA3 fusion, breakpoint FGFR2 aa 480; sample TCGA-AO-A03V-01</title></rect>
+<rect x="90.7" y="82.0" width="44.3" height="22" fill="#2878b5"><title>PF13927 retained (45-110 aa); FGFR2–CTNNA3 fusion, breakpoint FGFR2 aa 480; sample TCGA-AO-A03V-01</title></rect>
+<text x="112.9" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF13927</text>
+<rect x="241.4" y="82.0" width="54.6" height="22" fill="#2878b5"><title>PF13927 retained (266-346 aa); FGFR2–CTNNA3 fusion, breakpoint FGFR2 aa 480; sample TCGA-AO-A03V-01</title></rect>
+<text x="268.7" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF13927</text>
+<rect x="176.6" y="82.0" width="52.5" height="22" fill="#2878b5"><title>PF07679 retained (171-248 aa); FGFR2–CTNNA3 fusion, breakpoint FGFR2 aa 480; sample TCGA-AO-A03V-01</title></rect>
+<text x="202.9" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF07679</text>
+<line x1="60.7" y1="82.0" x2="60.7" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="85.2" y1="82.0" x2="85.2" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="145.9" y1="82.0" x2="145.9" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="163.7" y1="82.0" x2="163.7" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="202.6" y1="82.0" x2="202.6" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="230.5" y1="82.0" x2="230.5" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="274.2" y1="82.0" x2="274.2" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="306.9" y1="82.0" x2="306.9" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="353.3" y1="82.0" x2="353.3" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="387.4" y1="81.0" x2="387.4" y2="105.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; FGFR2–CTNNA3 fusion, breakpoint FGFR2 aa 480; sample TCGA-AO-A03V-01</title></line>
+<text x="64.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="96.5" font-family="sans-serif" font-size="9.5">CTNNA3 – Protein kinase domain lost – Breast Cancer</text>
+<rect x="483.6" y="108.0" width="136.4" height="22" fill="#8064a2"><title>Partner gene AP1M1; FGFR2–AP1M1 fusion, breakpoint FGFR2 aa 621; sample TCGA-AQ-A04L-01</title></rect>
+<rect x="60.0" y="108.0" width="423.6" height="22" fill="#e2e2e2"><title>FGFR2 backbone (0-621 aa, no domain); domain status truncated; FGFR2–AP1M1 fusion, breakpoint FGFR2 aa 621; sample TCGA-AQ-A04L-01</title></rect>
+<rect x="90.7" y="108.0" width="44.3" height="22" fill="#2878b5"><title>PF13927 retained (45-110 aa); FGFR2–AP1M1 fusion, breakpoint FGFR2 aa 621; sample TCGA-AQ-A04L-01</title></rect>
+<text x="112.9" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF13927</text>
+<rect x="241.4" y="108.0" width="54.6" height="22" fill="#2878b5"><title>PF13927 retained (266-346 aa); FGFR2–AP1M1 fusion, breakpoint FGFR2 aa 621; sample TCGA-AQ-A04L-01</title></rect>
+<text x="268.7" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF13927</text>
+<rect x="388.1" y="108.0" width="95.5" height="22" fill="#f2a93b"><title>Protein kinase domain truncated (481-621 aa); FGFR2–AP1M1 fusion, breakpoint FGFR2 aa 621; sample TCGA-AQ-A04L-01</title></rect>
+<text x="435.8" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<rect x="176.6" y="108.0" width="52.5" height="22" fill="#2878b5"><title>PF07679 retained (171-248 aa); FGFR2–AP1M1 fusion, breakpoint FGFR2 aa 621; sample TCGA-AQ-A04L-01</title></rect>
+<text x="202.9" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF07679</text>
+<line x1="60.7" y1="108.0" x2="60.7" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="85.2" y1="108.0" x2="85.2" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="145.9" y1="108.0" x2="145.9" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="163.7" y1="108.0" x2="163.7" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="202.6" y1="108.0" x2="202.6" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="230.5" y1="108.0" x2="230.5" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="274.2" y1="108.0" x2="274.2" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="306.9" y1="108.0" x2="306.9" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="353.3" y1="108.0" x2="353.3" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="387.4" y1="108.0" x2="387.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="415.4" y1="108.0" x2="415.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="440.6" y1="108.0" x2="440.6" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="483.6" y1="107.0" x2="483.6" y2="131.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; FGFR2–AP1M1 fusion, breakpoint FGFR2 aa 621; sample TCGA-AQ-A04L-01</title></line>
+<text x="64.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="122.5" font-family="sans-serif" font-size="9.5">AP1M1 – Protein kinase domain truncated – Breast Cancer</text>
+<rect x="583.2" y="134.0" width="36.8" height="22" fill="#8064a2"><title>Partner gene CASP7; FGFR2–CASP7 fusion, breakpoint FGFR2 aa 767; sample TCGA-AN-A0AL-01</title></rect>
+<rect x="60.0" y="134.0" width="523.2" height="22" fill="#e2e2e2"><title>FGFR2 backbone (0-767 aa, no domain); domain status retained; FGFR2–CASP7 fusion, breakpoint FGFR2 aa 767; sample TCGA-AN-A0AL-01</title></rect>
+<rect x="90.7" y="134.0" width="44.3" height="22" fill="#2878b5"><title>PF13927 retained (45-110 aa); FGFR2–CASP7 fusion, breakpoint FGFR2 aa 767; sample TCGA-AN-A0AL-01</title></rect>
+<text x="112.9" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF13927</text>
+<rect x="241.4" y="134.0" width="54.6" height="22" fill="#2878b5"><title>PF13927 retained (266-346 aa); FGFR2–CASP7 fusion, breakpoint FGFR2 aa 767; sample TCGA-AN-A0AL-01</title></rect>
+<text x="268.7" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF13927</text>
+<rect x="388.1" y="134.0" width="188.3" height="22" fill="#2878b5"><title>Protein kinase domain retained (481-757 aa); FGFR2–CASP7 fusion, breakpoint FGFR2 aa 767; sample TCGA-AN-A0AL-01</title></rect>
+<text x="482.2" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<rect x="176.6" y="134.0" width="52.5" height="22" fill="#2878b5"><title>PF07679 retained (171-248 aa); FGFR2–CASP7 fusion, breakpoint FGFR2 aa 767; sample TCGA-AN-A0AL-01</title></rect>
+<text x="202.9" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF07679</text>
+<line x1="60.7" y1="134.0" x2="60.7" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="85.2" y1="134.0" x2="85.2" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="145.9" y1="134.0" x2="145.9" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="163.7" y1="134.0" x2="163.7" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="202.6" y1="134.0" x2="202.6" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="230.5" y1="134.0" x2="230.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="274.2" y1="134.0" x2="274.2" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="306.9" y1="134.0" x2="306.9" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="353.3" y1="134.0" x2="353.3" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="387.4" y1="134.0" x2="387.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="415.4" y1="134.0" x2="415.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="440.6" y1="134.0" x2="440.6" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="484.3" y1="134.0" x2="484.3" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="512.2" y1="134.0" x2="512.2" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="527.9" y1="134.0" x2="527.9" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="559.3" y1="134.0" x2="559.3" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="583.2" y1="133.0" x2="583.2" y2="157.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; FGFR2–CASP7 fusion, breakpoint FGFR2 aa 767; sample TCGA-AN-A0AL-01</title></line>
+<text x="64.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="148.5" font-family="sans-serif" font-size="9.5">CASP7 – Protein kinase domain retained – Breast Cancer</text>
+<rect x="583.2" y="160.0" width="36.8" height="22" fill="#8064a2"><title>Partner gene CCDC6; FGFR2–CCDC6 fusion, breakpoint FGFR2 aa 767; sample TCGA-D8-A13Z-01</title></rect>
+<rect x="60.0" y="160.0" width="523.2" height="22" fill="#e2e2e2"><title>FGFR2 backbone (0-767 aa, no domain); domain status retained; FGFR2–CCDC6 fusion, breakpoint FGFR2 aa 767; sample TCGA-D8-A13Z-01</title></rect>
+<rect x="90.7" y="160.0" width="44.3" height="22" fill="#2878b5"><title>PF13927 retained (45-110 aa); FGFR2–CCDC6 fusion, breakpoint FGFR2 aa 767; sample TCGA-D8-A13Z-01</title></rect>
+<text x="112.9" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF13927</text>
+<rect x="241.4" y="160.0" width="54.6" height="22" fill="#2878b5"><title>PF13927 retained (266-346 aa); FGFR2–CCDC6 fusion, breakpoint FGFR2 aa 767; sample TCGA-D8-A13Z-01</title></rect>
+<text x="268.7" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF13927</text>
+<rect x="388.1" y="160.0" width="188.3" height="22" fill="#2878b5"><title>Protein kinase domain retained (481-757 aa); FGFR2–CCDC6 fusion, breakpoint FGFR2 aa 767; sample TCGA-D8-A13Z-01</title></rect>
+<text x="482.2" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<rect x="176.6" y="160.0" width="52.5" height="22" fill="#2878b5"><title>PF07679 retained (171-248 aa); FGFR2–CCDC6 fusion, breakpoint FGFR2 aa 767; sample TCGA-D8-A13Z-01</title></rect>
+<text x="202.9" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF07679</text>
+<line x1="60.7" y1="160.0" x2="60.7" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="85.2" y1="160.0" x2="85.2" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="145.9" y1="160.0" x2="145.9" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="163.7" y1="160.0" x2="163.7" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="202.6" y1="160.0" x2="202.6" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="230.5" y1="160.0" x2="230.5" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="274.2" y1="160.0" x2="274.2" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="306.9" y1="160.0" x2="306.9" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="353.3" y1="160.0" x2="353.3" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="387.4" y1="160.0" x2="387.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="415.4" y1="160.0" x2="415.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="440.6" y1="160.0" x2="440.6" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="484.3" y1="160.0" x2="484.3" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="512.2" y1="160.0" x2="512.2" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="527.9" y1="160.0" x2="527.9" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="559.3" y1="160.0" x2="559.3" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="583.2" y1="159.0" x2="583.2" y2="183.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; FGFR2–CCDC6 fusion, breakpoint FGFR2 aa 767; sample TCGA-D8-A13Z-01</title></line>
+<text x="64.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="174.5" font-family="sans-serif" font-size="9.5">CCDC6 – Protein kinase domain retained – Breast Cancer</text>
+<line x1="60.0" y1="190.0" x2="620.0" y2="190.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="185.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="620.0" y="185.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
+<text x="60.0" y="204.0" font-family="sans-serif" font-size="9">1</text>
+<text x="620.0" y="204.0" font-family="sans-serif" font-size="9" text-anchor="end">821 aa</text>
+<line x1="60.7" y1="208.0" x2="60.7" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="60.7" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 60.7 213.0)">E2</text>
+<line x1="85.2" y1="208.0" x2="85.2" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="85.2" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 85.2 213.0)">E3</text>
+<line x1="145.9" y1="208.0" x2="145.9" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="145.9" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 145.9 213.0)">E4</text>
+<line x1="163.7" y1="208.0" x2="163.7" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="163.7" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 163.7 213.0)">E5</text>
+<line x1="202.6" y1="208.0" x2="202.6" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="202.6" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 202.6 213.0)">E6</text>
+<line x1="230.5" y1="208.0" x2="230.5" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="230.5" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 230.5 213.0)">E7</text>
+<line x1="274.2" y1="208.0" x2="274.2" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="274.2" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 274.2 213.0)">E8</text>
+<line x1="306.9" y1="208.0" x2="306.9" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="306.9" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 306.9 213.0)">E9</text>
+<line x1="353.3" y1="208.0" x2="353.3" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="353.3" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 353.3 213.0)">E10</text>
+<line x1="387.4" y1="208.0" x2="387.4" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="387.4" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 387.4 213.0)">E11</text>
+<line x1="415.4" y1="208.0" x2="415.4" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="415.4" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 415.4 213.0)">E12</text>
+<line x1="440.6" y1="208.0" x2="440.6" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="440.6" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 440.6 213.0)">E13</text>
+<line x1="484.3" y1="208.0" x2="484.3" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="484.3" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 484.3 213.0)">E14</text>
+<line x1="512.2" y1="208.0" x2="512.2" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="512.2" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 512.2 213.0)">E15</text>
+<line x1="527.9" y1="208.0" x2="527.9" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="527.9" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 527.9 213.0)">E16</text>
+<line x1="559.3" y1="208.0" x2="559.3" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="559.3" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 559.3 213.0)">E17</text>
+<line x1="583.8" y1="208.0" x2="583.8" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="583.8" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 583.8 213.0)">E18</text>
+<rect x="60.0" y="221.0" width="12" height="10" fill="#2878b5"/>
+<text x="76.0" y="230.0" font-family="sans-serif" font-size="9">domain retained</text>
+<rect x="227.0" y="221.0" width="12" height="10" fill="#f2a93b"/>
+<text x="243.0" y="230.0" font-family="sans-serif" font-size="9">domain truncated</text>
+<rect x="403.0" y="221.0" width="12" height="10" fill="#e2e2e2"/>
+<text x="419.0" y="230.0" font-family="sans-serif" font-size="9">target backbone (no domain)</text>
+<rect x="678.0" y="221.0" width="12" height="10" fill="#d62728"/>
+<text x="694.0" y="230.0" font-family="sans-serif" font-size="9">breakpoint</text>
+<text x="60" y="266.0" font-family="sans-serif" font-size="9" fill="#555555">Partner-block colors are decorative; row labels identify partners.</text>
+</svg>
