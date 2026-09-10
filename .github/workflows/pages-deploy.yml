@@ -1,0 +1,55 @@
+name: Deploy viewer to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one Pages deployment at a time; never cancel one that's already
+# uploading so a deploy in progress can't be left half-published.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install package
+        run: pip install -e .
+
+      # Offline: reads only the results.json/summary.json/*.svg artifacts
+      # already committed under runs/ (same code path exercised by
+      # tests/test_html_viewer.py) and writes each run's viewer/ bundle plus
+      # a landing page into _site/. No network access and no live
+      # ingestion/analysis run.
+      - name: Build viewer bundles and Pages site
+        run: python scripts/build_pages_site.py --runs-dir runs --output-dir _site
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v6
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
