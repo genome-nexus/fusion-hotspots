@@ -1,6 +1,6 @@
 # EML4-ALK joint-partner fusion benchmark: msk_impact_50k_2026
 
-Retrieved from public cBioPortal on 2026-09-09.
+Retrieved from public cBioPortal on 2026-09-10.
 
 ## Method
 

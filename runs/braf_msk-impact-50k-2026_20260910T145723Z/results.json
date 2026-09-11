@@ -2,7 +2,7 @@
   "gene_symbol": "BRAF",
   "study_id": "msk_impact_50k_2026",
   "molecular_profile_id": "msk_impact_50k_2026_structural_variants",
-  "retrieved_at": "2026-09-09T18:19:26.409914+00:00",
+  "retrieved_at": "2026-09-10T14:57:23.668590+00:00",
   "summary": {
     "raw_structural_variant_count": 251,
     "total_fusions": 179,
@@ -4996,7 +4996,7 @@
         "domain_retention_p_value_used": 0.006993006993006993,
         "domain_disruption_p_value_used": 0.9635036496350365,
         "inferred_cutpoint_aa": 380,
-        "Runtime_seconds": 0.0005050830004620366
+        "Runtime_seconds": 0.000720957999874372
       },
       "Tables": {
         "composite_evidence_ranking": [
@@ -6209,8 +6209,8 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-09T18:19:26.409230Z",
-      "Input_fingerprint": "2d927052d9246c2faa240c7ef0a0bc9f591721a8336b046274cdfd1f4ddc0cc7"
+      "Created_at": "2026-09-10T14:57:23.661939Z",
+      "Input_fingerprint": "c3b7223a93dba107779df54f9ae1afe6a328fd29c85acda6aa20f9477089ee8c"
     },
     {
       "Algorithm": "confidence_stats",
@@ -6275,12 +6275,12 @@
           "mean_a": 52.07361963190184,
           "mean_b": 36.4
         },
-        "Runtime_seconds": 0.0049399589997847215
+        "Runtime_seconds": 0.0037677090003853664
       },
       "Tables": null,
       "Warnings": [],
-      "Created_at": "2026-09-09T18:18:50.308875Z",
-      "Input_fingerprint": "2d927052d9246c2faa240c7ef0a0bc9f591721a8336b046274cdfd1f4ddc0cc7"
+      "Created_at": "2026-09-10T14:56:50.003784Z",
+      "Input_fingerprint": "c3b7223a93dba107779df54f9ae1afe6a328fd29c85acda6aa20f9477089ee8c"
     },
     {
       "Algorithm": "cutpoint_detection",
@@ -6303,7 +6303,7 @@
           "nearest_known_domain_boundary_aa": 458,
           "distance_aa": -78
         },
-        "Runtime_seconds": 4.620822957999735
+        "Runtime_seconds": 7.1463308749989665
       },
       "Tables": {
         "cutpoint_scan": [
@@ -6410,8 +6410,8 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-09T18:18:54.944545Z",
-      "Input_fingerprint": "2d927052d9246c2faa240c7ef0a0bc9f591721a8336b046274cdfd1f4ddc0cc7"
+      "Created_at": "2026-09-10T14:56:57.159685Z",
+      "Input_fingerprint": "c3b7223a93dba107779df54f9ae1afe6a328fd29c85acda6aa20f9477089ee8c"
     },
     {
       "Algorithm": "domain_disruption",
@@ -6426,7 +6426,7 @@
         "fisher_p_value": 0.04170498244265482,
         "permutation_empirical_p_value": 0.9635036496350365,
         "observed_in_frame_disruption_rate": 0.9403973509933775,
-        "Runtime_seconds": 35.77069420800035
+        "Runtime_seconds": 33.57476654200218
       },
       "Tables": {
         "frame_domain_contingency_table": [
@@ -16463,8 +16463,8 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-09T18:19:26.340789Z",
-      "Input_fingerprint": "2d927052d9246c2faa240c7ef0a0bc9f591721a8336b046274cdfd1f4ddc0cc7"
+      "Created_at": "2026-09-10T14:57:23.654238Z",
+      "Input_fingerprint": "c3b7223a93dba107779df54f9ae1afe6a328fd29c85acda6aa20f9477089ee8c"
     },
     {
       "Algorithm": "domain_retention",
@@ -16479,7 +16479,7 @@
         "fisher_p_value": 0.013367557978153668,
         "permutation_empirical_p_value": 0.006993006993006993,
         "observed_in_frame_retention_rate": 0.9403973509933775,
-        "Runtime_seconds": 2.024086334000458
+        "Runtime_seconds": 2.0453130419991794
       },
       "Tables": {
         "frame_domain_contingency_table": [
@@ -16509,8 +16509,8 @@
         }
       },
       "Warnings": [],
-      "Created_at": "2026-09-09T18:18:50.290484Z",
-      "Input_fingerprint": "dde22363650970f78518ebff80ade897eb4bb5ec4a70343f0d16ec138dc498d1"
+      "Created_at": "2026-09-10T14:56:49.989295Z",
+      "Input_fingerprint": "1e1285957561b939392f7d1f2386fe16f85152c3780361807f2bfaacc0610890"
     },
     {
       "Algorithm": "exon_retention",
@@ -16523,7 +16523,7 @@
         "retained_event_count": 163,
         "total_event_count": 179,
         "retained_fraction": 0.9106145251396648,
-        "Runtime_seconds": 0.0003917499998351559
+        "Runtime_seconds": 0.0004350830022303853
       },
       "Tables": {
         "Exon_retention": [
@@ -16536,22 +16536,22 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-09T18:18:50.614042Z",
-      "Input_fingerprint": "2d927052d9246c2faa240c7ef0a0bc9f591721a8336b046274cdfd1f4ddc0cc7"
+      "Created_at": "2026-09-10T14:56:50.106896Z",
+      "Input_fingerprint": "c3b7223a93dba107779df54f9ae1afe6a328fd29c85acda6aa20f9477089ee8c"
     },
     {
       "Algorithm": "expression_association",
       "Algorithm_version": "0.1.0",
       "Parameters": {},
       "Summary": {
-        "Runtime_seconds": 3.479200040601427e-05
+        "Runtime_seconds": 5.7166002079611644e-05
       },
       "Tables": null,
       "Warnings": [
         "No mRNA expression data was available for BRAF in this cohort; expression-association analysis was skipped."
       ],
-      "Created_at": "2026-09-09T18:18:50.735302Z",
-      "Input_fingerprint": "2d927052d9246c2faa240c7ef0a0bc9f591721a8336b046274cdfd1f4ddc0cc7"
+      "Created_at": "2026-09-10T14:56:50.136701Z",
+      "Input_fingerprint": "c3b7223a93dba107779df54f9ae1afe6a328fd29c85acda6aa20f9477089ee8c"
     },
     {
       "Algorithm": "frequency",
@@ -16563,7 +16563,7 @@
         "input_event_count": 179,
         "analyzed_event_count": 179,
         "unique_partner_gene_count": 67,
-        "Runtime_seconds": 0.00016212500031542731
+        "Runtime_seconds": 0.0001781249993655365
       },
       "Tables": {
         "Partner_gene_counts": [
@@ -16838,22 +16838,597 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-09T18:18:51.149308Z",
-      "Input_fingerprint": "2d927052d9246c2faa240c7ef0a0bc9f591721a8336b046274cdfd1f4ddc0cc7"
+      "Created_at": "2026-09-10T14:56:50.152717Z",
+      "Input_fingerprint": "c3b7223a93dba107779df54f9ae1afe6a328fd29c85acda6aa20f9477089ee8c"
+    },
+    {
+      "Algorithm": "genomic_position_recurrence",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "bin_size_bp": 1000
+      },
+      "Summary": {
+        "determinable": true,
+        "reason": null,
+        "n_events_analyzed": 178,
+        "n_events_excluded_missing_position": 0,
+        "n_events_excluded_other_build": 0,
+        "reference_build": "GRCh37",
+        "reference_build_counts": {
+          "GRCh37": 178
+        },
+        "bin_size_bp": 1000,
+        "n_distinct_genomic_positions": 166,
+        "top_genomic_bin": {
+          "chromosome": "7",
+          "bin_start": 140493000,
+          "bin_end": 140494000,
+          "n_events": 21,
+          "event_ids": [
+            "EVT-P-0004795-T01-IM5-87",
+            "EVT-P-0009024-T01-IM5-190",
+            "EVT-P-0009024-T02-IM6-195",
+            "EVT-P-0009757-T01-IM5-15",
+            "EVT-P-0012395-T01-IM5-217",
+            "EVT-P-0014969-T01-IM6-118",
+            "EVT-P-0021458-T01-IM6-1",
+            "EVT-P-0021519-T02-IM6-14",
+            "EVT-P-0035844-T03-IM7-147",
+            "EVT-P-0035844-T04-IM7-148",
+            "EVT-P-0036567-T01-IM6-230",
+            "EVT-P-0036680-T01-IM6-181",
+            "EVT-P-0036870-T01-IM6-102",
+            "EVT-P-0047833-T02-IM6-183",
+            "EVT-P-0050574-T02-IM6-4",
+            "EVT-P-0052411-T03-IM6-154",
+            "EVT-P-0052411-T05-IM7-152",
+            "EVT-P-0056952-T01-IM6-138",
+            "EVT-P-0064310-T04-IM7-174",
+            "EVT-P-0064764-T01-IM7-105",
+            "EVT-P-0064764-T01-IM7-212"
+          ]
+        },
+        "n_positions_shared_by_multiple_events": 12,
+        "genomic_vs_protein_clustering_note": "The 3 events sharing protein position 380 aa use 3 distinct genomic positions spanning 5397 bp -- the protein-position recurrence is broader than any single genomic hotspot, consistent with independent intronic breakpoints mapped (or clamped) onto the same protein/exon boundary rather than one shared DNA lesion.",
+        "Runtime_seconds": 0.0008812909982225392
+      },
+      "Tables": {
+        "genomic_bin_recurrence": [
+          {
+            "chromosome": "7",
+            "bin_start": 140493000,
+            "bin_end": 140494000,
+            "n_events": 21,
+            "event_ids": [
+              "EVT-P-0004795-T01-IM5-87",
+              "EVT-P-0009024-T01-IM5-190",
+              "EVT-P-0009024-T02-IM6-195",
+              "EVT-P-0009757-T01-IM5-15",
+              "EVT-P-0012395-T01-IM5-217",
+              "EVT-P-0014969-T01-IM6-118",
+              "EVT-P-0021458-T01-IM6-1",
+              "EVT-P-0021519-T02-IM6-14",
+              "EVT-P-0035844-T03-IM7-147",
+              "EVT-P-0035844-T04-IM7-148",
+              "EVT-P-0036567-T01-IM6-230",
+              "EVT-P-0036680-T01-IM6-181",
+              "EVT-P-0036870-T01-IM6-102",
+              "EVT-P-0047833-T02-IM6-183",
+              "EVT-P-0050574-T02-IM6-4",
+              "EVT-P-0052411-T03-IM6-154",
+              "EVT-P-0052411-T05-IM7-152",
+              "EVT-P-0056952-T01-IM6-138",
+              "EVT-P-0064310-T04-IM7-174",
+              "EVT-P-0064764-T01-IM7-105",
+              "EVT-P-0064764-T01-IM7-212"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "bin_start": 140482000,
+            "bin_end": 140483000,
+            "n_events": 20,
+            "event_ids": [
+              "EVT-P-0001036-T01-IM3-192",
+              "EVT-P-0003502-T01-IM5-101",
+              "EVT-P-0007392-T01-IM5-214",
+              "EVT-P-0007533-T01-IM5-229",
+              "EVT-P-0009246-T01-IM5-103",
+              "EVT-P-0009619-T01-IM5-218",
+              "EVT-P-0022257-T01-IM6-88",
+              "EVT-P-0022404-T01-IM6-165",
+              "EVT-P-0026773-T01-IM6-234",
+              "EVT-P-0028611-T01-IM6-162",
+              "EVT-P-0028611-T02-IM6-168",
+              "EVT-P-0029727-T01-IM6-222",
+              "EVT-P-0031896-T02-IM6-196",
+              "EVT-P-0039799-T01-IM6-5",
+              "EVT-P-0044819-T01-IM6-206",
+              "EVT-P-0052299-T04-IM6-219",
+              "EVT-P-0062963-T01-IM7-150",
+              "EVT-P-0066030-T01-IM7-143",
+              "EVT-P-0068260-T01-IM7-211",
+              "EVT-P-0068451-T01-IM7-244"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "bin_start": 140491000,
+            "bin_end": 140492000,
+            "n_events": 18,
+            "event_ids": [
+              "EVT-P-0004203-T01-IM5-116",
+              "EVT-P-0005121-T02-IM5-156",
+              "EVT-P-0009694-T01-IM5-207",
+              "EVT-P-0015985-T03-IM6-111",
+              "EVT-P-0021127-T01-IM6-175",
+              "EVT-P-0026158-T01-IM6-186",
+              "EVT-P-0026158-T04-IM6-185",
+              "EVT-P-0030796-T01-IM6-113",
+              "EVT-P-0030988-T01-IM6-245",
+              "EVT-P-0032982-T01-IM6-173",
+              "EVT-P-0033764-T04-IM6-112",
+              "EVT-P-0035153-T01-IM6-144",
+              "EVT-P-0035153-T03-IM6-145",
+              "EVT-P-0043836-T01-IM6-239",
+              "EVT-P-0044270-T02-IM6-139",
+              "EVT-P-0058584-T01-IM7-142",
+              "EVT-P-0059002-T01-IM7-202",
+              "EVT-P-0068173-T01-IM7-125"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "bin_start": 140489000,
+            "bin_end": 140490000,
+            "n_events": 14,
+            "event_ids": [
+              "EVT-P-0001988-T01-IM3-89",
+              "EVT-P-0002071-T02-IM5-227",
+              "EVT-P-0008140-T01-IM5-224",
+              "EVT-P-0008789-T01-IM5-205",
+              "EVT-P-0015540-T01-IM6-163",
+              "EVT-P-0017693-T01-IM6-176",
+              "EVT-P-0017693-T02-IM6-149",
+              "EVT-P-0029361-T01-IM6-171",
+              "EVT-P-0034168-T01-IM6-225",
+              "EVT-P-0034845-T01-IM6-231",
+              "EVT-P-0049925-T01-IM6-146",
+              "EVT-P-0064088-T01-IM7-124",
+              "EVT-P-0064872-T01-IM7-157",
+              "EVT-P-0068194-T01-IM7-223"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "bin_start": 140490000,
+            "bin_end": 140491000,
+            "n_events": 13,
+            "event_ids": [
+              "EVT-P-0001687-T01-IM3-220",
+              "EVT-P-0006601-T03-IM6-187",
+              "EVT-P-0007861-T01-IM5-13",
+              "EVT-P-0012575-T01-IM5-151",
+              "EVT-P-0014833-T02-IM6-128",
+              "EVT-P-0018524-T01-IM6-236",
+              "EVT-P-0019127-T01-IM6-179",
+              "EVT-P-0025075-T01-IM6-226",
+              "EVT-P-0036937-T01-IM6-129",
+              "EVT-P-0043874-T01-IM6-169",
+              "EVT-P-0055099-T03-IM6-141",
+              "EVT-P-0062070-T01-IM7-164",
+              "EVT-P-0066835-T01-IM7-243"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "bin_start": 140492000,
+            "bin_end": 140493000,
+            "n_events": 12,
+            "event_ids": [
+              "EVT-P-0014191-T01-IM6-160",
+              "EVT-P-0014381-T01-IM6-161",
+              "EVT-P-0020125-T01-IM6-177",
+              "EVT-P-0027592-T01-IM6-140",
+              "EVT-P-0030237-T03-IM6-10",
+              "EVT-P-0039648-T01-IM6-122",
+              "EVT-P-0039648-T03-IM6-123",
+              "EVT-P-0041181-T01-IM6-209",
+              "EVT-P-0045683-T02-IM6-178",
+              "EVT-P-0047135-T01-IM6-193",
+              "EVT-P-0048950-T01-IM6-216",
+              "EVT-P-0069024-T04-IM7-170"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "bin_start": 140487000,
+            "bin_end": 140488000,
+            "n_events": 11,
+            "event_ids": [
+              "EVT-P-0004032-T01-IM5-166",
+              "EVT-P-0010494-T01-IM5-90",
+              "EVT-P-0024206-T01-IM6-130",
+              "EVT-P-0032569-T01-IM6-246",
+              "EVT-P-0032569-T02-IM6-247",
+              "EVT-P-0043372-T01-IM6-167",
+              "EVT-P-0043972-T03-IM6-200",
+              "EVT-P-0047918-T02-IM6-132",
+              "EVT-P-0047918-T04-IM7-131",
+              "EVT-P-0050635-T01-IM6-9",
+              "EVT-P-0054430-T02-IM6-240"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "bin_start": 140488000,
+            "bin_end": 140489000,
+            "n_events": 10,
+            "event_ids": [
+              "EVT-P-0002197-T01-IM3-228",
+              "EVT-P-0005834-T01-IM5-114",
+              "EVT-P-0009097-T01-IM5-155",
+              "EVT-P-0016557-T01-IM6-172",
+              "EVT-P-0024995-T01-IM6-121",
+              "EVT-P-0035393-T02-IM6-189",
+              "EVT-P-0040461-T01-IM6-119",
+              "EVT-P-0045111-T01-IM6-242",
+              "EVT-P-0054364-T01-IM6-232",
+              "EVT-P-0066022-T01-IM7-180"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "bin_start": 140483000,
+            "bin_end": 140484000,
+            "n_events": 9,
+            "event_ids": [
+              "EVT-P-0000828-T03-IM6-94",
+              "EVT-P-0000828-T05-IM6-135",
+              "EVT-P-0013536-T01-IM5-198",
+              "EVT-P-0022778-T01-IM6-237",
+              "EVT-P-0023821-T01-IM6-12",
+              "EVT-P-0029981-T01-IM6-106",
+              "EVT-P-0034117-T01-IM6-153",
+              "EVT-P-0064588-T01-IM7-127",
+              "EVT-P-0065446-T01-IM7-201"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "bin_start": 140485000,
+            "bin_end": 140486000,
+            "n_events": 7,
+            "event_ids": [
+              "EVT-P-0008920-T01-IM5-251",
+              "EVT-P-0027762-T01-IM6-250",
+              "EVT-P-0041308-T02-IM6-213",
+              "EVT-P-0044845-T01-IM6-134",
+              "EVT-P-0046745-T01-IM6-136",
+              "EVT-P-0049035-T01-IM6-85",
+              "EVT-P-0052582-T01-IM6-3"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "bin_start": 140486000,
+            "bin_end": 140487000,
+            "n_events": 7,
+            "event_ids": [
+              "EVT-P-0008567-T01-IM5-208",
+              "EVT-P-0014377-T01-IM6-99",
+              "EVT-P-0016313-T01-IM6-104",
+              "EVT-P-0025699-T02-IM6-241",
+              "EVT-P-0050196-T01-IM6-126",
+              "EVT-P-0054958-T02-IM6-203",
+              "EVT-P-0056639-T01-IM6-215"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "bin_start": 140497000,
+            "bin_end": 140498000,
+            "n_events": 6,
+            "event_ids": [
+              "EVT-P-0010945-T01-IM5-26",
+              "EVT-P-0015847-T02-IM6-95",
+              "EVT-P-0030746-T01-IM6-25",
+              "EVT-P-0042835-T02-IM6-8",
+              "EVT-P-0042835-T03-IM6-7",
+              "EVT-P-0048036-T01-IM6-199"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "bin_start": 140481000,
+            "bin_end": 140482000,
+            "n_events": 5,
+            "event_ids": [
+              "EVT-P-0004103-T01-IM5-221",
+              "EVT-P-0005461-T02-IM5-117",
+              "EVT-P-0013777-T01-IM5-158",
+              "EVT-P-0021469-T01-IM6-108",
+              "EVT-P-0040760-T01-IM6-159"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "bin_start": 140484000,
+            "bin_end": 140485000,
+            "n_events": 5,
+            "event_ids": [
+              "EVT-P-0008083-T02-IM6-197",
+              "EVT-P-0008083-T03-IM6-191",
+              "EVT-P-0010398-T01-IM5-100",
+              "EVT-P-0038194-T01-IM6-115",
+              "EVT-P-0054046-T01-IM6-93"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "bin_start": 140495000,
+            "bin_end": 140496000,
+            "n_events": 5,
+            "event_ids": [
+              "EVT-P-0004477-T01-IM5-20",
+              "EVT-P-0007266-T02-IM6-120",
+              "EVT-P-0012884-T01-IM5-210",
+              "EVT-P-0024227-T01-IM6-19",
+              "EVT-P-0034621-T01-IM6-2"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "bin_start": 140498000,
+            "bin_end": 140499000,
+            "n_events": 4,
+            "event_ids": [
+              "EVT-P-0023378-T01-IM6-21",
+              "EVT-P-0025561-T01-IM6-18",
+              "EVT-P-0025561-T03-IM6-17",
+              "EVT-P-0042835-T03-IM6-109"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "bin_start": 140494000,
+            "bin_end": 140495000,
+            "n_events": 3,
+            "event_ids": [
+              "EVT-P-0001832-T02-IM6-22",
+              "EVT-P-0036886-T01-IM6-16",
+              "EVT-P-0064223-T01-IM7-107"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "bin_start": 140496000,
+            "bin_end": 140497000,
+            "n_events": 2,
+            "event_ids": [
+              "EVT-P-0000913-T02-IM5-23",
+              "EVT-P-0023220-T01-IM6-188"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "bin_start": 140499000,
+            "bin_end": 140500000,
+            "n_events": 2,
+            "event_ids": [
+              "EVT-P-0019039-T01-IM6-248",
+              "EVT-P-0050931-T01-IM6-6"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "bin_start": 140434000,
+            "bin_end": 140435000,
+            "n_events": 1,
+            "event_ids": [
+              "EVT-P-0004373-T02-IM5-194"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "bin_start": 140500000,
+            "bin_end": 140501000,
+            "n_events": 1,
+            "event_ids": [
+              "EVT-P-0029531-T01-IM6-24"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "bin_start": 140501000,
+            "bin_end": 140502000,
+            "n_events": 1,
+            "event_ids": [
+              "EVT-P-0006412-T01-IM5-184"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "bin_start": 140502000,
+            "bin_end": 140503000,
+            "n_events": 1,
+            "event_ids": [
+              "EVT-P-0051214-T01-IM6-235"
+            ]
+          }
+        ],
+        "exact_position_recurrence": [
+          {
+            "chromosome": "7",
+            "position": 140482786,
+            "n_events": 2,
+            "event_ids": [
+              "EVT-P-0028611-T01-IM6-162",
+              "EVT-P-0028611-T02-IM6-168"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "position": 140487437,
+            "n_events": 2,
+            "event_ids": [
+              "EVT-P-0047918-T02-IM6-132",
+              "EVT-P-0047918-T04-IM7-131"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "position": 140487936,
+            "n_events": 2,
+            "event_ids": [
+              "EVT-P-0032569-T01-IM6-246",
+              "EVT-P-0032569-T02-IM6-247"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "position": 140489537,
+            "n_events": 2,
+            "event_ids": [
+              "EVT-P-0017693-T01-IM6-176",
+              "EVT-P-0017693-T02-IM6-149"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "position": 140491093,
+            "n_events": 2,
+            "event_ids": [
+              "EVT-P-0035153-T01-IM6-144",
+              "EVT-P-0035153-T03-IM6-145"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "position": 140491645,
+            "n_events": 2,
+            "event_ids": [
+              "EVT-P-0030796-T01-IM6-113",
+              "EVT-P-0044270-T02-IM6-139"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "position": 140491749,
+            "n_events": 2,
+            "event_ids": [
+              "EVT-P-0026158-T01-IM6-186",
+              "EVT-P-0026158-T04-IM6-185"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "position": 140492893,
+            "n_events": 2,
+            "event_ids": [
+              "EVT-P-0039648-T01-IM6-122",
+              "EVT-P-0039648-T03-IM6-123"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "position": 140493285,
+            "n_events": 2,
+            "event_ids": [
+              "EVT-P-0035844-T03-IM7-147",
+              "EVT-P-0035844-T04-IM7-148"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "position": 140493485,
+            "n_events": 2,
+            "event_ids": [
+              "EVT-P-0009024-T01-IM5-190",
+              "EVT-P-0009024-T02-IM6-195"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "position": 140493530,
+            "n_events": 2,
+            "event_ids": [
+              "EVT-P-0052411-T03-IM6-154",
+              "EVT-P-0052411-T05-IM7-152"
+            ]
+          },
+          {
+            "chromosome": "7",
+            "position": 140497995,
+            "n_events": 2,
+            "event_ids": [
+              "EVT-P-0042835-T02-IM6-8",
+              "EVT-P-0042835-T03-IM6-7"
+            ]
+          }
+        ],
+        "protein_position_genomic_spread": [
+          {
+            "protein_position_aa": 381,
+            "n_events": 95,
+            "n_distinct_genomic_positions": 85,
+            "genomic_span_bp": 6547,
+            "spans_multiple_chromosomes": false
+          },
+          {
+            "protein_position_aa": 393,
+            "n_events": 29,
+            "n_distinct_genomic_positions": 29,
+            "genomic_span_bp": 4129,
+            "spans_multiple_chromosomes": false
+          },
+          {
+            "protein_position_aa": 327,
+            "n_events": 22,
+            "n_distinct_genomic_positions": 21,
+            "genomic_span_bp": 4942,
+            "spans_multiple_chromosomes": false
+          },
+          {
+            "protein_position_aa": 439,
+            "n_events": 22,
+            "n_distinct_genomic_positions": 21,
+            "genomic_span_bp": 1246,
+            "spans_multiple_chromosomes": false
+          },
+          {
+            "protein_position_aa": 380,
+            "n_events": 3,
+            "n_distinct_genomic_positions": 3,
+            "genomic_span_bp": 5397,
+            "spans_multiple_chromosomes": false
+          },
+          {
+            "protein_position_aa": 438,
+            "n_events": 2,
+            "n_distinct_genomic_positions": 2,
+            "genomic_span_bp": 282,
+            "spans_multiple_chromosomes": false
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-09-10T14:57:23.667655Z",
+      "Input_fingerprint": "c3b7223a93dba107779df54f9ae1afe6a328fd29c85acda6aa20f9477089ee8c"
     },
     {
       "Algorithm": "joint_partner",
       "Algorithm_version": "0.1.0",
       "Parameters": {},
       "Summary": {
-        "Runtime_seconds": 3.4374999813735485e-05
+        "Runtime_seconds": 6.0874997870996594e-05
       },
       "Tables": {},
       "Warnings": [
         "BRAF has no gene_pair configured; joint-partner analysis was skipped."
       ],
-      "Created_at": "2026-09-09T18:18:51.330422Z",
-      "Input_fingerprint": "2d927052d9246c2faa240c7ef0a0bc9f591721a8336b046274cdfd1f4ddc0cc7"
+      "Created_at": "2026-09-10T14:56:50.193529Z",
+      "Input_fingerprint": "c3b7223a93dba107779df54f9ae1afe6a328fd29c85acda6aa20f9477089ee8c"
     },
     {
       "Algorithm": "mutation_cooccurrence",
@@ -16894,7 +17469,7 @@
             "both_altered_sample_count": 2
           }
         ],
-        "Runtime_seconds": 0.014118042000518471
+        "Runtime_seconds": 0.02173279199996614
       },
       "Tables": {
         "cooccurrence_results": [
@@ -16924,8 +17499,8 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-09T18:18:51.350307Z",
-      "Input_fingerprint": "2d927052d9246c2faa240c7ef0a0bc9f591721a8336b046274cdfd1f4ddc0cc7"
+      "Created_at": "2026-09-10T14:56:50.179209Z",
+      "Input_fingerprint": "c3b7223a93dba107779df54f9ae1afe6a328fd29c85acda6aa20f9477089ee8c"
     },
     {
       "Algorithm": "window_detection",
@@ -16990,7 +17565,7 @@
           "n_unknown": 0,
           "fraction_clamped_or_approximate": 0.9932885906040269
         },
-        "Runtime_seconds": 27.434004957999605
+        "Runtime_seconds": 30.931976374999067
       },
       "Tables": {
         "window_scan": [
@@ -25315,8 +25890,8 @@
         ]
       },
       "Warnings": [],
-      "Created_at": "2026-09-09T18:19:18.970033Z",
-      "Input_fingerprint": "2d927052d9246c2faa240c7ef0a0bc9f591721a8336b046274cdfd1f4ddc0cc7"
+      "Created_at": "2026-09-10T14:57:21.112377Z",
+      "Input_fingerprint": "c3b7223a93dba107779df54f9ae1afe6a328fd29c85acda6aa20f9477089ee8c"
     }
   ],
   "reference": {

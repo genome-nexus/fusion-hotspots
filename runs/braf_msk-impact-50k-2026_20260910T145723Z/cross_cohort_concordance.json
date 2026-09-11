@@ -1,0 +1,112 @@
+{
+  "gene_symbol": "BRAF",
+  "method": "CMH chi-square(1), no continuity correction",
+  "row_labels": [
+    "domain retained",
+    "domain not retained"
+  ],
+  "column_labels": [
+    "in-frame protein fusion",
+    "other"
+  ],
+  "strata": [
+    {
+      "study_id": "msk_impact_50k_2026",
+      "source": "runs/braf_msk-impact-50k-2026_20260910T145723Z/results.json",
+      "frame_domain_contingency_table": [
+        [
+          142,
+          21
+        ],
+        [
+          9,
+          6
+        ]
+      ],
+      "key_domains": [
+        {
+          "name": "Protein kinase domain",
+          "accession": "PF07714",
+          "start_aa": 458,
+          "end_aa": 712
+        }
+      ],
+      "informative": true,
+      "association_direction": "positive"
+    },
+    {
+      "study_id": "msk_impact_2017",
+      "source": "runs/braf_msk-impact-2017_20260905T012645Z/results.json",
+      "frame_domain_contingency_table": [
+        [
+          31,
+          2
+        ],
+        [
+          2,
+          5
+        ]
+      ],
+      "key_domains": [
+        {
+          "name": "Protein kinase domain",
+          "accession": "PF07714",
+          "start_aa": 458,
+          "end_aa": 712
+        }
+      ],
+      "informative": true,
+      "association_direction": "positive"
+    },
+    {
+      "study_id": "thca_tcga_pan_can_atlas_2018",
+      "source": "runs/braf_thca-tcga-pan-can-atlas-2018_20260909T034447Z/results.json",
+      "frame_domain_contingency_table": [
+        [
+          9,
+          0
+        ],
+        [
+          6,
+          0
+        ]
+      ],
+      "key_domains": [
+        {
+          "name": "Protein kinase domain",
+          "accession": "PF07714",
+          "start_aa": 457,
+          "end_aa": 712
+        }
+      ],
+      "informative": false,
+      "association_direction": "neutral"
+    }
+  ],
+  "cmh": {
+    "statistic": 21.36486008160812,
+    "p_value": 3.796664804980965e-06,
+    "common_odds_ratio": 7.45527079303675,
+    "informative_strata": 2,
+    "total_strata": 3
+  },
+  "alpha": 0.05,
+  "nominal_pooled_significant": true,
+  "all_cohorts_positive_and_informative": false,
+  "sample_overlaps": [
+    {
+      "study_ids": [
+        "msk_impact_50k_2026",
+        "msk_impact_2017"
+      ],
+      "shared_sample_id_count": 34
+    }
+  ],
+  "warnings": [
+    "CMH tests pooled conditional association, not equality of cohort odds ratios or significance in every cohort.",
+    "Inference assumes independent observations within and between cohorts and compatible domain definitions/counting units; absence of shared sample IDs does not verify this.",
+    "Zero-variance strata contribute no evidence to the pooled test.",
+    "Shared sample IDs violate between-cohort independence: the nominal p-value cannot establish independent cross-cohort replication. Tables were not deduplicated."
+  ],
+  "interpretation": "Nominal pooled association is significant at alpha=0.05. CMH alone does not confirm concordance across all cohorts; see stratum information and independence limitations."
+}

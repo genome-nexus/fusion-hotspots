@@ -6,7 +6,7 @@
     "https://www.genomenexus.org/ensembl/canonical-transcript/hgnc/BRAF",
     "https://www.cbioportal.org/api/studies/msk_impact_50k_2026/clinical-data/fetch"
   ],
-  "git_sha": "4f9db8c838852f3de5ce4acc1bda7c4f863ba574",
+  "git_sha": "cce037590e38380ed010e0d346ddcfc7a3cd8b9f",
   "cli_args": [
     "analyze",
     "BRAF",
@@ -16,5 +16,5 @@
     "--n-permutations",
     "1000"
   ],
-  "timestamp": "2026-09-09T18:19:26.409914+00:00"
+  "timestamp": "2026-09-10T14:57:23.668590+00:00"
 }

@@ -13,6 +13,7 @@ body {
 }
 .wrap { max-width: 1080px; margin: 0 auto; }
 h1 { font-size: 22px; margin: 0 0 4px; }
+h1 .badge { position: relative; top: -2px; }
 h2 {
   font-size: 16px; margin: 32px 0 10px;
   border-bottom: 1px solid #ddd; padding-bottom: 6px;
@@ -71,12 +72,37 @@ table.events th { position: sticky; top: 0; background: #fafafa; }
 .gene-links a:hover { background: #f0f0f0; }
 .gene-links a.significant { border-color: #d62728; color: #d62728; }
 .note { font-size: 12px; color: #777; margin-top: 8px; }
+.panel-note { font-size: 12px; color: #555; margin: 8px 0 0; padding-left: 18px; }
+.badge {
+  display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 9px;
+  border-radius: 999px; margin-left: 10px; vertical-align: middle;
+  text-transform: uppercase; letter-spacing: 0.03em;
+}
+.badge-curated { background: #e6f4ea; color: #1a7f37; border: 1px solid #b7e0c2; }
+.badge-auto { background: #fff4e5; color: #9a6700; border: 1px solid #f0dca6; }
+table.data-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+table.data-table th, table.data-table td {
+  text-align: left; padding: 5px 8px;
+  border-bottom: 1px solid #eee; white-space: nowrap;
+}
+table.data-table th { position: sticky; top: 0; background: #fafafa; }
+table.sortable th[data-sort-key] { cursor: pointer; user-select: none; }
+table.sortable th[data-sort-key]:hover { background: #f0f0f0; }
+table.sortable th[data-sort-key]::after { content: ""; margin-left: 4px; color: #999; }
+table.sortable th[data-sort-dir="asc"]::after { content: "\25B2"; margin-left: 4px; color: #555; }
+table.sortable th[data-sort-dir="desc"]::after { content: "\25BC"; margin-left: 4px; color: #555; }
+.data-table-frame {
+  max-height: 380px; overflow: auto;
+  border: 1px solid #e2e2e2; border-radius: 8px; background: #fff;
+}
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
 <div class="wrap">
   <a class="back-link" href="../index.html">&larr; Back to cohort-scan summary</a>
-  <h1>FH</h1>
+  <h1>FH<span class="badge badge-auto" title="Derived live from Genome Nexus, no curated YAML on file">Auto-configured</span></h1>
   <p class="subtitle">msk_impact_50k_2026</p>
   <div class="stat-grid"><div class="stat"><div class="label">Raw Structural Variant Count</div><div class="value">30</div></div><div class="stat"><div class="label">Total Fusions</div><div class="value">16</div></div><div class="stat"><div class="label">Mapped Fusions</div><div class="value">15</div></div><div class="stat"><div class="label">Skipped Fusions</div><div class="value">1</div></div><div class="stat"><div class="label">In Frame Count</div><div class="value">1</div></div><div class="stat"><div class="label">In Frame Percent</div><div class="value">6.25</div></div><div class="stat"><div class="label">Kinase Retained Count</div><div class="value">2</div></div><div class="stat"><div class="label">Kinase Retained Percent</div><div class="value">12.5</div></div><div class="stat"><div class="label">In Frame Kinase Retained Count</div><div class="value">1</div></div><div class="stat"><div class="label">Fisher Odds Ratio</div><div class="value">inf</div></div><div class="stat"><div class="label">Fisher P Value</div><div class="value">0.1333</div></div><div class="stat"><div class="label">Permutation P Value</div><div class="value">0.2871</div></div><div class="stat"><div class="label">Domain Accession</div><div class="value">PF00206</div></div><div class="stat"><div class="label">Domain Start Aa</div><div class="value">58</div></div><div class="stat"><div class="label">Domain End Aa</div><div class="value">389</div></div></div>
   <h2>Domain retention / outlier lollipop track</h2><div class="svg-frame"><svg xmlns="http://www.w3.org/2000/svg" width="920" height="200" viewBox="0 0 920 200">
@@ -141,7 +167,7 @@ table.events th { position: sticky; top: 0; background: #fafafa; }
 <circle cx="365" cy="167.0" r="4" fill="white" stroke="#d62728" stroke-width="1.5"/><text x="375" y="172.0" font-family="sans-serif" font-size="12">reference discrepancy</text>
 <rect x="60" y="180.0" width="12" height="10" fill="#62b36f" opacity="0.55"/><text x="80" y="189.0" font-family="sans-serif" font-size="12">configured key-domain span (name/range labeled above; a second or later configured domain gets its own distinct shade)</text>
 </svg>
-</div><h2>Fusion-transcript schematic</h2>
+</div><h2>Composite evidence ranking (per partner gene)</h2><p class="panel-note">Click a column header to sort ascending/descending. 11 partner gene(s) ranked by <code>composite_score</code>.</p><div class="data-table-frame"><table class="data-table sortable" id="composite-score-table"><thead><tr><th data-sort-key="Rank">Rank</th><th data-sort-key="Partner_gene">Partner gene</th><th data-sort-key="Event_count">Events</th><th data-sort-key="Composite_score">Composite score</th><th data-sort-key="Recurrence_score">Recurrence</th><th data-sort-key="Domain_retention_score">Domain retention</th><th data-sort-key="Domain_disruption_score">Domain disruption</th><th data-sort-key="Cutpoint_proximity_score">Cutpoint proximity</th><th data-sort-key="Confidence_certainty_score">Confidence</th></tr></thead><tbody><tr><td data-sort="1">1</td><td data-sort="RYR2">RYR2</td><td data-sort="1">1</td><td data-sort="0.27612678359599413">0.2761</td><td data-sort="0.0625">0.0625</td><td data-sort="0.05419233758836865">0.05419</td><td data-sort=""></td><td data-sort="1.0">1</td><td data-sort="0.3860334247970314">0.386</td></tr><tr><td data-sort="2">2</td><td data-sort="unknown">unknown</td><td data-sort="1">1</td><td data-sort="0.27612678359599413">0.2761</td><td data-sort="0.0625">0.0625</td><td data-sort="0.05419233758836865">0.05419</td><td data-sort=""></td><td data-sort="1.0">1</td><td data-sort="0.3860334247970314">0.386</td></tr><tr><td data-sort="3">3</td><td data-sort="PDE1C">PDE1C</td><td data-sort="1">1</td><td data-sort="0.27569275581821634">0.2757</td><td data-sort="0.0625">0.0625</td><td data-sort="0.05419233758836865">0.05419</td><td data-sort=""></td><td data-sort="0.9976851851851852">0.9977</td><td data-sort="0.3860334247970314">0.386</td></tr><tr><td data-sort="4">4</td><td data-sort="DGKH">DGKH</td><td data-sort="5">5</td><td data-sort="0.22065803359599415">0.2207</td><td data-sort="0.3125">0.3125</td><td data-sort="0.05419233758836865">0.05419</td><td data-sort=""></td><td data-sort="0.2041666666666666">0.2042</td><td data-sort="0.3860334247970314">0.386</td></tr><tr><td data-sort="5">5</td><td data-sort="NOTCH1">NOTCH1</td><td data-sort="1">1</td><td data-sort="0.21492886692932747">0.2149</td><td data-sort="0.0625">0.0625</td><td data-sort="0.05419233758836865">0.05419</td><td data-sort=""></td><td data-sort="0.6736111111111112">0.6736</td><td data-sort="0.3860334247970314">0.386</td></tr><tr><td data-sort="6">6</td><td data-sort="RGS7">RGS7</td><td data-sort="2">2</td><td data-sort="0.18541497804043855">0.1854</td><td data-sort="0.125">0.125</td><td data-sort="0.05419233758836865">0.05419</td><td data-sort=""></td><td data-sort="0.3912037037037037">0.3912</td><td data-sort="0.3860334247970314">0.386</td></tr><tr><td data-sort="7">7</td><td data-sort="FMN2">FMN2</td><td data-sort="1">1</td><td data-sort="0.14591845026266081">0.1459</td><td data-sort="0.0625">0.0625</td><td data-sort="0.05419233758836865">0.05419</td><td data-sort=""></td><td data-sort="0.3055555555555556">0.3056</td><td data-sort="0.3860334247970314">0.386</td></tr><tr><td data-sort="8">8</td><td data-sort="ARID4B">ARID4B</td><td data-sort="1">1</td><td data-sort="0.13506775581821637">0.1351</td><td data-sort="0.0625">0.0625</td><td data-sort="0.05419233758836865">0.05419</td><td data-sort=""></td><td data-sort="0.24768518518518523">0.2477</td><td data-sort="0.3860334247970314">0.386</td></tr><tr><td data-sort="9">9</td><td data-sort="TRMT1L">TRMT1L</td><td data-sort="1">1</td><td data-sort="0.10907911827199278">0.1091</td><td data-sort="0.0625">0.0625</td><td data-sort="0.05419233758836865">0.05419</td><td data-sort=""></td><td data-sort=""></td><td data-sort="0.3860334247970314">0.386</td></tr><tr><td data-sort="10">10</td><td data-sort="MAFTRR">MAFTRR</td><td data-sort="1">1</td><td data-sort="0.0929670613737719">0.09297</td><td data-sort="0.0625">0.0625</td><td data-sort="0.05419233758836865">0.05419</td><td data-sort=""></td><td data-sort="0.02314814814814814">0.02315</td><td data-sort="0.3860334247970314">0.386</td></tr><tr><td data-sort="11">11</td><td data-sort="SLC35F3">SLC35F3</td><td data-sort="1">1</td><td data-sort="0.08862678359599413">0.08863</td><td data-sort="0.0625">0.0625</td><td data-sort="0.05419233758836865">0.05419</td><td data-sort=""></td><td data-sort="0.0">0</td><td data-sort="0.3860334247970314">0.386</td></tr></tbody></table></div><h2>Fusion-transcript schematic</h2>
 <div class="controls">
   <div class="control-group">
     <label class="title" for="tumor-type-filter">Tumor type</label>
@@ -429,6 +455,44 @@ document.addEventListener("DOMContentLoaded", function () {
   tumorSelect.addEventListener("change", applyFilters);
   statusContainer.addEventListener("change", applyFilters);
   applyFilters();
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll("table.sortable").forEach(function (table) {
+    var tbody = table.tBodies[0];
+    if (!tbody) { return; }
+    var headers = Array.from(table.querySelectorAll("thead th[data-sort-key]"));
+    var currentKey = null;
+    var currentDir = 1;
+    headers.forEach(function (th, index) {
+      th.addEventListener("click", function () {
+        var key = th.getAttribute("data-sort-key");
+        currentDir = (currentKey === key) ? -currentDir : 1;
+        currentKey = key;
+        headers.forEach(function (h) { h.removeAttribute("data-sort-dir"); });
+        th.setAttribute("data-sort-dir", currentDir === 1 ? "asc" : "desc");
+
+        var rows = Array.from(tbody.querySelectorAll("tr"));
+        rows.sort(function (a, b) {
+          var aCell = a.children[index];
+          var bCell = b.children[index];
+          var aRaw = aCell ? aCell.getAttribute("data-sort") : null;
+          var bRaw = bCell ? bCell.getAttribute("data-sort") : null;
+          var aNum = aRaw === null || aRaw === "" ? NaN : Number(aRaw);
+          var bNum = bRaw === null || bRaw === "" ? NaN : Number(bRaw);
+          var cmp;
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            cmp = aNum - bNum;
+          } else {
+            cmp = String(aRaw).localeCompare(String(bRaw));
+          }
+          return cmp * currentDir;
+        });
+        rows.forEach(function (row) { tbody.appendChild(row); });
+      });
+    });
+  });
 });
 </script>
 </body>
