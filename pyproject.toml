@@ -19,7 +19,7 @@ dependencies = [
     "click>=8.5.0",
     "pyyaml>=6.0.3",
     "reportlab>=5.0.1",
-    "svglib>=1.5",
+    "svglib>=2.2.0",
 ]
 
 [project.optional-dependencies]
