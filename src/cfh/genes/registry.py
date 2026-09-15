@@ -30,6 +30,24 @@ class KeyDomain(BaseModel):
     key: Optional[str] = None
     accession: Optional[str] = None
     """Source-native identifier, such as a Pfam accession from Genome Nexus."""
+    start_aa: Optional[int] = None
+    end_aa: Optional[int] = None
+    """Opt-in curated coordinate override (one-based, inclusive). When both
+    are set, ``cfh.mapping.feature_mapper.map_event`` uses these coordinates
+    directly instead of looking the domain up by name/accession against a
+    live domain source (UniProt) -- for a region with no live-matchable
+    feature at all (e.g. a regulatory/autoinhibitory element that isn't
+    annotated as a discrete "domain"/"region" by UniProt, only described in
+    the primary literature by residue range). Leave unset for the normal,
+    live-matched path; only set both together, never just one."""
+
+    @model_validator(mode="after")
+    def _validate_coordinate_pair(self) -> "KeyDomain":
+        if (self.start_aa is None) != (self.end_aa is None):
+            raise ValueError("KeyDomain.start_aa and end_aa must be set together, or both left unset")
+        if self.start_aa is not None and self.end_aa is not None and self.end_aa < self.start_aa:
+            raise ValueError("KeyDomain.end_aa must be >= start_aa")
+        return self
 
 
 class MutualExclusivityTarget(BaseModel):

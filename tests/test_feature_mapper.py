@@ -194,6 +194,74 @@ def test_domain_listed_in_both_key_and_disruption_domains_is_not_double_processe
     assert feature.Disrupted_domains == []
 
 
+def test_coordinate_override_skips_the_live_source_lookup_entirely():
+    """A KeyDomain with both start_aa/end_aa set must resolve directly from
+    those coordinates -- never touching the live domain-source fetch at
+    all -- for a region with no live-matchable UniProt feature (e.g. an
+    autoinhibitory element only described in the literature by residue
+    range, not annotated as a discrete UniProt "domain"/"region")."""
+    gene_config = GeneConfig(
+        gene_symbol="FAKE4",
+        canonical_transcript_id="NM_000004",
+        protein_id="P00004",
+        disruption_required_domains=[
+            KeyDomain(
+                name="C-terminal autoinhibitory tail",
+                source="literature",
+                key="c_tail",
+                start_aa=768,
+                end_aa=821,
+            )
+        ],
+    )
+    domain_source = MagicMock()
+    domain_source.fetch.return_value = []  # nothing live-matchable at all
+
+    feature = feature_mapper.map_event(
+        _event("SAMPLE-COORD"),
+        gene_config,
+        role="five_prime",
+        junction_position_aa=800,
+        domain_source=domain_source,
+    )
+
+    assert feature.Domain_retention_flags["c_tail"] == "disrupted"
+    assert "C-terminal autoinhibitory tail" in feature.Disrupted_domains
+    domain_source.fetch.assert_called_once()  # still fetched (for other domains), never matched against
+
+
+def test_coordinate_override_wins_even_when_a_live_match_would_also_exist():
+    """The curated coordinate override is authoritative -- it is used even
+    when a same-named live feature is also present, so there is no
+    ambiguity about which boundary won."""
+    gene_config = GeneConfig(
+        gene_symbol="FAKE5",
+        canonical_transcript_id="NM_000005",
+        protein_id="P00005",
+        key_domains=[
+            KeyDomain(
+                name="Overridden domain", source="literature", key="ovr", start_aa=10, end_aa=20
+            )
+        ],
+    )
+    domain_source = MagicMock()
+    domain_source.fetch.return_value = [
+        ProteinDomain(name="Overridden domain", start_aa=500, end_aa=600, source="uniprot")
+    ]
+
+    # Breakpoint at 15 falls inside the curated 10-20 range (disrupted) but
+    # would be "lost" against the live 500-600 range -- proves which one won.
+    feature = feature_mapper.map_event(
+        _event("SAMPLE-COORD-WIN"),
+        gene_config,
+        role="five_prime",
+        junction_position_aa=15,
+        domain_source=domain_source,
+    )
+
+    assert feature.Domain_retention_flags["ovr"] == "disrupted"
+
+
 def test_default_domain_source_is_shared_across_calls_without_explicit_source(
     uniprot_fixture_path,
 ):

@@ -47,6 +47,25 @@ def _normalize_domain_name(name: str) -> str:
 def _find_matching_domain(
     domains: list[ProteinDomain], config_domain: KeyDomain
 ) -> ProteinDomain | None:
+    """Resolve ``config_domain`` to its coordinate-bearing record.
+
+    A curated ``start_aa``/``end_aa`` coordinate override always wins and
+    skips the live-source lookup entirely -- for a region with no
+    live-matchable UniProt "domain"/"region" feature at all (see
+    ``KeyDomain.start_aa``'s own docstring), name/accession matching would
+    either silently fail (leaving every event's status "unknown", as
+    happened for FGFR2's original Ig-D1-by-name entry) or coincidentally
+    match the wrong feature; an explicit coordinate override cannot do
+    either.
+    """
+    if config_domain.start_aa is not None and config_domain.end_aa is not None:
+        return ProteinDomain(
+            name=config_domain.name,
+            start_aa=config_domain.start_aa,
+            end_aa=config_domain.end_aa,
+            source=config_domain.source,
+            accession=config_domain.accession,
+        )
     target = _normalize_domain_name(config_domain.name)
     for domain in domains:
         if config_domain.accession and config_domain.accession in {

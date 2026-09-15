@@ -2,30 +2,38 @@
 # https://www.genomenexus.org/ensembl/canonical-transcript/hgnc/FGFR2?isoformOverrideSource=mskcc
 # ENST00000358487; ENSP00000351276; 821 aa.
 # PF07714: aa 481-757; https://www.ebi.ac.uk/interpro/api/entry/pfam/PF07714
-# PF13895: aa 43-115; https://www.ebi.ac.uk/interpro/api/entry/pfam/PF13895
-# D1 participates in FGFR2 autoinhibition:
-# https://www.jci.org/articles/view/182417
-# Check D1 disruption without asserting it is necessary for FGFR2 fusion activity:
-# FGFR2 fusions can retain the extracellular domains. The acid box has no
-# separate Pfam annotation here, so it is not configured.
+# PF13895 (Ig D1): aa 43-115; https://www.ebi.ac.uk/interpro/api/entry/pfam/PF13895
 #
 # IMPORTANT -- verified via OpenEvidence literature synthesis, 2026-09-15
-# (FGFR2::BICC1 query): the best-supported causal driver is actually loss
-# of the C-terminal tail (exon 18, ~residues 768-821), NOT loss of the D1
-# domain this config checks. Zingg et al., Nature 2022
+# (FGFR2::BICC1 query): the best-supported causal driver is loss of the
+# C-terminal tail (exon 18, residues 768-821, the last residue of the
+# 821-aa canonical protein), NOT loss of the Ig D1 domain this config used
+# to check. Zingg et al., Nature 2022
 # (https://doi.org/10.1038/s41586-022-05066-5) used isogenic Fgfr2 variants
 # with transposon screening and phosphoproteomics: Fgfr2-DeltaE18 alone
 # and Fgfr2-DeltaE18-Bicc1 produced equivalent MAPK/PI3K-AKT-mTOR
 # activation, and the BICC1 SAM oligomerization domain was dispensable
 # when tested directly. D1 loss was separately shown to INCREASE
 # dimerization in the same study (i.e. D1 itself is autoinhibitory, but by
-# a different mechanism than exon 18), so this D1 disruption_required_domains
-# check is not testing the same causal element the strongest evidence
-# points to. The exon-18 tail has no distinct Pfam accession under
-# genome_nexus's current domain source, so it cannot be configured here
-# the same way; this is a known, documented limitation of this config
-# pending either a domain source that annotates it or a coordinate-based
-# check. See mechanism_note below for the full picture, including the
+# a different mechanism than exon 18).
+#
+# Separately, and independent of which domain is scientifically correct:
+# the Ig-D1-by-name entry this replaced was silently non-functional at
+# runtime. cfh.mapping.feature_mapper.map_event resolves
+# disruption_required_domains against a *live UniProt* fetch (by name,
+# falling back to substring match), not against Genome Nexus's Pfam
+# annotation the comment above verified -- and UniProt's own feature for
+# this region is named "Ig-like C2-type 1", which never matches
+# "Immunoglobulin D1 domain" by either accession or fuzzy name. Every
+# committed FGFR2 run's domain_disruption result was therefore
+# `Algorithm failed: ValueError: no in-frame protein-fusion events have a
+# known domain-retention state` -- this test has never actually run. The
+# exon-18 tail has no UniProt "domain"/"region" feature at all to
+# name-match against either (confirmed live: UniProt P21802's own domains
+# stop at "Protein kinase" 481-770, nothing beyond), so it is configured
+# below via KeyDomain's start_aa/end_aa coordinate override instead, which
+# bypasses live-source matching entirely (see that field's own docstring).
+# See mechanism_note below for the full mechanistic picture, including the
 # FGFR3 paralog contrast (partner-dimerization model holds for FGFR3's
 # TACC3 fusions but not for FGFR2 -- do not generalize across the family).
 gene_symbol: FGFR2
@@ -38,10 +46,11 @@ key_domains:
     key: kinase
     accession: PF07714
 disruption_required_domains:
-  - name: "Immunoglobulin D1 domain"
-    source: genome_nexus
-    key: ig_d1
-    accession: PF13895
+  - name: "C-terminal autoinhibitory tail (exon 18)"
+    source: literature
+    key: c_terminal_tail
+    start_aa: 768
+    end_aa: 821
 expected_retained_exon_hint: null
 analysis_modes:
   - breakpoint_hotspot
