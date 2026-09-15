@@ -140,9 +140,7 @@ def render_abstract(payload: dict) -> str:
     frame_total = known_frame_total if known_frame_total is not None else mapped_total
     if frame_total and in_frame_count is not None:
         population = (
-            " fusions with known frame status"
-            if known_frame_total is not None
-            else " fusions"
+            " fusions with known frame status" if known_frame_total is not None else " fusions"
         )
         sentences.append(
             f"{in_frame_count}/{frame_total}{population} "

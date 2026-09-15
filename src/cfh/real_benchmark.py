@@ -1517,8 +1517,7 @@ def markdown_summary(
         f"- In-frame among known-frame events: "
         f"{summary['in_frame_count']}/{summary['known_frame_count']} "
         f"({summary['in_frame_percent']:.1f}%)",
-        f"- Unknown frame status: {summary['unknown_frame_count']}/"
-        f"{summary['mapped_fusions']}",
+        f"- Unknown frame status: {summary['unknown_frame_count']}/{summary['mapped_fusions']}",
         f"- {domain} ({summary['domain_start_aa']}-{summary['domain_end_aa']} aa) retained: "
         f"{summary['kinase_retained_count']}/{summary['mapped_fusions']} "
         f"({summary['kinase_retained_percent']:.1f}%)",
