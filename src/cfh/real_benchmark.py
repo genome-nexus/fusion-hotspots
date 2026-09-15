@@ -1022,6 +1022,9 @@ def analyze_structural_variant_calls_with_config(
     # Frame and retention summaries describe the same post-mapping population.
     mapped_total = len(rows)
     in_frame_count = sum(row["frame_status"] == "in-frame" for row in rows)
+    out_of_frame_count = sum(row["frame_status"] == "out-of-frame" for row in rows)
+    known_frame_count = in_frame_count + out_of_frame_count
+    unknown_frame_count = mapped_total - known_frame_count
     retained_count = sum(row["domain_status"] == "retained" for row in rows)
     in_frame_retained_count = sum(
         row["frame_status"] == "in-frame" and row["domain_status"] == "retained" for row in rows
@@ -1086,7 +1089,12 @@ def analyze_structural_variant_calls_with_config(
         "mapped_fusions": len(features),
         "skipped_fusions": total - len(features),
         "in_frame_count": in_frame_count,
-        "in_frame_percent": 100 * in_frame_count / mapped_total if mapped_total else 0.0,
+        "out_of_frame_count": out_of_frame_count,
+        "known_frame_count": known_frame_count,
+        "unknown_frame_count": unknown_frame_count,
+        "in_frame_percent": (
+            100 * in_frame_count / known_frame_count if known_frame_count else 0.0
+        ),
         "kinase_retained_count": retained_count,
         "kinase_retained_percent": 100 * retained_count / mapped_total if mapped_total else 0.0,
         "in_frame_kinase_retained_count": in_frame_retained_count,
@@ -1506,8 +1514,10 @@ def markdown_summary(
         f"- Protein-fusion records found: {summary['total_fusions']}",
         f"- Protein-fusion records mapped: {summary['mapped_fusions']}",
         f"- Malformed/unmappable fusion records skipped: {summary['skipped_fusions']}",
-        f"- In-frame: {summary['in_frame_count']}/{summary['mapped_fusions']} "
+        f"- In-frame among known-frame events: "
+        f"{summary['in_frame_count']}/{summary['known_frame_count']} "
         f"({summary['in_frame_percent']:.1f}%)",
+        f"- Unknown frame status: {summary['unknown_frame_count']}/{summary['mapped_fusions']}",
         f"- {domain} ({summary['domain_start_aa']}-{summary['domain_end_aa']} aa) retained: "
         f"{summary['kinase_retained_count']}/{summary['mapped_fusions']} "
         f"({summary['kinase_retained_percent']:.1f}%)",
@@ -1606,7 +1616,9 @@ def markdown_summary(
             "",
             f"{run.gene_symbol} genomic breakpoints were mapped against the Genome Nexus "
             f"canonical transcript, and retention was classified against its returned {domain} "
-            "coordinates. Counts are event-level with no patient deduplication. The "
+            "coordinates. Counts are event-level with no patient deduplication. In-frame "
+            "percentage uses only events explicitly called in-frame or out-of-frame; "
+            "unknown-frame events are reported separately and excluded from that denominator. The "
             "Fisher comparison's `other` column combines out-of-frame and unknown-frame "
             "events, as pre-specified by the domain-retention algorithm.",
             "",
@@ -1712,7 +1724,7 @@ def markdown_summary(
                 "This does **not** reproduce the Zehir et al. (PMC5461196) report of "
                 "33/33 BRAF fusions being in-frame with the kinase domain retained: "
                 f"this live successor cohort has {summary['in_frame_count']}/"
-                f"{summary['mapped_fusions']} mapped fusions in-frame and "
+                f"{summary['known_frame_count']} known-frame fusions in-frame and "
                 f"{summary['in_frame_kinase_retained_count']}/"
                 f"{summary['in_frame_count']} in-frame fusions retaining {domain}.",
                 "",

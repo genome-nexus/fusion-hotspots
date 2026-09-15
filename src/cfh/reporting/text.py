@@ -135,10 +135,15 @@ def render_abstract(payload: dict) -> str:
         sentences.append(f"This report analyzes {gene} gene fusions from the {study} study.")
 
     mapped_total = summary.get("mapped_fusions", total)
+    known_frame_total = summary.get("known_frame_count")
     in_frame_count = summary.get("in_frame_count")
-    if mapped_total and in_frame_count is not None:
+    frame_total = known_frame_total if known_frame_total is not None else mapped_total
+    if frame_total and in_frame_count is not None:
+        population = (
+            " fusions with known frame status" if known_frame_total is not None else " fusions"
+        )
         sentences.append(
-            f"{in_frame_count}/{mapped_total} fusions "
+            f"{in_frame_count}/{frame_total}{population} "
             f"({format_percent(summary.get('in_frame_percent'))}) "
             "were in-frame."
         )

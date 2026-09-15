@@ -442,6 +442,9 @@ def test_in_frame_and_retention_summaries_exclude_skipped_in_frame_rows(
     assert any("SKIPPED-IN-FRAME" in warning for warning in run.warnings)
     assert run.rows == baseline.rows
     assert run.summary["in_frame_count"] == (1 if include_mapped else 0)
+    assert run.summary["out_of_frame_count"] == (1 if include_mapped else 0)
+    assert run.summary["known_frame_count"] == (2 if include_mapped else 0)
+    assert run.summary["unknown_frame_count"] == 0
     assert run.summary["in_frame_percent"] == (50.0 if include_mapped else 0.0)
     assert run.summary["kinase_retained_count"] == len(mapped_calls)
     assert run.summary["kinase_retained_percent"] == (100.0 if include_mapped else 0.0)
@@ -457,10 +460,36 @@ def test_in_frame_and_retention_summaries_exclude_skipped_in_frame_rows(
     paths = write_outputs(run, tmp_path, pdf=False)
     report = paths["markdown"].read_text()
     if include_mapped:
-        assert "- In-frame: 1/2 (50.0%)" in report
+        assert "- In-frame among known-frame events: 1/2 (50.0%)" in report
         abstract = render_abstract(json.loads(paths["json"].read_text()))
-        assert "1/2 fusions (50.0%) were in-frame" in abstract
+        assert "1/2 fusions with known frame status (50.0%) were in-frame" in abstract
         assert "2/2 fusions (100.0%) retained" in abstract
+
+
+def test_in_frame_percent_excludes_unknown_frame_events(
+    genome_nexus_canonical_transcript_fixture_path,
+):
+    client = _genome_nexus_client(genome_nexus_canonical_transcript_fixture_path)
+    calls = [
+        _call("IN-FRAME"),
+        _call("OUT-OF-FRAME", event_info="Protein Fusion: out of frame {KIAA1549:BRAF}"),
+        _call("UNKNOWN", event_info="Protein Fusion {KIAA1549:BRAF}"),
+    ]
+
+    run = analyze_structural_variant_calls(
+        calls,
+        "BRAF",
+        "edge-study",
+        genome_nexus_client=client,
+        n_permutations=5,
+    )
+
+    assert run.summary["mapped_fusions"] == 3
+    assert run.summary["in_frame_count"] == 1
+    assert run.summary["out_of_frame_count"] == 1
+    assert run.summary["known_frame_count"] == 2
+    assert run.summary["unknown_frame_count"] == 1
+    assert run.summary["in_frame_percent"] == 50.0
 
 
 def test_tcga_fusion_annotation_uses_shared_benchmark_pipeline(
