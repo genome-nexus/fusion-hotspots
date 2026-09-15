@@ -83,6 +83,23 @@ def test_ret_disruption_required_domains_are_configured_with_real_pfam_accession
     assert all(domain.source == "genome_nexus" for domain in config.disruption_required_domains)
 
 
+def test_fgfr2_disruption_required_domains_uses_a_coordinate_override():
+    """Regression: fgfr2.yaml's disruption_required_domains used to name
+    "Immunoglobulin D1 domain" -- a name that never matches UniProt's own
+    feature for that region ("Ig-like C2-type 1"), so domain_disruption
+    failed outright on every real FGFR2 run
+    (see cfh.mapping.feature_mapper's KeyDomain.start_aa docstring). It now
+    targets the better-evidenced C-terminal exon-18 tail via an explicit
+    coordinate override, which needs no live-source name match at all."""
+    config = load_gene_config("fgfr2")
+    assert len(config.disruption_required_domains) == 1
+    domain = config.disruption_required_domains[0]
+    assert domain.source == "literature"
+    assert domain.start_aa == 768
+    assert domain.end_aa == 821
+    assert domain.accession is None
+
+
 def test_alk_and_ntrk1_explicitly_opt_out_of_disruption_required_domains():
     """ALK and NTRK1 have real N-terminal extracellular domains preceding
     their kinase domain (verified live), but neither is curated as a
@@ -102,6 +119,29 @@ def test_disruption_required_domains_defaults_to_empty_list():
     to no-op, not error, the same as the existing key_domains pattern."""
     config = GeneConfig(gene_symbol="FAKE", canonical_transcript_id="NM_1", protein_id="P1")
     assert config.disruption_required_domains == []
+
+
+def test_key_domain_coordinate_override_defaults_to_unset():
+    domain = KeyDomain(name="Some domain", source="test")
+    assert domain.start_aa is None
+    assert domain.end_aa is None
+
+
+def test_key_domain_coordinate_override_accepts_a_matched_pair():
+    domain = KeyDomain(name="C-terminal tail", source="literature", start_aa=768, end_aa=821)
+    assert domain.start_aa == 768
+    assert domain.end_aa == 821
+
+
+@pytest.mark.parametrize(("start_aa", "end_aa"), [(768, None), (None, 821)])
+def test_key_domain_coordinate_override_rejects_only_one_bound_set(start_aa, end_aa):
+    with pytest.raises(ValueError, match="start_aa and end_aa must be set together"):
+        KeyDomain(name="Bad", source="test", start_aa=start_aa, end_aa=end_aa)
+
+
+def test_key_domain_coordinate_override_rejects_end_before_start():
+    with pytest.raises(ValueError, match="end_aa must be >= start_aa"):
+        KeyDomain(name="Bad", source="test", start_aa=821, end_aa=768)
 
 
 def test_eml4_alk_and_a_synthetic_tmprss2_erg_pair_leave_disruption_domains_unset():
@@ -134,6 +174,15 @@ def test_loads_tmprss2_erg_yaml_as_a_curated_gene_pair_config():
     assert "not domain-retention" in config.mechanism_note.lower()
 
 
+def test_loads_eml4_alk_yaml_with_curated_mechanism_note():
+    """EML4-ALK's real config curates a domain-retention/ligand-independent-
+    dimerization mechanism_note -- the same family of mechanism as the
+    single-gene alk.yaml config, unlike TMPRSS2-ERG's promoter-swap note."""
+    config = load_gene_config("eml4-alk")
+    assert config.mechanism_note is not None
+    assert "dimerization" in config.mechanism_note.lower()
+
+
 def test_loads_erg_yaml_with_live_genome_nexus_identifiers():
     """ERG is TMPRSS2-ERG's curated single-gene component -- mirroring how
     EML4-ALK curates only ALK (its 3' partner) -- so the pair benchmark can
@@ -153,10 +202,9 @@ def test_loads_erg_yaml_with_live_genome_nexus_identifiers():
 
 
 def test_mechanism_note_defaults_to_none_and_is_opt_in():
-    """Opt-in field: EML4-ALK's real config never sets it, so the field
-    must default to ``None`` rather than requiring every gene_pair config
-    to supply one."""
-    config = load_gene_config("eml4-alk")
+    """Opt-in field: a config that never sets it must default to ``None``
+    rather than requiring every config to supply one."""
+    config = GeneConfig(gene_pair=("FAKE5", "FAKE6"), analysis_modes=["joint_partner_dependency"])
     assert config.mechanism_note is None
 
 

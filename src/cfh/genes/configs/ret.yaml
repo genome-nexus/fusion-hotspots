@@ -22,3 +22,28 @@ benchmark_reference:
   fusion_count: 7
   in_frame_percent: 100.0
   domain_retained_percent: 100.0
+# Verified via OpenEvidence literature synthesis, 2026-09-15 (KIF5B::RET
+# query): Ju et al., Genome Research 2012 (PMID 22194472,
+# https://doi.org/10.1101/gr.133645.111) is the original KIF5B-RET
+# discovery paper; Mulligan, NEJM 2023 editorial (PMID 37966290,
+# https://doi.org/10.1056/NEJMe2311295) states the general mechanism
+# concisely. CAP/IASLC/AMP molecular testing guidelines describe RET
+# fusions the same way.
+mechanism_note: >-
+  Ligand-independent dimerization via extracellular-domain replacement,
+  with a contributory promoter-swap component. Full-length RET is a
+  receptor tyrosine kinase normally dimerized and activated only by a
+  GDNF-family ligand bound through GFRalpha co-receptors and its
+  extracellular cadherin-like domain. A fusion that retains the
+  intracellular kinase domain while losing the cadherin-like repeats,
+  cysteine-rich region, and transmembrane segment removes this ligand
+  dependence entirely -- it does not work by unmasking a separate
+  autoinhibitory domain, but simply by deleting the ligand requirement; the
+  partner gene's own coiled-coil dimerization domain (e.g. KIF5B's,
+  CCDC6's) substitutes in its place, driving constitutive dimerization and
+  kinase activation with no ligand or co-receptor required. A second,
+  additive mechanism contributes in KIF5B::RET specifically: the
+  ubiquitously active KIF5B promoter drives markedly increased RET
+  transcription in an epithelial compartment that does not normally
+  express it -- overexpression alone is insufficient for transformation,
+  but adds to the fused kinase's own activity.

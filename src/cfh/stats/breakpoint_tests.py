@@ -197,7 +197,11 @@ def gene_breakpoint_domain_status_records(
 
 
 def gene_breakpoint_domain_status_event_records(
-    events: list[FusionEvent], features: list[FusionFeature], gene_config: GeneConfig
+    events: list[FusionEvent],
+    features: list[FusionFeature],
+    gene_config: GeneConfig,
+    *,
+    domains: list[KeyDomain] | None = None,
 ) -> list[tuple[str, int, str]]:
     """Return ``(event_id, breakpoint_protein_position, domain_status)`` triples.
 
@@ -206,8 +210,14 @@ def gene_breakpoint_domain_status_event_records(
     *which* events fall inside a candidate region -- needed by window-based
     scans (e.g. ``window_detection``) to de-duplicate candidate windows by
     event membership rather than by numeric position alone.
+
+    ``domains`` defaults to ``gene_config.key_domains`` (the retention test);
+    pass ``gene_config.disruption_required_domains`` to read the same triples
+    for the inverse disruption test, mirroring
+    :func:`build_frame_domain_contingency_table`'s ``domains`` parameter.
     """
-    target_key = _target_domain_key(gene_config.key_domains, gene_config.gene_symbol)
+    domains = gene_config.key_domains if domains is None else domains
+    target_key = _target_domain_key(domains, gene_config.gene_symbol)
     records: list[tuple[str, int, str]] = []
     for feature in _target_features(features, gene_config):
         status = _domain_status(feature, target_key)

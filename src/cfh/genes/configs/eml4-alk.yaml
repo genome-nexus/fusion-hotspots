@@ -3,3 +3,20 @@ gene_pair:
   - ALK
 analysis_modes:
   - joint_partner_dependency
+# Verified via OpenEvidence literature synthesis, 2026-09-15 (EML4::ALK
+# query) -- see alk.yaml's own mechanism_note comment for the causal
+# (monomerization) evidence. Every described EML4 breakpoint variant
+# (V1-V8) retains EML4's N-terminal trimerization domain (TD, the HELP
+# domain), and crystal structures show it is necessary and sufficient for
+# self-association.
+mechanism_note: >-
+  Domain-retention/partner-driven-oligomerization, the best-characterized
+  instance of the mechanism this benchmark's domain-retention framework is
+  built around: EML4 contributes its N-terminal trimerization domain (TD,
+  also called the HELP domain, historically described as a coiled-coil),
+  which forces constitutive, ligand-independent self-association of the
+  fused ALK intracellular kinase domain and drives trans-autophosphorylation.
+  This substitutes for ALK's native ligand-induced extracellular-domain
+  dimerization -- loss of that extracellular region is permissive (removes
+  ALKAL1/ALKAL2 dependence) but the partner-driven oligomerization, not the
+  loss itself, is the necessary activating event.

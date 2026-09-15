@@ -1115,6 +1115,8 @@ def analyze_structural_variant_calls_with_config(
         "configured_key_domains": configured_key_domains,
         "configured_disruption_required_domains": configured_disruption_domains,
     }
+    if config.mechanism_note:
+        summary["mechanism_note"] = config.mechanism_note
     return RealBenchmarkRun(
         gene_symbol=config.gene_symbol,
         study_id=study_id,
@@ -1474,6 +1476,121 @@ def _format_stat(value: float | int | None) -> str:
     return "unavailable" if value is None or not math.isfinite(value) else f"{value:.6g}"
 
 
+def _algorithm_failed(result: AlgorithmResult) -> bool:
+    """Same orchestrator-wrapped-exception convention
+    ``cfh.reporting.html_viewer``'s own copy checks."""
+    return any(str(warning).startswith("Algorithm failed") for warning in (result.Warnings or []))
+
+
+def _mechanistic_effect_lines(summary: dict, tables: dict, *, effect: str, label: str) -> list[str]:
+    """Render one effect's (``"retention"`` or ``"disruption"``) block of
+    the "### Mechanistic interpretation" section from
+    ``mechanistic_interpretation``'s already-computed
+    ``Summary``/``Tables`` -- never re-derives a statistic, only formats
+    what that algorithm already decided. Returns ``[]`` when the gene
+    doesn't configure this effect's domains at all."""
+    if not summary.get(f"{effect}_domains_configured"):
+        return []
+    domain_phrase = format_domain_names(summary.get(f"{effect}_domain_names") or []) or (
+        "the configured domain"
+    )
+    p_value = summary.get(f"{effect}_fisher_p_value")
+    odds_ratio = summary.get(f"{effect}_fisher_odds_ratio")
+    stats_phrase = f"p={_format_stat(p_value)}, odds ratio={_format_stat(odds_ratio)}"
+
+    if not summary.get(f"{effect}_statistically_supported"):
+        return [
+            f"**{domain_phrase} {label}:** not statistically significant ({stats_phrase}) -- "
+            "too weak to say what this gene's fusions require, let alone characterize which "
+            "events run counter to it.",
+            "",
+        ]
+
+    confidence = summary.get(f"{effect}_counter_intuitive_confidence")
+    count = summary.get(f"{effect}_counter_intuitive_count") or 0
+    total = summary.get(f"{effect}_counter_intuitive_total") or 0
+    percent = summary.get(f"{effect}_counter_intuitive_percent")
+
+    if confidence == "none":
+        return [
+            f"**{domain_phrase} {label}:** statistically supported ({stats_phrase}). All "
+            f"{total} in-frame events with a determinate status match it -- no "
+            "counter-intuitive events observed.",
+            "",
+        ]
+
+    lines = [
+        f"**{domain_phrase} {label}:** statistically supported ({stats_phrase}), but "
+        f"{count}/{total} in-frame events ({percent:.1f}%) show the opposite status.",
+        "",
+    ]
+    if confidence == "possible_subcluster":
+        recurrent = tables.get(f"{effect}_counter_intuitive_recurrent_partners") or []
+        partner_phrase = ", ".join(f"{row['partner_gene']} (x{row['count']})" for row in recurrent)
+        lines.append(
+            f"{partner_phrase} recur among just these counter-intuitive events -- a candidate "
+            "subgroup that may follow a distinct, not-yet-curated mechanism. This is flagged "
+            "for manual curator review, not asserted as a confirmed alternate mechanism."
+        )
+    else:
+        threshold = summary.get(f"{effect}_recurrent_partner_threshold")
+        lines.append(
+            f"Spread across distinct partner genes with no partner recurring {threshold}+ "
+            "times among them -- consistent with background noise or individual passenger "
+            "events rather than a distinct recurrent subgroup; too weak to infer an "
+            "alternate mechanism from this cohort alone."
+        )
+    lines.append("")
+
+    events_table = tables.get(f"{effect}_counter_intuitive_events") or []
+    if events_table:
+        lines.extend(
+            [
+                "| Event | Sample | Partner | Breakpoint (aa) | Status |",
+                "|---|---|---|---:|---|",
+            ]
+        )
+        lines.extend(
+            f"| {row['event_id']} | {row['sample_id']} | {row['partner_gene']} | "
+            f"{row['breakpoint_protein_position']} | {row['domain_status']} |"
+            for row in events_table
+        )
+        lines.append("")
+    return lines
+
+
+def _mechanistic_interpretation_lines(
+    mechanistic_result: AlgorithmResult | None, mechanism_note: str | None
+) -> list[str]:
+    """The "### Mechanistic interpretation" report section: the curated,
+    human-authored ``mechanism_note`` (the *why*, when a curator has
+    supplied one) followed by ``mechanistic_interpretation``'s
+    purely-statistical counter-intuitive-event flagging (the *is this
+    minority recurrent or just noise*) -- see that algorithm's module
+    docstring for why the two are kept strictly separate. Omitted entirely
+    when there is nothing to say (no mechanism_note and no configured
+    retention/disruption domains)."""
+    body: list[str] = []
+    if mechanism_note:
+        body.extend([f"**Curated mechanism:** {mechanism_note}", ""])
+
+    if mechanistic_result is not None and not _algorithm_failed(mechanistic_result):
+        summary = mechanistic_result.Summary or {}
+        tables = mechanistic_result.Tables or {}
+        body.extend(
+            _mechanistic_effect_lines(summary, tables, effect="retention", label="retention")
+        )
+        body.extend(
+            _mechanistic_effect_lines(summary, tables, effect="disruption", label="disruption")
+        )
+
+    if not body:
+        return []
+    while body and body[-1] == "":
+        body.pop()
+    return ["### Mechanistic interpretation", "", *body, ""]
+
+
 def markdown_summary(
     run: RealBenchmarkRun,
     *,
@@ -1564,6 +1681,11 @@ def markdown_summary(
     if cooccurrence_lines:
         lines.extend(cooccurrence_lines)
         lines.append("")
+    lines.extend(
+        _mechanistic_interpretation_lines(
+            results_by_name.get("mechanistic_interpretation"), summary.get("mechanism_note")
+        )
+    )
     lines.extend(
         [
             "### Domain retention and discrepancies",
