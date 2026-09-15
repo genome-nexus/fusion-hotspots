@@ -213,6 +213,11 @@ def test_real_benchmark_pipeline_writes_tsv_json_and_markdown(
     assert "fully retained" in domain_svg
     assert "truncated" in domain_svg
     assert "fully lost" in domain_svg
+    # Every lollipop dot carries a data-event-id so the static HTML viewer
+    # can wire up a click handler that jumps to this event's row in the
+    # events table (see cfh.reporting.html_viewer._GENE_PAGE_SCRIPT).
+    for event_row in payload["events"]:
+        assert f'data-event-id="{event_row["event_id"]}"' in domain_svg
     assert "reference 100.0%" in paths["comparison_svg"].read_text()
     outliers = paths["outliers"].read_text()
     assert "reference_discrepancy" in outliers

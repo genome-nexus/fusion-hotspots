@@ -165,6 +165,25 @@ class TestSingleGenePageContent:
         assert 'id="events-data"' in html
         assert "<!doctype html>" in html.lower()
 
+    def test_lollipop_points_are_wired_to_their_events_table_row(self, tmp_path):
+        """A lollipop-track ``<circle data-event-id="...">`` (as emitted by
+        ``cfh.real_benchmark._domain_track_svg``) must have a matching
+        ``data-event-id`` on its row in the events table below, plus the
+        click-to-scroll wiring in the page script, so clicking a point
+        navigates to that sample's row."""
+        run_dir = _write_gene_run(tmp_path, _minimal_gene_payload())
+        viz_dir = run_dir / "visualizations"
+        (viz_dir / "domain_retention_outliers.svg").write_text(
+            '<svg xmlns="http://www.w3.org/2000/svg">'
+            '<circle data-event-id="E2" r="3"><title>event E2</title></circle>'
+            "</svg>"
+        )
+        html = build_run_viewer(run_dir).read_text()
+        assert 'id="domain-track-svg"' in html
+        assert 'data-event-id="E2"' in html.split('id="events-table"', 1)[1]
+        assert "circle[data-event-id]" in html
+        assert "row-highlight" in html
+
     def test_gene_pair_shaped_payload_with_no_gene_track_does_not_crash(self, tmp_path):
         payload = _minimal_gene_payload(
             gene_symbol="EML4-ALK", summary={"gene_pair": ["EML4", "ALK"], "observed_count": 6}

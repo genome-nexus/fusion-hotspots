@@ -308,6 +308,7 @@ table.events th, table.events td {
   border-bottom: 1px solid #eee; white-space: nowrap;
 }
 table.events th { position: sticky; top: 0; background: #fafafa; }
+table.events tr.row-highlight { background: #fff3cd; transition: background 1.2s ease; }
 .events-table-frame {
   max-height: 420px; overflow: auto;
   border: 1px solid #e2e2e2; border-radius: 8px; background: #fff;
@@ -600,6 +601,32 @@ document.addEventListener("DOMContentLoaded", function () {
   tumorSelect.addEventListener("change", applyFilters);
   statusContainer.addEventListener("change", applyFilters);
   applyFilters();
+
+  // Clicking a lollipop-track point (data-event-id, set by
+  // cfh.real_benchmark._domain_track_svg) jumps to that event's row in the
+  // table below -- clearing any active filters first so the row can't be
+  // hidden, since the point itself is drawn independent of the table's
+  // tumor-type/domain-status filters.
+  var domainTrackFrame = document.getElementById("domain-track-svg");
+  if (domainTrackFrame) {
+    domainTrackFrame.querySelectorAll("circle[data-event-id]").forEach(function (circle) {
+      var eventId = circle.getAttribute("data-event-id");
+      if (!eventId) { return; }
+      var row = document.querySelector(
+        '#events-table tbody tr[data-event-id="' + CSS.escape(eventId) + '"]'
+      );
+      if (!row) { return; }
+      circle.style.cursor = "pointer";
+      circle.addEventListener("click", function () {
+        tumorSelect.value = "";
+        statusContainer.querySelectorAll("input").forEach(function (i) { i.checked = true; });
+        applyFilters();
+        row.scrollIntoView({ behavior: "smooth", block: "center" });
+        row.classList.add("row-highlight");
+        window.setTimeout(function () { row.classList.remove("row-highlight"); }, 1500);
+      });
+    });
+  }
 });
 """
 
@@ -676,13 +703,16 @@ def _render_events_table(events: list[dict[str, Any]]) -> str:
     for event in events:
         tumor_type = event.get("tumor_type") or ""
         domain_status = event.get("domain_status") or ""
+        event_id_value = str(event.get("event_id") or "")
         body_rows.append(
-            '<tr data-tumor-type="{tumor_attr}" data-domain-status="{status_attr}">'
+            '<tr data-tumor-type="{tumor_attr}" data-domain-status="{status_attr}" '
+            'data-event-id="{event_id_attr}">'
             "<td>{event_id}</td><td>{sample_id}</td><td>{tumor_type}</td><td>{oncotree}</td>"
             "<td>{partner}</td><td>{role}</td><td>{breakpoint}</td><td>{status}</td></tr>".format(
                 tumor_attr=_esc(tumor_type),
                 status_attr=_esc(domain_status),
-                event_id=_esc(str(event.get("event_id") or "")),
+                event_id_attr=_esc(event_id_value),
+                event_id=_esc(event_id_value),
                 sample_id=_esc(str(event.get("sample_id") or "")),
                 tumor_type=_esc(tumor_type),
                 oncotree=_esc(str(event.get("oncotree_code") or "")),
@@ -953,7 +983,8 @@ def _render_gene_page(
     if domain_svg:
         sections.append(
             "<h2>Domain retention / outlier lollipop track</h2>"
-            f'<div class="svg-frame">{domain_svg}</div>'
+            '<p class="panel-note">Click a point to jump to its event in the table below.</p>'
+            f'<div class="svg-frame" id="domain-track-svg">{domain_svg}</div>'
         )
 
     sections.append(_composite_score_section(payload))
