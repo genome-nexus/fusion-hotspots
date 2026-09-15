@@ -106,6 +106,24 @@ The output records the gene, study, algorithm, test, raw p-value, BH-adjusted
 q-value, and whether the result is significant at `q < 0.05`. All p-values
 collected by one invocation form a single correction family.
 
+The correction family includes retention/disruption Fisher and permutation
+tests, corrected cutpoint/window scans, pair enrichment, confidence Welch
+tests, both expression comparisons, and each mutation/CNA comparator test.
+Composite scores are rankings and are not included as p-values.
+
+Cohort scans fetch expression and comparator inputs when those algorithms
+are requested and the gene/study configuration supplies the required metadata.
+A failed or malformed comparator fetch skips that target; a successful fetch
+with zero calls remains an observed zero. Direct algorithm callers should use
+`comparator_alterations=None` for unavailable data and an explicit list
+(including `[]`) for available data. For partial availability across targets,
+pass `comparator_availability` keyed by `comparator_target_key(target)`.
+
+The live pipeline supplies the same genomic null-model client and requested
+permutation budget to retention and disruption, unless per-algorithm parameters
+override them. New disruption p-values and expanded-family q-values can therefore
+differ from historical saved reports; those reports are not updated automatically.
+
 RET uses the same command and live ingestion/mapping path:
 
 ```bash

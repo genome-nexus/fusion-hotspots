@@ -37,10 +37,11 @@ uses the same already-locus-validated genomic position that produced the
 event's ``Junction_position_aa`` in the first place -- anything else would
 make the genomic-vs-protein cross-reference below incoherent.
 
-Build handling is explicit and honest (never silently pooled): a record
-reporting a reference-genome build other than the run's majority build is
-excluded from every table here, and that exclusion is always surfaced in
-``Summary``/``Warnings``, never silently dropped.
+Build handling is explicit and honest (never silently pooled): among records
+with a nonempty reported build, only the most frequent build is pooled. Empty
+or unknown build provenance is pooled only when every usable record is
+unknown, and is never presented as a validated assembly. All exclusions and
+unknown counts are surfaced in ``Summary``/``Warnings``.
 """
 
 from __future__ import annotations
@@ -80,47 +81,59 @@ def _genomic_records(
     a known chromosome and position are returned. Anything else (an event
     with no genomic-breakpoint entry, or one missing chromosome/position)
     is counted in the second return value rather than silently vanishing.
+    An empty build is retained as unknown provenance; it is pooled only when
+    every usable record has unknown provenance, and is never presented as a
+    reported reference build.
     """
     event_ids = {event.Event_id for event in events}
-    target_event_ids = {feature.Event_id for feature in _target_features(features, gene_config)}
+    target_event_ids = {
+        feature.Event_id
+        for feature in _target_features(features, gene_config)
+        if feature.Event_id in event_ids
+    }
     records: list[dict] = []
-    skipped = 0
-    for event_id, info in genomic_breakpoints.items():
-        if event_id not in target_event_ids or event_id not in event_ids:
-            continue
+    for event_id in sorted(target_event_ids):
+        info = genomic_breakpoints.get(event_id)
         chromosome = info.get("chromosome") if isinstance(info, dict) else None
         position = info.get("position") if isinstance(info, dict) else None
         build = info.get("build") if isinstance(info, dict) else None
         if chromosome is None or position is None:
-            skipped += 1
             continue
         records.append(
             {
                 "event_id": event_id,
                 "chromosome": str(chromosome),
                 "position": int(position),
-                "build": str(build) if build is not None else None,
+                "build": str(build).strip() if build is not None and str(build).strip() else None,
             }
         )
+    skipped = len(target_event_ids) - len(records)
     return records, skipped
 
 
 def _select_pooled_build(
     records: list[dict],
-) -> tuple[Optional[str], list[dict], dict[str, int]]:
+) -> tuple[Optional[str], list[dict], dict[str | None, int]]:
     """Pick the single reference build to pool genomic positions within.
 
     Coordinates from two different genome assemblies are not comparable
     numbers even on the same-numbered chromosome, so a record reporting a
-    build other than this run's majority build is excluded from pooling
-    here -- never silently mixed in. ``build_counts`` names exactly what was
-    seen (including builds excluded), so the exclusion is always visible in
+    build other than this run's most frequent nonempty reported build is
+    excluded from pooling here -- never silently mixed in. ``build_counts``
+    names exactly what was seen (including builds excluded), so the exclusion is always visible in
     ``Summary``, not just implied by a smaller count.
     """
     build_counts = Counter(record["build"] for record in records)
     if not build_counts:
         return None, [], {}
-    (dominant_build, _), *_ = build_counts.most_common()
+    known_build_counts = Counter({build: count for build, count in build_counts.items() if build})
+    if not known_build_counts:
+        # Unknown-provenance coordinates can be described among themselves,
+        # but are never labelled as a reported reference build.
+        return None, [record for record in records if record["build"] is None], dict(build_counts)
+    dominant_build = known_build_counts.most_common(1)[0][0]
+    # Do not mix unknown provenance with reported-build coordinates, even if
+    # unknown records happen to be the numerical majority.
     pooled = [record for record in records if record["build"] == dominant_build]
     return dominant_build, pooled, dict(build_counts)
 
@@ -302,9 +315,12 @@ class GenomicPositionRecurrenceAlgorithm(Algorithm):
     request ``cutpoint_detection`` still gets a note, just anchored on the
     most-recurrent protein position instead.
 
-    Never pools genomic positions across differing reference-genome builds:
-    only the run's majority build is pooled, and any exclusion is reported
-    in both ``Summary`` and ``Warnings``.
+    Never pools genomic positions across differing reported reference-genome
+    builds: only the most frequent nonempty reported build is pooled. Unknown
+    provenance is pooled only when all usable records are unknown, and every
+    exclusion is reported in both ``Summary`` and ``Warnings``. The aggregate
+    ``n_events_excluded_other_build`` includes unknown-provenance exclusions;
+    ``n_events_excluded_other_reported_build`` isolates other nonempty builds.
     """
 
     DEPENDS_ON = ("cutpoint_detection",)
@@ -320,6 +336,12 @@ class GenomicPositionRecurrenceAlgorithm(Algorithm):
         bin_size_bp = int(params.get("bin_size_bp", DEFAULT_BIN_SIZE_BP))
         genomic_breakpoints = params.get("genomic_breakpoints") or {}
         warnings: list[str] = []
+        event_ids = {event.Event_id for event in events}
+        eligible_event_ids = {
+            feature.Event_id
+            for feature in _target_features(features, gene_config)
+            if feature.Event_id in event_ids
+        }
 
         if not genomic_breakpoints:
             warnings.append(
@@ -334,6 +356,7 @@ class GenomicPositionRecurrenceAlgorithm(Algorithm):
                     "determinable": False,
                     "reason": "no genomic breakpoint positions were supplied",
                     "n_events_analyzed": 0,
+                    "n_events_excluded_missing_position": len(eligible_event_ids),
                     "reference_build": None,
                     "bin_size_bp": bin_size_bp,
                 },
@@ -358,6 +381,7 @@ class GenomicPositionRecurrenceAlgorithm(Algorithm):
                     "determinable": False,
                     "reason": reason,
                     "n_events_analyzed": 0,
+                    "n_events_excluded_missing_position": skipped_no_position,
                     "reference_build": None,
                     "bin_size_bp": bin_size_bp,
                 },
@@ -368,12 +392,26 @@ class GenomicPositionRecurrenceAlgorithm(Algorithm):
 
         build, pooled_records, build_counts = _select_pooled_build(records)
         excluded_other_build = len(records) - len(pooled_records)
+        unknown_build_count = build_counts.get(None, 0)
+        if unknown_build_count:
+            if build is None:
+                warnings.append(
+                    f"{unknown_build_count} event(s) have unknown or empty reference-build "
+                    "provenance; positions were grouped only with other unknown-build "
+                    "records and reference_build remains null (not reported as an assembly)."
+                )
+            else:
+                warnings.append(
+                    f"{unknown_build_count} event(s) have unknown or empty reference-build "
+                    f"provenance and were excluded from pooling with reported build {build!r}."
+                )
         if len(build_counts) > 1:
             warnings.append(
                 "Events reported more than one reference genome build "
-                f"({build_counts}); only the majority build ({build!r}) was pooled for "
-                f"genomic-position recurrence -- {excluded_other_build} event(s) reporting "
-                "a different build were excluded from pooling rather than silently mixed in."
+                f"({build_counts}); only the most frequent nonempty reported build ({build!r}) "
+                f"was pooled for genomic-position recurrence -- {excluded_other_build} event(s) "
+                "with other or unknown provenance were excluded from pooling rather than "
+                "silently mixed in."
             )
 
         genomic_bin_table = _genomic_bin_recurrence_table(pooled_records, bin_size_bp)
@@ -390,6 +428,11 @@ class GenomicPositionRecurrenceAlgorithm(Algorithm):
             "n_events_analyzed": len(pooled_records),
             "n_events_excluded_missing_position": skipped_no_position,
             "n_events_excluded_other_build": excluded_other_build,
+            "n_events_excluded_other_reported_build": (
+                excluded_other_build - (unknown_build_count if build is not None else 0)
+            ),
+            "n_events_unknown_build": unknown_build_count,
+            "n_events_excluded_unknown_build": (unknown_build_count if build is not None else 0),
             "reference_build": build,
             "reference_build_counts": build_counts,
             "bin_size_bp": bin_size_bp,

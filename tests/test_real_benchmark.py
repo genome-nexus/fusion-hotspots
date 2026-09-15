@@ -12,6 +12,9 @@ from click.testing import CliRunner
 
 from cfh import cli
 from cfh import real_benchmark as benchmark_module
+from cfh.algorithms import domain_disruption as disruption_module
+from cfh.algorithms import domain_retention as retention_module
+from cfh.algorithms.mutation_cooccurrence import comparator_target_key
 from cfh.genes.registry import load_gene_config
 from cfh.ingestion import cbioportal_api
 from cfh.mapping.genome_nexus_source import GenomeNexusClient
@@ -109,6 +112,36 @@ def _call(
         "connectionType": connection_type,
         "eventInfo": event_info,
     }
+
+
+@pytest.mark.parametrize("override_budget", [None, 11])
+def test_disruption_uses_genomic_null_and_requested_budget(
+    genome_nexus_canonical_transcript_fixture_path, monkeypatch, override_budget
+):
+    client = _genome_nexus_client(genome_nexus_canonical_transcript_fixture_path)
+    retention_spy = MagicMock(wraps=retention_module.permutation_null_test)
+    disruption_spy = MagicMock(wraps=disruption_module.permutation_null_test)
+    monkeypatch.setattr(retention_module, "permutation_null_test", retention_spy)
+    monkeypatch.setattr(disruption_module, "permutation_null_test", disruption_spy)
+    overrides = (
+        {"domain_disruption": {"n_permutations": override_budget}}
+        if override_budget is not None
+        else {}
+    )
+    run = analyze_structural_variant_calls(
+        [_call("S1")],
+        "BRAF",
+        "test",
+        genome_nexus_client=client,
+        n_permutations=7,
+        algorithm_names=["domain_retention", "domain_disruption"],
+        algorithm_params=overrides,
+    )
+    assert all(not result.Warnings for result in run.results)
+    assert retention_spy.call_args.kwargs["genome_nexus_client"] is client
+    assert retention_spy.call_args.kwargs["n_permutations"] == 7
+    assert disruption_spy.call_args.kwargs["genome_nexus_client"] is client
+    assert disruption_spy.call_args.kwargs["n_permutations"] == (override_budget or 7)
 
 
 def test_real_benchmark_pipeline_writes_tsv_json_and_markdown(
@@ -743,9 +776,14 @@ def test_tcga_study_config_selects_profile_and_grch38_genome_nexus(monkeypatch):
     profile_id = "thca_tcga_pan_can_atlas_2018_structural_variants"
     cbioportal_api.fetch_structural_variants.assert_called_once_with([673], [profile_id])
     client_factory.assert_called_once_with(base_url="https://grch38.genomenexus.org")
-    cbioportal_api.fetch_sample_list_ids.assert_called_once_with("thca_tcga_pan_can_atlas_2018_all")
+    cbioportal_api.fetch_sample_list_ids.assert_called_once_with(
+        "thca_tcga_pan_can_atlas_2018_all", base_url=cbioportal_api.DEFAULT_BASE_URL, session=None
+    )
     cbioportal_api.fetch_mutations.assert_called_once_with(
-        [673], ["thca_tcga_pan_can_atlas_2018_mutations"]
+        [673],
+        ["thca_tcga_pan_can_atlas_2018_mutations"],
+        base_url=cbioportal_api.DEFAULT_BASE_URL,
+        session=None,
     )
     # The expression-association fetch queries the study's configured mRNA
     # z-score profile (distinct from the structural-variant profile above).
@@ -753,6 +791,8 @@ def test_tcga_study_config_selects_profile_and_grch38_genome_nexus(monkeypatch):
         [673],
         "thca_tcga_pan_can_atlas_2018_rna_seq_v2_mrna_median_Zscores",
         sample_list_id="thca_tcga_pan_can_atlas_2018_all",
+        base_url=cbioportal_api.DEFAULT_BASE_URL,
+        session=None,
     )
     analyze_mock.assert_called_once_with(
         fetched_calls,
@@ -767,6 +807,11 @@ def test_tcga_study_config_selects_profile_and_grch38_genome_nexus(monkeypatch):
             "mutation_cooccurrence": {
                 "cohort_sample_ids": ["TCGA-SAMPLE", "TCGA-OTHER"],
                 "comparator_alterations": [],
+                "comparator_availability": {
+                    comparator_target_key(
+                        load_gene_config("BRAF").mutual_exclusivity_targets[0]
+                    ): True
+                },
             }
         },
         extra_warnings=[],

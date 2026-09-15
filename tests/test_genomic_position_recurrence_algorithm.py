@@ -81,6 +81,76 @@ def test_events_missing_chromosome_or_position_are_excluded_not_crashed_on():
     assert result.Summary["n_events_excluded_missing_position"] == 1
 
 
+def test_missing_sidecar_entries_are_counted_once_and_irrelevant_entries_ignored():
+    records = [
+        _event_and_feature("present", 439),
+        _event_and_feature("absent", 439),
+        _event_and_feature("partial", 439),
+    ]
+    events, features = zip(*records)
+    result = GenomicPositionRecurrenceAlgorithm().run(
+        list(events),
+        list(features),
+        _FAKE_GENE,
+        {
+            "genomic_breakpoints": {
+                "present": _breakpoint("7", 100_000),
+                "partial": {"chromosome": "7", "position": None, "build": "GRCh37"},
+                "irrelevant": {"chromosome": "7", "position": 999_999, "build": "GRCh37"},
+            }
+        },
+    )
+
+    assert result.Summary["n_events_analyzed"] == 1
+    assert result.Summary["n_events_excluded_missing_position"] == 2
+    assert result.Summary["reference_build_counts"] == {"GRCh37": 1}
+
+
+def test_unknown_build_provenance_is_explicit_and_not_mixed_with_validated_build():
+    records = [
+        _event_and_feature("known", 439),
+        _event_and_feature("unknown", 439),
+    ]
+    events, features = zip(*records)
+    result = GenomicPositionRecurrenceAlgorithm().run(
+        list(events),
+        list(features),
+        _FAKE_GENE,
+        {
+            "genomic_breakpoints": {
+                "known": _breakpoint("7", 100_000, "GRCh37"),
+                "unknown": _breakpoint("7", 100_100, ""),
+            }
+        },
+    )
+
+    assert result.Summary["reference_build"] == "GRCh37"
+    assert result.Summary["reference_build_counts"] == {"GRCh37": 1, None: 1}
+    assert result.Summary["n_events_unknown_build"] == 1
+    assert result.Summary["n_events_excluded_unknown_build"] == 1
+    assert result.Summary["n_events_analyzed"] == 1
+    assert all("unknown" not in row["event_ids"] for row in result.Tables["genomic_bin_recurrence"])
+    assert any(
+        "unknown or empty reference-build provenance" in warning for warning in result.Warnings
+    )
+
+
+def test_all_unknown_builds_are_grouped_without_claiming_validated_build():
+    records = [_event_and_feature("a", 439), _event_and_feature("b", 439)]
+    events, features = zip(*records)
+    result = GenomicPositionRecurrenceAlgorithm().run(
+        list(events),
+        list(features),
+        _FAKE_GENE,
+        {"genomic_breakpoints": {"a": _breakpoint("7", 100, ""), "b": _breakpoint("7", 100, " ")}},
+    )
+
+    assert result.Summary["reference_build"] is None
+    assert result.Summary["n_events_analyzed"] == 2
+    assert result.Summary["n_events_unknown_build"] == 2
+    assert any("reference_build remains null" in warning for warning in result.Warnings)
+
+
 def test_shared_protein_position_with_identical_genomic_breakpoint_is_a_real_hotspot():
     """Three events all mapped to the same protein position AND the same
     exact genomic coordinate -- the "real DNA-level hotspot" case."""

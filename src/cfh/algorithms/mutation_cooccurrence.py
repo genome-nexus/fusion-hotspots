@@ -29,6 +29,7 @@ live-fetch step) still no-ops gracefully, with a warning distinct from the
 
 from __future__ import annotations
 
+import json
 from datetime import datetime, timezone
 from typing import Any
 
@@ -50,6 +51,21 @@ ALGORITHM_VERSION = "0.1.0"
 def _target_label(target: MutualExclusivityTarget) -> str:
     label = f"{target.gene} {target.alteration_type}"
     return f"{label} ({target.protein_change})" if target.protein_change else label
+
+
+def comparator_target_key(target: MutualExclusivityTarget) -> str:
+    """Return the canonical sidecar key for a comparator target.
+
+    The live-fetch layer supplies availability separately from alteration
+    records: an empty record list is a valid, confirmed zero-call result,
+    while an unavailable target must not be tested as though it had zero
+    calls.  Use all fields that select a comparator so targets for the same
+    gene remain independently addressable.
+    """
+    return json.dumps(
+        [target.gene.upper(), target.alteration_type, target.protein_change],
+        separators=(",", ":"),
+    )
 
 
 def _comparator_sample_ids(
@@ -98,6 +114,11 @@ class MutationCooccurrenceAlgorithm(Algorithm):
             (``AlterationEvent.model_dump()`` shape: ``Sample_id``,
             ``Gene``, ``Alteration_type``, ``Protein_change``) for every
             configured comparator gene, already fetched by the caller.
+        comparator_availability (dict[str, bool], optional): availability
+            keyed by :func:`comparator_target_key`. When supplied, every
+            configured target must have a ``True`` entry to be tested. This
+            fails closed for partial live-fetch failures; omitting the
+            sidecar preserves the original explicit-list behavior.
     """
 
     VERSION = ALGORITHM_VERSION
@@ -128,6 +149,15 @@ class MutationCooccurrenceAlgorithm(Algorithm):
                 "mutual-exclusivity analysis was skipped for this run."
             )
 
+        comparator_availability = params.get("comparator_availability")
+        has_availability_sidecar = comparator_availability is not None
+        if comparator_alterations is None:
+            return _no_op_result(
+                f"{gene_label} configures mutual_exclusivity_targets but comparator "
+                "alteration data were unavailable; co-occurrence/mutual-exclusivity "
+                "analysis was skipped for this run."
+            )
+
         cohort_sample_id_set = {str(sample_id) for sample_id in cohort_sample_ids}
         fusion_positive_sample_ids = {str(event.Sample_id) for event in events if event.Sample_id}
         warnings: list[str] = []
@@ -141,7 +171,17 @@ class MutationCooccurrenceAlgorithm(Algorithm):
 
         rows: list[dict[str, Any]] = []
         for target in targets:
-            comparator_samples = _comparator_sample_ids(comparator_alterations or [], target)
+            target_key = comparator_target_key(target)
+            if has_availability_sidecar and not (
+                isinstance(comparator_availability, dict)
+                and comparator_availability.get(target_key) is True
+            ):
+                warnings.append(
+                    f"Comparator data for {_target_label(target)} were unavailable; "
+                    "its co-occurrence/mutual-exclusivity test was skipped."
+                )
+                continue
+            comparator_samples = _comparator_sample_ids(comparator_alterations, target)
             table = build_cooccurrence_contingency_table(
                 fusion_positive_sample_ids, comparator_samples, cohort_sample_id_set
             )
@@ -172,7 +212,14 @@ class MutationCooccurrenceAlgorithm(Algorithm):
         return AlgorithmResult(
             Algorithm=ALGORITHM_NAME,
             Algorithm_version=ALGORITHM_VERSION,
-            Parameters={"configured_targets": [target.model_dump() for target in targets]},
+            Parameters={
+                "configured_targets": [target.model_dump() for target in targets],
+                **(
+                    {"comparator_availability": comparator_availability}
+                    if has_availability_sidecar
+                    else {}
+                ),
+            },
             Summary={"targets": rows},
             Tables={"cooccurrence_results": rows},
             Warnings=warnings,

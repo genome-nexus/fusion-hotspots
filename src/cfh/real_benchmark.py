@@ -17,6 +17,7 @@ import requests
 
 from cfh.algorithms.confidence_stats import resolve_confidence_stats_params
 from cfh.algorithms.frequency import FrequencyAnalysis
+from cfh.algorithms.mutation_cooccurrence import comparator_target_key
 from cfh.algorithms.registry import list_algorithms
 from cfh.genes.registry import GeneConfig, derive_gene_config_defaults, load_gene_config
 from cfh.ingestion import cbioportal_api
@@ -41,6 +42,7 @@ from cfh.model.algorithm_result import AlgorithmResult
 from cfh.model.fusion_event import FusionEvent
 from cfh.model.fusion_feature import FusionFeature
 from cfh.normalization.alteration_normalizer import (
+    CNA_ALTERATION_TYPE_BY_CODE,
     normalize_discrete_copy_number,
     normalize_mutations,
 )
@@ -972,6 +974,11 @@ def analyze_structural_variant_calls_with_config(
                 **resolve_confidence_stats_params(config, algorithm_params.get("confidence_stats")),
             },
             "frequency": {"dedup_by_patient": False, **algorithm_params.get("frequency", {})},
+            "domain_disruption": {
+                "n_permutations": n_permutations,
+                "genome_nexus_client": client,
+                **algorithm_params.get("domain_disruption", {}),
+            },
             "cutpoint_detection": {
                 "n_permutations": n_permutations,
                 "genome_nexus_client": client,
@@ -998,6 +1005,7 @@ def analyze_structural_variant_calls_with_config(
                     "window_detection",
                     "genomic_position_recurrence",
                     "domain_retention",
+                    "domain_disruption",
                 }
             },
         },
@@ -1158,24 +1166,31 @@ def analyze_structural_variant_calls(
 
 
 def _fetch_mutual_exclusivity_params(
-    config: GeneConfig, study_id: str, study_config: StudyConfig | None
+    config: GeneConfig,
+    study_id: str,
+    study_config: StudyConfig | None,
+    *,
+    base_url: str = cbioportal_api.DEFAULT_BASE_URL,
+    session: requests.Session | None = None,
 ) -> tuple[dict[str, dict] | None, list[str]]:
     """Best-effort live fetch of the comparator alteration + cohort-sample-
     universe data ``mutation_cooccurrence`` needs, for a gene that opts in
     via ``GeneConfig.mutual_exclusivity_targets``.
 
-    Never raises: a network or lookup failure here only produces a warning
-    and (for a target it applies to) fewer comparator_alterations -- this
-    evidence layer is additive, and must never take down an otherwise
-    successful domain-retention benchmark run over a failure fetching its
-    own, separate data.
+    cBioPortal request failures and invalid comparator payloads only produce
+    warnings and mark their affected target unavailable. This evidence layer
+    is additive, and these expected data-source failures must never take down
+    an otherwise successful domain-retention benchmark run. Configuration and
+    programming errors still propagate to their callers.
     """
     warnings: list[str] = []
     sample_list_id = (
         study_config.all_sample_list_id(study_id) if study_config else f"{study_id}_all"
     )
     try:
-        cohort_sample_ids = cbioportal_api.fetch_sample_list_ids(sample_list_id)
+        cohort_sample_ids = cbioportal_api.fetch_sample_list_ids(
+            sample_list_id, base_url=base_url, session=session
+        )
     except requests.RequestException as exc:
         warnings.append(
             f"Could not fetch cohort sample universe {sample_list_id!r} for "
@@ -1185,8 +1200,11 @@ def _fetch_mutual_exclusivity_params(
         return None, warnings
 
     comparator_alterations: list[dict] = []
+    comparator_availability: dict[str, bool] = {}
     for target in config.mutual_exclusivity_targets:
+        target_key = comparator_target_key(target)
         if target.entrez_gene_id is None:
+            comparator_availability[target_key] = False
             warnings.append(
                 f"mutual_exclusivity_targets entry for {target.gene} has no "
                 "entrez_gene_id configured; it cannot be live-fetched and was skipped."
@@ -1200,39 +1218,66 @@ def _fetch_mutual_exclusivity_params(
                     else f"{study_id}_mutations"
                 )
                 calls = cbioportal_api.fetch_mutations(
-                    [target.entrez_gene_id], [mutation_profile_id]
+                    [target.entrez_gene_id],
+                    [mutation_profile_id],
+                    base_url=base_url,
+                    session=session,
                 )
+                if not isinstance(calls, list):
+                    raise TypeError(
+                        f"expected a list of mutation calls, received {type(calls).__name__}"
+                    )
                 events, row_warnings = normalize_mutations(calls, target.gene, study_id)
-            elif target.alteration_type.startswith("cna_"):
+            elif target.alteration_type in CNA_ALTERATION_TYPE_BY_CODE.values():
                 cna_profile_id = (
                     study_config.discrete_cna_profile_id(study_id)
                     if study_config
                     else f"{study_id}_cna"
                 )
                 calls = cbioportal_api.fetch_discrete_copy_number(
-                    [target.entrez_gene_id], cna_profile_id, sample_list_id
+                    [target.entrez_gene_id],
+                    cna_profile_id,
+                    sample_list_id,
+                    base_url=base_url,
+                    session=session,
                 )
+                if not isinstance(calls, list):
+                    raise TypeError(
+                        "expected a list of discrete copy-number calls, received "
+                        f"{type(calls).__name__}"
+                    )
                 events, row_warnings = normalize_discrete_copy_number(calls, target.gene, study_id)
             else:
+                comparator_availability[target_key] = False
                 warnings.append(
                     "Unrecognized mutual_exclusivity_targets alteration_type "
                     f"{target.alteration_type!r} for {target.gene}; skipped."
                 )
                 continue
-        except requests.RequestException as exc:
+        except (requests.RequestException, TypeError) as exc:
+            comparator_availability[target_key] = False
             warnings.append(
-                f"Could not fetch {target.alteration_type} data for {target.gene} "
+                f"Could not fetch or validate {target.alteration_type} data for {target.gene} "
                 f"(mutation_cooccurrence comparator): {type(exc).__name__}: {exc}."
             )
             continue
         warnings.extend(row_warnings)
+        if row_warnings:
+            comparator_availability[target_key] = False
+            warnings.append(
+                f"Comparator data for {target.gene} {target.alteration_type} contained "
+                "malformed record(s) and were unavailable for mutation_cooccurrence."
+            )
+            continue
         comparator_alterations.extend(event.model_dump() for event in events)
+        comparator_availability[target_key] = True
 
     return (
         {
             "mutation_cooccurrence": {
                 "cohort_sample_ids": cohort_sample_ids,
                 "comparator_alterations": comparator_alterations,
+                "comparator_availability": comparator_availability,
             }
         },
         warnings,
@@ -1240,7 +1285,12 @@ def _fetch_mutual_exclusivity_params(
 
 
 def _fetch_expression_association_params(
-    config: GeneConfig, study_config: StudyConfig | None, study_id: str
+    config: GeneConfig,
+    study_config: StudyConfig | None,
+    study_id: str,
+    *,
+    base_url: str = cbioportal_api.DEFAULT_BASE_URL,
+    session: requests.Session | None = None,
 ) -> tuple[dict[str, Any], str | None]:
     """Best-effort live mRNA-expression fetch feeding the
     ``expression_association`` algorithm.
@@ -1264,7 +1314,9 @@ def _fetch_expression_association_params(
         records = cbioportal_api.fetch_molecular_data(
             [config.entrez_gene_id],
             profile_id,
-            sample_list_id=f"{study_id}_all",
+            sample_list_id=study_config.all_sample_list_id(study_id),
+            base_url=base_url,
+            session=session,
         )
     except requests.RequestException as exc:
         return {}, (
