@@ -314,6 +314,14 @@ table.events tr.row-highlight { background: #fff3cd; transition: background 1.2s
   background: #1a1a1a; color: #fff; font-size: 12px; line-height: 1.3;
   padding: 4px 8px; border-radius: 4px; white-space: nowrap;
 }
+.mechanism-callout {
+  background: #f5f8fc; border: 1px solid #cfe0f0; border-radius: 8px;
+  padding: 12px 16px; margin: 0 0 16px; font-size: 13px;
+}
+.mechanism-callout p { margin: 4px 0; }
+.mechanism-callout p.panel-note { padding-left: 0; }
+tr.counter-intuitive-row { cursor: pointer; }
+tr.counter-intuitive-row:hover { background: #f0f0f0; }
 .events-table-frame {
   max-height: 420px; overflow: auto;
   border: 1px solid #e2e2e2; border-radius: 8px; background: #fff;
@@ -611,11 +619,27 @@ document.addEventListener("DOMContentLoaded", function () {
   statusContainer.addEventListener("change", applyFilters);
   applyFilters();
 
+  // Shared by the lollipop-track points and the mechanistic-interpretation
+  // counter-intuitive-event tables: clear any active filters (so the row
+  // can't be hidden -- both jump sources are drawn independent of the
+  // table's tumor-type/domain-status filters), scroll the matching
+  // #events-table row into view, and briefly highlight it.
+  function jumpToEventRow(eventId) {
+    var row = document.querySelector(
+      '#events-table tbody tr[data-event-id="' + CSS.escape(eventId) + '"]'
+    );
+    if (!row) { return; }
+    tumorSelect.value = "";
+    statusContainer.querySelectorAll("input").forEach(function (i) { i.checked = true; });
+    applyFilters();
+    row.scrollIntoView({ behavior: "smooth", block: "center" });
+    row.classList.add("row-highlight");
+    window.setTimeout(function () { row.classList.remove("row-highlight"); }, 1500);
+  }
+
   // Hovering or clicking a lollipop-track point (data-event-id, set by
   // cfh.real_benchmark._domain_track_svg) shows a sample-id tooltip and/or
-  // jumps to that event's row in the table below -- clearing any active
-  // filters first so the row can't be hidden, since the point itself is
-  // drawn independent of the table's tumor-type/domain-status filters.
+  // jumps to that event's row in the table below.
   var domainTrackFrame = document.getElementById("domain-track-svg");
   var tooltip = document.getElementById("lollipop-tooltip");
   if (domainTrackFrame) {
@@ -636,21 +660,22 @@ document.addEventListener("DOMContentLoaded", function () {
           tooltip.hidden = true;
         });
       }
-      var row = document.querySelector(
-        '#events-table tbody tr[data-event-id="' + CSS.escape(eventId) + '"]'
-      );
-      if (!row) { return; }
+      if (!document.querySelector('#events-table tbody tr[data-event-id="' + CSS.escape(eventId) + '"]')) {
+        return;
+      }
       circle.style.cursor = "pointer";
-      circle.addEventListener("click", function () {
-        tumorSelect.value = "";
-        statusContainer.querySelectorAll("input").forEach(function (i) { i.checked = true; });
-        applyFilters();
-        row.scrollIntoView({ behavior: "smooth", block: "center" });
-        row.classList.add("row-highlight");
-        window.setTimeout(function () { row.classList.remove("row-highlight"); }, 1500);
-      });
+      circle.addEventListener("click", function () { jumpToEventRow(eventId); });
     });
   }
+
+  // Clicking a row in a "Mechanistic interpretation" counter-intuitive-
+  // event table (see cfh.reporting.html_viewer._mechanistic_effect_html)
+  // jumps to that same event in the main events table below.
+  document.querySelectorAll("tr.counter-intuitive-row[data-event-id]").forEach(function (row) {
+    var eventId = row.getAttribute("data-event-id");
+    if (!eventId) { return; }
+    row.addEventListener("click", function () { jumpToEventRow(eventId); });
+  });
 });
 """
 
@@ -787,6 +812,156 @@ def _composite_score_section(payload: dict) -> str:
         f"<thead><tr>{header_cells}</tr></thead>"
         f"<tbody>{''.join(body_rows)}</tbody></table></div>"
     )
+
+
+def _format_domain_names_html(names: list[str]) -> str:
+    unique = list(dict.fromkeys(name for name in names if name))
+    if not unique:
+        return "the configured domain"
+    if len(unique) == 1:
+        return _esc(unique[0])
+    if len(unique) == 2:
+        return f"{_esc(unique[0])} and {_esc(unique[1])}"
+    return f"{', '.join(_esc(name) for name in unique[:-1])}, and {_esc(unique[-1])}"
+
+
+def _mechanistic_effect_html(summary: dict, tables: dict, *, effect: str, label: str) -> tuple[str, str]:
+    """One effect's (``retention``/``disruption``) HTML for the full section
+    and, separately, a one-line summary for the top-of-page callout.
+    Returns ``("", "")`` when the gene doesn't configure this effect."""
+    if not summary.get(f"{effect}_domains_configured"):
+        return "", ""
+    domain_phrase = _format_domain_names_html(summary.get(f"{effect}_domain_names") or [])
+    p_value = summary.get(f"{effect}_fisher_p_value")
+    odds_ratio = summary.get(f"{effect}_fisher_odds_ratio")
+    stats_phrase = (
+        f"p={_esc(_format_summary_value(p_value)) if p_value is not None else 'unavailable'}, "
+        f"odds ratio={_esc(_format_summary_value(odds_ratio)) if odds_ratio is not None else 'unavailable'}"
+    )
+
+    if not summary.get(f"{effect}_statistically_supported"):
+        callout = (
+            f"<strong>{domain_phrase} {label}:</strong> not statistically significant "
+            f"({stats_phrase}) &mdash; too weak to draw a conclusion."
+        )
+        return f"<p>{callout}</p>", callout
+
+    confidence = summary.get(f"{effect}_counter_intuitive_confidence")
+    count = summary.get(f"{effect}_counter_intuitive_count") or 0
+    total = summary.get(f"{effect}_counter_intuitive_total") or 0
+    percent = summary.get(f"{effect}_counter_intuitive_percent")
+
+    supported_phrase = (
+        f"<strong>{domain_phrase} {label}:</strong> statistically supported ({stats_phrase})"
+    )
+    if confidence == "none":
+        callout = f"{supported_phrase}; no counter-intuitive events observed."
+        return f"<p>{callout}</p>", callout
+
+    percent_text = f"{percent:.1f}%" if isinstance(percent, (int, float)) else "?"
+    body = [
+        f"<p>{supported_phrase}, but {count}/{total} in-frame events ({percent_text}) "
+        "show the opposite status.</p>"
+    ]
+    if confidence == "possible_subcluster":
+        recurrent = tables.get(f"{effect}_counter_intuitive_recurrent_partners") or []
+        partner_phrase = ", ".join(
+            f"{_esc(str(row.get('partner_gene')))} (&times;{_esc(str(row.get('count')))})"
+            for row in recurrent
+        )
+        callout = (
+            f"{supported_phrase}; {count}/{total} events ({percent_text}) show the opposite "
+            f"status, recurring around {partner_phrase} &mdash; flagged as a possible subcluster."
+        )
+        body.append(
+            f'<p class="panel-note">{partner_phrase} recur among just these counter-intuitive '
+            "events &mdash; a candidate subgroup that may follow a distinct, not-yet-curated "
+            "mechanism. Flagged for manual curator review, not asserted as a confirmed "
+            "alternate mechanism.</p>"
+        )
+    else:
+        threshold = summary.get(f"{effect}_recurrent_partner_threshold")
+        callout = (
+            f"{supported_phrase}; {count}/{total} events ({percent_text}) show the opposite "
+            "status, spread across distinct partners &mdash; consistent with background noise."
+        )
+        body.append(
+            '<p class="panel-note">Spread across distinct partner genes with no partner '
+            f"recurring {_esc(str(threshold))}+ times among them &mdash; consistent with "
+            "background noise or individual passenger events rather than a distinct recurrent "
+            "subgroup; too weak to infer an alternate mechanism from this cohort alone.</p>"
+        )
+
+    events_table = tables.get(f"{effect}_counter_intuitive_events") or []
+    if events_table:
+        header = (
+            "<tr><th>Event</th><th>Sample</th><th>Partner</th><th>Breakpoint (aa)</th>"
+            "<th>Status</th></tr>"
+        )
+        rows_html = "".join(
+            "<tr class=\"counter-intuitive-row\" data-event-id=\"{event_id_attr}\">"
+            "<td>{event_id}</td><td>{sample_id}</td><td>{partner}</td>"
+            "<td>{breakpoint}</td><td>{status}</td></tr>".format(
+                event_id_attr=_esc(str(row.get("event_id") or "")),
+                event_id=_esc(str(row.get("event_id") or "")),
+                sample_id=_esc(str(row.get("sample_id") or "")),
+                partner=_esc(str(row.get("partner_gene") or "")),
+                breakpoint=_esc(str(row.get("breakpoint_protein_position") or "")),
+                status=_esc(str(row.get("domain_status") or "")),
+            )
+            for row in events_table
+        )
+        body.append(
+            '<p class="panel-note">Click a row to jump to that event in the table below.</p>'
+            '<div class="data-table-frame"><table class="data-table" id="'
+            f'{effect}-counter-intuitive-table">'
+            f"<thead>{header}</thead><tbody>{rows_html}</tbody></table></div>"
+        )
+    return "".join(body), callout
+
+
+def _mechanistic_interpretation_section(payload: dict) -> tuple[str, str]:
+    """The full "Mechanistic interpretation" section (curated mechanism
+    text plus ``mechanistic_interpretation``'s purely-statistical
+    counter-intuitive-event flagging) and, separately, a compact
+    top-of-page callout summarizing the same findings in one glance.
+    Returns ``("", "")`` when there is nothing to say (no curated
+    ``mechanism_note`` and no configured retention/disruption domains)."""
+    summary = payload.get("summary") or {}
+    mechanism_note = summary.get("mechanism_note")
+    result = _algorithm_result(payload, "mechanistic_interpretation")
+
+    body: list[str] = []
+    callout_lines: list[str] = []
+    if mechanism_note:
+        body.append(f'<p><strong>Curated mechanism:</strong> {_esc(str(mechanism_note))}</p>')
+
+    if result is not None and not _algorithm_failed(result):
+        algo_summary = result.get("Summary") or {}
+        tables = result.get("Tables") or {}
+        for effect, label in (("retention", "retention"), ("disruption", "disruption")):
+            effect_html, effect_callout = _mechanistic_effect_html(
+                algo_summary, tables, effect=effect, label=label
+            )
+            if effect_html:
+                body.append(effect_html)
+            if effect_callout:
+                callout_lines.append(f"<p>{effect_callout}</p>")
+
+    if not body:
+        return "", ""
+
+    section_html = (
+        '<h2 id="mechanistic-interpretation">Mechanistic interpretation</h2>' + "".join(body)
+    )
+    callout_html = (
+        f'<div class="mechanism-callout">{"".join(callout_lines)}'
+        '<p class="panel-note"><a href="#mechanistic-interpretation">'
+        "See full mechanistic interpretation below.</a></p></div>"
+        if callout_lines
+        else ""
+    )
+    return section_html, callout_html
 
 
 def _joint_partner_section(payload: dict) -> str:
@@ -1011,6 +1186,8 @@ def _render_gene_page(
             f'<div class="svg-frame" id="domain-track-svg">{domain_svg}</div>'
         )
 
+    mechanistic_section_html, mechanism_callout_html = _mechanistic_interpretation_section(payload)
+    sections.append(mechanistic_section_html)
     sections.append(_composite_score_section(payload))
 
     controls_html = ""
@@ -1038,6 +1215,7 @@ def _render_gene_page(
         + f"""  {back_html}
   <h1>{gene_symbol}{badge_html}</h1>
   <p class="subtitle">{study_id}</p>
+  {mechanism_callout_html}
   <div class="stat-grid">{stat_cells}</div>
   {"".join(sections)}
 </div>
@@ -1083,8 +1261,10 @@ def _render_gene_pair_page(
         else ""
     )
 
+    mechanistic_section_html, mechanism_callout_html = _mechanistic_interpretation_section(payload)
     sections = [
         _joint_partner_section(payload),
+        mechanistic_section_html,
         _composite_score_section(payload),
         _genomic_clustering_section(payload),
         _cross_cohort_panel(cross_cohort),
@@ -1101,9 +1281,11 @@ def _render_gene_pair_page(
         + f"""  {back_html}
   <h1>{gene_symbol}{badge_html}</h1>
   <p class="subtitle">{study_id} &mdash; gene-pair (joint-partner) fusion enrichment</p>
+  {mechanism_callout_html}
   <div class="stat-grid">{stat_cells}</div>
   {"".join(sections)}
 </div>
+<div class="lollipop-tooltip" id="lollipop-tooltip" hidden></div>
 <script type="application/json" id="events-data">{events_json}</script>
 <script type="application/json" id="status-labels">{status_labels_json}</script>
 <script>{_GENE_PAGE_SCRIPT}</script>

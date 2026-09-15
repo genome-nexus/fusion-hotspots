@@ -34,3 +34,27 @@ benchmark_reference:
   fusion_count: 33
   in_frame_percent: 100.0
   domain_retained_percent: 100.0
+# Verified via OpenEvidence literature synthesis, 2026-09-15 (KIAA1549::BRAF
+# query): Sievert et al., PNAS 2013 (PMID 23533272,
+# https://doi.org/10.1073/pnas.1219232110) is the definitive mechanistic
+# study -- KIAA1549-BRAF signals as a constitutive homodimer and mutagenic
+# disruption of the kinase dimer interface abolishes fusion signaling;
+# Weinberg et al., Oncogene 2020 (https://doi.org/10.1038/s41388-019-1021-1)
+# maps the exact deleted regulatory regions. Fusions are formally class II
+# (RAS-independent, dimer-dependent), distinct from class I V600E monomers
+# -- see Yao et al., Nat Med 2019 (https://doi.org/10.1038/s41591-018-0274-5).
+mechanism_note: >-
+  Loss-of-autoinhibition, not a novel gain-of-function. Full-length BRAF is
+  held inactive by an intramolecular clamp: CR1 (the RAS-binding and
+  cysteine-rich domains) together with CR2 (containing the S365 14-3-3
+  docking site) restrain the CR3 kinase domain until active RAS displaces
+  them. The KIAA1549::BRAF fusion deletes CR1 and CR2 while preserving CR3
+  (exons 11-18) intact, leaving a pre-activated kinase that homodimerizes
+  and signals to MEK/ERK independently of upstream RAS -- the same
+  RAS-independent, dimer-dependent ("class II") activation state as BRAF
+  V600E, reached structurally instead of by point mutation. The truncation
+  itself is sufficient: unlike EML4-ALK-style fusions, BRAF fusions do not
+  require a dimerization motif from the partner -- at least eight
+  structurally unrelated 5' partners are interchangeable, consistent with
+  the partner's role being deletion of the regulatory region rather than
+  supplying a dimerization domain of its own.

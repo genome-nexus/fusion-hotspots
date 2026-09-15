@@ -277,6 +277,117 @@ class TestCompositeScoreTable:
         assert "composite-score-table" not in html
 
 
+class TestMechanisticInterpretationSection:
+    def _payload_with_mechanistic_interpretation(self, **overrides) -> dict:
+        payload = _minimal_gene_payload(
+            summary={
+                "total_fusions": 10,
+                "mapped_fusions": 9,
+                "fisher_p_value": 0.0123,
+                "partner_counts": [{"Partner_gene": "AGK", "Event_count": 3}],
+                "mechanism_note": "Loss-of-autoinhibition: curated test mechanism text.",
+            }
+        )
+        payload["algorithm_results"] = [
+            {
+                "Algorithm": "mechanistic_interpretation",
+                "Algorithm_version": "1.0.0",
+                "Parameters": {},
+                "Summary": {
+                    "retention_domains_configured": True,
+                    "retention_domain_names": ["Kinase domain"],
+                    "retention_statistically_supported": True,
+                    "retention_fisher_p_value": 0.013,
+                    "retention_fisher_odds_ratio": 4.5,
+                    "retention_counter_intuitive_confidence": "possible_subcluster",
+                    "retention_counter_intuitive_count": 3,
+                    "retention_counter_intuitive_total": 20,
+                    "retention_counter_intuitive_percent": 15.0,
+                    "retention_recurrent_partner_threshold": 2,
+                    "disruption_domains_configured": False,
+                    "disruption_domain_names": [],
+                    "disruption_statistically_supported": False,
+                    "disruption_fisher_p_value": None,
+                    "disruption_fisher_odds_ratio": None,
+                    "disruption_counter_intuitive_confidence": "not_applicable",
+                    "disruption_counter_intuitive_count": 0,
+                    "disruption_counter_intuitive_total": 0,
+                    "disruption_counter_intuitive_percent": None,
+                },
+                "Tables": {
+                    "retention_counter_intuitive_events": [
+                        {
+                            "event_id": "E1",
+                            "sample_id": "S1",
+                            "partner_gene": "AGK",
+                            "breakpoint_protein_position": 327,
+                            "domain_status": "lost",
+                        }
+                    ],
+                    "retention_counter_intuitive_recurrent_partners": [
+                        {"partner_gene": "AGK", "count": 2}
+                    ],
+                },
+                "Warnings": [],
+            }
+        ]
+        payload.update(overrides)
+        return payload
+
+    def test_curated_mechanism_note_and_counter_intuitive_section_render(self, tmp_path):
+        run_dir = _write_gene_run(
+            tmp_path, self._payload_with_mechanistic_interpretation(), with_svgs=False
+        )
+        html = build_run_viewer(run_dir).read_text()
+        assert 'id="mechanistic-interpretation"' in html
+        assert "Loss-of-autoinhibition: curated test mechanism text." in html
+        assert "possible_subcluster" not in html  # not a raw enum leak
+        assert "AGK (&times;2)" in html
+        assert 'class="mechanism-callout"' in html
+        assert "See full mechanistic interpretation below" in html
+
+    def test_counter_intuitive_events_table_links_back_to_events_table(self, tmp_path):
+        run_dir = _write_gene_run(
+            tmp_path, self._payload_with_mechanistic_interpretation(), with_svgs=False
+        )
+        html = build_run_viewer(run_dir).read_text()
+        assert 'class="counter-intuitive-row" data-event-id="E1"' in html
+        assert "jumpToEventRow" in html
+        # The linked event must actually exist in the main events table.
+        assert 'data-event-id="E1"' in html.split('id="events-table"', 1)[1]
+
+    def test_section_omitted_when_nothing_to_say(self, tmp_path):
+        run_dir = _write_gene_run(tmp_path, _minimal_gene_payload(), with_svgs=False)
+        html = build_run_viewer(run_dir).read_text()
+        assert 'id="mechanistic-interpretation"' not in html
+        assert 'class="mechanism-callout"' not in html
+
+    def test_not_statistically_supported_states_too_weak_not_a_guess(self, tmp_path):
+        payload = self._payload_with_mechanistic_interpretation()
+        payload["algorithm_results"][0]["Summary"]["retention_statistically_supported"] = False
+        payload["algorithm_results"][0]["Summary"]["retention_counter_intuitive_confidence"] = (
+            "not_applicable"
+        )
+        payload["algorithm_results"][0]["Tables"] = {}
+        run_dir = _write_gene_run(tmp_path, payload, with_svgs=False)
+        html = build_run_viewer(run_dir).read_text()
+        assert "too weak to draw a conclusion" in html
+        assert "AGK" not in html.split("Mechanistic interpretation", 1)[1].split("</h2>", 1)[1][
+            :500
+        ]
+
+    def test_section_omitted_when_algorithm_result_failed(self, tmp_path):
+        payload = self._payload_with_mechanistic_interpretation()
+        payload["algorithm_results"][0]["Warnings"] = ["Algorithm failed: boom"]
+        run_dir = _write_gene_run(tmp_path, payload, with_svgs=False)
+        html = build_run_viewer(run_dir).read_text()
+        # Curated mechanism_note still renders -- it's independent of the
+        # algorithm's own success -- but the statistical claims do not.
+        assert "Loss-of-autoinhibition: curated test mechanism text." in html
+        assert "possible_subcluster" not in html
+        assert "statistically supported" not in html
+
+
 class TestGenePairPage:
     def _gene_pair_payload(self) -> dict:
         return {

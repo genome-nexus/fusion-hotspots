@@ -12,3 +12,25 @@ expected_retained_exon_hint: null
 analysis_modes:
   - breakpoint_hotspot
   - domain_retention
+# Verified via OpenEvidence literature synthesis, 2026-09-15 (LMNA::NTRK1
+# query): the extracellular-region-as-autoinhibitory evidence comes from
+# engineered TRKA variants (TRKA-III splice variant, ΔTRKA, and the P203A
+# point mutant in Ig1 alone) rather than from LMNA-NTRK1 directly, so
+# "loss of ligand dependence" is the securely established claim and "loss
+# of an autoinhibitory domain" the well-supported interpretation -- see
+# Cocco, Scaltriti & Drilon, Nat Rev Clin Oncol 2018,
+# https://doi.org/10.1038/s41571-018-0113-0.
+mechanism_note: >-
+  Combined loss of ligand-binding autoinhibition plus partner-driven
+  dimerization. Wild-type NTRK1/TRKA requires NGF binding to its
+  extracellular Ig-like domains to dimerize and autophosphorylate;
+  engineered TRKA variants lacking that region (the TRKA-III splice
+  variant, and a single P203A substitution within Ig1) are spontaneously
+  dimerizing and transforming even without a fusion partner, indicating
+  the deleted ectodomain is restraining, not merely permissive. No
+  disruption_required_domains target is configured for this gene because
+  no supported Pfam accession marks that specific restraining region --
+  a data-availability gap, not a mechanism gap. The fusion partner's own
+  coiled-coil (e.g. LMNA's alpha-helical rod, TPM3's) then supplies the
+  second, partner-driven half of the mechanism: forcing ligand-independent
+  dimerization and trans-autophosphorylation of the retained kinase domain.

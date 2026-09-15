@@ -19,3 +19,23 @@ expected_retained_exon_hint: null
 analysis_modes:
   - breakpoint_hotspot
   - domain_retention
+# Verified via OpenEvidence literature synthesis, 2026-09-15 (ETV6::NTRK3
+# query, ETV6's role as partner) -- see ntrk3.yaml's own mechanism_note
+# comment for the full causal-evidence chain (Wai et al., Oncogene 2000,
+# PMID 10702799; Cetinbas et al., JBC 2013, PMID 23798677: single-residue
+# SAM-interface mutagenesis abolishes transformation).
+mechanism_note: >-
+  ETV6 is typically the *partner*, not the target, in its recurrent
+  fusions -- it contributes an oligomerization module rather than being
+  itself the kinase/effector under domain-retention selection. Retention of
+  ETV6's SAM/Pointed domain lets the fusion protein head-to-tail
+  self-polymerize; in ETV6-NTRK3, single-residue mutagenesis at the SAM
+  polymer interface (Lys-99/Asp-101) shows this native polymeric assembly
+  -- not merely forced proximity of two kinase domains -- is what is
+  required to force NTRK3 kinase trans-autophosphorylation/activation
+  independent of ligand; substituting an unrelated dimerization module for
+  the SAM domain preserves kinase activation but still fails to transform.
+  In ETV6-RUNX1/ETV6-PDGFRB and related fusions, the same SAM-domain
+  oligomerization instead drives constitutive activity of a transcription
+  factor or a different kinase. The shared mechanistic thread is
+  oligomerization, not a target-kinase-specific autoinhibition mechanism.

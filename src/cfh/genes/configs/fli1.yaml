@@ -20,3 +20,25 @@ expected_retained_exon_hint: null
 analysis_modes:
   - breakpoint_hotspot
   - domain_retention
+# Verified via OpenEvidence literature synthesis, 2026-09-15 (EWSR1::FLI1
+# query): Boulay et al., Cell 2017 (PMID 28844694,
+# https://doi.org/10.1016/j.cell.2017.07.036) is the strongest causal
+# evidence for the neomorphic-enhancer mechanism -- BAF-complex retargeting
+# to GGAA-microsatellite enhancers depends on the EWSR1 prion-like domain's
+# phase-transition tyrosines, and neither EWSR1 nor FLI1 alone reproduces
+# it, so it is the fusion's juxtaposition specifically that is oncogenic.
+mechanism_note: >-
+  Chimeric (neomorphic) transcription factor -- a fundamentally different
+  category from the domain-retention kinase mechanism BRAF/ALK/RET/ROS1/
+  NTRK-family fusions rely on: nothing catalytic is retained and nothing
+  autoinhibitory is removed. The EWSR1::FLI1 translocation grafts EWSR1's
+  N-terminal, intrinsically disordered, prion-like low-complexity domain
+  onto FLI1's C-terminal ETS DNA-binding domain, replacing FLI1's own weak
+  native activation domain. DNA-binding sequence specificity is unchanged,
+  but only the fusion productively engages tandem GGAA-microsatellite
+  repeats that have no regulatory potential in other cell types: at these
+  repeats, the EWSR1 low-complexity domain recruits the BAF (SWI/SNF)
+  chromatin-remodeling complex to open closed chromatin and generate de
+  novo enhancers, a gain-of-function activity neither parent protein has
+  on its own. This is transcriptional/chromatin-based oncogenesis, not
+  domain-retention kinase signaling.

@@ -66,6 +66,14 @@ table.events tr.row-highlight { background: #fff3cd; transition: background 1.2s
   background: #1a1a1a; color: #fff; font-size: 12px; line-height: 1.3;
   padding: 4px 8px; border-radius: 4px; white-space: nowrap;
 }
+.mechanism-callout {
+  background: #f5f8fc; border: 1px solid #cfe0f0; border-radius: 8px;
+  padding: 12px 16px; margin: 0 0 16px; font-size: 13px;
+}
+.mechanism-callout p { margin: 4px 0; }
+.mechanism-callout p.panel-note { padding-left: 0; }
+tr.counter-intuitive-row { cursor: pointer; }
+tr.counter-intuitive-row:hover { background: #f0f0f0; }
 .events-table-frame {
   max-height: 420px; overflow: auto;
   border: 1px solid #e2e2e2; border-radius: 8px; background: #fff;
@@ -110,6 +118,7 @@ table.sortable th[data-sort-dir="desc"]::after { content: "\25BC"; margin-left: 
   
   <h1>FGFR2<span class="badge badge-curated" title="Loaded from a hand-curated YAML under genes/configs/">Curated config</span></h1>
   <p class="subtitle">brca_tcga_pan_can_atlas_2018</p>
+  
   <div class="stat-grid"><div class="stat"><div class="label">Raw Structural Variant Count</div><div class="value">5</div></div><div class="stat"><div class="label">Total Fusions</div><div class="value">5</div></div><div class="stat"><div class="label">Mapped Fusions</div><div class="value">5</div></div><div class="stat"><div class="label">Skipped Fusions</div><div class="value">0</div></div><div class="stat"><div class="label">In Frame Count</div><div class="value">4</div></div><div class="stat"><div class="label">In Frame Percent</div><div class="value">80</div></div><div class="stat"><div class="label">Kinase Retained Count</div><div class="value">2</div></div><div class="stat"><div class="label">Kinase Retained Percent</div><div class="value">40</div></div><div class="stat"><div class="label">In Frame Kinase Retained Count</div><div class="value">2</div></div><div class="stat"><div class="label">Fisher Odds Ratio</div><div class="value">inf</div></div><div class="stat"><div class="label">Fisher P Value</div><div class="value">0.6</div></div><div class="stat"><div class="label">Permutation P Value</div><div class="value">0.02098</div></div><div class="stat"><div class="label">Domain Accession</div><div class="value">PF07714</div></div><div class="stat"><div class="label">Domain Start Aa</div><div class="value">481</div></div><div class="stat"><div class="label">Domain End Aa</div><div class="value">757</div></div></div>
   <h2>Domain retention / outlier lollipop track</h2><p class="panel-note">Click a point to jump to its event in the table below.</p><div class="svg-frame" id="domain-track-svg"><svg xmlns="http://www.w3.org/2000/svg" width="920" height="200" viewBox="0 0 920 200">
 <rect width="920" height="200" fill="white"/>
@@ -469,11 +478,27 @@ document.addEventListener("DOMContentLoaded", function () {
   statusContainer.addEventListener("change", applyFilters);
   applyFilters();
 
+  // Shared by the lollipop-track points and the mechanistic-interpretation
+  // counter-intuitive-event tables: clear any active filters (so the row
+  // can't be hidden -- both jump sources are drawn independent of the
+  // table's tumor-type/domain-status filters), scroll the matching
+  // #events-table row into view, and briefly highlight it.
+  function jumpToEventRow(eventId) {
+    var row = document.querySelector(
+      '#events-table tbody tr[data-event-id="' + CSS.escape(eventId) + '"]'
+    );
+    if (!row) { return; }
+    tumorSelect.value = "";
+    statusContainer.querySelectorAll("input").forEach(function (i) { i.checked = true; });
+    applyFilters();
+    row.scrollIntoView({ behavior: "smooth", block: "center" });
+    row.classList.add("row-highlight");
+    window.setTimeout(function () { row.classList.remove("row-highlight"); }, 1500);
+  }
+
   // Hovering or clicking a lollipop-track point (data-event-id, set by
   // cfh.real_benchmark._domain_track_svg) shows a sample-id tooltip and/or
-  // jumps to that event's row in the table below -- clearing any active
-  // filters first so the row can't be hidden, since the point itself is
-  // drawn independent of the table's tumor-type/domain-status filters.
+  // jumps to that event's row in the table below.
   var domainTrackFrame = document.getElementById("domain-track-svg");
   var tooltip = document.getElementById("lollipop-tooltip");
   if (domainTrackFrame) {
@@ -494,21 +519,22 @@ document.addEventListener("DOMContentLoaded", function () {
           tooltip.hidden = true;
         });
       }
-      var row = document.querySelector(
-        '#events-table tbody tr[data-event-id="' + CSS.escape(eventId) + '"]'
-      );
-      if (!row) { return; }
+      if (!document.querySelector('#events-table tbody tr[data-event-id="' + CSS.escape(eventId) + '"]')) {
+        return;
+      }
       circle.style.cursor = "pointer";
-      circle.addEventListener("click", function () {
-        tumorSelect.value = "";
-        statusContainer.querySelectorAll("input").forEach(function (i) { i.checked = true; });
-        applyFilters();
-        row.scrollIntoView({ behavior: "smooth", block: "center" });
-        row.classList.add("row-highlight");
-        window.setTimeout(function () { row.classList.remove("row-highlight"); }, 1500);
-      });
+      circle.addEventListener("click", function () { jumpToEventRow(eventId); });
     });
   }
+
+  // Clicking a row in a "Mechanistic interpretation" counter-intuitive-
+  // event table (see cfh.reporting.html_viewer._mechanistic_effect_html)
+  // jumps to that same event in the main events table below.
+  document.querySelectorAll("tr.counter-intuitive-row[data-event-id]").forEach(function (row) {
+    var eventId = row.getAttribute("data-event-id");
+    if (!eventId) { return; }
+    row.addEventListener("click", function () { jumpToEventRow(eventId); });
+  });
 });
 </script>
 <script>

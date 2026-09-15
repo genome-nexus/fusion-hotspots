@@ -134,6 +134,15 @@ def test_loads_tmprss2_erg_yaml_as_a_curated_gene_pair_config():
     assert "not domain-retention" in config.mechanism_note.lower()
 
 
+def test_loads_eml4_alk_yaml_with_curated_mechanism_note():
+    """EML4-ALK's real config curates a domain-retention/ligand-independent-
+    dimerization mechanism_note -- the same family of mechanism as the
+    single-gene alk.yaml config, unlike TMPRSS2-ERG's promoter-swap note."""
+    config = load_gene_config("eml4-alk")
+    assert config.mechanism_note is not None
+    assert "dimerization" in config.mechanism_note.lower()
+
+
 def test_loads_erg_yaml_with_live_genome_nexus_identifiers():
     """ERG is TMPRSS2-ERG's curated single-gene component -- mirroring how
     EML4-ALK curates only ALK (its 3' partner) -- so the pair benchmark can
@@ -153,10 +162,9 @@ def test_loads_erg_yaml_with_live_genome_nexus_identifiers():
 
 
 def test_mechanism_note_defaults_to_none_and_is_opt_in():
-    """Opt-in field: EML4-ALK's real config never sets it, so the field
-    must default to ``None`` rather than requiring every gene_pair config
-    to supply one."""
-    config = load_gene_config("eml4-alk")
+    """Opt-in field: a config that never sets it must default to ``None``
+    rather than requiring every config to supply one."""
+    config = GeneConfig(gene_pair=("FAKE5", "FAKE6"), analysis_modes=["joint_partner_dependency"])
     assert config.mechanism_note is None
 
 

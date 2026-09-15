@@ -12,3 +12,22 @@ expected_retained_exon_hint: null
 analysis_modes:
   - breakpoint_hotspot
   - domain_retention
+# Verified via OpenEvidence literature synthesis, 2026-09-15 (EML4::ALK
+# query): the causal (not merely correlative) evidence is a Ba/F3 system
+# where ALK's dimer/monomer state is ligand-controlled -- forcing the
+# monomeric state abolishes transformation, and a coiled-coil-mimetic
+# peptide that dissolves EML4-ALK oligomers independently kills the
+# signaling (Hirai et al., Front Oncol 2020, PMID 32300555,
+# https://doi.org/10.3389/fonc.2020.00419).
+mechanism_note: >-
+  Partner-driven constitutive oligomerization, not domain loss per se: loss
+  of ALK's extracellular ligand-binding region is permissive (it removes
+  the requirement for ALKAL1/ALKAL2 and untethers the kinase from the
+  membrane) but not by itself activating -- an isolated ALK intracellular
+  domain held in the monomeric state is not transforming. The partner's
+  N-terminal self-association domain (e.g. EML4's trimerization domain,
+  historically described as a coiled-coil, in EML4-ALK) is the necessary
+  activating event: it forces ligand-independent self-association and
+  trans-autophosphorylation of the ALK kinase domain, independent of any
+  ligand. Ectopic promoter-driven expression in a tissue where ALK is
+  normally silent contributes but is not itself the activating step.

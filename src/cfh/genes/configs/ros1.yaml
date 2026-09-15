@@ -25,3 +25,25 @@ analysis_modes:
   - breakpoint_hotspot
   - domain_retention
   - domain_disruption
+# Verified via OpenEvidence literature synthesis, 2026-09-15 (CD74::ROS1
+# query): unlike ALK/RET, the literature attributes CD74-ROS1 activation
+# primarily to loss of an autoinhibitory ectodomain, not partner-driven
+# dimerization -- Drilon et al., Nat Rev Clin Oncol 2021
+# (https://doi.org/10.1038/s41571-020-0408-9); Awad et al., NEJM 2013
+# (PMID 23724914, https://doi.org/10.1056/NEJMoa1215530) gives the
+# topological argument for why the CD74-contributed transmembrane pass
+# matters for kinase-domain positioning, not dimerization.
+mechanism_note: >-
+  Loss of an autoinhibitory extracellular/ligand-binding domain, with
+  retention of an intact kinase domain -- not primarily partner-driven
+  dimerization the way ALK/RET fusions work. The fusion deletes essentially
+  the entire ROS1 ectodomain (the fibronectin type III repeats, YWTD
+  beta-propellers, and N-terminal CATCH domain) while preserving the
+  juxtamembrane segment, kinase domain, and C-terminal tail, yielding
+  ligand-independent constitutive autophosphorylation. The partner (e.g.
+  CD74, a type II integral membrane protein) contributes a topological
+  role rather than a dimerization motif: because CD74's N-terminus is
+  cytoplasmic, the ROS1-encoded transmembrane segment retained at the
+  breakpoint is what returns the chain to the cytosol so the kinase domain
+  can access its substrates -- positioning, not oligomerization, is what
+  the partner supplies here.

@@ -20,3 +20,27 @@ expected_retained_exon_hint: null
 analysis_modes:
   - breakpoint_hotspot
   - domain_retention
+# Verified via OpenEvidence literature synthesis, 2026-09-15 (ETV6::NTRK3
+# query): Wai et al., Oncogene 2000 (PMID 10702799,
+# https://doi.org/10.1038/sj.onc.1203396) shows deleting the ETV6
+# oligomerization domain abolishes both dimer formation and transformation.
+# Cetinbas et al., JBC 2013 (PMID 23798677,
+# https://doi.org/10.1074/jbc.M113.475301) is the single-residue
+# (Lys-99/Asp-101 salt bridge) causal evidence: disrupting just the SAM
+# polymer interface abolishes phosphorylation, signaling, transformation,
+# and tumor formation, while replacing the SAM domain with an unrelated
+# inducible dimerization module preserves kinase activation but still
+# fails to transform -- native head-to-tail polymeric assembly, not mere
+# proximity of two kinase domains, is what drives oncogenicity.
+mechanism_note: >-
+  Partner-driven oligomerization via ETV6's SAM (pointed/PNT) domain is the
+  dominant mechanism, operating on a permissive background of ligand-domain
+  loss. The t(12;15) breakpoint severs NTRK3 upstream of the kinase domain,
+  discarding the entire extracellular NT-3-binding region and transmembrane
+  segment (eliminating ligand dependence and membrane anchoring) while
+  retaining the kinase domain intact. ETV6's SAM domain, retained at the
+  N-terminus of the chimera, then drives head-to-tail self-polymerization;
+  this polymeric assembly -- not simply forced proximity of two kinase
+  domains -- is required for trans-autophosphorylation and transformation.
+  The chimera is not a transcription factor: ETV6's own ETS DNA-binding
+  domain is lost, and this is not a promoter-swap/overexpression mechanism.

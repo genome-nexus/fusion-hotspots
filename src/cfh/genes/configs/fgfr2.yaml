@@ -8,6 +8,26 @@
 # Check D1 disruption without asserting it is necessary for FGFR2 fusion activity:
 # FGFR2 fusions can retain the extracellular domains. The acid box has no
 # separate Pfam annotation here, so it is not configured.
+#
+# IMPORTANT -- verified via OpenEvidence literature synthesis, 2026-09-15
+# (FGFR2::BICC1 query): the best-supported causal driver is actually loss
+# of the C-terminal tail (exon 18, ~residues 768-821), NOT loss of the D1
+# domain this config checks. Zingg et al., Nature 2022
+# (https://doi.org/10.1038/s41586-022-05066-5) used isogenic Fgfr2 variants
+# with transposon screening and phosphoproteomics: Fgfr2-DeltaE18 alone
+# and Fgfr2-DeltaE18-Bicc1 produced equivalent MAPK/PI3K-AKT-mTOR
+# activation, and the BICC1 SAM oligomerization domain was dispensable
+# when tested directly. D1 loss was separately shown to INCREASE
+# dimerization in the same study (i.e. D1 itself is autoinhibitory, but by
+# a different mechanism than exon 18), so this D1 disruption_required_domains
+# check is not testing the same causal element the strongest evidence
+# points to. The exon-18 tail has no distinct Pfam accession under
+# genome_nexus's current domain source, so it cannot be configured here
+# the same way; this is a known, documented limitation of this config
+# pending either a domain source that annotates it or a coordinate-based
+# check. See mechanism_note below for the full picture, including the
+# FGFR3 paralog contrast (partner-dimerization model holds for FGFR3's
+# TACC3 fusions but not for FGFR2 -- do not generalize across the family).
 gene_symbol: FGFR2
 canonical_transcript_id: NM_000141
 protein_id: P21802
@@ -28,6 +48,29 @@ analysis_modes:
   - domain_retention
   - domain_disruption
   - mutation_cooccurrence
+mechanism_note: >-
+  Loss of a C-terminal autoinhibitory element is the best-supported
+  primary driver, not partner-driven dimerization. FGFR2 breakpoints in
+  cholangiocarcinoma fall essentially invariably in intron 17, retaining
+  the full extracellular ligand-binding domains, transmembrane segment,
+  and kinase domain intact while truncating the exon-18-encoded C-terminal
+  tail. That tail normally folds back onto and suppresses the kinase
+  domain; Zingg et al. (Cancer Research 2025) identified a specific
+  phenylalanine-serine motif within it that physically binds and
+  suppresses the kinase domain, and reconstructing this suppression motif
+  together with the tail's other regulatory sites was sufficient to
+  phenocopy the oncogenic competence of exon-18 truncation. The
+  partner-contributed BICC1 SAM oligomerization domain adds
+  ligand-independent dimerization, but isogenic in vivo screening showed
+  it is dispensable for signaling and transformation once the C-terminal
+  tail is already lost -- Fgfr2-DeltaE18 alone (no fusion partner at all)
+  produces equivalent pathway activation to the full Fgfr2-DeltaE18-Bicc1
+  fusion. This is not a promoter-swap/overexpression fusion either: FGFR2
+  is the 5' partner and retains its own promoter. Caution: the
+  partner-dimerization model does hold for the paralogous FGFR3-TACC3
+  fusion, where exon-18-equivalent truncation alone is insufficient without
+  a dimerizing partner -- this is a paralog-specific distinction, and the
+  FGFR2 mechanism above should not be generalized to FGFR3 or vice versa.
 mutual_exclusivity_targets:
   # FGFR2 S252W (Ig D2-D3 linker) is the single most recurrent somatic
   # activating FGFR2 point mutation in the literature -- confirmed live via

@@ -12,3 +12,29 @@ expected_retained_exon_hint: null
 analysis_modes:
   - breakpoint_hotspot
   - domain_retention
+# Verified via OpenEvidence literature synthesis, 2026-09-15
+# (TMPRSS2::ERG query): Tomlins et al., Science 2005 (PMID 16254181,
+# https://doi.org/10.1126/science.1117679) remains the strongest primary
+# evidence -- outlier expression analysis identified the fusion, FISH
+# confirmed rearrangement in 23/29 tumors, and cell-line experiments
+# showed TMPRSS2's androgen-responsive promoter elements mediate ERG
+# overexpression.
+mechanism_note: >-
+  Aberrant transcription factor, not domain-retention kinase signaling: ERG
+  is an ETS-family transcription factor, not a kinase, so its mechanism
+  differs fundamentally from BRAF/ALK/RET/ROS1/NTRK-family fusions.
+  Retaining the ETS DNA-binding domain preserves ERG's target-gene
+  specificity. Depending on the fusion partner, activation then comes from
+  one of two distinct routes. In the dominant TMPRSS2::ERG isoform
+  (>90% of fusion transcripts), TMPRSS2's exon 1 is untranslated, so no
+  TMPRSS2 amino acids are present at all -- this is a pure cis-regulatory
+  promoter/enhancer swap, not a chimeric protein in the BCR-ABL/EWS-FLI1
+  sense: the androgen-responsive TMPRSS2 promoter drives massive
+  overexpression of an N-terminally truncated but otherwise intact ERG,
+  translated from an internal ATG in ERG exon 4 (see the tmprss2-erg.yaml
+  config's own mechanism_note). Other ERG fusion partners instead
+  contribute an N-terminal transactivation domain fused in-frame to the
+  ETS domain (e.g. EWSR1-ERG), the same true-chimeric-transcription-factor
+  strategy as EWSR1-FLI1 -- so which of the two routes applies for a given
+  ERG fusion depends on the specific partner and breakpoint, not on ERG
+  alone.

@@ -155,9 +155,8 @@ def test_gene_pair_benchmark_pools_component_events_and_computes_enrichment(
     # Events are deduplicated by Event_id when pooling component runs.
     assert len({event.Event_id for event in run.events}) == 10
     assert run.results[0].Algorithm == "joint_partner"
-    # EML4-ALK's real config sets no mechanism_note, so the summary must not
-    # gain one -- the field is purely opt-in/additive.
-    assert "mechanism_note" not in run.summary
+    assert run.summary["mechanism_note"] == pair_config.mechanism_note
+    assert "dimerization" in run.summary["mechanism_note"].lower()
 
 
 def test_gene_pair_benchmark_pools_component_events_for_tmprss2_erg_and_surfaces_mechanism_note(
@@ -165,9 +164,10 @@ def test_gene_pair_benchmark_pools_component_events_for_tmprss2_erg_and_surfaces
 ):
     """TMPRSS2-ERG mirrors the EML4-ALK pooling/enrichment mechanics exactly
     -- JointPartnerMode's co-occurrence machinery is mechanism-agnostic --
-    but, unlike EML4-ALK, its config opts into ``mechanism_note`` so the
-    report can state the promoter-swap mechanism honestly instead of
-    defaulting to (or omitting) domain-retention language."""
+    but its curated ``mechanism_note`` describes a genuinely different
+    mechanism (promoter-swap/expression-driven, not domain-retention),
+    since the report must state whichever mechanism this pair's own config
+    actually curates rather than defaulting to domain-retention language."""
     client = _genome_nexus_client(genome_nexus_canonical_transcript_fixture_path)
     monkeypatch.setattr(benchmark_module, "GenomeNexusClient", MagicMock(return_value=client))
     calls = [_tmprss2_erg_call(f"TMPRSS2-{i}") for i in range(8)] + [
