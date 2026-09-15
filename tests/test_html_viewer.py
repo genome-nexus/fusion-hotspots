@@ -367,6 +367,57 @@ class TestMechanisticInterpretationSection:
             "statistically supported"
         )
 
+    def test_unverified_mechanism_note_gets_a_visibly_distinct_label_and_style(self, tmp_path):
+        """A mechanism_note drafted by an AI tool (e.g. OpenEvidence) and not
+        yet independently verified (GeneConfig.mechanism_note_verified=False)
+        must never be presented identically to a human-cross-checked one --
+        distinct label, distinct callout color."""
+        payload = self._payload_with_mechanistic_interpretation()
+        payload["summary"]["mechanism_note_verified"] = False
+        run_dir = _write_gene_run(tmp_path, payload, with_svgs=False)
+        html = build_run_viewer(run_dir).read_text()
+
+        assert "AI-suggested mechanism (unverified)" in html
+        assert "<strong>Curated mechanism:</strong>" not in html
+        assert 'class="mechanism-callout unverified"' in html
+
+        callout_start = html.index('<div class="mechanism-callout unverified">')
+        callout_end = html.index("</div>", callout_start) + len("</div>")
+        callout_html = html[callout_start:callout_end]
+        assert "AI-suggested mechanism (unverified)" in callout_html
+        assert "Loss-of-autoinhibition: curated test mechanism text." in callout_html
+
+    def test_verified_mechanism_note_keeps_the_curated_label_and_default_style(self, tmp_path):
+        """Explicit regression guard: a config that leaves
+        mechanism_note_verified unset (the default) must keep exactly the
+        pre-existing "Curated mechanism" treatment, not the unverified one."""
+        run_dir = _write_gene_run(
+            tmp_path, self._payload_with_mechanistic_interpretation(), with_svgs=False
+        )
+        html = build_run_viewer(run_dir).read_text()
+
+        assert "AI-suggested mechanism (unverified)" not in html
+        assert 'class="mechanism-callout unverified"' not in html
+        assert '<div class="mechanism-callout">' in html
+
+    def test_mechanism_note_never_duplicates_into_the_generic_stat_grid(self, tmp_path):
+        """Regression: mechanism_note (a multi-sentence paragraph) used to
+        pass _scalar_summary_items' generic filter (not a list/dict) and
+        get rendered a second time as an ordinary stat-grid cell -- whose
+        CSS (18px bold, sized for a short number) blew up into a huge card
+        duplicating the mechanism callout above it. Neither mechanism_note
+        nor mechanism_note_verified may appear as a stat-grid label."""
+        run_dir = _write_gene_run(
+            tmp_path, self._payload_with_mechanistic_interpretation(), with_svgs=False
+        )
+        html = build_run_viewer(run_dir).read_text()
+        stat_grid_html = html[html.index('<div class="stat-grid">') : html.index("</div>", html.index('<div class="stat-grid">'))]
+        assert "Mechanism Note" not in stat_grid_html
+        assert "MECHANISM NOTE" not in html
+        # The mechanism_note text is legitimately present once (in the
+        # callout/section), never as a second, generic stat-grid cell.
+        assert html.count("Loss-of-autoinhibition: curated test mechanism text.") == 2
+
     def test_counter_intuitive_events_table_links_back_to_events_table(self, tmp_path):
         run_dir = _write_gene_run(
             tmp_path, self._payload_with_mechanistic_interpretation(), with_svgs=False

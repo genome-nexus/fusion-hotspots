@@ -192,10 +192,20 @@ def test_gene_pair_benchmark_pools_component_events_for_tmprss2_erg_and_surfaces
 
     assert run.summary["mechanism_note"] == pair_config.mechanism_note
     assert "promoter-swap" in run.summary["mechanism_note"].lower()
+    # tmprss2-erg.yaml's note is human-cross-checked, the default trust level.
+    assert run.summary["mechanism_note_verified"] is True
 
     report = benchmark_module._gene_pair_markdown_summary(run)
     assert "## Mechanism" in report
+    assert "## Mechanism (AI-suggested, unverified)" not in report
     assert pair_config.mechanism_note in report
+
+    # An AI-drafted, not-yet-verified note must render under a visibly
+    # distinct heading, never the same "## Mechanism" a curated one gets.
+    run.summary["mechanism_note_verified"] = False
+    unverified_report = benchmark_module._gene_pair_markdown_summary(run)
+    assert "## Mechanism (AI-suggested, unverified)" in unverified_report
+    assert "## Mechanism\n" not in unverified_report
 
 
 def test_run_real_benchmark_routes_a_gene_pair_symbol_automatically(

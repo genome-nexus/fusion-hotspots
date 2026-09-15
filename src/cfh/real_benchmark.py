@@ -565,6 +565,7 @@ def run_gene_pair_benchmark(
     }
     if pair_config.mechanism_note:
         summary["mechanism_note"] = pair_config.mechanism_note
+        summary["mechanism_note_verified"] = pair_config.mechanism_note_verified
     return RealBenchmarkRun(
         gene_symbol=f"{gene5}-{gene3}",
         study_id=study_id,
@@ -1117,6 +1118,7 @@ def analyze_structural_variant_calls_with_config(
     }
     if config.mechanism_note:
         summary["mechanism_note"] = config.mechanism_note
+        summary["mechanism_note_verified"] = config.mechanism_note_verified
     return RealBenchmarkRun(
         gene_symbol=config.gene_symbol,
         study_id=study_id,
@@ -1560,7 +1562,9 @@ def _mechanistic_effect_lines(summary: dict, tables: dict, *, effect: str, label
 
 
 def _mechanistic_interpretation_lines(
-    mechanistic_result: AlgorithmResult | None, mechanism_note: str | None
+    mechanistic_result: AlgorithmResult | None,
+    mechanism_note: str | None,
+    mechanism_note_verified: bool = True,
 ) -> list[str]:
     """The "### Mechanistic interpretation" report section: the curated,
     human-authored ``mechanism_note`` (the *why*, when a curator has
@@ -1569,10 +1573,23 @@ def _mechanistic_interpretation_lines(
     minority recurrent or just noise*) -- see that algorithm's module
     docstring for why the two are kept strictly separate. Omitted entirely
     when there is nothing to say (no mechanism_note and no configured
-    retention/disruption domains)."""
+    retention/disruption domains).
+
+    ``mechanism_note_verified`` distinguishes a human-cross-checked note
+    (the default, and the standard every currently-curated gene meets)
+    from an AI-drafted one (e.g. from OpenEvidence) not yet independently
+    verified -- see ``GeneConfig.mechanism_note_verified``'s own docstring.
+    The label changes accordingly; the two trust levels are never
+    presented identically.
+    """
     body: list[str] = []
     if mechanism_note:
-        body.extend([f"**Curated mechanism:** {mechanism_note}", ""])
+        label = (
+            "Curated mechanism"
+            if mechanism_note_verified
+            else "AI-suggested mechanism (unverified)"
+        )
+        body.extend([f"**{label}:** {mechanism_note}", ""])
 
     if mechanistic_result is not None and not _algorithm_failed(mechanistic_result):
         summary = mechanistic_result.Summary or {}
@@ -1683,7 +1700,9 @@ def markdown_summary(
         lines.append("")
     lines.extend(
         _mechanistic_interpretation_lines(
-            results_by_name.get("mechanistic_interpretation"), summary.get("mechanism_note")
+            results_by_name.get("mechanistic_interpretation"),
+            summary.get("mechanism_note"),
+            summary.get("mechanism_note_verified", True),
         )
     )
     lines.extend(
@@ -2243,7 +2262,12 @@ def _gene_pair_markdown_summary(run: RealBenchmarkRun) -> str:
     ]
     mechanism_note = summary.get("mechanism_note")
     if mechanism_note:
-        lines.extend(["## Mechanism", "", mechanism_note, ""])
+        heading = (
+            "## Mechanism"
+            if summary.get("mechanism_note_verified", True)
+            else "## Mechanism (AI-suggested, unverified)"
+        )
+        lines.extend([heading, "", mechanism_note, ""])
     lines += [
         "## Method",
         "",

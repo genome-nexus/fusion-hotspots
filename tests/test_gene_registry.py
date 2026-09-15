@@ -208,6 +208,31 @@ def test_mechanism_note_defaults_to_none_and_is_opt_in():
     assert config.mechanism_note is None
 
 
+def test_mechanism_note_verified_defaults_to_true():
+    """Every currently-curated gene's mechanism_note was human-cross-checked
+    against primary literature -- defaulting to True means none of them
+    need to set this explicitly to keep their "Curated mechanism"
+    report/viewer treatment."""
+    config = GeneConfig(
+        gene_symbol="FAKE",
+        canonical_transcript_id="NM_1",
+        protein_id="P1",
+        mechanism_note="Some curated text.",
+    )
+    assert config.mechanism_note_verified is True
+
+
+def test_mechanism_note_verified_can_be_set_false_for_an_ai_drafted_note():
+    config = GeneConfig(
+        gene_symbol="FAKE",
+        canonical_transcript_id="NM_1",
+        protein_id="P1",
+        mechanism_note="Some AI-drafted text, not yet independently verified.",
+        mechanism_note_verified=False,
+    )
+    assert config.mechanism_note_verified is False
+
+
 def test_derive_defaults_uses_most_n_terminal_key_domain_and_complete_pfam_list():
     config = GeneConfig(
         gene_symbol="FAKE",

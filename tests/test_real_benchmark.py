@@ -915,3 +915,26 @@ def test_serialized_clinical_annotations_preserve_statistics(
             row.pop("tumor_type")
             row.pop("oncotree_code")
     assert json.dumps(before).encode() == json.dumps(after).encode()
+
+
+def test_mechanistic_interpretation_lines_labels_verified_mechanism_note_as_curated():
+    lines = benchmark_module._mechanistic_interpretation_lines(
+        None, "Some human-cross-checked mechanism text.", True
+    )
+    assert "**Curated mechanism:** Some human-cross-checked mechanism text." in lines
+
+
+def test_mechanistic_interpretation_lines_labels_unverified_mechanism_note_distinctly():
+    """An AI-drafted (e.g. OpenEvidence) mechanism_note not yet
+    independently verified must never be presented under the same
+    "Curated mechanism" label as a human-cross-checked one."""
+    lines = benchmark_module._mechanistic_interpretation_lines(
+        None, "Some AI-drafted mechanism text.", False
+    )
+    assert "**AI-suggested mechanism (unverified):** Some AI-drafted mechanism text." in lines
+    assert not any(line.startswith("**Curated mechanism:**") for line in lines)
+
+
+def test_mechanistic_interpretation_lines_defaults_to_verified_when_flag_omitted():
+    lines = benchmark_module._mechanistic_interpretation_lines(None, "Some mechanism text.")
+    assert "**Curated mechanism:** Some mechanism text." in lines

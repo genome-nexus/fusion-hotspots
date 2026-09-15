@@ -229,6 +229,16 @@ def _event_records(payload: dict) -> list[dict[str, Any]]:
     ]
 
 
+_SUMMARY_KEYS_WITH_DEDICATED_RENDERING = frozenset({"mechanism_note", "mechanism_note_verified"})
+"""Scalar summary fields excluded from the generic stat grid because they
+already have a dedicated, purpose-built rendering elsewhere on the page
+(see ``_mechanistic_interpretation_section``) -- showing ``mechanism_note``
+a second time as a generic stat-grid cell duplicates the mechanism callout
+and, worse, blows up the grid layout: a stat cell's CSS (18px bold, no
+wrapping consideration) is sized for a short number/percentage, not a
+multi-sentence paragraph."""
+
+
 def _scalar_summary_items(summary: dict) -> list[tuple[str, Any]]:
     """The subset of a run's ``summary`` dict worth showing as a simple
     stat grid: scalar values only (partner-count tables, contingency
@@ -238,7 +248,9 @@ def _scalar_summary_items(summary: dict) -> list[tuple[str, Any]]:
     return [
         (key, value)
         for key, value in summary.items()
-        if value is not None and not isinstance(value, (list, dict))
+        if value is not None
+        and not isinstance(value, (list, dict))
+        and key not in _SUMMARY_KEYS_WITH_DEDICATED_RENDERING
     ]
 
 
@@ -320,6 +332,8 @@ table.events tr.row-highlight { background: #fff3cd; transition: background 1.2s
 }
 .mechanism-callout p { margin: 4px 0; }
 .mechanism-callout p.panel-note { padding-left: 0; }
+.mechanism-callout.unverified { background: #fff4e5; border-color: #f0dca6; }
+p.unverified-mechanism { color: #9a6700; }
 tr.counter-intuitive-row { cursor: pointer; }
 tr.counter-intuitive-row:hover { background: #f0f0f0; }
 .events-table-frame {
@@ -929,6 +943,7 @@ def _mechanistic_interpretation_section(payload: dict) -> tuple[str, str]:
     ``mechanism_note`` and no configured retention/disruption domains)."""
     summary = payload.get("summary") or {}
     mechanism_note = summary.get("mechanism_note")
+    mechanism_note_verified = summary.get("mechanism_note_verified", True)
     result = _algorithm_result(payload, "mechanistic_interpretation")
 
     body: list[str] = []
@@ -936,8 +951,21 @@ def _mechanistic_interpretation_section(payload: dict) -> tuple[str, str]:
     if mechanism_note:
         # The curated "why" leads both the callout and the full section --
         # this is the actual functional/mechanistic reason a reader wants
-        # at a glance, not just the statistical support for it.
-        mechanism_note_html = f'<p><strong>Curated mechanism:</strong> {_esc(str(mechanism_note))}</p>'
+        # at a glance, not just the statistical support for it. An
+        # AI-drafted note not yet human-verified (see
+        # GeneConfig.mechanism_note_verified) gets a visibly distinct label
+        # and callout color -- the two trust levels are never presented
+        # identically.
+        if mechanism_note_verified:
+            mechanism_note_html = (
+                f'<p><strong>Curated mechanism:</strong> {_esc(str(mechanism_note))}</p>'
+            )
+        else:
+            mechanism_note_html = (
+                '<p class="unverified-mechanism">'
+                '<strong>AI-suggested mechanism (unverified):</strong> '
+                f'{_esc(str(mechanism_note))}</p>'
+            )
         body.append(mechanism_note_html)
         callout_lines.append(mechanism_note_html)
 
@@ -959,8 +987,13 @@ def _mechanistic_interpretation_section(payload: dict) -> tuple[str, str]:
     section_html = (
         '<h2 id="mechanistic-interpretation">Mechanistic interpretation</h2>' + "".join(body)
     )
+    callout_class = (
+        "mechanism-callout unverified"
+        if mechanism_note and not mechanism_note_verified
+        else "mechanism-callout"
+    )
     callout_html = (
-        f'<div class="mechanism-callout">{"".join(callout_lines)}'
+        f'<div class="{callout_class}">{"".join(callout_lines)}'
         '<p class="panel-note"><a href="#mechanistic-interpretation">'
         "See full mechanistic interpretation below.</a></p></div>"
         if callout_lines

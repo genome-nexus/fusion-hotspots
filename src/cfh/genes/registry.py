@@ -44,7 +44,9 @@ class KeyDomain(BaseModel):
     @model_validator(mode="after")
     def _validate_coordinate_pair(self) -> "KeyDomain":
         if (self.start_aa is None) != (self.end_aa is None):
-            raise ValueError("KeyDomain.start_aa and end_aa must be set together, or both left unset")
+            raise ValueError(
+                "KeyDomain.start_aa and end_aa must be set together, or both left unset"
+            )
         if self.start_aa is not None and self.end_aa is not None and self.end_aa < self.start_aa:
             raise ValueError("KeyDomain.end_aa must be >= start_aa")
         return self
@@ -115,6 +117,17 @@ class GeneConfig(BaseModel):
     domain-retention) that this gene/pair's algorithm results don't actually
     support. Left unset by default -- the same opt-in, no-op-when-absent
     pattern as every other field above."""
+    mechanism_note_verified: bool = True
+    """Whether ``mechanism_note`` has been cross-checked by a human against
+    primary literature (the standard every currently-curated gene's note
+    meets), as opposed to drafted from an AI literature-synthesis tool (e.g.
+    OpenEvidence) and not yet independently verified. Defaults to ``True`` so
+    every existing curated config keeps its current "Curated mechanism"
+    report/viewer treatment without having to set this explicitly; a config
+    that pastes in an unverified AI-drafted note must set this to ``False``
+    so the report/viewer render it as "AI-suggested mechanism (unverified)"
+    instead, never conflating the two trust levels. Meaningless when
+    ``mechanism_note`` is unset."""
 
     @model_validator(mode="after")
     def _validate_config_target(self) -> "GeneConfig":
