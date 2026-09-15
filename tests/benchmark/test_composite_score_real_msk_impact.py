@@ -410,6 +410,8 @@ def test_composite_score_via_real_orchestrator_dispatch_braf():
         {
             "domain_retention": {"seed": 42, "n_permutations": 500},
             "domain_disruption": {"seed": 42, "n_permutations": 500},
+            # This checks dispatch/composite wiring, not window significance.
+            "window_detection": {"seed": 42, "n_permutations": 500},
             "cutpoint_detection": {
                 "seed": 42,
                 "n_permutations": 500,
@@ -465,6 +467,7 @@ def test_composite_score_via_real_orchestrator_dispatch_ret_gracefully_degrades(
         {
             "domain_retention": {"seed": 42, "n_permutations": 500},
             "domain_disruption": {"seed": 42, "n_permutations": 500},
+            "window_detection": {"seed": 42, "n_permutations": 500},
             "cutpoint_detection": {"seed": 42, "n_permutations": 500},
         },
     )

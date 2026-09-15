@@ -1,5 +1,8 @@
 from cfh.algorithms import registry
-from cfh.algorithms.mutation_cooccurrence import MutationCooccurrenceAlgorithm
+from cfh.algorithms.mutation_cooccurrence import (
+    MutationCooccurrenceAlgorithm,
+    comparator_target_key,
+)
 from cfh.genes.registry import GeneConfig, MutualExclusivityTarget, load_gene_config
 from cfh.model.algorithm_result import AlgorithmResult
 from cfh.model.fusion_event import FusionEvent
@@ -135,6 +138,85 @@ def test_no_comparator_samples_still_computes_and_warns():
     row = result.Summary["targets"][0]
     assert row["comparator_altered_sample_count"] == 0
     assert any("No cohort samples carried" in warning for warning in result.Warnings)
+
+
+def test_successful_zero_data_target_with_availability_sidecar_still_computes():
+    target = _TARGET_GENE_WITH_COMPARATOR.mutual_exclusivity_targets[0]
+    result = MutationCooccurrenceAlgorithm().run(
+        [_event("evt-1", "S1")],
+        [],
+        _TARGET_GENE_WITH_COMPARATOR,
+        {
+            "cohort_sample_ids": ["S1", "S2"],
+            "comparator_alterations": [],
+            "comparator_availability": {comparator_target_key(target): True},
+        },
+    )
+
+    assert result.Summary["targets"][0]["comparator_altered_sample_count"] == 0
+    assert any("No cohort samples carried" in warning for warning in result.Warnings)
+
+
+def test_none_comparator_data_skips_instead_of_reporting_confirmed_zero_calls():
+    result = MutationCooccurrenceAlgorithm().run(
+        [_event("evt-1", "S1")],
+        [],
+        _TARGET_GENE_WITH_COMPARATOR,
+        {"cohort_sample_ids": ["S1", "S2"], "comparator_alterations": None},
+    )
+
+    assert result.Summary == {"targets": []}
+    assert result.Tables == {}
+    assert "comparator alteration data were unavailable" in result.Warnings[0]
+
+
+def test_availability_sidecar_skips_only_failed_comparator_targets():
+    second_target = MutualExclusivityTarget(
+        gene="FAKE2",
+        alteration_type="point_mutation",
+        entrez_gene_id=88888,
+    )
+    config = _TARGET_GENE_WITH_COMPARATOR.model_copy(
+        update={
+            "mutual_exclusivity_targets": [
+                _TARGET_GENE_WITH_COMPARATOR.mutual_exclusivity_targets[0],
+                second_target,
+            ]
+        }
+    )
+
+    result = MutationCooccurrenceAlgorithm().run(
+        [_event("evt-1", "S1")],
+        [],
+        config,
+        {
+            "cohort_sample_ids": ["S1", "S2", "S3"],
+            "comparator_alterations": [_comparator_row("S2")],
+            "comparator_availability": {
+                comparator_target_key(config.mutual_exclusivity_targets[0]): True,
+                comparator_target_key(second_target): False,
+            },
+        },
+    )
+
+    assert [row["comparator_gene"] for row in result.Summary["targets"]] == ["FAKE1"]
+    assert any("FAKE2 point_mutation were unavailable" in warning for warning in result.Warnings)
+
+
+def test_sidecar_missing_a_target_fails_closed():
+    result = MutationCooccurrenceAlgorithm().run(
+        [_event("evt-1", "S1")],
+        [],
+        _TARGET_GENE_WITH_COMPARATOR,
+        {
+            "cohort_sample_ids": ["S1", "S2"],
+            "comparator_alterations": [],
+            "comparator_availability": {},
+        },
+    )
+
+    assert result.Summary == {"targets": []}
+    assert any("were unavailable" in warning for warning in result.Warnings)
 
 
 def test_real_braf_config_opts_in_and_ret_does_not():

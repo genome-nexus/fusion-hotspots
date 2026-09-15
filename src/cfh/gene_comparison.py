@@ -25,8 +25,14 @@ _SUMMARY_P_VALUES: dict[str, tuple[tuple[str, tuple[str, ...]], ...]] = {
     ),
     # corrected_p_value already accounts for scanning candidate cutpoints.
     "cutpoint_detection": (("permutation_corrected", ("corrected_p_value",)),),
+    # corrected_p_value already accounts for scanning candidate windows.
+    "window_detection": (("permutation_corrected", ("corrected_p_value",)),),
     "joint_partner": (("enrichment", ("p_value",)),),
     "confidence_stats": (("welch_t_test", ("ttest", "p_value")),),
+    "expression_association": (
+        ("fusion_positive_vs_negative", ("fusion_positive_vs_negative", "p_value")),
+        ("domain_retention_split", ("domain_retention_split", "p_value")),
+    ),
 }
 
 
@@ -41,6 +47,33 @@ def _nested_value(mapping: dict[str, Any], path: tuple[str, ...]) -> Any:
 
 def _results_path(run_artifact: Path) -> Path:
     return run_artifact / "results.json" if run_artifact.is_dir() else run_artifact
+
+
+def _validate_p_value(
+    raw_p: Any, *, algorithm: str, value_path: tuple[str, ...], source: str
+) -> float | None:
+    if raw_p is None:
+        return None
+    if isinstance(raw_p, bool) or not isinstance(raw_p, (int, float)):
+        raise ValueError(
+            f"P-value {'.'.join(value_path)} for {algorithm} in {source} must be numeric or null"
+        )
+    value = float(raw_p)
+    if not math.isfinite(value) or not 0.0 <= value <= 1.0:
+        raise ValueError(
+            f"P-value {'.'.join(value_path)} for {algorithm} in {source} "
+            f"must be finite and between 0 and 1; got {value!r}"
+        )
+    return value
+
+
+def _mutation_target_test_label(target: dict[str, Any]) -> str:
+    """Return a stable, unique label for one configured comparator target."""
+    return "cooccurrence:{}:{}:{}".format(
+        target.get("comparator_gene", ""),
+        target.get("alteration_type", ""),
+        target.get("protein_change") or "any_protein_change",
+    )
 
 
 def collect_p_values_from_algorithm_results(
@@ -70,19 +103,11 @@ def collect_p_values_from_algorithm_results(
         summary = result.get("Summary") or {}
         for test, value_path in _SUMMARY_P_VALUES.get(algorithm, ()):
             raw_p = _nested_value(summary, value_path)
+            raw_p = _validate_p_value(
+                raw_p, algorithm=algorithm, value_path=value_path, source=source
+            )
             if raw_p is None:
                 continue
-            if isinstance(raw_p, bool) or not isinstance(raw_p, (int, float)):
-                raise ValueError(
-                    f"P-value {'.'.join(value_path)} for {algorithm} in {source} "
-                    "must be numeric or null"
-                )
-            raw_p = float(raw_p)
-            if not math.isfinite(raw_p) or not 0.0 <= raw_p <= 1.0:
-                raise ValueError(
-                    f"P-value {'.'.join(value_path)} for {algorithm} in {source} "
-                    f"must be finite and between 0 and 1; got {raw_p!r}"
-                )
             rows.append(
                 {
                     "gene": gene,
@@ -93,6 +118,36 @@ def collect_p_values_from_algorithm_results(
                     "source": source,
                 }
             )
+
+        # ``Tables["cooccurrence_results"]`` repeats these rows verbatim. Read
+        # the canonical Summary representation once so each comparator is one
+        # hypothesis in the family.
+        if algorithm == "mutation_cooccurrence":
+            targets = summary.get("targets")
+            if not isinstance(targets, list):
+                continue
+            for target in targets:
+                if not isinstance(target, dict):
+                    continue
+                value_path = ("targets", "p_value")
+                raw_p = _validate_p_value(
+                    target.get("p_value"),
+                    algorithm=algorithm,
+                    value_path=value_path,
+                    source=source,
+                )
+                if raw_p is None:
+                    continue
+                rows.append(
+                    {
+                        "gene": gene,
+                        "study": study,
+                        "algorithm": algorithm,
+                        "test": _mutation_target_test_label(target),
+                        "raw_p": raw_p,
+                        "source": source,
+                    }
+                )
     return rows
 
 

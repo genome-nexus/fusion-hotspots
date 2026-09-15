@@ -38,7 +38,12 @@ from cfh.gene_comparison import collect_p_values_from_algorithm_results
 from cfh.genes.registry import GeneConfig, load_gene_config
 from cfh.ingestion import cbioportal_api
 from cfh.mapping.genome_nexus_source import GenomeNexusClient
-from cfh.real_benchmark import RealBenchmarkRun, analyze_structural_variant_calls_with_config
+from cfh.real_benchmark import (
+    RealBenchmarkRun,
+    _fetch_expression_association_params,
+    _fetch_mutual_exclusivity_params,
+    analyze_structural_variant_calls_with_config,
+)
 from cfh.stats.multiple_testing import benjamini_hochberg
 from cfh.studies.registry import load_study_config
 
@@ -251,6 +256,26 @@ def run_cohort_scan(
                 base_url=cbioportal_base_url,
                 session=session,
             )
+            gene_algorithm_params = {
+                **algorithm_params,
+                "confidence_stats": default_confidence_stats_params(config),
+            }
+            evidence_warnings: list[str] = []
+            if "mutation_cooccurrence" in algorithm_names and config.mutual_exclusivity_targets:
+                comparator_params, fetch_warnings = _fetch_mutual_exclusivity_params(
+                    config, study_id, study_config, base_url=cbioportal_base_url, session=session
+                )
+                evidence_warnings.extend(fetch_warnings)
+                if comparator_params:
+                    gene_algorithm_params.update(comparator_params)
+            if "expression_association" in algorithm_names:
+                expression_params, expression_warning = _fetch_expression_association_params(
+                    config, study_config, study_id, base_url=cbioportal_base_url, session=session
+                )
+                if expression_params:
+                    gene_algorithm_params["expression_association"] = expression_params
+                if expression_warning:
+                    evidence_warnings.append(expression_warning)
             run = analyze_structural_variant_calls_with_config(
                 calls,
                 config,
@@ -265,10 +290,8 @@ def run_cohort_scan(
                 genome_nexus_client=genome_nexus_client,
                 n_permutations=n_permutations,
                 algorithm_names=algorithm_names,
-                algorithm_params={
-                    **algorithm_params,
-                    "confidence_stats": default_confidence_stats_params(config),
-                },
+                algorithm_params=gene_algorithm_params,
+                extra_warnings=evidence_warnings,
             )
             p_value_rows = collect_p_values_from_algorithm_results(
                 symbol, study_id, run.results, source=f"cohort_scan:{symbol}"

@@ -15,19 +15,41 @@ import json
 from unittest.mock import MagicMock
 
 import pytest
+import requests
 
+from cfh.cohort import scan as scan_module
 from cfh.cohort.outputs import build_summary_rows, write_cohort_scan_outputs
 from cfh.cohort.scan import genes_needing_full_report, run_cohort_scan
 from cfh.ingestion import cbioportal_api
 from cfh.mapping.genome_nexus_source import GenomeNexusClient
+from cfh.studies.registry import StudyConfig
 
 _STUDY_ID = "test_cohort_study"
 _EXON_GENOMIC_START = 1_000
 
 _GENE_SPECS = {
     # gene_symbol: (entrez_gene_id, distinct_patient_count, protein_id, pfam_domains)
-    "BRAF": (673, 20, "P15056_CURATED", None),  # curated: genes/configs/braf.yaml wins
-    "RET": (5979, 19, "P07949_CURATED", None),  # curated: genes/configs/ret.yaml wins
+    # Complete synthetic annotations keep the offline test out of UniProt fallback.
+    # Curated YAML still determines which domains are tested.
+    "BRAF": (
+        673,
+        20,
+        "P15056_CURATED",
+        [
+            {"pfamDomainId": "PF07714", "pfamDomainStart": 100, "pfamDomainEnd": 300},
+            {"pfamDomainId": "PF02196", "pfamDomainStart": 10, "pfamDomainEnd": 30},
+            {"pfamDomainId": "PF00130", "pfamDomainStart": 40, "pfamDomainEnd": 50},
+        ],
+    ),
+    "RET": (
+        5979,
+        19,
+        "P07949_CURATED",
+        [
+            {"pfamDomainId": "PF07714", "pfamDomainStart": 100, "pfamDomainEnd": 300},
+            {"pfamDomainId": "PF00028", "pfamDomainStart": 10, "pfamDomainEnd": 30},
+        ],
+    ),
     "FAKE1": (
         9001,
         10,
@@ -158,6 +180,8 @@ def mock_session() -> MagicMock:
         response = MagicMock(status_code=200)
         if url.endswith("/structuralvariant-genes/fetch"):
             response.json.return_value = _recurrence_records()
+        elif url.endswith("/mutations/fetch"):
+            response.json.return_value = []
         elif url.endswith("/clinical-data/fetch"):
             response.json.return_value = [
                 {"sampleId": sample, "clinicalAttributeId": attribute, "value": value}
@@ -185,6 +209,11 @@ def mock_session() -> MagicMock:
 
     def _get(url, params=None, **kwargs):
         response = MagicMock(status_code=200)
+        if url.endswith("/sample-ids"):
+            response.json.return_value = [
+                call["sampleId"] for call in _sv_calls_for_gene("BRAF")
+            ] + ["NEG-1", "NEG-2"]
+            return response
         for symbol, (_entrez_id, _patients, protein_id, domains) in _GENE_SPECS.items():
             if url.endswith(f"/ensembl/canonical-transcript/hgnc/{symbol}"):
                 response.json.return_value = _canonical_payload(symbol, protein_id, domains or [])
@@ -358,6 +387,8 @@ def test_cohort_scan_gracefully_skips_gene_genome_nexus_cannot_resolve(mock_sess
         response = MagicMock(status_code=200)
         if url.endswith("/structuralvariant-genes/fetch"):
             response.json.return_value = _recurrence_records()
+        elif url.endswith("/mutations/fetch"):
+            response.json.return_value = []
         elif url.endswith("/clinical-data/fetch"):
             response.json.return_value = [
                 {"sampleId": sample, "clinicalAttributeId": attribute, "value": value}
@@ -426,6 +457,94 @@ def test_genome_nexus_client_accepts_injected_session_for_testing():
     assert client.session is not None
     _fetch = cbioportal_api.fetch_structural_variants  # exercised via run_cohort_scan above
     assert callable(_fetch)
+
+
+@pytest.mark.parametrize("failed_fetch", [None, "expression", "mutation"])
+def test_cohort_scan_fetches_optional_evidence_and_reports_partial_failures(
+    mock_session, monkeypatch, failed_fetch
+):
+    study_config = StudyConfig(
+        study_ids=[_STUDY_ID],
+        all_sample_list_template="{study_id}_eligible",
+        mrna_expression_profile_template="{study_id}_expression",
+    )
+    monkeypatch.setattr(scan_module, "load_study_config", lambda _: study_config)
+    original_post = mock_session.post.side_effect
+
+    def evidence_post(url, json=None, **kwargs):
+        if url.endswith("/molecular-data/fetch"):
+            if failed_fetch == "expression":
+                raise requests.ConnectionError("expression unavailable")
+            assert json["sampleListId"] == f"{_STUDY_ID}_eligible"
+            response = MagicMock(status_code=200)
+            response.json.return_value = [
+                {"sampleId": call["sampleId"], "value": index + 2.0}
+                for index, call in enumerate(_sv_calls_for_gene("BRAF"))
+            ] + [{"sampleId": "NEG-1", "value": 0.0}, {"sampleId": "NEG-2", "value": 1.0}]
+            return response
+        if url.endswith("/mutations/fetch"):
+            if failed_fetch == "mutation":
+                raise requests.ConnectionError("mutation unavailable")
+            response = MagicMock(status_code=200)
+            response.json.return_value = [{"sampleId": "NEG-1", "proteinChange": "V600E"}]
+            return response
+        return original_post(url, json=json, **kwargs)
+
+    mock_session.post.side_effect = evidence_post
+    result = run_cohort_scan(
+        _STUDY_ID,
+        max_genes=1,
+        n_permutations=5,
+        adaptive=False,
+        algorithm_names=["frequency", "expression_association", "mutation_cooccurrence"],
+        cbioportal_base_url="https://custom.example/api",
+        session=mock_session,
+    )
+    outcome = result.gene_outcomes[0]
+    assert outcome.status == "ok", outcome.error
+    results = {r.Algorithm: r for r in outcome.run.results}
+    expression = results["expression_association"]
+    mutation = results["mutation_cooccurrence"]
+    if failed_fetch == "expression":
+        assert "fusion_positive_vs_negative" not in expression.Summary
+        assert any("expression unavailable" in warning for warning in outcome.run.warnings)
+    else:
+        assert expression.Summary["fusion_positive_vs_negative"]["n_fusion_positive"] == 7
+        assert expression.Summary["fusion_positive_vs_negative"]["n_fusion_negative"] == 2
+        assert any(row["algorithm"] == "expression_association" for row in result.fdr_rows)
+    if failed_fetch == "mutation":
+        assert mutation.Summary["targets"] == []
+        assert any("mutation unavailable" in warning for warning in outcome.run.warnings)
+        assert not any(row["algorithm"] == "mutation_cooccurrence" for row in result.fdr_rows)
+    else:
+        assert mutation.Summary["targets"][0]["contingency_table"] == [[0, 7], [1, 1]]
+        assert any(row["algorithm"] == "mutation_cooccurrence" for row in result.fdr_rows)
+    evidence_urls = [
+        call.args[0]
+        for call in mock_session.mock_calls
+        if call.args
+        and isinstance(call.args[0], str)
+        and any(
+            part in call.args[0] for part in ["/mutations/", "/sample-lists/", "/molecular-data/"]
+        )
+    ]
+    assert len(evidence_urls) == 3
+    assert all(url.startswith("https://custom.example/api/") for url in evidence_urls)
+
+
+def test_cohort_scan_does_not_fetch_unrequested_evidence(mock_session):
+    result = run_cohort_scan(
+        _STUDY_ID,
+        max_genes=1,
+        n_permutations=5,
+        algorithm_names=["frequency"],
+        session=mock_session,
+    )
+    assert result.gene_outcomes[0].status == "ok"
+    assert not any(
+        any(part in str(call) for part in ["/mutations/", "/sample-lists/", "/molecular-data/"])
+        for call in mock_session.mock_calls
+    )
 
 
 def test_manhattan_svg_is_wired_into_all_three_cohort_scan_outputs(mock_session, tmp_path):
