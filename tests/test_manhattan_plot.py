@@ -256,9 +256,9 @@ def test_real_committed_cohort_scan_run_places_etv6_above_and_ret_braf_below_thr
     assert etv6["fdr_significant"] is True
     assert ret["fdr_significant"] is False
     assert braf["fdr_significant"] is False
-    assert math.isclose(etv6["min_fdr_adjusted_q_value"], 0.0023260, rel_tol=1e-3)
-    assert math.isclose(ret["min_fdr_adjusted_q_value"], 0.0964039, rel_tol=1e-3)
-    assert math.isclose(braf["min_fdr_adjusted_q_value"], 0.2175024, rel_tol=1e-3)
+    assert math.isclose(etv6["min_fdr_adjusted_q_value"], 0.0025719, rel_tol=1e-3)
+    assert math.isclose(ret["min_fdr_adjusted_q_value"], 0.1065963, rel_tol=1e-3)
+    assert math.isclose(braf["min_fdr_adjusted_q_value"], 0.1675381, rel_tol=1e-3)
 
     svg = render_manhattan_svg(rows, significance_level=0.05)
     threshold_y = _threshold_line_y(svg)

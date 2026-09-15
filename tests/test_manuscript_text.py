@@ -211,8 +211,14 @@ def test_manuscript_abstract_never_claims_a_gated_gene_was_analyzed_when_it_was_
     recurrence-gate count with the actually-successfully-analyzed count (a
     gene can be gated in but left unresolvable, or resolved but still fail
     during analysis). The real committed msk_impact_50k_2026 run has exactly
-    this shape: 544 genes passed the gate, but only 523 were successfully
-    analyzed (NCOA4 has a resolved auto config yet ``status == "failed"``)."""
+    this shape: 544 genes passed the gate, but only 524 were successfully
+    analyzed -- the other 20 had no resolvable canonical transcript in
+    Genome Nexus (``config_source == "unresolved"``). The exact count (and
+    which specific genes/failure mode account for the gap) shifts whenever
+    the run is regenerated against live cBioPortal/Genome Nexus data; what
+    must always hold is that the abstract states whatever the real analyzed
+    count is, never the full gated count.
+    """
     payload = json.loads(REAL_COHORT_SCAN_SUMMARY_JSON.read_text())
     abstract = render_manuscript_abstract(payload)
     methods = render_manuscript_methods(payload)
@@ -220,11 +226,11 @@ def test_manuscript_abstract_never_claims_a_gated_gene_was_analyzed_when_it_was_
     n_scanned = len(payload["genes"])
     n_analyzed = sum(1 for row in payload["genes"] if row.get("status") == "ok")
     assert n_scanned == payload["genes_after_gating"] == 544
-    assert n_analyzed == 523
-    assert n_analyzed < n_scanned  # NCOA4: resolved config, failed analysis.
+    assert n_analyzed == 524
+    assert n_analyzed < n_scanned  # gap: 20 genes unresolved in Genome Nexus.
 
     for text in (abstract, methods):
-        assert "523 of the 544 attempted genes were successfully analyzed" in text
+        assert "524 of the 544 attempted genes were successfully analyzed" in text
         # Never claims the full 544 (or the 524 curated+auto) were analyzed.
         assert "544 gated genes were successfully analyzed" not in text
         assert "544 were analyzed" not in text

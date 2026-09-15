@@ -1,0 +1,986 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NTRK1 fusion-hotspot report</title>
+<style>
+:root { color-scheme: light; }
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 24px 20px 60px; background: #f7f7f8; color: #1a1a1a;
+  font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+.wrap { max-width: 1080px; margin: 0 auto; }
+h1 { font-size: 22px; margin: 0 0 4px; }
+h1 .badge { position: relative; top: -2px; }
+h2 {
+  font-size: 16px; margin: 32px 0 10px;
+  border-bottom: 1px solid #ddd; padding-bottom: 6px;
+}
+.subtitle { color: #555; font-size: 13px; margin: 0 0 20px; }
+.back-link {
+  display: inline-block; margin-bottom: 14px; font-size: 13px;
+  color: #2878b5; text-decoration: none;
+}
+.back-link:hover { text-decoration: underline; }
+.card {
+  background: #fff; border: 1px solid #e2e2e2;
+  border-radius: 8px; padding: 16px 18px;
+}
+.stat-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px;
+}
+.stat {
+  background: #fff; border: 1px solid #e2e2e2;
+  border-radius: 8px; padding: 10px 12px;
+}
+.stat .label {
+  font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.02em;
+}
+.stat .value { font-size: 18px; font-weight: 600; margin-top: 2px; }
+.svg-frame {
+  width: 100%; overflow-x: auto; background: #fff;
+  border: 1px solid #e2e2e2; border-radius: 8px; padding: 8px;
+}
+.svg-frame svg { display: block; max-width: 100%; height: auto; }
+.controls {
+  display: flex; flex-wrap: wrap; gap: 20px; align-items: center;
+  margin: 12px 0 16px; padding: 12px 14px; background: #fff;
+  border: 1px solid #e2e2e2; border-radius: 8px;
+}
+.control-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.control-group label.title { font-size: 12px; font-weight: 600; color: #333; }
+.control-group select { font-size: 13px; padding: 4px 6px; }
+.status-toggle { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; }
+#events-summary { font-size: 12px; color: #555; margin-left: auto; }
+table.events { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+table.events th, table.events td {
+  text-align: left; padding: 5px 8px;
+  border-bottom: 1px solid #eee; white-space: nowrap;
+}
+table.events th { position: sticky; top: 0; background: #fafafa; }
+table.events tr.row-highlight { background: #fff3cd; transition: background 1.2s ease; }
+.lollipop-tooltip {
+  position: fixed; z-index: 1000; pointer-events: none;
+  background: #1a1a1a; color: #fff; font-size: 12px; line-height: 1.3;
+  padding: 4px 8px; border-radius: 4px; white-space: nowrap;
+}
+.mechanism-callout {
+  background: #f5f8fc; border: 1px solid #cfe0f0; border-radius: 8px;
+  padding: 12px 16px; margin: 0 0 16px; font-size: 13px;
+}
+.mechanism-callout p { margin: 4px 0; }
+.mechanism-callout p.panel-note { padding-left: 0; }
+tr.counter-intuitive-row { cursor: pointer; }
+tr.counter-intuitive-row:hover { background: #f0f0f0; }
+.events-table-frame {
+  max-height: 420px; overflow: auto;
+  border: 1px solid #e2e2e2; border-radius: 8px; background: #fff;
+}
+.gene-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.gene-links a {
+  font-size: 12.5px; padding: 4px 9px; border-radius: 999px; text-decoration: none;
+  border: 1px solid #ccc; color: #1a1a1a; background: #fff;
+}
+.gene-links a:hover { background: #f0f0f0; }
+.gene-links a.significant { border-color: #d62728; color: #d62728; }
+.note { font-size: 12px; color: #777; margin-top: 8px; }
+.panel-note { font-size: 12px; color: #555; margin: 8px 0 0; padding-left: 18px; }
+.badge {
+  display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 9px;
+  border-radius: 999px; margin-left: 10px; vertical-align: middle;
+  text-transform: uppercase; letter-spacing: 0.03em;
+}
+.badge-curated { background: #e6f4ea; color: #1a7f37; border: 1px solid #b7e0c2; }
+.badge-auto { background: #fff4e5; color: #9a6700; border: 1px solid #f0dca6; }
+table.data-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+table.data-table th, table.data-table td {
+  text-align: left; padding: 5px 8px;
+  border-bottom: 1px solid #eee; white-space: nowrap;
+}
+table.data-table th { position: sticky; top: 0; background: #fafafa; }
+table.sortable th[data-sort-key] { cursor: pointer; user-select: none; }
+table.sortable th[data-sort-key]:hover { background: #f0f0f0; }
+table.sortable th[data-sort-key]::after { content: ""; margin-left: 4px; color: #999; }
+table.sortable th[data-sort-dir="asc"]::after { content: "\25B2"; margin-left: 4px; color: #555; }
+table.sortable th[data-sort-dir="desc"]::after { content: "\25BC"; margin-left: 4px; color: #555; }
+.data-table-frame {
+  max-height: 380px; overflow: auto;
+  border: 1px solid #e2e2e2; border-radius: 8px; background: #fff;
+}
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back-link" href="../index.html">&larr; Back to cohort-scan summary</a>
+  <h1>NTRK1<span class="badge badge-curated" title="Loaded from a hand-curated YAML under genes/configs/">Curated config</span></h1>
+  <p class="subtitle">msk_impact_50k_2026</p>
+  <div class="mechanism-callout"><p><strong>Protein kinase domain retention:</strong> statistically supported (p=0.04826, odds ratio=4.412); 2/32 events (6.2%) show the opposite status, spread across distinct partners &mdash; consistent with background noise.</p><p class="panel-note"><a href="#mechanistic-interpretation">See full mechanistic interpretation below.</a></p></div>
+  <div class="stat-grid"><div class="stat"><div class="label">Raw Structural Variant Count</div><div class="value">118</div></div><div class="stat"><div class="label">Total Fusions</div><div class="value">78</div></div><div class="stat"><div class="label">Mapped Fusions</div><div class="value">76</div></div><div class="stat"><div class="label">Skipped Fusions</div><div class="value">2</div></div><div class="stat"><div class="label">In Frame Count</div><div class="value">32</div></div><div class="stat"><div class="label">Out Of Frame Count</div><div class="value">12</div></div><div class="stat"><div class="label">Known Frame Count</div><div class="value">44</div></div><div class="stat"><div class="label">Unknown Frame Count</div><div class="value">32</div></div><div class="stat"><div class="label">In Frame Percent</div><div class="value">72.73</div></div><div class="stat"><div class="label">Kinase Retained Count</div><div class="value">64</div></div><div class="stat"><div class="label">Kinase Retained Percent</div><div class="value">84.21</div></div><div class="stat"><div class="label">In Frame Kinase Retained Count</div><div class="value">30</div></div><div class="stat"><div class="label">Fisher Odds Ratio</div><div class="value">4.412</div></div><div class="stat"><div class="label">Fisher P Value</div><div class="value">0.04826</div></div><div class="stat"><div class="label">Permutation P Value</div><div class="value">0.009901</div></div><div class="stat"><div class="label">Domain Accession</div><div class="value">PF07714</div></div><div class="stat"><div class="label">Domain Start Aa</div><div class="value">512</div></div><div class="stat"><div class="label">Domain End Aa</div><div class="value">781</div></div><div class="stat"><div class="label">Mechanism Note</div><div class="value">Combined loss of ligand-binding autoinhibition plus partner-driven dimerization. Wild-type NTRK1/TRKA requires NGF binding to its extracellular Ig-like domains to dimerize and autophosphorylate; engineered TRKA variants lacking that region (the TRKA-III splice variant, and a single P203A substitution within Ig1) are spontaneously dimerizing and transforming even without a fusion partner, indicating the deleted ectodomain is restraining, not merely permissive. No disruption_required_domains target is configured for this gene because no supported Pfam accession marks that specific restraining region -- a data-availability gap, not a mechanism gap. The fusion partner&#x27;s own coiled-coil (e.g. LMNA&#x27;s alpha-helical rod, TPM3&#x27;s) then supplies the second, partner-driven half of the mechanism: forcing ligand-independent dimerization and trans-autophosphorylation of the retained kinase domain.</div></div></div>
+  <h2>Domain retention / outlier lollipop track</h2><p class="panel-note">Click a point to jump to its event in the table below.</p><div class="svg-frame" id="domain-track-svg"><svg xmlns="http://www.w3.org/2000/svg" width="920" height="200" viewBox="0 0 920 200">
+<rect width="920" height="200" fill="white"/>
+<text x="60" y="28" font-family="sans-serif" font-size="16">NTRK1 domain-retention track</text>
+<rect x="574.6" y="34.0" width="270.4" height="16.0" fill="#62b36f" opacity="0.55"/>
+<text x="844.9" y="46.0" font-family="sans-serif" font-size="9.5" text-anchor="end">Protein kinase domain (512-781)</text>
+<line x1="60.0" y1="63.0" x2="860.0" y2="63.0" stroke="#444444" stroke-width="4"/>
+<circle cx="455.0" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0013559-T01-IM5-1"><title>event EVT-P-0013559-T01-IM5-1; sample P-0013559-T01-IM5; partner AFAP1; breakpoint aa 393; domain retained</title></circle>
+<circle cx="480.1" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0042270-T01-IM6-2"><title>event EVT-P-0042270-T01-IM6-2; sample P-0042270-T01-IM6; partner ANKRD36; breakpoint aa 418; domain retained</title></circle>
+<circle cx="563.5" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0017558-T02-IM7-3"><title>event EVT-P-0017558-T02-IM7-3; sample P-0017558-T02-IM7; partner ARHGEF11; breakpoint aa 501; domain retained</title></circle>
+<circle cx="345.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0050637-T01-IM6-4"><title>event EVT-P-0050637-T01-IM6-4; sample P-0050637-T01-IM6; partner BCAN; breakpoint aa 284; domain retained</title></circle>
+<circle cx="345.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0041874-T01-IM6-5"><title>event EVT-P-0041874-T01-IM6-5; sample P-0041874-T01-IM6; partner BCAN; breakpoint aa 284; domain retained</title></circle>
+<circle cx="799.7" cy="71.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0055952-T01-IM6-6"><title>event EVT-P-0055952-T01-IM6-6; sample P-0055952-T01-IM6; partner COP1; breakpoint aa 736; domain truncated</title></circle>
+<circle cx="345.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0014859-T03-IM6-8"><title>event EVT-P-0014859-T03-IM6-8; sample P-0014859-T03-IM6; partner CTRC; breakpoint aa 284; domain retained</title></circle>
+<circle cx="345.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0014859-T01-IM6-9"><title>event EVT-P-0014859-T01-IM6-9; sample P-0014859-T01-IM6; partner CTRC; breakpoint aa 284; domain retained</title></circle>
+<circle cx="455.0" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0029326-T01-IM6-10"><title>event EVT-P-0029326-T01-IM6-10; sample P-0029326-T01-IM6; partner DIAPH1; breakpoint aa 393; domain retained</title></circle>
+<circle cx="461.0" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0059139-T01-IM7-11"><title>event EVT-P-0059139-T01-IM7-11; sample P-0059139-T01-IM7; partner EML4; breakpoint aa 399; domain retained</title></circle>
+<circle cx="461.0" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0037901-T01-IM6-12"><title>event EVT-P-0037901-T01-IM6-12; sample P-0037901-T01-IM6; partner EPS15; breakpoint aa 399; domain retained</title></circle>
+<circle cx="440.9" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0009855-T01-IM5-13"><title>event EVT-P-0009855-T01-IM5-13; sample P-0009855-T01-IM5; partner GON4L; breakpoint aa 379; domain retained</title></circle>
+<circle cx="476.1" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0050669-T01-IM6-15"><title>event EVT-P-0050669-T01-IM6-15; sample P-0050669-T01-IM6; partner IQGAP3; breakpoint aa 414; domain retained</title></circle>
+<circle cx="473.1" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0022925-T01-IM6-16"><title>event EVT-P-0022925-T01-IM6-16; sample P-0022925-T01-IM6; partner LMNA; breakpoint aa 411; domain retained</title></circle>
+<circle cx="480.1" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0010581-T01-IM5-17"><title>event EVT-P-0010581-T01-IM5-17; sample P-0010581-T01-IM5; partner LMNA; breakpoint aa 418; domain retained</title></circle>
+<circle cx="480.1" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0010086-T01-IM5-18"><title>event EVT-P-0010086-T01-IM5-18; sample P-0010086-T01-IM5; partner LMNA; breakpoint aa 418; domain retained</title></circle>
+<circle cx="514.3" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0007739-T01-IM5-19"><title>event EVT-P-0007739-T01-IM5-19; sample P-0007739-T01-IM5; partner LMNA; breakpoint aa 452; domain retained</title></circle>
+<circle cx="554.5" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0003705-T01-IM5-24"><title>event EVT-P-0003705-T01-IM5-24; sample P-0003705-T01-IM5; partner LMNA; breakpoint aa 492; domain retained</title></circle>
+<circle cx="514.3" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0003329-T04-IM6-25"><title>event EVT-P-0003329-T04-IM6-25; sample P-0003329-T04-IM6; partner LMNA; breakpoint aa 452; domain retained</title></circle>
+<circle cx="514.3" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0003329-T03-IM6-26"><title>event EVT-P-0003329-T03-IM6-26; sample P-0003329-T03-IM6; partner LMNA; breakpoint aa 452; domain retained</title></circle>
+<circle cx="514.3" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0066239-T01-IM7-27"><title>event EVT-P-0066239-T01-IM7-27; sample P-0066239-T01-IM7; partner LMNA; breakpoint aa 452; domain retained</title></circle>
+<circle cx="514.3" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0003329-T02-IM6-28"><title>event EVT-P-0003329-T02-IM6-28; sample P-0003329-T02-IM6; partner LMNA; breakpoint aa 452; domain retained</title></circle>
+<circle cx="480.1" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0023994-T06-IM6-29"><title>event EVT-P-0023994-T06-IM6-29; sample P-0023994-T06-IM6; partner LMNA; breakpoint aa 418; domain retained</title></circle>
+<circle cx="480.1" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0023994-T05-IM6-30"><title>event EVT-P-0023994-T05-IM6-30; sample P-0023994-T05-IM6; partner LMNA; breakpoint aa 418; domain retained</title></circle>
+<circle cx="480.1" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0023994-T01-IM6-31"><title>event EVT-P-0023994-T01-IM6-31; sample P-0023994-T01-IM6; partner LMNA; breakpoint aa 418; domain retained</title></circle>
+<circle cx="633.9" cy="71.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0025031-T02-IM6-32"><title>event EVT-P-0025031-T02-IM6-32; sample P-0025031-T02-IM6; partner LTAP1; breakpoint aa 571; domain truncated</title></circle>
+<circle cx="563.5" cy="78.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0024231-T01-IM6-33"><title>event EVT-P-0024231-T01-IM6-33; sample P-0024231-T01-IM6; partner MEF2D; breakpoint aa 501; domain lost</title></circle>
+<circle cx="355.5" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0045731-T01-IM6-35"><title>event EVT-P-0045731-T01-IM6-35; sample P-0045731-T01-IM6; partner NOS1AP; breakpoint aa 294; domain retained</title></circle>
+<circle cx="514.3" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0026354-T01-IM6-36"><title>event EVT-P-0026354-T01-IM6-36; sample P-0026354-T01-IM6; partner ARHGEF11; breakpoint aa 452; domain retained</title></circle>
+<circle cx="485.1" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0035466-T01-IM6-37"><title>event EVT-P-0035466-T01-IM6-37; sample P-0035466-T01-IM6; partner ATP1A2; breakpoint aa 423; domain retained</title></circle>
+<circle cx="180.6" cy="71.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0058090-T04-IM7-38"><title>event EVT-P-0058090-T04-IM7-38; sample P-0058090-T04-IM7; partner CADM3; breakpoint aa 120; domain lost</title></circle>
+<circle cx="461.0" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0021262-T01-IM6-41"><title>event EVT-P-0021262-T01-IM6-41; sample P-0021262-T01-IM6; partner F11R; breakpoint aa 399; domain retained</title></circle>
+<circle cx="455.0" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0022467-T01-IM6-42"><title>event EVT-P-0022467-T01-IM6-42; sample P-0022467-T01-IM6; partner IRF2BP2; breakpoint aa 393; domain retained</title></circle>
+<circle cx="461.0" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0010628-T01-IM5-43"><title>event EVT-P-0010628-T01-IM5-43; sample P-0010628-T01-IM5; partner IRF2BP2; breakpoint aa 399; domain retained</title></circle>
+<circle cx="461.0" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0010628-T03-IM6-44"><title>event EVT-P-0010628-T03-IM6-44; sample P-0010628-T03-IM6; partner IRF2BP2; breakpoint aa 399; domain retained</title></circle>
+<circle cx="444.9" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0027278-T01-IM6-45"><title>event EVT-P-0027278-T01-IM6-45; sample P-0027278-T01-IM6; partner KIF21B; breakpoint aa 383; domain retained</title></circle>
+<circle cx="345.4" cy="78.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0056197-T01-IM6-46"><title>event EVT-P-0056197-T01-IM6-46; sample P-0056197-T01-IM6; partner NELFCD; breakpoint aa 284; domain lost</title></circle>
+<circle cx="461.0" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0027277-T01-IM6-79"><title>event EVT-P-0027277-T01-IM6-79; sample P-0027277-T01-IM6; partner PEAR1; breakpoint aa 399; domain retained</title></circle>
+<circle cx="461.0" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0029892-T05-IM6-80"><title>event EVT-P-0029892-T05-IM6-80; sample P-0029892-T05-IM6; partner PLEKHA6; breakpoint aa 399; domain retained</title></circle>
+<circle cx="461.0" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0029892-T04-IM6-81"><title>event EVT-P-0029892-T04-IM6-81; sample P-0029892-T04-IM6; partner PLEKHA6; breakpoint aa 399; domain retained</title></circle>
+<circle cx="461.0" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0029892-T03-IM6-82"><title>event EVT-P-0029892-T03-IM6-82; sample P-0029892-T03-IM6; partner PLEKHA6; breakpoint aa 399; domain retained</title></circle>
+<circle cx="479.1" cy="78.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0038819-T01-IM6-83"><title>event EVT-P-0038819-T01-IM6-83; sample P-0038819-T01-IM6; partner RAB25; breakpoint aa 417; domain lost</title></circle>
+<circle cx="514.3" cy="85.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0015004-T01-IM6-84"><title>event EVT-P-0015004-T01-IM6-84; sample P-0015004-T01-IM6; partner RABGAP1L; breakpoint aa 452; domain lost</title></circle>
+<circle cx="345.4" cy="92.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0038568-T01-IM6-85"><title>event EVT-P-0038568-T01-IM6-85; sample P-0038568-T01-IM6; partner SEMA4A; breakpoint aa 284; domain lost</title></circle>
+<circle cx="467.0" cy="99.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0048896-T01-IM6-86"><title>event EVT-P-0048896-T01-IM6-86; sample P-0048896-T01-IM6; partner SMYD2; breakpoint aa 405; domain lost</title></circle>
+<circle cx="461.0" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0023987-T01-IM6-88"><title>event EVT-P-0023987-T01-IM6-88; sample P-0023987-T01-IM6; partner TPR; breakpoint aa 399; domain retained</title></circle>
+<circle cx="461.0" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0024549-T03-IM6-89"><title>event EVT-P-0024549-T03-IM6-89; sample P-0024549-T03-IM6; partner TPR; breakpoint aa 399; domain retained</title></circle>
+<circle cx="514.3" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0007050-T01-IM5-90"><title>event EVT-P-0007050-T01-IM5-90; sample P-0007050-T01-IM5; partner VANGL2; breakpoint aa 452; domain retained</title></circle>
+<circle cx="242.9" cy="92.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0006172-T01-IM5-91"><title>event EVT-P-0006172-T01-IM5-91; sample P-0006172-T01-IM5; partner P2RY8; breakpoint aa 182; domain lost</title></circle>
+<circle cx="180.6" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0042526-T02-IM6-92"><title>event EVT-P-0042526-T02-IM6-92; sample P-0042526-T02-IM6; partner PRCC; breakpoint aa 120; domain retained</title></circle>
+<circle cx="505.2" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0044467-T01-IM6-93"><title>event EVT-P-0044467-T01-IM6-93; sample P-0044467-T01-IM6; partner SCP2; breakpoint aa 443; domain retained</title></circle>
+<circle cx="131.4" cy="78.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0036662-T01-IM6-94"><title>event EVT-P-0036662-T01-IM6-94; sample P-0036662-T01-IM6; partner SHPRH; breakpoint aa 71; domain lost</title></circle>
+<circle cx="180.6" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0055621-T05-IM6-95"><title>event EVT-P-0055621-T05-IM6-95; sample P-0055621-T05-IM6; partner SLAMF6; breakpoint aa 120; domain retained</title></circle>
+<circle cx="180.6" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0055621-T02-IM6-96"><title>event EVT-P-0055621-T02-IM6-96; sample P-0055621-T02-IM6; partner SLAMF6; breakpoint aa 120; domain retained</title></circle>
+<circle cx="180.6" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0055621-T01-IM6-97"><title>event EVT-P-0055621-T01-IM6-97; sample P-0055621-T01-IM6; partner SLAMF6; breakpoint aa 120; domain retained</title></circle>
+<circle cx="679.1" cy="71.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0022936-T01-IM6-98"><title>event EVT-P-0022936-T01-IM6-98; sample P-0022936-T01-IM6; partner STK11; breakpoint aa 616; domain truncated</title></circle>
+<circle cx="180.6" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0024875-T01-IM6-99"><title>event EVT-P-0024875-T01-IM6-99; sample P-0024875-T01-IM6; partner TAFA2; breakpoint aa 120; domain retained</title></circle>
+<circle cx="247.9" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0069757-T01-IM7-100"><title>event EVT-P-0069757-T01-IM7-100; sample P-0069757-T01-IM7; partner TARS2; breakpoint aa 187; domain retained</title></circle>
+<circle cx="514.3" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0050767-T01-IM6-101"><title>event EVT-P-0050767-T01-IM6-101; sample P-0050767-T01-IM6; partner TPM3; breakpoint aa 452; domain retained</title></circle>
+<circle cx="382.6" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0049078-T04-IM6-102"><title>event EVT-P-0049078-T04-IM6-102; sample P-0049078-T04-IM6; partner TPM3; breakpoint aa 321; domain retained</title></circle>
+<circle cx="382.6" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0049078-T01-IM6-103"><title>event EVT-P-0049078-T01-IM6-103; sample P-0049078-T01-IM6; partner TPM3; breakpoint aa 321; domain retained</title></circle>
+<circle cx="455.0" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0046877-T02-IM6-104"><title>event EVT-P-0046877-T02-IM6-104; sample P-0046877-T02-IM6; partner TPM3; breakpoint aa 393; domain retained</title></circle>
+<circle cx="455.0" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0026375-T04-IM6-105"><title>event EVT-P-0026375-T04-IM6-105; sample P-0026375-T04-IM6; partner TPM3; breakpoint aa 393; domain retained</title></circle>
+<circle cx="455.0" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0026375-T01-IM6-106"><title>event EVT-P-0026375-T01-IM6-106; sample P-0026375-T01-IM6; partner TPM3; breakpoint aa 393; domain retained</title></circle>
+<circle cx="461.0" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0025815-T02-IM6-107"><title>event EVT-P-0025815-T02-IM6-107; sample P-0025815-T02-IM6; partner TPM3; breakpoint aa 399; domain retained</title></circle>
+<circle cx="455.0" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0021467-T01-IM6-108"><title>event EVT-P-0021467-T01-IM6-108; sample P-0021467-T01-IM6; partner TPM3; breakpoint aa 393; domain retained</title></circle>
+<circle cx="514.3" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0021170-T03-IM6-109"><title>event EVT-P-0021170-T03-IM6-109; sample P-0021170-T03-IM6; partner TPM3; breakpoint aa 452; domain retained</title></circle>
+<circle cx="514.3" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0021170-T02-IM6-110"><title>event EVT-P-0021170-T02-IM6-110; sample P-0021170-T02-IM6; partner TPM3; breakpoint aa 452; domain retained</title></circle>
+<circle cx="455.0" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0014143-T01-IM5-111"><title>event EVT-P-0014143-T01-IM5-111; sample P-0014143-T01-IM5; partner TPM3; breakpoint aa 393; domain retained</title></circle>
+<circle cx="404.7" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0069266-T01-IM7-112"><title>event EVT-P-0069266-T01-IM7-112; sample P-0069266-T01-IM7; partner TPM3; breakpoint aa 343; domain retained</title></circle>
+<circle cx="480.1" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0049951-T01-IM6-113"><title>event EVT-P-0049951-T01-IM6-113; sample P-0049951-T01-IM6; partner TPR; breakpoint aa 418; domain retained</title></circle>
+<circle cx="438.9" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0042965-T01-IM6-114"><title>event EVT-P-0042965-T01-IM6-114; sample P-0042965-T01-IM6; partner TPR; breakpoint aa 377; domain retained</title></circle>
+<circle cx="420.8" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0065034-T02-IM7-115"><title>event EVT-P-0065034-T02-IM7-115; sample P-0065034-T02-IM7; partner TPR; breakpoint aa 359; domain retained</title></circle>
+<circle cx="455.0" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0016347-T01-IM6-116"><title>event EVT-P-0016347-T01-IM6-116; sample P-0016347-T01-IM6; partner TRIM63; breakpoint aa 393; domain retained</title></circle>
+<circle cx="563.5" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0007755-T02-IM5-117"><title>event EVT-P-0007755-T02-IM5-117; sample P-0007755-T02-IM5; partner TRPM8; breakpoint aa 501; domain retained</title></circle>
+<circle cx="514.3" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0000104-T02-IM6-118"><title>event EVT-P-0000104-T02-IM6-118; sample P-0000104-T02-IM6; partner ZBTB7B; breakpoint aa 452; domain retained</title></circle>
+<line x1="60.0" y1="114.0" x2="860.0" y2="114.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="860.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
+<text x="60.0" y="128.0" font-family="sans-serif" font-size="9">1</text>
+<text x="860.0" y="128.0" font-family="sans-serif" font-size="9" text-anchor="end">796 aa</text>
+<line x1="61.0" y1="132.0" x2="61.0" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="61.0" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 61.0 137.0)">E1</text>
+<line x1="131.4" y1="132.0" x2="131.4" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="131.4" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 131.4 137.0)">E2</text>
+<line x1="156.5" y1="132.0" x2="156.5" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="156.5" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 156.5 137.0)">E3</text>
+<line x1="180.6" y1="132.0" x2="180.6" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="180.6" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 180.6 137.0)">E4</text>
+<line x1="203.7" y1="132.0" x2="203.7" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="203.7" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 203.7 137.0)">E5</text>
+<line x1="253.0" y1="132.0" x2="253.0" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="253.0" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 253.0 137.0)">E6</text>
+<line x1="301.2" y1="132.0" x2="301.2" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="301.2" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 301.2 137.0)">E7</text>
+<line x1="345.4" y1="132.0" x2="345.4" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="345.4" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 345.4 137.0)">E8</text>
+<line x1="455.0" y1="132.0" x2="455.0" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="455.0" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 455.0 137.0)">E9</text>
+<line x1="461.0" y1="132.0" x2="461.0" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="461.0" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 461.0 137.0)">E10</text>
+<line x1="480.1" y1="132.0" x2="480.1" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="480.1" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 480.1 137.0)">E11</text>
+<line x1="514.3" y1="132.0" x2="514.3" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="514.3" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 514.3 137.0)">E12</text>
+<line x1="563.5" y1="132.0" x2="563.5" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="563.5" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 563.5 137.0)">E13</text>
+<line x1="607.7" y1="132.0" x2="607.7" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="607.7" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 607.7 137.0)">E14</text>
+<line x1="665.0" y1="132.0" x2="665.0" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="665.0" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 665.0 137.0)">E15</text>
+<line x1="746.4" y1="132.0" x2="746.4" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="746.4" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 746.4 137.0)">E16</text>
+<line x1="799.7" y1="132.0" x2="799.7" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="799.7" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 799.7 137.0)">E17</text>
+<line x1="160.5" y1="114.0" x2="160.5" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="160.5" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">100</text>
+<line x1="261.0" y1="114.0" x2="261.0" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="261.0" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">200</text>
+<line x1="361.5" y1="114.0" x2="361.5" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="361.5" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">300</text>
+<line x1="462.0" y1="114.0" x2="462.0" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="462.0" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">400</text>
+<line x1="562.5" y1="114.0" x2="562.5" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="562.5" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">500</text>
+<line x1="663.0" y1="114.0" x2="663.0" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="663.0" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">600</text>
+<line x1="763.5" y1="114.0" x2="763.5" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="763.5" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">700</text>
+<circle cx="60" cy="167.0" r="4" fill="#2878b5"/><text x="70" y="172.0" font-family="sans-serif" font-size="12">fully retained</text>
+<circle cx="180" cy="167.0" r="4" fill="#f2a93b"/><text x="190" y="172.0" font-family="sans-serif" font-size="12">truncated</text>
+<circle cx="275" cy="167.0" r="4" fill="#777777"/><text x="285" y="172.0" font-family="sans-serif" font-size="12">fully lost</text>
+<circle cx="365" cy="167.0" r="4" fill="white" stroke="#d62728" stroke-width="1.5"/><text x="375" y="172.0" font-family="sans-serif" font-size="12">reference discrepancy</text>
+<rect x="60" y="180.0" width="12" height="10" fill="#62b36f" opacity="0.55"/><text x="80" y="189.0" font-family="sans-serif" font-size="12">configured key-domain span (name/range labeled above; a second or later configured domain gets its own distinct shade)</text>
+</svg>
+</div><h2 id="mechanistic-interpretation">Mechanistic interpretation</h2><p><strong>Curated mechanism:</strong> Combined loss of ligand-binding autoinhibition plus partner-driven dimerization. Wild-type NTRK1/TRKA requires NGF binding to its extracellular Ig-like domains to dimerize and autophosphorylate; engineered TRKA variants lacking that region (the TRKA-III splice variant, and a single P203A substitution within Ig1) are spontaneously dimerizing and transforming even without a fusion partner, indicating the deleted ectodomain is restraining, not merely permissive. No disruption_required_domains target is configured for this gene because no supported Pfam accession marks that specific restraining region -- a data-availability gap, not a mechanism gap. The fusion partner&#x27;s own coiled-coil (e.g. LMNA&#x27;s alpha-helical rod, TPM3&#x27;s) then supplies the second, partner-driven half of the mechanism: forcing ligand-independent dimerization and trans-autophosphorylation of the retained kinase domain.</p><p><strong>Protein kinase domain retention:</strong> statistically supported (p=0.04826, odds ratio=4.412), but 2/32 in-frame events (6.2%) show the opposite status.</p><p class="panel-note">Spread across distinct partner genes with no partner recurring 2+ times among them &mdash; consistent with background noise or individual passenger events rather than a distinct recurrent subgroup; too weak to infer an alternate mechanism from this cohort alone.</p><p class="panel-note">Click a row to jump to that event in the table below.</p><div class="data-table-frame"><table class="data-table" id="retention-counter-intuitive-table"><thead><tr><th>Event</th><th>Sample</th><th>Partner</th><th>Breakpoint (aa)</th><th>Status</th></tr></thead><tbody><tr class="counter-intuitive-row" data-event-id="EVT-P-0055952-T01-IM6-6"><td>EVT-P-0055952-T01-IM6-6</td><td>P-0055952-T01-IM6</td><td>COP1</td><td>736</td><td>disrupted</td></tr><tr class="counter-intuitive-row" data-event-id="EVT-P-0024231-T01-IM6-33"><td>EVT-P-0024231-T01-IM6-33</td><td>P-0024231-T01-IM6</td><td>MEF2D</td><td>501</td><td>lost</td></tr></tbody></table></div><h2>Composite evidence ranking (per partner gene)</h2><p class="panel-note">Click a column header to sort ascending/descending. 43 partner gene(s) ranked by <code>composite_score</code>.</p><div class="data-table-frame"><table class="data-table sortable" id="composite-score-table"><thead><tr><th data-sort-key="Rank">Rank</th><th data-sort-key="Partner_gene">Partner gene</th><th data-sort-key="Event_count">Events</th><th data-sort-key="Composite_score">Composite score</th><th data-sort-key="Recurrence_score">Recurrence</th><th data-sort-key="Domain_retention_score">Domain retention</th><th data-sort-key="Domain_disruption_score">Domain disruption</th><th data-sort-key="Cutpoint_proximity_score">Cutpoint proximity</th><th data-sort-key="Confidence_certainty_score">Confidence</th></tr></thead><tbody><tr><td data-sort="1">1</td><td data-sort="LMNA">LMNA</td><td data-sort="12">12</td><td data-sort="0.3577818572562792">0.3578</td><td data-sort="0.15384615384615385">0.1538</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.852906976744186">0.8529</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="2">2</td><td data-sort="TPM3">TPM3</td><td data-sort="12">12</td><td data-sort="0.3378690665586047">0.3379</td><td data-sort="0.15384615384615385">0.1538</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.7467054263565891">0.7467</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="3">3</td><td data-sort="MEF2D">MEF2D</td><td data-sort="1">1</td><td data-sort="0.33247718373212887">0.3325</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="1.0">1</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="4">4</td><td data-sort="TRPM8">TRPM8</td><td data-sort="1">1</td><td data-sort="0.33247718373212887">0.3325</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="1.0">1</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="5">5</td><td data-sort="ARHGEF11">ARHGEF11</td><td data-sort="2">2</td><td data-sort="0.32660173650493746">0.3266</td><td data-sort="0.02564102564102564">0.02564</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.9430232558139535">0.943</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="6">6</td><td data-sort="RABGAP1L">RABGAP1L</td><td data-sort="1">1</td><td data-sort="0.3111109046623614">0.3111</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.8860465116279069">0.886</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="7">7</td><td data-sort="VANGL2">VANGL2</td><td data-sort="1">1</td><td data-sort="0.3111109046623614">0.3111</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.8860465116279069">0.886</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="8">8</td><td data-sort="ZBTB7B">ZBTB7B</td><td data-sort="1">1</td><td data-sort="0.3111109046623614">0.3111</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.8860465116279069">0.886</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="9">9</td><td data-sort="SCP2">SCP2</td><td data-sort="1">1</td><td data-sort="0.30718648605771026">0.3072</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.8651162790697674">0.8651</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="10">10</td><td data-sort="TPR">TPR</td><td data-sort="5">5</td><td data-sort="0.30348120877685164">0.3035</td><td data-sort="0.0641025641025641">0.0641</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.7427906976744186">0.7428</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="11">11</td><td data-sort="LTAP1">LTAP1</td><td data-sort="1">1</td><td data-sort="0.3019539279181754">0.302</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.8372093023255813">0.8372</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="12">12</td><td data-sort="ATP1A2">ATP1A2</td><td data-sort="1">1</td><td data-sort="0.29846555582515216">0.2985</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.8186046511627907">0.8186</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="13">13</td><td data-sort="PLEKHA6">PLEKHA6</td><td data-sort="3">3</td><td data-sort="0.297615824161467">0.2976</td><td data-sort="0.038461538461538464">0.03846</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.7627906976744185">0.7628</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="14">14</td><td data-sort="IRF2BP2">IRF2BP2</td><td data-sort="3">3</td><td data-sort="0.29674373113821123">0.2967</td><td data-sort="0.038461538461538464">0.03846</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.758139534883721">0.7581</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="15">15</td><td data-sort="ANKRD36">ANKRD36</td><td data-sort="1">1</td><td data-sort="0.2962853232670126">0.2963</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.8069767441860465">0.807</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="16">16</td><td data-sort="RAB25">RAB25</td><td data-sort="1">1</td><td data-sort="0.2958492767553847">0.2958</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.8046511627906977">0.8047</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="17">17</td><td data-sort="IQGAP3">IQGAP3</td><td data-sort="1">1</td><td data-sort="0.294541137220501">0.2945</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.7976744186046512">0.7977</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="18">18</td><td data-sort="SMYD2">SMYD2</td><td data-sort="1">1</td><td data-sort="0.2906167186158498">0.2906</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.7767441860465116">0.7767</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="19">19</td><td data-sort="EML4">EML4</td><td data-sort="1">1</td><td data-sort="0.28800043954608234">0.288</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.7627906976744185">0.7628</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="20">20</td><td data-sort="EPS15">EPS15</td><td data-sort="1">1</td><td data-sort="0.28800043954608234">0.288</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.7627906976744185">0.7628</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="21">21</td><td data-sort="F11R">F11R</td><td data-sort="1">1</td><td data-sort="0.28800043954608234">0.288</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.7627906976744185">0.7628</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="22">22</td><td data-sort="PEAR1">PEAR1</td><td data-sort="1">1</td><td data-sort="0.28800043954608234">0.288</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.7627906976744185">0.7628</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="23">23</td><td data-sort="AFAP1">AFAP1</td><td data-sort="1">1</td><td data-sort="0.28538416047631493">0.2854</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.7488372093023256">0.7488</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="24">24</td><td data-sort="DIAPH1">DIAPH1</td><td data-sort="1">1</td><td data-sort="0.28538416047631493">0.2854</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.7488372093023256">0.7488</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="25">25</td><td data-sort="TRIM63">TRIM63</td><td data-sort="1">1</td><td data-sort="0.28538416047631493">0.2854</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.7488372093023256">0.7488</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="26">26</td><td data-sort="STK11">STK11</td><td data-sort="1">1</td><td data-sort="0.2823318348949196">0.2823</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.7325581395348837">0.7326</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="27">27</td><td data-sort="KIF21B">KIF21B</td><td data-sort="1">1</td><td data-sort="0.2810236953600359">0.281</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.7255813953488373">0.7256</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="28">28</td><td data-sort="GON4L">GON4L</td><td data-sort="1">1</td><td data-sort="0.2792795093135243">0.2793</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.7162790697674419">0.7163</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="29">29</td><td data-sort="BCAN">BCAN</td><td data-sort="2">2</td><td data-sort="0.2426627830165654">0.2427</td><td data-sort="0.02564102564102564">0.02564</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.49534883720930234">0.4953</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="30">30</td><td data-sort="CTRC">CTRC</td><td data-sort="2">2</td><td data-sort="0.2426627830165654">0.2427</td><td data-sort="0.02564102564102564">0.02564</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.49534883720930234">0.4953</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="31">31</td><td data-sort="NOS1AP">NOS1AP</td><td data-sort="1">1</td><td data-sort="0.24221555582515214">0.2422</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.5186046511627906">0.5186</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="32">32</td><td data-sort="NELFCD">NELFCD</td><td data-sort="1">1</td><td data-sort="0.2378550907088731">0.2379</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.49534883720930234">0.4953</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="33">33</td><td data-sort="SEMA4A">SEMA4A</td><td data-sort="1">1</td><td data-sort="0.2378550907088731">0.2379</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.49534883720930234">0.4953</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="34">34</td><td data-sort="COP1">COP1</td><td data-sort="1">1</td><td data-sort="0.2300062534995708">0.23</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.4534883720930233">0.4535</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="35">35</td><td data-sort="TARS2">TARS2</td><td data-sort="1">1</td><td data-sort="0.19555857908096613">0.1956</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.2697674418604651">0.2698</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="36">36</td><td data-sort="P2RY8">P2RY8</td><td data-sort="1">1</td><td data-sort="0.19337834652282657">0.1934</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.2581395348837209">0.2581</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="37">37</td><td data-sort="DDR2">DDR2</td><td data-sort="1">1</td><td data-sort="0.17843345690108176">0.1784</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort=""></td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="38">38</td><td data-sort="METTL25B">METTL25B</td><td data-sort="1">1</td><td data-sort="0.17843345690108176">0.1784</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort=""></td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="39">39</td><td data-sort="SLAMF6">SLAMF6</td><td data-sort="3">3</td><td data-sort="0.17595884741728096">0.176</td><td data-sort="0.038461538461538464">0.03846</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.11395348837209307">0.114</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="40">40</td><td data-sort="CADM3">CADM3</td><td data-sort="1">1</td><td data-sort="0.16634346280189635">0.1663</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.11395348837209307">0.114</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="41">41</td><td data-sort="PRCC">PRCC</td><td data-sort="1">1</td><td data-sort="0.16634346280189635">0.1663</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.11395348837209307">0.114</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="42">42</td><td data-sort="TAFA2">TAFA2</td><td data-sort="1">1</td><td data-sort="0.16634346280189635">0.1663</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.11395348837209307">0.114</td><td data-sort="0.6202755879498323">0.6203</td></tr><tr><td data-sort="43">43</td><td data-sort="SHPRH">SHPRH</td><td data-sort="1">1</td><td data-sort="0.14497718373212892">0.145</td><td data-sort="0.01282051282051282">0.01282</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort=""></td><td data-sort="0.0">0</td><td data-sort="0.6202755879498323">0.6203</td></tr></tbody></table></div><h2>Fusion-transcript schematic</h2>
+<div class="controls">
+  <div class="control-group">
+    <label class="title" for="tumor-type-filter">Tumor type</label>
+    <select id="tumor-type-filter"><option value="">All tumor types</option></select>
+  </div>
+  <div class="control-group">
+    <span class="title">Domain status</span>
+    <span id="status-filter"></span>
+  </div>
+  <span id="events-summary"></span>
+</div>
+<div class="svg-frame" id="fusion-schematic-svg"><svg xmlns="http://www.w3.org/2000/svg" width="1000" height="890" viewBox="0 0 1000 890">
+<rect width="1000" height="890" fill="white"/>
+<text x="60" y="24" font-family="sans-serif" font-size="15">NTRK1 fusion-transcript schematic</text>
+<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555555">Fusion order varies by row; follow each row's 5' and 3' labels (NTRK1 portion is domain-colored, exon ticks). Partner-gene blocks share one color; row labels identify each partner.</text>
+<rect x="60.0" y="56.0" width="276.5" height="22" fill="#8064a2"><title>Partner gene TPM3; NTRK1–TPM3 fusion, breakpoint NTRK1 aa 393; samples P-0046877-T02-IM6, P-0026375-T04-IM6, P-0026375-T01-IM6, P-0021467-T01-IM6, P-0014143-T01-IM5</title></rect>
+<rect x="336.5" y="56.0" width="283.5" height="22" fill="#e2e2e2"><title>NTRK1 backbone (393-796 aa, no domain); domain status retained; NTRK1–TPM3 fusion, breakpoint NTRK1 aa 393; samples P-0046877-T02-IM6, P-0026375-T04-IM6, P-0026375-T01-IM6, P-0021467-T01-IM6, P-0014143-T01-IM5</title></rect>
+<rect x="420.2" y="56.0" width="189.2" height="22" fill="#2878b5"><title>Protein kinase domain retained (512-781 aa); NTRK1–TPM3 fusion, breakpoint NTRK1 aa 393; samples P-0046877-T02-IM6, P-0026375-T04-IM6, P-0026375-T01-IM6, P-0021467-T01-IM6, P-0014143-T01-IM5</title></rect>
+<text x="514.8" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="340.7" y1="56.0" x2="340.7" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="354.1" y1="56.0" x2="354.1" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="378.0" y1="56.0" x2="378.0" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.5" y1="56.0" x2="412.5" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="443.4" y1="56.0" x2="443.4" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="483.5" y1="56.0" x2="483.5" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.5" y1="56.0" x2="540.5" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.8" y1="56.0" x2="577.8" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="336.5" y1="55.0" x2="336.5" y2="79.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NTRK1–TPM3 fusion, breakpoint NTRK1 aa 393; samples P-0046877-T02-IM6, P-0026375-T04-IM6, P-0026375-T01-IM6, P-0021467-T01-IM6, P-0014143-T01-IM5</title></line>
+<text x="64.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="70.5" font-family="sans-serif" font-size="9.5">TPM3 (x5) – Protein kinase domain retained – Thyroid Cancer, Colorectal Cancer, Glioma</text>
+<rect x="60.0" y="82.0" width="294.1" height="22" fill="#8064a2"><title>Partner gene LMNA; NTRK1–LMNA fusion, breakpoint NTRK1 aa 418; samples P-0010581-T01-IM5, P-0010086-T01-IM5, P-0023994-T06-IM6, P-0023994-T05-IM6, P-0023994-T01-IM6</title></rect>
+<rect x="354.1" y="82.0" width="265.9" height="22" fill="#e2e2e2"><title>NTRK1 backbone (418-796 aa, no domain); domain status retained; NTRK1–LMNA fusion, breakpoint NTRK1 aa 418; samples P-0010581-T01-IM5, P-0010086-T01-IM5, P-0023994-T06-IM6, P-0023994-T05-IM6, P-0023994-T01-IM6</title></rect>
+<rect x="420.2" y="82.0" width="189.2" height="22" fill="#2878b5"><title>Protein kinase domain retained (512-781 aa); NTRK1–LMNA fusion, breakpoint NTRK1 aa 418; samples P-0010581-T01-IM5, P-0010086-T01-IM5, P-0023994-T06-IM6, P-0023994-T05-IM6, P-0023994-T01-IM6</title></rect>
+<text x="514.8" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="378.0" y1="82.0" x2="378.0" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.5" y1="82.0" x2="412.5" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="443.4" y1="82.0" x2="443.4" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="483.5" y1="82.0" x2="483.5" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.5" y1="82.0" x2="540.5" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.8" y1="82.0" x2="577.8" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="354.1" y1="81.0" x2="354.1" y2="105.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NTRK1–LMNA fusion, breakpoint NTRK1 aa 418; samples P-0010581-T01-IM5, P-0010086-T01-IM5, P-0023994-T06-IM6, P-0023994-T05-IM6, P-0023994-T01-IM6</title></line>
+<text x="64.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="96.5" font-family="sans-serif" font-size="9.5">LMNA (x5) – Protein kinase domain retained – Breast Cancer, Colorectal Cancer, Soft Tissue Sarcoma</text>
+<rect x="60.0" y="108.0" width="318.0" height="22" fill="#8064a2"><title>Partner gene LMNA; NTRK1–LMNA fusion, breakpoint NTRK1 aa 452; samples P-0007739-T01-IM5, P-0003329-T04-IM6, P-0003329-T03-IM6, P-0066239-T01-IM7, P-0003329-T02-IM6</title></rect>
+<rect x="378.0" y="108.0" width="242.0" height="22" fill="#e2e2e2"><title>NTRK1 backbone (452-796 aa, no domain); domain status retained; NTRK1–LMNA fusion, breakpoint NTRK1 aa 452; samples P-0007739-T01-IM5, P-0003329-T04-IM6, P-0003329-T03-IM6, P-0066239-T01-IM7, P-0003329-T02-IM6</title></rect>
+<rect x="420.2" y="108.0" width="189.2" height="22" fill="#2878b5"><title>Protein kinase domain retained (512-781 aa); NTRK1–LMNA fusion, breakpoint NTRK1 aa 452; samples P-0007739-T01-IM5, P-0003329-T04-IM6, P-0003329-T03-IM6, P-0066239-T01-IM7, P-0003329-T02-IM6</title></rect>
+<text x="514.8" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="412.5" y1="108.0" x2="412.5" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="443.4" y1="108.0" x2="443.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="483.5" y1="108.0" x2="483.5" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.5" y1="108.0" x2="540.5" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.8" y1="108.0" x2="577.8" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="378.0" y1="107.0" x2="378.0" y2="131.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NTRK1–LMNA fusion, breakpoint NTRK1 aa 452; samples P-0007739-T01-IM5, P-0003329-T04-IM6, P-0003329-T03-IM6, P-0066239-T01-IM7, P-0003329-T02-IM6</title></line>
+<text x="64.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="122.5" font-family="sans-serif" font-size="9.5">LMNA (x5) – Protein kinase domain retained – Hepatobiliary Cancer, Colorectal Cancer</text>
+<rect x="60.0" y="134.0" width="84.4" height="22" fill="#8064a2"><title>Partner gene SLAMF6; NTRK1–SLAMF6 fusion, breakpoint NTRK1 aa 120; samples P-0055621-T05-IM6, P-0055621-T02-IM6, P-0055621-T01-IM6</title></rect>
+<rect x="144.4" y="134.0" width="475.6" height="22" fill="#e2e2e2"><title>NTRK1 backbone (120-796 aa, no domain); domain status retained; NTRK1–SLAMF6 fusion, breakpoint NTRK1 aa 120; samples P-0055621-T05-IM6, P-0055621-T02-IM6, P-0055621-T01-IM6</title></rect>
+<rect x="144.4" y="134.0" width="21.1" height="22" fill="#f2a93b"><title>PF13855 truncated (120-150 aa); NTRK1–SLAMF6 fusion, breakpoint NTRK1 aa 120; samples P-0055621-T05-IM6, P-0055621-T02-IM6, P-0055621-T01-IM6</title></rect>
+<text x="155.0" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF13…</text>
+<rect x="198.6" y="134.0" width="59.1" height="22" fill="#2878b5"><title>PF13895 retained (197-281 aa); NTRK1–SLAMF6 fusion, breakpoint NTRK1 aa 120; samples P-0055621-T05-IM6, P-0055621-T02-IM6, P-0055621-T01-IM6</title></rect>
+<text x="228.1" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF13895</text>
+<rect x="420.2" y="134.0" width="189.2" height="22" fill="#2878b5"><title>Protein kinase domain retained (512-781 aa); NTRK1–SLAMF6 fusion, breakpoint NTRK1 aa 120; samples P-0055621-T05-IM6, P-0055621-T02-IM6, P-0055621-T01-IM6</title></rect>
+<text x="514.8" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="160.6" y1="134.0" x2="160.6" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="195.1" y1="134.0" x2="195.1" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="228.8" y1="134.0" x2="228.8" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="259.8" y1="134.0" x2="259.8" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="336.5" y1="134.0" x2="336.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="340.7" y1="134.0" x2="340.7" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="354.1" y1="134.0" x2="354.1" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="378.0" y1="134.0" x2="378.0" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.5" y1="134.0" x2="412.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="443.4" y1="134.0" x2="443.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="483.5" y1="134.0" x2="483.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.5" y1="134.0" x2="540.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.8" y1="134.0" x2="577.8" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="144.4" y1="133.0" x2="144.4" y2="157.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NTRK1–SLAMF6 fusion, breakpoint NTRK1 aa 120; samples P-0055621-T05-IM6, P-0055621-T02-IM6, P-0055621-T01-IM6</title></line>
+<text x="64.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="148.5" font-family="sans-serif" font-size="9.5">SLAMF6 (x3) – Protein kinase domain retained – Bladder Cancer</text>
+<rect x="60.0" y="160.0" width="280.7" height="22" fill="#8064a2"><title>Partner gene PLEKHA6; NTRK1–PLEKHA6 fusion, breakpoint NTRK1 aa 399; samples P-0029892-T05-IM6, P-0029892-T04-IM6, P-0029892-T03-IM6</title></rect>
+<rect x="340.7" y="160.0" width="279.3" height="22" fill="#e2e2e2"><title>NTRK1 backbone (399-796 aa, no domain); domain status retained; NTRK1–PLEKHA6 fusion, breakpoint NTRK1 aa 399; samples P-0029892-T05-IM6, P-0029892-T04-IM6, P-0029892-T03-IM6</title></rect>
+<rect x="420.2" y="160.0" width="189.2" height="22" fill="#2878b5"><title>Protein kinase domain retained (512-781 aa); NTRK1–PLEKHA6 fusion, breakpoint NTRK1 aa 399; samples P-0029892-T05-IM6, P-0029892-T04-IM6, P-0029892-T03-IM6</title></rect>
+<text x="514.8" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="354.1" y1="160.0" x2="354.1" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="378.0" y1="160.0" x2="378.0" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.5" y1="160.0" x2="412.5" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="443.4" y1="160.0" x2="443.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="483.5" y1="160.0" x2="483.5" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.5" y1="160.0" x2="540.5" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.8" y1="160.0" x2="577.8" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="340.7" y1="159.0" x2="340.7" y2="183.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NTRK1–PLEKHA6 fusion, breakpoint NTRK1 aa 399; samples P-0029892-T05-IM6, P-0029892-T04-IM6, P-0029892-T03-IM6</title></line>
+<text x="64.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="174.5" font-family="sans-serif" font-size="9.5">PLEKHA6 (x3) – Protein kinase domain retained – Hepatobiliary Cancer</text>
+<rect x="60.0" y="186.0" width="318.0" height="22" fill="#8064a2"><title>Partner gene TPM3; NTRK1–TPM3 fusion, breakpoint NTRK1 aa 452; samples P-0050767-T01-IM6, P-0021170-T03-IM6, P-0021170-T02-IM6</title></rect>
+<rect x="378.0" y="186.0" width="242.0" height="22" fill="#e2e2e2"><title>NTRK1 backbone (452-796 aa, no domain); domain status retained; NTRK1–TPM3 fusion, breakpoint NTRK1 aa 452; samples P-0050767-T01-IM6, P-0021170-T03-IM6, P-0021170-T02-IM6</title></rect>
+<rect x="420.2" y="186.0" width="189.2" height="22" fill="#2878b5"><title>Protein kinase domain retained (512-781 aa); NTRK1–TPM3 fusion, breakpoint NTRK1 aa 452; samples P-0050767-T01-IM6, P-0021170-T03-IM6, P-0021170-T02-IM6</title></rect>
+<text x="514.8" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="412.5" y1="186.0" x2="412.5" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="443.4" y1="186.0" x2="443.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="483.5" y1="186.0" x2="483.5" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.5" y1="186.0" x2="540.5" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.8" y1="186.0" x2="577.8" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="378.0" y1="185.0" x2="378.0" y2="209.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NTRK1–TPM3 fusion, breakpoint NTRK1 aa 452; samples P-0050767-T01-IM6, P-0021170-T03-IM6, P-0021170-T02-IM6</title></line>
+<text x="64.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="200.5" font-family="sans-serif" font-size="9.5">TPM3 (x3) – Protein kinase domain retained – Soft Tissue Sarcoma, Thyroid Cancer</text>
+<rect x="60.0" y="212.0" width="199.8" height="22" fill="#8064a2"><title>Partner gene BCAN; NTRK1–BCAN fusion, breakpoint NTRK1 aa 284; samples P-0050637-T01-IM6, P-0041874-T01-IM6</title></rect>
+<rect x="259.8" y="212.0" width="360.2" height="22" fill="#e2e2e2"><title>NTRK1 backbone (284-796 aa, no domain); domain status retained; NTRK1–BCAN fusion, breakpoint NTRK1 aa 284; samples P-0050637-T01-IM6, P-0041874-T01-IM6</title></rect>
+<rect x="420.2" y="212.0" width="189.2" height="22" fill="#2878b5"><title>Protein kinase domain retained (512-781 aa); NTRK1–BCAN fusion, breakpoint NTRK1 aa 284; samples P-0050637-T01-IM6, P-0041874-T01-IM6</title></rect>
+<text x="514.8" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="336.5" y1="212.0" x2="336.5" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="340.7" y1="212.0" x2="340.7" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="354.1" y1="212.0" x2="354.1" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="378.0" y1="212.0" x2="378.0" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.5" y1="212.0" x2="412.5" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="443.4" y1="212.0" x2="443.4" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="483.5" y1="212.0" x2="483.5" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.5" y1="212.0" x2="540.5" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.8" y1="212.0" x2="577.8" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="259.8" y1="211.0" x2="259.8" y2="235.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NTRK1–BCAN fusion, breakpoint NTRK1 aa 284; samples P-0050637-T01-IM6, P-0041874-T01-IM6</title></line>
+<text x="64.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="226.5" font-family="sans-serif" font-size="9.5">BCAN (x2) – Protein kinase domain retained – Glioma, Soft Tissue Sarcoma</text>
+<rect x="60.0" y="238.0" width="199.8" height="22" fill="#8064a2"><title>Partner gene CTRC; NTRK1–CTRC fusion, breakpoint NTRK1 aa 284; samples P-0014859-T03-IM6, P-0014859-T01-IM6</title></rect>
+<rect x="259.8" y="238.0" width="360.2" height="22" fill="#e2e2e2"><title>NTRK1 backbone (284-796 aa, no domain); domain status retained; NTRK1–CTRC fusion, breakpoint NTRK1 aa 284; samples P-0014859-T03-IM6, P-0014859-T01-IM6</title></rect>
+<rect x="420.2" y="238.0" width="189.2" height="22" fill="#2878b5"><title>Protein kinase domain retained (512-781 aa); NTRK1–CTRC fusion, breakpoint NTRK1 aa 284; samples P-0014859-T03-IM6, P-0014859-T01-IM6</title></rect>
+<text x="514.8" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="336.5" y1="238.0" x2="336.5" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="340.7" y1="238.0" x2="340.7" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="354.1" y1="238.0" x2="354.1" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="378.0" y1="238.0" x2="378.0" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.5" y1="238.0" x2="412.5" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="443.4" y1="238.0" x2="443.4" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="483.5" y1="238.0" x2="483.5" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.5" y1="238.0" x2="540.5" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.8" y1="238.0" x2="577.8" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="259.8" y1="237.0" x2="259.8" y2="261.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NTRK1–CTRC fusion, breakpoint NTRK1 aa 284; samples P-0014859-T03-IM6, P-0014859-T01-IM6</title></line>
+<text x="64.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="252.5" font-family="sans-serif" font-size="9.5">CTRC (x2) – Protein kinase domain retained – Pancreatic Cancer</text>
+<rect x="60.0" y="264.0" width="225.8" height="22" fill="#8064a2"><title>Partner gene TPM3; NTRK1–TPM3 fusion, breakpoint NTRK1 aa 321; samples P-0049078-T04-IM6, P-0049078-T01-IM6</title></rect>
+<rect x="285.8" y="264.0" width="334.2" height="22" fill="#e2e2e2"><title>NTRK1 backbone (321-796 aa, no domain); domain status retained; NTRK1–TPM3 fusion, breakpoint NTRK1 aa 321; samples P-0049078-T04-IM6, P-0049078-T01-IM6</title></rect>
+<rect x="420.2" y="264.0" width="189.2" height="22" fill="#2878b5"><title>Protein kinase domain retained (512-781 aa); NTRK1–TPM3 fusion, breakpoint NTRK1 aa 321; samples P-0049078-T04-IM6, P-0049078-T01-IM6</title></rect>
+<text x="514.8" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="336.5" y1="264.0" x2="336.5" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="340.7" y1="264.0" x2="340.7" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="354.1" y1="264.0" x2="354.1" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="378.0" y1="264.0" x2="378.0" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.5" y1="264.0" x2="412.5" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="443.4" y1="264.0" x2="443.4" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="483.5" y1="264.0" x2="483.5" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.5" y1="264.0" x2="540.5" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.8" y1="264.0" x2="577.8" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="285.8" y1="263.0" x2="285.8" y2="287.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NTRK1–TPM3 fusion, breakpoint NTRK1 aa 321; samples P-0049078-T04-IM6, P-0049078-T01-IM6</title></line>
+<text x="64.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="278.5" font-family="sans-serif" font-size="9.5">TPM3 (x2) – Protein kinase domain retained – Colorectal Cancer</text>
+<rect x="60.0" y="290.0" width="280.7" height="22" fill="#8064a2"><title>Partner gene IRF2BP2; NTRK1–IRF2BP2 fusion, breakpoint NTRK1 aa 399; samples P-0010628-T01-IM5, P-0010628-T03-IM6</title></rect>
+<rect x="340.7" y="290.0" width="279.3" height="22" fill="#e2e2e2"><title>NTRK1 backbone (399-796 aa, no domain); domain status retained; NTRK1–IRF2BP2 fusion, breakpoint NTRK1 aa 399; samples P-0010628-T01-IM5, P-0010628-T03-IM6</title></rect>
+<rect x="420.2" y="290.0" width="189.2" height="22" fill="#2878b5"><title>Protein kinase domain retained (512-781 aa); NTRK1–IRF2BP2 fusion, breakpoint NTRK1 aa 399; samples P-0010628-T01-IM5, P-0010628-T03-IM6</title></rect>
+<text x="514.8" y="304.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="354.1" y1="290.0" x2="354.1" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="378.0" y1="290.0" x2="378.0" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.5" y1="290.0" x2="412.5" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="443.4" y1="290.0" x2="443.4" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="483.5" y1="290.0" x2="483.5" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.5" y1="290.0" x2="540.5" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.8" y1="290.0" x2="577.8" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="340.7" y1="289.0" x2="340.7" y2="313.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NTRK1–IRF2BP2 fusion, breakpoint NTRK1 aa 399; samples P-0010628-T01-IM5, P-0010628-T03-IM6</title></line>
+<text x="64.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="304.5" font-family="sans-serif" font-size="9.5">IRF2BP2 (x2) – Protein kinase domain retained – Cancer of Unknown Primary, Non-Small Cell Lung Cancer</text>
+<rect x="60.0" y="316.0" width="280.7" height="22" fill="#8064a2"><title>Partner gene TPR; NTRK1–TPR fusion, breakpoint NTRK1 aa 399; samples P-0023987-T01-IM6, P-0024549-T03-IM6</title></rect>
+<rect x="340.7" y="316.0" width="279.3" height="22" fill="#e2e2e2"><title>NTRK1 backbone (399-796 aa, no domain); domain status retained; NTRK1–TPR fusion, breakpoint NTRK1 aa 399; samples P-0023987-T01-IM6, P-0024549-T03-IM6</title></rect>
+<rect x="420.2" y="316.0" width="189.2" height="22" fill="#2878b5"><title>Protein kinase domain retained (512-781 aa); NTRK1–TPR fusion, breakpoint NTRK1 aa 399; samples P-0023987-T01-IM6, P-0024549-T03-IM6</title></rect>
+<text x="514.8" y="330.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="354.1" y1="316.0" x2="354.1" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="378.0" y1="316.0" x2="378.0" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.5" y1="316.0" x2="412.5" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="443.4" y1="316.0" x2="443.4" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="483.5" y1="316.0" x2="483.5" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.5" y1="316.0" x2="540.5" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.8" y1="316.0" x2="577.8" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="340.7" y1="315.0" x2="340.7" y2="339.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NTRK1–TPR fusion, breakpoint NTRK1 aa 399; samples P-0023987-T01-IM6, P-0024549-T03-IM6</title></line>
+<text x="64.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="330.5" font-family="sans-serif" font-size="9.5">TPR (x2) – Protein kinase domain retained – Soft Tissue Sarcoma, Thyroid Cancer</text>
+<rect x="109.9" y="342.0" width="510.1" height="22" fill="#8064a2"><title>Partner gene SHPRH; NTRK1–SHPRH fusion, breakpoint NTRK1 aa 71; sample P-0036662-T01-IM6</title></rect>
+<rect x="60.0" y="342.0" width="49.9" height="22" fill="#e2e2e2"><title>NTRK1 backbone (0-71 aa, no domain); domain status lost; NTRK1–SHPRH fusion, breakpoint NTRK1 aa 71; sample P-0036662-T01-IM6</title></rect>
+<line x1="60.7" y1="342.0" x2="60.7" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="109.9" y1="341.0" x2="109.9" y2="365.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; NTRK1–SHPRH fusion, breakpoint NTRK1 aa 71; sample P-0036662-T01-IM6</title></line>
+<text x="64.0" y="356.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="356.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="356.5" font-family="sans-serif" font-size="9.5">SHPRH – Protein kinase domain lost – Soft Tissue Sarcoma</text>
+<rect x="144.4" y="368.0" width="475.6" height="22" fill="#8064a2"><title>Partner gene CADM3; NTRK1–CADM3 fusion, breakpoint NTRK1 aa 120; sample P-0058090-T04-IM7</title></rect>
+<rect x="60.0" y="368.0" width="84.4" height="22" fill="#e2e2e2"><title>NTRK1 backbone (0-120 aa, no domain); domain status lost; NTRK1–CADM3 fusion, breakpoint NTRK1 aa 120; sample P-0058090-T04-IM7</title></rect>
+<rect x="124.7" y="368.0" width="19.7" height="22" fill="#f2a93b"><title>PF13855 truncated (92-120 aa); NTRK1–CADM3 fusion, breakpoint NTRK1 aa 120; sample P-0058090-T04-IM7</title></rect>
+<text x="134.6" y="382.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF1…</text>
+<line x1="60.7" y1="368.0" x2="60.7" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="109.9" y1="368.0" x2="109.9" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="127.5" y1="368.0" x2="127.5" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="144.4" y1="367.0" x2="144.4" y2="391.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; NTRK1–CADM3 fusion, breakpoint NTRK1 aa 120; sample P-0058090-T04-IM7</title></line>
+<text x="64.0" y="382.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="382.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="382.5" font-family="sans-serif" font-size="9.5">CADM3 – Protein kinase domain lost – Non-Small Cell Lung Cancer</text>
+<rect x="60.0" y="394.0" width="84.4" height="22" fill="#8064a2"><title>Partner gene PRCC; NTRK1–PRCC fusion, breakpoint NTRK1 aa 120; sample P-0042526-T02-IM6</title></rect>
+<rect x="144.4" y="394.0" width="475.6" height="22" fill="#e2e2e2"><title>NTRK1 backbone (120-796 aa, no domain); domain status retained; NTRK1–PRCC fusion, breakpoint NTRK1 aa 120; sample P-0042526-T02-IM6</title></rect>
+<rect x="144.4" y="394.0" width="21.1" height="22" fill="#f2a93b"><title>PF13855 truncated (120-150 aa); NTRK1–PRCC fusion, breakpoint NTRK1 aa 120; sample P-0042526-T02-IM6</title></rect>
+<text x="155.0" y="408.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF13…</text>
+<rect x="198.6" y="394.0" width="59.1" height="22" fill="#2878b5"><title>PF13895 retained (197-281 aa); NTRK1–PRCC fusion, breakpoint NTRK1 aa 120; sample P-0042526-T02-IM6</title></rect>
+<text x="228.1" y="408.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF13895</text>
+<rect x="420.2" y="394.0" width="189.2" height="22" fill="#2878b5"><title>Protein kinase domain retained (512-781 aa); NTRK1–PRCC fusion, breakpoint NTRK1 aa 120; sample P-0042526-T02-IM6</title></rect>
+<text x="514.8" y="408.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="160.6" y1="394.0" x2="160.6" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="195.1" y1="394.0" x2="195.1" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="228.8" y1="394.0" x2="228.8" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="259.8" y1="394.0" x2="259.8" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="336.5" y1="394.0" x2="336.5" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="340.7" y1="394.0" x2="340.7" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="354.1" y1="394.0" x2="354.1" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="378.0" y1="394.0" x2="378.0" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.5" y1="394.0" x2="412.5" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="443.4" y1="394.0" x2="443.4" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="483.5" y1="394.0" x2="483.5" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.5" y1="394.0" x2="540.5" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.8" y1="394.0" x2="577.8" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="144.4" y1="393.0" x2="144.4" y2="417.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NTRK1–PRCC fusion, breakpoint NTRK1 aa 120; sample P-0042526-T02-IM6</title></line>
+<text x="64.0" y="408.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="408.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="408.5" font-family="sans-serif" font-size="9.5">PRCC – Protein kinase domain retained – Small Cell Lung Cancer</text>
+<rect x="60.0" y="420.0" width="84.4" height="22" fill="#8064a2"><title>Partner gene TAFA2; NTRK1–TAFA2 fusion, breakpoint NTRK1 aa 120; sample P-0024875-T01-IM6</title></rect>
+<rect x="144.4" y="420.0" width="475.6" height="22" fill="#e2e2e2"><title>NTRK1 backbone (120-796 aa, no domain); domain status retained; NTRK1–TAFA2 fusion, breakpoint NTRK1 aa 120; sample P-0024875-T01-IM6</title></rect>
+<rect x="144.4" y="420.0" width="21.1" height="22" fill="#f2a93b"><title>PF13855 truncated (120-150 aa); NTRK1–TAFA2 fusion, breakpoint NTRK1 aa 120; sample P-0024875-T01-IM6</title></rect>
+<text x="155.0" y="434.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF13…</text>
+<rect x="198.6" y="420.0" width="59.1" height="22" fill="#2878b5"><title>PF13895 retained (197-281 aa); NTRK1–TAFA2 fusion, breakpoint NTRK1 aa 120; sample P-0024875-T01-IM6</title></rect>
+<text x="228.1" y="434.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF13895</text>
+<rect x="420.2" y="420.0" width="189.2" height="22" fill="#2878b5"><title>Protein kinase domain retained (512-781 aa); NTRK1–TAFA2 fusion, breakpoint NTRK1 aa 120; sample P-0024875-T01-IM6</title></rect>
+<text x="514.8" y="434.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="160.6" y1="420.0" x2="160.6" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="195.1" y1="420.0" x2="195.1" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="228.8" y1="420.0" x2="228.8" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="259.8" y1="420.0" x2="259.8" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="336.5" y1="420.0" x2="336.5" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="340.7" y1="420.0" x2="340.7" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="354.1" y1="420.0" x2="354.1" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="378.0" y1="420.0" x2="378.0" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.5" y1="420.0" x2="412.5" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="443.4" y1="420.0" x2="443.4" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="483.5" y1="420.0" x2="483.5" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.5" y1="420.0" x2="540.5" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.8" y1="420.0" x2="577.8" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="144.4" y1="419.0" x2="144.4" y2="443.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NTRK1–TAFA2 fusion, breakpoint NTRK1 aa 120; sample P-0024875-T01-IM6</title></line>
+<text x="64.0" y="434.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="434.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="434.5" font-family="sans-serif" font-size="9.5">TAFA2 – Protein kinase domain retained – Soft Tissue Sarcoma</text>
+<rect x="188.0" y="446.0" width="432.0" height="22" fill="#8064a2"><title>Partner gene P2RY8; NTRK1–P2RY8 fusion, breakpoint NTRK1 aa 182; sample P-0006172-T01-IM5</title></rect>
+<rect x="60.0" y="446.0" width="128.0" height="22" fill="#e2e2e2"><title>NTRK1 backbone (0-182 aa, no domain); domain status lost; NTRK1–P2RY8 fusion, breakpoint NTRK1 aa 182; sample P-0006172-T01-IM5</title></rect>
+<rect x="124.7" y="446.0" width="40.8" height="22" fill="#2878b5"><title>PF13855 retained (92-150 aa); NTRK1–P2RY8 fusion, breakpoint NTRK1 aa 182; sample P-0006172-T01-IM5</title></rect>
+<text x="145.1" y="460.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF13855</text>
+<line x1="60.7" y1="446.0" x2="60.7" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="109.9" y1="446.0" x2="109.9" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="127.5" y1="446.0" x2="127.5" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="144.4" y1="446.0" x2="144.4" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="160.6" y1="446.0" x2="160.6" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="188.0" y1="445.0" x2="188.0" y2="469.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; NTRK1–P2RY8 fusion, breakpoint NTRK1 aa 182; sample P-0006172-T01-IM5</title></line>
+<text x="64.0" y="460.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="460.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="460.5" font-family="sans-serif" font-size="9.5">P2RY8 – Protein kinase domain lost – Non-Small Cell Lung Cancer</text>
+<rect x="60.0" y="472.0" width="131.6" height="22" fill="#8064a2"><title>Partner gene TARS2; NTRK1–TARS2 fusion, breakpoint NTRK1 aa 187; sample P-0069757-T01-IM7</title></rect>
+<rect x="191.6" y="472.0" width="428.4" height="22" fill="#e2e2e2"><title>NTRK1 backbone (187-796 aa, no domain); domain status retained; NTRK1–TARS2 fusion, breakpoint NTRK1 aa 187; sample P-0069757-T01-IM7</title></rect>
+<rect x="198.6" y="472.0" width="59.1" height="22" fill="#2878b5"><title>PF13895 retained (197-281 aa); NTRK1–TARS2 fusion, breakpoint NTRK1 aa 187; sample P-0069757-T01-IM7</title></rect>
+<text x="228.1" y="486.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF13895</text>
+<rect x="420.2" y="472.0" width="189.2" height="22" fill="#2878b5"><title>Protein kinase domain retained (512-781 aa); NTRK1–TARS2 fusion, breakpoint NTRK1 aa 187; sample P-0069757-T01-IM7</title></rect>
+<text x="514.8" y="486.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="195.1" y1="472.0" x2="195.1" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="228.8" y1="472.0" x2="228.8" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="259.8" y1="472.0" x2="259.8" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="336.5" y1="472.0" x2="336.5" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="340.7" y1="472.0" x2="340.7" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="354.1" y1="472.0" x2="354.1" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="378.0" y1="472.0" x2="378.0" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.5" y1="472.0" x2="412.5" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="443.4" y1="472.0" x2="443.4" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="483.5" y1="472.0" x2="483.5" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.5" y1="472.0" x2="540.5" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.8" y1="472.0" x2="577.8" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="191.6" y1="471.0" x2="191.6" y2="495.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NTRK1–TARS2 fusion, breakpoint NTRK1 aa 187; sample P-0069757-T01-IM7</title></line>
+<text x="64.0" y="486.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="486.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="486.5" font-family="sans-serif" font-size="9.5">TARS2 – Protein kinase domain retained – Soft Tissue Sarcoma</text>
+<rect x="259.8" y="498.0" width="360.2" height="22" fill="#8064a2"><title>Partner gene NELFCD; NTRK1–NELFCD fusion, breakpoint NTRK1 aa 284; sample P-0056197-T01-IM6</title></rect>
+<rect x="60.0" y="498.0" width="199.8" height="22" fill="#e2e2e2"><title>NTRK1 backbone (0-284 aa, no domain); domain status lost; NTRK1–NELFCD fusion, breakpoint NTRK1 aa 284; sample P-0056197-T01-IM6</title></rect>
+<rect x="124.7" y="498.0" width="40.8" height="22" fill="#2878b5"><title>PF13855 retained (92-150 aa); NTRK1–NELFCD fusion, breakpoint NTRK1 aa 284; sample P-0056197-T01-IM6</title></rect>
+<text x="145.1" y="512.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF13855</text>
+<rect x="198.6" y="498.0" width="59.1" height="22" fill="#2878b5"><title>PF13895 retained (197-281 aa); NTRK1–NELFCD fusion, breakpoint NTRK1 aa 284; sample P-0056197-T01-IM6</title></rect>
+<text x="228.1" y="512.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF13895</text>
+<line x1="60.7" y1="498.0" x2="60.7" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="109.9" y1="498.0" x2="109.9" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="127.5" y1="498.0" x2="127.5" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="144.4" y1="498.0" x2="144.4" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="160.6" y1="498.0" x2="160.6" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="195.1" y1="498.0" x2="195.1" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="228.8" y1="498.0" x2="228.8" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="259.8" y1="497.0" x2="259.8" y2="521.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; NTRK1–NELFCD fusion, breakpoint NTRK1 aa 284; sample P-0056197-T01-IM6</title></line>
+<text x="64.0" y="512.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="512.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="512.5" font-family="sans-serif" font-size="9.5">NELFCD – Protein kinase domain lost – Ovarian Cancer</text>
+<rect x="259.8" y="524.0" width="360.2" height="22" fill="#8064a2"><title>Partner gene SEMA4A; NTRK1–SEMA4A fusion, breakpoint NTRK1 aa 284; sample P-0038568-T01-IM6</title></rect>
+<rect x="60.0" y="524.0" width="199.8" height="22" fill="#e2e2e2"><title>NTRK1 backbone (0-284 aa, no domain); domain status lost; NTRK1–SEMA4A fusion, breakpoint NTRK1 aa 284; sample P-0038568-T01-IM6</title></rect>
+<rect x="124.7" y="524.0" width="40.8" height="22" fill="#2878b5"><title>PF13855 retained (92-150 aa); NTRK1–SEMA4A fusion, breakpoint NTRK1 aa 284; sample P-0038568-T01-IM6</title></rect>
+<text x="145.1" y="538.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF13855</text>
+<rect x="198.6" y="524.0" width="59.1" height="22" fill="#2878b5"><title>PF13895 retained (197-281 aa); NTRK1–SEMA4A fusion, breakpoint NTRK1 aa 284; sample P-0038568-T01-IM6</title></rect>
+<text x="228.1" y="538.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF13895</text>
+<line x1="60.7" y1="524.0" x2="60.7" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="109.9" y1="524.0" x2="109.9" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="127.5" y1="524.0" x2="127.5" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="144.4" y1="524.0" x2="144.4" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="160.6" y1="524.0" x2="160.6" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="195.1" y1="524.0" x2="195.1" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="228.8" y1="524.0" x2="228.8" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="259.8" y1="523.0" x2="259.8" y2="547.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; NTRK1–SEMA4A fusion, breakpoint NTRK1 aa 284; sample P-0038568-T01-IM6</title></line>
+<text x="64.0" y="538.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="538.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="538.5" font-family="sans-serif" font-size="9.5">SEMA4A – Protein kinase domain lost – Prostate Cancer</text>
+<rect x="60.0" y="550.0" width="206.8" height="22" fill="#8064a2"><title>Partner gene NOS1AP; NTRK1–NOS1AP fusion, breakpoint NTRK1 aa 294; sample P-0045731-T01-IM6</title></rect>
+<rect x="266.8" y="550.0" width="353.2" height="22" fill="#e2e2e2"><title>NTRK1 backbone (294-796 aa, no domain); domain status retained; NTRK1–NOS1AP fusion, breakpoint NTRK1 aa 294; sample P-0045731-T01-IM6</title></rect>
+<rect x="420.2" y="550.0" width="189.2" height="22" fill="#2878b5"><title>Protein kinase domain retained (512-781 aa); NTRK1–NOS1AP fusion, breakpoint NTRK1 aa 294; sample P-0045731-T01-IM6</title></rect>
+<text x="514.8" y="564.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="336.5" y1="550.0" x2="336.5" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="340.7" y1="550.0" x2="340.7" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="354.1" y1="550.0" x2="354.1" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="378.0" y1="550.0" x2="378.0" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.5" y1="550.0" x2="412.5" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="443.4" y1="550.0" x2="443.4" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="483.5" y1="550.0" x2="483.5" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.5" y1="550.0" x2="540.5" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.8" y1="550.0" x2="577.8" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="266.8" y1="549.0" x2="266.8" y2="573.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NTRK1–NOS1AP fusion, breakpoint NTRK1 aa 294; sample P-0045731-T01-IM6</title></line>
+<text x="64.0" y="564.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="564.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="564.5" font-family="sans-serif" font-size="9.5">NOS1AP – Protein kinase domain retained – Esophagogastric Cancer</text>
+<rect x="60.0" y="576.0" width="241.3" height="22" fill="#8064a2"><title>Partner gene TPM3; NTRK1–TPM3 fusion, breakpoint NTRK1 aa 343; sample P-0069266-T01-IM7</title></rect>
+<rect x="301.3" y="576.0" width="318.7" height="22" fill="#e2e2e2"><title>NTRK1 backbone (343-796 aa, no domain); domain status retained; NTRK1–TPM3 fusion, breakpoint NTRK1 aa 343; sample P-0069266-T01-IM7</title></rect>
+<rect x="420.2" y="576.0" width="189.2" height="22" fill="#2878b5"><title>Protein kinase domain retained (512-781 aa); NTRK1–TPM3 fusion, breakpoint NTRK1 aa 343; sample P-0069266-T01-IM7</title></rect>
+<text x="514.8" y="590.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="336.5" y1="576.0" x2="336.5" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="340.7" y1="576.0" x2="340.7" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="354.1" y1="576.0" x2="354.1" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="378.0" y1="576.0" x2="378.0" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.5" y1="576.0" x2="412.5" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="443.4" y1="576.0" x2="443.4" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="483.5" y1="576.0" x2="483.5" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.5" y1="576.0" x2="540.5" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.8" y1="576.0" x2="577.8" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="301.3" y1="575.0" x2="301.3" y2="599.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NTRK1–TPM3 fusion, breakpoint NTRK1 aa 343; sample P-0069266-T01-IM7</title></line>
+<text x="64.0" y="590.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="590.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="590.5" font-family="sans-serif" font-size="9.5">TPM3 – Protein kinase domain retained – Thyroid Cancer</text>
+<rect x="60.0" y="602.0" width="252.6" height="22" fill="#8064a2"><title>Partner gene TPR; NTRK1–TPR fusion, breakpoint NTRK1 aa 359; sample P-0065034-T02-IM7</title></rect>
+<rect x="312.6" y="602.0" width="307.4" height="22" fill="#e2e2e2"><title>NTRK1 backbone (359-796 aa, no domain); domain status retained; NTRK1–TPR fusion, breakpoint NTRK1 aa 359; sample P-0065034-T02-IM7</title></rect>
+<rect x="420.2" y="602.0" width="189.2" height="22" fill="#2878b5"><title>Protein kinase domain retained (512-781 aa); NTRK1–TPR fusion, breakpoint NTRK1 aa 359; sample P-0065034-T02-IM7</title></rect>
+<text x="514.8" y="616.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="336.5" y1="602.0" x2="336.5" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="340.7" y1="602.0" x2="340.7" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="354.1" y1="602.0" x2="354.1" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="378.0" y1="602.0" x2="378.0" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.5" y1="602.0" x2="412.5" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="443.4" y1="602.0" x2="443.4" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="483.5" y1="602.0" x2="483.5" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.5" y1="602.0" x2="540.5" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.8" y1="602.0" x2="577.8" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="312.6" y1="601.0" x2="312.6" y2="625.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NTRK1–TPR fusion, breakpoint NTRK1 aa 359; sample P-0065034-T02-IM7</title></line>
+<text x="64.0" y="616.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="616.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="616.5" font-family="sans-serif" font-size="9.5">TPR – Protein kinase domain retained – Colorectal Cancer</text>
+<rect x="60.0" y="628.0" width="265.2" height="22" fill="#8064a2"><title>Partner gene TPR; NTRK1–TPR fusion, breakpoint NTRK1 aa 377; sample P-0042965-T01-IM6</title></rect>
+<rect x="325.2" y="628.0" width="294.8" height="22" fill="#e2e2e2"><title>NTRK1 backbone (377-796 aa, no domain); domain status retained; NTRK1–TPR fusion, breakpoint NTRK1 aa 377; sample P-0042965-T01-IM6</title></rect>
+<rect x="420.2" y="628.0" width="189.2" height="22" fill="#2878b5"><title>Protein kinase domain retained (512-781 aa); NTRK1–TPR fusion, breakpoint NTRK1 aa 377; sample P-0042965-T01-IM6</title></rect>
+<text x="514.8" y="642.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="336.5" y1="628.0" x2="336.5" y2="650.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="340.7" y1="628.0" x2="340.7" y2="650.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="354.1" y1="628.0" x2="354.1" y2="650.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="378.0" y1="628.0" x2="378.0" y2="650.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.5" y1="628.0" x2="412.5" y2="650.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="443.4" y1="628.0" x2="443.4" y2="650.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="483.5" y1="628.0" x2="483.5" y2="650.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.5" y1="628.0" x2="540.5" y2="650.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.8" y1="628.0" x2="577.8" y2="650.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="325.2" y1="627.0" x2="325.2" y2="651.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NTRK1–TPR fusion, breakpoint NTRK1 aa 377; sample P-0042965-T01-IM6</title></line>
+<text x="64.0" y="642.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="642.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="642.5" font-family="sans-serif" font-size="9.5">TPR – Protein kinase domain retained – Thyroid Cancer</text>
+<rect x="60.0" y="654.0" width="266.6" height="22" fill="#8064a2"><title>Partner gene GON4L; NTRK1–GON4L fusion, breakpoint NTRK1 aa 379; sample P-0009855-T01-IM5</title></rect>
+<rect x="326.6" y="654.0" width="293.4" height="22" fill="#e2e2e2"><title>NTRK1 backbone (379-796 aa, no domain); domain status retained; NTRK1–GON4L fusion, breakpoint NTRK1 aa 379; sample P-0009855-T01-IM5</title></rect>
+<rect x="420.2" y="654.0" width="189.2" height="22" fill="#2878b5"><title>Protein kinase domain retained (512-781 aa); NTRK1–GON4L fusion, breakpoint NTRK1 aa 379; sample P-0009855-T01-IM5</title></rect>
+<text x="514.8" y="668.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="336.5" y1="654.0" x2="336.5" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="340.7" y1="654.0" x2="340.7" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="354.1" y1="654.0" x2="354.1" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="378.0" y1="654.0" x2="378.0" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.5" y1="654.0" x2="412.5" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="443.4" y1="654.0" x2="443.4" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="483.5" y1="654.0" x2="483.5" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.5" y1="654.0" x2="540.5" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.8" y1="654.0" x2="577.8" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="326.6" y1="653.0" x2="326.6" y2="677.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NTRK1–GON4L fusion, breakpoint NTRK1 aa 379; sample P-0009855-T01-IM5</title></line>
+<text x="64.0" y="668.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="668.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="668.5" font-family="sans-serif" font-size="9.5">GON4L – Protein kinase domain retained – Melanoma</text>
+<rect x="60.0" y="680.0" width="269.4" height="22" fill="#8064a2"><title>Partner gene KIF21B; NTRK1–KIF21B fusion, breakpoint NTRK1 aa 383; sample P-0027278-T01-IM6</title></rect>
+<rect x="329.4" y="680.0" width="290.6" height="22" fill="#e2e2e2"><title>NTRK1 backbone (383-796 aa, no domain); domain status retained; NTRK1–KIF21B fusion, breakpoint NTRK1 aa 383; sample P-0027278-T01-IM6</title></rect>
+<rect x="420.2" y="680.0" width="189.2" height="22" fill="#2878b5"><title>Protein kinase domain retained (512-781 aa); NTRK1–KIF21B fusion, breakpoint NTRK1 aa 383; sample P-0027278-T01-IM6</title></rect>
+<text x="514.8" y="694.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="336.5" y1="680.0" x2="336.5" y2="702.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="340.7" y1="680.0" x2="340.7" y2="702.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="354.1" y1="680.0" x2="354.1" y2="702.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="378.0" y1="680.0" x2="378.0" y2="702.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.5" y1="680.0" x2="412.5" y2="702.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="443.4" y1="680.0" x2="443.4" y2="702.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="483.5" y1="680.0" x2="483.5" y2="702.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.5" y1="680.0" x2="540.5" y2="702.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.8" y1="680.0" x2="577.8" y2="702.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="329.4" y1="679.0" x2="329.4" y2="703.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NTRK1–KIF21B fusion, breakpoint NTRK1 aa 383; sample P-0027278-T01-IM6</title></line>
+<text x="64.0" y="694.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="694.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="694.5" font-family="sans-serif" font-size="9.5">KIF21B – Protein kinase domain retained – Miscellaneous Brain Tumor</text>
+<rect x="60.0" y="706.0" width="276.5" height="22" fill="#8064a2"><title>Partner gene AFAP1; NTRK1–AFAP1 fusion, breakpoint NTRK1 aa 393; sample P-0013559-T01-IM5</title></rect>
+<rect x="336.5" y="706.0" width="283.5" height="22" fill="#e2e2e2"><title>NTRK1 backbone (393-796 aa, no domain); domain status retained; NTRK1–AFAP1 fusion, breakpoint NTRK1 aa 393; sample P-0013559-T01-IM5</title></rect>
+<rect x="420.2" y="706.0" width="189.2" height="22" fill="#2878b5"><title>Protein kinase domain retained (512-781 aa); NTRK1–AFAP1 fusion, breakpoint NTRK1 aa 393; sample P-0013559-T01-IM5</title></rect>
+<text x="514.8" y="720.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="340.7" y1="706.0" x2="340.7" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="354.1" y1="706.0" x2="354.1" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="378.0" y1="706.0" x2="378.0" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.5" y1="706.0" x2="412.5" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="443.4" y1="706.0" x2="443.4" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="483.5" y1="706.0" x2="483.5" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.5" y1="706.0" x2="540.5" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.8" y1="706.0" x2="577.8" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="336.5" y1="705.0" x2="336.5" y2="729.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NTRK1–AFAP1 fusion, breakpoint NTRK1 aa 393; sample P-0013559-T01-IM5</title></line>
+<text x="64.0" y="720.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="720.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="720.5" font-family="sans-serif" font-size="9.5">AFAP1 – Protein kinase domain retained – Glioma</text>
+<rect x="60.0" y="732.0" width="276.5" height="22" fill="#8064a2"><title>Partner gene DIAPH1; NTRK1–DIAPH1 fusion, breakpoint NTRK1 aa 393; sample P-0029326-T01-IM6</title></rect>
+<rect x="336.5" y="732.0" width="283.5" height="22" fill="#e2e2e2"><title>NTRK1 backbone (393-796 aa, no domain); domain status retained; NTRK1–DIAPH1 fusion, breakpoint NTRK1 aa 393; sample P-0029326-T01-IM6</title></rect>
+<rect x="420.2" y="732.0" width="189.2" height="22" fill="#2878b5"><title>Protein kinase domain retained (512-781 aa); NTRK1–DIAPH1 fusion, breakpoint NTRK1 aa 393; sample P-0029326-T01-IM6</title></rect>
+<text x="514.8" y="746.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="340.7" y1="732.0" x2="340.7" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="354.1" y1="732.0" x2="354.1" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="378.0" y1="732.0" x2="378.0" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.5" y1="732.0" x2="412.5" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="443.4" y1="732.0" x2="443.4" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="483.5" y1="732.0" x2="483.5" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.5" y1="732.0" x2="540.5" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.8" y1="732.0" x2="577.8" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="336.5" y1="731.0" x2="336.5" y2="755.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NTRK1–DIAPH1 fusion, breakpoint NTRK1 aa 393; sample P-0029326-T01-IM6</title></line>
+<text x="64.0" y="746.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="746.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="746.5" font-family="sans-serif" font-size="9.5">DIAPH1 – Protein kinase domain retained – Thyroid Cancer</text>
+<rect x="60.0" y="758.0" width="276.5" height="22" fill="#8064a2"><title>Partner gene IRF2BP2; NTRK1–IRF2BP2 fusion, breakpoint NTRK1 aa 393; sample P-0022467-T01-IM6</title></rect>
+<rect x="336.5" y="758.0" width="283.5" height="22" fill="#e2e2e2"><title>NTRK1 backbone (393-796 aa, no domain); domain status retained; NTRK1–IRF2BP2 fusion, breakpoint NTRK1 aa 393; sample P-0022467-T01-IM6</title></rect>
+<rect x="420.2" y="758.0" width="189.2" height="22" fill="#2878b5"><title>Protein kinase domain retained (512-781 aa); NTRK1–IRF2BP2 fusion, breakpoint NTRK1 aa 393; sample P-0022467-T01-IM6</title></rect>
+<text x="514.8" y="772.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="340.7" y1="758.0" x2="340.7" y2="780.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="354.1" y1="758.0" x2="354.1" y2="780.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="378.0" y1="758.0" x2="378.0" y2="780.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="412.5" y1="758.0" x2="412.5" y2="780.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="443.4" y1="758.0" x2="443.4" y2="780.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="483.5" y1="758.0" x2="483.5" y2="780.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="540.5" y1="758.0" x2="540.5" y2="780.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.8" y1="758.0" x2="577.8" y2="780.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="336.5" y1="757.0" x2="336.5" y2="781.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NTRK1–IRF2BP2 fusion, breakpoint NTRK1 aa 393; sample P-0022467-T01-IM6</title></line>
+<text x="64.0" y="772.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="772.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="772.5" font-family="sans-serif" font-size="9.5">IRF2BP2 – Protein kinase domain retained – Thyroid Cancer</text>
+<line x1="60.0" y1="788.0" x2="620.0" y2="788.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="783.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="620.0" y="783.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
+<text x="60.0" y="802.0" font-family="sans-serif" font-size="9">1</text>
+<text x="620.0" y="802.0" font-family="sans-serif" font-size="9" text-anchor="end">796 aa</text>
+<line x1="60.7" y1="806.0" x2="60.7" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="60.7" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 60.7 811.0)">E1</text>
+<line x1="109.9" y1="806.0" x2="109.9" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="109.9" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 109.9 811.0)">E2</text>
+<line x1="127.5" y1="806.0" x2="127.5" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="127.5" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 127.5 811.0)">E3</text>
+<line x1="144.4" y1="806.0" x2="144.4" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="144.4" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 144.4 811.0)">E4</text>
+<line x1="160.6" y1="806.0" x2="160.6" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="160.6" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 160.6 811.0)">E5</text>
+<line x1="195.1" y1="806.0" x2="195.1" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="195.1" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 195.1 811.0)">E6</text>
+<line x1="228.8" y1="806.0" x2="228.8" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="228.8" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 228.8 811.0)">E7</text>
+<line x1="259.8" y1="806.0" x2="259.8" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="259.8" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 259.8 811.0)">E8</text>
+<line x1="336.5" y1="806.0" x2="336.5" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="336.5" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 336.5 811.0)">E9</text>
+<line x1="340.7" y1="806.0" x2="340.7" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="340.7" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 340.7 811.0)">E10</text>
+<line x1="354.1" y1="806.0" x2="354.1" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="354.1" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 354.1 811.0)">E11</text>
+<line x1="378.0" y1="806.0" x2="378.0" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="378.0" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 378.0 811.0)">E12</text>
+<line x1="412.5" y1="806.0" x2="412.5" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="412.5" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 412.5 811.0)">E13</text>
+<line x1="443.4" y1="806.0" x2="443.4" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="443.4" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 443.4 811.0)">E14</text>
+<line x1="483.5" y1="806.0" x2="483.5" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="483.5" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 483.5 811.0)">E15</text>
+<line x1="540.5" y1="806.0" x2="540.5" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="540.5" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 540.5 811.0)">E16</text>
+<line x1="577.8" y1="806.0" x2="577.8" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="577.8" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 577.8 811.0)">E17</text>
+<rect x="60.0" y="819.0" width="12" height="10" fill="#2878b5"/>
+<text x="76.0" y="828.0" font-family="sans-serif" font-size="9">domain retained</text>
+<rect x="227.0" y="819.0" width="12" height="10" fill="#f2a93b"/>
+<text x="243.0" y="828.0" font-family="sans-serif" font-size="9">domain truncated</text>
+<rect x="403.0" y="819.0" width="12" height="10" fill="#e2e2e2"/>
+<text x="419.0" y="828.0" font-family="sans-serif" font-size="9">target backbone (no domain)</text>
+<rect x="678.0" y="819.0" width="12" height="10" fill="#d62728"/>
+<text x="694.0" y="828.0" font-family="sans-serif" font-size="9">breakpoint</text>
+<text x="60" y="864.0" font-family="sans-serif" font-size="9" fill="#555555">Partner-block colors are decorative; row labels identify partners.</text>
+<text x="60" y="880.0" font-family="sans-serif" font-size="9" fill="#555555">Showing the top 28 of 53 partner/breakpoint groups by recurrence; see results.tsv for the complete list.</text>
+</svg>
+</div><h2>Genomic-coordinate clustering (build GRCh37)</h2><p class="note">The 3 events sharing protein position 501 aa use 3 distinct genomic positions spanning 254 bp -- the protein-position recurrence is broader than any single genomic hotspot, consistent with independent intronic breakpoints mapped (or clamped) onto the same protein/exon boundary rather than one shared DNA lesion.</p><div class="two-col"><p><strong>Protein position &harr; genomic breakpoint spread</strong> (linked view: each row is a protein junction position also shown in the fusion schematic/events table above).</p><div class="data-table-frame"><table class="data-table"><thead><tr><th>Protein position (aa)</th><th>Events</th><th>Distinct genomic positions</th><th>Genomic span (bp)</th><th>Spans &gt;1 chromosome</th></tr></thead><tbody><tr><td>399</td><td>12</td><td>10</td><td>78</td><td>No</td></tr><tr><td>452</td><td>12</td><td>9</td><td>280</td><td>No</td></tr><tr><td>393</td><td>9</td><td>8</td><td>318</td><td>No</td></tr><tr><td>418</td><td>7</td><td>5</td><td>224</td><td>No</td></tr><tr><td>120</td><td>6</td><td>4</td><td>1957</td><td>No</td></tr><tr><td>284</td><td>6</td><td>6</td><td>1666</td><td>No</td></tr><tr><td>501</td><td>3</td><td>3</td><td>254</td><td>No</td></tr><tr><td>321</td><td>2</td><td>1</td><td>0</td><td>No</td></tr></tbody></table></div><p><strong>Top genomic bins</strong> (fixed 1000 bp width):</p><div class="data-table-frame"><table class="data-table"><thead><tr><th>Chromosome</th><th>Bin start</th><th>Bin end</th><th>Events</th></tr></thead><tbody><tr><td>1</td><td>156844000</td><td>156845000</td><td>33</td></tr><tr><td>1</td><td>156845000</td><td>156846000</td><td>15</td></tr><tr><td>1</td><td>156843000</td><td>156844000</td><td>12</td></tr><tr><td>1</td><td>156836000</td><td>156837000</td><td>5</td></tr><tr><td>1</td><td>156841000</td><td>156842000</td><td>3</td></tr><tr><td>1</td><td>156838000</td><td>156839000</td><td>2</td></tr><tr><td>1</td><td>156831000</td><td>156832000</td><td>1</td></tr><tr><td>1</td><td>156834000</td><td>156835000</td><td>1</td></tr><tr><td>1</td><td>156842000</td><td>156843000</td><td>1</td></tr><tr><td>1</td><td>156846000</td><td>156847000</td><td>1</td></tr></tbody></table></div></div><h2>Events</h2><div class="events-table-frame"><table class="events" id="events-table"><thead><tr><th>Event</th><th>Sample</th><th>Tumor type</th><th>Oncotree</th><th>Partner gene</th><th>Role</th><th>Breakpoint (aa)</th><th>Domain status</th></tr></thead><tbody><tr data-tumor-type="Glioma" data-domain-status="retained" data-event-id="EVT-P-0013559-T01-IM5-1"><td>EVT-P-0013559-T01-IM5-1</td><td>P-0013559-T01-IM5</td><td>Glioma</td><td>GB</td><td>AFAP1</td><td>three_prime</td><td>393</td><td>Retained</td></tr><tr data-tumor-type="Bladder Cancer" data-domain-status="retained" data-event-id="EVT-P-0042270-T01-IM6-2"><td>EVT-P-0042270-T01-IM6-2</td><td>P-0042270-T01-IM6</td><td>Bladder Cancer</td><td>BLCA</td><td>ANKRD36</td><td>three_prime</td><td>418</td><td>Retained</td></tr><tr data-tumor-type="Ampullary Cancer" data-domain-status="retained" data-event-id="EVT-P-0017558-T02-IM7-3"><td>EVT-P-0017558-T02-IM7-3</td><td>P-0017558-T02-IM7</td><td>Ampullary Cancer</td><td>AMPCA</td><td>ARHGEF11</td><td>three_prime</td><td>501</td><td>Retained</td></tr><tr data-tumor-type="Glioma" data-domain-status="retained" data-event-id="EVT-P-0050637-T01-IM6-4"><td>EVT-P-0050637-T01-IM6-4</td><td>P-0050637-T01-IM6</td><td>Glioma</td><td>GB</td><td>BCAN</td><td>three_prime</td><td>284</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0041874-T01-IM6-5"><td>EVT-P-0041874-T01-IM6-5</td><td>P-0041874-T01-IM6</td><td>Soft Tissue Sarcoma</td><td>DDLS</td><td>BCAN</td><td>three_prime</td><td>284</td><td>Retained</td></tr><tr data-tumor-type="Pancreatic Cancer" data-domain-status="disrupted" data-event-id="EVT-P-0055952-T01-IM6-6"><td>EVT-P-0055952-T01-IM6-6</td><td>P-0055952-T01-IM6</td><td>Pancreatic Cancer</td><td>PAAD</td><td>COP1</td><td>three_prime</td><td>736</td><td>Truncated</td></tr><tr data-tumor-type="Pancreatic Cancer" data-domain-status="retained" data-event-id="EVT-P-0014859-T03-IM6-8"><td>EVT-P-0014859-T03-IM6-8</td><td>P-0014859-T03-IM6</td><td>Pancreatic Cancer</td><td>PAAD</td><td>CTRC</td><td>three_prime</td><td>284</td><td>Retained</td></tr><tr data-tumor-type="Pancreatic Cancer" data-domain-status="retained" data-event-id="EVT-P-0014859-T01-IM6-9"><td>EVT-P-0014859-T01-IM6-9</td><td>P-0014859-T01-IM6</td><td>Pancreatic Cancer</td><td>PAAD</td><td>CTRC</td><td>three_prime</td><td>284</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-P-0029326-T01-IM6-10"><td>EVT-P-0029326-T01-IM6-10</td><td>P-0029326-T01-IM6</td><td>Thyroid Cancer</td><td>THPA</td><td>DIAPH1</td><td>three_prime</td><td>393</td><td>Retained</td></tr><tr data-tumor-type="Pancreatic Cancer" data-domain-status="retained" data-event-id="EVT-P-0059139-T01-IM7-11"><td>EVT-P-0059139-T01-IM7-11</td><td>P-0059139-T01-IM7</td><td>Pancreatic Cancer</td><td>PAAD</td><td>EML4</td><td>three_prime</td><td>399</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0037901-T01-IM6-12"><td>EVT-P-0037901-T01-IM6-12</td><td>P-0037901-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>EPS15</td><td>three_prime</td><td>399</td><td>Retained</td></tr><tr data-tumor-type="Melanoma" data-domain-status="retained" data-event-id="EVT-P-0009855-T01-IM5-13"><td>EVT-P-0009855-T01-IM5-13</td><td>P-0009855-T01-IM5</td><td>Melanoma</td><td>SKCM</td><td>GON4L</td><td>three_prime</td><td>379</td><td>Retained</td></tr><tr data-tumor-type="Ovarian Cancer" data-domain-status="retained" data-event-id="EVT-P-0050669-T01-IM6-15"><td>EVT-P-0050669-T01-IM6-15</td><td>P-0050669-T01-IM6</td><td>Ovarian Cancer</td><td>HGSFT</td><td>IQGAP3</td><td>three_prime</td><td>414</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0022925-T01-IM6-16"><td>EVT-P-0022925-T01-IM6-16</td><td>P-0022925-T01-IM6</td><td>Soft Tissue Sarcoma</td><td>SARCNOS</td><td>LMNA</td><td>three_prime</td><td>411</td><td>Retained</td></tr><tr data-tumor-type="Colorectal Cancer" data-domain-status="retained" data-event-id="EVT-P-0010581-T01-IM5-17"><td>EVT-P-0010581-T01-IM5-17</td><td>P-0010581-T01-IM5</td><td>Colorectal Cancer</td><td>COAD</td><td>LMNA</td><td>three_prime</td><td>418</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0010086-T01-IM5-18"><td>EVT-P-0010086-T01-IM5-18</td><td>P-0010086-T01-IM5</td><td>Soft Tissue Sarcoma</td><td>SARCNOS</td><td>LMNA</td><td>three_prime</td><td>418</td><td>Retained</td></tr><tr data-tumor-type="Colorectal Cancer" data-domain-status="retained" data-event-id="EVT-P-0007739-T01-IM5-19"><td>EVT-P-0007739-T01-IM5-19</td><td>P-0007739-T01-IM5</td><td>Colorectal Cancer</td><td>COAD</td><td>LMNA</td><td>three_prime</td><td>452</td><td>Retained</td></tr><tr data-tumor-type="Appendiceal Cancer" data-domain-status="retained" data-event-id="EVT-P-0003705-T01-IM5-24"><td>EVT-P-0003705-T01-IM5-24</td><td>P-0003705-T01-IM5</td><td>Appendiceal Cancer</td><td>MAAP</td><td>LMNA</td><td>three_prime</td><td>492</td><td>Retained</td></tr><tr data-tumor-type="Hepatobiliary Cancer" data-domain-status="retained" data-event-id="EVT-P-0003329-T04-IM6-25"><td>EVT-P-0003329-T04-IM6-25</td><td>P-0003329-T04-IM6</td><td>Hepatobiliary Cancer</td><td>GBC</td><td>LMNA</td><td>three_prime</td><td>452</td><td>Retained</td></tr><tr data-tumor-type="Hepatobiliary Cancer" data-domain-status="retained" data-event-id="EVT-P-0003329-T03-IM6-26"><td>EVT-P-0003329-T03-IM6-26</td><td>P-0003329-T03-IM6</td><td>Hepatobiliary Cancer</td><td>GBC</td><td>LMNA</td><td>three_prime</td><td>452</td><td>Retained</td></tr><tr data-tumor-type="Colorectal Cancer" data-domain-status="retained" data-event-id="EVT-P-0066239-T01-IM7-27"><td>EVT-P-0066239-T01-IM7-27</td><td>P-0066239-T01-IM7</td><td>Colorectal Cancer</td><td>COAD</td><td>LMNA</td><td>three_prime</td><td>452</td><td>Retained</td></tr><tr data-tumor-type="Hepatobiliary Cancer" data-domain-status="retained" data-event-id="EVT-P-0003329-T02-IM6-28"><td>EVT-P-0003329-T02-IM6-28</td><td>P-0003329-T02-IM6</td><td>Hepatobiliary Cancer</td><td>GBC</td><td>LMNA</td><td>three_prime</td><td>452</td><td>Retained</td></tr><tr data-tumor-type="Breast Cancer" data-domain-status="retained" data-event-id="EVT-P-0023994-T06-IM6-29"><td>EVT-P-0023994-T06-IM6-29</td><td>P-0023994-T06-IM6</td><td>Breast Cancer</td><td>BRCA</td><td>LMNA</td><td>three_prime</td><td>418</td><td>Retained</td></tr><tr data-tumor-type="Breast Cancer" data-domain-status="retained" data-event-id="EVT-P-0023994-T05-IM6-30"><td>EVT-P-0023994-T05-IM6-30</td><td>P-0023994-T05-IM6</td><td>Breast Cancer</td><td>IDC</td><td>LMNA</td><td>three_prime</td><td>418</td><td>Retained</td></tr><tr data-tumor-type="Breast Cancer" data-domain-status="retained" data-event-id="EVT-P-0023994-T01-IM6-31"><td>EVT-P-0023994-T01-IM6-31</td><td>P-0023994-T01-IM6</td><td>Breast Cancer</td><td>BRCNOS</td><td>LMNA</td><td>three_prime</td><td>418</td><td>Retained</td></tr><tr data-tumor-type="Esophagogastric Cancer" data-domain-status="disrupted" data-event-id="EVT-P-0025031-T02-IM6-32"><td>EVT-P-0025031-T02-IM6-32</td><td>P-0025031-T02-IM6</td><td>Esophagogastric Cancer</td><td>ESCA</td><td>LTAP1</td><td>three_prime</td><td>571</td><td>Truncated</td></tr><tr data-tumor-type="Breast Cancer" data-domain-status="lost" data-event-id="EVT-P-0024231-T01-IM6-33"><td>EVT-P-0024231-T01-IM6-33</td><td>P-0024231-T01-IM6</td><td>Breast Cancer</td><td>BRCA</td><td>MEF2D</td><td>five_prime</td><td>501</td><td>Lost</td></tr><tr data-tumor-type="Esophagogastric Cancer" data-domain-status="retained" data-event-id="EVT-P-0045731-T01-IM6-35"><td>EVT-P-0045731-T01-IM6-35</td><td>P-0045731-T01-IM6</td><td>Esophagogastric Cancer</td><td>ESCA</td><td>NOS1AP</td><td>three_prime</td><td>294</td><td>Retained</td></tr><tr data-tumor-type="Melanoma" data-domain-status="retained" data-event-id="EVT-P-0026354-T01-IM6-36"><td>EVT-P-0026354-T01-IM6-36</td><td>P-0026354-T01-IM6</td><td>Melanoma</td><td>MUP</td><td>ARHGEF11</td><td>three_prime</td><td>452</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0035466-T01-IM6-37"><td>EVT-P-0035466-T01-IM6-37</td><td>P-0035466-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>ATP1A2</td><td>three_prime</td><td>423</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="lost" data-event-id="EVT-P-0058090-T04-IM7-38"><td>EVT-P-0058090-T04-IM7-38</td><td>P-0058090-T04-IM7</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>CADM3</td><td>five_prime</td><td>120</td><td>Lost</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0021262-T01-IM6-41"><td>EVT-P-0021262-T01-IM6-41</td><td>P-0021262-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>F11R</td><td>three_prime</td><td>399</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-P-0022467-T01-IM6-42"><td>EVT-P-0022467-T01-IM6-42</td><td>P-0022467-T01-IM6</td><td>Thyroid Cancer</td><td>THAP</td><td>IRF2BP2</td><td>three_prime</td><td>393</td><td>Retained</td></tr><tr data-tumor-type="Cancer of Unknown Primary" data-domain-status="retained" data-event-id="EVT-P-0010628-T01-IM5-43"><td>EVT-P-0010628-T01-IM5-43</td><td>P-0010628-T01-IM5</td><td>Cancer of Unknown Primary</td><td>PDC</td><td>IRF2BP2</td><td>three_prime</td><td>399</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0010628-T03-IM6-44"><td>EVT-P-0010628-T03-IM6-44</td><td>P-0010628-T03-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>IRF2BP2</td><td>three_prime</td><td>399</td><td>Retained</td></tr><tr data-tumor-type="Miscellaneous Brain Tumor" data-domain-status="retained" data-event-id="EVT-P-0027278-T01-IM6-45"><td>EVT-P-0027278-T01-IM6-45</td><td>P-0027278-T01-IM6</td><td>Miscellaneous Brain Tumor</td><td>PRNET</td><td>KIF21B</td><td>three_prime</td><td>383</td><td>Retained</td></tr><tr data-tumor-type="Ovarian Cancer" data-domain-status="lost" data-event-id="EVT-P-0056197-T01-IM6-46"><td>EVT-P-0056197-T01-IM6-46</td><td>P-0056197-T01-IM6</td><td>Ovarian Cancer</td><td>HGSOC</td><td>NELFCD</td><td>five_prime</td><td>284</td><td>Lost</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0027277-T01-IM6-79"><td>EVT-P-0027277-T01-IM6-79</td><td>P-0027277-T01-IM6</td><td>Soft Tissue Sarcoma</td><td>ANGS</td><td>PEAR1</td><td>three_prime</td><td>399</td><td>Retained</td></tr><tr data-tumor-type="Hepatobiliary Cancer" data-domain-status="retained" data-event-id="EVT-P-0029892-T05-IM6-80"><td>EVT-P-0029892-T05-IM6-80</td><td>P-0029892-T05-IM6</td><td>Hepatobiliary Cancer</td><td>CHOL</td><td>PLEKHA6</td><td>three_prime</td><td>399</td><td>Retained</td></tr><tr data-tumor-type="Hepatobiliary Cancer" data-domain-status="retained" data-event-id="EVT-P-0029892-T04-IM6-81"><td>EVT-P-0029892-T04-IM6-81</td><td>P-0029892-T04-IM6</td><td>Hepatobiliary Cancer</td><td>IHCH</td><td>PLEKHA6</td><td>three_prime</td><td>399</td><td>Retained</td></tr><tr data-tumor-type="Hepatobiliary Cancer" data-domain-status="retained" data-event-id="EVT-P-0029892-T03-IM6-82"><td>EVT-P-0029892-T03-IM6-82</td><td>P-0029892-T03-IM6</td><td>Hepatobiliary Cancer</td><td>IHCH</td><td>PLEKHA6</td><td>three_prime</td><td>399</td><td>Retained</td></tr><tr data-tumor-type="Pancreatic Cancer" data-domain-status="lost" data-event-id="EVT-P-0038819-T01-IM6-83"><td>EVT-P-0038819-T01-IM6-83</td><td>P-0038819-T01-IM6</td><td>Pancreatic Cancer</td><td>PAAD</td><td>RAB25</td><td>five_prime</td><td>417</td><td>Lost</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="lost" data-event-id="EVT-P-0015004-T01-IM6-84"><td>EVT-P-0015004-T01-IM6-84</td><td>P-0015004-T01-IM6</td><td>Soft Tissue Sarcoma</td><td>WDLS</td><td>RABGAP1L</td><td>five_prime</td><td>452</td><td>Lost</td></tr><tr data-tumor-type="Prostate Cancer" data-domain-status="lost" data-event-id="EVT-P-0038568-T01-IM6-85"><td>EVT-P-0038568-T01-IM6-85</td><td>P-0038568-T01-IM6</td><td>Prostate Cancer</td><td>PRAD</td><td>SEMA4A</td><td>five_prime</td><td>284</td><td>Lost</td></tr><tr data-tumor-type="Glioma" data-domain-status="lost" data-event-id="EVT-P-0048896-T01-IM6-86"><td>EVT-P-0048896-T01-IM6-86</td><td>P-0048896-T01-IM6</td><td>Glioma</td><td>GB</td><td>SMYD2</td><td>five_prime</td><td>405</td><td>Lost</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0023987-T01-IM6-88"><td>EVT-P-0023987-T01-IM6-88</td><td>P-0023987-T01-IM6</td><td>Soft Tissue Sarcoma</td><td>SARCNOS</td><td>TPR</td><td>three_prime</td><td>399</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-P-0024549-T03-IM6-89"><td>EVT-P-0024549-T03-IM6-89</td><td>P-0024549-T03-IM6</td><td>Thyroid Cancer</td><td>THPA</td><td>TPR</td><td>three_prime</td><td>399</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0007050-T01-IM5-90"><td>EVT-P-0007050-T01-IM5-90</td><td>P-0007050-T01-IM5</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>VANGL2</td><td>three_prime</td><td>452</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="lost" data-event-id="EVT-P-0006172-T01-IM5-91"><td>EVT-P-0006172-T01-IM5-91</td><td>P-0006172-T01-IM5</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>P2RY8</td><td>five_prime</td><td>182</td><td>Lost</td></tr><tr data-tumor-type="Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0042526-T02-IM6-92"><td>EVT-P-0042526-T02-IM6-92</td><td>P-0042526-T02-IM6</td><td>Small Cell Lung Cancer</td><td>CSCLC</td><td>PRCC</td><td>three_prime</td><td>120</td><td>Retained</td></tr><tr data-tumor-type="Breast Cancer" data-domain-status="retained" data-event-id="EVT-P-0044467-T01-IM6-93"><td>EVT-P-0044467-T01-IM6-93</td><td>P-0044467-T01-IM6</td><td>Breast Cancer</td><td>IDC</td><td>SCP2</td><td>three_prime</td><td>443</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="lost" data-event-id="EVT-P-0036662-T01-IM6-94"><td>EVT-P-0036662-T01-IM6-94</td><td>P-0036662-T01-IM6</td><td>Soft Tissue Sarcoma</td><td>DDLS</td><td>SHPRH</td><td>five_prime</td><td>71</td><td>Lost</td></tr><tr data-tumor-type="Bladder Cancer" data-domain-status="retained" data-event-id="EVT-P-0055621-T05-IM6-95"><td>EVT-P-0055621-T05-IM6-95</td><td>P-0055621-T05-IM6</td><td>Bladder Cancer</td><td>BLCA</td><td>SLAMF6</td><td>three_prime</td><td>120</td><td>Retained</td></tr><tr data-tumor-type="Bladder Cancer" data-domain-status="retained" data-event-id="EVT-P-0055621-T02-IM6-96"><td>EVT-P-0055621-T02-IM6-96</td><td>P-0055621-T02-IM6</td><td>Bladder Cancer</td><td>UTUC</td><td>SLAMF6</td><td>three_prime</td><td>120</td><td>Retained</td></tr><tr data-tumor-type="Bladder Cancer" data-domain-status="retained" data-event-id="EVT-P-0055621-T01-IM6-97"><td>EVT-P-0055621-T01-IM6-97</td><td>P-0055621-T01-IM6</td><td>Bladder Cancer</td><td>UTUC</td><td>SLAMF6</td><td>three_prime</td><td>120</td><td>Retained</td></tr><tr data-tumor-type="Esophagogastric Cancer" data-domain-status="disrupted" data-event-id="EVT-P-0022936-T01-IM6-98"><td>EVT-P-0022936-T01-IM6-98</td><td>P-0022936-T01-IM6</td><td>Esophagogastric Cancer</td><td>EGC</td><td>STK11</td><td>five_prime</td><td>616</td><td>Truncated</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0024875-T01-IM6-99"><td>EVT-P-0024875-T01-IM6-99</td><td>P-0024875-T01-IM6</td><td>Soft Tissue Sarcoma</td><td>SARCNOS</td><td>TAFA2</td><td>three_prime</td><td>120</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0069757-T01-IM7-100"><td>EVT-P-0069757-T01-IM7-100</td><td>P-0069757-T01-IM7</td><td>Soft Tissue Sarcoma</td><td>DDLS</td><td>TARS2</td><td>three_prime</td><td>187</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-P-0050767-T01-IM6-101"><td>EVT-P-0050767-T01-IM6-101</td><td>P-0050767-T01-IM6</td><td>Thyroid Cancer</td><td>THPA</td><td>TPM3</td><td>three_prime</td><td>452</td><td>Retained</td></tr><tr data-tumor-type="Colorectal Cancer" data-domain-status="retained" data-event-id="EVT-P-0049078-T04-IM6-102"><td>EVT-P-0049078-T04-IM6-102</td><td>P-0049078-T04-IM6</td><td>Colorectal Cancer</td><td>COAD</td><td>TPM3</td><td>three_prime</td><td>321</td><td>Retained</td></tr><tr data-tumor-type="Colorectal Cancer" data-domain-status="retained" data-event-id="EVT-P-0049078-T01-IM6-103"><td>EVT-P-0049078-T01-IM6-103</td><td>P-0049078-T01-IM6</td><td>Colorectal Cancer</td><td>COAD</td><td>TPM3</td><td>three_prime</td><td>321</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-P-0046877-T02-IM6-104"><td>EVT-P-0046877-T02-IM6-104</td><td>P-0046877-T02-IM6</td><td>Thyroid Cancer</td><td>THPA</td><td>TPM3</td><td>three_prime</td><td>393</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-P-0026375-T04-IM6-105"><td>EVT-P-0026375-T04-IM6-105</td><td>P-0026375-T04-IM6</td><td>Thyroid Cancer</td><td>THAP</td><td>TPM3</td><td>three_prime</td><td>393</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-P-0026375-T01-IM6-106"><td>EVT-P-0026375-T01-IM6-106</td><td>P-0026375-T01-IM6</td><td>Thyroid Cancer</td><td>THPA</td><td>TPM3</td><td>three_prime</td><td>393</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0025815-T02-IM6-107"><td>EVT-P-0025815-T02-IM6-107</td><td>P-0025815-T02-IM6</td><td>Soft Tissue Sarcoma</td><td>SARCNOS</td><td>TPM3</td><td>three_prime</td><td>399</td><td>Retained</td></tr><tr data-tumor-type="Glioma" data-domain-status="retained" data-event-id="EVT-P-0021467-T01-IM6-108"><td>EVT-P-0021467-T01-IM6-108</td><td>P-0021467-T01-IM6</td><td>Glioma</td><td>GB</td><td>TPM3</td><td>three_prime</td><td>393</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0021170-T03-IM6-109"><td>EVT-P-0021170-T03-IM6-109</td><td>P-0021170-T03-IM6</td><td>Soft Tissue Sarcoma</td><td>SARCNOS</td><td>TPM3</td><td>three_prime</td><td>452</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0021170-T02-IM6-110"><td>EVT-P-0021170-T02-IM6-110</td><td>P-0021170-T02-IM6</td><td>Soft Tissue Sarcoma</td><td>SARCNOS</td><td>TPM3</td><td>three_prime</td><td>452</td><td>Retained</td></tr><tr data-tumor-type="Colorectal Cancer" data-domain-status="retained" data-event-id="EVT-P-0014143-T01-IM5-111"><td>EVT-P-0014143-T01-IM5-111</td><td>P-0014143-T01-IM5</td><td>Colorectal Cancer</td><td>COAD</td><td>TPM3</td><td>three_prime</td><td>393</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-P-0069266-T01-IM7-112"><td>EVT-P-0069266-T01-IM7-112</td><td>P-0069266-T01-IM7</td><td>Thyroid Cancer</td><td>THPA</td><td>TPM3</td><td>three_prime</td><td>343</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-P-0049951-T01-IM6-113"><td>EVT-P-0049951-T01-IM6-113</td><td>P-0049951-T01-IM6</td><td>Thyroid Cancer</td><td>THPA</td><td>TPR</td><td>three_prime</td><td>418</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-P-0042965-T01-IM6-114"><td>EVT-P-0042965-T01-IM6-114</td><td>P-0042965-T01-IM6</td><td>Thyroid Cancer</td><td>THPA</td><td>TPR</td><td>three_prime</td><td>377</td><td>Retained</td></tr><tr data-tumor-type="Colorectal Cancer" data-domain-status="retained" data-event-id="EVT-P-0065034-T02-IM7-115"><td>EVT-P-0065034-T02-IM7-115</td><td>P-0065034-T02-IM7</td><td>Colorectal Cancer</td><td>COAD</td><td>TPR</td><td>three_prime</td><td>359</td><td>Retained</td></tr><tr data-tumor-type="Melanoma" data-domain-status="retained" data-event-id="EVT-P-0016347-T01-IM6-116"><td>EVT-P-0016347-T01-IM6-116</td><td>P-0016347-T01-IM6</td><td>Melanoma</td><td>SKCM</td><td>TRIM63</td><td>three_prime</td><td>393</td><td>Retained</td></tr><tr data-tumor-type="Bladder Cancer" data-domain-status="retained" data-event-id="EVT-P-0007755-T02-IM5-117"><td>EVT-P-0007755-T02-IM5-117</td><td>P-0007755-T02-IM5</td><td>Bladder Cancer</td><td>BLCA</td><td>TRPM8</td><td>three_prime</td><td>501</td><td>Retained</td></tr><tr data-tumor-type="Breast Cancer" data-domain-status="retained" data-event-id="EVT-P-0000104-T02-IM6-118"><td>EVT-P-0000104-T02-IM6-118</td><td>P-0000104-T02-IM6</td><td>Breast Cancer</td><td>ILC</td><td>ZBTB7B</td><td>three_prime</td><td>452</td><td>Retained</td></tr></tbody></table></div>
+</div>
+<div class="lollipop-tooltip" id="lollipop-tooltip" hidden></div>
+<script type="application/json" id="events-data">[{"event_id": "EVT-P-0013559-T01-IM5-1", "sample_id": "P-0013559-T01-IM5", "tumor_type": "Glioma", "oncotree_code": "GB", "partner_gene": "AFAP1", "target_role": "three_prime", "breakpoint_protein_position": 393, "domain_status": "retained"}, {"event_id": "EVT-P-0042270-T01-IM6-2", "sample_id": "P-0042270-T01-IM6", "tumor_type": "Bladder Cancer", "oncotree_code": "BLCA", "partner_gene": "ANKRD36", "target_role": "three_prime", "breakpoint_protein_position": 418, "domain_status": "retained"}, {"event_id": "EVT-P-0017558-T02-IM7-3", "sample_id": "P-0017558-T02-IM7", "tumor_type": "Ampullary Cancer", "oncotree_code": "AMPCA", "partner_gene": "ARHGEF11", "target_role": "three_prime", "breakpoint_protein_position": 501, "domain_status": "retained"}, {"event_id": "EVT-P-0050637-T01-IM6-4", "sample_id": "P-0050637-T01-IM6", "tumor_type": "Glioma", "oncotree_code": "GB", "partner_gene": "BCAN", "target_role": "three_prime", "breakpoint_protein_position": 284, "domain_status": "retained"}, {"event_id": "EVT-P-0041874-T01-IM6-5", "sample_id": "P-0041874-T01-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "DDLS", "partner_gene": "BCAN", "target_role": "three_prime", "breakpoint_protein_position": 284, "domain_status": "retained"}, {"event_id": "EVT-P-0055952-T01-IM6-6", "sample_id": "P-0055952-T01-IM6", "tumor_type": "Pancreatic Cancer", "oncotree_code": "PAAD", "partner_gene": "COP1", "target_role": "three_prime", "breakpoint_protein_position": 736, "domain_status": "disrupted"}, {"event_id": "EVT-P-0014859-T03-IM6-8", "sample_id": "P-0014859-T03-IM6", "tumor_type": "Pancreatic Cancer", "oncotree_code": "PAAD", "partner_gene": "CTRC", "target_role": "three_prime", "breakpoint_protein_position": 284, "domain_status": "retained"}, {"event_id": "EVT-P-0014859-T01-IM6-9", "sample_id": "P-0014859-T01-IM6", "tumor_type": "Pancreatic Cancer", "oncotree_code": "PAAD", "partner_gene": "CTRC", "target_role": "three_prime", "breakpoint_protein_position": 284, "domain_status": "retained"}, {"event_id": "EVT-P-0029326-T01-IM6-10", "sample_id": "P-0029326-T01-IM6", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "DIAPH1", "target_role": "three_prime", "breakpoint_protein_position": 393, "domain_status": "retained"}, {"event_id": "EVT-P-0059139-T01-IM7-11", "sample_id": "P-0059139-T01-IM7", "tumor_type": "Pancreatic Cancer", "oncotree_code": "PAAD", "partner_gene": "EML4", "target_role": "three_prime", "breakpoint_protein_position": 399, "domain_status": "retained"}, {"event_id": "EVT-P-0037901-T01-IM6-12", "sample_id": "P-0037901-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "EPS15", "target_role": "three_prime", "breakpoint_protein_position": 399, "domain_status": "retained"}, {"event_id": "EVT-P-0009855-T01-IM5-13", "sample_id": "P-0009855-T01-IM5", "tumor_type": "Melanoma", "oncotree_code": "SKCM", "partner_gene": "GON4L", "target_role": "three_prime", "breakpoint_protein_position": 379, "domain_status": "retained"}, {"event_id": "EVT-P-0050669-T01-IM6-15", "sample_id": "P-0050669-T01-IM6", "tumor_type": "Ovarian Cancer", "oncotree_code": "HGSFT", "partner_gene": "IQGAP3", "target_role": "three_prime", "breakpoint_protein_position": 414, "domain_status": "retained"}, {"event_id": "EVT-P-0022925-T01-IM6-16", "sample_id": "P-0022925-T01-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SARCNOS", "partner_gene": "LMNA", "target_role": "three_prime", "breakpoint_protein_position": 411, "domain_status": "retained"}, {"event_id": "EVT-P-0010581-T01-IM5-17", "sample_id": "P-0010581-T01-IM5", "tumor_type": "Colorectal Cancer", "oncotree_code": "COAD", "partner_gene": "LMNA", "target_role": "three_prime", "breakpoint_protein_position": 418, "domain_status": "retained"}, {"event_id": "EVT-P-0010086-T01-IM5-18", "sample_id": "P-0010086-T01-IM5", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SARCNOS", "partner_gene": "LMNA", "target_role": "three_prime", "breakpoint_protein_position": 418, "domain_status": "retained"}, {"event_id": "EVT-P-0007739-T01-IM5-19", "sample_id": "P-0007739-T01-IM5", "tumor_type": "Colorectal Cancer", "oncotree_code": "COAD", "partner_gene": "LMNA", "target_role": "three_prime", "breakpoint_protein_position": 452, "domain_status": "retained"}, {"event_id": "EVT-P-0003705-T01-IM5-24", "sample_id": "P-0003705-T01-IM5", "tumor_type": "Appendiceal Cancer", "oncotree_code": "MAAP", "partner_gene": "LMNA", "target_role": "three_prime", "breakpoint_protein_position": 492, "domain_status": "retained"}, {"event_id": "EVT-P-0003329-T04-IM6-25", "sample_id": "P-0003329-T04-IM6", "tumor_type": "Hepatobiliary Cancer", "oncotree_code": "GBC", "partner_gene": "LMNA", "target_role": "three_prime", "breakpoint_protein_position": 452, "domain_status": "retained"}, {"event_id": "EVT-P-0003329-T03-IM6-26", "sample_id": "P-0003329-T03-IM6", "tumor_type": "Hepatobiliary Cancer", "oncotree_code": "GBC", "partner_gene": "LMNA", "target_role": "three_prime", "breakpoint_protein_position": 452, "domain_status": "retained"}, {"event_id": "EVT-P-0066239-T01-IM7-27", "sample_id": "P-0066239-T01-IM7", "tumor_type": "Colorectal Cancer", "oncotree_code": "COAD", "partner_gene": "LMNA", "target_role": "three_prime", "breakpoint_protein_position": 452, "domain_status": "retained"}, {"event_id": "EVT-P-0003329-T02-IM6-28", "sample_id": "P-0003329-T02-IM6", "tumor_type": "Hepatobiliary Cancer", "oncotree_code": "GBC", "partner_gene": "LMNA", "target_role": "three_prime", "breakpoint_protein_position": 452, "domain_status": "retained"}, {"event_id": "EVT-P-0023994-T06-IM6-29", "sample_id": "P-0023994-T06-IM6", "tumor_type": "Breast Cancer", "oncotree_code": "BRCA", "partner_gene": "LMNA", "target_role": "three_prime", "breakpoint_protein_position": 418, "domain_status": "retained"}, {"event_id": "EVT-P-0023994-T05-IM6-30", "sample_id": "P-0023994-T05-IM6", "tumor_type": "Breast Cancer", "oncotree_code": "IDC", "partner_gene": "LMNA", "target_role": "three_prime", "breakpoint_protein_position": 418, "domain_status": "retained"}, {"event_id": "EVT-P-0023994-T01-IM6-31", "sample_id": "P-0023994-T01-IM6", "tumor_type": "Breast Cancer", "oncotree_code": "BRCNOS", "partner_gene": "LMNA", "target_role": "three_prime", "breakpoint_protein_position": 418, "domain_status": "retained"}, {"event_id": "EVT-P-0025031-T02-IM6-32", "sample_id": "P-0025031-T02-IM6", "tumor_type": "Esophagogastric Cancer", "oncotree_code": "ESCA", "partner_gene": "LTAP1", "target_role": "three_prime", "breakpoint_protein_position": 571, "domain_status": "disrupted"}, {"event_id": "EVT-P-0024231-T01-IM6-33", "sample_id": "P-0024231-T01-IM6", "tumor_type": "Breast Cancer", "oncotree_code": "BRCA", "partner_gene": "MEF2D", "target_role": "five_prime", "breakpoint_protein_position": 501, "domain_status": "lost"}, {"event_id": "EVT-P-0045731-T01-IM6-35", "sample_id": "P-0045731-T01-IM6", "tumor_type": "Esophagogastric Cancer", "oncotree_code": "ESCA", "partner_gene": "NOS1AP", "target_role": "three_prime", "breakpoint_protein_position": 294, "domain_status": "retained"}, {"event_id": "EVT-P-0026354-T01-IM6-36", "sample_id": "P-0026354-T01-IM6", "tumor_type": "Melanoma", "oncotree_code": "MUP", "partner_gene": "ARHGEF11", "target_role": "three_prime", "breakpoint_protein_position": 452, "domain_status": "retained"}, {"event_id": "EVT-P-0035466-T01-IM6-37", "sample_id": "P-0035466-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "ATP1A2", "target_role": "three_prime", "breakpoint_protein_position": 423, "domain_status": "retained"}, {"event_id": "EVT-P-0058090-T04-IM7-38", "sample_id": "P-0058090-T04-IM7", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "CADM3", "target_role": "five_prime", "breakpoint_protein_position": 120, "domain_status": "lost"}, {"event_id": "EVT-P-0021262-T01-IM6-41", "sample_id": "P-0021262-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "F11R", "target_role": "three_prime", "breakpoint_protein_position": 399, "domain_status": "retained"}, {"event_id": "EVT-P-0022467-T01-IM6-42", "sample_id": "P-0022467-T01-IM6", "tumor_type": "Thyroid Cancer", "oncotree_code": "THAP", "partner_gene": "IRF2BP2", "target_role": "three_prime", "breakpoint_protein_position": 393, "domain_status": "retained"}, {"event_id": "EVT-P-0010628-T01-IM5-43", "sample_id": "P-0010628-T01-IM5", "tumor_type": "Cancer of Unknown Primary", "oncotree_code": "PDC", "partner_gene": "IRF2BP2", "target_role": "three_prime", "breakpoint_protein_position": 399, "domain_status": "retained"}, {"event_id": "EVT-P-0010628-T03-IM6-44", "sample_id": "P-0010628-T03-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "IRF2BP2", "target_role": "three_prime", "breakpoint_protein_position": 399, "domain_status": "retained"}, {"event_id": "EVT-P-0027278-T01-IM6-45", "sample_id": "P-0027278-T01-IM6", "tumor_type": "Miscellaneous Brain Tumor", "oncotree_code": "PRNET", "partner_gene": "KIF21B", "target_role": "three_prime", "breakpoint_protein_position": 383, "domain_status": "retained"}, {"event_id": "EVT-P-0056197-T01-IM6-46", "sample_id": "P-0056197-T01-IM6", "tumor_type": "Ovarian Cancer", "oncotree_code": "HGSOC", "partner_gene": "NELFCD", "target_role": "five_prime", "breakpoint_protein_position": 284, "domain_status": "lost"}, {"event_id": "EVT-P-0027277-T01-IM6-79", "sample_id": "P-0027277-T01-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "ANGS", "partner_gene": "PEAR1", "target_role": "three_prime", "breakpoint_protein_position": 399, "domain_status": "retained"}, {"event_id": "EVT-P-0029892-T05-IM6-80", "sample_id": "P-0029892-T05-IM6", "tumor_type": "Hepatobiliary Cancer", "oncotree_code": "CHOL", "partner_gene": "PLEKHA6", "target_role": "three_prime", "breakpoint_protein_position": 399, "domain_status": "retained"}, {"event_id": "EVT-P-0029892-T04-IM6-81", "sample_id": "P-0029892-T04-IM6", "tumor_type": "Hepatobiliary Cancer", "oncotree_code": "IHCH", "partner_gene": "PLEKHA6", "target_role": "three_prime", "breakpoint_protein_position": 399, "domain_status": "retained"}, {"event_id": "EVT-P-0029892-T03-IM6-82", "sample_id": "P-0029892-T03-IM6", "tumor_type": "Hepatobiliary Cancer", "oncotree_code": "IHCH", "partner_gene": "PLEKHA6", "target_role": "three_prime", "breakpoint_protein_position": 399, "domain_status": "retained"}, {"event_id": "EVT-P-0038819-T01-IM6-83", "sample_id": "P-0038819-T01-IM6", "tumor_type": "Pancreatic Cancer", "oncotree_code": "PAAD", "partner_gene": "RAB25", "target_role": "five_prime", "breakpoint_protein_position": 417, "domain_status": "lost"}, {"event_id": "EVT-P-0015004-T01-IM6-84", "sample_id": "P-0015004-T01-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "WDLS", "partner_gene": "RABGAP1L", "target_role": "five_prime", "breakpoint_protein_position": 452, "domain_status": "lost"}, {"event_id": "EVT-P-0038568-T01-IM6-85", "sample_id": "P-0038568-T01-IM6", "tumor_type": "Prostate Cancer", "oncotree_code": "PRAD", "partner_gene": "SEMA4A", "target_role": "five_prime", "breakpoint_protein_position": 284, "domain_status": "lost"}, {"event_id": "EVT-P-0048896-T01-IM6-86", "sample_id": "P-0048896-T01-IM6", "tumor_type": "Glioma", "oncotree_code": "GB", "partner_gene": "SMYD2", "target_role": "five_prime", "breakpoint_protein_position": 405, "domain_status": "lost"}, {"event_id": "EVT-P-0023987-T01-IM6-88", "sample_id": "P-0023987-T01-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SARCNOS", "partner_gene": "TPR", "target_role": "three_prime", "breakpoint_protein_position": 399, "domain_status": "retained"}, {"event_id": "EVT-P-0024549-T03-IM6-89", "sample_id": "P-0024549-T03-IM6", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "TPR", "target_role": "three_prime", "breakpoint_protein_position": 399, "domain_status": "retained"}, {"event_id": "EVT-P-0007050-T01-IM5-90", "sample_id": "P-0007050-T01-IM5", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "VANGL2", "target_role": "three_prime", "breakpoint_protein_position": 452, "domain_status": "retained"}, {"event_id": "EVT-P-0006172-T01-IM5-91", "sample_id": "P-0006172-T01-IM5", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "P2RY8", "target_role": "five_prime", "breakpoint_protein_position": 182, "domain_status": "lost"}, {"event_id": "EVT-P-0042526-T02-IM6-92", "sample_id": "P-0042526-T02-IM6", "tumor_type": "Small Cell Lung Cancer", "oncotree_code": "CSCLC", "partner_gene": "PRCC", "target_role": "three_prime", "breakpoint_protein_position": 120, "domain_status": "retained"}, {"event_id": "EVT-P-0044467-T01-IM6-93", "sample_id": "P-0044467-T01-IM6", "tumor_type": "Breast Cancer", "oncotree_code": "IDC", "partner_gene": "SCP2", "target_role": "three_prime", "breakpoint_protein_position": 443, "domain_status": "retained"}, {"event_id": "EVT-P-0036662-T01-IM6-94", "sample_id": "P-0036662-T01-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "DDLS", "partner_gene": "SHPRH", "target_role": "five_prime", "breakpoint_protein_position": 71, "domain_status": "lost"}, {"event_id": "EVT-P-0055621-T05-IM6-95", "sample_id": "P-0055621-T05-IM6", "tumor_type": "Bladder Cancer", "oncotree_code": "BLCA", "partner_gene": "SLAMF6", "target_role": "three_prime", "breakpoint_protein_position": 120, "domain_status": "retained"}, {"event_id": "EVT-P-0055621-T02-IM6-96", "sample_id": "P-0055621-T02-IM6", "tumor_type": "Bladder Cancer", "oncotree_code": "UTUC", "partner_gene": "SLAMF6", "target_role": "three_prime", "breakpoint_protein_position": 120, "domain_status": "retained"}, {"event_id": "EVT-P-0055621-T01-IM6-97", "sample_id": "P-0055621-T01-IM6", "tumor_type": "Bladder Cancer", "oncotree_code": "UTUC", "partner_gene": "SLAMF6", "target_role": "three_prime", "breakpoint_protein_position": 120, "domain_status": "retained"}, {"event_id": "EVT-P-0022936-T01-IM6-98", "sample_id": "P-0022936-T01-IM6", "tumor_type": "Esophagogastric Cancer", "oncotree_code": "EGC", "partner_gene": "STK11", "target_role": "five_prime", "breakpoint_protein_position": 616, "domain_status": "disrupted"}, {"event_id": "EVT-P-0024875-T01-IM6-99", "sample_id": "P-0024875-T01-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SARCNOS", "partner_gene": "TAFA2", "target_role": "three_prime", "breakpoint_protein_position": 120, "domain_status": "retained"}, {"event_id": "EVT-P-0069757-T01-IM7-100", "sample_id": "P-0069757-T01-IM7", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "DDLS", "partner_gene": "TARS2", "target_role": "three_prime", "breakpoint_protein_position": 187, "domain_status": "retained"}, {"event_id": "EVT-P-0050767-T01-IM6-101", "sample_id": "P-0050767-T01-IM6", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "TPM3", "target_role": "three_prime", "breakpoint_protein_position": 452, "domain_status": "retained"}, {"event_id": "EVT-P-0049078-T04-IM6-102", "sample_id": "P-0049078-T04-IM6", "tumor_type": "Colorectal Cancer", "oncotree_code": "COAD", "partner_gene": "TPM3", "target_role": "three_prime", "breakpoint_protein_position": 321, "domain_status": "retained"}, {"event_id": "EVT-P-0049078-T01-IM6-103", "sample_id": "P-0049078-T01-IM6", "tumor_type": "Colorectal Cancer", "oncotree_code": "COAD", "partner_gene": "TPM3", "target_role": "three_prime", "breakpoint_protein_position": 321, "domain_status": "retained"}, {"event_id": "EVT-P-0046877-T02-IM6-104", "sample_id": "P-0046877-T02-IM6", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "TPM3", "target_role": "three_prime", "breakpoint_protein_position": 393, "domain_status": "retained"}, {"event_id": "EVT-P-0026375-T04-IM6-105", "sample_id": "P-0026375-T04-IM6", "tumor_type": "Thyroid Cancer", "oncotree_code": "THAP", "partner_gene": "TPM3", "target_role": "three_prime", "breakpoint_protein_position": 393, "domain_status": "retained"}, {"event_id": "EVT-P-0026375-T01-IM6-106", "sample_id": "P-0026375-T01-IM6", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "TPM3", "target_role": "three_prime", "breakpoint_protein_position": 393, "domain_status": "retained"}, {"event_id": "EVT-P-0025815-T02-IM6-107", "sample_id": "P-0025815-T02-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SARCNOS", "partner_gene": "TPM3", "target_role": "three_prime", "breakpoint_protein_position": 399, "domain_status": "retained"}, {"event_id": "EVT-P-0021467-T01-IM6-108", "sample_id": "P-0021467-T01-IM6", "tumor_type": "Glioma", "oncotree_code": "GB", "partner_gene": "TPM3", "target_role": "three_prime", "breakpoint_protein_position": 393, "domain_status": "retained"}, {"event_id": "EVT-P-0021170-T03-IM6-109", "sample_id": "P-0021170-T03-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SARCNOS", "partner_gene": "TPM3", "target_role": "three_prime", "breakpoint_protein_position": 452, "domain_status": "retained"}, {"event_id": "EVT-P-0021170-T02-IM6-110", "sample_id": "P-0021170-T02-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SARCNOS", "partner_gene": "TPM3", "target_role": "three_prime", "breakpoint_protein_position": 452, "domain_status": "retained"}, {"event_id": "EVT-P-0014143-T01-IM5-111", "sample_id": "P-0014143-T01-IM5", "tumor_type": "Colorectal Cancer", "oncotree_code": "COAD", "partner_gene": "TPM3", "target_role": "three_prime", "breakpoint_protein_position": 393, "domain_status": "retained"}, {"event_id": "EVT-P-0069266-T01-IM7-112", "sample_id": "P-0069266-T01-IM7", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "TPM3", "target_role": "three_prime", "breakpoint_protein_position": 343, "domain_status": "retained"}, {"event_id": "EVT-P-0049951-T01-IM6-113", "sample_id": "P-0049951-T01-IM6", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "TPR", "target_role": "three_prime", "breakpoint_protein_position": 418, "domain_status": "retained"}, {"event_id": "EVT-P-0042965-T01-IM6-114", "sample_id": "P-0042965-T01-IM6", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "TPR", "target_role": "three_prime", "breakpoint_protein_position": 377, "domain_status": "retained"}, {"event_id": "EVT-P-0065034-T02-IM7-115", "sample_id": "P-0065034-T02-IM7", "tumor_type": "Colorectal Cancer", "oncotree_code": "COAD", "partner_gene": "TPR", "target_role": "three_prime", "breakpoint_protein_position": 359, "domain_status": "retained"}, {"event_id": "EVT-P-0016347-T01-IM6-116", "sample_id": "P-0016347-T01-IM6", "tumor_type": "Melanoma", "oncotree_code": "SKCM", "partner_gene": "TRIM63", "target_role": "three_prime", "breakpoint_protein_position": 393, "domain_status": "retained"}, {"event_id": "EVT-P-0007755-T02-IM5-117", "sample_id": "P-0007755-T02-IM5", "tumor_type": "Bladder Cancer", "oncotree_code": "BLCA", "partner_gene": "TRPM8", "target_role": "three_prime", "breakpoint_protein_position": 501, "domain_status": "retained"}, {"event_id": "EVT-P-0000104-T02-IM6-118", "sample_id": "P-0000104-T02-IM6", "tumor_type": "Breast Cancer", "oncotree_code": "ILC", "partner_gene": "ZBTB7B", "target_role": "three_prime", "breakpoint_protein_position": 452, "domain_status": "retained"}]</script>
+<script type="application/json" id="status-labels">{"retained": "Retained", "disrupted": "Truncated", "lost": "Lost"}</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var events = JSON.parse(document.getElementById("events-data").textContent);
+  var statusLabels = JSON.parse(document.getElementById("status-labels").textContent);
+  var eventsById = {};
+  events.forEach(function (e) {
+    if (e.event_id) { eventsById[e.event_id] = e; }
+  });
+
+  function distinctValues(field) {
+    var values = events.map(function (e) { return e[field]; }).filter(Boolean);
+    return Array.from(new Set(values)).sort();
+  }
+  var tumorTypes = distinctValues("tumor_type");
+  var domainStatuses = distinctValues("domain_status");
+
+  var tumorSelect = document.getElementById("tumor-type-filter");
+  tumorSelect.innerHTML = '<option value="">All tumor types</option>' + tumorTypes.map(
+    function (t) {
+      return '<option value="' + t.replace(/"/g, "&quot;") + '">' + t + "</option>";
+    }
+  ).join("");
+
+  var statusContainer = document.getElementById("status-filter");
+  statusContainer.innerHTML = domainStatuses.map(function (s) {
+    var label = statusLabels[s] || (s.charAt(0).toUpperCase() + s.slice(1));
+    var checkbox = '<input type="checkbox" value="' + s + '" checked> ';
+    return '<label class="status-toggle">' + checkbox + label + "</label>";
+  }).join("");
+
+  // Group fusion-schematic rows by the (partner, breakpoint-aa) key baked
+  // into every row shape's <title> text by cfh.reporting.fusion_schematic
+  // (e.g. "...BRAF–KIAA1549 fusion, breakpoint BRAF aa 381; ...") --
+  // read back here, never recomputed or duplicated from the algorithm side.
+  var schematicGroups = new Map();
+  events.forEach(function (e) {
+    if (!e.partner_gene || e.breakpoint_protein_position == null) { return; }
+    var key = e.partner_gene + "|" + e.breakpoint_protein_position;
+    var group = schematicGroups.get(key);
+    if (!group) {
+      group = { tumorTypes: new Set(), domainStatuses: new Set() };
+      schematicGroups.set(key, group);
+    }
+    if (e.tumor_type) { group.tumorTypes.add(e.tumor_type); }
+    if (e.domain_status) { group.domainStatuses.add(e.domain_status); }
+  });
+  var TITLE_RE = /–([^;]+?) fusion, breakpoint \S+ aa (\d+);/;
+  var schematicSvg = document.getElementById("fusion-schematic-svg");
+
+  var summaryEl = document.getElementById("events-summary");
+  var rows = Array.from(document.querySelectorAll("#events-table tbody tr"));
+
+  function applyFilters() {
+    var tumor = tumorSelect.value;
+    var checked = statusContainer.querySelectorAll("input:checked");
+    var activeStatuses = new Set(Array.from(checked).map(function (i) { return i.value; }));
+
+    var shown = 0;
+    rows.forEach(function (tr) {
+      var matchesTumor = !tumor || tr.dataset.tumorType === tumor;
+      var matchesStatus = !tr.dataset.domainStatus || activeStatuses.has(tr.dataset.domainStatus);
+      var visible = matchesTumor && matchesStatus;
+      tr.hidden = !visible;
+      if (visible) { shown += 1; }
+    });
+    if (summaryEl) {
+      summaryEl.textContent = "Showing " + shown + " of " + rows.length + " events";
+    }
+
+    if (schematicSvg) {
+      schematicSvg.querySelectorAll("title").forEach(function (titleEl) {
+        var match = TITLE_RE.exec(titleEl.textContent || "");
+        var shape = titleEl.parentElement;
+        if (!match) { return; }
+        var group = schematicGroups.get(match[1] + "|" + match[2]);
+        if (!group) { shape.style.opacity = ""; return; }
+        var groupMatchesTumor = !tumor || group.tumorTypes.has(tumor);
+        var groupMatchesStatus = Array.from(group.domainStatuses).some(function (s) {
+          return activeStatuses.has(s);
+        });
+        shape.style.opacity = (groupMatchesTumor && groupMatchesStatus) ? "1" : "0.12";
+      });
+    }
+  }
+
+  tumorSelect.addEventListener("change", applyFilters);
+  statusContainer.addEventListener("change", applyFilters);
+  applyFilters();
+
+  // Shared by the lollipop-track points and the mechanistic-interpretation
+  // counter-intuitive-event tables: clear any active filters (so the row
+  // can't be hidden -- both jump sources are drawn independent of the
+  // table's tumor-type/domain-status filters), scroll the matching
+  // #events-table row into view, and briefly highlight it.
+  function jumpToEventRow(eventId) {
+    var row = document.querySelector(
+      '#events-table tbody tr[data-event-id="' + CSS.escape(eventId) + '"]'
+    );
+    if (!row) { return; }
+    tumorSelect.value = "";
+    statusContainer.querySelectorAll("input").forEach(function (i) { i.checked = true; });
+    applyFilters();
+    row.scrollIntoView({ behavior: "smooth", block: "center" });
+    row.classList.add("row-highlight");
+    window.setTimeout(function () { row.classList.remove("row-highlight"); }, 1500);
+  }
+
+  // Hovering or clicking a lollipop-track point (data-event-id, set by
+  // cfh.real_benchmark._domain_track_svg) shows a sample-id tooltip and/or
+  // jumps to that event's row in the table below.
+  var domainTrackFrame = document.getElementById("domain-track-svg");
+  var tooltip = document.getElementById("lollipop-tooltip");
+  if (domainTrackFrame) {
+    domainTrackFrame.querySelectorAll("circle[data-event-id]").forEach(function (circle) {
+      var eventId = circle.getAttribute("data-event-id");
+      if (!eventId) { return; }
+      var matchedEvent = eventsById[eventId];
+      if (tooltip && matchedEvent && matchedEvent.sample_id) {
+        circle.addEventListener("mouseenter", function () {
+          tooltip.textContent = "Sample " + matchedEvent.sample_id;
+          tooltip.hidden = false;
+        });
+        circle.addEventListener("mousemove", function (mouseEvent) {
+          tooltip.style.left = mouseEvent.clientX + 14 + "px";
+          tooltip.style.top = mouseEvent.clientY + 14 + "px";
+        });
+        circle.addEventListener("mouseleave", function () {
+          tooltip.hidden = true;
+        });
+      }
+      if (!document.querySelector('#events-table tbody tr[data-event-id="' + CSS.escape(eventId) + '"]')) {
+        return;
+      }
+      circle.style.cursor = "pointer";
+      circle.addEventListener("click", function () { jumpToEventRow(eventId); });
+    });
+  }
+
+  // Clicking a row in a "Mechanistic interpretation" counter-intuitive-
+  // event table (see cfh.reporting.html_viewer._mechanistic_effect_html)
+  // jumps to that same event in the main events table below.
+  document.querySelectorAll("tr.counter-intuitive-row[data-event-id]").forEach(function (row) {
+    var eventId = row.getAttribute("data-event-id");
+    if (!eventId) { return; }
+    row.addEventListener("click", function () { jumpToEventRow(eventId); });
+  });
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll("table.sortable").forEach(function (table) {
+    var tbody = table.tBodies[0];
+    if (!tbody) { return; }
+    var headers = Array.from(table.querySelectorAll("thead th[data-sort-key]"));
+    var currentKey = null;
+    var currentDir = 1;
+    headers.forEach(function (th, index) {
+      th.addEventListener("click", function () {
+        var key = th.getAttribute("data-sort-key");
+        currentDir = (currentKey === key) ? -currentDir : 1;
+        currentKey = key;
+        headers.forEach(function (h) { h.removeAttribute("data-sort-dir"); });
+        th.setAttribute("data-sort-dir", currentDir === 1 ? "asc" : "desc");
+
+        var rows = Array.from(tbody.querySelectorAll("tr"));
+        rows.sort(function (a, b) {
+          var aCell = a.children[index];
+          var bCell = b.children[index];
+          var aRaw = aCell ? aCell.getAttribute("data-sort") : null;
+          var bRaw = bCell ? bCell.getAttribute("data-sort") : null;
+          var aNum = aRaw === null || aRaw === "" ? NaN : Number(aRaw);
+          var bNum = bRaw === null || bRaw === "" ? NaN : Number(bRaw);
+          var cmp;
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            cmp = aNum - bNum;
+          } else {
+            cmp = String(aRaw).localeCompare(String(bRaw));
+          }
+          return cmp * currentDir;
+        });
+        rows.forEach(function (row) { tbody.appendChild(row); });
+      });
+    });
+  });
+});
+</script>
+</body>
+</html>

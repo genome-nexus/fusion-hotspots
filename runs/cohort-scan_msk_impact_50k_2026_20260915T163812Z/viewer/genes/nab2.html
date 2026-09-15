@@ -1,0 +1,767 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NAB2 fusion-hotspot report</title>
+<style>
+:root { color-scheme: light; }
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 24px 20px 60px; background: #f7f7f8; color: #1a1a1a;
+  font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+.wrap { max-width: 1080px; margin: 0 auto; }
+h1 { font-size: 22px; margin: 0 0 4px; }
+h1 .badge { position: relative; top: -2px; }
+h2 {
+  font-size: 16px; margin: 32px 0 10px;
+  border-bottom: 1px solid #ddd; padding-bottom: 6px;
+}
+.subtitle { color: #555; font-size: 13px; margin: 0 0 20px; }
+.back-link {
+  display: inline-block; margin-bottom: 14px; font-size: 13px;
+  color: #2878b5; text-decoration: none;
+}
+.back-link:hover { text-decoration: underline; }
+.card {
+  background: #fff; border: 1px solid #e2e2e2;
+  border-radius: 8px; padding: 16px 18px;
+}
+.stat-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px;
+}
+.stat {
+  background: #fff; border: 1px solid #e2e2e2;
+  border-radius: 8px; padding: 10px 12px;
+}
+.stat .label {
+  font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.02em;
+}
+.stat .value { font-size: 18px; font-weight: 600; margin-top: 2px; }
+.svg-frame {
+  width: 100%; overflow-x: auto; background: #fff;
+  border: 1px solid #e2e2e2; border-radius: 8px; padding: 8px;
+}
+.svg-frame svg { display: block; max-width: 100%; height: auto; }
+.controls {
+  display: flex; flex-wrap: wrap; gap: 20px; align-items: center;
+  margin: 12px 0 16px; padding: 12px 14px; background: #fff;
+  border: 1px solid #e2e2e2; border-radius: 8px;
+}
+.control-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.control-group label.title { font-size: 12px; font-weight: 600; color: #333; }
+.control-group select { font-size: 13px; padding: 4px 6px; }
+.status-toggle { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; }
+#events-summary { font-size: 12px; color: #555; margin-left: auto; }
+table.events { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+table.events th, table.events td {
+  text-align: left; padding: 5px 8px;
+  border-bottom: 1px solid #eee; white-space: nowrap;
+}
+table.events th { position: sticky; top: 0; background: #fafafa; }
+table.events tr.row-highlight { background: #fff3cd; transition: background 1.2s ease; }
+.lollipop-tooltip {
+  position: fixed; z-index: 1000; pointer-events: none;
+  background: #1a1a1a; color: #fff; font-size: 12px; line-height: 1.3;
+  padding: 4px 8px; border-radius: 4px; white-space: nowrap;
+}
+.mechanism-callout {
+  background: #f5f8fc; border: 1px solid #cfe0f0; border-radius: 8px;
+  padding: 12px 16px; margin: 0 0 16px; font-size: 13px;
+}
+.mechanism-callout p { margin: 4px 0; }
+.mechanism-callout p.panel-note { padding-left: 0; }
+tr.counter-intuitive-row { cursor: pointer; }
+tr.counter-intuitive-row:hover { background: #f0f0f0; }
+.events-table-frame {
+  max-height: 420px; overflow: auto;
+  border: 1px solid #e2e2e2; border-radius: 8px; background: #fff;
+}
+.gene-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.gene-links a {
+  font-size: 12.5px; padding: 4px 9px; border-radius: 999px; text-decoration: none;
+  border: 1px solid #ccc; color: #1a1a1a; background: #fff;
+}
+.gene-links a:hover { background: #f0f0f0; }
+.gene-links a.significant { border-color: #d62728; color: #d62728; }
+.note { font-size: 12px; color: #777; margin-top: 8px; }
+.panel-note { font-size: 12px; color: #555; margin: 8px 0 0; padding-left: 18px; }
+.badge {
+  display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 9px;
+  border-radius: 999px; margin-left: 10px; vertical-align: middle;
+  text-transform: uppercase; letter-spacing: 0.03em;
+}
+.badge-curated { background: #e6f4ea; color: #1a7f37; border: 1px solid #b7e0c2; }
+.badge-auto { background: #fff4e5; color: #9a6700; border: 1px solid #f0dca6; }
+table.data-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+table.data-table th, table.data-table td {
+  text-align: left; padding: 5px 8px;
+  border-bottom: 1px solid #eee; white-space: nowrap;
+}
+table.data-table th { position: sticky; top: 0; background: #fafafa; }
+table.sortable th[data-sort-key] { cursor: pointer; user-select: none; }
+table.sortable th[data-sort-key]:hover { background: #f0f0f0; }
+table.sortable th[data-sort-key]::after { content: ""; margin-left: 4px; color: #999; }
+table.sortable th[data-sort-dir="asc"]::after { content: "\25B2"; margin-left: 4px; color: #555; }
+table.sortable th[data-sort-dir="desc"]::after { content: "\25BC"; margin-left: 4px; color: #555; }
+.data-table-frame {
+  max-height: 380px; overflow: auto;
+  border: 1px solid #e2e2e2; border-radius: 8px; background: #fff;
+}
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back-link" href="../index.html">&larr; Back to cohort-scan summary</a>
+  <h1>NAB2<span class="badge badge-auto" title="Derived live from Genome Nexus, no curated YAML on file">Auto-configured</span></h1>
+  <p class="subtitle">msk_impact_50k_2026</p>
+  <div class="mechanism-callout"><p><strong>NAB conserved region 2 (NCD2) retention:</strong> not statistically significant (p=0.1126, odds ratio=2.345) &mdash; too weak to draw a conclusion.</p><p><strong>NAB conserved region 1 (NCD1) SAM domain disruption:</strong> not statistically significant (p=0.9982, odds ratio=0.1181) &mdash; too weak to draw a conclusion.</p><p class="panel-note"><a href="#mechanistic-interpretation">See full mechanistic interpretation below.</a></p></div>
+  <div class="stat-grid"><div class="stat"><div class="label">Raw Structural Variant Count</div><div class="value">111</div></div><div class="stat"><div class="label">Total Fusions</div><div class="value">72</div></div><div class="stat"><div class="label">Mapped Fusions</div><div class="value">71</div></div><div class="stat"><div class="label">Skipped Fusions</div><div class="value">1</div></div><div class="stat"><div class="label">In Frame Count</div><div class="value">25</div></div><div class="stat"><div class="label">Out Of Frame Count</div><div class="value">10</div></div><div class="stat"><div class="label">Known Frame Count</div><div class="value">35</div></div><div class="stat"><div class="label">Unknown Frame Count</div><div class="value">36</div></div><div class="stat"><div class="label">In Frame Percent</div><div class="value">71.43</div></div><div class="stat"><div class="label">Kinase Retained Count</div><div class="value">49</div></div><div class="stat"><div class="label">Kinase Retained Percent</div><div class="value">69.01</div></div><div class="stat"><div class="label">In Frame Kinase Retained Count</div><div class="value">20</div></div><div class="stat"><div class="label">Fisher Odds Ratio</div><div class="value">2.345</div></div><div class="stat"><div class="label">Fisher P Value</div><div class="value">0.1126</div></div><div class="stat"><div class="label">Permutation P Value</div><div class="value">0.009901</div></div><div class="stat"><div class="label">Domain Accession</div><div class="value">PF04905</div></div><div class="stat"><div class="label">Domain Start Aa</div><div class="value">200</div></div><div class="stat"><div class="label">Domain End Aa</div><div class="value">366</div></div></div>
+  <h2>Domain retention / outlier lollipop track</h2><p class="panel-note">Click a point to jump to its event in the table below.</p><div class="svg-frame" id="domain-track-svg"><svg xmlns="http://www.w3.org/2000/svg" width="920" height="200" viewBox="0 0 920 200">
+<rect width="920" height="200" fill="white"/>
+<text x="60" y="28" font-family="sans-serif" font-size="16">NAB2 domain-retention track</text>
+<rect x="364.2" y="34.0" width="252.5" height="16.0" fill="#62b36f" opacity="0.55"/>
+<text x="364.2" y="46.0" font-family="sans-serif" font-size="9.5">NAB conserved region 2 (NCD2) (200-366)</text>
+<line x1="60.0" y1="63.0" x2="860.0" y2="63.0" stroke="#444444" stroke-width="4"/>
+<circle cx="805.2" cy="71.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0052994-T01-IM6-1"><title>event EVT-P-0052994-T01-IM6-1; sample P-0052994-T01-IM6; partner FAM186A; breakpoint aa 490; domain lost</title></circle>
+<circle cx="805.2" cy="78.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0015989-T01-IM6-2"><title>event EVT-P-0015989-T01-IM6-2; sample P-0015989-T01-IM6; partner FMN1; breakpoint aa 490; domain lost</title></circle>
+<circle cx="805.2" cy="85.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0015989-T05-IM6-3"><title>event EVT-P-0015989-T05-IM6-3; sample P-0015989-T05-IM6; partner FMN1; breakpoint aa 490; domain lost</title></circle>
+<circle cx="805.2" cy="92.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0015989-T02-IM6-4"><title>event EVT-P-0015989-T02-IM6-4; sample P-0015989-T02-IM6; partner FMN1; breakpoint aa 490; domain lost</title></circle>
+<circle cx="641.0" cy="99.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0020678-T01-IM6-6"><title>event EVT-P-0020678-T01-IM6-6; sample P-0020678-T01-IM6; partner KRT6A; breakpoint aa 382; domain lost</title></circle>
+<circle cx="837.2" cy="71.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0045531-T01-IM6-7"><title>event EVT-P-0045531-T01-IM6-7; sample P-0045531-T01-IM6; partner LGR5; breakpoint aa 511; domain lost</title></circle>
+<circle cx="707.9" cy="78.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0068029-T01-IM7-9"><title>event EVT-P-0068029-T01-IM7-9; sample P-0068029-T01-IM7; partner LRP1; breakpoint aa 426; domain lost</title></circle>
+<circle cx="625.8" cy="85.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0058847-T01-IM7-10"><title>event EVT-P-0058847-T01-IM7-10; sample P-0058847-T01-IM7; partner LRP1; breakpoint aa 372; domain lost</title></circle>
+<circle cx="613.6" cy="92.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0008384-T01-IM5-12"><title>event EVT-P-0008384-T01-IM5-12; sample P-0008384-T01-IM5; partner CUX2; breakpoint aa 364; domain truncated</title></circle>
+<circle cx="805.2" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0038472-T01-IM6-13"><title>event EVT-P-0038472-T01-IM6-13; sample P-0038472-T01-IM6; partner DLGAP2; breakpoint aa 490; domain retained</title></circle>
+<circle cx="545.2" cy="71.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0039139-T01-IM6-14"><title>event EVT-P-0039139-T01-IM6-14; sample P-0039139-T01-IM6; partner KIF5A; breakpoint aa 319; domain truncated</title></circle>
+<circle cx="613.6" cy="78.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0022192-T01-IM6-18"><title>event EVT-P-0022192-T01-IM6-18; sample P-0022192-T01-IM6; partner LRP1; breakpoint aa 364; domain truncated</title></circle>
+<circle cx="595.4" cy="85.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0028347-T01-IM6-21"><title>event EVT-P-0028347-T01-IM6-21; sample P-0028347-T01-IM6; partner MGAT4C; breakpoint aa 352; domain truncated</title></circle>
+<circle cx="613.6" cy="92.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0011161-T01-IM5-22"><title>event EVT-P-0011161-T01-IM5-22; sample P-0011161-T01-IM5; partner MGAT4C; breakpoint aa 364; domain truncated</title></circle>
+<circle cx="860.0" cy="99.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0025245-T01-IM6-23"><title>event EVT-P-0025245-T01-IM6-23; sample P-0025245-T01-IM6; partner MTOR; breakpoint aa 526; domain lost</title></circle>
+<circle cx="805.2" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0001055-T02-IM5-49"><title>event EVT-P-0001055-T02-IM5-49; sample P-0001055-T02-IM5; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="805.2" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0066534-T01-IM7-50"><title>event EVT-P-0066534-T01-IM7-50; sample P-0066534-T01-IM7; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="805.2" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0003845-T01-IM5-51"><title>event EVT-P-0003845-T01-IM5-51; sample P-0003845-T01-IM5; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="639.5" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0029101-T01-IM6-52"><title>event EVT-P-0029101-T01-IM6-52; sample P-0029101-T01-IM6; partner STAT6; breakpoint aa 381; domain retained</title></circle>
+<circle cx="805.2" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0029763-T01-IM6-53"><title>event EVT-P-0029763-T01-IM6-53; sample P-0029763-T01-IM6; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="805.2" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0001055-T03-IM6-55"><title>event EVT-P-0001055-T03-IM6-55; sample P-0001055-T03-IM6; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="805.2" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0020523-T01-IM6-56"><title>event EVT-P-0020523-T01-IM6-56; sample P-0020523-T01-IM6; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="805.2" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0032069-T01-IM6-57"><title>event EVT-P-0032069-T01-IM6-57; sample P-0032069-T01-IM6; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="835.7" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0022259-T02-IM6-61"><title>event EVT-P-0022259-T02-IM6-61; sample P-0022259-T02-IM6; partner STAT6; breakpoint aa 510; domain retained</title></circle>
+<circle cx="805.2" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0004282-T03-IM5-62"><title>event EVT-P-0004282-T03-IM5-62; sample P-0004282-T03-IM5; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="668.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0033539-T02-IM6-63"><title>event EVT-P-0033539-T02-IM6-63; sample P-0033539-T02-IM6; partner STAT6; breakpoint aa 400; domain retained</title></circle>
+<circle cx="805.2" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0019357-T03-IM6-64"><title>event EVT-P-0019357-T03-IM6-64; sample P-0019357-T03-IM6; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="805.2" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0019182-T01-IM6-66"><title>event EVT-P-0019182-T01-IM6-66; sample P-0019182-T01-IM6; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="805.2" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0036288-T01-IM6-67"><title>event EVT-P-0036288-T01-IM6-67; sample P-0036288-T01-IM6; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="639.5" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0036975-T01-IM6-68"><title>event EVT-P-0036975-T01-IM6-68; sample P-0036975-T01-IM6; partner STAT6; breakpoint aa 381; domain retained</title></circle>
+<circle cx="805.2" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0019032-T01-IM6-69"><title>event EVT-P-0019032-T01-IM6-69; sample P-0019032-T01-IM6; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="613.6" cy="78.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0017518-T01-IM6-70"><title>event EVT-P-0017518-T01-IM6-70; sample P-0017518-T01-IM6; partner STAT6; breakpoint aa 364; domain truncated</title></circle>
+<circle cx="805.2" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0016751-T02-IM6-71"><title>event EVT-P-0016751-T02-IM6-71; sample P-0016751-T02-IM6; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="805.2" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0038591-T01-IM6-72"><title>event EVT-P-0038591-T01-IM6-72; sample P-0038591-T01-IM6; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="613.6" cy="99.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0016113-T01-IM6-73"><title>event EVT-P-0016113-T01-IM6-73; sample P-0016113-T01-IM6; partner STAT6; breakpoint aa 364; domain truncated</title></circle>
+<circle cx="720.1" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0004405-T01-IM5-74"><title>event EVT-P-0004405-T01-IM5-74; sample P-0004405-T01-IM5; partner STAT6; breakpoint aa 434; domain retained</title></circle>
+<circle cx="852.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0004943-T01-IM5-75"><title>event EVT-P-0004943-T01-IM5-75; sample P-0004943-T01-IM5; partner STAT6; breakpoint aa 521; domain retained</title></circle>
+<circle cx="805.2" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0040364-T01-IM6-76"><title>event EVT-P-0040364-T01-IM6-76; sample P-0040364-T01-IM6; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="805.2" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0040364-T02-IM6-77"><title>event EVT-P-0040364-T02-IM6-77; sample P-0040364-T02-IM6; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="805.2" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0014386-T01-IM6-78"><title>event EVT-P-0014386-T01-IM6-78; sample P-0014386-T01-IM6; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="805.2" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0043579-T01-IM6-79"><title>event EVT-P-0043579-T01-IM6-79; sample P-0043579-T01-IM6; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="805.2" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0044036-T01-IM6-80"><title>event EVT-P-0044036-T01-IM6-80; sample P-0044036-T01-IM6; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="805.2" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0044232-T02-IM6-81"><title>event EVT-P-0044232-T02-IM6-81; sample P-0044232-T02-IM6; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="805.2" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0001947-T03-IM6-82"><title>event EVT-P-0001947-T03-IM6-82; sample P-0001947-T03-IM6; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="805.2" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0045590-T01-IM6-83"><title>event EVT-P-0045590-T01-IM6-83; sample P-0045590-T01-IM6; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="805.2" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0046398-T01-IM6-84"><title>event EVT-P-0046398-T01-IM6-84; sample P-0046398-T01-IM6; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="805.2" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0046398-T02-IM6-85"><title>event EVT-P-0046398-T02-IM6-85; sample P-0046398-T02-IM6; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="613.6" cy="85.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0048656-T01-IM6-86"><title>event EVT-P-0048656-T01-IM6-86; sample P-0048656-T01-IM6; partner STAT6; breakpoint aa 364; domain truncated</title></circle>
+<circle cx="805.2" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0013489-T01-IM5-87"><title>event EVT-P-0013489-T01-IM5-87; sample P-0013489-T01-IM5; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="805.2" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0053200-T02-IM6-89"><title>event EVT-P-0053200-T02-IM6-89; sample P-0053200-T02-IM6; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="805.2" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0013261-T01-IM5-90"><title>event EVT-P-0013261-T01-IM5-90; sample P-0013261-T01-IM5; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="805.2" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0013216-T02-IM5-91"><title>event EVT-P-0013216-T02-IM5-91; sample P-0013216-T02-IM5; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="805.2" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0055865-T01-IM6-92"><title>event EVT-P-0055865-T01-IM6-92; sample P-0055865-T01-IM6; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="545.2" cy="92.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0055909-T01-IM6-93"><title>event EVT-P-0055909-T01-IM6-93; sample P-0055909-T01-IM6; partner STAT6; breakpoint aa 319; domain truncated</title></circle>
+<circle cx="805.2" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0012841-T01-IM5-94"><title>event EVT-P-0012841-T01-IM5-94; sample P-0012841-T01-IM5; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="805.2" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0057770-T01-IM6-95"><title>event EVT-P-0057770-T01-IM6-95; sample P-0057770-T01-IM6; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="805.2" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0057786-T01-IM6-96"><title>event EVT-P-0057786-T01-IM6-96; sample P-0057786-T01-IM6; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="613.6" cy="85.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0012421-T01-IM5-97"><title>event EVT-P-0012421-T01-IM5-97; sample P-0012421-T01-IM5; partner STAT6; breakpoint aa 364; domain truncated</title></circle>
+<circle cx="805.2" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0007527-T01-IM5-98"><title>event EVT-P-0007527-T01-IM5-98; sample P-0007527-T01-IM5; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="805.2" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0001055-T04-IM6-99"><title>event EVT-P-0001055-T04-IM6-99; sample P-0001055-T04-IM6; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="832.6" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0059117-T01-IM7-100"><title>event EVT-P-0059117-T01-IM7-100; sample P-0059117-T01-IM7; partner STAT6; breakpoint aa 508; domain retained</title></circle>
+<circle cx="805.2" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0059275-T01-IM7-101"><title>event EVT-P-0059275-T01-IM7-101; sample P-0059275-T01-IM7; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="805.2" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0006897-T01-IM5-102"><title>event EVT-P-0006897-T01-IM5-102; sample P-0006897-T01-IM5; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="823.5" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0006243-T01-IM5-103"><title>event EVT-P-0006243-T01-IM5-103; sample P-0006243-T01-IM5; partner STAT6; breakpoint aa 502; domain retained</title></circle>
+<circle cx="639.5" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0005578-T01-IM5-104"><title>event EVT-P-0005578-T01-IM5-104; sample P-0005578-T01-IM5; partner STAT6; breakpoint aa 381; domain retained</title></circle>
+<circle cx="805.2" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0067841-T01-IM7-106"><title>event EVT-P-0067841-T01-IM7-106; sample P-0067841-T01-IM7; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="805.2" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0066305-T01-IM7-107"><title>event EVT-P-0066305-T01-IM7-107; sample P-0066305-T01-IM7; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="805.2" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0027038-T01-IM6-108"><title>event EVT-P-0027038-T01-IM6-108; sample P-0027038-T01-IM6; partner STAT6; breakpoint aa 490; domain retained</title></circle>
+<circle cx="545.2" cy="92.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0030371-T02-IM6-109"><title>event EVT-P-0030371-T02-IM6-109; sample P-0030371-T02-IM6; partner TMEM117; breakpoint aa 319; domain truncated</title></circle>
+<circle cx="613.6" cy="99.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0004638-T01-IM5-110"><title>event EVT-P-0004638-T01-IM5-110; sample P-0004638-T01-IM5; partner PDZRN4; breakpoint aa 364; domain truncated</title></circle>
+<circle cx="545.2" cy="71.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0030371-T01-IM6-111"><title>event EVT-P-0030371-T01-IM6-111; sample P-0030371-T01-IM6; partner TMEM117; breakpoint aa 319; domain truncated</title></circle>
+<line x1="60.0" y1="114.0" x2="860.0" y2="114.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="860.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
+<text x="60.0" y="128.0" font-family="sans-serif" font-size="9">1</text>
+<text x="860.0" y="128.0" font-family="sans-serif" font-size="9" text-anchor="end">526 aa</text>
+<line x1="61.5" y1="132.0" x2="61.5" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="61.5" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 61.5 137.0)">E1</text>
+<line x1="102.6" y1="132.0" x2="102.6" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="102.6" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 102.6 137.0)">E2</text>
+<line x1="546.7" y1="132.0" x2="546.7" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="546.7" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 546.7 137.0)">E3</text>
+<line x1="613.6" y1="132.0" x2="613.6" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="613.6" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 613.6 137.0)">E4</text>
+<line x1="641.0" y1="132.0" x2="641.0" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="641.0" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 641.0 137.0)">E5</text>
+<line x1="707.9" y1="132.0" x2="707.9" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="707.9" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 707.9 137.0)">E6</text>
+<line x1="805.2" y1="132.0" x2="805.2" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="805.2" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 805.2 137.0)">E7</text>
+<line x1="212.1" y1="114.0" x2="212.1" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="212.1" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">100</text>
+<line x1="364.2" y1="114.0" x2="364.2" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="364.2" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">200</text>
+<line x1="516.3" y1="114.0" x2="516.3" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="516.3" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">300</text>
+<line x1="668.4" y1="114.0" x2="668.4" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="668.4" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">400</text>
+<line x1="820.5" y1="114.0" x2="820.5" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="820.5" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">500</text>
+<circle cx="60" cy="167.0" r="4" fill="#2878b5"/><text x="70" y="172.0" font-family="sans-serif" font-size="12">fully retained</text>
+<circle cx="180" cy="167.0" r="4" fill="#f2a93b"/><text x="190" y="172.0" font-family="sans-serif" font-size="12">truncated</text>
+<circle cx="275" cy="167.0" r="4" fill="#777777"/><text x="285" y="172.0" font-family="sans-serif" font-size="12">fully lost</text>
+<circle cx="365" cy="167.0" r="4" fill="white" stroke="#d62728" stroke-width="1.5"/><text x="375" y="172.0" font-family="sans-serif" font-size="12">reference discrepancy</text>
+<rect x="60" y="180.0" width="12" height="10" fill="#62b36f" opacity="0.55"/><text x="80" y="189.0" font-family="sans-serif" font-size="12">configured key-domain span (name/range labeled above; a second or later configured domain gets its own distinct shade)</text>
+</svg>
+</div><h2 id="mechanistic-interpretation">Mechanistic interpretation</h2><p><strong>NAB conserved region 2 (NCD2) retention:</strong> not statistically significant (p=0.1126, odds ratio=2.345) &mdash; too weak to draw a conclusion.</p><p><strong>NAB conserved region 1 (NCD1) SAM domain disruption:</strong> not statistically significant (p=0.9982, odds ratio=0.1181) &mdash; too weak to draw a conclusion.</p><h2>Composite evidence ranking (per partner gene)</h2><p class="panel-note">Click a column header to sort ascending/descending. 14 partner gene(s) ranked by <code>composite_score</code>.</p><div class="data-table-frame"><table class="data-table sortable" id="composite-score-table"><thead><tr><th data-sort-key="Rank">Rank</th><th data-sort-key="Partner_gene">Partner gene</th><th data-sort-key="Event_count">Events</th><th data-sort-key="Composite_score">Composite score</th><th data-sort-key="Recurrence_score">Recurrence</th><th data-sort-key="Domain_retention_score">Domain retention</th><th data-sort-key="Domain_disruption_score">Domain disruption</th><th data-sort-key="Cutpoint_proximity_score">Cutpoint proximity</th><th data-sort-key="Confidence_certainty_score">Confidence</th></tr></thead><tbody><tr><td data-sort="1">1</td><td data-sort="STAT6">STAT6</td><td data-sort="53">53</td><td data-sort="0.3891339296891707">0.3891</td><td data-sort="0.7361111111111112">0.7361</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort="0.0">0</td><td data-sort="0.34366576819407013">0.3437</td><td data-sort="0.6664269678216079">0.6664</td></tr><tr><td data-sort="2">2</td><td data-sort="CUX2">CUX2</td><td data-sort="1">1</td><td data-sort="0.2631251900011857">0.2631</td><td data-sort="0.013888888888888888">0.01389</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort="0.0">0</td><td data-sort="0.948051948051948">0.9481</td><td data-sort="0.6664269678216079">0.6664</td></tr><tr><td data-sort="3">3</td><td data-sort="PDZRN4">PDZRN4</td><td data-sort="1">1</td><td data-sort="0.2631251900011857">0.2631</td><td data-sort="0.013888888888888888">0.01389</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort="0.0">0</td><td data-sort="0.948051948051948">0.9481</td><td data-sort="0.6664269678216079">0.6664</td></tr><tr><td data-sort="4">4</td><td data-sort="MGAT4C">MGAT4C</td><td data-sort="2">2</td><td data-sort="0.26144770082369656">0.2614</td><td data-sort="0.027777777777777776">0.02778</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort="0.0">0</td><td data-sort="0.9090909090909091">0.9091</td><td data-sort="0.6664269678216079">0.6664</td></tr><tr><td data-sort="5">5</td><td data-sort="KRT6A">KRT6A</td><td data-sort="1">1</td><td data-sort="0.2611771380531338">0.2612</td><td data-sort="0.013888888888888888">0.01389</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort="0.0">0</td><td data-sort="0.935064935064935">0.9351</td><td data-sort="0.6664269678216079">0.6664</td></tr><tr><td data-sort="6">6</td><td data-sort="LRP1">LRP1</td><td data-sort="3">3</td><td data-sort="0.2591208609968567">0.2591</td><td data-sort="0.041666666666666664">0.04167</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort="0.0">0</td><td data-sort="0.8658008658008658">0.8658</td><td data-sort="0.6664269678216079">0.6664</td></tr><tr><td data-sort="7">7</td><td data-sort="TMEM117">TMEM117</td><td data-sort="2">2</td><td data-sort="0.2234606878366836">0.2235</td><td data-sort="0.027777777777777776">0.02778</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort="0.0">0</td><td data-sort="0.6558441558441559">0.6558</td><td data-sort="0.6664269678216079">0.6664</td></tr><tr><td data-sort="8">8</td><td data-sort="KIF5A">KIF5A</td><td data-sort="1">1</td><td data-sort="0.2192940211700169">0.2193</td><td data-sort="0.013888888888888888">0.01389</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort="0.0">0</td><td data-sort="0.6558441558441559">0.6558</td><td data-sort="0.6664269678216079">0.6664</td></tr><tr><td data-sort="9">9</td><td data-sort="FMN1">FMN1</td><td data-sort="3">3</td><td data-sort="0.16431566619166194">0.1643</td><td data-sort="0.041666666666666664">0.04167</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort="0.0">0</td><td data-sort="0.23376623376623373">0.2338</td><td data-sort="0.6664269678216079">0.6664</td></tr><tr><td data-sort="10">10</td><td data-sort="DLGAP2">DLGAP2</td><td data-sort="1">1</td><td data-sort="0.15598233285832858">0.156</td><td data-sort="0.013888888888888888">0.01389</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort="0.0">0</td><td data-sort="0.23376623376623373">0.2338</td><td data-sort="0.6664269678216079">0.6664</td></tr><tr><td data-sort="11">11</td><td data-sort="FAM186A">FAM186A</td><td data-sort="1">1</td><td data-sort="0.15598233285832858">0.156</td><td data-sort="0.013888888888888888">0.01389</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort="0.0">0</td><td data-sort="0.23376623376623373">0.2338</td><td data-sort="0.6664269678216079">0.6664</td></tr><tr><td data-sort="12">12</td><td data-sort="LFNG">LFNG</td><td data-sort="1">1</td><td data-sort="0.14225576210987473">0.1423</td><td data-sort="0.013888888888888888">0.01389</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort="0.0">0</td><td data-sort=""></td><td data-sort="0.6664269678216079">0.6664</td></tr><tr><td data-sort="13">13</td><td data-sort="LGR5">LGR5</td><td data-sort="1">1</td><td data-sort="0.13552778740378313">0.1355</td><td data-sort="0.013888888888888888">0.01389</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort="0.0">0</td><td data-sort="0.09740259740259738">0.0974</td><td data-sort="0.6664269678216079">0.6664</td></tr><tr><td data-sort="14">14</td><td data-sort="MTOR">MTOR</td><td data-sort="1">1</td><td data-sort="0.12091739779339353">0.1209</td><td data-sort="0.013888888888888888">0.01389</td><td data-sort="0.20043213737826426">0.2004</td><td data-sort="0.0">0</td><td data-sort="0.0">0</td><td data-sort="0.6664269678216079">0.6664</td></tr></tbody></table></div><h2>Fusion-transcript schematic</h2>
+<div class="controls">
+  <div class="control-group">
+    <label class="title" for="tumor-type-filter">Tumor type</label>
+    <select id="tumor-type-filter"><option value="">All tumor types</option></select>
+  </div>
+  <div class="control-group">
+    <span class="title">Domain status</span>
+    <span id="status-filter"></span>
+  </div>
+  <span id="events-summary"></span>
+</div>
+<div class="svg-frame" id="fusion-schematic-svg"><svg xmlns="http://www.w3.org/2000/svg" width="1000" height="796" viewBox="0 0 1000 796">
+<rect width="1000" height="796" fill="white"/>
+<text x="60" y="24" font-family="sans-serif" font-size="15">NAB2 fusion-transcript schematic</text>
+<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555555">Fusion order varies by row; follow each row's 5' and 3' labels (NAB2 portion is domain-colored, exon ticks). Partner-gene blocks share one color; row labels identify each partner.</text>
+<rect x="582.7" y="56.0" width="37.3" height="22" fill="#8064a2"><title>Partner gene STAT6; NAB2–STAT6 fusion, breakpoint NAB2 aa 490; samples P-0001055-T02-IM5, P-0066534-T01-IM7, P-0003845-T01-IM5, P-0029763-T01-IM6, P-0001055-T03-IM6 (+34 more)</title></rect>
+<rect x="60.0" y="56.0" width="522.7" height="22" fill="#e2e2e2"><title>NAB2 backbone (0-490 aa, no domain); domain status retained; NAB2–STAT6 fusion, breakpoint NAB2 aa 490; samples P-0001055-T02-IM5, P-0066534-T01-IM7, P-0003845-T01-IM5, P-0029763-T01-IM6, P-0001055-T03-IM6 (+34 more)</title></rect>
+<rect x="96.3" y="56.0" width="86.4" height="22" fill="#2878b5"><title>NAB conserved region 1 (NCD1) SAM domain retained (34-115 aa); NAB2–STAT6 fusion, breakpoint NAB2 aa 490; samples P-0001055-T02-IM5, P-0066534-T01-IM7, P-0003845-T01-IM5, P-0029763-T01-IM6, P-0001055-T03-IM6 (+34 more)</title></rect>
+<text x="139.5" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">NAB conserved region…</text>
+<rect x="273.3" y="56.0" width="177.1" height="22" fill="#2878b5"><title>NAB conserved region 2 (NCD2) retained (200-366 aa); NAB2–STAT6 fusion, breakpoint NAB2 aa 490; samples P-0001055-T02-IM5, P-0066534-T01-IM7, P-0003845-T01-IM5, P-0029763-T01-IM6, P-0001055-T03-IM6 (+34 more)</title></rect>
+<text x="361.9" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">NAB conserved region 2 (NCD2)</text>
+<line x1="61.1" y1="56.0" x2="61.1" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="89.9" y1="56.0" x2="89.9" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="401.3" y1="56.0" x2="401.3" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="448.3" y1="56.0" x2="448.3" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="467.5" y1="56.0" x2="467.5" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.4" y1="56.0" x2="514.4" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="582.7" y1="55.0" x2="582.7" y2="79.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NAB2–STAT6 fusion, breakpoint NAB2 aa 490; samples P-0001055-T02-IM5, P-0066534-T01-IM7, P-0003845-T01-IM5, P-0029763-T01-IM6, P-0001055-T03-IM6 (+34 more)</title></line>
+<text x="64.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="70.5" font-family="sans-serif" font-size="9.5">STAT6 (x39) – NAB conserved region 2 (NCD2) retained – Soft Tissue Sarcoma, CNS Cancer</text>
+<rect x="448.3" y="82.0" width="171.7" height="22" fill="#8064a2"><title>Partner gene STAT6; NAB2–STAT6 fusion, breakpoint NAB2 aa 364; samples P-0017518-T01-IM6, P-0016113-T01-IM6, P-0048656-T01-IM6, P-0012421-T01-IM5</title></rect>
+<rect x="60.0" y="82.0" width="388.3" height="22" fill="#e2e2e2"><title>NAB2 backbone (0-364 aa, no domain); domain status truncated; NAB2–STAT6 fusion, breakpoint NAB2 aa 364; samples P-0017518-T01-IM6, P-0016113-T01-IM6, P-0048656-T01-IM6, P-0012421-T01-IM5</title></rect>
+<rect x="96.3" y="82.0" width="86.4" height="22" fill="#2878b5"><title>NAB conserved region 1 (NCD1) SAM domain retained (34-115 aa); NAB2–STAT6 fusion, breakpoint NAB2 aa 364; samples P-0017518-T01-IM6, P-0016113-T01-IM6, P-0048656-T01-IM6, P-0012421-T01-IM5</title></rect>
+<text x="139.5" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">NAB conserved region…</text>
+<rect x="273.3" y="82.0" width="174.9" height="22" fill="#f2a93b"><title>NAB conserved region 2 (NCD2) truncated (200-364 aa); NAB2–STAT6 fusion, breakpoint NAB2 aa 364; samples P-0017518-T01-IM6, P-0016113-T01-IM6, P-0048656-T01-IM6, P-0012421-T01-IM5</title></rect>
+<text x="360.8" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">NAB conserved region 2 (NCD2)</text>
+<line x1="61.1" y1="82.0" x2="61.1" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="89.9" y1="82.0" x2="89.9" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="401.3" y1="82.0" x2="401.3" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="448.3" y1="81.0" x2="448.3" y2="105.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; NAB2–STAT6 fusion, breakpoint NAB2 aa 364; samples P-0017518-T01-IM6, P-0016113-T01-IM6, P-0048656-T01-IM6, P-0012421-T01-IM5</title></line>
+<text x="64.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="96.5" font-family="sans-serif" font-size="9.5">STAT6 (x4) – NAB conserved region 2 (NCD2) truncated – Soft Tissue Sarcoma, CNS Cancer</text>
+<rect x="466.4" y="108.0" width="153.6" height="22" fill="#8064a2"><title>Partner gene STAT6; NAB2–STAT6 fusion, breakpoint NAB2 aa 381; samples P-0029101-T01-IM6, P-0036975-T01-IM6, P-0005578-T01-IM5</title></rect>
+<rect x="60.0" y="108.0" width="406.4" height="22" fill="#e2e2e2"><title>NAB2 backbone (0-381 aa, no domain); domain status retained; NAB2–STAT6 fusion, breakpoint NAB2 aa 381; samples P-0029101-T01-IM6, P-0036975-T01-IM6, P-0005578-T01-IM5</title></rect>
+<rect x="96.3" y="108.0" width="86.4" height="22" fill="#2878b5"><title>NAB conserved region 1 (NCD1) SAM domain retained (34-115 aa); NAB2–STAT6 fusion, breakpoint NAB2 aa 381; samples P-0029101-T01-IM6, P-0036975-T01-IM6, P-0005578-T01-IM5</title></rect>
+<text x="139.5" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">NAB conserved region…</text>
+<rect x="273.3" y="108.0" width="177.1" height="22" fill="#2878b5"><title>NAB conserved region 2 (NCD2) retained (200-366 aa); NAB2–STAT6 fusion, breakpoint NAB2 aa 381; samples P-0029101-T01-IM6, P-0036975-T01-IM6, P-0005578-T01-IM5</title></rect>
+<text x="361.9" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">NAB conserved region 2 (NCD2)</text>
+<line x1="61.1" y1="108.0" x2="61.1" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="89.9" y1="108.0" x2="89.9" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="401.3" y1="108.0" x2="401.3" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="448.3" y1="108.0" x2="448.3" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="466.4" y1="107.0" x2="466.4" y2="131.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NAB2–STAT6 fusion, breakpoint NAB2 aa 381; samples P-0029101-T01-IM6, P-0036975-T01-IM6, P-0005578-T01-IM5</title></line>
+<text x="64.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="122.5" font-family="sans-serif" font-size="9.5">STAT6 (x3) – NAB conserved region 2 (NCD2) retained – Soft Tissue Sarcoma</text>
+<rect x="60.0" y="134.0" width="522.7" height="22" fill="#8064a2"><title>Partner gene FMN1; NAB2–FMN1 fusion, breakpoint NAB2 aa 490; samples P-0015989-T01-IM6, P-0015989-T05-IM6, P-0015989-T02-IM6</title></rect>
+<rect x="582.7" y="134.0" width="37.3" height="22" fill="#e2e2e2"><title>NAB2 backbone (490-525 aa, no domain); domain status lost; NAB2–FMN1 fusion, breakpoint NAB2 aa 490; samples P-0015989-T01-IM6, P-0015989-T05-IM6, P-0015989-T02-IM6</title></rect>
+<line x1="582.7" y1="133.0" x2="582.7" y2="157.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; NAB2–FMN1 fusion, breakpoint NAB2 aa 490; samples P-0015989-T01-IM6, P-0015989-T05-IM6, P-0015989-T02-IM6</title></line>
+<text x="64.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="148.5" font-family="sans-serif" font-size="9.5">FMN1 (x3) – NAB conserved region 2 (NCD2) lost – Melanoma</text>
+<rect x="400.3" y="160.0" width="219.7" height="22" fill="#8064a2"><title>Partner gene TMEM117; NAB2–TMEM117 fusion, breakpoint NAB2 aa 319; samples P-0030371-T02-IM6, P-0030371-T01-IM6</title></rect>
+<rect x="60.0" y="160.0" width="340.3" height="22" fill="#e2e2e2"><title>NAB2 backbone (0-319 aa, no domain); domain status truncated; NAB2–TMEM117 fusion, breakpoint NAB2 aa 319; samples P-0030371-T02-IM6, P-0030371-T01-IM6</title></rect>
+<rect x="96.3" y="160.0" width="86.4" height="22" fill="#2878b5"><title>NAB conserved region 1 (NCD1) SAM domain retained (34-115 aa); NAB2–TMEM117 fusion, breakpoint NAB2 aa 319; samples P-0030371-T02-IM6, P-0030371-T01-IM6</title></rect>
+<text x="139.5" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">NAB conserved region…</text>
+<rect x="273.3" y="160.0" width="126.9" height="22" fill="#f2a93b"><title>NAB conserved region 2 (NCD2) truncated (200-319 aa); NAB2–TMEM117 fusion, breakpoint NAB2 aa 319; samples P-0030371-T02-IM6, P-0030371-T01-IM6</title></rect>
+<text x="336.8" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">NAB conserved region 2 (NCD2)</text>
+<line x1="61.1" y1="160.0" x2="61.1" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="89.9" y1="160.0" x2="89.9" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="400.3" y1="159.0" x2="400.3" y2="183.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; NAB2–TMEM117 fusion, breakpoint NAB2 aa 319; samples P-0030371-T02-IM6, P-0030371-T01-IM6</title></line>
+<text x="64.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="174.5" font-family="sans-serif" font-size="9.5">TMEM117 (x2) – NAB conserved region 2 (NCD2) truncated – Soft Tissue Sarcoma</text>
+<rect x="400.3" y="186.0" width="219.7" height="22" fill="#8064a2"><title>Partner gene KIF5A; NAB2–KIF5A fusion, breakpoint NAB2 aa 319; sample P-0039139-T01-IM6</title></rect>
+<rect x="60.0" y="186.0" width="340.3" height="22" fill="#e2e2e2"><title>NAB2 backbone (0-319 aa, no domain); domain status truncated; NAB2–KIF5A fusion, breakpoint NAB2 aa 319; sample P-0039139-T01-IM6</title></rect>
+<rect x="96.3" y="186.0" width="86.4" height="22" fill="#2878b5"><title>NAB conserved region 1 (NCD1) SAM domain retained (34-115 aa); NAB2–KIF5A fusion, breakpoint NAB2 aa 319; sample P-0039139-T01-IM6</title></rect>
+<text x="139.5" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">NAB conserved region…</text>
+<rect x="273.3" y="186.0" width="126.9" height="22" fill="#f2a93b"><title>NAB conserved region 2 (NCD2) truncated (200-319 aa); NAB2–KIF5A fusion, breakpoint NAB2 aa 319; sample P-0039139-T01-IM6</title></rect>
+<text x="336.8" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">NAB conserved region 2 (NCD2)</text>
+<line x1="61.1" y1="186.0" x2="61.1" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="89.9" y1="186.0" x2="89.9" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="400.3" y1="185.0" x2="400.3" y2="209.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; NAB2–KIF5A fusion, breakpoint NAB2 aa 319; sample P-0039139-T01-IM6</title></line>
+<text x="64.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="200.5" font-family="sans-serif" font-size="9.5">KIF5A – NAB conserved region 2 (NCD2) truncated – Soft Tissue Sarcoma</text>
+<rect x="400.3" y="212.0" width="219.7" height="22" fill="#8064a2"><title>Partner gene STAT6; NAB2–STAT6 fusion, breakpoint NAB2 aa 319; sample P-0055909-T01-IM6</title></rect>
+<rect x="60.0" y="212.0" width="340.3" height="22" fill="#e2e2e2"><title>NAB2 backbone (0-319 aa, no domain); domain status truncated; NAB2–STAT6 fusion, breakpoint NAB2 aa 319; sample P-0055909-T01-IM6</title></rect>
+<rect x="96.3" y="212.0" width="86.4" height="22" fill="#2878b5"><title>NAB conserved region 1 (NCD1) SAM domain retained (34-115 aa); NAB2–STAT6 fusion, breakpoint NAB2 aa 319; sample P-0055909-T01-IM6</title></rect>
+<text x="139.5" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">NAB conserved region…</text>
+<rect x="273.3" y="212.0" width="126.9" height="22" fill="#f2a93b"><title>NAB conserved region 2 (NCD2) truncated (200-319 aa); NAB2–STAT6 fusion, breakpoint NAB2 aa 319; sample P-0055909-T01-IM6</title></rect>
+<text x="336.8" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">NAB conserved region 2 (NCD2)</text>
+<line x1="61.1" y1="212.0" x2="61.1" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="89.9" y1="212.0" x2="89.9" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="400.3" y1="211.0" x2="400.3" y2="235.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; NAB2–STAT6 fusion, breakpoint NAB2 aa 319; sample P-0055909-T01-IM6</title></line>
+<text x="64.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="226.5" font-family="sans-serif" font-size="9.5">STAT6 – NAB conserved region 2 (NCD2) truncated – Soft Tissue Sarcoma</text>
+<rect x="435.5" y="238.0" width="184.5" height="22" fill="#8064a2"><title>Partner gene MGAT4C; NAB2–MGAT4C fusion, breakpoint NAB2 aa 352; sample P-0028347-T01-IM6</title></rect>
+<rect x="60.0" y="238.0" width="375.5" height="22" fill="#e2e2e2"><title>NAB2 backbone (0-352 aa, no domain); domain status truncated; NAB2–MGAT4C fusion, breakpoint NAB2 aa 352; sample P-0028347-T01-IM6</title></rect>
+<rect x="96.3" y="238.0" width="86.4" height="22" fill="#2878b5"><title>NAB conserved region 1 (NCD1) SAM domain retained (34-115 aa); NAB2–MGAT4C fusion, breakpoint NAB2 aa 352; sample P-0028347-T01-IM6</title></rect>
+<text x="139.5" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">NAB conserved region…</text>
+<rect x="273.3" y="238.0" width="162.1" height="22" fill="#f2a93b"><title>NAB conserved region 2 (NCD2) truncated (200-352 aa); NAB2–MGAT4C fusion, breakpoint NAB2 aa 352; sample P-0028347-T01-IM6</title></rect>
+<text x="354.4" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">NAB conserved region 2 (NCD2)</text>
+<line x1="61.1" y1="238.0" x2="61.1" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="89.9" y1="238.0" x2="89.9" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="401.3" y1="238.0" x2="401.3" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="435.5" y1="237.0" x2="435.5" y2="261.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; NAB2–MGAT4C fusion, breakpoint NAB2 aa 352; sample P-0028347-T01-IM6</title></line>
+<text x="64.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="252.5" font-family="sans-serif" font-size="9.5">MGAT4C – NAB conserved region 2 (NCD2) truncated – Soft Tissue Sarcoma</text>
+<rect x="60.0" y="264.0" width="388.3" height="22" fill="#8064a2"><title>Partner gene CUX2; NAB2–CUX2 fusion, breakpoint NAB2 aa 364; sample P-0008384-T01-IM5</title></rect>
+<rect x="448.3" y="264.0" width="171.7" height="22" fill="#e2e2e2"><title>NAB2 backbone (364-525 aa, no domain); domain status truncated; NAB2–CUX2 fusion, breakpoint NAB2 aa 364; sample P-0008384-T01-IM5</title></rect>
+<rect x="448.3" y="264.0" width="2.1" height="22" fill="#f2a93b"><title>NAB conserved region 2 (NCD2) truncated (364-366 aa); NAB2–CUX2 fusion, breakpoint NAB2 aa 364; sample P-0008384-T01-IM5</title></rect>
+<line x1="467.5" y1="264.0" x2="467.5" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.4" y1="264.0" x2="514.4" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="582.7" y1="264.0" x2="582.7" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="448.3" y1="263.0" x2="448.3" y2="287.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; NAB2–CUX2 fusion, breakpoint NAB2 aa 364; sample P-0008384-T01-IM5</title></line>
+<text x="64.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="278.5" font-family="sans-serif" font-size="9.5">CUX2 – NAB conserved region 2 (NCD2) truncated – Glioma</text>
+<rect x="60.0" y="290.0" width="388.3" height="22" fill="#8064a2"><title>Partner gene LRP1; NAB2–LRP1 fusion, breakpoint NAB2 aa 364; sample P-0022192-T01-IM6</title></rect>
+<rect x="448.3" y="290.0" width="171.7" height="22" fill="#e2e2e2"><title>NAB2 backbone (364-525 aa, no domain); domain status truncated; NAB2–LRP1 fusion, breakpoint NAB2 aa 364; sample P-0022192-T01-IM6</title></rect>
+<rect x="448.3" y="290.0" width="2.1" height="22" fill="#f2a93b"><title>NAB conserved region 2 (NCD2) truncated (364-366 aa); NAB2–LRP1 fusion, breakpoint NAB2 aa 364; sample P-0022192-T01-IM6</title></rect>
+<line x1="467.5" y1="290.0" x2="467.5" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.4" y1="290.0" x2="514.4" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="582.7" y1="290.0" x2="582.7" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="448.3" y1="289.0" x2="448.3" y2="313.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; NAB2–LRP1 fusion, breakpoint NAB2 aa 364; sample P-0022192-T01-IM6</title></line>
+<text x="64.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="304.5" font-family="sans-serif" font-size="9.5">LRP1 – NAB conserved region 2 (NCD2) truncated – Germ Cell Tumor</text>
+<rect x="60.0" y="316.0" width="388.3" height="22" fill="#8064a2"><title>Partner gene MGAT4C; NAB2–MGAT4C fusion, breakpoint NAB2 aa 364; sample P-0011161-T01-IM5</title></rect>
+<rect x="448.3" y="316.0" width="171.7" height="22" fill="#e2e2e2"><title>NAB2 backbone (364-525 aa, no domain); domain status truncated; NAB2–MGAT4C fusion, breakpoint NAB2 aa 364; sample P-0011161-T01-IM5</title></rect>
+<rect x="448.3" y="316.0" width="2.1" height="22" fill="#f2a93b"><title>NAB conserved region 2 (NCD2) truncated (364-366 aa); NAB2–MGAT4C fusion, breakpoint NAB2 aa 364; sample P-0011161-T01-IM5</title></rect>
+<line x1="467.5" y1="316.0" x2="467.5" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.4" y1="316.0" x2="514.4" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="582.7" y1="316.0" x2="582.7" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="448.3" y1="315.0" x2="448.3" y2="339.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; NAB2–MGAT4C fusion, breakpoint NAB2 aa 364; sample P-0011161-T01-IM5</title></line>
+<text x="64.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="330.5" font-family="sans-serif" font-size="9.5">MGAT4C – NAB conserved region 2 (NCD2) truncated – Non-Small Cell Lung Cancer</text>
+<rect x="60.0" y="342.0" width="388.3" height="22" fill="#8064a2"><title>Partner gene PDZRN4; NAB2–PDZRN4 fusion, breakpoint NAB2 aa 364; sample P-0004638-T01-IM5</title></rect>
+<rect x="448.3" y="342.0" width="171.7" height="22" fill="#e2e2e2"><title>NAB2 backbone (364-525 aa, no domain); domain status truncated; NAB2–PDZRN4 fusion, breakpoint NAB2 aa 364; sample P-0004638-T01-IM5</title></rect>
+<rect x="448.3" y="342.0" width="2.1" height="22" fill="#f2a93b"><title>NAB conserved region 2 (NCD2) truncated (364-366 aa); NAB2–PDZRN4 fusion, breakpoint NAB2 aa 364; sample P-0004638-T01-IM5</title></rect>
+<line x1="467.5" y1="342.0" x2="467.5" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.4" y1="342.0" x2="514.4" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="582.7" y1="342.0" x2="582.7" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="448.3" y1="341.0" x2="448.3" y2="365.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; NAB2–PDZRN4 fusion, breakpoint NAB2 aa 364; sample P-0004638-T01-IM5</title></line>
+<text x="64.0" y="356.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="356.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="356.5" font-family="sans-serif" font-size="9.5">PDZRN4 – NAB conserved region 2 (NCD2) truncated – Ampullary Cancer</text>
+<rect x="60.0" y="368.0" width="396.8" height="22" fill="#8064a2"><title>Partner gene LRP1; NAB2–LRP1 fusion, breakpoint NAB2 aa 372; sample P-0058847-T01-IM7</title></rect>
+<rect x="456.8" y="368.0" width="163.2" height="22" fill="#e2e2e2"><title>NAB2 backbone (372-525 aa, no domain); domain status lost; NAB2–LRP1 fusion, breakpoint NAB2 aa 372; sample P-0058847-T01-IM7</title></rect>
+<line x1="467.5" y1="368.0" x2="467.5" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.4" y1="368.0" x2="514.4" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="582.7" y1="368.0" x2="582.7" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="456.8" y1="367.0" x2="456.8" y2="391.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; NAB2–LRP1 fusion, breakpoint NAB2 aa 372; sample P-0058847-T01-IM7</title></line>
+<text x="64.0" y="382.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="382.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="382.5" font-family="sans-serif" font-size="9.5">LRP1 – NAB conserved region 2 (NCD2) lost – Non-Small Cell Lung Cancer</text>
+<rect x="60.0" y="394.0" width="407.5" height="22" fill="#8064a2"><title>Partner gene KRT6A; NAB2–KRT6A fusion, breakpoint NAB2 aa 382; sample P-0020678-T01-IM6</title></rect>
+<rect x="467.5" y="394.0" width="152.5" height="22" fill="#e2e2e2"><title>NAB2 backbone (382-525 aa, no domain); domain status lost; NAB2–KRT6A fusion, breakpoint NAB2 aa 382; sample P-0020678-T01-IM6</title></rect>
+<line x1="514.4" y1="394.0" x2="514.4" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="582.7" y1="394.0" x2="582.7" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="467.5" y1="393.0" x2="467.5" y2="417.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; NAB2–KRT6A fusion, breakpoint NAB2 aa 382; sample P-0020678-T01-IM6</title></line>
+<text x="64.0" y="408.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="408.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="408.5" font-family="sans-serif" font-size="9.5">KRT6A – NAB conserved region 2 (NCD2) lost – Non-Small Cell Lung Cancer</text>
+<rect x="486.7" y="420.0" width="133.3" height="22" fill="#8064a2"><title>Partner gene STAT6; NAB2–STAT6 fusion, breakpoint NAB2 aa 400; sample P-0033539-T02-IM6</title></rect>
+<rect x="60.0" y="420.0" width="426.7" height="22" fill="#e2e2e2"><title>NAB2 backbone (0-400 aa, no domain); domain status retained; NAB2–STAT6 fusion, breakpoint NAB2 aa 400; sample P-0033539-T02-IM6</title></rect>
+<rect x="96.3" y="420.0" width="86.4" height="22" fill="#2878b5"><title>NAB conserved region 1 (NCD1) SAM domain retained (34-115 aa); NAB2–STAT6 fusion, breakpoint NAB2 aa 400; sample P-0033539-T02-IM6</title></rect>
+<text x="139.5" y="434.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">NAB conserved region…</text>
+<rect x="273.3" y="420.0" width="177.1" height="22" fill="#2878b5"><title>NAB conserved region 2 (NCD2) retained (200-366 aa); NAB2–STAT6 fusion, breakpoint NAB2 aa 400; sample P-0033539-T02-IM6</title></rect>
+<text x="361.9" y="434.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">NAB conserved region 2 (NCD2)</text>
+<line x1="61.1" y1="420.0" x2="61.1" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="89.9" y1="420.0" x2="89.9" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="401.3" y1="420.0" x2="401.3" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="448.3" y1="420.0" x2="448.3" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="467.5" y1="420.0" x2="467.5" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="486.7" y1="419.0" x2="486.7" y2="443.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NAB2–STAT6 fusion, breakpoint NAB2 aa 400; sample P-0033539-T02-IM6</title></line>
+<text x="64.0" y="434.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="434.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="434.5" font-family="sans-serif" font-size="9.5">STAT6 – NAB conserved region 2 (NCD2) retained – Soft Tissue Sarcoma</text>
+<rect x="60.0" y="446.0" width="454.4" height="22" fill="#8064a2"><title>Partner gene LRP1; NAB2–LRP1 fusion, breakpoint NAB2 aa 426; sample P-0068029-T01-IM7</title></rect>
+<rect x="514.4" y="446.0" width="105.6" height="22" fill="#e2e2e2"><title>NAB2 backbone (426-525 aa, no domain); domain status lost; NAB2–LRP1 fusion, breakpoint NAB2 aa 426; sample P-0068029-T01-IM7</title></rect>
+<line x1="582.7" y1="446.0" x2="582.7" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.4" y1="445.0" x2="514.4" y2="469.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; NAB2–LRP1 fusion, breakpoint NAB2 aa 426; sample P-0068029-T01-IM7</title></line>
+<text x="64.0" y="460.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="460.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="460.5" font-family="sans-serif" font-size="9.5">LRP1 – NAB conserved region 2 (NCD2) lost – Bladder Cancer</text>
+<rect x="522.9" y="472.0" width="97.1" height="22" fill="#8064a2"><title>Partner gene STAT6; NAB2–STAT6 fusion, breakpoint NAB2 aa 434; sample P-0004405-T01-IM5</title></rect>
+<rect x="60.0" y="472.0" width="462.9" height="22" fill="#e2e2e2"><title>NAB2 backbone (0-434 aa, no domain); domain status retained; NAB2–STAT6 fusion, breakpoint NAB2 aa 434; sample P-0004405-T01-IM5</title></rect>
+<rect x="96.3" y="472.0" width="86.4" height="22" fill="#2878b5"><title>NAB conserved region 1 (NCD1) SAM domain retained (34-115 aa); NAB2–STAT6 fusion, breakpoint NAB2 aa 434; sample P-0004405-T01-IM5</title></rect>
+<text x="139.5" y="486.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">NAB conserved region…</text>
+<rect x="273.3" y="472.0" width="177.1" height="22" fill="#2878b5"><title>NAB conserved region 2 (NCD2) retained (200-366 aa); NAB2–STAT6 fusion, breakpoint NAB2 aa 434; sample P-0004405-T01-IM5</title></rect>
+<text x="361.9" y="486.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">NAB conserved region 2 (NCD2)</text>
+<line x1="61.1" y1="472.0" x2="61.1" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="89.9" y1="472.0" x2="89.9" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="401.3" y1="472.0" x2="401.3" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="448.3" y1="472.0" x2="448.3" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="467.5" y1="472.0" x2="467.5" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.4" y1="472.0" x2="514.4" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="522.9" y1="471.0" x2="522.9" y2="495.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NAB2–STAT6 fusion, breakpoint NAB2 aa 434; sample P-0004405-T01-IM5</title></line>
+<text x="64.0" y="486.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="486.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="486.5" font-family="sans-serif" font-size="9.5">STAT6 – NAB conserved region 2 (NCD2) retained – Soft Tissue Sarcoma</text>
+<rect x="582.7" y="498.0" width="37.3" height="22" fill="#8064a2"><title>Partner gene DLGAP2; NAB2–DLGAP2 fusion, breakpoint NAB2 aa 490; sample P-0038472-T01-IM6</title></rect>
+<rect x="60.0" y="498.0" width="522.7" height="22" fill="#e2e2e2"><title>NAB2 backbone (0-490 aa, no domain); domain status retained; NAB2–DLGAP2 fusion, breakpoint NAB2 aa 490; sample P-0038472-T01-IM6</title></rect>
+<rect x="96.3" y="498.0" width="86.4" height="22" fill="#2878b5"><title>NAB conserved region 1 (NCD1) SAM domain retained (34-115 aa); NAB2–DLGAP2 fusion, breakpoint NAB2 aa 490; sample P-0038472-T01-IM6</title></rect>
+<text x="139.5" y="512.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">NAB conserved region…</text>
+<rect x="273.3" y="498.0" width="177.1" height="22" fill="#2878b5"><title>NAB conserved region 2 (NCD2) retained (200-366 aa); NAB2–DLGAP2 fusion, breakpoint NAB2 aa 490; sample P-0038472-T01-IM6</title></rect>
+<text x="361.9" y="512.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">NAB conserved region 2 (NCD2)</text>
+<line x1="61.1" y1="498.0" x2="61.1" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="89.9" y1="498.0" x2="89.9" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="401.3" y1="498.0" x2="401.3" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="448.3" y1="498.0" x2="448.3" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="467.5" y1="498.0" x2="467.5" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.4" y1="498.0" x2="514.4" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="582.7" y1="497.0" x2="582.7" y2="521.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NAB2–DLGAP2 fusion, breakpoint NAB2 aa 490; sample P-0038472-T01-IM6</title></line>
+<text x="64.0" y="512.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="512.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="512.5" font-family="sans-serif" font-size="9.5">DLGAP2 – NAB conserved region 2 (NCD2) retained – Breast Cancer</text>
+<rect x="60.0" y="524.0" width="522.7" height="22" fill="#8064a2"><title>Partner gene FAM186A; NAB2–FAM186A fusion, breakpoint NAB2 aa 490; sample P-0052994-T01-IM6</title></rect>
+<rect x="582.7" y="524.0" width="37.3" height="22" fill="#e2e2e2"><title>NAB2 backbone (490-525 aa, no domain); domain status lost; NAB2–FAM186A fusion, breakpoint NAB2 aa 490; sample P-0052994-T01-IM6</title></rect>
+<line x1="582.7" y1="523.0" x2="582.7" y2="547.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; NAB2–FAM186A fusion, breakpoint NAB2 aa 490; sample P-0052994-T01-IM6</title></line>
+<text x="64.0" y="538.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="538.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="538.5" font-family="sans-serif" font-size="9.5">FAM186A – NAB conserved region 2 (NCD2) lost – Hepatobiliary Cancer</text>
+<rect x="595.5" y="550.0" width="24.5" height="22" fill="#8064a2"><title>Partner gene STAT6; NAB2–STAT6 fusion, breakpoint NAB2 aa 502; sample P-0006243-T01-IM5</title></rect>
+<rect x="60.0" y="550.0" width="535.5" height="22" fill="#e2e2e2"><title>NAB2 backbone (0-502 aa, no domain); domain status retained; NAB2–STAT6 fusion, breakpoint NAB2 aa 502; sample P-0006243-T01-IM5</title></rect>
+<rect x="96.3" y="550.0" width="86.4" height="22" fill="#2878b5"><title>NAB conserved region 1 (NCD1) SAM domain retained (34-115 aa); NAB2–STAT6 fusion, breakpoint NAB2 aa 502; sample P-0006243-T01-IM5</title></rect>
+<text x="139.5" y="564.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">NAB conserved region…</text>
+<rect x="273.3" y="550.0" width="177.1" height="22" fill="#2878b5"><title>NAB conserved region 2 (NCD2) retained (200-366 aa); NAB2–STAT6 fusion, breakpoint NAB2 aa 502; sample P-0006243-T01-IM5</title></rect>
+<text x="361.9" y="564.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">NAB conserved region 2 (NCD2)</text>
+<line x1="61.1" y1="550.0" x2="61.1" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="89.9" y1="550.0" x2="89.9" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="401.3" y1="550.0" x2="401.3" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="448.3" y1="550.0" x2="448.3" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="467.5" y1="550.0" x2="467.5" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.4" y1="550.0" x2="514.4" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="582.7" y1="550.0" x2="582.7" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="595.5" y1="549.0" x2="595.5" y2="573.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NAB2–STAT6 fusion, breakpoint NAB2 aa 502; sample P-0006243-T01-IM5</title></line>
+<text x="64.0" y="564.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="564.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="564.5" font-family="sans-serif" font-size="9.5">STAT6 – NAB conserved region 2 (NCD2) retained – Soft Tissue Sarcoma</text>
+<rect x="601.9" y="576.0" width="18.1" height="22" fill="#8064a2"><title>Partner gene STAT6; NAB2–STAT6 fusion, breakpoint NAB2 aa 508; sample P-0059117-T01-IM7</title></rect>
+<rect x="60.0" y="576.0" width="541.9" height="22" fill="#e2e2e2"><title>NAB2 backbone (0-508 aa, no domain); domain status retained; NAB2–STAT6 fusion, breakpoint NAB2 aa 508; sample P-0059117-T01-IM7</title></rect>
+<rect x="96.3" y="576.0" width="86.4" height="22" fill="#2878b5"><title>NAB conserved region 1 (NCD1) SAM domain retained (34-115 aa); NAB2–STAT6 fusion, breakpoint NAB2 aa 508; sample P-0059117-T01-IM7</title></rect>
+<text x="139.5" y="590.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">NAB conserved region…</text>
+<rect x="273.3" y="576.0" width="177.1" height="22" fill="#2878b5"><title>NAB conserved region 2 (NCD2) retained (200-366 aa); NAB2–STAT6 fusion, breakpoint NAB2 aa 508; sample P-0059117-T01-IM7</title></rect>
+<text x="361.9" y="590.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">NAB conserved region 2 (NCD2)</text>
+<line x1="61.1" y1="576.0" x2="61.1" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="89.9" y1="576.0" x2="89.9" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="401.3" y1="576.0" x2="401.3" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="448.3" y1="576.0" x2="448.3" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="467.5" y1="576.0" x2="467.5" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.4" y1="576.0" x2="514.4" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="582.7" y1="576.0" x2="582.7" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="601.9" y1="575.0" x2="601.9" y2="599.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NAB2–STAT6 fusion, breakpoint NAB2 aa 508; sample P-0059117-T01-IM7</title></line>
+<text x="64.0" y="590.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="590.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="590.5" font-family="sans-serif" font-size="9.5">STAT6 – NAB conserved region 2 (NCD2) retained – Soft Tissue Sarcoma</text>
+<rect x="604.0" y="602.0" width="16.0" height="22" fill="#8064a2"><title>Partner gene STAT6; NAB2–STAT6 fusion, breakpoint NAB2 aa 510; sample P-0022259-T02-IM6</title></rect>
+<rect x="60.0" y="602.0" width="544.0" height="22" fill="#e2e2e2"><title>NAB2 backbone (0-510 aa, no domain); domain status retained; NAB2–STAT6 fusion, breakpoint NAB2 aa 510; sample P-0022259-T02-IM6</title></rect>
+<rect x="96.3" y="602.0" width="86.4" height="22" fill="#2878b5"><title>NAB conserved region 1 (NCD1) SAM domain retained (34-115 aa); NAB2–STAT6 fusion, breakpoint NAB2 aa 510; sample P-0022259-T02-IM6</title></rect>
+<text x="139.5" y="616.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">NAB conserved region…</text>
+<rect x="273.3" y="602.0" width="177.1" height="22" fill="#2878b5"><title>NAB conserved region 2 (NCD2) retained (200-366 aa); NAB2–STAT6 fusion, breakpoint NAB2 aa 510; sample P-0022259-T02-IM6</title></rect>
+<text x="361.9" y="616.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">NAB conserved region 2 (NCD2)</text>
+<line x1="61.1" y1="602.0" x2="61.1" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="89.9" y1="602.0" x2="89.9" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="401.3" y1="602.0" x2="401.3" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="448.3" y1="602.0" x2="448.3" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="467.5" y1="602.0" x2="467.5" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.4" y1="602.0" x2="514.4" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="582.7" y1="602.0" x2="582.7" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="604.0" y1="601.0" x2="604.0" y2="625.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NAB2–STAT6 fusion, breakpoint NAB2 aa 510; sample P-0022259-T02-IM6</title></line>
+<text x="64.0" y="616.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="616.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="616.5" font-family="sans-serif" font-size="9.5">STAT6 – NAB conserved region 2 (NCD2) retained – Soft Tissue Sarcoma</text>
+<rect x="60.0" y="628.0" width="545.1" height="22" fill="#8064a2"><title>Partner gene LGR5; NAB2–LGR5 fusion, breakpoint NAB2 aa 511; sample P-0045531-T01-IM6</title></rect>
+<rect x="605.1" y="628.0" width="14.9" height="22" fill="#e2e2e2"><title>NAB2 backbone (511-525 aa, no domain); domain status lost; NAB2–LGR5 fusion, breakpoint NAB2 aa 511; sample P-0045531-T01-IM6</title></rect>
+<line x1="605.1" y1="627.0" x2="605.1" y2="651.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; NAB2–LGR5 fusion, breakpoint NAB2 aa 511; sample P-0045531-T01-IM6</title></line>
+<text x="64.0" y="642.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="642.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="642.5" font-family="sans-serif" font-size="9.5">LGR5 – NAB conserved region 2 (NCD2) lost – Colorectal Cancer</text>
+<rect x="615.7" y="654.0" width="4.3" height="22" fill="#8064a2"><title>Partner gene STAT6; NAB2–STAT6 fusion, breakpoint NAB2 aa 521; sample P-0004943-T01-IM5</title></rect>
+<rect x="60.0" y="654.0" width="555.7" height="22" fill="#e2e2e2"><title>NAB2 backbone (0-521 aa, no domain); domain status retained; NAB2–STAT6 fusion, breakpoint NAB2 aa 521; sample P-0004943-T01-IM5</title></rect>
+<rect x="96.3" y="654.0" width="86.4" height="22" fill="#2878b5"><title>NAB conserved region 1 (NCD1) SAM domain retained (34-115 aa); NAB2–STAT6 fusion, breakpoint NAB2 aa 521; sample P-0004943-T01-IM5</title></rect>
+<text x="139.5" y="668.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">NAB conserved region…</text>
+<rect x="273.3" y="654.0" width="177.1" height="22" fill="#2878b5"><title>NAB conserved region 2 (NCD2) retained (200-366 aa); NAB2–STAT6 fusion, breakpoint NAB2 aa 521; sample P-0004943-T01-IM5</title></rect>
+<text x="361.9" y="668.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">NAB conserved region 2 (NCD2)</text>
+<line x1="61.1" y1="654.0" x2="61.1" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="89.9" y1="654.0" x2="89.9" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="401.3" y1="654.0" x2="401.3" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="448.3" y1="654.0" x2="448.3" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="467.5" y1="654.0" x2="467.5" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.4" y1="654.0" x2="514.4" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="582.7" y1="654.0" x2="582.7" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="615.7" y1="653.0" x2="615.7" y2="677.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NAB2–STAT6 fusion, breakpoint NAB2 aa 521; sample P-0004943-T01-IM5</title></line>
+<text x="64.0" y="668.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="668.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="668.5" font-family="sans-serif" font-size="9.5">STAT6 – NAB conserved region 2 (NCD2) retained – Soft Tissue Sarcoma</text>
+<rect x="60.0" y="680.0" width="560.0" height="22" fill="#8064a2"><title>Partner gene MTOR; NAB2–MTOR fusion, breakpoint NAB2 aa 525; sample P-0025245-T01-IM6</title></rect>
+<rect x="620.0" y="680.0" width="0.5" height="22" fill="#e2e2e2"><title>NAB2 backbone (525-525 aa, no domain); domain status lost; NAB2–MTOR fusion, breakpoint NAB2 aa 525; sample P-0025245-T01-IM6</title></rect>
+<line x1="620.0" y1="679.0" x2="620.0" y2="703.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; NAB2–MTOR fusion, breakpoint NAB2 aa 525; sample P-0025245-T01-IM6</title></line>
+<text x="64.0" y="694.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="694.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="694.5" font-family="sans-serif" font-size="9.5">MTOR – NAB conserved region 2 (NCD2) lost – Non-Small Cell Lung Cancer</text>
+<line x1="60.0" y1="710.0" x2="620.0" y2="710.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="705.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="620.0" y="705.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
+<text x="60.0" y="724.0" font-family="sans-serif" font-size="9">1</text>
+<text x="620.0" y="724.0" font-family="sans-serif" font-size="9" text-anchor="end">525 aa</text>
+<line x1="61.1" y1="728.0" x2="61.1" y2="732.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="61.1" y="733.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 61.1 733.0)">E1</text>
+<line x1="89.9" y1="728.0" x2="89.9" y2="732.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="89.9" y="733.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 89.9 733.0)">E2</text>
+<line x1="401.3" y1="728.0" x2="401.3" y2="732.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="401.3" y="733.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 401.3 733.0)">E3</text>
+<line x1="448.3" y1="728.0" x2="448.3" y2="732.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="448.3" y="733.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 448.3 733.0)">E4</text>
+<line x1="467.5" y1="728.0" x2="467.5" y2="732.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="467.5" y="733.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 467.5 733.0)">E5</text>
+<line x1="514.4" y1="728.0" x2="514.4" y2="732.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="514.4" y="733.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 514.4 733.0)">E6</text>
+<line x1="582.7" y1="728.0" x2="582.7" y2="732.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="582.7" y="733.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 582.7 733.0)">E7</text>
+<rect x="60.0" y="741.0" width="12" height="10" fill="#2878b5"/>
+<text x="76.0" y="750.0" font-family="sans-serif" font-size="9">domain retained</text>
+<rect x="227.0" y="741.0" width="12" height="10" fill="#f2a93b"/>
+<text x="243.0" y="750.0" font-family="sans-serif" font-size="9">domain truncated</text>
+<rect x="403.0" y="741.0" width="12" height="10" fill="#e2e2e2"/>
+<text x="419.0" y="750.0" font-family="sans-serif" font-size="9">target backbone (no domain)</text>
+<rect x="678.0" y="741.0" width="12" height="10" fill="#d62728"/>
+<text x="694.0" y="750.0" font-family="sans-serif" font-size="9">breakpoint</text>
+<text x="60" y="786.0" font-family="sans-serif" font-size="9" fill="#555555">Partner-block colors are decorative; row labels identify partners.</text>
+</svg>
+</div><h2>Genomic-coordinate clustering (build GRCh37)</h2><p class="note">The 44 events sharing protein position 490 aa use 39 distinct genomic positions spanning 978 bp -- the protein-position recurrence is broader than any single genomic hotspot, consistent with independent intronic breakpoints mapped (or clamped) onto the same protein/exon boundary rather than one shared DNA lesion.</p><div class="two-col"><p><strong>Protein position &harr; genomic breakpoint spread</strong> (linked view: each row is a protein junction position also shown in the fusion schematic/events table above).</p><div class="data-table-frame"><table class="data-table"><thead><tr><th>Protein position (aa)</th><th>Events</th><th>Distinct genomic positions</th><th>Genomic span (bp)</th><th>Spans &gt;1 chromosome</th></tr></thead><tbody><tr><td>490</td><td>44</td><td>39</td><td>978</td><td>No</td></tr><tr><td>364</td><td>8</td><td>8</td><td>225</td><td>No</td></tr><tr><td>319</td><td>4</td><td>3</td><td>189</td><td>No</td></tr><tr><td>381</td><td>3</td><td>3</td><td>43</td><td>No</td></tr></tbody></table></div><p><strong>Top genomic bins</strong> (fixed 1000 bp width):</p><div class="data-table-frame"><table class="data-table"><thead><tr><th>Chromosome</th><th>Bin start</th><th>Bin end</th><th>Events</th></tr></thead><tbody><tr><td>12</td><td>57487000</td><td>57488000</td><td>32</td></tr><tr><td>12</td><td>57488000</td><td>57489000</td><td>19</td></tr><tr><td>12</td><td>57486000</td><td>57487000</td><td>16</td></tr><tr><td>12</td><td>57485000</td><td>57486000</td><td>3</td></tr><tr><td>12</td><td>57491000</td><td>57492000</td><td>1</td></tr></tbody></table></div></div><h2>Events</h2><div class="events-table-frame"><table class="events" id="events-table"><thead><tr><th>Event</th><th>Sample</th><th>Tumor type</th><th>Oncotree</th><th>Partner gene</th><th>Role</th><th>Breakpoint (aa)</th><th>Domain status</th></tr></thead><tbody><tr data-tumor-type="Hepatobiliary Cancer" data-domain-status="lost" data-event-id="EVT-P-0052994-T01-IM6-1"><td>EVT-P-0052994-T01-IM6-1</td><td>P-0052994-T01-IM6</td><td>Hepatobiliary Cancer</td><td>GBAD</td><td>FAM186A</td><td>three_prime</td><td>490</td><td>Lost</td></tr><tr data-tumor-type="Melanoma" data-domain-status="lost" data-event-id="EVT-P-0015989-T01-IM6-2"><td>EVT-P-0015989-T01-IM6-2</td><td>P-0015989-T01-IM6</td><td>Melanoma</td><td>ACRM</td><td>FMN1</td><td>three_prime</td><td>490</td><td>Lost</td></tr><tr data-tumor-type="Melanoma" data-domain-status="lost" data-event-id="EVT-P-0015989-T05-IM6-3"><td>EVT-P-0015989-T05-IM6-3</td><td>P-0015989-T05-IM6</td><td>Melanoma</td><td>SKCM</td><td>FMN1</td><td>three_prime</td><td>490</td><td>Lost</td></tr><tr data-tumor-type="Melanoma" data-domain-status="lost" data-event-id="EVT-P-0015989-T02-IM6-4"><td>EVT-P-0015989-T02-IM6-4</td><td>P-0015989-T02-IM6</td><td>Melanoma</td><td>ACRM</td><td>FMN1</td><td>three_prime</td><td>490</td><td>Lost</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="lost" data-event-id="EVT-P-0020678-T01-IM6-6"><td>EVT-P-0020678-T01-IM6-6</td><td>P-0020678-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>KRT6A</td><td>three_prime</td><td>382</td><td>Lost</td></tr><tr data-tumor-type="Colorectal Cancer" data-domain-status="lost" data-event-id="EVT-P-0045531-T01-IM6-7"><td>EVT-P-0045531-T01-IM6-7</td><td>P-0045531-T01-IM6</td><td>Colorectal Cancer</td><td>COAD</td><td>LGR5</td><td>three_prime</td><td>511</td><td>Lost</td></tr><tr data-tumor-type="Bladder Cancer" data-domain-status="lost" data-event-id="EVT-P-0068029-T01-IM7-9"><td>EVT-P-0068029-T01-IM7-9</td><td>P-0068029-T01-IM7</td><td>Bladder Cancer</td><td>BLCA</td><td>LRP1</td><td>three_prime</td><td>426</td><td>Lost</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="lost" data-event-id="EVT-P-0058847-T01-IM7-10"><td>EVT-P-0058847-T01-IM7-10</td><td>P-0058847-T01-IM7</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>LRP1</td><td>three_prime</td><td>372</td><td>Lost</td></tr><tr data-tumor-type="Glioma" data-domain-status="disrupted" data-event-id="EVT-P-0008384-T01-IM5-12"><td>EVT-P-0008384-T01-IM5-12</td><td>P-0008384-T01-IM5</td><td>Glioma</td><td>ASTR</td><td>CUX2</td><td>three_prime</td><td>364</td><td>Truncated</td></tr><tr data-tumor-type="Breast Cancer" data-domain-status="retained" data-event-id="EVT-P-0038472-T01-IM6-13"><td>EVT-P-0038472-T01-IM6-13</td><td>P-0038472-T01-IM6</td><td>Breast Cancer</td><td>IDC</td><td>DLGAP2</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="disrupted" data-event-id="EVT-P-0039139-T01-IM6-14"><td>EVT-P-0039139-T01-IM6-14</td><td>P-0039139-T01-IM6</td><td>Soft Tissue Sarcoma</td><td>DDLS</td><td>KIF5A</td><td>five_prime</td><td>319</td><td>Truncated</td></tr><tr data-tumor-type="Germ Cell Tumor" data-domain-status="disrupted" data-event-id="EVT-P-0022192-T01-IM6-18"><td>EVT-P-0022192-T01-IM6-18</td><td>P-0022192-T01-IM6</td><td>Germ Cell Tumor</td><td>MGCT</td><td>LRP1</td><td>three_prime</td><td>364</td><td>Truncated</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="disrupted" data-event-id="EVT-P-0028347-T01-IM6-21"><td>EVT-P-0028347-T01-IM6-21</td><td>P-0028347-T01-IM6</td><td>Soft Tissue Sarcoma</td><td>DDLS</td><td>MGAT4C</td><td>five_prime</td><td>352</td><td>Truncated</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="disrupted" data-event-id="EVT-P-0011161-T01-IM5-22"><td>EVT-P-0011161-T01-IM5-22</td><td>P-0011161-T01-IM5</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>MGAT4C</td><td>three_prime</td><td>364</td><td>Truncated</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="lost" data-event-id="EVT-P-0025245-T01-IM6-23"><td>EVT-P-0025245-T01-IM6-23</td><td>P-0025245-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>MTOR</td><td>three_prime</td><td>526</td><td>Lost</td></tr><tr data-tumor-type="CNS Cancer" data-domain-status="retained" data-event-id="EVT-P-0001055-T02-IM5-49"><td>EVT-P-0001055-T02-IM5-49</td><td>P-0001055-T02-IM5</td><td>CNS Cancer</td><td>HPCCNS</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0066534-T01-IM7-50"><td>EVT-P-0066534-T01-IM7-50</td><td>P-0066534-T01-IM7</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0003845-T01-IM5-51"><td>EVT-P-0003845-T01-IM5-51</td><td>P-0003845-T01-IM5</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0029101-T01-IM6-52"><td>EVT-P-0029101-T01-IM6-52</td><td>P-0029101-T01-IM6</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>381</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0029763-T01-IM6-53"><td>EVT-P-0029763-T01-IM6-53</td><td>P-0029763-T01-IM6</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0001055-T03-IM6-55"><td>EVT-P-0001055-T03-IM6-55</td><td>P-0001055-T03-IM6</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="CNS Cancer" data-domain-status="retained" data-event-id="EVT-P-0020523-T01-IM6-56"><td>EVT-P-0020523-T01-IM6-56</td><td>P-0020523-T01-IM6</td><td>CNS Cancer</td><td>HPCCNS</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="CNS Cancer" data-domain-status="retained" data-event-id="EVT-P-0032069-T01-IM6-57"><td>EVT-P-0032069-T01-IM6-57</td><td>P-0032069-T01-IM6</td><td>CNS Cancer</td><td>SFTCNS</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0022259-T02-IM6-61"><td>EVT-P-0022259-T02-IM6-61</td><td>P-0022259-T02-IM6</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>510</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0004282-T03-IM5-62"><td>EVT-P-0004282-T03-IM5-62</td><td>P-0004282-T03-IM5</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0033539-T02-IM6-63"><td>EVT-P-0033539-T02-IM6-63</td><td>P-0033539-T02-IM6</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>400</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0019357-T03-IM6-64"><td>EVT-P-0019357-T03-IM6-64</td><td>P-0019357-T03-IM6</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0019182-T01-IM6-66"><td>EVT-P-0019182-T01-IM6-66</td><td>P-0019182-T01-IM6</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0036288-T01-IM6-67"><td>EVT-P-0036288-T01-IM6-67</td><td>P-0036288-T01-IM6</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0036975-T01-IM6-68"><td>EVT-P-0036975-T01-IM6-68</td><td>P-0036975-T01-IM6</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>381</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0019032-T01-IM6-69"><td>EVT-P-0019032-T01-IM6-69</td><td>P-0019032-T01-IM6</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="disrupted" data-event-id="EVT-P-0017518-T01-IM6-70"><td>EVT-P-0017518-T01-IM6-70</td><td>P-0017518-T01-IM6</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>364</td><td>Truncated</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0016751-T02-IM6-71"><td>EVT-P-0016751-T02-IM6-71</td><td>P-0016751-T02-IM6</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0038591-T01-IM6-72"><td>EVT-P-0038591-T01-IM6-72</td><td>P-0038591-T01-IM6</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="disrupted" data-event-id="EVT-P-0016113-T01-IM6-73"><td>EVT-P-0016113-T01-IM6-73</td><td>P-0016113-T01-IM6</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>364</td><td>Truncated</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0004405-T01-IM5-74"><td>EVT-P-0004405-T01-IM5-74</td><td>P-0004405-T01-IM5</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>434</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0004943-T01-IM5-75"><td>EVT-P-0004943-T01-IM5-75</td><td>P-0004943-T01-IM5</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>521</td><td>Retained</td></tr><tr data-tumor-type="CNS Cancer" data-domain-status="retained" data-event-id="EVT-P-0040364-T01-IM6-76"><td>EVT-P-0040364-T01-IM6-76</td><td>P-0040364-T01-IM6</td><td>CNS Cancer</td><td>HPCCNS</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="CNS Cancer" data-domain-status="retained" data-event-id="EVT-P-0040364-T02-IM6-77"><td>EVT-P-0040364-T02-IM6-77</td><td>P-0040364-T02-IM6</td><td>CNS Cancer</td><td>HPCCNS</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0014386-T01-IM6-78"><td>EVT-P-0014386-T01-IM6-78</td><td>P-0014386-T01-IM6</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0043579-T01-IM6-79"><td>EVT-P-0043579-T01-IM6-79</td><td>P-0043579-T01-IM6</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="CNS Cancer" data-domain-status="retained" data-event-id="EVT-P-0044036-T01-IM6-80"><td>EVT-P-0044036-T01-IM6-80</td><td>P-0044036-T01-IM6</td><td>CNS Cancer</td><td>SFTCNS</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0044232-T02-IM6-81"><td>EVT-P-0044232-T02-IM6-81</td><td>P-0044232-T02-IM6</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0001947-T03-IM6-82"><td>EVT-P-0001947-T03-IM6-82</td><td>P-0001947-T03-IM6</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="CNS Cancer" data-domain-status="retained" data-event-id="EVT-P-0045590-T01-IM6-83"><td>EVT-P-0045590-T01-IM6-83</td><td>P-0045590-T01-IM6</td><td>CNS Cancer</td><td>SFTCNS</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0046398-T01-IM6-84"><td>EVT-P-0046398-T01-IM6-84</td><td>P-0046398-T01-IM6</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0046398-T02-IM6-85"><td>EVT-P-0046398-T02-IM6-85</td><td>P-0046398-T02-IM6</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="CNS Cancer" data-domain-status="disrupted" data-event-id="EVT-P-0048656-T01-IM6-86"><td>EVT-P-0048656-T01-IM6-86</td><td>P-0048656-T01-IM6</td><td>CNS Cancer</td><td>HPCCNS</td><td>STAT6</td><td>five_prime</td><td>364</td><td>Truncated</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0013489-T01-IM5-87"><td>EVT-P-0013489-T01-IM5-87</td><td>P-0013489-T01-IM5</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0053200-T02-IM6-89"><td>EVT-P-0053200-T02-IM6-89</td><td>P-0053200-T02-IM6</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0013261-T01-IM5-90"><td>EVT-P-0013261-T01-IM5-90</td><td>P-0013261-T01-IM5</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0013216-T02-IM5-91"><td>EVT-P-0013216-T02-IM5-91</td><td>P-0013216-T02-IM5</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0055865-T01-IM6-92"><td>EVT-P-0055865-T01-IM6-92</td><td>P-0055865-T01-IM6</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="disrupted" data-event-id="EVT-P-0055909-T01-IM6-93"><td>EVT-P-0055909-T01-IM6-93</td><td>P-0055909-T01-IM6</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>319</td><td>Truncated</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0012841-T01-IM5-94"><td>EVT-P-0012841-T01-IM5-94</td><td>P-0012841-T01-IM5</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0057770-T01-IM6-95"><td>EVT-P-0057770-T01-IM6-95</td><td>P-0057770-T01-IM6</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0057786-T01-IM6-96"><td>EVT-P-0057786-T01-IM6-96</td><td>P-0057786-T01-IM6</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="disrupted" data-event-id="EVT-P-0012421-T01-IM5-97"><td>EVT-P-0012421-T01-IM5-97</td><td>P-0012421-T01-IM5</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>364</td><td>Truncated</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0007527-T01-IM5-98"><td>EVT-P-0007527-T01-IM5-98</td><td>P-0007527-T01-IM5</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="CNS Cancer" data-domain-status="retained" data-event-id="EVT-P-0001055-T04-IM6-99"><td>EVT-P-0001055-T04-IM6-99</td><td>P-0001055-T04-IM6</td><td>CNS Cancer</td><td>SFTCNS</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0059117-T01-IM7-100"><td>EVT-P-0059117-T01-IM7-100</td><td>P-0059117-T01-IM7</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>508</td><td>Retained</td></tr><tr data-tumor-type="CNS Cancer" data-domain-status="retained" data-event-id="EVT-P-0059275-T01-IM7-101"><td>EVT-P-0059275-T01-IM7-101</td><td>P-0059275-T01-IM7</td><td>CNS Cancer</td><td>SFTCNS</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0006897-T01-IM5-102"><td>EVT-P-0006897-T01-IM5-102</td><td>P-0006897-T01-IM5</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0006243-T01-IM5-103"><td>EVT-P-0006243-T01-IM5-103</td><td>P-0006243-T01-IM5</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>502</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0005578-T01-IM5-104"><td>EVT-P-0005578-T01-IM5-104</td><td>P-0005578-T01-IM5</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>381</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0067841-T01-IM7-106"><td>EVT-P-0067841-T01-IM7-106</td><td>P-0067841-T01-IM7</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0066305-T01-IM7-107"><td>EVT-P-0066305-T01-IM7-107</td><td>P-0066305-T01-IM7</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0027038-T01-IM6-108"><td>EVT-P-0027038-T01-IM6-108</td><td>P-0027038-T01-IM6</td><td>Soft Tissue Sarcoma</td><td>SFT</td><td>STAT6</td><td>five_prime</td><td>490</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="disrupted" data-event-id="EVT-P-0030371-T02-IM6-109"><td>EVT-P-0030371-T02-IM6-109</td><td>P-0030371-T02-IM6</td><td>Soft Tissue Sarcoma</td><td>SARCNOS</td><td>TMEM117</td><td>five_prime</td><td>319</td><td>Truncated</td></tr><tr data-tumor-type="Ampullary Cancer" data-domain-status="disrupted" data-event-id="EVT-P-0004638-T01-IM5-110"><td>EVT-P-0004638-T01-IM5-110</td><td>P-0004638-T01-IM5</td><td>Ampullary Cancer</td><td>AMPCA</td><td>PDZRN4</td><td>three_prime</td><td>364</td><td>Truncated</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="disrupted" data-event-id="EVT-P-0030371-T01-IM6-111"><td>EVT-P-0030371-T01-IM6-111</td><td>P-0030371-T01-IM6</td><td>Soft Tissue Sarcoma</td><td>SARCNOS</td><td>TMEM117</td><td>five_prime</td><td>319</td><td>Truncated</td></tr></tbody></table></div>
+</div>
+<div class="lollipop-tooltip" id="lollipop-tooltip" hidden></div>
+<script type="application/json" id="events-data">[{"event_id": "EVT-P-0052994-T01-IM6-1", "sample_id": "P-0052994-T01-IM6", "tumor_type": "Hepatobiliary Cancer", "oncotree_code": "GBAD", "partner_gene": "FAM186A", "target_role": "three_prime", "breakpoint_protein_position": 490, "domain_status": "lost"}, {"event_id": "EVT-P-0015989-T01-IM6-2", "sample_id": "P-0015989-T01-IM6", "tumor_type": "Melanoma", "oncotree_code": "ACRM", "partner_gene": "FMN1", "target_role": "three_prime", "breakpoint_protein_position": 490, "domain_status": "lost"}, {"event_id": "EVT-P-0015989-T05-IM6-3", "sample_id": "P-0015989-T05-IM6", "tumor_type": "Melanoma", "oncotree_code": "SKCM", "partner_gene": "FMN1", "target_role": "three_prime", "breakpoint_protein_position": 490, "domain_status": "lost"}, {"event_id": "EVT-P-0015989-T02-IM6-4", "sample_id": "P-0015989-T02-IM6", "tumor_type": "Melanoma", "oncotree_code": "ACRM", "partner_gene": "FMN1", "target_role": "three_prime", "breakpoint_protein_position": 490, "domain_status": "lost"}, {"event_id": "EVT-P-0020678-T01-IM6-6", "sample_id": "P-0020678-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "KRT6A", "target_role": "three_prime", "breakpoint_protein_position": 382, "domain_status": "lost"}, {"event_id": "EVT-P-0045531-T01-IM6-7", "sample_id": "P-0045531-T01-IM6", "tumor_type": "Colorectal Cancer", "oncotree_code": "COAD", "partner_gene": "LGR5", "target_role": "three_prime", "breakpoint_protein_position": 511, "domain_status": "lost"}, {"event_id": "EVT-P-0068029-T01-IM7-9", "sample_id": "P-0068029-T01-IM7", "tumor_type": "Bladder Cancer", "oncotree_code": "BLCA", "partner_gene": "LRP1", "target_role": "three_prime", "breakpoint_protein_position": 426, "domain_status": "lost"}, {"event_id": "EVT-P-0058847-T01-IM7-10", "sample_id": "P-0058847-T01-IM7", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "LRP1", "target_role": "three_prime", "breakpoint_protein_position": 372, "domain_status": "lost"}, {"event_id": "EVT-P-0008384-T01-IM5-12", "sample_id": "P-0008384-T01-IM5", "tumor_type": "Glioma", "oncotree_code": "ASTR", "partner_gene": "CUX2", "target_role": "three_prime", "breakpoint_protein_position": 364, "domain_status": "disrupted"}, {"event_id": "EVT-P-0038472-T01-IM6-13", "sample_id": "P-0038472-T01-IM6", "tumor_type": "Breast Cancer", "oncotree_code": "IDC", "partner_gene": "DLGAP2", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0039139-T01-IM6-14", "sample_id": "P-0039139-T01-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "DDLS", "partner_gene": "KIF5A", "target_role": "five_prime", "breakpoint_protein_position": 319, "domain_status": "disrupted"}, {"event_id": "EVT-P-0022192-T01-IM6-18", "sample_id": "P-0022192-T01-IM6", "tumor_type": "Germ Cell Tumor", "oncotree_code": "MGCT", "partner_gene": "LRP1", "target_role": "three_prime", "breakpoint_protein_position": 364, "domain_status": "disrupted"}, {"event_id": "EVT-P-0028347-T01-IM6-21", "sample_id": "P-0028347-T01-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "DDLS", "partner_gene": "MGAT4C", "target_role": "five_prime", "breakpoint_protein_position": 352, "domain_status": "disrupted"}, {"event_id": "EVT-P-0011161-T01-IM5-22", "sample_id": "P-0011161-T01-IM5", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "MGAT4C", "target_role": "three_prime", "breakpoint_protein_position": 364, "domain_status": "disrupted"}, {"event_id": "EVT-P-0025245-T01-IM6-23", "sample_id": "P-0025245-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "MTOR", "target_role": "three_prime", "breakpoint_protein_position": 526, "domain_status": "lost"}, {"event_id": "EVT-P-0001055-T02-IM5-49", "sample_id": "P-0001055-T02-IM5", "tumor_type": "CNS Cancer", "oncotree_code": "HPCCNS", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0066534-T01-IM7-50", "sample_id": "P-0066534-T01-IM7", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0003845-T01-IM5-51", "sample_id": "P-0003845-T01-IM5", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0029101-T01-IM6-52", "sample_id": "P-0029101-T01-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 381, "domain_status": "retained"}, {"event_id": "EVT-P-0029763-T01-IM6-53", "sample_id": "P-0029763-T01-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0001055-T03-IM6-55", "sample_id": "P-0001055-T03-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0020523-T01-IM6-56", "sample_id": "P-0020523-T01-IM6", "tumor_type": "CNS Cancer", "oncotree_code": "HPCCNS", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0032069-T01-IM6-57", "sample_id": "P-0032069-T01-IM6", "tumor_type": "CNS Cancer", "oncotree_code": "SFTCNS", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0022259-T02-IM6-61", "sample_id": "P-0022259-T02-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 510, "domain_status": "retained"}, {"event_id": "EVT-P-0004282-T03-IM5-62", "sample_id": "P-0004282-T03-IM5", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0033539-T02-IM6-63", "sample_id": "P-0033539-T02-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 400, "domain_status": "retained"}, {"event_id": "EVT-P-0019357-T03-IM6-64", "sample_id": "P-0019357-T03-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0019182-T01-IM6-66", "sample_id": "P-0019182-T01-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0036288-T01-IM6-67", "sample_id": "P-0036288-T01-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0036975-T01-IM6-68", "sample_id": "P-0036975-T01-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 381, "domain_status": "retained"}, {"event_id": "EVT-P-0019032-T01-IM6-69", "sample_id": "P-0019032-T01-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0017518-T01-IM6-70", "sample_id": "P-0017518-T01-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 364, "domain_status": "disrupted"}, {"event_id": "EVT-P-0016751-T02-IM6-71", "sample_id": "P-0016751-T02-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0038591-T01-IM6-72", "sample_id": "P-0038591-T01-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0016113-T01-IM6-73", "sample_id": "P-0016113-T01-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 364, "domain_status": "disrupted"}, {"event_id": "EVT-P-0004405-T01-IM5-74", "sample_id": "P-0004405-T01-IM5", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 434, "domain_status": "retained"}, {"event_id": "EVT-P-0004943-T01-IM5-75", "sample_id": "P-0004943-T01-IM5", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 521, "domain_status": "retained"}, {"event_id": "EVT-P-0040364-T01-IM6-76", "sample_id": "P-0040364-T01-IM6", "tumor_type": "CNS Cancer", "oncotree_code": "HPCCNS", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0040364-T02-IM6-77", "sample_id": "P-0040364-T02-IM6", "tumor_type": "CNS Cancer", "oncotree_code": "HPCCNS", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0014386-T01-IM6-78", "sample_id": "P-0014386-T01-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0043579-T01-IM6-79", "sample_id": "P-0043579-T01-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0044036-T01-IM6-80", "sample_id": "P-0044036-T01-IM6", "tumor_type": "CNS Cancer", "oncotree_code": "SFTCNS", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0044232-T02-IM6-81", "sample_id": "P-0044232-T02-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0001947-T03-IM6-82", "sample_id": "P-0001947-T03-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0045590-T01-IM6-83", "sample_id": "P-0045590-T01-IM6", "tumor_type": "CNS Cancer", "oncotree_code": "SFTCNS", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0046398-T01-IM6-84", "sample_id": "P-0046398-T01-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0046398-T02-IM6-85", "sample_id": "P-0046398-T02-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0048656-T01-IM6-86", "sample_id": "P-0048656-T01-IM6", "tumor_type": "CNS Cancer", "oncotree_code": "HPCCNS", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 364, "domain_status": "disrupted"}, {"event_id": "EVT-P-0013489-T01-IM5-87", "sample_id": "P-0013489-T01-IM5", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0053200-T02-IM6-89", "sample_id": "P-0053200-T02-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0013261-T01-IM5-90", "sample_id": "P-0013261-T01-IM5", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0013216-T02-IM5-91", "sample_id": "P-0013216-T02-IM5", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0055865-T01-IM6-92", "sample_id": "P-0055865-T01-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0055909-T01-IM6-93", "sample_id": "P-0055909-T01-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 319, "domain_status": "disrupted"}, {"event_id": "EVT-P-0012841-T01-IM5-94", "sample_id": "P-0012841-T01-IM5", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0057770-T01-IM6-95", "sample_id": "P-0057770-T01-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0057786-T01-IM6-96", "sample_id": "P-0057786-T01-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0012421-T01-IM5-97", "sample_id": "P-0012421-T01-IM5", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 364, "domain_status": "disrupted"}, {"event_id": "EVT-P-0007527-T01-IM5-98", "sample_id": "P-0007527-T01-IM5", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0001055-T04-IM6-99", "sample_id": "P-0001055-T04-IM6", "tumor_type": "CNS Cancer", "oncotree_code": "SFTCNS", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0059117-T01-IM7-100", "sample_id": "P-0059117-T01-IM7", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 508, "domain_status": "retained"}, {"event_id": "EVT-P-0059275-T01-IM7-101", "sample_id": "P-0059275-T01-IM7", "tumor_type": "CNS Cancer", "oncotree_code": "SFTCNS", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0006897-T01-IM5-102", "sample_id": "P-0006897-T01-IM5", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0006243-T01-IM5-103", "sample_id": "P-0006243-T01-IM5", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 502, "domain_status": "retained"}, {"event_id": "EVT-P-0005578-T01-IM5-104", "sample_id": "P-0005578-T01-IM5", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 381, "domain_status": "retained"}, {"event_id": "EVT-P-0067841-T01-IM7-106", "sample_id": "P-0067841-T01-IM7", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0066305-T01-IM7-107", "sample_id": "P-0066305-T01-IM7", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0027038-T01-IM6-108", "sample_id": "P-0027038-T01-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SFT", "partner_gene": "STAT6", "target_role": "five_prime", "breakpoint_protein_position": 490, "domain_status": "retained"}, {"event_id": "EVT-P-0030371-T02-IM6-109", "sample_id": "P-0030371-T02-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SARCNOS", "partner_gene": "TMEM117", "target_role": "five_prime", "breakpoint_protein_position": 319, "domain_status": "disrupted"}, {"event_id": "EVT-P-0004638-T01-IM5-110", "sample_id": "P-0004638-T01-IM5", "tumor_type": "Ampullary Cancer", "oncotree_code": "AMPCA", "partner_gene": "PDZRN4", "target_role": "three_prime", "breakpoint_protein_position": 364, "domain_status": "disrupted"}, {"event_id": "EVT-P-0030371-T01-IM6-111", "sample_id": "P-0030371-T01-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SARCNOS", "partner_gene": "TMEM117", "target_role": "five_prime", "breakpoint_protein_position": 319, "domain_status": "disrupted"}]</script>
+<script type="application/json" id="status-labels">{"retained": "Retained", "disrupted": "Truncated", "lost": "Lost"}</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var events = JSON.parse(document.getElementById("events-data").textContent);
+  var statusLabels = JSON.parse(document.getElementById("status-labels").textContent);
+  var eventsById = {};
+  events.forEach(function (e) {
+    if (e.event_id) { eventsById[e.event_id] = e; }
+  });
+
+  function distinctValues(field) {
+    var values = events.map(function (e) { return e[field]; }).filter(Boolean);
+    return Array.from(new Set(values)).sort();
+  }
+  var tumorTypes = distinctValues("tumor_type");
+  var domainStatuses = distinctValues("domain_status");
+
+  var tumorSelect = document.getElementById("tumor-type-filter");
+  tumorSelect.innerHTML = '<option value="">All tumor types</option>' + tumorTypes.map(
+    function (t) {
+      return '<option value="' + t.replace(/"/g, "&quot;") + '">' + t + "</option>";
+    }
+  ).join("");
+
+  var statusContainer = document.getElementById("status-filter");
+  statusContainer.innerHTML = domainStatuses.map(function (s) {
+    var label = statusLabels[s] || (s.charAt(0).toUpperCase() + s.slice(1));
+    var checkbox = '<input type="checkbox" value="' + s + '" checked> ';
+    return '<label class="status-toggle">' + checkbox + label + "</label>";
+  }).join("");
+
+  // Group fusion-schematic rows by the (partner, breakpoint-aa) key baked
+  // into every row shape's <title> text by cfh.reporting.fusion_schematic
+  // (e.g. "...BRAF–KIAA1549 fusion, breakpoint BRAF aa 381; ...") --
+  // read back here, never recomputed or duplicated from the algorithm side.
+  var schematicGroups = new Map();
+  events.forEach(function (e) {
+    if (!e.partner_gene || e.breakpoint_protein_position == null) { return; }
+    var key = e.partner_gene + "|" + e.breakpoint_protein_position;
+    var group = schematicGroups.get(key);
+    if (!group) {
+      group = { tumorTypes: new Set(), domainStatuses: new Set() };
+      schematicGroups.set(key, group);
+    }
+    if (e.tumor_type) { group.tumorTypes.add(e.tumor_type); }
+    if (e.domain_status) { group.domainStatuses.add(e.domain_status); }
+  });
+  var TITLE_RE = /–([^;]+?) fusion, breakpoint \S+ aa (\d+);/;
+  var schematicSvg = document.getElementById("fusion-schematic-svg");
+
+  var summaryEl = document.getElementById("events-summary");
+  var rows = Array.from(document.querySelectorAll("#events-table tbody tr"));
+
+  function applyFilters() {
+    var tumor = tumorSelect.value;
+    var checked = statusContainer.querySelectorAll("input:checked");
+    var activeStatuses = new Set(Array.from(checked).map(function (i) { return i.value; }));
+
+    var shown = 0;
+    rows.forEach(function (tr) {
+      var matchesTumor = !tumor || tr.dataset.tumorType === tumor;
+      var matchesStatus = !tr.dataset.domainStatus || activeStatuses.has(tr.dataset.domainStatus);
+      var visible = matchesTumor && matchesStatus;
+      tr.hidden = !visible;
+      if (visible) { shown += 1; }
+    });
+    if (summaryEl) {
+      summaryEl.textContent = "Showing " + shown + " of " + rows.length + " events";
+    }
+
+    if (schematicSvg) {
+      schematicSvg.querySelectorAll("title").forEach(function (titleEl) {
+        var match = TITLE_RE.exec(titleEl.textContent || "");
+        var shape = titleEl.parentElement;
+        if (!match) { return; }
+        var group = schematicGroups.get(match[1] + "|" + match[2]);
+        if (!group) { shape.style.opacity = ""; return; }
+        var groupMatchesTumor = !tumor || group.tumorTypes.has(tumor);
+        var groupMatchesStatus = Array.from(group.domainStatuses).some(function (s) {
+          return activeStatuses.has(s);
+        });
+        shape.style.opacity = (groupMatchesTumor && groupMatchesStatus) ? "1" : "0.12";
+      });
+    }
+  }
+
+  tumorSelect.addEventListener("change", applyFilters);
+  statusContainer.addEventListener("change", applyFilters);
+  applyFilters();
+
+  // Shared by the lollipop-track points and the mechanistic-interpretation
+  // counter-intuitive-event tables: clear any active filters (so the row
+  // can't be hidden -- both jump sources are drawn independent of the
+  // table's tumor-type/domain-status filters), scroll the matching
+  // #events-table row into view, and briefly highlight it.
+  function jumpToEventRow(eventId) {
+    var row = document.querySelector(
+      '#events-table tbody tr[data-event-id="' + CSS.escape(eventId) + '"]'
+    );
+    if (!row) { return; }
+    tumorSelect.value = "";
+    statusContainer.querySelectorAll("input").forEach(function (i) { i.checked = true; });
+    applyFilters();
+    row.scrollIntoView({ behavior: "smooth", block: "center" });
+    row.classList.add("row-highlight");
+    window.setTimeout(function () { row.classList.remove("row-highlight"); }, 1500);
+  }
+
+  // Hovering or clicking a lollipop-track point (data-event-id, set by
+  // cfh.real_benchmark._domain_track_svg) shows a sample-id tooltip and/or
+  // jumps to that event's row in the table below.
+  var domainTrackFrame = document.getElementById("domain-track-svg");
+  var tooltip = document.getElementById("lollipop-tooltip");
+  if (domainTrackFrame) {
+    domainTrackFrame.querySelectorAll("circle[data-event-id]").forEach(function (circle) {
+      var eventId = circle.getAttribute("data-event-id");
+      if (!eventId) { return; }
+      var matchedEvent = eventsById[eventId];
+      if (tooltip && matchedEvent && matchedEvent.sample_id) {
+        circle.addEventListener("mouseenter", function () {
+          tooltip.textContent = "Sample " + matchedEvent.sample_id;
+          tooltip.hidden = false;
+        });
+        circle.addEventListener("mousemove", function (mouseEvent) {
+          tooltip.style.left = mouseEvent.clientX + 14 + "px";
+          tooltip.style.top = mouseEvent.clientY + 14 + "px";
+        });
+        circle.addEventListener("mouseleave", function () {
+          tooltip.hidden = true;
+        });
+      }
+      if (!document.querySelector('#events-table tbody tr[data-event-id="' + CSS.escape(eventId) + '"]')) {
+        return;
+      }
+      circle.style.cursor = "pointer";
+      circle.addEventListener("click", function () { jumpToEventRow(eventId); });
+    });
+  }
+
+  // Clicking a row in a "Mechanistic interpretation" counter-intuitive-
+  // event table (see cfh.reporting.html_viewer._mechanistic_effect_html)
+  // jumps to that same event in the main events table below.
+  document.querySelectorAll("tr.counter-intuitive-row[data-event-id]").forEach(function (row) {
+    var eventId = row.getAttribute("data-event-id");
+    if (!eventId) { return; }
+    row.addEventListener("click", function () { jumpToEventRow(eventId); });
+  });
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll("table.sortable").forEach(function (table) {
+    var tbody = table.tBodies[0];
+    if (!tbody) { return; }
+    var headers = Array.from(table.querySelectorAll("thead th[data-sort-key]"));
+    var currentKey = null;
+    var currentDir = 1;
+    headers.forEach(function (th, index) {
+      th.addEventListener("click", function () {
+        var key = th.getAttribute("data-sort-key");
+        currentDir = (currentKey === key) ? -currentDir : 1;
+        currentKey = key;
+        headers.forEach(function (h) { h.removeAttribute("data-sort-dir"); });
+        th.setAttribute("data-sort-dir", currentDir === 1 ? "asc" : "desc");
+
+        var rows = Array.from(tbody.querySelectorAll("tr"));
+        rows.sort(function (a, b) {
+          var aCell = a.children[index];
+          var bCell = b.children[index];
+          var aRaw = aCell ? aCell.getAttribute("data-sort") : null;
+          var bRaw = bCell ? bCell.getAttribute("data-sort") : null;
+          var aNum = aRaw === null || aRaw === "" ? NaN : Number(aRaw);
+          var bNum = bRaw === null || bRaw === "" ? NaN : Number(bRaw);
+          var cmp;
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            cmp = aNum - bNum;
+          } else {
+            cmp = String(aRaw).localeCompare(String(bRaw));
+          }
+          return cmp * currentDir;
+        });
+        rows.forEach(function (row) { tbody.appendChild(row); });
+      });
+    });
+  });
+});
+</script>
+</body>
+</html>
