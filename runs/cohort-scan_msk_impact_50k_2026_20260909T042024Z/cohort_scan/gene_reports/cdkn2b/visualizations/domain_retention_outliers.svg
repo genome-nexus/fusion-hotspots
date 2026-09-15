@@ -4,16 +4,16 @@
 <rect x="373.0" y="34.0" width="463.8" height="16.0" fill="#62b36f" opacity="0.55"/>
 <text x="373.0" y="46.0" font-family="sans-serif" font-size="9.5">Ankyrin repeats (3 copies) (54-134)</text>
 <line x1="60.0" y1="63.0" x2="860.0" y2="63.0" stroke="#444444" stroke-width="4"/>
-<circle cx="494.8" cy="71.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0"><title>event EVT-P-0035576-T01-IM6-2; sample P-0035576-T01-IM6; partner CDKN2A; breakpoint aa 75; domain truncated</title></circle>
-<circle cx="460.0" cy="78.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0"><title>event EVT-P-0010183-T02-IM6-10; sample P-0010183-T02-IM6; partner CDKN2A; breakpoint aa 69; domain truncated</title></circle>
-<circle cx="361.4" cy="85.0" r="3" fill="#777777" stroke="none" stroke-width="0"><title>event EVT-P-0060581-T01-IM7-11; sample P-0060581-T01-IM7; partner CDKN2A; breakpoint aa 52; domain lost</title></circle>
-<circle cx="715.1" cy="92.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0"><title>event EVT-P-0045019-T02-IM6-12; sample P-0045019-T02-IM6; partner CDKN2A; breakpoint aa 113; domain truncated</title></circle>
-<circle cx="361.4" cy="99.0" r="3" fill="#777777" stroke="none" stroke-width="0"><title>event EVT-P-0038263-T01-IM6-13; sample P-0038263-T01-IM6; partner CDKN2A; breakpoint aa 52; domain lost</title></circle>
-<circle cx="720.9" cy="71.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0"><title>event EVT-P-0009347-T01-IM5-34; sample P-0009347-T01-IM5; partner CDKN2B-AS1; breakpoint aa 114; domain truncated</title></circle>
-<circle cx="280.3" cy="78.0" r="3" fill="#777777" stroke="none" stroke-width="0"><title>event EVT-P-0045616-T01-IM6-36; sample P-0045616-T01-IM6; partner SLC24A2; breakpoint aa 38; domain lost</title></circle>
-<circle cx="367.2" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0042985-T01-IM6-37; sample P-0042985-T01-IM6; partner CNTRL; breakpoint aa 53; domain retained</title></circle>
-<circle cx="483.2" cy="92.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0"><title>event EVT-P-0053040-T01-IM6-38; sample P-0053040-T01-IM6; partner GAB2; breakpoint aa 73; domain truncated</title></circle>
-<circle cx="367.2" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0002886-T01-IM3-40; sample P-0002886-T01-IM3; partner MTAP; breakpoint aa 53; domain retained</title></circle>
+<circle cx="494.8" cy="71.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0035576-T01-IM6-2"><title>event EVT-P-0035576-T01-IM6-2; sample P-0035576-T01-IM6; partner CDKN2A; breakpoint aa 75; domain truncated</title></circle>
+<circle cx="460.0" cy="78.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0010183-T02-IM6-10"><title>event EVT-P-0010183-T02-IM6-10; sample P-0010183-T02-IM6; partner CDKN2A; breakpoint aa 69; domain truncated</title></circle>
+<circle cx="361.4" cy="85.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0060581-T01-IM7-11"><title>event EVT-P-0060581-T01-IM7-11; sample P-0060581-T01-IM7; partner CDKN2A; breakpoint aa 52; domain lost</title></circle>
+<circle cx="715.1" cy="92.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0045019-T02-IM6-12"><title>event EVT-P-0045019-T02-IM6-12; sample P-0045019-T02-IM6; partner CDKN2A; breakpoint aa 113; domain truncated</title></circle>
+<circle cx="361.4" cy="99.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0038263-T01-IM6-13"><title>event EVT-P-0038263-T01-IM6-13; sample P-0038263-T01-IM6; partner CDKN2A; breakpoint aa 52; domain lost</title></circle>
+<circle cx="720.9" cy="71.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0009347-T01-IM5-34"><title>event EVT-P-0009347-T01-IM5-34; sample P-0009347-T01-IM5; partner CDKN2B-AS1; breakpoint aa 114; domain truncated</title></circle>
+<circle cx="280.3" cy="78.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0045616-T01-IM6-36"><title>event EVT-P-0045616-T01-IM6-36; sample P-0045616-T01-IM6; partner SLC24A2; breakpoint aa 38; domain lost</title></circle>
+<circle cx="367.2" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0042985-T01-IM6-37"><title>event EVT-P-0042985-T01-IM6-37; sample P-0042985-T01-IM6; partner CNTRL; breakpoint aa 53; domain retained</title></circle>
+<circle cx="483.2" cy="92.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0053040-T01-IM6-38"><title>event EVT-P-0053040-T01-IM6-38; sample P-0053040-T01-IM6; partner GAB2; breakpoint aa 73; domain truncated</title></circle>
+<circle cx="367.2" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0002886-T01-IM3-40"><title>event EVT-P-0002886-T01-IM3-40; sample P-0002886-T01-IM3; partner MTAP; breakpoint aa 53; domain retained</title></circle>
 <line x1="60.0" y1="114.0" x2="860.0" y2="114.0" stroke="#444444" stroke-width="1"/>
 <text x="60.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
 <text x="860.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>

@@ -4,17 +4,17 @@
 <rect x="71.2" y="34.0" width="261.5" height="16.0" fill="#62b36f" opacity="0.55"/>
 <text x="71.2" y="46.0" font-family="sans-serif" font-size="9.5">Protein kinase domain (10-244)</text>
 <line x1="60.0" y1="63.0" x2="860.0" y2="63.0" stroke="#444444" stroke-width="4"/>
-<circle cx="822.0" cy="71.0" r="3" fill="#777777" stroke="none" stroke-width="0"><title>event EVT-P-0027193-T03-IM6-14; sample P-0027193-T03-IM6; partner IL20; breakpoint aa 682; domain lost</title></circle>
-<circle cx="559.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0051760-T01-IM6-15; sample P-0051760-T01-IM6; partner NAV1; breakpoint aa 447; domain retained</title></circle>
-<circle cx="559.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0051760-T02-IM6-16; sample P-0051760-T02-IM6; partner NAV1; breakpoint aa 447; domain retained</title></circle>
-<circle cx="822.0" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0053124-T01-IM6-17; sample P-0053124-T01-IM6; partner RABGAP1L; breakpoint aa 682; domain retained</title></circle>
-<circle cx="194.1" cy="99.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0"><title>event EVT-P-0052992-T01-IM6-18; sample P-0052992-T01-IM6; partner RBBP5; breakpoint aa 120; domain truncated</title></circle>
-<circle cx="144.9" cy="71.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0"><title>event EVT-P-0058226-T01-IM6-21; sample P-0058226-T01-IM6; partner THBS3; breakpoint aa 76; domain truncated</title></circle>
-<circle cx="501.3" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0001902-T01-IM3-23; sample P-0001902-T01-IM3; partner NFASC; breakpoint aa 395; domain retained</title></circle>
-<circle cx="461.1" cy="85.0" r="3" fill="#777777" stroke="none" stroke-width="0"><title>event EVT-P-0019364-T01-IM6-24; sample P-0019364-T01-IM6; partner RASAL2; breakpoint aa 359; domain lost</title></circle>
-<circle cx="662.2" cy="92.0" r="3" fill="#777777" stroke="none" stroke-width="0"><title>event EVT-P-0067348-T01-IM7-25; sample P-0067348-T01-IM7; partner RASSF5; breakpoint aa 539; domain lost</title></circle>
-<circle cx="699.1" cy="99.0" r="3" fill="#777777" stroke="none" stroke-width="0"><title>event EVT-P-0022004-T02-IM6-27; sample P-0022004-T02-IM6; partner SRGAP2; breakpoint aa 572; domain lost</title></circle>
-<circle cx="290.2" cy="71.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0"><title>event EVT-P-0054307-T01-IM6-28; sample P-0054307-T01-IM6; partner TCEA3; breakpoint aa 206; domain truncated</title></circle>
+<circle cx="822.0" cy="71.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0027193-T03-IM6-14"><title>event EVT-P-0027193-T03-IM6-14; sample P-0027193-T03-IM6; partner IL20; breakpoint aa 682; domain lost</title></circle>
+<circle cx="559.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0051760-T01-IM6-15"><title>event EVT-P-0051760-T01-IM6-15; sample P-0051760-T01-IM6; partner NAV1; breakpoint aa 447; domain retained</title></circle>
+<circle cx="559.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0051760-T02-IM6-16"><title>event EVT-P-0051760-T02-IM6-16; sample P-0051760-T02-IM6; partner NAV1; breakpoint aa 447; domain retained</title></circle>
+<circle cx="822.0" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0053124-T01-IM6-17"><title>event EVT-P-0053124-T01-IM6-17; sample P-0053124-T01-IM6; partner RABGAP1L; breakpoint aa 682; domain retained</title></circle>
+<circle cx="194.1" cy="99.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0052992-T01-IM6-18"><title>event EVT-P-0052992-T01-IM6-18; sample P-0052992-T01-IM6; partner RBBP5; breakpoint aa 120; domain truncated</title></circle>
+<circle cx="144.9" cy="71.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0058226-T01-IM6-21"><title>event EVT-P-0058226-T01-IM6-21; sample P-0058226-T01-IM6; partner THBS3; breakpoint aa 76; domain truncated</title></circle>
+<circle cx="501.3" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0001902-T01-IM3-23"><title>event EVT-P-0001902-T01-IM3-23; sample P-0001902-T01-IM3; partner NFASC; breakpoint aa 395; domain retained</title></circle>
+<circle cx="461.1" cy="85.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0019364-T01-IM6-24"><title>event EVT-P-0019364-T01-IM6-24; sample P-0019364-T01-IM6; partner RASAL2; breakpoint aa 359; domain lost</title></circle>
+<circle cx="662.2" cy="92.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0067348-T01-IM7-25"><title>event EVT-P-0067348-T01-IM7-25; sample P-0067348-T01-IM7; partner RASSF5; breakpoint aa 539; domain lost</title></circle>
+<circle cx="699.1" cy="99.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0022004-T02-IM6-27"><title>event EVT-P-0022004-T02-IM6-27; sample P-0022004-T02-IM6; partner SRGAP2; breakpoint aa 572; domain lost</title></circle>
+<circle cx="290.2" cy="71.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0054307-T01-IM6-28"><title>event EVT-P-0054307-T01-IM6-28; sample P-0054307-T01-IM6; partner TCEA3; breakpoint aa 206; domain truncated</title></circle>
 <line x1="60.0" y1="114.0" x2="860.0" y2="114.0" stroke="#444444" stroke-width="1"/>
 <text x="60.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
 <text x="860.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>

@@ -4,12 +4,12 @@
 <rect x="130.8" y="34.0" width="146.9" height="16.0" fill="#62b36f" opacity="0.55"/>
 <text x="130.8" y="46.0" font-family="sans-serif" font-size="9.5">Sterile alpha motif (SAM)/Pointed domain (40-123)</text>
 <line x1="60.0" y1="63.0" x2="860.0" y2="63.0" stroke="#444444" stroke-width="4"/>
-<circle cx="334.3" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-TCGA-CE-A27D-01-1; sample TCGA-CE-A27D-01; partner NTRK3; breakpoint aa 155; domain retained</title></circle>
-<circle cx="334.3" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-TCGA-DJ-A4V0-01-2; sample TCGA-DJ-A4V0-01; partner NTRK3; breakpoint aa 155; domain retained</title></circle>
-<circle cx="334.3" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-TCGA-E8-A438-01-3; sample TCGA-E8-A438-01; partner NTRK3; breakpoint aa 155; domain retained</title></circle>
-<circle cx="334.3" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-TCGA-EL-A3ZN-01-4; sample TCGA-EL-A3ZN-01; partner NTRK3; breakpoint aa 155; domain retained</title></circle>
-<circle cx="334.3" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-TCGA-FE-A3PD-01-5; sample TCGA-FE-A3PD-01; partner NTRK3; breakpoint aa 155; domain retained</title></circle>
-<circle cx="334.3" cy="71.0" r="3" fill="#777777" stroke="none" stroke-width="0"><title>event EVT-TCGA-E8-A438-01-6; sample TCGA-E8-A438-01; partner NTRK3; breakpoint aa 155; domain lost</title></circle>
+<circle cx="334.3" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-CE-A27D-01-1"><title>event EVT-TCGA-CE-A27D-01-1; sample TCGA-CE-A27D-01; partner NTRK3; breakpoint aa 155; domain retained</title></circle>
+<circle cx="334.3" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-DJ-A4V0-01-2"><title>event EVT-TCGA-DJ-A4V0-01-2; sample TCGA-DJ-A4V0-01; partner NTRK3; breakpoint aa 155; domain retained</title></circle>
+<circle cx="334.3" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-E8-A438-01-3"><title>event EVT-TCGA-E8-A438-01-3; sample TCGA-E8-A438-01; partner NTRK3; breakpoint aa 155; domain retained</title></circle>
+<circle cx="334.3" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-EL-A3ZN-01-4"><title>event EVT-TCGA-EL-A3ZN-01-4; sample TCGA-EL-A3ZN-01; partner NTRK3; breakpoint aa 155; domain retained</title></circle>
+<circle cx="334.3" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-FE-A3PD-01-5"><title>event EVT-TCGA-FE-A3PD-01-5; sample TCGA-FE-A3PD-01; partner NTRK3; breakpoint aa 155; domain retained</title></circle>
+<circle cx="334.3" cy="71.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-E8-A438-01-6"><title>event EVT-TCGA-E8-A438-01-6; sample TCGA-E8-A438-01; partner NTRK3; breakpoint aa 155; domain lost</title></circle>
 <line x1="60.0" y1="114.0" x2="860.0" y2="114.0" stroke="#444444" stroke-width="1"/>
 <text x="60.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
 <text x="860.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
