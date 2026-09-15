@@ -20,3 +20,12 @@ def escape_xml_text(text: str) -> str:
     not attribute values, so ``"``/``'`` are not XML-significant here.
     """
     return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+def escape_xml_attr(text: str) -> str:
+    """Escape ``&``/``<``/``>``/``"`` for safe use inside a double-quoted
+    XML/SVG attribute value (e.g. ``data-event-id="..."``) -- unlike
+    :func:`escape_xml_text`, quotes must also be escaped here since they
+    would otherwise terminate the attribute value early.
+    """
+    return escape_xml_text(text).replace('"', "&quot;")

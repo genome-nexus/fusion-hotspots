@@ -70,7 +70,7 @@ from cfh.reporting.palette import (
     deterministic_color,
 )
 from cfh.reporting.pdf import render_pdf_report
-from cfh.reporting.svg_utils import escape_xml_text
+from cfh.reporting.svg_utils import escape_xml_attr, escape_xml_text
 from cfh.stats.breakpoint_tests import build_frame_domain_contingency_table
 from cfh.studies.registry import StudyConfig, load_study_config
 
@@ -1925,9 +1925,16 @@ def _domain_track_svg(run: RealBenchmarkRun, outlier_ids: set[str]) -> str:
         if is_outlier:
             title_parts.append("reference discrepancy")
         title = escape_xml_text("; ".join(title_parts))
+        # data-event-id lets the static HTML viewer wire up a click handler
+        # that scrolls the events table to this exact row (see
+        # cfh.reporting.html_viewer's _GENE_PAGE_SCRIPT) -- event_id is
+        # unique per event, unlike sample_id, which a sample can share
+        # across multiple fusion events for the same gene.
+        event_id_attr = escape_xml_attr(str(row["event_id"]))
         dots.append(
             f'<circle cx="{axis_left + position * scale:.1f}" cy="{y:.1f}" r="3" fill="{color}" '
-            f'stroke="{stroke}" stroke-width="{stroke_width}"><title>{title}</title></circle>'
+            f'stroke="{stroke}" stroke-width="{stroke_width}" '
+            f'data-event-id="{event_id_attr}"><title>{title}</title></circle>'
         )
     dots_bottom = dots_top + 4 * 7 + 3
 
