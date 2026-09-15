@@ -361,9 +361,20 @@ def test_composite_score_real_ret_msk_impact_all_five_subscores_applicable():
     # With directional intronic-breakpoint snapping now merged in (which
     # shifts several events' breakpoint_protein_position/exon), the honest
     # corrected value differs from the pre-snapping pin.
+    #
+    # Re-pinned 2026-09-15 after rerunning the committed RET run: PR #85
+    # ("Fix algorithm input availability...") started passing the shared
+    # --n-permutations value through to domain_disruption, which previously
+    # silently fell back to its own hardcoded 10,000-permutation default
+    # regardless of the CLI flag. The rerun correctly uses the same 1,000
+    # permutations as domain_retention (permutation_empirical_p_value moves
+    # from 0.0349 to the 1,000-permutation floor of 0.000999), which alone
+    # raises the domain_disruption sub-score and therefore the composite
+    # score -- domain_retention/domain_disruption's own Fisher p-values and
+    # odds ratios are unchanged between the two runs.
     assert ranking[0]["Partner_gene"] == "KIF5B"
     assert ranking[0]["Event_count"] == 87
-    assert ranking[0]["Composite_score"] == pytest.approx(0.4593659412119797)
+    assert ranking[0]["Composite_score"] == pytest.approx(0.4902302627552125)
 
     for row in ranking:
         assert row["Domain_disruption_score"] is not None

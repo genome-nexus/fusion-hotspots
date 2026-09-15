@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NTRK3 fusion-hotspot report</title>
+<style>
+:root { color-scheme: light; }
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 24px 20px 60px; background: #f7f7f8; color: #1a1a1a;
+  font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+.wrap { max-width: 1080px; margin: 0 auto; }
+h1 { font-size: 22px; margin: 0 0 4px; }
+h1 .badge { position: relative; top: -2px; }
+h2 {
+  font-size: 16px; margin: 32px 0 10px;
+  border-bottom: 1px solid #ddd; padding-bottom: 6px;
+}
+.subtitle { color: #555; font-size: 13px; margin: 0 0 20px; }
+.back-link {
+  display: inline-block; margin-bottom: 14px; font-size: 13px;
+  color: #2878b5; text-decoration: none;
+}
+.back-link:hover { text-decoration: underline; }
+.card {
+  background: #fff; border: 1px solid #e2e2e2;
+  border-radius: 8px; padding: 16px 18px;
+}
+.stat-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px;
+}
+.stat {
+  background: #fff; border: 1px solid #e2e2e2;
+  border-radius: 8px; padding: 10px 12px;
+}
+.stat .label {
+  font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.02em;
+}
+.stat .value { font-size: 18px; font-weight: 600; margin-top: 2px; }
+.svg-frame {
+  width: 100%; overflow-x: auto; background: #fff;
+  border: 1px solid #e2e2e2; border-radius: 8px; padding: 8px;
+}
+.svg-frame svg { display: block; max-width: 100%; height: auto; }
+.controls {
+  display: flex; flex-wrap: wrap; gap: 20px; align-items: center;
+  margin: 12px 0 16px; padding: 12px 14px; background: #fff;
+  border: 1px solid #e2e2e2; border-radius: 8px;
+}
+.control-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.control-group label.title { font-size: 12px; font-weight: 600; color: #333; }
+.control-group select { font-size: 13px; padding: 4px 6px; }
+.status-toggle { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; }
+#events-summary { font-size: 12px; color: #555; margin-left: auto; }
+table.events { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+table.events th, table.events td {
+  text-align: left; padding: 5px 8px;
+  border-bottom: 1px solid #eee; white-space: nowrap;
+}
+table.events th { position: sticky; top: 0; background: #fafafa; }
+table.events tr.row-highlight { background: #fff3cd; transition: background 1.2s ease; }
+.lollipop-tooltip {
+  position: fixed; z-index: 1000; pointer-events: none;
+  background: #1a1a1a; color: #fff; font-size: 12px; line-height: 1.3;
+  padding: 4px 8px; border-radius: 4px; white-space: nowrap;
+}
+.mechanism-callout {
+  background: #f5f8fc; border: 1px solid #cfe0f0; border-radius: 8px;
+  padding: 12px 16px; margin: 0 0 16px; font-size: 13px;
+}
+.mechanism-callout p { margin: 4px 0; }
+.mechanism-callout p.panel-note { padding-left: 0; }
+tr.counter-intuitive-row { cursor: pointer; }
+tr.counter-intuitive-row:hover { background: #f0f0f0; }
+.events-table-frame {
+  max-height: 420px; overflow: auto;
+  border: 1px solid #e2e2e2; border-radius: 8px; background: #fff;
+}
+.gene-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.gene-links a {
+  font-size: 12.5px; padding: 4px 9px; border-radius: 999px; text-decoration: none;
+  border: 1px solid #ccc; color: #1a1a1a; background: #fff;
+}
+.gene-links a:hover { background: #f0f0f0; }
+.gene-links a.significant { border-color: #d62728; color: #d62728; }
+.note { font-size: 12px; color: #777; margin-top: 8px; }
+.panel-note { font-size: 12px; color: #555; margin: 8px 0 0; padding-left: 18px; }
+.badge {
+  display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 9px;
+  border-radius: 999px; margin-left: 10px; vertical-align: middle;
+  text-transform: uppercase; letter-spacing: 0.03em;
+}
+.badge-curated { background: #e6f4ea; color: #1a7f37; border: 1px solid #b7e0c2; }
+.badge-auto { background: #fff4e5; color: #9a6700; border: 1px solid #f0dca6; }
+table.data-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+table.data-table th, table.data-table td {
+  text-align: left; padding: 5px 8px;
+  border-bottom: 1px solid #eee; white-space: nowrap;
+}
+table.data-table th { position: sticky; top: 0; background: #fafafa; }
+table.sortable th[data-sort-key] { cursor: pointer; user-select: none; }
+table.sortable th[data-sort-key]:hover { background: #f0f0f0; }
+table.sortable th[data-sort-key]::after { content: ""; margin-left: 4px; color: #999; }
+table.sortable th[data-sort-dir="asc"]::after { content: "\25B2"; margin-left: 4px; color: #555; }
+table.sortable th[data-sort-dir="desc"]::after { content: "\25BC"; margin-left: 4px; color: #555; }
+.data-table-frame {
+  max-height: 380px; overflow: auto;
+  border: 1px solid #e2e2e2; border-radius: 8px; background: #fff;
+}
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  
+  <h1>NTRK3<span class="badge badge-curated" title="Loaded from a hand-curated YAML under genes/configs/">Curated config</span></h1>
+  <p class="subtitle">msk_impact_50k_2026</p>
+  <div class="mechanism-callout"><p><strong>Protein kinase domain retention:</strong> not statistically significant (p=0.06955, odds ratio=54) &mdash; too weak to draw a conclusion.</p><p class="panel-note"><a href="#mechanistic-interpretation">See full mechanistic interpretation below.</a></p></div>
+  <div class="stat-grid"><div class="stat"><div class="label">Raw Structural Variant Count</div><div class="value">71</div></div><div class="stat"><div class="label">Total Fusions</div><div class="value">58</div></div><div class="stat"><div class="label">Mapped Fusions</div><div class="value">57</div></div><div class="stat"><div class="label">Skipped Fusions</div><div class="value">1</div></div><div class="stat"><div class="label">In Frame Count</div><div class="value">55</div></div><div class="stat"><div class="label">Out Of Frame Count</div><div class="value">1</div></div><div class="stat"><div class="label">Known Frame Count</div><div class="value">56</div></div><div class="stat"><div class="label">Unknown Frame Count</div><div class="value">1</div></div><div class="stat"><div class="label">In Frame Percent</div><div class="value">98.21</div></div><div class="stat"><div class="label">Kinase Retained Count</div><div class="value">55</div></div><div class="stat"><div class="label">Kinase Retained Percent</div><div class="value">96.49</div></div><div class="stat"><div class="label">In Frame Kinase Retained Count</div><div class="value">54</div></div><div class="stat"><div class="label">Fisher Odds Ratio</div><div class="value">54</div></div><div class="stat"><div class="label">Fisher P Value</div><div class="value">0.06955</div></div><div class="stat"><div class="label">Permutation P Value</div><div class="value">0.000999</div></div><div class="stat"><div class="label">Domain Accession</div><div class="value">PF07714</div></div><div class="stat"><div class="label">Domain Start Aa</div><div class="value">539</div></div><div class="stat"><div class="label">Domain End Aa</div><div class="value">824</div></div><div class="stat"><div class="label">Mechanism Note</div><div class="value">Partner-driven oligomerization via ETV6&#x27;s SAM (pointed/PNT) domain is the dominant mechanism, operating on a permissive background of ligand-domain loss. The t(12;15) breakpoint severs NTRK3 upstream of the kinase domain, discarding the entire extracellular NT-3-binding region and transmembrane segment (eliminating ligand dependence and membrane anchoring) while retaining the kinase domain intact. ETV6&#x27;s SAM domain, retained at the N-terminus of the chimera, then drives head-to-tail self-polymerization; this polymeric assembly -- not simply forced proximity of two kinase domains -- is required for trans-autophosphorylation and transformation. The chimera is not a transcription factor: ETV6&#x27;s own ETS DNA-binding domain is lost, and this is not a promoter-swap/overexpression mechanism.</div></div></div>
+  <h2>Domain retention / outlier lollipop track</h2><p class="panel-note">Click a point to jump to its event in the table below.</p><div class="svg-frame" id="domain-track-svg"><svg xmlns="http://www.w3.org/2000/svg" width="920" height="200" viewBox="0 0 920 200">
+<rect width="920" height="200" fill="white"/>
+<text x="60" y="28" font-family="sans-serif" font-size="16">NTRK3 domain-retention track</text>
+<rect x="573.9" y="34.0" width="271.8" height="16.0" fill="#62b36f" opacity="0.55"/>
+<text x="845.7" y="46.0" font-family="sans-serif" font-size="9.5" text-anchor="end">Protein kinase domain (539-824)</text>
+<line x1="60.0" y1="63.0" x2="860.0" y2="63.0" stroke="#444444" stroke-width="4"/>
+<circle cx="564.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0013664-T02-IM5-1"><title>event EVT-P-0013664-T02-IM5-1; sample P-0013664-T02-IM5; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="564.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0061265-T01-IM7-2"><title>event EVT-P-0061265-T01-IM7-2; sample P-0061265-T01-IM7; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="564.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0058408-T01-IM6-3"><title>event EVT-P-0058408-T01-IM6-3; sample P-0058408-T01-IM6; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="504.3" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0056156-T02-IM7-4"><title>event EVT-P-0056156-T02-IM7-4; sample P-0056156-T02-IM7; partner ETV6; breakpoint aa 466; domain retained</title></circle>
+<circle cx="564.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0055703-T01-IM6-5"><title>event EVT-P-0055703-T01-IM6-5; sample P-0055703-T01-IM6; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="564.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0042503-T01-IM6-6"><title>event EVT-P-0042503-T01-IM6-6; sample P-0042503-T01-IM6; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="564.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0040355-T01-IM6-7"><title>event EVT-P-0040355-T01-IM6-7; sample P-0040355-T01-IM6; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="504.3" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0037610-T01-IM6-8"><title>event EVT-P-0037610-T01-IM6-8; sample P-0037610-T01-IM6; partner ETV6; breakpoint aa 466; domain retained</title></circle>
+<circle cx="564.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0035767-T06-IM7-9"><title>event EVT-P-0035767-T06-IM7-9; sample P-0035767-T06-IM7; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="564.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0035767-T04-IM6-10"><title>event EVT-P-0035767-T04-IM6-10; sample P-0035767-T04-IM6; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="564.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0033921-T05-IM7-11"><title>event EVT-P-0033921-T05-IM7-11; sample P-0033921-T05-IM7; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="564.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0033921-T04-IM6-12"><title>event EVT-P-0033921-T04-IM6-12; sample P-0033921-T04-IM6; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="564.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0033921-T02-IM6-13"><title>event EVT-P-0033921-T02-IM6-13; sample P-0033921-T02-IM6; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="564.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0032148-T04-IM6-14"><title>event EVT-P-0032148-T04-IM6-14; sample P-0032148-T04-IM6; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="564.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0064964-T01-IM7-15"><title>event EVT-P-0064964-T01-IM7-15; sample P-0064964-T01-IM7; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="564.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0013664-T04-IM6-16"><title>event EVT-P-0013664-T04-IM6-16; sample P-0013664-T04-IM6; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="207.8" cy="78.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0058230-T02-IM7-19"><title>event EVT-P-0058230-T02-IM7-19; sample P-0058230-T02-IM7; partner DOT1L; breakpoint aa 155; domain lost</title></circle>
+<circle cx="564.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0013196-T03-IM6-20"><title>event EVT-P-0013196-T03-IM6-20; sample P-0013196-T03-IM6; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="564.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0002978-T06-IM6-21"><title>event EVT-P-0002978-T06-IM6-21; sample P-0002978-T06-IM6; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="564.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0010668-T01-IM5-22"><title>event EVT-P-0010668-T01-IM5-22; sample P-0010668-T01-IM5; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="564.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0014872-T02-IM6-23"><title>event EVT-P-0014872-T02-IM6-23; sample P-0014872-T02-IM6; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="564.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0014872-T03-IM6-24"><title>event EVT-P-0014872-T03-IM6-24; sample P-0014872-T03-IM6; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="564.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0013196-T04-IM6-25"><title>event EVT-P-0013196-T04-IM6-25; sample P-0013196-T04-IM6; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="564.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0016507-T01-IM6-26"><title>event EVT-P-0016507-T01-IM6-26; sample P-0016507-T01-IM6; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="564.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0016507-T02-IM6-27"><title>event EVT-P-0016507-T02-IM6-27; sample P-0016507-T02-IM6; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="564.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0016507-T03-IM6-28"><title>event EVT-P-0016507-T03-IM6-28; sample P-0016507-T03-IM6; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="564.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0016507-T04-IM6-29"><title>event EVT-P-0016507-T04-IM6-29; sample P-0016507-T04-IM6; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="564.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0002671-T01-IM3-30"><title>event EVT-P-0002671-T01-IM3-30; sample P-0002671-T01-IM3; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="564.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0018060-T01-IM6-31"><title>event EVT-P-0018060-T01-IM6-31; sample P-0018060-T01-IM6; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="564.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0021974-T01-IM6-32"><title>event EVT-P-0021974-T01-IM6-32; sample P-0021974-T01-IM6; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="564.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0013196-T02-IM6-33"><title>event EVT-P-0013196-T02-IM6-33; sample P-0013196-T02-IM6; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="564.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0025507-T01-IM6-34"><title>event EVT-P-0025507-T01-IM6-34; sample P-0025507-T01-IM6; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="504.3" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0025987-T01-IM6-35"><title>event EVT-P-0025987-T01-IM6-35; sample P-0025987-T01-IM6; partner ETV6; breakpoint aa 466; domain retained</title></circle>
+<circle cx="504.3" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0010562-T01-IM5-36"><title>event EVT-P-0010562-T01-IM5-36; sample P-0010562-T01-IM5; partner ETV6; breakpoint aa 466; domain retained</title></circle>
+<circle cx="504.3" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0026390-T01-IM6-37"><title>event EVT-P-0026390-T01-IM6-37; sample P-0026390-T01-IM6; partner ETV6; breakpoint aa 466; domain retained</title></circle>
+<circle cx="504.3" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0026696-T01-IM6-38"><title>event EVT-P-0026696-T01-IM6-38; sample P-0026696-T01-IM6; partner ETV6; breakpoint aa 466; domain retained</title></circle>
+<circle cx="564.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0027006-T01-IM6-39"><title>event EVT-P-0027006-T01-IM6-39; sample P-0027006-T01-IM6; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="564.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0027006-T03-IM6-40"><title>event EVT-P-0027006-T03-IM6-40; sample P-0027006-T03-IM6; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="564.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0027006-T04-IM6-41"><title>event EVT-P-0027006-T04-IM6-41; sample P-0027006-T04-IM6; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="564.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0002978-T07-IM6-42"><title>event EVT-P-0002978-T07-IM6-42; sample P-0002978-T07-IM6; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="564.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0002978-T02-IM5-43"><title>event EVT-P-0002978-T02-IM5-43; sample P-0002978-T02-IM5; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="504.3" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0026286-T01-IM6-44"><title>event EVT-P-0026286-T01-IM6-44; sample P-0026286-T01-IM6; partner ETV6; breakpoint aa 466; domain retained</title></circle>
+<circle cx="564.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0002978-T03-IM5-45"><title>event EVT-P-0002978-T03-IM5-45; sample P-0002978-T03-IM5; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="504.3" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0010264-T01-IM5-46"><title>event EVT-P-0010264-T01-IM5-46; sample P-0010264-T01-IM5; partner ETV6; breakpoint aa 466; domain retained</title></circle>
+<circle cx="504.3" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0007911-T02-IM5-47"><title>event EVT-P-0007911-T02-IM5-47; sample P-0007911-T02-IM5; partner ETV6; breakpoint aa 466; domain retained</title></circle>
+<circle cx="564.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0033921-T03-IM6-48"><title>event EVT-P-0033921-T03-IM6-48; sample P-0033921-T03-IM6; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="504.3" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0007772-T03-IM5-49"><title>event EVT-P-0007772-T03-IM5-49; sample P-0007772-T03-IM5; partner ETV6; breakpoint aa 466; domain retained</title></circle>
+<circle cx="504.3" cy="85.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0007772-T02-IM5-50"><title>event EVT-P-0007772-T02-IM5-50; sample P-0007772-T02-IM5; partner ETV6; breakpoint aa 466; domain lost</title></circle>
+<circle cx="504.3" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0035552-T01-IM6-51"><title>event EVT-P-0035552-T01-IM6-51; sample P-0035552-T01-IM6; partner ETV6; breakpoint aa 466; domain retained</title></circle>
+<circle cx="564.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0035767-T01-IM6-52"><title>event EVT-P-0035767-T01-IM6-52; sample P-0035767-T01-IM6; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="504.3" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0007772-T01-IM5-53"><title>event EVT-P-0007772-T01-IM5-53; sample P-0007772-T01-IM5; partner ETV6; breakpoint aa 466; domain retained</title></circle>
+<circle cx="564.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0006480-T01-IM5-54"><title>event EVT-P-0006480-T01-IM5-54; sample P-0006480-T01-IM5; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="564.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0002978-T04-IM5-55"><title>event EVT-P-0002978-T04-IM5-55; sample P-0002978-T04-IM5; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="564.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0002978-T05-IM6-56"><title>event EVT-P-0002978-T05-IM6-56; sample P-0002978-T05-IM6; partner ETV6; breakpoint aa 529; domain retained</title></circle>
+<circle cx="504.3" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0004737-T01-IM5-57"><title>event EVT-P-0004737-T01-IM5-57; sample P-0004737-T01-IM5; partner ETV6; breakpoint aa 466; domain retained</title></circle>
+<circle cx="504.3" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0023257-T01-IM6-58"><title>event EVT-P-0023257-T01-IM6-58; sample P-0023257-T01-IM6; partner ETV6; breakpoint aa 466; domain retained</title></circle>
+<circle cx="510.1" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0010556-T01-IM5-70"><title>event EVT-P-0010556-T01-IM5-70; sample P-0010556-T01-IM5; partner ZNF710; breakpoint aa 472; domain retained</title></circle>
+<line x1="60.0" y1="114.0" x2="860.0" y2="114.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="860.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
+<text x="60.0" y="128.0" font-family="sans-serif" font-size="9">1</text>
+<text x="860.0" y="128.0" font-family="sans-serif" font-size="9" text-anchor="end">839 aa</text>
+<line x1="61.0" y1="132.0" x2="61.0" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="61.0" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 61.0 137.0)">E2</text>
+<line x1="139.1" y1="132.0" x2="139.1" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="139.1" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 139.1 137.0)">E3</text>
+<line x1="163.0" y1="132.0" x2="163.0" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="163.0" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 163.0 137.0)">E4</text>
+<line x1="185.9" y1="132.0" x2="185.9" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="185.9" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 185.9 137.0)">E5</text>
+<line x1="207.8" y1="132.0" x2="207.8" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="207.8" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 207.8 137.0)">E6</text>
+<line x1="258.3" y1="132.0" x2="258.3" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="258.3" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 258.3 137.0)">E7</text>
+<line x1="304.1" y1="132.0" x2="304.1" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="304.1" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 304.1 137.0)">E8</text>
+<line x1="348.9" y1="132.0" x2="348.9" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="348.9" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 348.9 137.0)">E9</text>
+<line x1="443.3" y1="132.0" x2="443.3" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="443.3" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 443.3 137.0)">E10</text>
+<line x1="450.9" y1="132.0" x2="450.9" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="450.9" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 450.9 137.0)">E11</text>
+<line x1="471.9" y1="132.0" x2="471.9" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="471.9" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 471.9 137.0)">E12</text>
+<line x1="504.3" y1="132.0" x2="504.3" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="504.3" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 504.3 137.0)">E13</text>
+<line x1="564.4" y1="132.0" x2="564.4" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="564.4" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 564.4 137.0)">E14</text>
+<line x1="606.4" y1="132.0" x2="606.4" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="606.4" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 606.4 137.0)">E15</text>
+<line x1="660.7" y1="132.0" x2="660.7" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="660.7" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 660.7 137.0)">E16</text>
+<line x1="738.9" y1="132.0" x2="738.9" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="738.9" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 738.9 137.0)">E17</text>
+<line x1="752.3" y1="132.0" x2="752.3" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="752.3" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 752.3 137.0)">E18</text>
+<line x1="802.8" y1="132.0" x2="802.8" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="802.8" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 802.8 137.0)">E19</text>
+<line x1="155.4" y1="114.0" x2="155.4" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="155.4" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">100</text>
+<line x1="250.7" y1="114.0" x2="250.7" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="250.7" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">200</text>
+<line x1="346.1" y1="114.0" x2="346.1" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="346.1" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">300</text>
+<line x1="441.4" y1="114.0" x2="441.4" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="441.4" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">400</text>
+<line x1="536.8" y1="114.0" x2="536.8" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="536.8" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">500</text>
+<line x1="632.1" y1="114.0" x2="632.1" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="632.1" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">600</text>
+<line x1="727.5" y1="114.0" x2="727.5" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="727.5" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">700</text>
+<line x1="822.8" y1="114.0" x2="822.8" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="822.8" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">800</text>
+<circle cx="60" cy="167.0" r="4" fill="#2878b5"/><text x="70" y="172.0" font-family="sans-serif" font-size="12">fully retained</text>
+<circle cx="180" cy="167.0" r="4" fill="#f2a93b"/><text x="190" y="172.0" font-family="sans-serif" font-size="12">truncated</text>
+<circle cx="275" cy="167.0" r="4" fill="#777777"/><text x="285" y="172.0" font-family="sans-serif" font-size="12">fully lost</text>
+<circle cx="365" cy="167.0" r="4" fill="white" stroke="#d62728" stroke-width="1.5"/><text x="375" y="172.0" font-family="sans-serif" font-size="12">reference discrepancy</text>
+<rect x="60" y="180.0" width="12" height="10" fill="#62b36f" opacity="0.55"/><text x="80" y="189.0" font-family="sans-serif" font-size="12">configured key-domain span (name/range labeled above; a second or later configured domain gets its own distinct shade)</text>
+</svg>
+</div><h2 id="mechanistic-interpretation">Mechanistic interpretation</h2><p><strong>Curated mechanism:</strong> Partner-driven oligomerization via ETV6&#x27;s SAM (pointed/PNT) domain is the dominant mechanism, operating on a permissive background of ligand-domain loss. The t(12;15) breakpoint severs NTRK3 upstream of the kinase domain, discarding the entire extracellular NT-3-binding region and transmembrane segment (eliminating ligand dependence and membrane anchoring) while retaining the kinase domain intact. ETV6&#x27;s SAM domain, retained at the N-terminus of the chimera, then drives head-to-tail self-polymerization; this polymeric assembly -- not simply forced proximity of two kinase domains -- is required for trans-autophosphorylation and transformation. The chimera is not a transcription factor: ETV6&#x27;s own ETS DNA-binding domain is lost, and this is not a promoter-swap/overexpression mechanism.</p><p><strong>Protein kinase domain retention:</strong> not statistically significant (p=0.06955, odds ratio=54) &mdash; too weak to draw a conclusion.</p><h2>Composite evidence ranking (per partner gene)</h2><p class="panel-note">Click a column header to sort ascending/descending. 4 partner gene(s) ranked by <code>composite_score</code>.</p><div class="data-table-frame"><table class="data-table sortable" id="composite-score-table"><thead><tr><th data-sort-key="Rank">Rank</th><th data-sort-key="Partner_gene">Partner gene</th><th data-sort-key="Event_count">Events</th><th data-sort-key="Composite_score">Composite score</th><th data-sort-key="Recurrence_score">Recurrence</th><th data-sort-key="Domain_retention_score">Domain retention</th><th data-sort-key="Domain_disruption_score">Domain disruption</th><th data-sort-key="Cutpoint_proximity_score">Cutpoint proximity</th><th data-sort-key="Confidence_certainty_score">Confidence</th></tr></thead><tbody><tr><td data-sort="1">1</td><td data-sort="ETV6">ETV6</td><td data-sort="55">55</td><td data-sort="0.5195325646581886">0.5195</td><td data-sort="0.9482758620689655">0.9483</td><td data-sort="0.30004340774793187">0.3</td><td data-sort=""></td><td data-sort="0.0">0</td><td data-sort="0.5613244116887826">0.5613</td></tr><tr><td data-sort="2">2</td><td data-sort="DOT1L">DOT1L</td><td data-sort="1">1</td><td data-sort="0.3578946336237058">0.3579</td><td data-sort="0.017241379310344827">0.01724</td><td data-sort="0.30004340774793187">0.3</td><td data-sort=""></td><td data-sort="1.0">1</td><td data-sort="0.5613244116887826">0.5613</td></tr><tr><td data-sort="3">3</td><td data-sort="VPS39">VPS39</td><td data-sort="1">1</td><td data-sort="0.2097164721522533">0.2097</td><td data-sort="0.017241379310344827">0.01724</td><td data-sort="0.30004340774793187">0.3</td><td data-sort=""></td><td data-sort=""></td><td data-sort="0.5613244116887826">0.5613</td></tr><tr><td data-sort="4">4</td><td data-sort="ZNF710">ZNF710</td><td data-sort="1">1</td><td data-sort="0.19131820050268672">0.1913</td><td data-sort="0.017241379310344827">0.01724</td><td data-sort="0.30004340774793187">0.3</td><td data-sort=""></td><td data-sort="0.11159235668789813">0.1116</td><td data-sort="0.5613244116887826">0.5613</td></tr></tbody></table></div><h2>Fusion-transcript schematic</h2>
+<div class="controls">
+  <div class="control-group">
+    <label class="title" for="tumor-type-filter">Tumor type</label>
+    <select id="tumor-type-filter"><option value="">All tumor types</option></select>
+  </div>
+  <div class="control-group">
+    <span class="title">Domain status</span>
+    <span id="status-filter"></span>
+  </div>
+  <span id="events-summary"></span>
+</div>
+<div class="svg-frame" id="fusion-schematic-svg"><svg xmlns="http://www.w3.org/2000/svg" width="1000" height="276" viewBox="0 0 1000 276">
+<rect width="1000" height="276" fill="white"/>
+<text x="60" y="24" font-family="sans-serif" font-size="15">NTRK3 fusion-transcript schematic</text>
+<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555555">Fusion order varies by row; follow each row's 5' and 3' labels (NTRK3 portion is domain-colored, exon ticks). Partner-gene blocks share one color; row labels identify each partner.</text>
+<rect x="60.0" y="56.0" width="353.1" height="22" fill="#8064a2"><title>Partner gene ETV6; NTRK3–ETV6 fusion, breakpoint NTRK3 aa 529; samples P-0013664-T02-IM5, P-0061265-T01-IM7, P-0058408-T01-IM6, P-0055703-T01-IM6, P-0042503-T01-IM6 (+35 more)</title></rect>
+<rect x="413.1" y="56.0" width="206.9" height="22" fill="#e2e2e2"><title>NTRK3 backbone (529-839 aa, no domain); domain status retained; NTRK3–ETV6 fusion, breakpoint NTRK3 aa 529; samples P-0013664-T02-IM5, P-0061265-T01-IM7, P-0058408-T01-IM6, P-0055703-T01-IM6, P-0042503-T01-IM6 (+35 more)</title></rect>
+<rect x="419.8" y="56.0" width="190.2" height="22" fill="#2878b5"><title>Protein kinase domain retained (539-824 aa); NTRK3–ETV6 fusion, breakpoint NTRK3 aa 529; samples P-0013664-T02-IM5, P-0061265-T01-IM7, P-0058408-T01-IM6, P-0055703-T01-IM6, P-0042503-T01-IM6 (+35 more)</title></rect>
+<text x="514.9" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="442.5" y1="56.0" x2="442.5" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="480.5" y1="56.0" x2="480.5" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="535.2" y1="56.0" x2="535.2" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="544.6" y1="56.0" x2="544.6" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="580.0" y1="56.0" x2="580.0" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="413.1" y1="55.0" x2="413.1" y2="79.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NTRK3–ETV6 fusion, breakpoint NTRK3 aa 529; samples P-0013664-T02-IM5, P-0061265-T01-IM7, P-0058408-T01-IM6, P-0055703-T01-IM6, P-0042503-T01-IM6 (+35 more)</title></line>
+<text x="64.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="70.5" font-family="sans-serif" font-size="9.5">ETV6 (x40) – Protein kinase domain retained – multiple tumor types</text>
+<rect x="60.0" y="82.0" width="311.0" height="22" fill="#8064a2"><title>Partner gene ETV6; NTRK3–ETV6 fusion, breakpoint NTRK3 aa 466; samples P-0056156-T02-IM7, P-0037610-T01-IM6, P-0025987-T01-IM6, P-0010562-T01-IM5, P-0026390-T01-IM6 (+9 more)</title></rect>
+<rect x="371.0" y="82.0" width="249.0" height="22" fill="#e2e2e2"><title>NTRK3 backbone (466-839 aa, no domain); domain status retained; NTRK3–ETV6 fusion, breakpoint NTRK3 aa 466; samples P-0056156-T02-IM7, P-0037610-T01-IM6, P-0025987-T01-IM6, P-0010562-T01-IM5, P-0026390-T01-IM6 (+9 more)</title></rect>
+<rect x="419.8" y="82.0" width="190.2" height="22" fill="#2878b5"><title>Protein kinase domain retained (539-824 aa); NTRK3–ETV6 fusion, breakpoint NTRK3 aa 466; samples P-0056156-T02-IM7, P-0037610-T01-IM6, P-0025987-T01-IM6, P-0010562-T01-IM5, P-0026390-T01-IM6 (+9 more)</title></rect>
+<text x="514.9" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="413.1" y1="82.0" x2="413.1" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="442.5" y1="82.0" x2="442.5" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="480.5" y1="82.0" x2="480.5" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="535.2" y1="82.0" x2="535.2" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="544.6" y1="82.0" x2="544.6" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="580.0" y1="82.0" x2="580.0" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="371.0" y1="81.0" x2="371.0" y2="105.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NTRK3–ETV6 fusion, breakpoint NTRK3 aa 466; samples P-0056156-T02-IM7, P-0037610-T01-IM6, P-0025987-T01-IM6, P-0010562-T01-IM5, P-0026390-T01-IM6 (+9 more)</title></line>
+<text x="64.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="96.5" font-family="sans-serif" font-size="9.5">ETV6 (x14) – Protein kinase domain retained – multiple tumor types</text>
+<rect x="163.5" y="108.0" width="456.5" height="22" fill="#8064a2"><title>Partner gene DOT1L; NTRK3–DOT1L fusion, breakpoint NTRK3 aa 155; sample P-0058230-T02-IM7</title></rect>
+<rect x="60.0" y="108.0" width="103.5" height="22" fill="#e2e2e2"><title>NTRK3 backbone (0-155 aa, no domain); domain status lost; NTRK3–DOT1L fusion, breakpoint NTRK3 aa 155; sample P-0058230-T02-IM7</title></rect>
+<rect x="80.7" y="108.0" width="16.7" height="22" fill="#2878b5"><title>PF01462 retained (31-56 aa); NTRK3–DOT1L fusion, breakpoint NTRK3 aa 155; sample P-0058230-T02-IM7</title></rect>
+<text x="89.0" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF0…</text>
+<rect x="129.4" y="108.0" width="34.0" height="22" fill="#f2a93b"><title>PF13855 truncated (104-155 aa); NTRK3–DOT1L fusion, breakpoint NTRK3 aa 155; sample P-0058230-T02-IM7</title></rect>
+<text x="146.4" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF13855</text>
+<line x1="60.7" y1="108.0" x2="60.7" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="115.4" y1="108.0" x2="115.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="132.1" y1="108.0" x2="132.1" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="148.1" y1="108.0" x2="148.1" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="163.5" y1="107.0" x2="163.5" y2="131.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; NTRK3–DOT1L fusion, breakpoint NTRK3 aa 155; sample P-0058230-T02-IM7</title></line>
+<text x="64.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="122.5" font-family="sans-serif" font-size="9.5">DOT1L – Protein kinase domain lost – Pancreatic Cancer</text>
+<rect x="371.0" y="134.0" width="249.0" height="22" fill="#8064a2"><title>Partner gene ETV6; NTRK3–ETV6 fusion, breakpoint NTRK3 aa 466; sample P-0007772-T02-IM5</title></rect>
+<rect x="60.0" y="134.0" width="311.0" height="22" fill="#e2e2e2"><title>NTRK3 backbone (0-466 aa, no domain); domain status lost; NTRK3–ETV6 fusion, breakpoint NTRK3 aa 466; sample P-0007772-T02-IM5</title></rect>
+<rect x="80.7" y="134.0" width="16.7" height="22" fill="#2878b5"><title>PF01462 retained (31-56 aa); NTRK3–ETV6 fusion, breakpoint NTRK3 aa 466; sample P-0007772-T02-IM5</title></rect>
+<text x="89.0" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF0…</text>
+<rect x="275.6" y="134.0" width="45.4" height="22" fill="#2878b5"><title>PF07679 retained (323-391 aa); NTRK3–ETV6 fusion, breakpoint NTRK3 aa 466; sample P-0007772-T02-IM5</title></rect>
+<text x="298.3" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF07679</text>
+<rect x="200.2" y="134.0" width="60.7" height="22" fill="#2878b5"><title>PF07679 retained (210-301 aa); NTRK3–ETV6 fusion, breakpoint NTRK3 aa 466; sample P-0007772-T02-IM5</title></rect>
+<text x="230.5" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF07679</text>
+<rect x="129.4" y="134.0" width="37.4" height="22" fill="#2878b5"><title>PF13855 retained (104-160 aa); NTRK3–ETV6 fusion, breakpoint NTRK3 aa 466; sample P-0007772-T02-IM5</title></rect>
+<text x="148.1" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF13855</text>
+<line x1="60.7" y1="134.0" x2="60.7" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="115.4" y1="134.0" x2="115.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="132.1" y1="134.0" x2="132.1" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="148.1" y1="134.0" x2="148.1" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="163.5" y1="134.0" x2="163.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="198.8" y1="134.0" x2="198.8" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="230.9" y1="134.0" x2="230.9" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="262.2" y1="134.0" x2="262.2" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="328.3" y1="134.0" x2="328.3" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="333.7" y1="134.0" x2="333.7" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="348.3" y1="134.0" x2="348.3" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="371.0" y1="133.0" x2="371.0" y2="157.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; NTRK3–ETV6 fusion, breakpoint NTRK3 aa 466; sample P-0007772-T02-IM5</title></line>
+<text x="64.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="148.5" font-family="sans-serif" font-size="9.5">ETV6 – Protein kinase domain lost – Salivary Gland Cancer</text>
+<rect x="60.0" y="160.0" width="315.0" height="22" fill="#8064a2"><title>Partner gene ZNF710; NTRK3–ZNF710 fusion, breakpoint NTRK3 aa 472; sample P-0010556-T01-IM5</title></rect>
+<rect x="375.0" y="160.0" width="245.0" height="22" fill="#e2e2e2"><title>NTRK3 backbone (472-839 aa, no domain); domain status retained; NTRK3–ZNF710 fusion, breakpoint NTRK3 aa 472; sample P-0010556-T01-IM5</title></rect>
+<rect x="419.8" y="160.0" width="190.2" height="22" fill="#2878b5"><title>Protein kinase domain retained (539-824 aa); NTRK3–ZNF710 fusion, breakpoint NTRK3 aa 472; sample P-0010556-T01-IM5</title></rect>
+<text x="514.9" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="413.1" y1="160.0" x2="413.1" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="442.5" y1="160.0" x2="442.5" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="480.5" y1="160.0" x2="480.5" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="535.2" y1="160.0" x2="535.2" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="544.6" y1="160.0" x2="544.6" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="580.0" y1="160.0" x2="580.0" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="375.0" y1="159.0" x2="375.0" y2="183.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NTRK3–ZNF710 fusion, breakpoint NTRK3 aa 472; sample P-0010556-T01-IM5</title></line>
+<text x="64.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="174.5" font-family="sans-serif" font-size="9.5">ZNF710 – Protein kinase domain retained – Glioma</text>
+<line x1="60.0" y1="190.0" x2="620.0" y2="190.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="185.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="620.0" y="185.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
+<text x="60.0" y="204.0" font-family="sans-serif" font-size="9">1</text>
+<text x="620.0" y="204.0" font-family="sans-serif" font-size="9" text-anchor="end">839 aa</text>
+<line x1="60.7" y1="208.0" x2="60.7" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="60.7" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 60.7 213.0)">E2</text>
+<line x1="115.4" y1="208.0" x2="115.4" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="115.4" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 115.4 213.0)">E3</text>
+<line x1="132.1" y1="208.0" x2="132.1" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="132.1" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 132.1 213.0)">E4</text>
+<line x1="148.1" y1="208.0" x2="148.1" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="148.1" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 148.1 213.0)">E5</text>
+<line x1="163.5" y1="208.0" x2="163.5" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="163.5" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 163.5 213.0)">E6</text>
+<line x1="198.8" y1="208.0" x2="198.8" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="198.8" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 198.8 213.0)">E7</text>
+<line x1="230.9" y1="208.0" x2="230.9" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="230.9" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 230.9 213.0)">E8</text>
+<line x1="262.2" y1="208.0" x2="262.2" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="262.2" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 262.2 213.0)">E9</text>
+<line x1="328.3" y1="208.0" x2="328.3" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="328.3" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 328.3 213.0)">E10</text>
+<line x1="333.7" y1="208.0" x2="333.7" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="333.7" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 333.7 213.0)">E11</text>
+<line x1="348.3" y1="208.0" x2="348.3" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="348.3" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 348.3 213.0)">E12</text>
+<line x1="371.0" y1="208.0" x2="371.0" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="371.0" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 371.0 213.0)">E13</text>
+<line x1="413.1" y1="208.0" x2="413.1" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="413.1" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 413.1 213.0)">E14</text>
+<line x1="442.5" y1="208.0" x2="442.5" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="442.5" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 442.5 213.0)">E15</text>
+<line x1="480.5" y1="208.0" x2="480.5" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="480.5" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 480.5 213.0)">E16</text>
+<line x1="535.2" y1="208.0" x2="535.2" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="535.2" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 535.2 213.0)">E17</text>
+<line x1="544.6" y1="208.0" x2="544.6" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="544.6" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 544.6 213.0)">E18</text>
+<line x1="580.0" y1="208.0" x2="580.0" y2="212.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="580.0" y="213.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 580.0 213.0)">E19</text>
+<rect x="60.0" y="221.0" width="12" height="10" fill="#2878b5"/>
+<text x="76.0" y="230.0" font-family="sans-serif" font-size="9">domain retained</text>
+<rect x="227.0" y="221.0" width="12" height="10" fill="#f2a93b"/>
+<text x="243.0" y="230.0" font-family="sans-serif" font-size="9">domain truncated</text>
+<rect x="403.0" y="221.0" width="12" height="10" fill="#e2e2e2"/>
+<text x="419.0" y="230.0" font-family="sans-serif" font-size="9">target backbone (no domain)</text>
+<rect x="678.0" y="221.0" width="12" height="10" fill="#d62728"/>
+<text x="694.0" y="230.0" font-family="sans-serif" font-size="9">breakpoint</text>
+<text x="60" y="266.0" font-family="sans-serif" font-size="9" fill="#555555">Partner-block colors are decorative; row labels identify partners.</text>
+</svg>
+</div><h2>Genomic-coordinate clustering (build GRCh37)</h2><p class="note">The 40 events sharing protein position 529 aa use 21 distinct genomic positions spanning 75862 bp -- the protein-position recurrence is broader than any single genomic hotspot, consistent with independent intronic breakpoints mapped (or clamped) onto the same protein/exon boundary rather than one shared DNA lesion.</p><div class="two-col"><p><strong>Protein position &harr; genomic breakpoint spread</strong> (linked view: each row is a protein junction position also shown in the fusion schematic/events table above).</p><div class="data-table-frame"><table class="data-table"><thead><tr><th>Protein position (aa)</th><th>Events</th><th>Distinct genomic positions</th><th>Genomic span (bp)</th><th>Spans &gt;1 chromosome</th></tr></thead><tbody><tr><td>529</td><td>40</td><td>21</td><td>75862</td><td>No</td></tr><tr><td>466</td><td>15</td><td>13</td><td>80532</td><td>No</td></tr></tbody></table></div><p><strong>Top genomic bins</strong> (fixed 1000 bp width):</p><div class="data-table-frame"><table class="data-table"><thead><tr><th>Chromosome</th><th>Bin start</th><th>Bin end</th><th>Events</th></tr></thead><tbody><tr><td>15</td><td>88506000</td><td>88507000</td><td>6</td></tr><tr><td>15</td><td>88505000</td><td>88506000</td><td>5</td></tr><tr><td>15</td><td>88488000</td><td>88489000</td><td>4</td></tr><tr><td>15</td><td>88516000</td><td>88517000</td><td>4</td></tr><tr><td>15</td><td>88501000</td><td>88502000</td><td>3</td></tr><tr><td>15</td><td>88512000</td><td>88513000</td><td>3</td></tr><tr><td>15</td><td>88600000</td><td>88601000</td><td>3</td></tr><tr><td>15</td><td>88548000</td><td>88549000</td><td>2</td></tr><tr><td>15</td><td>88558000</td><td>88559000</td><td>2</td></tr><tr><td>15</td><td>88651000</td><td>88652000</td><td>2</td></tr></tbody></table></div></div><h2>Events</h2><div class="events-table-frame"><table class="events" id="events-table"><thead><tr><th>Event</th><th>Sample</th><th>Tumor type</th><th>Oncotree</th><th>Partner gene</th><th>Role</th><th>Breakpoint (aa)</th><th>Domain status</th></tr></thead><tbody><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0013664-T02-IM5-1"><td>EVT-P-0013664-T02-IM5-1</td><td>P-0013664-T02-IM5</td><td>Soft Tissue Sarcoma</td><td>FIBS</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Salivary Gland Cancer" data-domain-status="retained" data-event-id="EVT-P-0061265-T01-IM7-2"><td>EVT-P-0061265-T01-IM7-2</td><td>P-0061265-T01-IM7</td><td>Salivary Gland Cancer</td><td>HNMASC</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Colorectal Cancer" data-domain-status="retained" data-event-id="EVT-P-0058408-T01-IM6-3"><td>EVT-P-0058408-T01-IM6-3</td><td>P-0058408-T01-IM6</td><td>Colorectal Cancer</td><td>COAD</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-P-0056156-T02-IM7-4"><td>EVT-P-0056156-T02-IM7-4</td><td>P-0056156-T02-IM7</td><td>Thyroid Cancer</td><td>THPA</td><td>ETV6</td><td>three_prime</td><td>466</td><td>Retained</td></tr><tr data-tumor-type="Cancer of Unknown Primary" data-domain-status="retained" data-event-id="EVT-P-0055703-T01-IM6-5"><td>EVT-P-0055703-T01-IM6-5</td><td>P-0055703-T01-IM6</td><td>Cancer of Unknown Primary</td><td>CUP</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Colorectal Cancer" data-domain-status="retained" data-event-id="EVT-P-0042503-T01-IM6-6"><td>EVT-P-0042503-T01-IM6-6</td><td>P-0042503-T01-IM6</td><td>Colorectal Cancer</td><td>COAD</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Colorectal Cancer" data-domain-status="retained" data-event-id="EVT-P-0040355-T01-IM6-7"><td>EVT-P-0040355-T01-IM6-7</td><td>P-0040355-T01-IM6</td><td>Colorectal Cancer</td><td>COAD</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-P-0037610-T01-IM6-8"><td>EVT-P-0037610-T01-IM6-8</td><td>P-0037610-T01-IM6</td><td>Thyroid Cancer</td><td>THPA</td><td>ETV6</td><td>three_prime</td><td>466</td><td>Retained</td></tr><tr data-tumor-type="Pancreatic Cancer" data-domain-status="retained" data-event-id="EVT-P-0035767-T06-IM7-9"><td>EVT-P-0035767-T06-IM7-9</td><td>P-0035767-T06-IM7</td><td>Pancreatic Cancer</td><td>PAAC</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Pancreatic Cancer" data-domain-status="retained" data-event-id="EVT-P-0035767-T04-IM6-10"><td>EVT-P-0035767-T04-IM6-10</td><td>P-0035767-T04-IM6</td><td>Pancreatic Cancer</td><td>PAAD</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Breast Cancer" data-domain-status="retained" data-event-id="EVT-P-0033921-T05-IM7-11"><td>EVT-P-0033921-T05-IM7-11</td><td>P-0033921-T05-IM7</td><td>Breast Cancer</td><td>JSCB</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Breast Cancer" data-domain-status="retained" data-event-id="EVT-P-0033921-T04-IM6-12"><td>EVT-P-0033921-T04-IM6-12</td><td>P-0033921-T04-IM6</td><td>Breast Cancer</td><td>JSCB</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Breast Cancer" data-domain-status="retained" data-event-id="EVT-P-0033921-T02-IM6-13"><td>EVT-P-0033921-T02-IM6-13</td><td>P-0033921-T02-IM6</td><td>Breast Cancer</td><td>JSCB</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Salivary Gland Cancer" data-domain-status="retained" data-event-id="EVT-P-0032148-T04-IM6-14"><td>EVT-P-0032148-T04-IM6-14</td><td>P-0032148-T04-IM6</td><td>Salivary Gland Cancer</td><td>HNMASC</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Breast Cancer" data-domain-status="retained" data-event-id="EVT-P-0064964-T01-IM7-15"><td>EVT-P-0064964-T01-IM7-15</td><td>P-0064964-T01-IM7</td><td>Breast Cancer</td><td>JSCB</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0013664-T04-IM6-16"><td>EVT-P-0013664-T04-IM6-16</td><td>P-0013664-T04-IM6</td><td>Soft Tissue Sarcoma</td><td>FIBS</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Pancreatic Cancer" data-domain-status="lost" data-event-id="EVT-P-0058230-T02-IM7-19"><td>EVT-P-0058230-T02-IM7-19</td><td>P-0058230-T02-IM7</td><td>Pancreatic Cancer</td><td>PAAD</td><td>DOT1L</td><td>five_prime</td><td>155</td><td>Lost</td></tr><tr data-tumor-type="Breast Cancer" data-domain-status="retained" data-event-id="EVT-P-0013196-T03-IM6-20"><td>EVT-P-0013196-T03-IM6-20</td><td>P-0013196-T03-IM6</td><td>Breast Cancer</td><td>BNNOS</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Salivary Gland Cancer" data-domain-status="retained" data-event-id="EVT-P-0002978-T06-IM6-21"><td>EVT-P-0002978-T06-IM6-21</td><td>P-0002978-T06-IM6</td><td>Salivary Gland Cancer</td><td>HNMASC</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Salivary Gland Cancer" data-domain-status="retained" data-event-id="EVT-P-0010668-T01-IM5-22"><td>EVT-P-0010668-T01-IM5-22</td><td>P-0010668-T01-IM5</td><td>Salivary Gland Cancer</td><td>HNMASC</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0014872-T02-IM6-23"><td>EVT-P-0014872-T02-IM6-23</td><td>P-0014872-T02-IM6</td><td>Soft Tissue Sarcoma</td><td>IMT</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0014872-T03-IM6-24"><td>EVT-P-0014872-T03-IM6-24</td><td>P-0014872-T03-IM6</td><td>Soft Tissue Sarcoma</td><td>IMT</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Breast Cancer" data-domain-status="retained" data-event-id="EVT-P-0013196-T04-IM6-25"><td>EVT-P-0013196-T04-IM6-25</td><td>P-0013196-T04-IM6</td><td>Breast Cancer</td><td>BRCNOS</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Salivary Gland Cancer" data-domain-status="retained" data-event-id="EVT-P-0016507-T01-IM6-26"><td>EVT-P-0016507-T01-IM6-26</td><td>P-0016507-T01-IM6</td><td>Salivary Gland Cancer</td><td>HNMASC</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Salivary Gland Cancer" data-domain-status="retained" data-event-id="EVT-P-0016507-T02-IM6-27"><td>EVT-P-0016507-T02-IM6-27</td><td>P-0016507-T02-IM6</td><td>Salivary Gland Cancer</td><td>HNMASC</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Salivary Gland Cancer" data-domain-status="retained" data-event-id="EVT-P-0016507-T03-IM6-28"><td>EVT-P-0016507-T03-IM6-28</td><td>P-0016507-T03-IM6</td><td>Salivary Gland Cancer</td><td>HNMASC</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Salivary Gland Cancer" data-domain-status="retained" data-event-id="EVT-P-0016507-T04-IM6-29"><td>EVT-P-0016507-T04-IM6-29</td><td>P-0016507-T04-IM6</td><td>Salivary Gland Cancer</td><td>HNMASC</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Colorectal Cancer" data-domain-status="retained" data-event-id="EVT-P-0002671-T01-IM3-30"><td>EVT-P-0002671-T01-IM3-30</td><td>P-0002671-T01-IM3</td><td>Colorectal Cancer</td><td>COAD</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Salivary Gland Cancer" data-domain-status="retained" data-event-id="EVT-P-0018060-T01-IM6-31"><td>EVT-P-0018060-T01-IM6-31</td><td>P-0018060-T01-IM6</td><td>Salivary Gland Cancer</td><td>HNMASC</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Salivary Gland Cancer" data-domain-status="retained" data-event-id="EVT-P-0021974-T01-IM6-32"><td>EVT-P-0021974-T01-IM6-32</td><td>P-0021974-T01-IM6</td><td>Salivary Gland Cancer</td><td>SAAD</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Breast Cancer" data-domain-status="retained" data-event-id="EVT-P-0013196-T02-IM6-33"><td>EVT-P-0013196-T02-IM6-33</td><td>P-0013196-T02-IM6</td><td>Breast Cancer</td><td>BRCNOS</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Breast Cancer" data-domain-status="retained" data-event-id="EVT-P-0025507-T01-IM6-34"><td>EVT-P-0025507-T01-IM6-34</td><td>P-0025507-T01-IM6</td><td>Breast Cancer</td><td>IDC</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Miscellaneous Brain Tumor" data-domain-status="retained" data-event-id="EVT-P-0025987-T01-IM6-35"><td>EVT-P-0025987-T01-IM6-35</td><td>P-0025987-T01-IM6</td><td>Miscellaneous Brain Tumor</td><td>PRNET</td><td>ETV6</td><td>three_prime</td><td>466</td><td>Retained</td></tr><tr data-tumor-type="Salivary Gland Cancer" data-domain-status="retained" data-event-id="EVT-P-0010562-T01-IM5-36"><td>EVT-P-0010562-T01-IM5-36</td><td>P-0010562-T01-IM5</td><td>Salivary Gland Cancer</td><td>SDCA</td><td>ETV6</td><td>three_prime</td><td>466</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-P-0026390-T01-IM6-37"><td>EVT-P-0026390-T01-IM6-37</td><td>P-0026390-T01-IM6</td><td>Thyroid Cancer</td><td>THPA</td><td>ETV6</td><td>three_prime</td><td>466</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-P-0026696-T01-IM6-38"><td>EVT-P-0026696-T01-IM6-38</td><td>P-0026696-T01-IM6</td><td>Thyroid Cancer</td><td>THPA</td><td>ETV6</td><td>three_prime</td><td>466</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0027006-T01-IM6-39"><td>EVT-P-0027006-T01-IM6-39</td><td>P-0027006-T01-IM6</td><td>Soft Tissue Sarcoma</td><td>SARCNOS</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0027006-T03-IM6-40"><td>EVT-P-0027006-T03-IM6-40</td><td>P-0027006-T03-IM6</td><td>Soft Tissue Sarcoma</td><td>FIBS</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0027006-T04-IM6-41"><td>EVT-P-0027006-T04-IM6-41</td><td>P-0027006-T04-IM6</td><td>Soft Tissue Sarcoma</td><td>FIBS</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Salivary Gland Cancer" data-domain-status="retained" data-event-id="EVT-P-0002978-T07-IM6-42"><td>EVT-P-0002978-T07-IM6-42</td><td>P-0002978-T07-IM6</td><td>Salivary Gland Cancer</td><td>HNMASC</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Salivary Gland Cancer" data-domain-status="retained" data-event-id="EVT-P-0002978-T02-IM5-43"><td>EVT-P-0002978-T02-IM5-43</td><td>P-0002978-T02-IM5</td><td>Salivary Gland Cancer</td><td>HNMASC</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Salivary Gland Cancer" data-domain-status="retained" data-event-id="EVT-P-0026286-T01-IM6-44"><td>EVT-P-0026286-T01-IM6-44</td><td>P-0026286-T01-IM6</td><td>Salivary Gland Cancer</td><td>SACA</td><td>ETV6</td><td>three_prime</td><td>466</td><td>Retained</td></tr><tr data-tumor-type="Salivary Gland Cancer" data-domain-status="retained" data-event-id="EVT-P-0002978-T03-IM5-45"><td>EVT-P-0002978-T03-IM5-45</td><td>P-0002978-T03-IM5</td><td>Salivary Gland Cancer</td><td>HNMASC</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Pancreatic Cancer" data-domain-status="retained" data-event-id="EVT-P-0010264-T01-IM5-46"><td>EVT-P-0010264-T01-IM5-46</td><td>P-0010264-T01-IM5</td><td>Pancreatic Cancer</td><td>PAAD</td><td>ETV6</td><td>three_prime</td><td>466</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-P-0007911-T02-IM5-47"><td>EVT-P-0007911-T02-IM5-47</td><td>P-0007911-T02-IM5</td><td>Thyroid Cancer</td><td>THPD</td><td>ETV6</td><td>three_prime</td><td>466</td><td>Retained</td></tr><tr data-tumor-type="Breast Cancer" data-domain-status="retained" data-event-id="EVT-P-0033921-T03-IM6-48"><td>EVT-P-0033921-T03-IM6-48</td><td>P-0033921-T03-IM6</td><td>Breast Cancer</td><td>BRCNOS</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Salivary Gland Cancer" data-domain-status="retained" data-event-id="EVT-P-0007772-T03-IM5-49"><td>EVT-P-0007772-T03-IM5-49</td><td>P-0007772-T03-IM5</td><td>Salivary Gland Cancer</td><td>HNMASC</td><td>ETV6</td><td>three_prime</td><td>466</td><td>Retained</td></tr><tr data-tumor-type="Salivary Gland Cancer" data-domain-status="lost" data-event-id="EVT-P-0007772-T02-IM5-50"><td>EVT-P-0007772-T02-IM5-50</td><td>P-0007772-T02-IM5</td><td>Salivary Gland Cancer</td><td>HNMASC</td><td>ETV6</td><td>five_prime</td><td>466</td><td>Lost</td></tr><tr data-tumor-type="Pancreatic Cancer" data-domain-status="retained" data-event-id="EVT-P-0035552-T01-IM6-51"><td>EVT-P-0035552-T01-IM6-51</td><td>P-0035552-T01-IM6</td><td>Pancreatic Cancer</td><td>PAAD</td><td>ETV6</td><td>three_prime</td><td>466</td><td>Retained</td></tr><tr data-tumor-type="Pancreatic Cancer" data-domain-status="retained" data-event-id="EVT-P-0035767-T01-IM6-52"><td>EVT-P-0035767-T01-IM6-52</td><td>P-0035767-T01-IM6</td><td>Pancreatic Cancer</td><td>PANET</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Salivary Gland Cancer" data-domain-status="retained" data-event-id="EVT-P-0007772-T01-IM5-53"><td>EVT-P-0007772-T01-IM5-53</td><td>P-0007772-T01-IM5</td><td>Salivary Gland Cancer</td><td>HNMASC</td><td>ETV6</td><td>three_prime</td><td>466</td><td>Retained</td></tr><tr data-tumor-type="Salivary Gland Cancer" data-domain-status="retained" data-event-id="EVT-P-0006480-T01-IM5-54"><td>EVT-P-0006480-T01-IM5-54</td><td>P-0006480-T01-IM5</td><td>Salivary Gland Cancer</td><td>HNMASC</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Salivary Gland Cancer" data-domain-status="retained" data-event-id="EVT-P-0002978-T04-IM5-55"><td>EVT-P-0002978-T04-IM5-55</td><td>P-0002978-T04-IM5</td><td>Salivary Gland Cancer</td><td>HNMASC</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Salivary Gland Cancer" data-domain-status="retained" data-event-id="EVT-P-0002978-T05-IM6-56"><td>EVT-P-0002978-T05-IM6-56</td><td>P-0002978-T05-IM6</td><td>Salivary Gland Cancer</td><td>HNMASC</td><td>ETV6</td><td>three_prime</td><td>529</td><td>Retained</td></tr><tr data-tumor-type="Pancreatic Cancer" data-domain-status="retained" data-event-id="EVT-P-0004737-T01-IM5-57"><td>EVT-P-0004737-T01-IM5-57</td><td>P-0004737-T01-IM5</td><td>Pancreatic Cancer</td><td>PAAD</td><td>ETV6</td><td>three_prime</td><td>466</td><td>Retained</td></tr><tr data-tumor-type="Salivary Gland Cancer" data-domain-status="retained" data-event-id="EVT-P-0023257-T01-IM6-58"><td>EVT-P-0023257-T01-IM6-58</td><td>P-0023257-T01-IM6</td><td>Salivary Gland Cancer</td><td>HNMASC</td><td>ETV6</td><td>three_prime</td><td>466</td><td>Retained</td></tr><tr data-tumor-type="Glioma" data-domain-status="retained" data-event-id="EVT-P-0010556-T01-IM5-70"><td>EVT-P-0010556-T01-IM5-70</td><td>P-0010556-T01-IM5</td><td>Glioma</td><td>GB</td><td>ZNF710</td><td>three_prime</td><td>472</td><td>Retained</td></tr></tbody></table></div>
+</div>
+<div class="lollipop-tooltip" id="lollipop-tooltip" hidden></div>
+<script type="application/json" id="events-data">[{"event_id": "EVT-P-0013664-T02-IM5-1", "sample_id": "P-0013664-T02-IM5", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "FIBS", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0061265-T01-IM7-2", "sample_id": "P-0061265-T01-IM7", "tumor_type": "Salivary Gland Cancer", "oncotree_code": "HNMASC", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0058408-T01-IM6-3", "sample_id": "P-0058408-T01-IM6", "tumor_type": "Colorectal Cancer", "oncotree_code": "COAD", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0056156-T02-IM7-4", "sample_id": "P-0056156-T02-IM7", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 466, "domain_status": "retained"}, {"event_id": "EVT-P-0055703-T01-IM6-5", "sample_id": "P-0055703-T01-IM6", "tumor_type": "Cancer of Unknown Primary", "oncotree_code": "CUP", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0042503-T01-IM6-6", "sample_id": "P-0042503-T01-IM6", "tumor_type": "Colorectal Cancer", "oncotree_code": "COAD", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0040355-T01-IM6-7", "sample_id": "P-0040355-T01-IM6", "tumor_type": "Colorectal Cancer", "oncotree_code": "COAD", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0037610-T01-IM6-8", "sample_id": "P-0037610-T01-IM6", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 466, "domain_status": "retained"}, {"event_id": "EVT-P-0035767-T06-IM7-9", "sample_id": "P-0035767-T06-IM7", "tumor_type": "Pancreatic Cancer", "oncotree_code": "PAAC", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0035767-T04-IM6-10", "sample_id": "P-0035767-T04-IM6", "tumor_type": "Pancreatic Cancer", "oncotree_code": "PAAD", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0033921-T05-IM7-11", "sample_id": "P-0033921-T05-IM7", "tumor_type": "Breast Cancer", "oncotree_code": "JSCB", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0033921-T04-IM6-12", "sample_id": "P-0033921-T04-IM6", "tumor_type": "Breast Cancer", "oncotree_code": "JSCB", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0033921-T02-IM6-13", "sample_id": "P-0033921-T02-IM6", "tumor_type": "Breast Cancer", "oncotree_code": "JSCB", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0032148-T04-IM6-14", "sample_id": "P-0032148-T04-IM6", "tumor_type": "Salivary Gland Cancer", "oncotree_code": "HNMASC", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0064964-T01-IM7-15", "sample_id": "P-0064964-T01-IM7", "tumor_type": "Breast Cancer", "oncotree_code": "JSCB", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0013664-T04-IM6-16", "sample_id": "P-0013664-T04-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "FIBS", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0058230-T02-IM7-19", "sample_id": "P-0058230-T02-IM7", "tumor_type": "Pancreatic Cancer", "oncotree_code": "PAAD", "partner_gene": "DOT1L", "target_role": "five_prime", "breakpoint_protein_position": 155, "domain_status": "lost"}, {"event_id": "EVT-P-0013196-T03-IM6-20", "sample_id": "P-0013196-T03-IM6", "tumor_type": "Breast Cancer", "oncotree_code": "BNNOS", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0002978-T06-IM6-21", "sample_id": "P-0002978-T06-IM6", "tumor_type": "Salivary Gland Cancer", "oncotree_code": "HNMASC", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0010668-T01-IM5-22", "sample_id": "P-0010668-T01-IM5", "tumor_type": "Salivary Gland Cancer", "oncotree_code": "HNMASC", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0014872-T02-IM6-23", "sample_id": "P-0014872-T02-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "IMT", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0014872-T03-IM6-24", "sample_id": "P-0014872-T03-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "IMT", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0013196-T04-IM6-25", "sample_id": "P-0013196-T04-IM6", "tumor_type": "Breast Cancer", "oncotree_code": "BRCNOS", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0016507-T01-IM6-26", "sample_id": "P-0016507-T01-IM6", "tumor_type": "Salivary Gland Cancer", "oncotree_code": "HNMASC", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0016507-T02-IM6-27", "sample_id": "P-0016507-T02-IM6", "tumor_type": "Salivary Gland Cancer", "oncotree_code": "HNMASC", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0016507-T03-IM6-28", "sample_id": "P-0016507-T03-IM6", "tumor_type": "Salivary Gland Cancer", "oncotree_code": "HNMASC", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0016507-T04-IM6-29", "sample_id": "P-0016507-T04-IM6", "tumor_type": "Salivary Gland Cancer", "oncotree_code": "HNMASC", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0002671-T01-IM3-30", "sample_id": "P-0002671-T01-IM3", "tumor_type": "Colorectal Cancer", "oncotree_code": "COAD", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0018060-T01-IM6-31", "sample_id": "P-0018060-T01-IM6", "tumor_type": "Salivary Gland Cancer", "oncotree_code": "HNMASC", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0021974-T01-IM6-32", "sample_id": "P-0021974-T01-IM6", "tumor_type": "Salivary Gland Cancer", "oncotree_code": "SAAD", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0013196-T02-IM6-33", "sample_id": "P-0013196-T02-IM6", "tumor_type": "Breast Cancer", "oncotree_code": "BRCNOS", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0025507-T01-IM6-34", "sample_id": "P-0025507-T01-IM6", "tumor_type": "Breast Cancer", "oncotree_code": "IDC", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0025987-T01-IM6-35", "sample_id": "P-0025987-T01-IM6", "tumor_type": "Miscellaneous Brain Tumor", "oncotree_code": "PRNET", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 466, "domain_status": "retained"}, {"event_id": "EVT-P-0010562-T01-IM5-36", "sample_id": "P-0010562-T01-IM5", "tumor_type": "Salivary Gland Cancer", "oncotree_code": "SDCA", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 466, "domain_status": "retained"}, {"event_id": "EVT-P-0026390-T01-IM6-37", "sample_id": "P-0026390-T01-IM6", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 466, "domain_status": "retained"}, {"event_id": "EVT-P-0026696-T01-IM6-38", "sample_id": "P-0026696-T01-IM6", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 466, "domain_status": "retained"}, {"event_id": "EVT-P-0027006-T01-IM6-39", "sample_id": "P-0027006-T01-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "SARCNOS", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0027006-T03-IM6-40", "sample_id": "P-0027006-T03-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "FIBS", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0027006-T04-IM6-41", "sample_id": "P-0027006-T04-IM6", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "FIBS", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0002978-T07-IM6-42", "sample_id": "P-0002978-T07-IM6", "tumor_type": "Salivary Gland Cancer", "oncotree_code": "HNMASC", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0002978-T02-IM5-43", "sample_id": "P-0002978-T02-IM5", "tumor_type": "Salivary Gland Cancer", "oncotree_code": "HNMASC", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0026286-T01-IM6-44", "sample_id": "P-0026286-T01-IM6", "tumor_type": "Salivary Gland Cancer", "oncotree_code": "SACA", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 466, "domain_status": "retained"}, {"event_id": "EVT-P-0002978-T03-IM5-45", "sample_id": "P-0002978-T03-IM5", "tumor_type": "Salivary Gland Cancer", "oncotree_code": "HNMASC", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0010264-T01-IM5-46", "sample_id": "P-0010264-T01-IM5", "tumor_type": "Pancreatic Cancer", "oncotree_code": "PAAD", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 466, "domain_status": "retained"}, {"event_id": "EVT-P-0007911-T02-IM5-47", "sample_id": "P-0007911-T02-IM5", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPD", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 466, "domain_status": "retained"}, {"event_id": "EVT-P-0033921-T03-IM6-48", "sample_id": "P-0033921-T03-IM6", "tumor_type": "Breast Cancer", "oncotree_code": "BRCNOS", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0007772-T03-IM5-49", "sample_id": "P-0007772-T03-IM5", "tumor_type": "Salivary Gland Cancer", "oncotree_code": "HNMASC", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 466, "domain_status": "retained"}, {"event_id": "EVT-P-0007772-T02-IM5-50", "sample_id": "P-0007772-T02-IM5", "tumor_type": "Salivary Gland Cancer", "oncotree_code": "HNMASC", "partner_gene": "ETV6", "target_role": "five_prime", "breakpoint_protein_position": 466, "domain_status": "lost"}, {"event_id": "EVT-P-0035552-T01-IM6-51", "sample_id": "P-0035552-T01-IM6", "tumor_type": "Pancreatic Cancer", "oncotree_code": "PAAD", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 466, "domain_status": "retained"}, {"event_id": "EVT-P-0035767-T01-IM6-52", "sample_id": "P-0035767-T01-IM6", "tumor_type": "Pancreatic Cancer", "oncotree_code": "PANET", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0007772-T01-IM5-53", "sample_id": "P-0007772-T01-IM5", "tumor_type": "Salivary Gland Cancer", "oncotree_code": "HNMASC", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 466, "domain_status": "retained"}, {"event_id": "EVT-P-0006480-T01-IM5-54", "sample_id": "P-0006480-T01-IM5", "tumor_type": "Salivary Gland Cancer", "oncotree_code": "HNMASC", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0002978-T04-IM5-55", "sample_id": "P-0002978-T04-IM5", "tumor_type": "Salivary Gland Cancer", "oncotree_code": "HNMASC", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0002978-T05-IM6-56", "sample_id": "P-0002978-T05-IM6", "tumor_type": "Salivary Gland Cancer", "oncotree_code": "HNMASC", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 529, "domain_status": "retained"}, {"event_id": "EVT-P-0004737-T01-IM5-57", "sample_id": "P-0004737-T01-IM5", "tumor_type": "Pancreatic Cancer", "oncotree_code": "PAAD", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 466, "domain_status": "retained"}, {"event_id": "EVT-P-0023257-T01-IM6-58", "sample_id": "P-0023257-T01-IM6", "tumor_type": "Salivary Gland Cancer", "oncotree_code": "HNMASC", "partner_gene": "ETV6", "target_role": "three_prime", "breakpoint_protein_position": 466, "domain_status": "retained"}, {"event_id": "EVT-P-0010556-T01-IM5-70", "sample_id": "P-0010556-T01-IM5", "tumor_type": "Glioma", "oncotree_code": "GB", "partner_gene": "ZNF710", "target_role": "three_prime", "breakpoint_protein_position": 472, "domain_status": "retained"}]</script>
+<script type="application/json" id="status-labels">{"retained": "Retained", "disrupted": "Truncated", "lost": "Lost"}</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var events = JSON.parse(document.getElementById("events-data").textContent);
+  var statusLabels = JSON.parse(document.getElementById("status-labels").textContent);
+  var eventsById = {};
+  events.forEach(function (e) {
+    if (e.event_id) { eventsById[e.event_id] = e; }
+  });
+
+  function distinctValues(field) {
+    var values = events.map(function (e) { return e[field]; }).filter(Boolean);
+    return Array.from(new Set(values)).sort();
+  }
+  var tumorTypes = distinctValues("tumor_type");
+  var domainStatuses = distinctValues("domain_status");
+
+  var tumorSelect = document.getElementById("tumor-type-filter");
+  tumorSelect.innerHTML = '<option value="">All tumor types</option>' + tumorTypes.map(
+    function (t) {
+      return '<option value="' + t.replace(/"/g, "&quot;") + '">' + t + "</option>";
+    }
+  ).join("");
+
+  var statusContainer = document.getElementById("status-filter");
+  statusContainer.innerHTML = domainStatuses.map(function (s) {
+    var label = statusLabels[s] || (s.charAt(0).toUpperCase() + s.slice(1));
+    var checkbox = '<input type="checkbox" value="' + s + '" checked> ';
+    return '<label class="status-toggle">' + checkbox + label + "</label>";
+  }).join("");
+
+  // Group fusion-schematic rows by the (partner, breakpoint-aa) key baked
+  // into every row shape's <title> text by cfh.reporting.fusion_schematic
+  // (e.g. "...BRAF–KIAA1549 fusion, breakpoint BRAF aa 381; ...") --
+  // read back here, never recomputed or duplicated from the algorithm side.
+  var schematicGroups = new Map();
+  events.forEach(function (e) {
+    if (!e.partner_gene || e.breakpoint_protein_position == null) { return; }
+    var key = e.partner_gene + "|" + e.breakpoint_protein_position;
+    var group = schematicGroups.get(key);
+    if (!group) {
+      group = { tumorTypes: new Set(), domainStatuses: new Set() };
+      schematicGroups.set(key, group);
+    }
+    if (e.tumor_type) { group.tumorTypes.add(e.tumor_type); }
+    if (e.domain_status) { group.domainStatuses.add(e.domain_status); }
+  });
+  var TITLE_RE = /–([^;]+?) fusion, breakpoint \S+ aa (\d+);/;
+  var schematicSvg = document.getElementById("fusion-schematic-svg");
+
+  var summaryEl = document.getElementById("events-summary");
+  var rows = Array.from(document.querySelectorAll("#events-table tbody tr"));
+
+  function applyFilters() {
+    var tumor = tumorSelect.value;
+    var checked = statusContainer.querySelectorAll("input:checked");
+    var activeStatuses = new Set(Array.from(checked).map(function (i) { return i.value; }));
+
+    var shown = 0;
+    rows.forEach(function (tr) {
+      var matchesTumor = !tumor || tr.dataset.tumorType === tumor;
+      var matchesStatus = !tr.dataset.domainStatus || activeStatuses.has(tr.dataset.domainStatus);
+      var visible = matchesTumor && matchesStatus;
+      tr.hidden = !visible;
+      if (visible) { shown += 1; }
+    });
+    if (summaryEl) {
+      summaryEl.textContent = "Showing " + shown + " of " + rows.length + " events";
+    }
+
+    if (schematicSvg) {
+      schematicSvg.querySelectorAll("title").forEach(function (titleEl) {
+        var match = TITLE_RE.exec(titleEl.textContent || "");
+        var shape = titleEl.parentElement;
+        if (!match) { return; }
+        var group = schematicGroups.get(match[1] + "|" + match[2]);
+        if (!group) { shape.style.opacity = ""; return; }
+        var groupMatchesTumor = !tumor || group.tumorTypes.has(tumor);
+        var groupMatchesStatus = Array.from(group.domainStatuses).some(function (s) {
+          return activeStatuses.has(s);
+        });
+        shape.style.opacity = (groupMatchesTumor && groupMatchesStatus) ? "1" : "0.12";
+      });
+    }
+  }
+
+  tumorSelect.addEventListener("change", applyFilters);
+  statusContainer.addEventListener("change", applyFilters);
+  applyFilters();
+
+  // Shared by the lollipop-track points and the mechanistic-interpretation
+  // counter-intuitive-event tables: clear any active filters (so the row
+  // can't be hidden -- both jump sources are drawn independent of the
+  // table's tumor-type/domain-status filters), scroll the matching
+  // #events-table row into view, and briefly highlight it.
+  function jumpToEventRow(eventId) {
+    var row = document.querySelector(
+      '#events-table tbody tr[data-event-id="' + CSS.escape(eventId) + '"]'
+    );
+    if (!row) { return; }
+    tumorSelect.value = "";
+    statusContainer.querySelectorAll("input").forEach(function (i) { i.checked = true; });
+    applyFilters();
+    row.scrollIntoView({ behavior: "smooth", block: "center" });
+    row.classList.add("row-highlight");
+    window.setTimeout(function () { row.classList.remove("row-highlight"); }, 1500);
+  }
+
+  // Hovering or clicking a lollipop-track point (data-event-id, set by
+  // cfh.real_benchmark._domain_track_svg) shows a sample-id tooltip and/or
+  // jumps to that event's row in the table below.
+  var domainTrackFrame = document.getElementById("domain-track-svg");
+  var tooltip = document.getElementById("lollipop-tooltip");
+  if (domainTrackFrame) {
+    domainTrackFrame.querySelectorAll("circle[data-event-id]").forEach(function (circle) {
+      var eventId = circle.getAttribute("data-event-id");
+      if (!eventId) { return; }
+      var matchedEvent = eventsById[eventId];
+      if (tooltip && matchedEvent && matchedEvent.sample_id) {
+        circle.addEventListener("mouseenter", function () {
+          tooltip.textContent = "Sample " + matchedEvent.sample_id;
+          tooltip.hidden = false;
+        });
+        circle.addEventListener("mousemove", function (mouseEvent) {
+          tooltip.style.left = mouseEvent.clientX + 14 + "px";
+          tooltip.style.top = mouseEvent.clientY + 14 + "px";
+        });
+        circle.addEventListener("mouseleave", function () {
+          tooltip.hidden = true;
+        });
+      }
+      if (!document.querySelector('#events-table tbody tr[data-event-id="' + CSS.escape(eventId) + '"]')) {
+        return;
+      }
+      circle.style.cursor = "pointer";
+      circle.addEventListener("click", function () { jumpToEventRow(eventId); });
+    });
+  }
+
+  // Clicking a row in a "Mechanistic interpretation" counter-intuitive-
+  // event table (see cfh.reporting.html_viewer._mechanistic_effect_html)
+  // jumps to that same event in the main events table below.
+  document.querySelectorAll("tr.counter-intuitive-row[data-event-id]").forEach(function (row) {
+    var eventId = row.getAttribute("data-event-id");
+    if (!eventId) { return; }
+    row.addEventListener("click", function () { jumpToEventRow(eventId); });
+  });
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll("table.sortable").forEach(function (table) {
+    var tbody = table.tBodies[0];
+    if (!tbody) { return; }
+    var headers = Array.from(table.querySelectorAll("thead th[data-sort-key]"));
+    var currentKey = null;
+    var currentDir = 1;
+    headers.forEach(function (th, index) {
+      th.addEventListener("click", function () {
+        var key = th.getAttribute("data-sort-key");
+        currentDir = (currentKey === key) ? -currentDir : 1;
+        currentKey = key;
+        headers.forEach(function (h) { h.removeAttribute("data-sort-dir"); });
+        th.setAttribute("data-sort-dir", currentDir === 1 ? "asc" : "desc");
+
+        var rows = Array.from(tbody.querySelectorAll("tr"));
+        rows.sort(function (a, b) {
+          var aCell = a.children[index];
+          var bCell = b.children[index];
+          var aRaw = aCell ? aCell.getAttribute("data-sort") : null;
+          var bRaw = bCell ? bCell.getAttribute("data-sort") : null;
+          var aNum = aRaw === null || aRaw === "" ? NaN : Number(aRaw);
+          var bNum = bRaw === null || bRaw === "" ? NaN : Number(bRaw);
+          var cmp;
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            cmp = aNum - bNum;
+          } else {
+            cmp = String(aRaw).localeCompare(String(bRaw));
+          }
+          return cmp * currentDir;
+        });
+        rows.forEach(function (row) { tbody.appendChild(row); });
+      });
+    });
+  });
+});
+</script>
+</body>
+</html>
