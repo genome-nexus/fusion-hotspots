@@ -61,6 +61,11 @@ table.events th, table.events td {
 }
 table.events th { position: sticky; top: 0; background: #fafafa; }
 table.events tr.row-highlight { background: #fff3cd; transition: background 1.2s ease; }
+.lollipop-tooltip {
+  position: fixed; z-index: 1000; pointer-events: none;
+  background: #1a1a1a; color: #fff; font-size: 12px; line-height: 1.3;
+  padding: 4px 8px; border-radius: 4px; white-space: nowrap;
+}
 .events-table-frame {
   max-height: 420px; overflow: auto;
   border: 1px solid #e2e2e2; border-radius: 8px; background: #fff;
@@ -112,19 +117,19 @@ table.sortable th[data-sort-dir="desc"]::after { content: "\25BC"; margin-left: 
 <rect x="332.8" y="34.0" width="183.8" height="16.0" fill="#62b36f" opacity="0.55"/>
 <text x="332.8" y="46.0" font-family="sans-serif" font-size="9.5">Endonuclease/Exonuclease/phosphatase family (429-718)</text>
 <line x1="60.0" y1="63.0" x2="860.0" y2="63.0" stroke="#444444" stroke-width="4"/>
-<circle cx="416.1" cy="71.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0"><title>event EVT-P-0007343-T02-IM6-4; sample P-0007343-T02-IM6; partner ANK2; breakpoint aa 560; domain truncated</title></circle>
-<circle cx="176.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0031523-T02-IM6-5; sample P-0031523-T02-IM6; partner CLPB; breakpoint aa 183; domain retained</title></circle>
-<circle cx="132.5" cy="85.0" r="3" fill="#777777" stroke="none" stroke-width="0"><title>event EVT-P-0042110-T02-IM7-6; sample P-0042110-T02-IM7; partner FAT3; breakpoint aa 114; domain lost</title></circle>
-<circle cx="571.9" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0004226-T08-IM7-7; sample P-0004226-T08-IM7; partner FCHSD2; breakpoint aa 805; domain retained</title></circle>
-<circle cx="571.9" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0004226-T04-IM6-8; sample P-0004226-T04-IM6; partner FCHSD2; breakpoint aa 805; domain retained</title></circle>
-<circle cx="571.9" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0004226-T03-IM6-9; sample P-0004226-T03-IM6; partner FCHSD2; breakpoint aa 805; domain retained</title></circle>
-<circle cx="571.9" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0004226-T07-IM7-10; sample P-0004226-T07-IM7; partner FCHSD2; breakpoint aa 805; domain retained</title></circle>
-<circle cx="144.6" cy="85.0" r="3" fill="#777777" stroke="none" stroke-width="0"><title>event EVT-P-0045578-T01-IM6-11; sample P-0045578-T01-IM6; partner FOLR2; breakpoint aa 133; domain lost</title></circle>
-<circle cx="199.9" cy="92.0" r="3" fill="#777777" stroke="none" stroke-width="0"><title>event EVT-P-0009791-T02-IM6-12; sample P-0009791-T02-IM6; partner GAB2; breakpoint aa 220; domain lost</title></circle>
-<circle cx="734.1" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0048151-T01-IM6-31; sample P-0048151-T01-IM6; partner LRTOMT; breakpoint aa 1060; domain retained</title></circle>
-<circle cx="291.5" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-P-0005693-T03-IM6-34; sample P-0005693-T03-IM6; partner PTCH1; breakpoint aa 364; domain retained</title></circle>
-<circle cx="191.0" cy="78.0" r="3" fill="#777777" stroke="none" stroke-width="0"><title>event EVT-P-0024858-T01-IM6-36; sample P-0024858-T01-IM6; partner NLRP6; breakpoint aa 206; domain lost</title></circle>
-<circle cx="402.1" cy="85.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0"><title>event EVT-P-0031882-T01-IM6-37; sample P-0031882-T01-IM6; partner SHANK2; breakpoint aa 538; domain truncated</title></circle>
+<circle cx="416.1" cy="71.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0007343-T02-IM6-4"><title>event EVT-P-0007343-T02-IM6-4; sample P-0007343-T02-IM6; partner ANK2; breakpoint aa 560; domain truncated</title></circle>
+<circle cx="176.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0031523-T02-IM6-5"><title>event EVT-P-0031523-T02-IM6-5; sample P-0031523-T02-IM6; partner CLPB; breakpoint aa 183; domain retained</title></circle>
+<circle cx="132.5" cy="85.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0042110-T02-IM7-6"><title>event EVT-P-0042110-T02-IM7-6; sample P-0042110-T02-IM7; partner FAT3; breakpoint aa 114; domain lost</title></circle>
+<circle cx="571.9" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0004226-T08-IM7-7"><title>event EVT-P-0004226-T08-IM7-7; sample P-0004226-T08-IM7; partner FCHSD2; breakpoint aa 805; domain retained</title></circle>
+<circle cx="571.9" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0004226-T04-IM6-8"><title>event EVT-P-0004226-T04-IM6-8; sample P-0004226-T04-IM6; partner FCHSD2; breakpoint aa 805; domain retained</title></circle>
+<circle cx="571.9" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0004226-T03-IM6-9"><title>event EVT-P-0004226-T03-IM6-9; sample P-0004226-T03-IM6; partner FCHSD2; breakpoint aa 805; domain retained</title></circle>
+<circle cx="571.9" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0004226-T07-IM7-10"><title>event EVT-P-0004226-T07-IM7-10; sample P-0004226-T07-IM7; partner FCHSD2; breakpoint aa 805; domain retained</title></circle>
+<circle cx="144.6" cy="85.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0045578-T01-IM6-11"><title>event EVT-P-0045578-T01-IM6-11; sample P-0045578-T01-IM6; partner FOLR2; breakpoint aa 133; domain lost</title></circle>
+<circle cx="199.9" cy="92.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0009791-T02-IM6-12"><title>event EVT-P-0009791-T02-IM6-12; sample P-0009791-T02-IM6; partner GAB2; breakpoint aa 220; domain lost</title></circle>
+<circle cx="734.1" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0048151-T01-IM6-31"><title>event EVT-P-0048151-T01-IM6-31; sample P-0048151-T01-IM6; partner LRTOMT; breakpoint aa 1060; domain retained</title></circle>
+<circle cx="291.5" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0005693-T03-IM6-34"><title>event EVT-P-0005693-T03-IM6-34; sample P-0005693-T03-IM6; partner PTCH1; breakpoint aa 364; domain retained</title></circle>
+<circle cx="191.0" cy="78.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0024858-T01-IM6-36"><title>event EVT-P-0024858-T01-IM6-36; sample P-0024858-T01-IM6; partner NLRP6; breakpoint aa 206; domain lost</title></circle>
+<circle cx="402.1" cy="85.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0031882-T01-IM6-37"><title>event EVT-P-0031882-T01-IM6-37; sample P-0031882-T01-IM6; partner SHANK2; breakpoint aa 538; domain truncated</title></circle>
 <line x1="60.0" y1="114.0" x2="860.0" y2="114.0" stroke="#444444" stroke-width="1"/>
 <text x="60.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
 <text x="860.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
@@ -530,12 +535,17 @@ table.sortable th[data-sort-dir="desc"]::after { content: "\25BC"; margin-left: 
 </svg>
 </div><h2>Events</h2><div class="events-table-frame"><table class="events" id="events-table"><thead><tr><th>Event</th><th>Sample</th><th>Tumor type</th><th>Oncotree</th><th>Partner gene</th><th>Role</th><th>Breakpoint (aa)</th><th>Domain status</th></tr></thead><tbody><tr data-tumor-type="Prostate Cancer" data-domain-status="disrupted" data-event-id="EVT-P-0007343-T02-IM6-4"><td>EVT-P-0007343-T02-IM6-4</td><td>P-0007343-T02-IM6</td><td>Prostate Cancer</td><td>PRAD</td><td>ANK2</td><td>five_prime</td><td>560</td><td>Truncated</td></tr><tr data-tumor-type="Breast Cancer" data-domain-status="retained" data-event-id="EVT-P-0031523-T02-IM6-5"><td>EVT-P-0031523-T02-IM6-5</td><td>P-0031523-T02-IM6</td><td>Breast Cancer</td><td>BRCNOS</td><td>CLPB</td><td>three_prime</td><td>183</td><td>Retained</td></tr><tr data-tumor-type="Bladder Cancer" data-domain-status="lost" data-event-id="EVT-P-0042110-T02-IM7-6"><td>EVT-P-0042110-T02-IM7-6</td><td>P-0042110-T02-IM7</td><td>Bladder Cancer</td><td>BLCA</td><td>FAT3</td><td>five_prime</td><td>114</td><td>Lost</td></tr><tr data-tumor-type="Bladder Cancer" data-domain-status="retained" data-event-id="EVT-P-0004226-T08-IM7-7"><td>EVT-P-0004226-T08-IM7-7</td><td>P-0004226-T08-IM7</td><td>Bladder Cancer</td><td>UTUC</td><td>FCHSD2</td><td>five_prime</td><td>805</td><td>Retained</td></tr><tr data-tumor-type="Bladder Cancer" data-domain-status="retained" data-event-id="EVT-P-0004226-T04-IM6-8"><td>EVT-P-0004226-T04-IM6-8</td><td>P-0004226-T04-IM6</td><td>Bladder Cancer</td><td>UTUC</td><td>FCHSD2</td><td>five_prime</td><td>805</td><td>Retained</td></tr><tr data-tumor-type="Bladder Cancer" data-domain-status="retained" data-event-id="EVT-P-0004226-T03-IM6-9"><td>EVT-P-0004226-T03-IM6-9</td><td>P-0004226-T03-IM6</td><td>Bladder Cancer</td><td>UTUC</td><td>FCHSD2</td><td>five_prime</td><td>805</td><td>Retained</td></tr><tr data-tumor-type="Bladder Cancer" data-domain-status="retained" data-event-id="EVT-P-0004226-T07-IM7-10"><td>EVT-P-0004226-T07-IM7-10</td><td>P-0004226-T07-IM7</td><td>Bladder Cancer</td><td>UTUC</td><td>FCHSD2</td><td>five_prime</td><td>805</td><td>Retained</td></tr><tr data-tumor-type="Ovarian Cancer" data-domain-status="lost" data-event-id="EVT-P-0045578-T01-IM6-11"><td>EVT-P-0045578-T01-IM6-11</td><td>P-0045578-T01-IM6</td><td>Ovarian Cancer</td><td>HGSOC</td><td>FOLR2</td><td>five_prime</td><td>133</td><td>Lost</td></tr><tr data-tumor-type="Breast Cancer" data-domain-status="lost" data-event-id="EVT-P-0009791-T02-IM6-12"><td>EVT-P-0009791-T02-IM6-12</td><td>P-0009791-T02-IM6</td><td>Breast Cancer</td><td>IDC</td><td>GAB2</td><td>five_prime</td><td>220</td><td>Lost</td></tr><tr data-tumor-type="Endometrial Cancer" data-domain-status="retained" data-event-id="EVT-P-0048151-T01-IM6-31"><td>EVT-P-0048151-T01-IM6-31</td><td>P-0048151-T01-IM6</td><td>Endometrial Cancer</td><td>UCCC</td><td>LRTOMT</td><td>five_prime</td><td>1060</td><td>Retained</td></tr><tr data-tumor-type="Glioma" data-domain-status="retained" data-event-id="EVT-P-0005693-T03-IM6-34"><td>EVT-P-0005693-T03-IM6-34</td><td>P-0005693-T03-IM6</td><td>Glioma</td><td>EPM</td><td>PTCH1</td><td>three_prime</td><td>364</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="lost" data-event-id="EVT-P-0024858-T01-IM6-36"><td>EVT-P-0024858-T01-IM6-36</td><td>P-0024858-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUSC</td><td>NLRP6</td><td>five_prime</td><td>206</td><td>Lost</td></tr><tr data-tumor-type="Breast Cancer" data-domain-status="disrupted" data-event-id="EVT-P-0031882-T01-IM6-37"><td>EVT-P-0031882-T01-IM6-37</td><td>P-0031882-T01-IM6</td><td>Breast Cancer</td><td>BRCNOS</td><td>SHANK2</td><td>three_prime</td><td>538</td><td>Truncated</td></tr></tbody></table></div>
 </div>
+<div class="lollipop-tooltip" id="lollipop-tooltip" hidden></div>
 <script type="application/json" id="events-data">[{"event_id": "EVT-P-0007343-T02-IM6-4", "sample_id": "P-0007343-T02-IM6", "tumor_type": "Prostate Cancer", "oncotree_code": "PRAD", "partner_gene": "ANK2", "target_role": "five_prime", "breakpoint_protein_position": 560, "domain_status": "disrupted"}, {"event_id": "EVT-P-0031523-T02-IM6-5", "sample_id": "P-0031523-T02-IM6", "tumor_type": "Breast Cancer", "oncotree_code": "BRCNOS", "partner_gene": "CLPB", "target_role": "three_prime", "breakpoint_protein_position": 183, "domain_status": "retained"}, {"event_id": "EVT-P-0042110-T02-IM7-6", "sample_id": "P-0042110-T02-IM7", "tumor_type": "Bladder Cancer", "oncotree_code": "BLCA", "partner_gene": "FAT3", "target_role": "five_prime", "breakpoint_protein_position": 114, "domain_status": "lost"}, {"event_id": "EVT-P-0004226-T08-IM7-7", "sample_id": "P-0004226-T08-IM7", "tumor_type": "Bladder Cancer", "oncotree_code": "UTUC", "partner_gene": "FCHSD2", "target_role": "five_prime", "breakpoint_protein_position": 805, "domain_status": "retained"}, {"event_id": "EVT-P-0004226-T04-IM6-8", "sample_id": "P-0004226-T04-IM6", "tumor_type": "Bladder Cancer", "oncotree_code": "UTUC", "partner_gene": "FCHSD2", "target_role": "five_prime", "breakpoint_protein_position": 805, "domain_status": "retained"}, {"event_id": "EVT-P-0004226-T03-IM6-9", "sample_id": "P-0004226-T03-IM6", "tumor_type": "Bladder Cancer", "oncotree_code": "UTUC", "partner_gene": "FCHSD2", "target_role": "five_prime", "breakpoint_protein_position": 805, "domain_status": "retained"}, {"event_id": "EVT-P-0004226-T07-IM7-10", "sample_id": "P-0004226-T07-IM7", "tumor_type": "Bladder Cancer", "oncotree_code": "UTUC", "partner_gene": "FCHSD2", "target_role": "five_prime", "breakpoint_protein_position": 805, "domain_status": "retained"}, {"event_id": "EVT-P-0045578-T01-IM6-11", "sample_id": "P-0045578-T01-IM6", "tumor_type": "Ovarian Cancer", "oncotree_code": "HGSOC", "partner_gene": "FOLR2", "target_role": "five_prime", "breakpoint_protein_position": 133, "domain_status": "lost"}, {"event_id": "EVT-P-0009791-T02-IM6-12", "sample_id": "P-0009791-T02-IM6", "tumor_type": "Breast Cancer", "oncotree_code": "IDC", "partner_gene": "GAB2", "target_role": "five_prime", "breakpoint_protein_position": 220, "domain_status": "lost"}, {"event_id": "EVT-P-0048151-T01-IM6-31", "sample_id": "P-0048151-T01-IM6", "tumor_type": "Endometrial Cancer", "oncotree_code": "UCCC", "partner_gene": "LRTOMT", "target_role": "five_prime", "breakpoint_protein_position": 1060, "domain_status": "retained"}, {"event_id": "EVT-P-0005693-T03-IM6-34", "sample_id": "P-0005693-T03-IM6", "tumor_type": "Glioma", "oncotree_code": "EPM", "partner_gene": "PTCH1", "target_role": "three_prime", "breakpoint_protein_position": 364, "domain_status": "retained"}, {"event_id": "EVT-P-0024858-T01-IM6-36", "sample_id": "P-0024858-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUSC", "partner_gene": "NLRP6", "target_role": "five_prime", "breakpoint_protein_position": 206, "domain_status": "lost"}, {"event_id": "EVT-P-0031882-T01-IM6-37", "sample_id": "P-0031882-T01-IM6", "tumor_type": "Breast Cancer", "oncotree_code": "BRCNOS", "partner_gene": "SHANK2", "target_role": "three_prime", "breakpoint_protein_position": 538, "domain_status": "disrupted"}]</script>
 <script type="application/json" id="status-labels">{"retained": "Retained", "disrupted": "Truncated", "lost": "Lost"}</script>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   var events = JSON.parse(document.getElementById("events-data").textContent);
   var statusLabels = JSON.parse(document.getElementById("status-labels").textContent);
+  var eventsById = {};
+  events.forEach(function (e) {
+    if (e.event_id) { eventsById[e.event_id] = e; }
+  });
 
   function distinctValues(field) {
     var values = events.map(function (e) { return e[field]; }).filter(Boolean);
@@ -617,16 +627,31 @@ document.addEventListener("DOMContentLoaded", function () {
   statusContainer.addEventListener("change", applyFilters);
   applyFilters();
 
-  // Clicking a lollipop-track point (data-event-id, set by
-  // cfh.real_benchmark._domain_track_svg) jumps to that event's row in the
-  // table below -- clearing any active filters first so the row can't be
-  // hidden, since the point itself is drawn independent of the table's
-  // tumor-type/domain-status filters.
+  // Hovering or clicking a lollipop-track point (data-event-id, set by
+  // cfh.real_benchmark._domain_track_svg) shows a sample-id tooltip and/or
+  // jumps to that event's row in the table below -- clearing any active
+  // filters first so the row can't be hidden, since the point itself is
+  // drawn independent of the table's tumor-type/domain-status filters.
   var domainTrackFrame = document.getElementById("domain-track-svg");
+  var tooltip = document.getElementById("lollipop-tooltip");
   if (domainTrackFrame) {
     domainTrackFrame.querySelectorAll("circle[data-event-id]").forEach(function (circle) {
       var eventId = circle.getAttribute("data-event-id");
       if (!eventId) { return; }
+      var matchedEvent = eventsById[eventId];
+      if (tooltip && matchedEvent && matchedEvent.sample_id) {
+        circle.addEventListener("mouseenter", function () {
+          tooltip.textContent = "Sample " + matchedEvent.sample_id;
+          tooltip.hidden = false;
+        });
+        circle.addEventListener("mousemove", function (mouseEvent) {
+          tooltip.style.left = mouseEvent.clientX + 14 + "px";
+          tooltip.style.top = mouseEvent.clientY + 14 + "px";
+        });
+        circle.addEventListener("mouseleave", function () {
+          tooltip.hidden = true;
+        });
+      }
       var row = document.querySelector(
         '#events-table tbody tr[data-event-id="' + CSS.escape(eventId) + '"]'
       );

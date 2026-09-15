@@ -61,6 +61,11 @@ table.events th, table.events td {
 }
 table.events th { position: sticky; top: 0; background: #fafafa; }
 table.events tr.row-highlight { background: #fff3cd; transition: background 1.2s ease; }
+.lollipop-tooltip {
+  position: fixed; z-index: 1000; pointer-events: none;
+  background: #1a1a1a; color: #fff; font-size: 12px; line-height: 1.3;
+  padding: 4px 8px; border-radius: 4px; white-space: nowrap;
+}
 .events-table-frame {
   max-height: 420px; overflow: auto;
   border: 1px solid #e2e2e2; border-radius: 8px; background: #fff;
@@ -112,12 +117,12 @@ table.sortable th[data-sort-dir="desc"]::after { content: "\25BC"; margin-left: 
 <rect x="574.6" y="34.0" width="270.4" height="16.0" fill="#62b36f" opacity="0.55"/>
 <text x="844.9" y="46.0" font-family="sans-serif" font-size="9.5" text-anchor="end">Protein kinase domain (512-781)</text>
 <line x1="60.0" y1="63.0" x2="860.0" y2="63.0" stroke="#444444" stroke-width="4"/>
-<circle cx="461.0" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-TCGA-DJ-A4UP-01-1; sample TCGA-DJ-A4UP-01; partner IRF2BP2; breakpoint aa 399; domain retained</title></circle>
-<circle cx="461.0" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-TCGA-DJ-A4UQ-01-2; sample TCGA-DJ-A4UQ-01; partner IRF2BP2; breakpoint aa 399; domain retained</title></circle>
-<circle cx="461.0" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-TCGA-ET-A40S-01-3; sample TCGA-ET-A40S-01; partner SQSTM1; breakpoint aa 399; domain retained</title></circle>
-<circle cx="514.3" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-TCGA-CE-A3MD-01-4; sample TCGA-CE-A3MD-01; partner SSBP2; breakpoint aa 452; domain retained</title></circle>
-<circle cx="461.0" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-TCGA-EM-A3AO-01-5; sample TCGA-EM-A3AO-01; partner TFG; breakpoint aa 399; domain retained</title></circle>
-<circle cx="461.0" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"><title>event EVT-TCGA-EL-A3D4-01-6; sample TCGA-EL-A3D4-01; partner TPM3; breakpoint aa 399; domain retained</title></circle>
+<circle cx="461.0" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-DJ-A4UP-01-1"><title>event EVT-TCGA-DJ-A4UP-01-1; sample TCGA-DJ-A4UP-01; partner IRF2BP2; breakpoint aa 399; domain retained</title></circle>
+<circle cx="461.0" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-DJ-A4UQ-01-2"><title>event EVT-TCGA-DJ-A4UQ-01-2; sample TCGA-DJ-A4UQ-01; partner IRF2BP2; breakpoint aa 399; domain retained</title></circle>
+<circle cx="461.0" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-ET-A40S-01-3"><title>event EVT-TCGA-ET-A40S-01-3; sample TCGA-ET-A40S-01; partner SQSTM1; breakpoint aa 399; domain retained</title></circle>
+<circle cx="514.3" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-CE-A3MD-01-4"><title>event EVT-TCGA-CE-A3MD-01-4; sample TCGA-CE-A3MD-01; partner SSBP2; breakpoint aa 452; domain retained</title></circle>
+<circle cx="461.0" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-EM-A3AO-01-5"><title>event EVT-TCGA-EM-A3AO-01-5; sample TCGA-EM-A3AO-01; partner TFG; breakpoint aa 399; domain retained</title></circle>
+<circle cx="461.0" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-EL-A3D4-01-6"><title>event EVT-TCGA-EL-A3D4-01-6; sample TCGA-EL-A3D4-01; partner TPM3; breakpoint aa 399; domain retained</title></circle>
 <line x1="60.0" y1="114.0" x2="860.0" y2="114.0" stroke="#444444" stroke-width="1"/>
 <text x="60.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
 <text x="860.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
@@ -325,12 +330,17 @@ table.sortable th[data-sort-dir="desc"]::after { content: "\25BC"; margin-left: 
 </svg>
 </div><h2>Genomic-coordinate clustering (build GRCh37)</h2><p class="note">All 5 events sharing protein position 399 aa share the exact same genomic breakpoint -- consistent with a real DNA-level recurrent breakpoint, not just a protein-coordinate coincidence.</p><div class="two-col"><p><strong>Protein position &harr; genomic breakpoint spread</strong> (linked view: each row is a protein junction position also shown in the fusion schematic/events table above).</p><div class="data-table-frame"><table class="data-table"><thead><tr><th>Protein position (aa)</th><th>Events</th><th>Distinct genomic positions</th><th>Genomic span (bp)</th><th>Spans &gt;1 chromosome</th></tr></thead><tbody><tr><td>399</td><td>5</td><td>1</td><td>0</td><td>No</td></tr></tbody></table></div><p><strong>Top genomic bins</strong> (fixed 1000 bp width):</p><div class="data-table-frame"><table class="data-table"><thead><tr><th>Chromosome</th><th>Bin start</th><th>Bin end</th><th>Events</th></tr></thead><tbody><tr><td>1</td><td>156874000</td><td>156875000</td><td>5</td></tr><tr><td>1</td><td>156875000</td><td>156876000</td><td>1</td></tr></tbody></table></div></div><h2>Events</h2><div class="events-table-frame"><table class="events" id="events-table"><thead><tr><th>Event</th><th>Sample</th><th>Tumor type</th><th>Oncotree</th><th>Partner gene</th><th>Role</th><th>Breakpoint (aa)</th><th>Domain status</th></tr></thead><tbody><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-DJ-A4UP-01-1"><td>EVT-TCGA-DJ-A4UP-01-1</td><td>TCGA-DJ-A4UP-01</td><td>Thyroid Cancer</td><td>THPA</td><td>IRF2BP2</td><td>three_prime</td><td>399</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-DJ-A4UQ-01-2"><td>EVT-TCGA-DJ-A4UQ-01-2</td><td>TCGA-DJ-A4UQ-01</td><td>Thyroid Cancer</td><td>THPA</td><td>IRF2BP2</td><td>three_prime</td><td>399</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-ET-A40S-01-3"><td>EVT-TCGA-ET-A40S-01-3</td><td>TCGA-ET-A40S-01</td><td>Thyroid Cancer</td><td>THPA</td><td>SQSTM1</td><td>three_prime</td><td>399</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-CE-A3MD-01-4"><td>EVT-TCGA-CE-A3MD-01-4</td><td>TCGA-CE-A3MD-01</td><td>Thyroid Cancer</td><td>THPA</td><td>SSBP2</td><td>three_prime</td><td>452</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-EM-A3AO-01-5"><td>EVT-TCGA-EM-A3AO-01-5</td><td>TCGA-EM-A3AO-01</td><td>Thyroid Cancer</td><td>THPA</td><td>TFG</td><td>three_prime</td><td>399</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-EL-A3D4-01-6"><td>EVT-TCGA-EL-A3D4-01-6</td><td>TCGA-EL-A3D4-01</td><td>Thyroid Cancer</td><td>THPA</td><td>TPM3</td><td>three_prime</td><td>399</td><td>Retained</td></tr></tbody></table></div>
 </div>
+<div class="lollipop-tooltip" id="lollipop-tooltip" hidden></div>
 <script type="application/json" id="events-data">[{"event_id": "EVT-TCGA-DJ-A4UP-01-1", "sample_id": "TCGA-DJ-A4UP-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "IRF2BP2", "target_role": "three_prime", "breakpoint_protein_position": 399, "domain_status": "retained"}, {"event_id": "EVT-TCGA-DJ-A4UQ-01-2", "sample_id": "TCGA-DJ-A4UQ-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "IRF2BP2", "target_role": "three_prime", "breakpoint_protein_position": 399, "domain_status": "retained"}, {"event_id": "EVT-TCGA-ET-A40S-01-3", "sample_id": "TCGA-ET-A40S-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "SQSTM1", "target_role": "three_prime", "breakpoint_protein_position": 399, "domain_status": "retained"}, {"event_id": "EVT-TCGA-CE-A3MD-01-4", "sample_id": "TCGA-CE-A3MD-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "SSBP2", "target_role": "three_prime", "breakpoint_protein_position": 452, "domain_status": "retained"}, {"event_id": "EVT-TCGA-EM-A3AO-01-5", "sample_id": "TCGA-EM-A3AO-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "TFG", "target_role": "three_prime", "breakpoint_protein_position": 399, "domain_status": "retained"}, {"event_id": "EVT-TCGA-EL-A3D4-01-6", "sample_id": "TCGA-EL-A3D4-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "TPM3", "target_role": "three_prime", "breakpoint_protein_position": 399, "domain_status": "retained"}]</script>
 <script type="application/json" id="status-labels">{"retained": "Retained", "disrupted": "Truncated", "lost": "Lost"}</script>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   var events = JSON.parse(document.getElementById("events-data").textContent);
   var statusLabels = JSON.parse(document.getElementById("status-labels").textContent);
+  var eventsById = {};
+  events.forEach(function (e) {
+    if (e.event_id) { eventsById[e.event_id] = e; }
+  });
 
   function distinctValues(field) {
     var values = events.map(function (e) { return e[field]; }).filter(Boolean);
@@ -412,16 +422,31 @@ document.addEventListener("DOMContentLoaded", function () {
   statusContainer.addEventListener("change", applyFilters);
   applyFilters();
 
-  // Clicking a lollipop-track point (data-event-id, set by
-  // cfh.real_benchmark._domain_track_svg) jumps to that event's row in the
-  // table below -- clearing any active filters first so the row can't be
-  // hidden, since the point itself is drawn independent of the table's
-  // tumor-type/domain-status filters.
+  // Hovering or clicking a lollipop-track point (data-event-id, set by
+  // cfh.real_benchmark._domain_track_svg) shows a sample-id tooltip and/or
+  // jumps to that event's row in the table below -- clearing any active
+  // filters first so the row can't be hidden, since the point itself is
+  // drawn independent of the table's tumor-type/domain-status filters.
   var domainTrackFrame = document.getElementById("domain-track-svg");
+  var tooltip = document.getElementById("lollipop-tooltip");
   if (domainTrackFrame) {
     domainTrackFrame.querySelectorAll("circle[data-event-id]").forEach(function (circle) {
       var eventId = circle.getAttribute("data-event-id");
       if (!eventId) { return; }
+      var matchedEvent = eventsById[eventId];
+      if (tooltip && matchedEvent && matchedEvent.sample_id) {
+        circle.addEventListener("mouseenter", function () {
+          tooltip.textContent = "Sample " + matchedEvent.sample_id;
+          tooltip.hidden = false;
+        });
+        circle.addEventListener("mousemove", function (mouseEvent) {
+          tooltip.style.left = mouseEvent.clientX + 14 + "px";
+          tooltip.style.top = mouseEvent.clientY + 14 + "px";
+        });
+        circle.addEventListener("mouseleave", function () {
+          tooltip.hidden = true;
+        });
+      }
       var row = document.querySelector(
         '#events-table tbody tr[data-event-id="' + CSS.escape(eventId) + '"]'
       );

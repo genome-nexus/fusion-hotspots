@@ -183,6 +183,11 @@ class TestSingleGenePageContent:
         assert 'data-event-id="E2"' in html.split('id="events-table"', 1)[1]
         assert "circle[data-event-id]" in html
         assert "row-highlight" in html
+        # Hovering the same point shows a sample-id tooltip, looked up from
+        # the already-embedded events JSON by event_id -- E2's sample is S2
+        # in _minimal_gene_payload.
+        assert 'id="lollipop-tooltip"' in html
+        assert "matchedEvent.sample_id" in html
 
     def test_gene_pair_shaped_payload_with_no_gene_track_does_not_crash(self, tmp_path):
         payload = _minimal_gene_payload(

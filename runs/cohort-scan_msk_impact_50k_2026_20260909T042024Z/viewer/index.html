@@ -61,6 +61,11 @@ table.events th, table.events td {
 }
 table.events th { position: sticky; top: 0; background: #fafafa; }
 table.events tr.row-highlight { background: #fff3cd; transition: background 1.2s ease; }
+.lollipop-tooltip {
+  position: fixed; z-index: 1000; pointer-events: none;
+  background: #1a1a1a; color: #fff; font-size: 12px; line-height: 1.3;
+  padding: 4px 8px; border-radius: 4px; white-space: nowrap;
+}
 .events-table-frame {
   max-height: 420px; overflow: auto;
   border: 1px solid #e2e2e2; border-radius: 8px; background: #fff;

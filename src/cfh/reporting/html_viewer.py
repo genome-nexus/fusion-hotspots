@@ -309,6 +309,11 @@ table.events th, table.events td {
 }
 table.events th { position: sticky; top: 0; background: #fafafa; }
 table.events tr.row-highlight { background: #fff3cd; transition: background 1.2s ease; }
+.lollipop-tooltip {
+  position: fixed; z-index: 1000; pointer-events: none;
+  background: #1a1a1a; color: #fff; font-size: 12px; line-height: 1.3;
+  padding: 4px 8px; border-radius: 4px; white-space: nowrap;
+}
 .events-table-frame {
   max-height: 420px; overflow: auto;
   border: 1px solid #e2e2e2; border-radius: 8px; background: #fff;
@@ -521,6 +526,10 @@ _GENE_PAGE_SCRIPT = r"""
 document.addEventListener("DOMContentLoaded", function () {
   var events = JSON.parse(document.getElementById("events-data").textContent);
   var statusLabels = JSON.parse(document.getElementById("status-labels").textContent);
+  var eventsById = {};
+  events.forEach(function (e) {
+    if (e.event_id) { eventsById[e.event_id] = e; }
+  });
 
   function distinctValues(field) {
     var values = events.map(function (e) { return e[field]; }).filter(Boolean);
@@ -602,16 +611,31 @@ document.addEventListener("DOMContentLoaded", function () {
   statusContainer.addEventListener("change", applyFilters);
   applyFilters();
 
-  // Clicking a lollipop-track point (data-event-id, set by
-  // cfh.real_benchmark._domain_track_svg) jumps to that event's row in the
-  // table below -- clearing any active filters first so the row can't be
-  // hidden, since the point itself is drawn independent of the table's
-  // tumor-type/domain-status filters.
+  // Hovering or clicking a lollipop-track point (data-event-id, set by
+  // cfh.real_benchmark._domain_track_svg) shows a sample-id tooltip and/or
+  // jumps to that event's row in the table below -- clearing any active
+  // filters first so the row can't be hidden, since the point itself is
+  // drawn independent of the table's tumor-type/domain-status filters.
   var domainTrackFrame = document.getElementById("domain-track-svg");
+  var tooltip = document.getElementById("lollipop-tooltip");
   if (domainTrackFrame) {
     domainTrackFrame.querySelectorAll("circle[data-event-id]").forEach(function (circle) {
       var eventId = circle.getAttribute("data-event-id");
       if (!eventId) { return; }
+      var matchedEvent = eventsById[eventId];
+      if (tooltip && matchedEvent && matchedEvent.sample_id) {
+        circle.addEventListener("mouseenter", function () {
+          tooltip.textContent = "Sample " + matchedEvent.sample_id;
+          tooltip.hidden = false;
+        });
+        circle.addEventListener("mousemove", function (mouseEvent) {
+          tooltip.style.left = mouseEvent.clientX + 14 + "px";
+          tooltip.style.top = mouseEvent.clientY + 14 + "px";
+        });
+        circle.addEventListener("mouseleave", function () {
+          tooltip.hidden = true;
+        });
+      }
       var row = document.querySelector(
         '#events-table tbody tr[data-event-id="' + CSS.escape(eventId) + '"]'
       );
@@ -1017,6 +1041,7 @@ def _render_gene_page(
   <div class="stat-grid">{stat_cells}</div>
   {"".join(sections)}
 </div>
+<div class="lollipop-tooltip" id="lollipop-tooltip" hidden></div>
 <script type="application/json" id="events-data">{events_json}</script>
 <script type="application/json" id="status-labels">{status_labels_json}</script>
 <script>{_GENE_PAGE_SCRIPT}</script>
