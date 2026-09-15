@@ -1,0 +1,971 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BRAF fusion-hotspot report</title>
+<style>
+:root { color-scheme: light; }
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 24px 20px 60px; background: #f7f7f8; color: #1a1a1a;
+  font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+.wrap { max-width: 1080px; margin: 0 auto; }
+h1 { font-size: 22px; margin: 0 0 4px; }
+h1 .badge { position: relative; top: -2px; }
+h2 {
+  font-size: 16px; margin: 32px 0 10px;
+  border-bottom: 1px solid #ddd; padding-bottom: 6px;
+}
+.subtitle { color: #555; font-size: 13px; margin: 0 0 20px; }
+.back-link {
+  display: inline-block; margin-bottom: 14px; font-size: 13px;
+  color: #2878b5; text-decoration: none;
+}
+.back-link:hover { text-decoration: underline; }
+.card {
+  background: #fff; border: 1px solid #e2e2e2;
+  border-radius: 8px; padding: 16px 18px;
+}
+.stat-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px;
+}
+.stat {
+  background: #fff; border: 1px solid #e2e2e2;
+  border-radius: 8px; padding: 10px 12px;
+}
+.stat .label {
+  font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.02em;
+}
+.stat .value { font-size: 18px; font-weight: 600; margin-top: 2px; }
+.svg-frame {
+  width: 100%; overflow-x: auto; background: #fff;
+  border: 1px solid #e2e2e2; border-radius: 8px; padding: 8px;
+}
+.svg-frame svg { display: block; max-width: 100%; height: auto; }
+.controls {
+  display: flex; flex-wrap: wrap; gap: 20px; align-items: center;
+  margin: 12px 0 16px; padding: 12px 14px; background: #fff;
+  border: 1px solid #e2e2e2; border-radius: 8px;
+}
+.control-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.control-group label.title { font-size: 12px; font-weight: 600; color: #333; }
+.control-group select { font-size: 13px; padding: 4px 6px; }
+.status-toggle { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; }
+#events-summary { font-size: 12px; color: #555; margin-left: auto; }
+table.events { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+table.events th, table.events td {
+  text-align: left; padding: 5px 8px;
+  border-bottom: 1px solid #eee; white-space: nowrap;
+}
+table.events th { position: sticky; top: 0; background: #fafafa; }
+table.events tr.row-highlight { background: #fff3cd; transition: background 1.2s ease; }
+.lollipop-tooltip {
+  position: fixed; z-index: 1000; pointer-events: none;
+  background: #1a1a1a; color: #fff; font-size: 12px; line-height: 1.3;
+  padding: 4px 8px; border-radius: 4px; white-space: nowrap;
+}
+.mechanism-callout {
+  background: #f5f8fc; border: 1px solid #cfe0f0; border-radius: 8px;
+  padding: 12px 16px; margin: 0 0 16px; font-size: 13px;
+}
+.mechanism-callout p { margin: 4px 0; }
+.mechanism-callout p.panel-note { padding-left: 0; }
+tr.counter-intuitive-row { cursor: pointer; }
+tr.counter-intuitive-row:hover { background: #f0f0f0; }
+.events-table-frame {
+  max-height: 420px; overflow: auto;
+  border: 1px solid #e2e2e2; border-radius: 8px; background: #fff;
+}
+.gene-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.gene-links a {
+  font-size: 12.5px; padding: 4px 9px; border-radius: 999px; text-decoration: none;
+  border: 1px solid #ccc; color: #1a1a1a; background: #fff;
+}
+.gene-links a:hover { background: #f0f0f0; }
+.gene-links a.significant { border-color: #d62728; color: #d62728; }
+.note { font-size: 12px; color: #777; margin-top: 8px; }
+.panel-note { font-size: 12px; color: #555; margin: 8px 0 0; padding-left: 18px; }
+.badge {
+  display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 9px;
+  border-radius: 999px; margin-left: 10px; vertical-align: middle;
+  text-transform: uppercase; letter-spacing: 0.03em;
+}
+.badge-curated { background: #e6f4ea; color: #1a7f37; border: 1px solid #b7e0c2; }
+.badge-auto { background: #fff4e5; color: #9a6700; border: 1px solid #f0dca6; }
+table.data-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+table.data-table th, table.data-table td {
+  text-align: left; padding: 5px 8px;
+  border-bottom: 1px solid #eee; white-space: nowrap;
+}
+table.data-table th { position: sticky; top: 0; background: #fafafa; }
+table.sortable th[data-sort-key] { cursor: pointer; user-select: none; }
+table.sortable th[data-sort-key]:hover { background: #f0f0f0; }
+table.sortable th[data-sort-key]::after { content: ""; margin-left: 4px; color: #999; }
+table.sortable th[data-sort-dir="asc"]::after { content: "\25B2"; margin-left: 4px; color: #555; }
+table.sortable th[data-sort-dir="desc"]::after { content: "\25BC"; margin-left: 4px; color: #555; }
+.data-table-frame {
+  max-height: 380px; overflow: auto;
+  border: 1px solid #e2e2e2; border-radius: 8px; background: #fff;
+}
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  
+  <h1>BRAF<span class="badge badge-curated" title="Loaded from a hand-curated YAML under genes/configs/">Curated config</span></h1>
+  <p class="subtitle">msk_impact_2017</p>
+  
+  <div class="stat-grid"><div class="stat"><div class="label">Raw Structural Variant Count</div><div class="value">48</div></div><div class="stat"><div class="label">Total Fusions</div><div class="value">41</div></div><div class="stat"><div class="label">Mapped Fusions</div><div class="value">40</div></div><div class="stat"><div class="label">Skipped Fusions</div><div class="value">1</div></div><div class="stat"><div class="label">In Frame Count</div><div class="value">33</div></div><div class="stat"><div class="label">In Frame Percent</div><div class="value">80.49</div></div><div class="stat"><div class="label">Kinase Retained Count</div><div class="value">33</div></div><div class="stat"><div class="label">Kinase Retained Percent</div><div class="value">80.49</div></div><div class="stat"><div class="label">In Frame Kinase Retained Count</div><div class="value">31</div></div><div class="stat"><div class="label">Fisher Odds Ratio</div><div class="value">38.75</div></div><div class="stat"><div class="label">Fisher P Value</div><div class="value">0.0006072</div></div><div class="stat"><div class="label">Permutation P Value</div><div class="value">0.000999</div></div><div class="stat"><div class="label">Domain Accession</div><div class="value">PF07714</div></div><div class="stat"><div class="label">Domain Start Aa</div><div class="value">458</div></div><div class="stat"><div class="label">Domain End Aa</div><div class="value">712</div></div></div>
+  <h2>Domain retention / outlier lollipop track</h2><p class="panel-note">Click a point to jump to its event in the table below.</p><div class="svg-frame" id="domain-track-svg"><svg xmlns="http://www.w3.org/2000/svg" width="920" height="200" viewBox="0 0 920 200">
+<rect width="920" height="200" fill="white"/>
+<text x="60" y="28" font-family="sans-serif" font-size="16">BRAF domain-retention track</text>
+<rect x="538.3" y="34.0" width="265.3" height="16.0" fill="#62b36f" opacity="0.55"/>
+<text x="803.6" y="46.0" font-family="sans-serif" font-size="9.5" text-anchor="end">Protein kinase domain (458-712)</text>
+<line x1="60.0" y1="63.0" x2="860.0" y2="63.0" stroke="#444444" stroke-width="4"/>
+<circle cx="456.9" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<circle cx="457.9" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<circle cx="401.5" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<circle cx="401.5" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<circle cx="401.5" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<circle cx="456.9" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<circle cx="457.9" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<circle cx="470.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<circle cx="456.9" cy="92.0" r="3" fill="#777777" stroke="#d62728" stroke-width="1.5"/>
+<circle cx="401.5" cy="99.0" r="3" fill="#777777" stroke="#d62728" stroke-width="1.5"/>
+<circle cx="470.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<circle cx="517.4" cy="78.0" r="3" fill="#777777" stroke="#d62728" stroke-width="1.5"/>
+<circle cx="517.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<circle cx="650.1" cy="92.0" r="3" fill="#f2a93b" stroke="#d62728" stroke-width="1.5"/>
+<circle cx="457.9" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<circle cx="456.9" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<circle cx="518.5" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<circle cx="470.4" cy="85.0" r="3" fill="#2878b5" stroke="#d62728" stroke-width="1.5"/>
+<circle cx="456.9" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<circle cx="457.9" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<circle cx="457.9" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<circle cx="517.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<circle cx="359.7" cy="85.0" r="3" fill="#777777" stroke="#d62728" stroke-width="1.5"/>
+<circle cx="456.9" cy="92.0" r="3" fill="#2878b5" stroke="#d62728" stroke-width="1.5"/>
+<circle cx="837.0" cy="99.0" r="3" fill="#777777" stroke="#d62728" stroke-width="1.5"/>
+<circle cx="517.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<circle cx="456.9" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<circle cx="457.9" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<circle cx="456.9" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<circle cx="470.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<circle cx="518.5" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<circle cx="518.5" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<circle cx="517.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<circle cx="456.9" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<circle cx="457.9" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<circle cx="457.9" cy="71.0" r="3" fill="#777777" stroke="#d62728" stroke-width="1.5"/>
+<circle cx="457.9" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<circle cx="517.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<circle cx="457.9" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<circle cx="470.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0"/>
+<line x1="60.0" y1="114.0" x2="860.0" y2="114.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="860.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
+<text x="60.0" y="128.0" font-family="sans-serif" font-size="9">1</text>
+<text x="860.0" y="128.0" font-family="sans-serif" font-size="9" text-anchor="end">766 aa</text>
+<line x1="61.0" y1="132.0" x2="61.0" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="61.0" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 61.0 137.0)">E1</text>
+<line x1="109.1" y1="132.0" x2="109.1" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="109.1" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 109.1 137.0)">E2</text>
+<line x1="144.6" y1="132.0" x2="144.6" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="144.6" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 144.6 137.0)">E3</text>
+<line x1="236.5" y1="132.0" x2="236.5" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="236.5" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 236.5 137.0)">E4</text>
+<line x1="272.0" y1="132.0" x2="272.0" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="272.0" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 272.0 137.0)">E5</text>
+<line x1="308.6" y1="132.0" x2="308.6" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="308.6" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 308.6 137.0)">E6</text>
+<line x1="359.7" y1="132.0" x2="359.7" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="359.7" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 359.7 137.0)">E7</text>
+<line x1="401.5" y1="132.0" x2="401.5" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="401.5" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 401.5 137.0)">E8</text>
+<line x1="457.9" y1="132.0" x2="457.9" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="457.9" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 457.9 137.0)">E9</text>
+<line x1="470.4" y1="132.0" x2="470.4" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="470.4" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 470.4 137.0)">E10</text>
+<line x1="518.5" y1="132.0" x2="518.5" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="518.5" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 518.5 137.0)">E11</text>
+<line x1="559.2" y1="132.0" x2="559.2" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="559.2" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 559.2 137.0)">E12</text>
+<line x1="588.5" y1="132.0" x2="588.5" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="588.5" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 588.5 137.0)">E13</text>
+<line x1="650.1" y1="132.0" x2="650.1" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="650.1" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 650.1 137.0)">E14</text>
+<line x1="666.8" y1="132.0" x2="666.8" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="666.8" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 666.8 137.0)">E15</text>
+<line x1="708.6" y1="132.0" x2="708.6" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="708.6" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 708.6 137.0)">E16</text>
+<line x1="754.5" y1="132.0" x2="754.5" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="754.5" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 754.5 137.0)">E17</text>
+<line x1="801.5" y1="132.0" x2="801.5" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="801.5" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 801.5 137.0)">E18</text>
+<line x1="164.4" y1="114.0" x2="164.4" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="164.4" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">100</text>
+<line x1="268.9" y1="114.0" x2="268.9" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="268.9" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">200</text>
+<line x1="373.3" y1="114.0" x2="373.3" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="373.3" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">300</text>
+<line x1="477.8" y1="114.0" x2="477.8" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="477.8" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">400</text>
+<line x1="582.2" y1="114.0" x2="582.2" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="582.2" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">500</text>
+<line x1="686.6" y1="114.0" x2="686.6" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="686.6" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">600</text>
+<line x1="791.1" y1="114.0" x2="791.1" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="791.1" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">700</text>
+<circle cx="60" cy="167.0" r="4" fill="#2878b5"/><text x="70" y="172.0" font-family="sans-serif" font-size="12">fully retained</text>
+<circle cx="180" cy="167.0" r="4" fill="#f2a93b"/><text x="190" y="172.0" font-family="sans-serif" font-size="12">truncated</text>
+<circle cx="275" cy="167.0" r="4" fill="#777777"/><text x="285" y="172.0" font-family="sans-serif" font-size="12">fully lost</text>
+<circle cx="365" cy="167.0" r="4" fill="white" stroke="#d62728" stroke-width="1.5"/><text x="375" y="172.0" font-family="sans-serif" font-size="12">reference discrepancy</text>
+<rect x="60" y="180.0" width="12" height="10" fill="#62b36f" opacity="0.55"/><text x="80" y="189.0" font-family="sans-serif" font-size="12">configured key-domain span (name/range labeled above; a second or later configured domain gets its own distinct shade)</text>
+</svg>
+</div><h2>Composite evidence ranking (per partner gene)</h2><p class="panel-note">Click a column header to sort ascending/descending. 25 partner gene(s) ranked by <code>composite_score</code>.</p><div class="data-table-frame"><table class="data-table sortable" id="composite-score-table"><thead><tr><th data-sort-key="Rank">Rank</th><th data-sort-key="Partner_gene">Partner gene</th><th data-sort-key="Event_count">Events</th><th data-sort-key="Composite_score">Composite score</th><th data-sort-key="Recurrence_score">Recurrence</th><th data-sort-key="Domain_retention_score">Domain retention</th><th data-sort-key="Domain_disruption_score">Domain disruption</th><th data-sort-key="Cutpoint_proximity_score">Cutpoint proximity</th><th data-sort-key="Confidence_certainty_score">Confidence</th></tr></thead><tbody><tr><td data-sort="1">1</td><td data-sort="SND1">SND1</td><td data-sort="8">8</td><td data-sort="0.34105265517198086">0.3411</td><td data-sort="0.1951219512195122">0.1951</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.1602103418604825">0.1602</td><td data-sort="0.759046052631579">0.759</td><td data-sort="0.6160624160231085">0.6161</td></tr><tr><td data-sort="2">2</td><td data-sort="SCRIB">SCRIB</td><td data-sort="1">1</td><td data-sort="0.32597623508212203">0.326</td><td data-sort="0.024390243902439025">0.02439</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.1602103418604825">0.1602</td><td data-sort="1.0">1</td><td data-sort="0.6160624160231085">0.6161</td></tr><tr><td data-sort="3">3</td><td data-sort="PJA2">PJA2</td><td data-sort="1">1</td><td data-sort="0.3249893929768589">0.325</td><td data-sort="0.024390243902439025">0.02439</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.1602103418604825">0.1602</td><td data-sort="0.993421052631579">0.9934</td><td data-sort="0.6160624160231085">0.6161</td></tr><tr><td data-sort="4">4</td><td data-sort="RBM33">RBM33</td><td data-sort="1">1</td><td data-sort="0.3249893929768589">0.325</td><td data-sort="0.024390243902439025">0.02439</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.1602103418604825">0.1602</td><td data-sort="0.993421052631579">0.9934</td><td data-sort="0.6160624160231085">0.6161</td></tr><tr><td data-sort="5">5</td><td data-sort="KIAA1549">KIAA1549</td><td data-sort="4">4</td><td data-sort="0.3045064019627382">0.3045</td><td data-sort="0.0975609756097561">0.09756</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.1602103418604825">0.1602</td><td data-sort="0.7105263157894737">0.7105</td><td data-sort="0.6160624160231085">0.6161</td></tr><tr><td data-sort="6">6</td><td data-sort="CDK5RAP2">CDK5RAP2</td><td data-sort="2">2</td><td data-sort="0.30418146614759056">0.3042</td><td data-sort="0.04878048780487805">0.04878</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.1602103418604825">0.1602</td><td data-sort="0.805921052631579">0.8059</td><td data-sort="0.6160624160231085">0.6161</td></tr><tr><td data-sort="7">7</td><td data-sort="GIPC2">GIPC2</td><td data-sort="1">1</td><td data-sort="0.28058149824001677">0.2806</td><td data-sort="0.024390243902439025">0.02439</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.1602103418604825">0.1602</td><td data-sort="0.6973684210526316">0.6974</td><td data-sort="0.6160624160231085">0.6161</td></tr><tr><td data-sort="8">8</td><td data-sort="KDM7A">KDM7A</td><td data-sort="1">1</td><td data-sort="0.28058149824001677">0.2806</td><td data-sort="0.024390243902439025">0.02439</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.1602103418604825">0.1602</td><td data-sort="0.6973684210526316">0.6974</td><td data-sort="0.6160624160231085">0.6161</td></tr><tr><td data-sort="9">9</td><td data-sort="OSBPL9">OSBPL9</td><td data-sort="1">1</td><td data-sort="0.28058149824001677">0.2806</td><td data-sort="0.024390243902439025">0.02439</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.1602103418604825">0.1602</td><td data-sort="0.6973684210526316">0.6974</td><td data-sort="0.6160624160231085">0.6161</td></tr><tr><td data-sort="10">10</td><td data-sort="PRKAR2B">PRKAR2B</td><td data-sort="1">1</td><td data-sort="0.28058149824001677">0.2806</td><td data-sort="0.024390243902439025">0.02439</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.1602103418604825">0.1602</td><td data-sort="0.6973684210526316">0.6974</td><td data-sort="0.6160624160231085">0.6161</td></tr><tr><td data-sort="11">11</td><td data-sort="ZNF207">ZNF207</td><td data-sort="1">1</td><td data-sort="0.28058149824001677">0.2806</td><td data-sort="0.024390243902439025">0.02439</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.1602103418604825">0.1602</td><td data-sort="0.6973684210526316">0.6974</td><td data-sort="0.6160624160231085">0.6161</td></tr><tr><td data-sort="12">12</td><td data-sort="AGAP3">AGAP3</td><td data-sort="2">2</td><td data-sort="0.275563045094959">0.2756</td><td data-sort="0.04878048780487805">0.04878</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.1602103418604825">0.1602</td><td data-sort="0.6151315789473684">0.6151</td><td data-sort="0.6160624160231085">0.6161</td></tr><tr><td data-sort="13">13</td><td data-sort="CCDC6">CCDC6</td><td data-sort="1">1</td><td data-sort="0.2687393929768589">0.2687</td><td data-sort="0.024390243902439025">0.02439</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.1602103418604825">0.1602</td><td data-sort="0.618421052631579">0.6184</td><td data-sort="0.6160624160231085">0.6161</td></tr><tr><td data-sort="14">14</td><td data-sort="FAM131B">FAM131B</td><td data-sort="1">1</td><td data-sort="0.2687393929768589">0.2687</td><td data-sort="0.024390243902439025">0.02439</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.1602103418604825">0.1602</td><td data-sort="0.618421052631579">0.6184</td><td data-sort="0.6160624160231085">0.6161</td></tr><tr><td data-sort="15">15</td><td data-sort="PHTF2">PHTF2</td><td data-sort="1">1</td><td data-sort="0.2687393929768589">0.2687</td><td data-sort="0.024390243902439025">0.02439</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.1602103418604825">0.1602</td><td data-sort="0.618421052631579">0.6184</td><td data-sort="0.6160624160231085">0.6161</td></tr><tr><td data-sort="16">16</td><td data-sort="CUL1">CUL1</td><td data-sort="1">1</td><td data-sort="0.2677525508715957">0.2678</td><td data-sort="0.024390243902439025">0.02439</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.1602103418604825">0.1602</td><td data-sort="0.611842105263158">0.6118</td><td data-sort="0.6160624160231085">0.6161</td></tr><tr><td data-sort="17">17</td><td data-sort="LINC00244">LINC00244</td><td data-sort="1">1</td><td data-sort="0.2677525508715957">0.2678</td><td data-sort="0.024390243902439025">0.02439</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.1602103418604825">0.1602</td><td data-sort="0.611842105263158">0.6118</td><td data-sort="0.6160624160231085">0.6161</td></tr><tr><td data-sort="18">18</td><td data-sort="METTL2B">METTL2B</td><td data-sort="1">1</td><td data-sort="0.2677525508715957">0.2678</td><td data-sort="0.024390243902439025">0.02439</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.1602103418604825">0.1602</td><td data-sort="0.611842105263158">0.6118</td><td data-sort="0.6160624160231085">0.6161</td></tr><tr><td data-sort="19">19</td><td data-sort="PRKAR1B">PRKAR1B</td><td data-sort="1">1</td><td data-sort="0.2677525508715957">0.2678</td><td data-sort="0.024390243902439025">0.02439</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.1602103418604825">0.1602</td><td data-sort="0.611842105263158">0.6118</td><td data-sort="0.6160624160231085">0.6161</td></tr><tr><td data-sort="20">20</td><td data-sort="AGK">AGK</td><td data-sort="3">3</td><td data-sort="0.23008406563411174">0.2301</td><td data-sort="0.07317073170731707">0.07317</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.1602103418604825">0.1602</td><td data-sort="0.26315789473684215">0.2632</td><td data-sort="0.6160624160231085">0.6161</td></tr><tr><td data-sort="21">21</td><td data-sort="MKRN1">MKRN1</td><td data-sort="3">3</td><td data-sort="0.22054459194990123">0.2205</td><td data-sort="0.07317073170731707">0.07317</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.1602103418604825">0.1602</td><td data-sort="0.19956140350877194">0.1996</td><td data-sort="0.6160624160231085">0.6161</td></tr><tr><td data-sort="22">22</td><td data-sort="MRPS33">MRPS33</td><td data-sort="1">1</td><td data-sort="0.21544991929264834">0.2154</td><td data-sort="0.024390243902439025">0.02439</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.1602103418604825">0.1602</td><td data-sort="0.26315789473684215">0.2632</td><td data-sort="0.6160624160231085">0.6161</td></tr><tr><td data-sort="23">23</td><td data-sort="PARP12">PARP12</td><td data-sort="1">1</td><td data-sort="0.2070308648024965">0.207</td><td data-sort="0.024390243902439025">0.02439</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.1602103418604825">0.1602</td><td data-sort=""></td><td data-sort="0.6160624160231085">0.6161</td></tr><tr><td data-sort="24">24</td><td data-sort="VIPR2">VIPR2</td><td data-sort="1">1</td><td data-sort="0.20163412981896411">0.2016</td><td data-sort="0.024390243902439025">0.02439</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.1602103418604825">0.1602</td><td data-sort="0.17105263157894735">0.1711</td><td data-sort="0.6160624160231085">0.6161</td></tr><tr><td data-sort="25">25</td><td data-sort="LUC7L2">LUC7L2</td><td data-sort="1">1</td><td data-sort="0.175976235082122">0.176</td><td data-sort="0.024390243902439025">0.02439</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.1602103418604825">0.1602</td><td data-sort="0.0">0</td><td data-sort="0.6160624160231085">0.6161</td></tr></tbody></table></div><h2>Fusion-transcript schematic</h2>
+<div class="controls">
+  <div class="control-group">
+    <label class="title" for="tumor-type-filter">Tumor type</label>
+    <select id="tumor-type-filter"><option value="">All tumor types</option></select>
+  </div>
+  <div class="control-group">
+    <span class="title">Domain status</span>
+    <span id="status-filter"></span>
+  </div>
+  <span id="events-summary"></span>
+</div>
+<div class="svg-frame" id="fusion-schematic-svg"><svg xmlns="http://www.w3.org/2000/svg" width="1000" height="890" viewBox="0 0 1000 890">
+<rect width="1000" height="890" fill="white"/>
+<text x="60" y="24" font-family="sans-serif" font-size="15">BRAF fusion-transcript schematic</text>
+<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555555">Fusion order varies by row; follow each row's 5' and 3' labels (BRAF portion is domain-colored, exon ticks)</text>
+<rect x="60.0" y="56.0" width="239.1" height="22" fill="#cbc04d"/>
+<rect x="299.1" y="56.0" width="320.9" height="22" fill="#e2e2e2"/>
+<rect x="394.8" y="56.0" width="185.7" height="22" fill="#2878b5"/>
+<text x="487.7" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="338.5" y1="56.0" x2="338.5" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="347.3" y1="56.0" x2="347.3" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="380.9" y1="56.0" x2="380.9" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="409.5" y1="56.0" x2="409.5" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="429.9" y1="56.0" x2="429.9" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="473.1" y1="56.0" x2="473.1" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="484.8" y1="56.0" x2="484.8" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.0" y1="56.0" x2="514.0" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="546.2" y1="56.0" x2="546.2" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="579.1" y1="56.0" x2="579.1" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="299.1" y1="55.0" x2="299.1" y2="79.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="70.5" font-family="sans-serif" font-size="9.5">AGK (x3) – Protein kinase domain retained</text>
+<rect x="60.0" y="82.0" width="278.5" height="22" fill="#cb4d5b"/>
+<rect x="338.5" y="82.0" width="281.5" height="22" fill="#e2e2e2"/>
+<rect x="394.8" y="82.0" width="185.7" height="22" fill="#2878b5"/>
+<text x="487.7" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="347.3" y1="82.0" x2="347.3" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="380.9" y1="82.0" x2="380.9" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="409.5" y1="82.0" x2="409.5" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="429.9" y1="82.0" x2="429.9" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="473.1" y1="82.0" x2="473.1" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="484.8" y1="82.0" x2="484.8" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.0" y1="82.0" x2="514.0" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="546.2" y1="82.0" x2="546.2" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="579.1" y1="82.0" x2="579.1" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="338.5" y1="81.0" x2="338.5" y2="105.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="96.5" font-family="sans-serif" font-size="9.5">SND1 (x3) – Protein kinase domain retained</text>
+<rect x="60.0" y="108.0" width="278.5" height="22" fill="#90cb4d"/>
+<rect x="338.5" y="108.0" width="281.5" height="22" fill="#e2e2e2"/>
+<rect x="394.8" y="108.0" width="185.7" height="22" fill="#2878b5"/>
+<text x="487.7" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="347.3" y1="108.0" x2="347.3" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="380.9" y1="108.0" x2="380.9" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="409.5" y1="108.0" x2="409.5" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="429.9" y1="108.0" x2="429.9" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="473.1" y1="108.0" x2="473.1" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="484.8" y1="108.0" x2="484.8" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.0" y1="108.0" x2="514.0" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="546.2" y1="108.0" x2="546.2" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="579.1" y1="108.0" x2="579.1" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="338.5" y1="107.0" x2="338.5" y2="131.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="122.5" font-family="sans-serif" font-size="9.5">KIAA1549 (x2) – Protein kinase domain retained</text>
+<rect x="60.0" y="134.0" width="320.2" height="22" fill="#cb4d5b"/>
+<rect x="380.2" y="134.0" width="239.8" height="22" fill="#e2e2e2"/>
+<rect x="394.8" y="134.0" width="185.7" height="22" fill="#2878b5"/>
+<text x="487.7" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="380.9" y1="134.0" x2="380.9" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="409.5" y1="134.0" x2="409.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="429.9" y1="134.0" x2="429.9" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="473.1" y1="134.0" x2="473.1" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="484.8" y1="134.0" x2="484.8" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.0" y1="134.0" x2="514.0" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="546.2" y1="134.0" x2="546.2" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="579.1" y1="134.0" x2="579.1" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="380.2" y1="133.0" x2="380.2" y2="157.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="148.5" font-family="sans-serif" font-size="9.5">SND1 (x2) – Protein kinase domain retained</text>
+<rect x="269.8" y="160.0" width="350.2" height="22" fill="#cb5d4d"/>
+<rect x="60.0" y="160.0" width="209.8" height="22" fill="#e2e2e2"/>
+<rect x="174.0" y="160.0" width="51.9" height="22" fill="#2878b5"/>
+<text x="200.0" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">RAS-binding…</text>
+<rect x="231.8" y="160.0" width="32.9" height="22" fill="#2878b5"/>
+<text x="248.3" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Cystein…</text>
+<line x1="60.7" y1="160.0" x2="60.7" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="94.4" y1="160.0" x2="94.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="119.2" y1="160.0" x2="119.2" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="183.6" y1="160.0" x2="183.6" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="208.4" y1="160.0" x2="208.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="234.0" y1="160.0" x2="234.0" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="269.8" y1="159.0" x2="269.8" y2="183.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="174.5" font-family="sans-serif" font-size="9.5">LUC7L2 – Protein kinase domain lost</text>
+<rect x="299.1" y="186.0" width="320.9" height="22" fill="#cb6c4d"/>
+<rect x="60.0" y="186.0" width="239.1" height="22" fill="#e2e2e2"/>
+<rect x="174.0" y="186.0" width="51.9" height="22" fill="#2878b5"/>
+<text x="200.0" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">RAS-binding…</text>
+<rect x="231.8" y="186.0" width="32.9" height="22" fill="#2878b5"/>
+<text x="248.3" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Cystein…</text>
+<line x1="60.7" y1="186.0" x2="60.7" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="94.4" y1="186.0" x2="94.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="119.2" y1="186.0" x2="119.2" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="183.6" y1="186.0" x2="183.6" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="208.4" y1="186.0" x2="208.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="234.0" y1="186.0" x2="234.0" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="269.8" y1="186.0" x2="269.8" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="299.1" y1="185.0" x2="299.1" y2="209.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="200.5" font-family="sans-serif" font-size="9.5">MRPS33 – Protein kinase domain lost</text>
+<rect x="60.0" y="212.0" width="277.8" height="22" fill="#bc4dcb"/>
+<rect x="337.8" y="212.0" width="282.2" height="22" fill="#e2e2e2"/>
+<rect x="394.8" y="212.0" width="185.7" height="22" fill="#2878b5"/>
+<text x="487.7" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="338.5" y1="212.0" x2="338.5" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="347.3" y1="212.0" x2="347.3" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="380.9" y1="212.0" x2="380.9" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="409.5" y1="212.0" x2="409.5" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="429.9" y1="212.0" x2="429.9" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="473.1" y1="212.0" x2="473.1" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="484.8" y1="212.0" x2="484.8" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.0" y1="212.0" x2="514.0" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="546.2" y1="212.0" x2="546.2" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="579.1" y1="212.0" x2="579.1" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="337.8" y1="211.0" x2="337.8" y2="235.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="226.5" font-family="sans-serif" font-size="9.5">AGAP3 – Protein kinase domain retained</text>
+<rect x="60.0" y="238.0" width="277.8" height="22" fill="#cb4da5"/>
+<rect x="337.8" y="238.0" width="282.2" height="22" fill="#e2e2e2"/>
+<rect x="394.8" y="238.0" width="185.7" height="22" fill="#2878b5"/>
+<text x="487.7" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="338.5" y1="238.0" x2="338.5" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="347.3" y1="238.0" x2="347.3" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="380.9" y1="238.0" x2="380.9" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="409.5" y1="238.0" x2="409.5" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="429.9" y1="238.0" x2="429.9" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="473.1" y1="238.0" x2="473.1" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="484.8" y1="238.0" x2="484.8" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.0" y1="238.0" x2="514.0" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="546.2" y1="238.0" x2="546.2" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="579.1" y1="238.0" x2="579.1" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="337.8" y1="237.0" x2="337.8" y2="261.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="252.5" font-family="sans-serif" font-size="9.5">CDK5RAP2 – Protein kinase domain retained</text>
+<rect x="60.0" y="264.0" width="277.8" height="22" fill="#7d4dcb"/>
+<rect x="337.8" y="264.0" width="282.2" height="22" fill="#e2e2e2"/>
+<rect x="394.8" y="264.0" width="185.7" height="22" fill="#2878b5"/>
+<text x="487.7" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="338.5" y1="264.0" x2="338.5" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="347.3" y1="264.0" x2="347.3" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="380.9" y1="264.0" x2="380.9" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="409.5" y1="264.0" x2="409.5" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="429.9" y1="264.0" x2="429.9" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="473.1" y1="264.0" x2="473.1" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="484.8" y1="264.0" x2="484.8" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.0" y1="264.0" x2="514.0" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="546.2" y1="264.0" x2="546.2" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="579.1" y1="264.0" x2="579.1" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="337.8" y1="263.0" x2="337.8" y2="287.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="278.5" font-family="sans-serif" font-size="9.5">CUL1 – Protein kinase domain retained</text>
+<rect x="60.0" y="290.0" width="277.8" height="22" fill="#90cb4d"/>
+<rect x="337.8" y="290.0" width="282.2" height="22" fill="#e2e2e2"/>
+<rect x="394.8" y="290.0" width="185.7" height="22" fill="#2878b5"/>
+<text x="487.7" y="304.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="338.5" y1="290.0" x2="338.5" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="347.3" y1="290.0" x2="347.3" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="380.9" y1="290.0" x2="380.9" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="409.5" y1="290.0" x2="409.5" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="429.9" y1="290.0" x2="429.9" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="473.1" y1="290.0" x2="473.1" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="484.8" y1="290.0" x2="484.8" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.0" y1="290.0" x2="514.0" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="546.2" y1="290.0" x2="546.2" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="579.1" y1="290.0" x2="579.1" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="337.8" y1="289.0" x2="337.8" y2="313.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="304.5" font-family="sans-serif" font-size="9.5">KIAA1549 – Protein kinase domain retained</text>
+<rect x="337.8" y="316.0" width="282.2" height="22" fill="#4dcbbe"/>
+<rect x="60.0" y="316.0" width="277.8" height="22" fill="#e2e2e2"/>
+<rect x="174.0" y="316.0" width="51.9" height="22" fill="#2878b5"/>
+<text x="200.0" y="330.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">RAS-binding…</text>
+<rect x="231.8" y="316.0" width="32.9" height="22" fill="#2878b5"/>
+<text x="248.3" y="330.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Cystein…</text>
+<line x1="60.7" y1="316.0" x2="60.7" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="94.4" y1="316.0" x2="94.4" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="119.2" y1="316.0" x2="119.2" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="183.6" y1="316.0" x2="183.6" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="208.4" y1="316.0" x2="208.4" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="234.0" y1="316.0" x2="234.0" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="269.8" y1="316.0" x2="269.8" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="299.1" y1="316.0" x2="299.1" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="337.8" y1="315.0" x2="337.8" y2="339.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="330.5" font-family="sans-serif" font-size="9.5">LINC00244 – Protein kinase domain lost</text>
+<rect x="60.0" y="342.0" width="277.8" height="22" fill="#cb7d4d"/>
+<rect x="337.8" y="342.0" width="282.2" height="22" fill="#e2e2e2"/>
+<rect x="394.8" y="342.0" width="185.7" height="22" fill="#2878b5"/>
+<text x="487.7" y="356.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="338.5" y1="342.0" x2="338.5" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="347.3" y1="342.0" x2="347.3" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="380.9" y1="342.0" x2="380.9" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="409.5" y1="342.0" x2="409.5" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="429.9" y1="342.0" x2="429.9" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="473.1" y1="342.0" x2="473.1" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="484.8" y1="342.0" x2="484.8" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.0" y1="342.0" x2="514.0" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="546.2" y1="342.0" x2="546.2" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="579.1" y1="342.0" x2="579.1" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="337.8" y1="341.0" x2="337.8" y2="365.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="356.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="356.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="356.5" font-family="sans-serif" font-size="9.5">METTL2B – Protein kinase domain retained</text>
+<rect x="60.0" y="368.0" width="277.8" height="22" fill="#cb8c4d"/>
+<rect x="337.8" y="368.0" width="282.2" height="22" fill="#e2e2e2"/>
+<rect x="394.8" y="368.0" width="185.7" height="22" fill="#2878b5"/>
+<text x="487.7" y="382.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="338.5" y1="368.0" x2="338.5" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="347.3" y1="368.0" x2="347.3" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="380.9" y1="368.0" x2="380.9" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="409.5" y1="368.0" x2="409.5" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="429.9" y1="368.0" x2="429.9" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="473.1" y1="368.0" x2="473.1" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="484.8" y1="368.0" x2="484.8" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.0" y1="368.0" x2="514.0" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="546.2" y1="368.0" x2="546.2" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="579.1" y1="368.0" x2="579.1" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="337.8" y1="367.0" x2="337.8" y2="391.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="382.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="382.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="382.5" font-family="sans-serif" font-size="9.5">MKRN1 – Protein kinase domain retained</text>
+<rect x="60.0" y="394.0" width="277.8" height="22" fill="#bc4dcb"/>
+<rect x="337.8" y="394.0" width="282.2" height="22" fill="#e2e2e2"/>
+<rect x="394.8" y="394.0" width="185.7" height="22" fill="#2878b5"/>
+<text x="487.7" y="408.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="338.5" y1="394.0" x2="338.5" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="347.3" y1="394.0" x2="347.3" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="380.9" y1="394.0" x2="380.9" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="409.5" y1="394.0" x2="409.5" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="429.9" y1="394.0" x2="429.9" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="473.1" y1="394.0" x2="473.1" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="484.8" y1="394.0" x2="484.8" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.0" y1="394.0" x2="514.0" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="546.2" y1="394.0" x2="546.2" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="579.1" y1="394.0" x2="579.1" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="337.8" y1="393.0" x2="337.8" y2="417.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="408.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="408.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="408.5" font-family="sans-serif" font-size="9.5">PRKAR1B – Protein kinase domain retained</text>
+<rect x="60.0" y="420.0" width="277.8" height="22" fill="#cb4d5b"/>
+<rect x="337.8" y="420.0" width="282.2" height="22" fill="#e2e2e2"/>
+<rect x="394.8" y="420.0" width="185.7" height="22" fill="#2878b5"/>
+<text x="487.7" y="434.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="338.5" y1="420.0" x2="338.5" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="347.3" y1="420.0" x2="347.3" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="380.9" y1="420.0" x2="380.9" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="409.5" y1="420.0" x2="409.5" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="429.9" y1="420.0" x2="429.9" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="473.1" y1="420.0" x2="473.1" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="484.8" y1="420.0" x2="484.8" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.0" y1="420.0" x2="514.0" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="546.2" y1="420.0" x2="546.2" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="579.1" y1="420.0" x2="579.1" y2="442.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="337.8" y1="419.0" x2="337.8" y2="443.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="434.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="434.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="434.5" font-family="sans-serif" font-size="9.5">SND1 – Protein kinase domain retained</text>
+<rect x="60.0" y="446.0" width="278.5" height="22" fill="#bc4dcb"/>
+<rect x="338.5" y="446.0" width="281.5" height="22" fill="#e2e2e2"/>
+<rect x="394.8" y="446.0" width="185.7" height="22" fill="#2878b5"/>
+<text x="487.7" y="460.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="347.3" y1="446.0" x2="347.3" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="380.9" y1="446.0" x2="380.9" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="409.5" y1="446.0" x2="409.5" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="429.9" y1="446.0" x2="429.9" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="473.1" y1="446.0" x2="473.1" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="484.8" y1="446.0" x2="484.8" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.0" y1="446.0" x2="514.0" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="546.2" y1="446.0" x2="546.2" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="579.1" y1="446.0" x2="579.1" y2="468.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="338.5" y1="445.0" x2="338.5" y2="469.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="460.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="460.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="460.5" font-family="sans-serif" font-size="9.5">AGAP3 – Protein kinase domain retained</text>
+<rect x="60.0" y="472.0" width="278.5" height="22" fill="#cb4d55"/>
+<rect x="338.5" y="472.0" width="281.5" height="22" fill="#e2e2e2"/>
+<rect x="394.8" y="472.0" width="185.7" height="22" fill="#2878b5"/>
+<text x="487.7" y="486.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="347.3" y1="472.0" x2="347.3" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="380.9" y1="472.0" x2="380.9" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="409.5" y1="472.0" x2="409.5" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="429.9" y1="472.0" x2="429.9" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="473.1" y1="472.0" x2="473.1" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="484.8" y1="472.0" x2="484.8" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.0" y1="472.0" x2="514.0" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="546.2" y1="472.0" x2="546.2" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="579.1" y1="472.0" x2="579.1" y2="494.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="338.5" y1="471.0" x2="338.5" y2="495.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="486.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="486.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="486.5" font-family="sans-serif" font-size="9.5">CCDC6 – Protein kinase domain retained</text>
+<rect x="60.0" y="498.0" width="278.5" height="22" fill="#4d4fcb"/>
+<rect x="338.5" y="498.0" width="281.5" height="22" fill="#e2e2e2"/>
+<rect x="394.8" y="498.0" width="185.7" height="22" fill="#2878b5"/>
+<text x="487.7" y="512.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="347.3" y1="498.0" x2="347.3" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="380.9" y1="498.0" x2="380.9" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="409.5" y1="498.0" x2="409.5" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="429.9" y1="498.0" x2="429.9" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="473.1" y1="498.0" x2="473.1" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="484.8" y1="498.0" x2="484.8" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.0" y1="498.0" x2="514.0" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="546.2" y1="498.0" x2="546.2" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="579.1" y1="498.0" x2="579.1" y2="520.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="338.5" y1="497.0" x2="338.5" y2="521.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="512.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="512.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="512.5" font-family="sans-serif" font-size="9.5">FAM131B – Protein kinase domain retained</text>
+<rect x="60.0" y="524.0" width="278.5" height="22" fill="#4dcbc9"/>
+<rect x="338.5" y="524.0" width="281.5" height="22" fill="#e2e2e2"/>
+<rect x="394.8" y="524.0" width="185.7" height="22" fill="#2878b5"/>
+<text x="487.7" y="538.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="347.3" y1="524.0" x2="347.3" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="380.9" y1="524.0" x2="380.9" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="409.5" y1="524.0" x2="409.5" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="429.9" y1="524.0" x2="429.9" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="473.1" y1="524.0" x2="473.1" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="484.8" y1="524.0" x2="484.8" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.0" y1="524.0" x2="514.0" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="546.2" y1="524.0" x2="546.2" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="579.1" y1="524.0" x2="579.1" y2="546.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="338.5" y1="523.0" x2="338.5" y2="547.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="538.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="538.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="538.5" font-family="sans-serif" font-size="9.5">PHTF2 – Protein kinase domain retained</text>
+<rect x="338.5" y="550.0" width="281.5" height="22" fill="#cb4d5b"/>
+<rect x="60.0" y="550.0" width="278.5" height="22" fill="#e2e2e2"/>
+<rect x="174.0" y="550.0" width="51.9" height="22" fill="#2878b5"/>
+<text x="200.0" y="564.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">RAS-binding…</text>
+<rect x="231.8" y="550.0" width="32.9" height="22" fill="#2878b5"/>
+<text x="248.3" y="564.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Cystein…</text>
+<line x1="60.7" y1="550.0" x2="60.7" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="94.4" y1="550.0" x2="94.4" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="119.2" y1="550.0" x2="119.2" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="183.6" y1="550.0" x2="183.6" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="208.4" y1="550.0" x2="208.4" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="234.0" y1="550.0" x2="234.0" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="269.8" y1="550.0" x2="269.8" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="299.1" y1="550.0" x2="299.1" y2="572.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="338.5" y1="549.0" x2="338.5" y2="573.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="564.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="564.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="564.5" font-family="sans-serif" font-size="9.5">SND1 – Protein kinase domain lost</text>
+<rect x="60.0" y="576.0" width="287.3" height="22" fill="#684dcb"/>
+<rect x="347.3" y="576.0" width="272.7" height="22" fill="#e2e2e2"/>
+<rect x="394.8" y="576.0" width="185.7" height="22" fill="#2878b5"/>
+<text x="487.7" y="590.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="380.9" y1="576.0" x2="380.9" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="409.5" y1="576.0" x2="409.5" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="429.9" y1="576.0" x2="429.9" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="473.1" y1="576.0" x2="473.1" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="484.8" y1="576.0" x2="484.8" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.0" y1="576.0" x2="514.0" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="546.2" y1="576.0" x2="546.2" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="579.1" y1="576.0" x2="579.1" y2="598.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="347.3" y1="575.0" x2="347.3" y2="599.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="590.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="590.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="590.5" font-family="sans-serif" font-size="9.5">GIPC2 – Protein kinase domain retained</text>
+<rect x="60.0" y="602.0" width="287.3" height="22" fill="#4d51cb"/>
+<rect x="347.3" y="602.0" width="272.7" height="22" fill="#e2e2e2"/>
+<rect x="394.8" y="602.0" width="185.7" height="22" fill="#2878b5"/>
+<text x="487.7" y="616.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="380.9" y1="602.0" x2="380.9" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="409.5" y1="602.0" x2="409.5" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="429.9" y1="602.0" x2="429.9" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="473.1" y1="602.0" x2="473.1" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="484.8" y1="602.0" x2="484.8" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.0" y1="602.0" x2="514.0" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="546.2" y1="602.0" x2="546.2" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="579.1" y1="602.0" x2="579.1" y2="624.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="347.3" y1="601.0" x2="347.3" y2="625.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="616.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="616.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="616.5" font-family="sans-serif" font-size="9.5">KDM7A – Protein kinase domain retained</text>
+<rect x="60.0" y="628.0" width="287.3" height="22" fill="#cb9d4d"/>
+<rect x="347.3" y="628.0" width="272.7" height="22" fill="#e2e2e2"/>
+<rect x="394.8" y="628.0" width="185.7" height="22" fill="#2878b5"/>
+<text x="487.7" y="642.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="380.9" y1="628.0" x2="380.9" y2="650.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="409.5" y1="628.0" x2="409.5" y2="650.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="429.9" y1="628.0" x2="429.9" y2="650.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="473.1" y1="628.0" x2="473.1" y2="650.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="484.8" y1="628.0" x2="484.8" y2="650.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.0" y1="628.0" x2="514.0" y2="650.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="546.2" y1="628.0" x2="546.2" y2="650.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="579.1" y1="628.0" x2="579.1" y2="650.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="347.3" y1="627.0" x2="347.3" y2="651.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="642.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="642.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="642.5" font-family="sans-serif" font-size="9.5">OSBPL9 – Protein kinase domain retained</text>
+<rect x="60.0" y="654.0" width="287.3" height="22" fill="#b6cb4d"/>
+<rect x="347.3" y="654.0" width="272.7" height="22" fill="#e2e2e2"/>
+<rect x="394.8" y="654.0" width="185.7" height="22" fill="#2878b5"/>
+<text x="487.7" y="668.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="380.9" y1="654.0" x2="380.9" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="409.5" y1="654.0" x2="409.5" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="429.9" y1="654.0" x2="429.9" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="473.1" y1="654.0" x2="473.1" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="484.8" y1="654.0" x2="484.8" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.0" y1="654.0" x2="514.0" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="546.2" y1="654.0" x2="546.2" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="579.1" y1="654.0" x2="579.1" y2="676.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="347.3" y1="653.0" x2="347.3" y2="677.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="668.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="668.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="668.5" font-family="sans-serif" font-size="9.5">PRKAR2B – Protein kinase domain retained</text>
+<rect x="60.0" y="680.0" width="287.3" height="22" fill="#cbc54d"/>
+<rect x="347.3" y="680.0" width="272.7" height="22" fill="#e2e2e2"/>
+<rect x="394.8" y="680.0" width="185.7" height="22" fill="#2878b5"/>
+<text x="487.7" y="694.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="380.9" y1="680.0" x2="380.9" y2="702.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="409.5" y1="680.0" x2="409.5" y2="702.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="429.9" y1="680.0" x2="429.9" y2="702.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="473.1" y1="680.0" x2="473.1" y2="702.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="484.8" y1="680.0" x2="484.8" y2="702.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.0" y1="680.0" x2="514.0" y2="702.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="546.2" y1="680.0" x2="546.2" y2="702.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="579.1" y1="680.0" x2="579.1" y2="702.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="347.3" y1="679.0" x2="347.3" y2="703.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="694.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="694.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="694.5" font-family="sans-serif" font-size="9.5">ZNF207 – Protein kinase domain retained</text>
+<rect x="60.0" y="706.0" width="320.2" height="22" fill="#90cb4d"/>
+<rect x="380.2" y="706.0" width="239.8" height="22" fill="#e2e2e2"/>
+<rect x="394.8" y="706.0" width="185.7" height="22" fill="#2878b5"/>
+<text x="487.7" y="720.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="380.9" y1="706.0" x2="380.9" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="409.5" y1="706.0" x2="409.5" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="429.9" y1="706.0" x2="429.9" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="473.1" y1="706.0" x2="473.1" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="484.8" y1="706.0" x2="484.8" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.0" y1="706.0" x2="514.0" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="546.2" y1="706.0" x2="546.2" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="579.1" y1="706.0" x2="579.1" y2="728.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="380.2" y1="705.0" x2="380.2" y2="729.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="720.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="720.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="720.5" font-family="sans-serif" font-size="9.5">KIAA1549 – Protein kinase domain retained</text>
+<rect x="60.0" y="732.0" width="320.2" height="22" fill="#cb8c4d"/>
+<rect x="380.2" y="732.0" width="239.8" height="22" fill="#e2e2e2"/>
+<rect x="394.8" y="732.0" width="185.7" height="22" fill="#2878b5"/>
+<text x="487.7" y="746.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="380.9" y1="732.0" x2="380.9" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="409.5" y1="732.0" x2="409.5" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="429.9" y1="732.0" x2="429.9" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="473.1" y1="732.0" x2="473.1" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="484.8" y1="732.0" x2="484.8" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="514.0" y1="732.0" x2="514.0" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="546.2" y1="732.0" x2="546.2" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="579.1" y1="732.0" x2="579.1" y2="754.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="380.2" y1="731.0" x2="380.2" y2="755.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="746.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="746.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="746.5" font-family="sans-serif" font-size="9.5">MKRN1 – Protein kinase domain retained</text>
+<rect x="380.2" y="758.0" width="239.8" height="22" fill="#4dcb88"/>
+<rect x="60.0" y="758.0" width="320.2" height="22" fill="#e2e2e2"/>
+<rect x="174.0" y="758.0" width="51.9" height="22" fill="#2878b5"/>
+<text x="200.0" y="772.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">RAS-binding…</text>
+<rect x="231.8" y="758.0" width="32.9" height="22" fill="#2878b5"/>
+<text x="248.3" y="772.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Cystein…</text>
+<line x1="60.7" y1="758.0" x2="60.7" y2="780.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="94.4" y1="758.0" x2="94.4" y2="780.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="119.2" y1="758.0" x2="119.2" y2="780.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="183.6" y1="758.0" x2="183.6" y2="780.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="208.4" y1="758.0" x2="208.4" y2="780.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="234.0" y1="758.0" x2="234.0" y2="780.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="269.8" y1="758.0" x2="269.8" y2="780.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="299.1" y1="758.0" x2="299.1" y2="780.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="338.5" y1="758.0" x2="338.5" y2="780.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="347.3" y1="758.0" x2="347.3" y2="780.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="380.2" y1="757.0" x2="380.2" y2="781.0" stroke="#d62728" stroke-width="1.6"/>
+<text x="64.0" y="772.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="772.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="772.5" font-family="sans-serif" font-size="9.5">PJA2 – Protein kinase domain lost</text>
+<line x1="60.0" y1="788.0" x2="620.0" y2="788.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="783.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="620.0" y="783.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
+<text x="60.0" y="802.0" font-family="sans-serif" font-size="9">1</text>
+<text x="620.0" y="802.0" font-family="sans-serif" font-size="9" text-anchor="end">766 aa</text>
+<line x1="60.7" y1="806.0" x2="60.7" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="60.7" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 60.7 811.0)">E1</text>
+<line x1="94.4" y1="806.0" x2="94.4" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="94.4" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 94.4 811.0)">E2</text>
+<line x1="119.2" y1="806.0" x2="119.2" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="119.2" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 119.2 811.0)">E3</text>
+<line x1="183.6" y1="806.0" x2="183.6" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="183.6" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 183.6 811.0)">E4</text>
+<line x1="208.4" y1="806.0" x2="208.4" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="208.4" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 208.4 811.0)">E5</text>
+<line x1="234.0" y1="806.0" x2="234.0" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="234.0" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 234.0 811.0)">E6</text>
+<line x1="269.8" y1="806.0" x2="269.8" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="269.8" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 269.8 811.0)">E7</text>
+<line x1="299.1" y1="806.0" x2="299.1" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="299.1" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 299.1 811.0)">E8</text>
+<line x1="338.5" y1="806.0" x2="338.5" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="338.5" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 338.5 811.0)">E9</text>
+<line x1="347.3" y1="806.0" x2="347.3" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="347.3" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 347.3 811.0)">E10</text>
+<line x1="380.9" y1="806.0" x2="380.9" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="380.9" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 380.9 811.0)">E11</text>
+<line x1="409.5" y1="806.0" x2="409.5" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="409.5" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 409.5 811.0)">E12</text>
+<line x1="429.9" y1="806.0" x2="429.9" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="429.9" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 429.9 811.0)">E13</text>
+<line x1="473.1" y1="806.0" x2="473.1" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="473.1" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 473.1 811.0)">E14</text>
+<line x1="484.8" y1="806.0" x2="484.8" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="484.8" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 484.8 811.0)">E15</text>
+<line x1="514.0" y1="806.0" x2="514.0" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="514.0" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 514.0 811.0)">E16</text>
+<line x1="546.2" y1="806.0" x2="546.2" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="546.2" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 546.2 811.0)">E17</text>
+<line x1="579.1" y1="806.0" x2="579.1" y2="810.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="579.1" y="811.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 579.1 811.0)">E18</text>
+<rect x="60.0" y="819.0" width="12" height="10" fill="#2878b5"/>
+<text x="76.0" y="828.0" font-family="sans-serif" font-size="9">domain retained</text>
+<rect x="227.0" y="819.0" width="12" height="10" fill="#f2a93b"/>
+<text x="243.0" y="828.0" font-family="sans-serif" font-size="9">domain truncated</text>
+<rect x="403.0" y="819.0" width="12" height="10" fill="#e2e2e2"/>
+<text x="419.0" y="828.0" font-family="sans-serif" font-size="9">target backbone (no domain)</text>
+<rect x="678.0" y="819.0" width="12" height="10" fill="#d62728"/>
+<text x="694.0" y="828.0" font-family="sans-serif" font-size="9">breakpoint</text>
+<text x="60" y="864.0" font-family="sans-serif" font-size="9" fill="#555555">Partner-block colors are decorative; row labels identify partners.</text>
+<text x="60" y="880.0" font-family="sans-serif" font-size="9" fill="#555555">Showing the top 28 of 34 partner/breakpoint groups by recurrence; see results.tsv for the complete list.</text>
+</svg>
+</div><h2>Events</h2><div class="events-table-frame"><table class="events" id="events-table"><thead><tr><th>Event</th><th>Sample</th><th>Tumor type</th><th>Oncotree</th><th>Partner gene</th><th>Role</th><th>Breakpoint (aa)</th><th>Domain status</th></tr></thead><tbody><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0009757-T01-IM5-1"><td>EVT-P-0009757-T01-IM5-1</td><td>P-0009757-T01-IM5</td><td></td><td></td><td>AGAP3</td><td>three_prime</td><td>380</td><td>Retained</td></tr><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0007861-T01-IM5-2"><td>EVT-P-0007861-T01-IM5-2</td><td>P-0007861-T01-IM5</td><td></td><td></td><td>AGAP3</td><td>three_prime</td><td>381</td><td>Retained</td></tr><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0000913-T02-IM5-3"><td>EVT-P-0000913-T02-IM5-3</td><td>P-0000913-T02-IM5</td><td></td><td></td><td>AGK</td><td>three_prime</td><td>327</td><td>Retained</td></tr><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0010945-T01-IM5-4"><td>EVT-P-0010945-T01-IM5-4</td><td>P-0010945-T01-IM5</td><td></td><td></td><td>AGK</td><td>three_prime</td><td>327</td><td>Retained</td></tr><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0004477-T01-IM5-5"><td>EVT-P-0004477-T01-IM5-5</td><td>P-0004477-T01-IM5</td><td></td><td></td><td>AGK</td><td>three_prime</td><td>327</td><td>Retained</td></tr><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0004795-T01-IM5-13"><td>EVT-P-0004795-T01-IM5-13</td><td>P-0004795-T01-IM5</td><td></td><td></td><td>CUL1</td><td>three_prime</td><td>380</td><td>Retained</td></tr><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0001988-T01-IM3-14"><td>EVT-P-0001988-T01-IM3-14</td><td>P-0001988-T01-IM3</td><td></td><td></td><td>FAM131B</td><td>three_prime</td><td>381</td><td>Retained</td></tr><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0010494-T01-IM5-15"><td>EVT-P-0010494-T01-IM5-15</td><td>P-0010494-T01-IM5</td><td></td><td></td><td>GIPC2</td><td>three_prime</td><td>393</td><td>Retained</td></tr><tr data-tumor-type="" data-domain-status="lost" data-event-id="EVT-P-0004871-T01-IM5-16"><td>EVT-P-0004871-T01-IM5-16</td><td>P-0004871-T01-IM5</td><td></td><td></td><td>LINC00244</td><td>five_prime</td><td>380</td><td>Lost</td></tr><tr data-tumor-type="" data-domain-status="lost" data-event-id="EVT-P-0005553-T02-IM5-17"><td>EVT-P-0005553-T02-IM5-17</td><td>P-0005553-T02-IM5</td><td></td><td></td><td>MRPS33</td><td>five_prime</td><td>327</td><td>Lost</td></tr><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0010398-T01-IM5-18"><td>EVT-P-0010398-T01-IM5-18</td><td>P-0010398-T01-IM5</td><td></td><td></td><td>OSBPL9</td><td>three_prime</td><td>393</td><td>Retained</td></tr><tr data-tumor-type="" data-domain-status="lost" data-event-id="EVT-P-0003502-T01-IM5-19"><td>EVT-P-0003502-T01-IM5-19</td><td>P-0003502-T01-IM5</td><td></td><td></td><td>PJA2</td><td>five_prime</td><td>438</td><td>Lost</td></tr><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0009246-T01-IM5-20"><td>EVT-P-0009246-T01-IM5-20</td><td>P-0009246-T01-IM5</td><td></td><td></td><td>RBM33</td><td>three_prime</td><td>438</td><td>Retained</td></tr><tr data-tumor-type="" data-domain-status="disrupted" data-event-id="EVT-P-0002516-T01-IM3-21"><td>EVT-P-0002516-T01-IM3-21</td><td>P-0002516-T01-IM3</td><td></td><td></td><td>VIPR2</td><td>five_prime</td><td>565</td><td>Truncated</td></tr><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0005834-T01-IM5-22"><td>EVT-P-0005834-T01-IM5-22</td><td>P-0005834-T01-IM5</td><td></td><td></td><td>CCDC6</td><td>three_prime</td><td>381</td><td>Retained</td></tr><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0004203-T01-IM5-23"><td>EVT-P-0004203-T01-IM5-23</td><td>P-0004203-T01-IM5</td><td></td><td></td><td>CDK5RAP2</td><td>three_prime</td><td>380</td><td>Retained</td></tr><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0005461-T02-IM5-24"><td>EVT-P-0005461-T02-IM5-24</td><td>P-0005461-T02-IM5</td><td></td><td></td><td>CDK5RAP2</td><td>three_prime</td><td>439</td><td>Retained</td></tr><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0011111-T01-IM5-25"><td>EVT-P-0011111-T01-IM5-25</td><td>P-0011111-T01-IM5</td><td></td><td></td><td>KDM7A</td><td>three_prime</td><td>393</td><td>Retained</td></tr><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0005121-T02-IM5-26"><td>EVT-P-0005121-T02-IM5-26</td><td>P-0005121-T02-IM5</td><td></td><td></td><td>KIAA1549</td><td>three_prime</td><td>380</td><td>Retained</td></tr><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0004032-T01-IM5-27"><td>EVT-P-0004032-T01-IM5-27</td><td>P-0004032-T01-IM5</td><td></td><td></td><td>KIAA1549</td><td>three_prime</td><td>381</td><td>Retained</td></tr><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0009097-T01-IM5-28"><td>EVT-P-0009097-T01-IM5-28</td><td>P-0009097-T01-IM5</td><td></td><td></td><td>KIAA1549</td><td>three_prime</td><td>381</td><td>Retained</td></tr><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0003664-T01-IM5-29"><td>EVT-P-0003664-T01-IM5-29</td><td>P-0003664-T01-IM5</td><td></td><td></td><td>KIAA1549</td><td>three_prime</td><td>438</td><td>Retained</td></tr><tr data-tumor-type="" data-domain-status="lost" data-event-id="EVT-P-0006412-T01-IM5-30"><td>EVT-P-0006412-T01-IM5-30</td><td>P-0006412-T01-IM5</td><td></td><td></td><td>LUC7L2</td><td>five_prime</td><td>287</td><td>Lost</td></tr><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0002305-T01-IM3-31"><td>EVT-P-0002305-T01-IM3-31</td><td>P-0002305-T01-IM3</td><td></td><td></td><td>METTL2B</td><td>three_prime</td><td>380</td><td>Retained</td></tr><tr data-tumor-type="" data-domain-status="lost" data-event-id="EVT-P-0004373-T02-IM5-32"><td>EVT-P-0004373-T02-IM5-32</td><td>P-0004373-T02-IM5</td><td></td><td></td><td>MKRN1</td><td>three_prime</td><td>744</td><td>Lost</td></tr><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0001036-T01-IM3-33"><td>EVT-P-0001036-T01-IM3-33</td><td>P-0001036-T01-IM3</td><td></td><td></td><td>MKRN1</td><td>three_prime</td><td>438</td><td>Retained</td></tr><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0009024-T01-IM5-34"><td>EVT-P-0009024-T01-IM5-34</td><td>P-0009024-T01-IM5</td><td></td><td></td><td>MKRN1</td><td>three_prime</td><td>380</td><td>Retained</td></tr><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0008789-T01-IM5-36"><td>EVT-P-0008789-T01-IM5-36</td><td>P-0008789-T01-IM5</td><td></td><td></td><td>PHTF2</td><td>three_prime</td><td>381</td><td>Retained</td></tr><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0009694-T01-IM5-37"><td>EVT-P-0009694-T01-IM5-37</td><td>P-0009694-T01-IM5</td><td></td><td></td><td>PRKAR1B</td><td>three_prime</td><td>380</td><td>Retained</td></tr><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0008567-T01-IM5-38"><td>EVT-P-0008567-T01-IM5-38</td><td>P-0008567-T01-IM5</td><td></td><td></td><td>PRKAR2B</td><td>three_prime</td><td>393</td><td>Retained</td></tr><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0007392-T01-IM5-39"><td>EVT-P-0007392-T01-IM5-39</td><td>P-0007392-T01-IM5</td><td></td><td></td><td>SCRIB</td><td>three_prime</td><td>439</td><td>Retained</td></tr><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0004103-T01-IM5-40"><td>EVT-P-0004103-T01-IM5-40</td><td>P-0004103-T01-IM5</td><td></td><td></td><td>SND1</td><td>three_prime</td><td>439</td><td>Retained</td></tr><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0009619-T01-IM5-41"><td>EVT-P-0009619-T01-IM5-41</td><td>P-0009619-T01-IM5</td><td></td><td></td><td>SND1</td><td>three_prime</td><td>438</td><td>Retained</td></tr><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0012395-T01-IM5-42"><td>EVT-P-0012395-T01-IM5-42</td><td>P-0012395-T01-IM5</td><td></td><td></td><td>SND1</td><td>three_prime</td><td>380</td><td>Retained</td></tr><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0008140-T01-IM5-43"><td>EVT-P-0008140-T01-IM5-43</td><td>P-0008140-T01-IM5</td><td></td><td></td><td>SND1</td><td>three_prime</td><td>381</td><td>Retained</td></tr><tr data-tumor-type="" data-domain-status="lost" data-event-id="EVT-P-0002197-T01-IM3-44"><td>EVT-P-0002197-T01-IM3-44</td><td>P-0002197-T01-IM3</td><td></td><td></td><td>SND1</td><td>five_prime</td><td>381</td><td>Lost</td></tr><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0002071-T02-IM5-45"><td>EVT-P-0002071-T02-IM5-45</td><td>P-0002071-T02-IM5</td><td></td><td></td><td>SND1</td><td>three_prime</td><td>381</td><td>Retained</td></tr><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0007533-T01-IM5-46"><td>EVT-P-0007533-T01-IM5-46</td><td>P-0007533-T01-IM5</td><td></td><td></td><td>SND1</td><td>three_prime</td><td>438</td><td>Retained</td></tr><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0001687-T01-IM3-47"><td>EVT-P-0001687-T01-IM3-47</td><td>P-0001687-T01-IM3</td><td></td><td></td><td>SND1</td><td>three_prime</td><td>381</td><td>Retained</td></tr><tr data-tumor-type="" data-domain-status="retained" data-event-id="EVT-P-0008920-T01-IM5-48"><td>EVT-P-0008920-T01-IM5-48</td><td>P-0008920-T01-IM5</td><td></td><td></td><td>ZNF207</td><td>three_prime</td><td>393</td><td>Retained</td></tr></tbody></table></div>
+</div>
+<div class="lollipop-tooltip" id="lollipop-tooltip" hidden></div>
+<script type="application/json" id="events-data">[{"event_id": "EVT-P-0009757-T01-IM5-1", "sample_id": "P-0009757-T01-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "AGAP3", "target_role": "three_prime", "breakpoint_protein_position": 380, "domain_status": "retained"}, {"event_id": "EVT-P-0007861-T01-IM5-2", "sample_id": "P-0007861-T01-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "AGAP3", "target_role": "three_prime", "breakpoint_protein_position": 381, "domain_status": "retained"}, {"event_id": "EVT-P-0000913-T02-IM5-3", "sample_id": "P-0000913-T02-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "AGK", "target_role": "three_prime", "breakpoint_protein_position": 327, "domain_status": "retained"}, {"event_id": "EVT-P-0010945-T01-IM5-4", "sample_id": "P-0010945-T01-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "AGK", "target_role": "three_prime", "breakpoint_protein_position": 327, "domain_status": "retained"}, {"event_id": "EVT-P-0004477-T01-IM5-5", "sample_id": "P-0004477-T01-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "AGK", "target_role": "three_prime", "breakpoint_protein_position": 327, "domain_status": "retained"}, {"event_id": "EVT-P-0004795-T01-IM5-13", "sample_id": "P-0004795-T01-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "CUL1", "target_role": "three_prime", "breakpoint_protein_position": 380, "domain_status": "retained"}, {"event_id": "EVT-P-0001988-T01-IM3-14", "sample_id": "P-0001988-T01-IM3", "tumor_type": null, "oncotree_code": null, "partner_gene": "FAM131B", "target_role": "three_prime", "breakpoint_protein_position": 381, "domain_status": "retained"}, {"event_id": "EVT-P-0010494-T01-IM5-15", "sample_id": "P-0010494-T01-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "GIPC2", "target_role": "three_prime", "breakpoint_protein_position": 393, "domain_status": "retained"}, {"event_id": "EVT-P-0004871-T01-IM5-16", "sample_id": "P-0004871-T01-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "LINC00244", "target_role": "five_prime", "breakpoint_protein_position": 380, "domain_status": "lost"}, {"event_id": "EVT-P-0005553-T02-IM5-17", "sample_id": "P-0005553-T02-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "MRPS33", "target_role": "five_prime", "breakpoint_protein_position": 327, "domain_status": "lost"}, {"event_id": "EVT-P-0010398-T01-IM5-18", "sample_id": "P-0010398-T01-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "OSBPL9", "target_role": "three_prime", "breakpoint_protein_position": 393, "domain_status": "retained"}, {"event_id": "EVT-P-0003502-T01-IM5-19", "sample_id": "P-0003502-T01-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "PJA2", "target_role": "five_prime", "breakpoint_protein_position": 438, "domain_status": "lost"}, {"event_id": "EVT-P-0009246-T01-IM5-20", "sample_id": "P-0009246-T01-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "RBM33", "target_role": "three_prime", "breakpoint_protein_position": 438, "domain_status": "retained"}, {"event_id": "EVT-P-0002516-T01-IM3-21", "sample_id": "P-0002516-T01-IM3", "tumor_type": null, "oncotree_code": null, "partner_gene": "VIPR2", "target_role": "five_prime", "breakpoint_protein_position": 565, "domain_status": "disrupted"}, {"event_id": "EVT-P-0005834-T01-IM5-22", "sample_id": "P-0005834-T01-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "CCDC6", "target_role": "three_prime", "breakpoint_protein_position": 381, "domain_status": "retained"}, {"event_id": "EVT-P-0004203-T01-IM5-23", "sample_id": "P-0004203-T01-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "CDK5RAP2", "target_role": "three_prime", "breakpoint_protein_position": 380, "domain_status": "retained"}, {"event_id": "EVT-P-0005461-T02-IM5-24", "sample_id": "P-0005461-T02-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "CDK5RAP2", "target_role": "three_prime", "breakpoint_protein_position": 439, "domain_status": "retained"}, {"event_id": "EVT-P-0011111-T01-IM5-25", "sample_id": "P-0011111-T01-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "KDM7A", "target_role": "three_prime", "breakpoint_protein_position": 393, "domain_status": "retained"}, {"event_id": "EVT-P-0005121-T02-IM5-26", "sample_id": "P-0005121-T02-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "KIAA1549", "target_role": "three_prime", "breakpoint_protein_position": 380, "domain_status": "retained"}, {"event_id": "EVT-P-0004032-T01-IM5-27", "sample_id": "P-0004032-T01-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "KIAA1549", "target_role": "three_prime", "breakpoint_protein_position": 381, "domain_status": "retained"}, {"event_id": "EVT-P-0009097-T01-IM5-28", "sample_id": "P-0009097-T01-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "KIAA1549", "target_role": "three_prime", "breakpoint_protein_position": 381, "domain_status": "retained"}, {"event_id": "EVT-P-0003664-T01-IM5-29", "sample_id": "P-0003664-T01-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "KIAA1549", "target_role": "three_prime", "breakpoint_protein_position": 438, "domain_status": "retained"}, {"event_id": "EVT-P-0006412-T01-IM5-30", "sample_id": "P-0006412-T01-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "LUC7L2", "target_role": "five_prime", "breakpoint_protein_position": 287, "domain_status": "lost"}, {"event_id": "EVT-P-0002305-T01-IM3-31", "sample_id": "P-0002305-T01-IM3", "tumor_type": null, "oncotree_code": null, "partner_gene": "METTL2B", "target_role": "three_prime", "breakpoint_protein_position": 380, "domain_status": "retained"}, {"event_id": "EVT-P-0004373-T02-IM5-32", "sample_id": "P-0004373-T02-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "MKRN1", "target_role": "three_prime", "breakpoint_protein_position": 744, "domain_status": "lost"}, {"event_id": "EVT-P-0001036-T01-IM3-33", "sample_id": "P-0001036-T01-IM3", "tumor_type": null, "oncotree_code": null, "partner_gene": "MKRN1", "target_role": "three_prime", "breakpoint_protein_position": 438, "domain_status": "retained"}, {"event_id": "EVT-P-0009024-T01-IM5-34", "sample_id": "P-0009024-T01-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "MKRN1", "target_role": "three_prime", "breakpoint_protein_position": 380, "domain_status": "retained"}, {"event_id": "EVT-P-0008789-T01-IM5-36", "sample_id": "P-0008789-T01-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "PHTF2", "target_role": "three_prime", "breakpoint_protein_position": 381, "domain_status": "retained"}, {"event_id": "EVT-P-0009694-T01-IM5-37", "sample_id": "P-0009694-T01-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "PRKAR1B", "target_role": "three_prime", "breakpoint_protein_position": 380, "domain_status": "retained"}, {"event_id": "EVT-P-0008567-T01-IM5-38", "sample_id": "P-0008567-T01-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "PRKAR2B", "target_role": "three_prime", "breakpoint_protein_position": 393, "domain_status": "retained"}, {"event_id": "EVT-P-0007392-T01-IM5-39", "sample_id": "P-0007392-T01-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "SCRIB", "target_role": "three_prime", "breakpoint_protein_position": 439, "domain_status": "retained"}, {"event_id": "EVT-P-0004103-T01-IM5-40", "sample_id": "P-0004103-T01-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "SND1", "target_role": "three_prime", "breakpoint_protein_position": 439, "domain_status": "retained"}, {"event_id": "EVT-P-0009619-T01-IM5-41", "sample_id": "P-0009619-T01-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "SND1", "target_role": "three_prime", "breakpoint_protein_position": 438, "domain_status": "retained"}, {"event_id": "EVT-P-0012395-T01-IM5-42", "sample_id": "P-0012395-T01-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "SND1", "target_role": "three_prime", "breakpoint_protein_position": 380, "domain_status": "retained"}, {"event_id": "EVT-P-0008140-T01-IM5-43", "sample_id": "P-0008140-T01-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "SND1", "target_role": "three_prime", "breakpoint_protein_position": 381, "domain_status": "retained"}, {"event_id": "EVT-P-0002197-T01-IM3-44", "sample_id": "P-0002197-T01-IM3", "tumor_type": null, "oncotree_code": null, "partner_gene": "SND1", "target_role": "five_prime", "breakpoint_protein_position": 381, "domain_status": "lost"}, {"event_id": "EVT-P-0002071-T02-IM5-45", "sample_id": "P-0002071-T02-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "SND1", "target_role": "three_prime", "breakpoint_protein_position": 381, "domain_status": "retained"}, {"event_id": "EVT-P-0007533-T01-IM5-46", "sample_id": "P-0007533-T01-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "SND1", "target_role": "three_prime", "breakpoint_protein_position": 438, "domain_status": "retained"}, {"event_id": "EVT-P-0001687-T01-IM3-47", "sample_id": "P-0001687-T01-IM3", "tumor_type": null, "oncotree_code": null, "partner_gene": "SND1", "target_role": "three_prime", "breakpoint_protein_position": 381, "domain_status": "retained"}, {"event_id": "EVT-P-0008920-T01-IM5-48", "sample_id": "P-0008920-T01-IM5", "tumor_type": null, "oncotree_code": null, "partner_gene": "ZNF207", "target_role": "three_prime", "breakpoint_protein_position": 393, "domain_status": "retained"}]</script>
+<script type="application/json" id="status-labels">{"retained": "Retained", "disrupted": "Truncated", "lost": "Lost"}</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var events = JSON.parse(document.getElementById("events-data").textContent);
+  var statusLabels = JSON.parse(document.getElementById("status-labels").textContent);
+  var eventsById = {};
+  events.forEach(function (e) {
+    if (e.event_id) { eventsById[e.event_id] = e; }
+  });
+
+  function distinctValues(field) {
+    var values = events.map(function (e) { return e[field]; }).filter(Boolean);
+    return Array.from(new Set(values)).sort();
+  }
+  var tumorTypes = distinctValues("tumor_type");
+  var domainStatuses = distinctValues("domain_status");
+
+  var tumorSelect = document.getElementById("tumor-type-filter");
+  tumorSelect.innerHTML = '<option value="">All tumor types</option>' + tumorTypes.map(
+    function (t) {
+      return '<option value="' + t.replace(/"/g, "&quot;") + '">' + t + "</option>";
+    }
+  ).join("");
+
+  var statusContainer = document.getElementById("status-filter");
+  statusContainer.innerHTML = domainStatuses.map(function (s) {
+    var label = statusLabels[s] || (s.charAt(0).toUpperCase() + s.slice(1));
+    var checkbox = '<input type="checkbox" value="' + s + '" checked> ';
+    return '<label class="status-toggle">' + checkbox + label + "</label>";
+  }).join("");
+
+  // Group fusion-schematic rows by the (partner, breakpoint-aa) key baked
+  // into every row shape's <title> text by cfh.reporting.fusion_schematic
+  // (e.g. "...BRAF–KIAA1549 fusion, breakpoint BRAF aa 381; ...") --
+  // read back here, never recomputed or duplicated from the algorithm side.
+  var schematicGroups = new Map();
+  events.forEach(function (e) {
+    if (!e.partner_gene || e.breakpoint_protein_position == null) { return; }
+    var key = e.partner_gene + "|" + e.breakpoint_protein_position;
+    var group = schematicGroups.get(key);
+    if (!group) {
+      group = { tumorTypes: new Set(), domainStatuses: new Set() };
+      schematicGroups.set(key, group);
+    }
+    if (e.tumor_type) { group.tumorTypes.add(e.tumor_type); }
+    if (e.domain_status) { group.domainStatuses.add(e.domain_status); }
+  });
+  var TITLE_RE = /–([^;]+?) fusion, breakpoint \S+ aa (\d+);/;
+  var schematicSvg = document.getElementById("fusion-schematic-svg");
+
+  var summaryEl = document.getElementById("events-summary");
+  var rows = Array.from(document.querySelectorAll("#events-table tbody tr"));
+
+  function applyFilters() {
+    var tumor = tumorSelect.value;
+    var checked = statusContainer.querySelectorAll("input:checked");
+    var activeStatuses = new Set(Array.from(checked).map(function (i) { return i.value; }));
+
+    var shown = 0;
+    rows.forEach(function (tr) {
+      var matchesTumor = !tumor || tr.dataset.tumorType === tumor;
+      var matchesStatus = !tr.dataset.domainStatus || activeStatuses.has(tr.dataset.domainStatus);
+      var visible = matchesTumor && matchesStatus;
+      tr.hidden = !visible;
+      if (visible) { shown += 1; }
+    });
+    if (summaryEl) {
+      summaryEl.textContent = "Showing " + shown + " of " + rows.length + " events";
+    }
+
+    if (schematicSvg) {
+      schematicSvg.querySelectorAll("title").forEach(function (titleEl) {
+        var match = TITLE_RE.exec(titleEl.textContent || "");
+        var shape = titleEl.parentElement;
+        if (!match) { return; }
+        var group = schematicGroups.get(match[1] + "|" + match[2]);
+        if (!group) { shape.style.opacity = ""; return; }
+        var groupMatchesTumor = !tumor || group.tumorTypes.has(tumor);
+        var groupMatchesStatus = Array.from(group.domainStatuses).some(function (s) {
+          return activeStatuses.has(s);
+        });
+        shape.style.opacity = (groupMatchesTumor && groupMatchesStatus) ? "1" : "0.12";
+      });
+    }
+  }
+
+  tumorSelect.addEventListener("change", applyFilters);
+  statusContainer.addEventListener("change", applyFilters);
+  applyFilters();
+
+  // Shared by the lollipop-track points and the mechanistic-interpretation
+  // counter-intuitive-event tables: clear any active filters (so the row
+  // can't be hidden -- both jump sources are drawn independent of the
+  // table's tumor-type/domain-status filters), scroll the matching
+  // #events-table row into view, and briefly highlight it.
+  function jumpToEventRow(eventId) {
+    var row = document.querySelector(
+      '#events-table tbody tr[data-event-id="' + CSS.escape(eventId) + '"]'
+    );
+    if (!row) { return; }
+    tumorSelect.value = "";
+    statusContainer.querySelectorAll("input").forEach(function (i) { i.checked = true; });
+    applyFilters();
+    row.scrollIntoView({ behavior: "smooth", block: "center" });
+    row.classList.add("row-highlight");
+    window.setTimeout(function () { row.classList.remove("row-highlight"); }, 1500);
+  }
+
+  // Hovering or clicking a lollipop-track point (data-event-id, set by
+  // cfh.real_benchmark._domain_track_svg) shows a sample-id tooltip and/or
+  // jumps to that event's row in the table below.
+  var domainTrackFrame = document.getElementById("domain-track-svg");
+  var tooltip = document.getElementById("lollipop-tooltip");
+  if (domainTrackFrame) {
+    domainTrackFrame.querySelectorAll("circle[data-event-id]").forEach(function (circle) {
+      var eventId = circle.getAttribute("data-event-id");
+      if (!eventId) { return; }
+      var matchedEvent = eventsById[eventId];
+      if (tooltip && matchedEvent && matchedEvent.sample_id) {
+        circle.addEventListener("mouseenter", function () {
+          tooltip.textContent = "Sample " + matchedEvent.sample_id;
+          tooltip.hidden = false;
+        });
+        circle.addEventListener("mousemove", function (mouseEvent) {
+          tooltip.style.left = mouseEvent.clientX + 14 + "px";
+          tooltip.style.top = mouseEvent.clientY + 14 + "px";
+        });
+        circle.addEventListener("mouseleave", function () {
+          tooltip.hidden = true;
+        });
+      }
+      if (!document.querySelector('#events-table tbody tr[data-event-id="' + CSS.escape(eventId) + '"]')) {
+        return;
+      }
+      circle.style.cursor = "pointer";
+      circle.addEventListener("click", function () { jumpToEventRow(eventId); });
+    });
+  }
+
+  // Clicking a row in a "Mechanistic interpretation" counter-intuitive-
+  // event table (see cfh.reporting.html_viewer._mechanistic_effect_html)
+  // jumps to that same event in the main events table below.
+  document.querySelectorAll("tr.counter-intuitive-row[data-event-id]").forEach(function (row) {
+    var eventId = row.getAttribute("data-event-id");
+    if (!eventId) { return; }
+    row.addEventListener("click", function () { jumpToEventRow(eventId); });
+  });
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll("table.sortable").forEach(function (table) {
+    var tbody = table.tBodies[0];
+    if (!tbody) { return; }
+    var headers = Array.from(table.querySelectorAll("thead th[data-sort-key]"));
+    var currentKey = null;
+    var currentDir = 1;
+    headers.forEach(function (th, index) {
+      th.addEventListener("click", function () {
+        var key = th.getAttribute("data-sort-key");
+        currentDir = (currentKey === key) ? -currentDir : 1;
+        currentKey = key;
+        headers.forEach(function (h) { h.removeAttribute("data-sort-dir"); });
+        th.setAttribute("data-sort-dir", currentDir === 1 ? "asc" : "desc");
+
+        var rows = Array.from(tbody.querySelectorAll("tr"));
+        rows.sort(function (a, b) {
+          var aCell = a.children[index];
+          var bCell = b.children[index];
+          var aRaw = aCell ? aCell.getAttribute("data-sort") : null;
+          var bRaw = bCell ? bCell.getAttribute("data-sort") : null;
+          var aNum = aRaw === null || aRaw === "" ? NaN : Number(aRaw);
+          var bNum = bRaw === null || bRaw === "" ? NaN : Number(bRaw);
+          var cmp;
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            cmp = aNum - bNum;
+          } else {
+            cmp = String(aRaw).localeCompare(String(bRaw));
+          }
+          return cmp * currentDir;
+        });
+        rows.forEach(function (row) { tbody.appendChild(row); });
+      });
+    });
+  });
+});
+</script>
+</body>
+</html>

@@ -346,6 +346,27 @@ class TestMechanisticInterpretationSection:
         assert 'class="mechanism-callout"' in html
         assert "See full mechanistic interpretation below" in html
 
+    def test_callout_leads_with_the_curated_mechanism_not_just_statistics(self, tmp_path):
+        """Regression: the top-of-page callout used to show only the
+        statistical support lines (p-value/odds-ratio/counter-intuitive
+        confidence) and omit the actual curated "why" entirely, even
+        though it was present in the full section below. A reader glancing
+        at just the callout must see the functional/mechanistic reason,
+        not only how statistically confident the finding is."""
+        run_dir = _write_gene_run(
+            tmp_path, self._payload_with_mechanistic_interpretation(), with_svgs=False
+        )
+        html = build_run_viewer(run_dir).read_text()
+        callout_start = html.index('<div class="mechanism-callout">')
+        callout_end = html.index("</div>", callout_start) + len("</div>")
+        callout_html = html[callout_start:callout_end]
+        assert "Loss-of-autoinhibition: curated test mechanism text." in callout_html
+        assert "Curated mechanism" in callout_html
+        # The curated "why" leads the callout, before the statistical lines.
+        assert callout_html.index("Curated mechanism") < callout_html.index(
+            "statistically supported"
+        )
+
     def test_counter_intuitive_events_table_links_back_to_events_table(self, tmp_path):
         run_dir = _write_gene_run(
             tmp_path, self._payload_with_mechanistic_interpretation(), with_svgs=False
@@ -460,6 +481,22 @@ class TestGenePairPage:
         result = build_run_viewer(run_dir)
         assert result is not None
         assert "Gene-pair enrichment test" not in result.read_text()
+
+    def test_gene_pair_mechanism_note_shows_in_the_callout(self, tmp_path):
+        """Gene-pair pages have no mechanistic_interpretation algorithm
+        result at all (it no-ops for gene_pair configs) -- the callout must
+        still show the curated mechanism_note by itself, not only appear
+        when statistical support lines are also present."""
+        payload = self._gene_pair_payload()
+        payload["summary"]["mechanism_note"] = (
+            "Promoter-swap/expression-driven fusion, not domain-retention."
+        )
+        run_dir = _write_gene_run(tmp_path, payload, with_svgs=False)
+        html = build_run_viewer(run_dir).read_text()
+        callout_start = html.index('<div class="mechanism-callout">')
+        callout_end = html.index("</div>", callout_start) + len("</div>")
+        callout_html = html[callout_start:callout_end]
+        assert "Promoter-swap/expression-driven fusion, not domain-retention." in callout_html
 
 
 class TestGenomicClusteringSection:

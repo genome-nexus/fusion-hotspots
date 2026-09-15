@@ -934,7 +934,12 @@ def _mechanistic_interpretation_section(payload: dict) -> tuple[str, str]:
     body: list[str] = []
     callout_lines: list[str] = []
     if mechanism_note:
-        body.append(f'<p><strong>Curated mechanism:</strong> {_esc(str(mechanism_note))}</p>')
+        # The curated "why" leads both the callout and the full section --
+        # this is the actual functional/mechanistic reason a reader wants
+        # at a glance, not just the statistical support for it.
+        mechanism_note_html = f'<p><strong>Curated mechanism:</strong> {_esc(str(mechanism_note))}</p>'
+        body.append(mechanism_note_html)
+        callout_lines.append(mechanism_note_html)
 
     if result is not None and not _algorithm_failed(result):
         algo_summary = result.get("Summary") or {}

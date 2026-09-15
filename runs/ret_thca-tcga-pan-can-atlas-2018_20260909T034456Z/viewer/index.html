@@ -1,0 +1,742 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RET fusion-hotspot report</title>
+<style>
+:root { color-scheme: light; }
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 24px 20px 60px; background: #f7f7f8; color: #1a1a1a;
+  font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+.wrap { max-width: 1080px; margin: 0 auto; }
+h1 { font-size: 22px; margin: 0 0 4px; }
+h1 .badge { position: relative; top: -2px; }
+h2 {
+  font-size: 16px; margin: 32px 0 10px;
+  border-bottom: 1px solid #ddd; padding-bottom: 6px;
+}
+.subtitle { color: #555; font-size: 13px; margin: 0 0 20px; }
+.back-link {
+  display: inline-block; margin-bottom: 14px; font-size: 13px;
+  color: #2878b5; text-decoration: none;
+}
+.back-link:hover { text-decoration: underline; }
+.card {
+  background: #fff; border: 1px solid #e2e2e2;
+  border-radius: 8px; padding: 16px 18px;
+}
+.stat-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px;
+}
+.stat {
+  background: #fff; border: 1px solid #e2e2e2;
+  border-radius: 8px; padding: 10px 12px;
+}
+.stat .label {
+  font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.02em;
+}
+.stat .value { font-size: 18px; font-weight: 600; margin-top: 2px; }
+.svg-frame {
+  width: 100%; overflow-x: auto; background: #fff;
+  border: 1px solid #e2e2e2; border-radius: 8px; padding: 8px;
+}
+.svg-frame svg { display: block; max-width: 100%; height: auto; }
+.controls {
+  display: flex; flex-wrap: wrap; gap: 20px; align-items: center;
+  margin: 12px 0 16px; padding: 12px 14px; background: #fff;
+  border: 1px solid #e2e2e2; border-radius: 8px;
+}
+.control-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.control-group label.title { font-size: 12px; font-weight: 600; color: #333; }
+.control-group select { font-size: 13px; padding: 4px 6px; }
+.status-toggle { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; }
+#events-summary { font-size: 12px; color: #555; margin-left: auto; }
+table.events { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+table.events th, table.events td {
+  text-align: left; padding: 5px 8px;
+  border-bottom: 1px solid #eee; white-space: nowrap;
+}
+table.events th { position: sticky; top: 0; background: #fafafa; }
+table.events tr.row-highlight { background: #fff3cd; transition: background 1.2s ease; }
+.lollipop-tooltip {
+  position: fixed; z-index: 1000; pointer-events: none;
+  background: #1a1a1a; color: #fff; font-size: 12px; line-height: 1.3;
+  padding: 4px 8px; border-radius: 4px; white-space: nowrap;
+}
+.mechanism-callout {
+  background: #f5f8fc; border: 1px solid #cfe0f0; border-radius: 8px;
+  padding: 12px 16px; margin: 0 0 16px; font-size: 13px;
+}
+.mechanism-callout p { margin: 4px 0; }
+.mechanism-callout p.panel-note { padding-left: 0; }
+tr.counter-intuitive-row { cursor: pointer; }
+tr.counter-intuitive-row:hover { background: #f0f0f0; }
+.events-table-frame {
+  max-height: 420px; overflow: auto;
+  border: 1px solid #e2e2e2; border-radius: 8px; background: #fff;
+}
+.gene-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.gene-links a {
+  font-size: 12.5px; padding: 4px 9px; border-radius: 999px; text-decoration: none;
+  border: 1px solid #ccc; color: #1a1a1a; background: #fff;
+}
+.gene-links a:hover { background: #f0f0f0; }
+.gene-links a.significant { border-color: #d62728; color: #d62728; }
+.note { font-size: 12px; color: #777; margin-top: 8px; }
+.panel-note { font-size: 12px; color: #555; margin: 8px 0 0; padding-left: 18px; }
+.badge {
+  display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 9px;
+  border-radius: 999px; margin-left: 10px; vertical-align: middle;
+  text-transform: uppercase; letter-spacing: 0.03em;
+}
+.badge-curated { background: #e6f4ea; color: #1a7f37; border: 1px solid #b7e0c2; }
+.badge-auto { background: #fff4e5; color: #9a6700; border: 1px solid #f0dca6; }
+table.data-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+table.data-table th, table.data-table td {
+  text-align: left; padding: 5px 8px;
+  border-bottom: 1px solid #eee; white-space: nowrap;
+}
+table.data-table th { position: sticky; top: 0; background: #fafafa; }
+table.sortable th[data-sort-key] { cursor: pointer; user-select: none; }
+table.sortable th[data-sort-key]:hover { background: #f0f0f0; }
+table.sortable th[data-sort-key]::after { content: ""; margin-left: 4px; color: #999; }
+table.sortable th[data-sort-dir="asc"]::after { content: "\25B2"; margin-left: 4px; color: #555; }
+table.sortable th[data-sort-dir="desc"]::after { content: "\25BC"; margin-left: 4px; color: #555; }
+.data-table-frame {
+  max-height: 380px; overflow: auto;
+  border: 1px solid #e2e2e2; border-radius: 8px; background: #fff;
+}
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  
+  <h1>RET<span class="badge badge-curated" title="Loaded from a hand-curated YAML under genes/configs/">Curated config</span></h1>
+  <p class="subtitle">thca_tcga_pan_can_atlas_2018</p>
+  
+  <div class="stat-grid"><div class="stat"><div class="label">Raw Structural Variant Count</div><div class="value">36</div></div><div class="stat"><div class="label">Total Fusions</div><div class="value">36</div></div><div class="stat"><div class="label">Mapped Fusions</div><div class="value">36</div></div><div class="stat"><div class="label">Skipped Fusions</div><div class="value">0</div></div><div class="stat"><div class="label">In Frame Count</div><div class="value">35</div></div><div class="stat"><div class="label">In Frame Percent</div><div class="value">97.22</div></div><div class="stat"><div class="label">Kinase Retained Count</div><div class="value">33</div></div><div class="stat"><div class="label">Kinase Retained Percent</div><div class="value">91.67</div></div><div class="stat"><div class="label">In Frame Kinase Retained Count</div><div class="value">33</div></div><div class="stat"><div class="label">Fisher Odds Ratio</div><div class="value">inf</div></div><div class="stat"><div class="label">Fisher P Value</div><div class="value">0.08333</div></div><div class="stat"><div class="label">Permutation P Value</div><div class="value">0.000999</div></div><div class="stat"><div class="label">Domain Accession</div><div class="value">PF07714</div></div><div class="stat"><div class="label">Domain Start Aa</div><div class="value">725</div></div><div class="stat"><div class="label">Domain End Aa</div><div class="value">1005</div></div></div>
+  <h2>Domain retention / outlier lollipop track</h2><p class="panel-note">Click a point to jump to its event in the table below.</p><div class="svg-frame" id="domain-track-svg"><svg xmlns="http://www.w3.org/2000/svg" width="920" height="200" viewBox="0 0 920 200">
+<rect width="920" height="200" fill="white"/>
+<text x="60" y="28" font-family="sans-serif" font-size="16">RET domain-retention track</text>
+<rect x="580.6" y="34.0" width="201.1" height="16.0" fill="#62b36f" opacity="0.55"/>
+<text x="781.7" y="46.0" font-family="sans-serif" font-size="9.5" text-anchor="end">Protein kinase domain (725-1005)</text>
+<line x1="60.0" y1="63.0" x2="860.0" y2="63.0" stroke="#444444" stroke-width="4"/>
+<circle cx="572.0" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-FK-A3SG-01-1"><title>event EVT-TCGA-FK-A3SG-01-1; sample TCGA-FK-A3SG-01; partner AKAP13; breakpoint aa 713; domain retained</title></circle>
+<circle cx="572.0" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-BJ-A0ZJ-01-2"><title>event EVT-TCGA-BJ-A0ZJ-01-2; sample TCGA-BJ-A0ZJ-01; partner CCDC6; breakpoint aa 713; domain retained</title></circle>
+<circle cx="572.0" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-EM-A3AN-01-3"><title>event EVT-TCGA-EM-A3AN-01-3; sample TCGA-EM-A3AN-01; partner CCDC6; breakpoint aa 713; domain retained</title></circle>
+<circle cx="572.0" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-FK-A4UB-01-4"><title>event EVT-TCGA-FK-A4UB-01-4; sample TCGA-FK-A4UB-01; partner CCDC6; breakpoint aa 713; domain retained</title></circle>
+<circle cx="572.0" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-BJ-A28Z-01-5"><title>event EVT-TCGA-BJ-A28Z-01-5; sample TCGA-BJ-A28Z-01; partner CCDC6; breakpoint aa 713; domain retained</title></circle>
+<circle cx="572.0" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-FK-A3SE-01-6"><title>event EVT-TCGA-FK-A3SE-01-6; sample TCGA-FK-A3SE-01; partner CCDC6; breakpoint aa 713; domain retained</title></circle>
+<circle cx="572.0" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-ET-A40T-01-7"><title>event EVT-TCGA-ET-A40T-01-7; sample TCGA-ET-A40T-01; partner CCDC6; breakpoint aa 713; domain retained</title></circle>
+<circle cx="572.0" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-ET-A3DR-01-8"><title>event EVT-TCGA-ET-A3DR-01-8; sample TCGA-ET-A3DR-01; partner CCDC6; breakpoint aa 713; domain retained</title></circle>
+<circle cx="572.0" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-J8-A4HW-01-9"><title>event EVT-TCGA-J8-A4HW-01-9; sample TCGA-J8-A4HW-01; partner CCDC6; breakpoint aa 713; domain retained</title></circle>
+<circle cx="572.0" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-CE-A13K-01-10"><title>event EVT-TCGA-CE-A13K-01-10; sample TCGA-CE-A13K-01; partner CCDC6; breakpoint aa 713; domain retained</title></circle>
+<circle cx="572.0" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-DJ-A3V3-01-11"><title>event EVT-TCGA-DJ-A3V3-01-11; sample TCGA-DJ-A3V3-01; partner CCDC6; breakpoint aa 713; domain retained</title></circle>
+<circle cx="572.0" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-DJ-A4UQ-01-12"><title>event EVT-TCGA-DJ-A4UQ-01-12; sample TCGA-DJ-A4UQ-01; partner CCDC6; breakpoint aa 713; domain retained</title></circle>
+<circle cx="572.0" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-DJ-A4V5-01-13"><title>event EVT-TCGA-DJ-A4V5-01-13; sample TCGA-DJ-A4V5-01; partner CCDC6; breakpoint aa 713; domain retained</title></circle>
+<circle cx="572.0" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-ET-A39R-01-14"><title>event EVT-TCGA-ET-A39R-01-14; sample TCGA-ET-A39R-01; partner CCDC6; breakpoint aa 713; domain retained</title></circle>
+<circle cx="572.0" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-DO-A1JZ-01-15"><title>event EVT-TCGA-DO-A1JZ-01-15; sample TCGA-DO-A1JZ-01; partner CCDC6; breakpoint aa 713; domain retained</title></circle>
+<circle cx="572.0" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-E3-A3E0-01-16"><title>event EVT-TCGA-E3-A3E0-01-16; sample TCGA-E3-A3E0-01; partner CCDC6; breakpoint aa 713; domain retained</title></circle>
+<circle cx="572.0" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-E8-A44M-01-17"><title>event EVT-TCGA-E8-A44M-01-17; sample TCGA-E8-A44M-01; partner CCDC6; breakpoint aa 713; domain retained</title></circle>
+<circle cx="572.0" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-EL-A3CY-01-18"><title>event EVT-TCGA-EL-A3CY-01-18; sample TCGA-EL-A3CY-01; partner CCDC6; breakpoint aa 713; domain retained</title></circle>
+<circle cx="572.0" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-DJ-A2Q1-01-19"><title>event EVT-TCGA-DJ-A2Q1-01-19; sample TCGA-DJ-A2Q1-01; partner CCDC6; breakpoint aa 713; domain retained</title></circle>
+<circle cx="572.0" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-EL-A3TB-01-20"><title>event EVT-TCGA-EL-A3TB-01-20; sample TCGA-EL-A3TB-01; partner CCDC6; breakpoint aa 713; domain retained</title></circle>
+<circle cx="536.1" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-EL-A3ZP-01-21"><title>event EVT-TCGA-EL-A3ZP-01-21; sample TCGA-EL-A3ZP-01; partner CCDC6; breakpoint aa 663; domain retained</title></circle>
+<circle cx="572.0" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-EL-A3ZS-01-22"><title>event EVT-TCGA-EL-A3ZS-01-22; sample TCGA-EL-A3ZS-01; partner CCDC6; breakpoint aa 713; domain retained</title></circle>
+<circle cx="572.0" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-DE-A69K-01-23"><title>event EVT-TCGA-DE-A69K-01-23; sample TCGA-DE-A69K-01; partner DLG5; breakpoint aa 713; domain retained</title></circle>
+<circle cx="572.0" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-EL-A3T9-01-24"><title>event EVT-TCGA-EL-A3T9-01-24; sample TCGA-EL-A3T9-01; partner ERC1; breakpoint aa 713; domain retained</title></circle>
+<circle cx="572.0" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-EM-A3FQ-01-25"><title>event EVT-TCGA-EM-A3FQ-01-25; sample TCGA-EM-A3FQ-01; partner ERC1; breakpoint aa 713; domain retained</title></circle>
+<circle cx="572.0" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-ET-A3DQ-01-26"><title>event EVT-TCGA-ET-A3DQ-01-26; sample TCGA-ET-A3DQ-01; partner FKBP15; breakpoint aa 713; domain retained</title></circle>
+<circle cx="572.0" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-EM-A2CU-01-27"><title>event EVT-TCGA-EM-A2CU-01-27; sample TCGA-EM-A2CU-01; partner NCOA4; breakpoint aa 713; domain retained</title></circle>
+<circle cx="572.0" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-DE-A3KN-01-28"><title>event EVT-TCGA-DE-A3KN-01-28; sample TCGA-DE-A3KN-01; partner NCOA4; breakpoint aa 713; domain retained</title></circle>
+<circle cx="572.0" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-CE-A482-01-29"><title>event EVT-TCGA-CE-A482-01-29; sample TCGA-CE-A482-01; partner NCOA4; breakpoint aa 713; domain retained</title></circle>
+<circle cx="572.0" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-EL-A3H3-01-30"><title>event EVT-TCGA-EL-A3H3-01-30; sample TCGA-EL-A3H3-01; partner NCOA4; breakpoint aa 713; domain retained</title></circle>
+<circle cx="571.3" cy="71.0" r="3" fill="#777777" stroke="#d62728" stroke-width="1.5" data-event-id="EVT-TCGA-DJ-A4V5-01-31"><title>event EVT-TCGA-DJ-A4V5-01-31; sample TCGA-DJ-A4V5-01; partner CCDC6; breakpoint aa 712; domain lost; reference discrepancy</title></circle>
+<circle cx="510.3" cy="78.0" r="3" fill="#777777" stroke="#d62728" stroke-width="1.5" data-event-id="EVT-TCGA-CE-A13K-01-32"><title>event EVT-TCGA-CE-A13K-01-32; sample TCGA-CE-A13K-01; partner MRLN; breakpoint aa 627; domain lost; reference discrepancy</title></circle>
+<circle cx="571.3" cy="85.0" r="3" fill="#777777" stroke="#d62728" stroke-width="1.5" data-event-id="EVT-TCGA-CE-A482-01-33"><title>event EVT-TCGA-CE-A482-01-33; sample TCGA-CE-A482-01; partner NCOA4; breakpoint aa 712; domain lost; reference discrepancy</title></circle>
+<circle cx="572.0" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-CE-A485-01-34"><title>event EVT-TCGA-CE-A485-01-34; sample TCGA-CE-A485-01; partner SPECC1L; breakpoint aa 713; domain retained</title></circle>
+<circle cx="572.0" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-ET-A40R-01-35"><title>event EVT-TCGA-ET-A40R-01-35; sample TCGA-ET-A40R-01; partner TBL1XR1; breakpoint aa 713; domain retained</title></circle>
+<circle cx="572.0" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-TCGA-CE-A481-01-36"><title>event EVT-TCGA-CE-A481-01-36; sample TCGA-CE-A481-01; partner TRIM27; breakpoint aa 713; domain retained</title></circle>
+<line x1="60.0" y1="114.0" x2="860.0" y2="114.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="860.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
+<text x="60.0" y="128.0" font-family="sans-serif" font-size="9">1</text>
+<text x="860.0" y="128.0" font-family="sans-serif" font-size="9" text-anchor="end">1114 aa</text>
+<line x1="60.7" y1="132.0" x2="60.7" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="60.7" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 60.7 137.0)">E1</text>
+<line x1="78.0" y1="132.0" x2="78.0" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="78.0" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 78.0 137.0)">E2</text>
+<line x1="141.1" y1="132.0" x2="141.1" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="141.1" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 141.1 137.0)">E3</text>
+<line x1="210.1" y1="132.0" x2="210.1" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="210.1" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 210.1 137.0)">E4</text>
+<line x1="268.3" y1="132.0" x2="268.3" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="268.3" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 268.3 137.0)">E5</text>
+<line x1="314.9" y1="132.0" x2="314.9" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="314.9" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 314.9 137.0)">E6</text>
+<line x1="363.1" y1="132.0" x2="363.1" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="363.1" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 363.1 137.0)">E7</text>
+<line x1="424.8" y1="132.0" x2="424.8" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="424.8" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 424.8 137.0)">E8</text>
+<line x1="455.0" y1="132.0" x2="455.0" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="455.0" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 455.0 137.0)">E9</text>
+<line x1="481.5" y1="132.0" x2="481.5" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="481.5" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 481.5 137.0)">E10</text>
+<line x1="510.3" y1="132.0" x2="510.3" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="510.3" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 510.3 137.0)">E11</text>
+<line x1="572.0" y1="132.0" x2="572.0" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="572.0" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 572.0 137.0)">E12</text>
+<line x1="607.2" y1="132.0" x2="607.2" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="607.2" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 607.2 137.0)">E13</text>
+<line x1="633.1" y1="132.0" x2="633.1" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="633.1" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 633.1 137.0)">E14</text>
+<line x1="684.8" y1="132.0" x2="684.8" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="684.8" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 684.8 137.0)">E15</text>
+<line x1="714.2" y1="132.0" x2="714.2" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="714.2" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 714.2 137.0)">E16</text>
+<line x1="730.7" y1="132.0" x2="730.7" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="730.7" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 730.7 137.0)">E17</text>
+<line x1="763.8" y1="132.0" x2="763.8" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="763.8" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 763.8 137.0)">E18</text>
+<line x1="788.2" y1="132.0" x2="788.2" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="788.2" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 788.2 137.0)">E19</text>
+<line x1="823.4" y1="132.0" x2="823.4" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="823.4" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 823.4 137.0)">E20</text>
+<line x1="131.8" y1="114.0" x2="131.8" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="131.8" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">100</text>
+<line x1="203.6" y1="114.0" x2="203.6" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="203.6" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">200</text>
+<line x1="275.4" y1="114.0" x2="275.4" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="275.4" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">300</text>
+<line x1="347.3" y1="114.0" x2="347.3" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="347.3" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">400</text>
+<line x1="419.1" y1="114.0" x2="419.1" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="419.1" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">500</text>
+<line x1="490.9" y1="114.0" x2="490.9" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="490.9" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">600</text>
+<line x1="562.7" y1="114.0" x2="562.7" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="562.7" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">700</text>
+<line x1="634.5" y1="114.0" x2="634.5" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="634.5" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">800</text>
+<line x1="706.3" y1="114.0" x2="706.3" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="706.3" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">900</text>
+<line x1="778.1" y1="114.0" x2="778.1" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="778.1" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">1000</text>
+<line x1="849.9" y1="114.0" x2="849.9" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="849.9" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">1100</text>
+<circle cx="60" cy="167.0" r="4" fill="#2878b5"/><text x="70" y="172.0" font-family="sans-serif" font-size="12">fully retained</text>
+<circle cx="180" cy="167.0" r="4" fill="#f2a93b"/><text x="190" y="172.0" font-family="sans-serif" font-size="12">truncated</text>
+<circle cx="275" cy="167.0" r="4" fill="#777777"/><text x="285" y="172.0" font-family="sans-serif" font-size="12">fully lost</text>
+<circle cx="365" cy="167.0" r="4" fill="white" stroke="#d62728" stroke-width="1.5"/><text x="375" y="172.0" font-family="sans-serif" font-size="12">reference discrepancy</text>
+<rect x="60" y="180.0" width="12" height="10" fill="#62b36f" opacity="0.55"/><text x="80" y="189.0" font-family="sans-serif" font-size="12">configured key-domain span (name/range labeled above; a second or later configured domain gets its own distinct shade)</text>
+</svg>
+</div><h2>Composite evidence ranking (per partner gene)</h2><p class="panel-note">Click a column header to sort ascending/descending. 10 partner gene(s) ranked by <code>composite_score</code>.</p><div class="data-table-frame"><table class="data-table sortable" id="composite-score-table"><thead><tr><th data-sort-key="Rank">Rank</th><th data-sort-key="Partner_gene">Partner gene</th><th data-sort-key="Event_count">Events</th><th data-sort-key="Composite_score">Composite score</th><th data-sort-key="Recurrence_score">Recurrence</th><th data-sort-key="Domain_retention_score">Domain retention</th><th data-sort-key="Domain_disruption_score">Domain disruption</th><th data-sort-key="Cutpoint_proximity_score">Cutpoint proximity</th><th data-sort-key="Confidence_certainty_score">Confidence</th></tr></thead><tbody><tr><td data-sort="1">1</td><td data-sort="CCDC6">CCDC6</td><td data-sort="22">22</td><td data-sort="0.47191811111744875">0.4719</td><td data-sort="0.6111111111111112">0.6111</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.036015868536055845">0.03602</td><td data-sort="0.9631016042780749">0.9631</td><td data-sort="0.6190551149821004">0.6191</td></tr><tr><td data-sort="2">2</td><td data-sort="NCOA4">NCOA4</td><td data-sort="5">5</td><td data-sort="0.3343744391031885">0.3344</td><td data-sort="0.1388888888888889">0.1389</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.036015868536055845">0.03602</td><td data-sort="0.9905882352941177">0.9906</td><td data-sort="0.6190551149821004">0.6191</td></tr><tr><td data-sort="3">3</td><td data-sort="ERC1">ERC1</td><td data-sort="2">2</td><td data-sort="0.3090214979267179">0.309</td><td data-sort="0.05555555555555555">0.05556</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.036015868536055845">0.03602</td><td data-sort="0.9882352941176471">0.9882</td><td data-sort="0.6190551149821004">0.6191</td></tr><tr><td data-sort="4">4</td><td data-sort="AKAP13">AKAP13</td><td data-sort="1">1</td><td data-sort="0.30068816459338454">0.3007</td><td data-sort="0.027777777777777776">0.02778</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.036015868536055845">0.03602</td><td data-sort="0.9882352941176471">0.9882</td><td data-sort="0.6190551149821004">0.6191</td></tr><tr><td data-sort="5">5</td><td data-sort="DLG5">DLG5</td><td data-sort="1">1</td><td data-sort="0.30068816459338454">0.3007</td><td data-sort="0.027777777777777776">0.02778</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.036015868536055845">0.03602</td><td data-sort="0.9882352941176471">0.9882</td><td data-sort="0.6190551149821004">0.6191</td></tr><tr><td data-sort="6">6</td><td data-sort="FKBP15">FKBP15</td><td data-sort="1">1</td><td data-sort="0.30068816459338454">0.3007</td><td data-sort="0.027777777777777776">0.02778</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.036015868536055845">0.03602</td><td data-sort="0.9882352941176471">0.9882</td><td data-sort="0.6190551149821004">0.6191</td></tr><tr><td data-sort="7">7</td><td data-sort="SPECC1L">SPECC1L</td><td data-sort="1">1</td><td data-sort="0.30068816459338454">0.3007</td><td data-sort="0.027777777777777776">0.02778</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.036015868536055845">0.03602</td><td data-sort="0.9882352941176471">0.9882</td><td data-sort="0.6190551149821004">0.6191</td></tr><tr><td data-sort="8">8</td><td data-sort="TBL1XR1">TBL1XR1</td><td data-sort="1">1</td><td data-sort="0.30068816459338454">0.3007</td><td data-sort="0.027777777777777776">0.02778</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.036015868536055845">0.03602</td><td data-sort="0.9882352941176471">0.9882</td><td data-sort="0.6190551149821004">0.6191</td></tr><tr><td data-sort="9">9</td><td data-sort="TRIM27">TRIM27</td><td data-sort="1">1</td><td data-sort="0.30068816459338454">0.3007</td><td data-sort="0.027777777777777776">0.02778</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.036015868536055845">0.03602</td><td data-sort="0.9882352941176471">0.9882</td><td data-sort="0.6190551149821004">0.6191</td></tr><tr><td data-sort="10">10</td><td data-sort="MRLN">MRLN</td><td data-sort="1">1</td><td data-sort="0.15245287047573752">0.1525</td><td data-sort="0.027777777777777776">0.02778</td><td data-sort="0.30004340774793187">0.3</td><td data-sort="0.036015868536055845">0.03602</td><td data-sort="0.0">0</td><td data-sort="0.6190551149821004">0.6191</td></tr></tbody></table></div><h2>Fusion-transcript schematic</h2>
+<div class="controls">
+  <div class="control-group">
+    <label class="title" for="tumor-type-filter">Tumor type</label>
+    <select id="tumor-type-filter"><option value="">All tumor types</option></select>
+  </div>
+  <div class="control-group">
+    <span class="title">Domain status</span>
+    <span id="status-filter"></span>
+  </div>
+  <span id="events-summary"></span>
+</div>
+<div class="svg-frame" id="fusion-schematic-svg"><svg xmlns="http://www.w3.org/2000/svg" width="1000" height="484" viewBox="0 0 1000 484">
+<rect width="1000" height="484" fill="white"/>
+<text x="60" y="24" font-family="sans-serif" font-size="15">RET fusion-transcript schematic</text>
+<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555555">Fusion order varies by row; follow each row's 5' and 3' labels (RET portion is domain-colored, exon ticks). Partner-gene blocks share one color; row labels identify each partner.</text>
+<rect x="60.0" y="56.0" width="358.4" height="22" fill="#8064a2"><title>Partner gene CCDC6; RET–CCDC6 fusion, breakpoint RET aa 713; samples TCGA-BJ-A0ZJ-01, TCGA-EM-A3AN-01, TCGA-FK-A4UB-01, TCGA-BJ-A28Z-01, TCGA-FK-A3SE-01 (+15 more)</title></rect>
+<rect x="418.4" y="56.0" width="201.6" height="22" fill="#e2e2e2"><title>RET backbone (713-1114 aa, no domain); domain status retained; RET–CCDC6 fusion, breakpoint RET aa 713; samples TCGA-BJ-A0ZJ-01, TCGA-EM-A3AN-01, TCGA-FK-A4UB-01, TCGA-BJ-A28Z-01, TCGA-FK-A3SE-01 (+15 more)</title></rect>
+<rect x="424.5" y="56.0" width="140.8" height="22" fill="#2878b5"><title>Protein kinase domain retained (725-1005 aa); RET–CCDC6 fusion, breakpoint RET aa 713; samples TCGA-BJ-A0ZJ-01, TCGA-EM-A3AN-01, TCGA-FK-A4UB-01, TCGA-BJ-A28Z-01, TCGA-FK-A3SE-01 (+15 more)</title></rect>
+<text x="494.8" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="443.1" y1="56.0" x2="443.1" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="461.1" y1="56.0" x2="461.1" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="497.3" y1="56.0" x2="497.3" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="518.0" y1="56.0" x2="518.0" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="529.5" y1="56.0" x2="529.5" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="552.6" y1="56.0" x2="552.6" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="569.7" y1="56.0" x2="569.7" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="594.4" y1="56.0" x2="594.4" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="418.4" y1="55.0" x2="418.4" y2="79.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; RET–CCDC6 fusion, breakpoint RET aa 713; samples TCGA-BJ-A0ZJ-01, TCGA-EM-A3AN-01, TCGA-FK-A4UB-01, TCGA-BJ-A28Z-01, TCGA-FK-A3SE-01 (+15 more)</title></line>
+<text x="64.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="70.5" font-family="sans-serif" font-size="9.5">CCDC6 (x20) – Protein kinase domain retained – Thyroid Cancer</text>
+<rect x="60.0" y="82.0" width="358.4" height="22" fill="#8064a2"><title>Partner gene NCOA4; RET–NCOA4 fusion, breakpoint RET aa 713; samples TCGA-EM-A2CU-01, TCGA-DE-A3KN-01, TCGA-CE-A482-01, TCGA-EL-A3H3-01</title></rect>
+<rect x="418.4" y="82.0" width="201.6" height="22" fill="#e2e2e2"><title>RET backbone (713-1114 aa, no domain); domain status retained; RET–NCOA4 fusion, breakpoint RET aa 713; samples TCGA-EM-A2CU-01, TCGA-DE-A3KN-01, TCGA-CE-A482-01, TCGA-EL-A3H3-01</title></rect>
+<rect x="424.5" y="82.0" width="140.8" height="22" fill="#2878b5"><title>Protein kinase domain retained (725-1005 aa); RET–NCOA4 fusion, breakpoint RET aa 713; samples TCGA-EM-A2CU-01, TCGA-DE-A3KN-01, TCGA-CE-A482-01, TCGA-EL-A3H3-01</title></rect>
+<text x="494.8" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="443.1" y1="82.0" x2="443.1" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="461.1" y1="82.0" x2="461.1" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="497.3" y1="82.0" x2="497.3" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="518.0" y1="82.0" x2="518.0" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="529.5" y1="82.0" x2="529.5" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="552.6" y1="82.0" x2="552.6" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="569.7" y1="82.0" x2="569.7" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="594.4" y1="82.0" x2="594.4" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="418.4" y1="81.0" x2="418.4" y2="105.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; RET–NCOA4 fusion, breakpoint RET aa 713; samples TCGA-EM-A2CU-01, TCGA-DE-A3KN-01, TCGA-CE-A482-01, TCGA-EL-A3H3-01</title></line>
+<text x="64.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="96.5" font-family="sans-serif" font-size="9.5">NCOA4 (x4) – Protein kinase domain retained – Thyroid Cancer</text>
+<rect x="60.0" y="108.0" width="358.4" height="22" fill="#8064a2"><title>Partner gene ERC1; RET–ERC1 fusion, breakpoint RET aa 713; samples TCGA-EL-A3T9-01, TCGA-EM-A3FQ-01</title></rect>
+<rect x="418.4" y="108.0" width="201.6" height="22" fill="#e2e2e2"><title>RET backbone (713-1114 aa, no domain); domain status retained; RET–ERC1 fusion, breakpoint RET aa 713; samples TCGA-EL-A3T9-01, TCGA-EM-A3FQ-01</title></rect>
+<rect x="424.5" y="108.0" width="140.8" height="22" fill="#2878b5"><title>Protein kinase domain retained (725-1005 aa); RET–ERC1 fusion, breakpoint RET aa 713; samples TCGA-EL-A3T9-01, TCGA-EM-A3FQ-01</title></rect>
+<text x="494.8" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="443.1" y1="108.0" x2="443.1" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="461.1" y1="108.0" x2="461.1" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="497.3" y1="108.0" x2="497.3" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="518.0" y1="108.0" x2="518.0" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="529.5" y1="108.0" x2="529.5" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="552.6" y1="108.0" x2="552.6" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="569.7" y1="108.0" x2="569.7" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="594.4" y1="108.0" x2="594.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="418.4" y1="107.0" x2="418.4" y2="131.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; RET–ERC1 fusion, breakpoint RET aa 713; samples TCGA-EL-A3T9-01, TCGA-EM-A3FQ-01</title></line>
+<text x="64.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="122.5" font-family="sans-serif" font-size="9.5">ERC1 (x2) – Protein kinase domain retained – Thyroid Cancer</text>
+<rect x="375.2" y="134.0" width="244.8" height="22" fill="#8064a2"><title>Partner gene MRLN; RET–MRLN fusion, breakpoint RET aa 627; sample TCGA-CE-A13K-01</title></rect>
+<rect x="60.0" y="134.0" width="315.2" height="22" fill="#e2e2e2"><title>RET backbone (0-627 aa, no domain); domain status lost; RET–MRLN fusion, breakpoint RET aa 627; sample TCGA-CE-A13K-01</title></rect>
+<rect x="320.4" y="134.0" width="51.3" height="22" fill="#2878b5"><title>PF22540 retained (518-620 aa); RET–MRLN fusion, breakpoint RET aa 627; sample TCGA-CE-A13K-01</title></rect>
+<text x="346.0" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF22540</text>
+<rect x="263.6" y="134.0" width="50.8" height="22" fill="#2878b5"><title>PF17813 retained (405-506 aa); RET–MRLN fusion, breakpoint RET aa 627; sample TCGA-CE-A13K-01</title></rect>
+<text x="289.0" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF17813</text>
+<rect x="193.2" y="134.0" width="57.3" height="22" fill="#2878b5"><title>PF17812 retained (265-379 aa); RET–MRLN fusion, breakpoint RET aa 627; sample TCGA-CE-A13K-01</title></rect>
+<text x="221.9" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF17812</text>
+<rect x="147.0" y="134.0" width="43.7" height="22" fill="#2878b5"><title>Cadherin domain retained (173-260 aa); RET–MRLN fusion, breakpoint RET aa 627; sample TCGA-CE-A13K-01</title></rect>
+<text x="168.8" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Cadherin…</text>
+<rect x="74.6" y="134.0" width="62.3" height="22" fill="#2878b5"><title>PF17756 retained (29-153 aa); RET–MRLN fusion, breakpoint RET aa 627; sample TCGA-CE-A13K-01</title></rect>
+<text x="105.7" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF17756</text>
+<line x1="60.5" y1="134.0" x2="60.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="72.6" y1="134.0" x2="72.6" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="116.8" y1="134.0" x2="116.8" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="165.1" y1="134.0" x2="165.1" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="205.8" y1="134.0" x2="205.8" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="238.5" y1="134.0" x2="238.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="272.1" y1="134.0" x2="272.1" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="315.4" y1="134.0" x2="315.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="336.5" y1="134.0" x2="336.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="355.1" y1="134.0" x2="355.1" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="375.2" y1="133.0" x2="375.2" y2="157.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; RET–MRLN fusion, breakpoint RET aa 627; sample TCGA-CE-A13K-01</title></line>
+<text x="64.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="148.5" font-family="sans-serif" font-size="9.5">MRLN – Protein kinase domain lost – Thyroid Cancer</text>
+<rect x="60.0" y="160.0" width="333.3" height="22" fill="#8064a2"><title>Partner gene CCDC6; RET–CCDC6 fusion, breakpoint RET aa 663; sample TCGA-EL-A3ZP-01</title></rect>
+<rect x="393.3" y="160.0" width="226.7" height="22" fill="#e2e2e2"><title>RET backbone (663-1114 aa, no domain); domain status retained; RET–CCDC6 fusion, breakpoint RET aa 663; sample TCGA-EL-A3ZP-01</title></rect>
+<rect x="424.5" y="160.0" width="140.8" height="22" fill="#2878b5"><title>Protein kinase domain retained (725-1005 aa); RET–CCDC6 fusion, breakpoint RET aa 663; sample TCGA-EL-A3ZP-01</title></rect>
+<text x="494.8" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="418.4" y1="160.0" x2="418.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="443.1" y1="160.0" x2="443.1" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="461.1" y1="160.0" x2="461.1" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="497.3" y1="160.0" x2="497.3" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="518.0" y1="160.0" x2="518.0" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="529.5" y1="160.0" x2="529.5" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="552.6" y1="160.0" x2="552.6" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="569.7" y1="160.0" x2="569.7" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="594.4" y1="160.0" x2="594.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="393.3" y1="159.0" x2="393.3" y2="183.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; RET–CCDC6 fusion, breakpoint RET aa 663; sample TCGA-EL-A3ZP-01</title></line>
+<text x="64.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="174.5" font-family="sans-serif" font-size="9.5">CCDC6 – Protein kinase domain retained – Thyroid Cancer</text>
+<rect x="417.9" y="186.0" width="202.1" height="22" fill="#8064a2"><title>Partner gene CCDC6; RET–CCDC6 fusion, breakpoint RET aa 712; sample TCGA-DJ-A4V5-01</title></rect>
+<rect x="60.0" y="186.0" width="357.9" height="22" fill="#e2e2e2"><title>RET backbone (0-712 aa, no domain); domain status lost; RET–CCDC6 fusion, breakpoint RET aa 712; sample TCGA-DJ-A4V5-01</title></rect>
+<rect x="320.4" y="186.0" width="51.3" height="22" fill="#2878b5"><title>PF22540 retained (518-620 aa); RET–CCDC6 fusion, breakpoint RET aa 712; sample TCGA-DJ-A4V5-01</title></rect>
+<text x="346.0" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF22540</text>
+<rect x="263.6" y="186.0" width="50.8" height="22" fill="#2878b5"><title>PF17813 retained (405-506 aa); RET–CCDC6 fusion, breakpoint RET aa 712; sample TCGA-DJ-A4V5-01</title></rect>
+<text x="289.0" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF17813</text>
+<rect x="193.2" y="186.0" width="57.3" height="22" fill="#2878b5"><title>PF17812 retained (265-379 aa); RET–CCDC6 fusion, breakpoint RET aa 712; sample TCGA-DJ-A4V5-01</title></rect>
+<text x="221.9" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF17812</text>
+<rect x="147.0" y="186.0" width="43.7" height="22" fill="#2878b5"><title>Cadherin domain retained (173-260 aa); RET–CCDC6 fusion, breakpoint RET aa 712; sample TCGA-DJ-A4V5-01</title></rect>
+<text x="168.8" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Cadherin…</text>
+<rect x="74.6" y="186.0" width="62.3" height="22" fill="#2878b5"><title>PF17756 retained (29-153 aa); RET–CCDC6 fusion, breakpoint RET aa 712; sample TCGA-DJ-A4V5-01</title></rect>
+<text x="105.7" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF17756</text>
+<line x1="60.5" y1="186.0" x2="60.5" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="72.6" y1="186.0" x2="72.6" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="116.8" y1="186.0" x2="116.8" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="165.1" y1="186.0" x2="165.1" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="205.8" y1="186.0" x2="205.8" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="238.5" y1="186.0" x2="238.5" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="272.1" y1="186.0" x2="272.1" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="315.4" y1="186.0" x2="315.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="336.5" y1="186.0" x2="336.5" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="355.1" y1="186.0" x2="355.1" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="375.2" y1="186.0" x2="375.2" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="417.9" y1="185.0" x2="417.9" y2="209.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; RET–CCDC6 fusion, breakpoint RET aa 712; sample TCGA-DJ-A4V5-01</title></line>
+<text x="64.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="200.5" font-family="sans-serif" font-size="9.5">CCDC6 – Protein kinase domain lost – Thyroid Cancer</text>
+<rect x="417.9" y="212.0" width="202.1" height="22" fill="#8064a2"><title>Partner gene NCOA4; RET–NCOA4 fusion, breakpoint RET aa 712; sample TCGA-CE-A482-01</title></rect>
+<rect x="60.0" y="212.0" width="357.9" height="22" fill="#e2e2e2"><title>RET backbone (0-712 aa, no domain); domain status lost; RET–NCOA4 fusion, breakpoint RET aa 712; sample TCGA-CE-A482-01</title></rect>
+<rect x="320.4" y="212.0" width="51.3" height="22" fill="#2878b5"><title>PF22540 retained (518-620 aa); RET–NCOA4 fusion, breakpoint RET aa 712; sample TCGA-CE-A482-01</title></rect>
+<text x="346.0" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF22540</text>
+<rect x="263.6" y="212.0" width="50.8" height="22" fill="#2878b5"><title>PF17813 retained (405-506 aa); RET–NCOA4 fusion, breakpoint RET aa 712; sample TCGA-CE-A482-01</title></rect>
+<text x="289.0" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF17813</text>
+<rect x="193.2" y="212.0" width="57.3" height="22" fill="#2878b5"><title>PF17812 retained (265-379 aa); RET–NCOA4 fusion, breakpoint RET aa 712; sample TCGA-CE-A482-01</title></rect>
+<text x="221.9" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF17812</text>
+<rect x="147.0" y="212.0" width="43.7" height="22" fill="#2878b5"><title>Cadherin domain retained (173-260 aa); RET–NCOA4 fusion, breakpoint RET aa 712; sample TCGA-CE-A482-01</title></rect>
+<text x="168.8" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Cadherin…</text>
+<rect x="74.6" y="212.0" width="62.3" height="22" fill="#2878b5"><title>PF17756 retained (29-153 aa); RET–NCOA4 fusion, breakpoint RET aa 712; sample TCGA-CE-A482-01</title></rect>
+<text x="105.7" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF17756</text>
+<line x1="60.5" y1="212.0" x2="60.5" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="72.6" y1="212.0" x2="72.6" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="116.8" y1="212.0" x2="116.8" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="165.1" y1="212.0" x2="165.1" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="205.8" y1="212.0" x2="205.8" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="238.5" y1="212.0" x2="238.5" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="272.1" y1="212.0" x2="272.1" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="315.4" y1="212.0" x2="315.4" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="336.5" y1="212.0" x2="336.5" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="355.1" y1="212.0" x2="355.1" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="375.2" y1="212.0" x2="375.2" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="417.9" y1="211.0" x2="417.9" y2="235.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; RET–NCOA4 fusion, breakpoint RET aa 712; sample TCGA-CE-A482-01</title></line>
+<text x="64.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="226.5" font-family="sans-serif" font-size="9.5">NCOA4 – Protein kinase domain lost – Thyroid Cancer</text>
+<rect x="60.0" y="238.0" width="358.4" height="22" fill="#8064a2"><title>Partner gene AKAP13; RET–AKAP13 fusion, breakpoint RET aa 713; sample TCGA-FK-A3SG-01</title></rect>
+<rect x="418.4" y="238.0" width="201.6" height="22" fill="#e2e2e2"><title>RET backbone (713-1114 aa, no domain); domain status retained; RET–AKAP13 fusion, breakpoint RET aa 713; sample TCGA-FK-A3SG-01</title></rect>
+<rect x="424.5" y="238.0" width="140.8" height="22" fill="#2878b5"><title>Protein kinase domain retained (725-1005 aa); RET–AKAP13 fusion, breakpoint RET aa 713; sample TCGA-FK-A3SG-01</title></rect>
+<text x="494.8" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="443.1" y1="238.0" x2="443.1" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="461.1" y1="238.0" x2="461.1" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="497.3" y1="238.0" x2="497.3" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="518.0" y1="238.0" x2="518.0" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="529.5" y1="238.0" x2="529.5" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="552.6" y1="238.0" x2="552.6" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="569.7" y1="238.0" x2="569.7" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="594.4" y1="238.0" x2="594.4" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="418.4" y1="237.0" x2="418.4" y2="261.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; RET–AKAP13 fusion, breakpoint RET aa 713; sample TCGA-FK-A3SG-01</title></line>
+<text x="64.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="252.5" font-family="sans-serif" font-size="9.5">AKAP13 – Protein kinase domain retained – Thyroid Cancer</text>
+<rect x="60.0" y="264.0" width="358.4" height="22" fill="#8064a2"><title>Partner gene DLG5; RET–DLG5 fusion, breakpoint RET aa 713; sample TCGA-DE-A69K-01</title></rect>
+<rect x="418.4" y="264.0" width="201.6" height="22" fill="#e2e2e2"><title>RET backbone (713-1114 aa, no domain); domain status retained; RET–DLG5 fusion, breakpoint RET aa 713; sample TCGA-DE-A69K-01</title></rect>
+<rect x="424.5" y="264.0" width="140.8" height="22" fill="#2878b5"><title>Protein kinase domain retained (725-1005 aa); RET–DLG5 fusion, breakpoint RET aa 713; sample TCGA-DE-A69K-01</title></rect>
+<text x="494.8" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="443.1" y1="264.0" x2="443.1" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="461.1" y1="264.0" x2="461.1" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="497.3" y1="264.0" x2="497.3" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="518.0" y1="264.0" x2="518.0" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="529.5" y1="264.0" x2="529.5" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="552.6" y1="264.0" x2="552.6" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="569.7" y1="264.0" x2="569.7" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="594.4" y1="264.0" x2="594.4" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="418.4" y1="263.0" x2="418.4" y2="287.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; RET–DLG5 fusion, breakpoint RET aa 713; sample TCGA-DE-A69K-01</title></line>
+<text x="64.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="278.5" font-family="sans-serif" font-size="9.5">DLG5 – Protein kinase domain retained – Thyroid Cancer</text>
+<rect x="60.0" y="290.0" width="358.4" height="22" fill="#8064a2"><title>Partner gene FKBP15; RET–FKBP15 fusion, breakpoint RET aa 713; sample TCGA-ET-A3DQ-01</title></rect>
+<rect x="418.4" y="290.0" width="201.6" height="22" fill="#e2e2e2"><title>RET backbone (713-1114 aa, no domain); domain status retained; RET–FKBP15 fusion, breakpoint RET aa 713; sample TCGA-ET-A3DQ-01</title></rect>
+<rect x="424.5" y="290.0" width="140.8" height="22" fill="#2878b5"><title>Protein kinase domain retained (725-1005 aa); RET–FKBP15 fusion, breakpoint RET aa 713; sample TCGA-ET-A3DQ-01</title></rect>
+<text x="494.8" y="304.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="443.1" y1="290.0" x2="443.1" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="461.1" y1="290.0" x2="461.1" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="497.3" y1="290.0" x2="497.3" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="518.0" y1="290.0" x2="518.0" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="529.5" y1="290.0" x2="529.5" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="552.6" y1="290.0" x2="552.6" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="569.7" y1="290.0" x2="569.7" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="594.4" y1="290.0" x2="594.4" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="418.4" y1="289.0" x2="418.4" y2="313.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; RET–FKBP15 fusion, breakpoint RET aa 713; sample TCGA-ET-A3DQ-01</title></line>
+<text x="64.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="304.5" font-family="sans-serif" font-size="9.5">FKBP15 – Protein kinase domain retained – Thyroid Cancer</text>
+<rect x="60.0" y="316.0" width="358.4" height="22" fill="#8064a2"><title>Partner gene SPECC1L; RET–SPECC1L fusion, breakpoint RET aa 713; sample TCGA-CE-A485-01</title></rect>
+<rect x="418.4" y="316.0" width="201.6" height="22" fill="#e2e2e2"><title>RET backbone (713-1114 aa, no domain); domain status retained; RET–SPECC1L fusion, breakpoint RET aa 713; sample TCGA-CE-A485-01</title></rect>
+<rect x="424.5" y="316.0" width="140.8" height="22" fill="#2878b5"><title>Protein kinase domain retained (725-1005 aa); RET–SPECC1L fusion, breakpoint RET aa 713; sample TCGA-CE-A485-01</title></rect>
+<text x="494.8" y="330.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="443.1" y1="316.0" x2="443.1" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="461.1" y1="316.0" x2="461.1" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="497.3" y1="316.0" x2="497.3" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="518.0" y1="316.0" x2="518.0" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="529.5" y1="316.0" x2="529.5" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="552.6" y1="316.0" x2="552.6" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="569.7" y1="316.0" x2="569.7" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="594.4" y1="316.0" x2="594.4" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="418.4" y1="315.0" x2="418.4" y2="339.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; RET–SPECC1L fusion, breakpoint RET aa 713; sample TCGA-CE-A485-01</title></line>
+<text x="64.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="330.5" font-family="sans-serif" font-size="9.5">SPECC1L – Protein kinase domain retained – Thyroid Cancer</text>
+<rect x="60.0" y="342.0" width="358.4" height="22" fill="#8064a2"><title>Partner gene TBL1XR1; RET–TBL1XR1 fusion, breakpoint RET aa 713; sample TCGA-ET-A40R-01</title></rect>
+<rect x="418.4" y="342.0" width="201.6" height="22" fill="#e2e2e2"><title>RET backbone (713-1114 aa, no domain); domain status retained; RET–TBL1XR1 fusion, breakpoint RET aa 713; sample TCGA-ET-A40R-01</title></rect>
+<rect x="424.5" y="342.0" width="140.8" height="22" fill="#2878b5"><title>Protein kinase domain retained (725-1005 aa); RET–TBL1XR1 fusion, breakpoint RET aa 713; sample TCGA-ET-A40R-01</title></rect>
+<text x="494.8" y="356.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="443.1" y1="342.0" x2="443.1" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="461.1" y1="342.0" x2="461.1" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="497.3" y1="342.0" x2="497.3" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="518.0" y1="342.0" x2="518.0" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="529.5" y1="342.0" x2="529.5" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="552.6" y1="342.0" x2="552.6" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="569.7" y1="342.0" x2="569.7" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="594.4" y1="342.0" x2="594.4" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="418.4" y1="341.0" x2="418.4" y2="365.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; RET–TBL1XR1 fusion, breakpoint RET aa 713; sample TCGA-ET-A40R-01</title></line>
+<text x="64.0" y="356.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="356.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="356.5" font-family="sans-serif" font-size="9.5">TBL1XR1 – Protein kinase domain retained – Thyroid Cancer</text>
+<rect x="60.0" y="368.0" width="358.4" height="22" fill="#8064a2"><title>Partner gene TRIM27; RET–TRIM27 fusion, breakpoint RET aa 713; sample TCGA-CE-A481-01</title></rect>
+<rect x="418.4" y="368.0" width="201.6" height="22" fill="#e2e2e2"><title>RET backbone (713-1114 aa, no domain); domain status retained; RET–TRIM27 fusion, breakpoint RET aa 713; sample TCGA-CE-A481-01</title></rect>
+<rect x="424.5" y="368.0" width="140.8" height="22" fill="#2878b5"><title>Protein kinase domain retained (725-1005 aa); RET–TRIM27 fusion, breakpoint RET aa 713; sample TCGA-CE-A481-01</title></rect>
+<text x="494.8" y="382.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="443.1" y1="368.0" x2="443.1" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="461.1" y1="368.0" x2="461.1" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="497.3" y1="368.0" x2="497.3" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="518.0" y1="368.0" x2="518.0" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="529.5" y1="368.0" x2="529.5" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="552.6" y1="368.0" x2="552.6" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="569.7" y1="368.0" x2="569.7" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="594.4" y1="368.0" x2="594.4" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="418.4" y1="367.0" x2="418.4" y2="391.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; RET–TRIM27 fusion, breakpoint RET aa 713; sample TCGA-CE-A481-01</title></line>
+<text x="64.0" y="382.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="382.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="382.5" font-family="sans-serif" font-size="9.5">TRIM27 – Protein kinase domain retained – Thyroid Cancer</text>
+<line x1="60.0" y1="398.0" x2="620.0" y2="398.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="393.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="620.0" y="393.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
+<text x="60.0" y="412.0" font-family="sans-serif" font-size="9">1</text>
+<text x="620.0" y="412.0" font-family="sans-serif" font-size="9" text-anchor="end">1114 aa</text>
+<line x1="60.5" y1="416.0" x2="60.5" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="60.5" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 60.5 421.0)">E1</text>
+<line x1="72.6" y1="416.0" x2="72.6" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="72.6" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 72.6 421.0)">E2</text>
+<line x1="116.8" y1="416.0" x2="116.8" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="116.8" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 116.8 421.0)">E3</text>
+<line x1="165.1" y1="416.0" x2="165.1" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="165.1" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 165.1 421.0)">E4</text>
+<line x1="205.8" y1="416.0" x2="205.8" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="205.8" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 205.8 421.0)">E5</text>
+<line x1="238.5" y1="416.0" x2="238.5" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="238.5" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 238.5 421.0)">E6</text>
+<line x1="272.1" y1="416.0" x2="272.1" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="272.1" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 272.1 421.0)">E7</text>
+<line x1="315.4" y1="416.0" x2="315.4" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="315.4" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 315.4 421.0)">E8</text>
+<line x1="336.5" y1="416.0" x2="336.5" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="336.5" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 336.5 421.0)">E9</text>
+<line x1="355.1" y1="416.0" x2="355.1" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="355.1" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 355.1 421.0)">E10</text>
+<line x1="375.2" y1="416.0" x2="375.2" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="375.2" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 375.2 421.0)">E11</text>
+<line x1="418.4" y1="416.0" x2="418.4" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="418.4" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 418.4 421.0)">E12</text>
+<line x1="443.1" y1="416.0" x2="443.1" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="443.1" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 443.1 421.0)">E13</text>
+<line x1="461.1" y1="416.0" x2="461.1" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="461.1" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 461.1 421.0)">E14</text>
+<line x1="497.3" y1="416.0" x2="497.3" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="497.3" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 497.3 421.0)">E15</text>
+<line x1="518.0" y1="416.0" x2="518.0" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="518.0" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 518.0 421.0)">E16</text>
+<line x1="529.5" y1="416.0" x2="529.5" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="529.5" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 529.5 421.0)">E17</text>
+<line x1="552.6" y1="416.0" x2="552.6" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="552.6" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 552.6 421.0)">E18</text>
+<line x1="569.7" y1="416.0" x2="569.7" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="569.7" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 569.7 421.0)">E19</text>
+<line x1="594.4" y1="416.0" x2="594.4" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="594.4" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 594.4 421.0)">E20</text>
+<rect x="60.0" y="429.0" width="12" height="10" fill="#2878b5"/>
+<text x="76.0" y="438.0" font-family="sans-serif" font-size="9">domain retained</text>
+<rect x="227.0" y="429.0" width="12" height="10" fill="#f2a93b"/>
+<text x="243.0" y="438.0" font-family="sans-serif" font-size="9">domain truncated</text>
+<rect x="403.0" y="429.0" width="12" height="10" fill="#e2e2e2"/>
+<text x="419.0" y="438.0" font-family="sans-serif" font-size="9">target backbone (no domain)</text>
+<rect x="678.0" y="429.0" width="12" height="10" fill="#d62728"/>
+<text x="694.0" y="438.0" font-family="sans-serif" font-size="9">breakpoint</text>
+<text x="60" y="474.0" font-family="sans-serif" font-size="9" fill="#555555">Partner-block colors are decorative; row labels identify partners.</text>
+</svg>
+</div><h2>Events</h2><div class="events-table-frame"><table class="events" id="events-table"><thead><tr><th>Event</th><th>Sample</th><th>Tumor type</th><th>Oncotree</th><th>Partner gene</th><th>Role</th><th>Breakpoint (aa)</th><th>Domain status</th></tr></thead><tbody><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-FK-A3SG-01-1"><td>EVT-TCGA-FK-A3SG-01-1</td><td>TCGA-FK-A3SG-01</td><td>Thyroid Cancer</td><td>THPA</td><td>AKAP13</td><td>three_prime</td><td>713</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-BJ-A0ZJ-01-2"><td>EVT-TCGA-BJ-A0ZJ-01-2</td><td>TCGA-BJ-A0ZJ-01</td><td>Thyroid Cancer</td><td>THPA</td><td>CCDC6</td><td>three_prime</td><td>713</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-EM-A3AN-01-3"><td>EVT-TCGA-EM-A3AN-01-3</td><td>TCGA-EM-A3AN-01</td><td>Thyroid Cancer</td><td>THPA</td><td>CCDC6</td><td>three_prime</td><td>713</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-FK-A4UB-01-4"><td>EVT-TCGA-FK-A4UB-01-4</td><td>TCGA-FK-A4UB-01</td><td>Thyroid Cancer</td><td>THPA</td><td>CCDC6</td><td>three_prime</td><td>713</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-BJ-A28Z-01-5"><td>EVT-TCGA-BJ-A28Z-01-5</td><td>TCGA-BJ-A28Z-01</td><td>Thyroid Cancer</td><td>THPA</td><td>CCDC6</td><td>three_prime</td><td>713</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-FK-A3SE-01-6"><td>EVT-TCGA-FK-A3SE-01-6</td><td>TCGA-FK-A3SE-01</td><td>Thyroid Cancer</td><td>THPA</td><td>CCDC6</td><td>three_prime</td><td>713</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-ET-A40T-01-7"><td>EVT-TCGA-ET-A40T-01-7</td><td>TCGA-ET-A40T-01</td><td>Thyroid Cancer</td><td>THPA</td><td>CCDC6</td><td>three_prime</td><td>713</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-ET-A3DR-01-8"><td>EVT-TCGA-ET-A3DR-01-8</td><td>TCGA-ET-A3DR-01</td><td>Thyroid Cancer</td><td>THPA</td><td>CCDC6</td><td>three_prime</td><td>713</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-J8-A4HW-01-9"><td>EVT-TCGA-J8-A4HW-01-9</td><td>TCGA-J8-A4HW-01</td><td>Thyroid Cancer</td><td>THPA</td><td>CCDC6</td><td>three_prime</td><td>713</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-CE-A13K-01-10"><td>EVT-TCGA-CE-A13K-01-10</td><td>TCGA-CE-A13K-01</td><td>Thyroid Cancer</td><td>THPA</td><td>CCDC6</td><td>three_prime</td><td>713</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-DJ-A3V3-01-11"><td>EVT-TCGA-DJ-A3V3-01-11</td><td>TCGA-DJ-A3V3-01</td><td>Thyroid Cancer</td><td>THPA</td><td>CCDC6</td><td>three_prime</td><td>713</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-DJ-A4UQ-01-12"><td>EVT-TCGA-DJ-A4UQ-01-12</td><td>TCGA-DJ-A4UQ-01</td><td>Thyroid Cancer</td><td>THPA</td><td>CCDC6</td><td>three_prime</td><td>713</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-DJ-A4V5-01-13"><td>EVT-TCGA-DJ-A4V5-01-13</td><td>TCGA-DJ-A4V5-01</td><td>Thyroid Cancer</td><td>THPA</td><td>CCDC6</td><td>three_prime</td><td>713</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-ET-A39R-01-14"><td>EVT-TCGA-ET-A39R-01-14</td><td>TCGA-ET-A39R-01</td><td>Thyroid Cancer</td><td>THPA</td><td>CCDC6</td><td>three_prime</td><td>713</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-DO-A1JZ-01-15"><td>EVT-TCGA-DO-A1JZ-01-15</td><td>TCGA-DO-A1JZ-01</td><td>Thyroid Cancer</td><td>THPA</td><td>CCDC6</td><td>three_prime</td><td>713</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-E3-A3E0-01-16"><td>EVT-TCGA-E3-A3E0-01-16</td><td>TCGA-E3-A3E0-01</td><td>Thyroid Cancer</td><td>THPA</td><td>CCDC6</td><td>three_prime</td><td>713</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-E8-A44M-01-17"><td>EVT-TCGA-E8-A44M-01-17</td><td>TCGA-E8-A44M-01</td><td>Thyroid Cancer</td><td>THPA</td><td>CCDC6</td><td>three_prime</td><td>713</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-EL-A3CY-01-18"><td>EVT-TCGA-EL-A3CY-01-18</td><td>TCGA-EL-A3CY-01</td><td>Thyroid Cancer</td><td>THPA</td><td>CCDC6</td><td>three_prime</td><td>713</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-DJ-A2Q1-01-19"><td>EVT-TCGA-DJ-A2Q1-01-19</td><td>TCGA-DJ-A2Q1-01</td><td>Thyroid Cancer</td><td>THPA</td><td>CCDC6</td><td>three_prime</td><td>713</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-EL-A3TB-01-20"><td>EVT-TCGA-EL-A3TB-01-20</td><td>TCGA-EL-A3TB-01</td><td>Thyroid Cancer</td><td>THPA</td><td>CCDC6</td><td>three_prime</td><td>713</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-EL-A3ZP-01-21"><td>EVT-TCGA-EL-A3ZP-01-21</td><td>TCGA-EL-A3ZP-01</td><td>Thyroid Cancer</td><td>THPA</td><td>CCDC6</td><td>three_prime</td><td>663</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-EL-A3ZS-01-22"><td>EVT-TCGA-EL-A3ZS-01-22</td><td>TCGA-EL-A3ZS-01</td><td>Thyroid Cancer</td><td>THPA</td><td>CCDC6</td><td>three_prime</td><td>713</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-DE-A69K-01-23"><td>EVT-TCGA-DE-A69K-01-23</td><td>TCGA-DE-A69K-01</td><td>Thyroid Cancer</td><td>THPA</td><td>DLG5</td><td>three_prime</td><td>713</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-EL-A3T9-01-24"><td>EVT-TCGA-EL-A3T9-01-24</td><td>TCGA-EL-A3T9-01</td><td>Thyroid Cancer</td><td>THPA</td><td>ERC1</td><td>three_prime</td><td>713</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-EM-A3FQ-01-25"><td>EVT-TCGA-EM-A3FQ-01-25</td><td>TCGA-EM-A3FQ-01</td><td>Thyroid Cancer</td><td>THPA</td><td>ERC1</td><td>three_prime</td><td>713</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-ET-A3DQ-01-26"><td>EVT-TCGA-ET-A3DQ-01-26</td><td>TCGA-ET-A3DQ-01</td><td>Thyroid Cancer</td><td>THPA</td><td>FKBP15</td><td>three_prime</td><td>713</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-EM-A2CU-01-27"><td>EVT-TCGA-EM-A2CU-01-27</td><td>TCGA-EM-A2CU-01</td><td>Thyroid Cancer</td><td>THPA</td><td>NCOA4</td><td>three_prime</td><td>713</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-DE-A3KN-01-28"><td>EVT-TCGA-DE-A3KN-01-28</td><td>TCGA-DE-A3KN-01</td><td>Thyroid Cancer</td><td>THPA</td><td>NCOA4</td><td>three_prime</td><td>713</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-CE-A482-01-29"><td>EVT-TCGA-CE-A482-01-29</td><td>TCGA-CE-A482-01</td><td>Thyroid Cancer</td><td>THPA</td><td>NCOA4</td><td>three_prime</td><td>713</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-EL-A3H3-01-30"><td>EVT-TCGA-EL-A3H3-01-30</td><td>TCGA-EL-A3H3-01</td><td>Thyroid Cancer</td><td>THPA</td><td>NCOA4</td><td>three_prime</td><td>713</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="lost" data-event-id="EVT-TCGA-DJ-A4V5-01-31"><td>EVT-TCGA-DJ-A4V5-01-31</td><td>TCGA-DJ-A4V5-01</td><td>Thyroid Cancer</td><td>THPA</td><td>CCDC6</td><td>five_prime</td><td>712</td><td>Lost</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="lost" data-event-id="EVT-TCGA-CE-A13K-01-32"><td>EVT-TCGA-CE-A13K-01-32</td><td>TCGA-CE-A13K-01</td><td>Thyroid Cancer</td><td>THPA</td><td>MRLN</td><td>five_prime</td><td>627</td><td>Lost</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="lost" data-event-id="EVT-TCGA-CE-A482-01-33"><td>EVT-TCGA-CE-A482-01-33</td><td>TCGA-CE-A482-01</td><td>Thyroid Cancer</td><td>THPA</td><td>NCOA4</td><td>five_prime</td><td>712</td><td>Lost</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-CE-A485-01-34"><td>EVT-TCGA-CE-A485-01-34</td><td>TCGA-CE-A485-01</td><td>Thyroid Cancer</td><td>THPA</td><td>SPECC1L</td><td>three_prime</td><td>713</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-ET-A40R-01-35"><td>EVT-TCGA-ET-A40R-01-35</td><td>TCGA-ET-A40R-01</td><td>Thyroid Cancer</td><td>THPA</td><td>TBL1XR1</td><td>three_prime</td><td>713</td><td>Retained</td></tr><tr data-tumor-type="Thyroid Cancer" data-domain-status="retained" data-event-id="EVT-TCGA-CE-A481-01-36"><td>EVT-TCGA-CE-A481-01-36</td><td>TCGA-CE-A481-01</td><td>Thyroid Cancer</td><td>THPA</td><td>TRIM27</td><td>three_prime</td><td>713</td><td>Retained</td></tr></tbody></table></div>
+</div>
+<div class="lollipop-tooltip" id="lollipop-tooltip" hidden></div>
+<script type="application/json" id="events-data">[{"event_id": "EVT-TCGA-FK-A3SG-01-1", "sample_id": "TCGA-FK-A3SG-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "AKAP13", "target_role": "three_prime", "breakpoint_protein_position": 713, "domain_status": "retained"}, {"event_id": "EVT-TCGA-BJ-A0ZJ-01-2", "sample_id": "TCGA-BJ-A0ZJ-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "CCDC6", "target_role": "three_prime", "breakpoint_protein_position": 713, "domain_status": "retained"}, {"event_id": "EVT-TCGA-EM-A3AN-01-3", "sample_id": "TCGA-EM-A3AN-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "CCDC6", "target_role": "three_prime", "breakpoint_protein_position": 713, "domain_status": "retained"}, {"event_id": "EVT-TCGA-FK-A4UB-01-4", "sample_id": "TCGA-FK-A4UB-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "CCDC6", "target_role": "three_prime", "breakpoint_protein_position": 713, "domain_status": "retained"}, {"event_id": "EVT-TCGA-BJ-A28Z-01-5", "sample_id": "TCGA-BJ-A28Z-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "CCDC6", "target_role": "three_prime", "breakpoint_protein_position": 713, "domain_status": "retained"}, {"event_id": "EVT-TCGA-FK-A3SE-01-6", "sample_id": "TCGA-FK-A3SE-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "CCDC6", "target_role": "three_prime", "breakpoint_protein_position": 713, "domain_status": "retained"}, {"event_id": "EVT-TCGA-ET-A40T-01-7", "sample_id": "TCGA-ET-A40T-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "CCDC6", "target_role": "three_prime", "breakpoint_protein_position": 713, "domain_status": "retained"}, {"event_id": "EVT-TCGA-ET-A3DR-01-8", "sample_id": "TCGA-ET-A3DR-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "CCDC6", "target_role": "three_prime", "breakpoint_protein_position": 713, "domain_status": "retained"}, {"event_id": "EVT-TCGA-J8-A4HW-01-9", "sample_id": "TCGA-J8-A4HW-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "CCDC6", "target_role": "three_prime", "breakpoint_protein_position": 713, "domain_status": "retained"}, {"event_id": "EVT-TCGA-CE-A13K-01-10", "sample_id": "TCGA-CE-A13K-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "CCDC6", "target_role": "three_prime", "breakpoint_protein_position": 713, "domain_status": "retained"}, {"event_id": "EVT-TCGA-DJ-A3V3-01-11", "sample_id": "TCGA-DJ-A3V3-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "CCDC6", "target_role": "three_prime", "breakpoint_protein_position": 713, "domain_status": "retained"}, {"event_id": "EVT-TCGA-DJ-A4UQ-01-12", "sample_id": "TCGA-DJ-A4UQ-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "CCDC6", "target_role": "three_prime", "breakpoint_protein_position": 713, "domain_status": "retained"}, {"event_id": "EVT-TCGA-DJ-A4V5-01-13", "sample_id": "TCGA-DJ-A4V5-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "CCDC6", "target_role": "three_prime", "breakpoint_protein_position": 713, "domain_status": "retained"}, {"event_id": "EVT-TCGA-ET-A39R-01-14", "sample_id": "TCGA-ET-A39R-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "CCDC6", "target_role": "three_prime", "breakpoint_protein_position": 713, "domain_status": "retained"}, {"event_id": "EVT-TCGA-DO-A1JZ-01-15", "sample_id": "TCGA-DO-A1JZ-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "CCDC6", "target_role": "three_prime", "breakpoint_protein_position": 713, "domain_status": "retained"}, {"event_id": "EVT-TCGA-E3-A3E0-01-16", "sample_id": "TCGA-E3-A3E0-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "CCDC6", "target_role": "three_prime", "breakpoint_protein_position": 713, "domain_status": "retained"}, {"event_id": "EVT-TCGA-E8-A44M-01-17", "sample_id": "TCGA-E8-A44M-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "CCDC6", "target_role": "three_prime", "breakpoint_protein_position": 713, "domain_status": "retained"}, {"event_id": "EVT-TCGA-EL-A3CY-01-18", "sample_id": "TCGA-EL-A3CY-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "CCDC6", "target_role": "three_prime", "breakpoint_protein_position": 713, "domain_status": "retained"}, {"event_id": "EVT-TCGA-DJ-A2Q1-01-19", "sample_id": "TCGA-DJ-A2Q1-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "CCDC6", "target_role": "three_prime", "breakpoint_protein_position": 713, "domain_status": "retained"}, {"event_id": "EVT-TCGA-EL-A3TB-01-20", "sample_id": "TCGA-EL-A3TB-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "CCDC6", "target_role": "three_prime", "breakpoint_protein_position": 713, "domain_status": "retained"}, {"event_id": "EVT-TCGA-EL-A3ZP-01-21", "sample_id": "TCGA-EL-A3ZP-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "CCDC6", "target_role": "three_prime", "breakpoint_protein_position": 663, "domain_status": "retained"}, {"event_id": "EVT-TCGA-EL-A3ZS-01-22", "sample_id": "TCGA-EL-A3ZS-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "CCDC6", "target_role": "three_prime", "breakpoint_protein_position": 713, "domain_status": "retained"}, {"event_id": "EVT-TCGA-DE-A69K-01-23", "sample_id": "TCGA-DE-A69K-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "DLG5", "target_role": "three_prime", "breakpoint_protein_position": 713, "domain_status": "retained"}, {"event_id": "EVT-TCGA-EL-A3T9-01-24", "sample_id": "TCGA-EL-A3T9-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "ERC1", "target_role": "three_prime", "breakpoint_protein_position": 713, "domain_status": "retained"}, {"event_id": "EVT-TCGA-EM-A3FQ-01-25", "sample_id": "TCGA-EM-A3FQ-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "ERC1", "target_role": "three_prime", "breakpoint_protein_position": 713, "domain_status": "retained"}, {"event_id": "EVT-TCGA-ET-A3DQ-01-26", "sample_id": "TCGA-ET-A3DQ-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "FKBP15", "target_role": "three_prime", "breakpoint_protein_position": 713, "domain_status": "retained"}, {"event_id": "EVT-TCGA-EM-A2CU-01-27", "sample_id": "TCGA-EM-A2CU-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "NCOA4", "target_role": "three_prime", "breakpoint_protein_position": 713, "domain_status": "retained"}, {"event_id": "EVT-TCGA-DE-A3KN-01-28", "sample_id": "TCGA-DE-A3KN-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "NCOA4", "target_role": "three_prime", "breakpoint_protein_position": 713, "domain_status": "retained"}, {"event_id": "EVT-TCGA-CE-A482-01-29", "sample_id": "TCGA-CE-A482-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "NCOA4", "target_role": "three_prime", "breakpoint_protein_position": 713, "domain_status": "retained"}, {"event_id": "EVT-TCGA-EL-A3H3-01-30", "sample_id": "TCGA-EL-A3H3-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "NCOA4", "target_role": "three_prime", "breakpoint_protein_position": 713, "domain_status": "retained"}, {"event_id": "EVT-TCGA-DJ-A4V5-01-31", "sample_id": "TCGA-DJ-A4V5-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "CCDC6", "target_role": "five_prime", "breakpoint_protein_position": 712, "domain_status": "lost"}, {"event_id": "EVT-TCGA-CE-A13K-01-32", "sample_id": "TCGA-CE-A13K-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "MRLN", "target_role": "five_prime", "breakpoint_protein_position": 627, "domain_status": "lost"}, {"event_id": "EVT-TCGA-CE-A482-01-33", "sample_id": "TCGA-CE-A482-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "NCOA4", "target_role": "five_prime", "breakpoint_protein_position": 712, "domain_status": "lost"}, {"event_id": "EVT-TCGA-CE-A485-01-34", "sample_id": "TCGA-CE-A485-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "SPECC1L", "target_role": "three_prime", "breakpoint_protein_position": 713, "domain_status": "retained"}, {"event_id": "EVT-TCGA-ET-A40R-01-35", "sample_id": "TCGA-ET-A40R-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "TBL1XR1", "target_role": "three_prime", "breakpoint_protein_position": 713, "domain_status": "retained"}, {"event_id": "EVT-TCGA-CE-A481-01-36", "sample_id": "TCGA-CE-A481-01", "tumor_type": "Thyroid Cancer", "oncotree_code": "THPA", "partner_gene": "TRIM27", "target_role": "three_prime", "breakpoint_protein_position": 713, "domain_status": "retained"}]</script>
+<script type="application/json" id="status-labels">{"retained": "Retained", "disrupted": "Truncated", "lost": "Lost"}</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var events = JSON.parse(document.getElementById("events-data").textContent);
+  var statusLabels = JSON.parse(document.getElementById("status-labels").textContent);
+  var eventsById = {};
+  events.forEach(function (e) {
+    if (e.event_id) { eventsById[e.event_id] = e; }
+  });
+
+  function distinctValues(field) {
+    var values = events.map(function (e) { return e[field]; }).filter(Boolean);
+    return Array.from(new Set(values)).sort();
+  }
+  var tumorTypes = distinctValues("tumor_type");
+  var domainStatuses = distinctValues("domain_status");
+
+  var tumorSelect = document.getElementById("tumor-type-filter");
+  tumorSelect.innerHTML = '<option value="">All tumor types</option>' + tumorTypes.map(
+    function (t) {
+      return '<option value="' + t.replace(/"/g, "&quot;") + '">' + t + "</option>";
+    }
+  ).join("");
+
+  var statusContainer = document.getElementById("status-filter");
+  statusContainer.innerHTML = domainStatuses.map(function (s) {
+    var label = statusLabels[s] || (s.charAt(0).toUpperCase() + s.slice(1));
+    var checkbox = '<input type="checkbox" value="' + s + '" checked> ';
+    return '<label class="status-toggle">' + checkbox + label + "</label>";
+  }).join("");
+
+  // Group fusion-schematic rows by the (partner, breakpoint-aa) key baked
+  // into every row shape's <title> text by cfh.reporting.fusion_schematic
+  // (e.g. "...BRAF–KIAA1549 fusion, breakpoint BRAF aa 381; ...") --
+  // read back here, never recomputed or duplicated from the algorithm side.
+  var schematicGroups = new Map();
+  events.forEach(function (e) {
+    if (!e.partner_gene || e.breakpoint_protein_position == null) { return; }
+    var key = e.partner_gene + "|" + e.breakpoint_protein_position;
+    var group = schematicGroups.get(key);
+    if (!group) {
+      group = { tumorTypes: new Set(), domainStatuses: new Set() };
+      schematicGroups.set(key, group);
+    }
+    if (e.tumor_type) { group.tumorTypes.add(e.tumor_type); }
+    if (e.domain_status) { group.domainStatuses.add(e.domain_status); }
+  });
+  var TITLE_RE = /–([^;]+?) fusion, breakpoint \S+ aa (\d+);/;
+  var schematicSvg = document.getElementById("fusion-schematic-svg");
+
+  var summaryEl = document.getElementById("events-summary");
+  var rows = Array.from(document.querySelectorAll("#events-table tbody tr"));
+
+  function applyFilters() {
+    var tumor = tumorSelect.value;
+    var checked = statusContainer.querySelectorAll("input:checked");
+    var activeStatuses = new Set(Array.from(checked).map(function (i) { return i.value; }));
+
+    var shown = 0;
+    rows.forEach(function (tr) {
+      var matchesTumor = !tumor || tr.dataset.tumorType === tumor;
+      var matchesStatus = !tr.dataset.domainStatus || activeStatuses.has(tr.dataset.domainStatus);
+      var visible = matchesTumor && matchesStatus;
+      tr.hidden = !visible;
+      if (visible) { shown += 1; }
+    });
+    if (summaryEl) {
+      summaryEl.textContent = "Showing " + shown + " of " + rows.length + " events";
+    }
+
+    if (schematicSvg) {
+      schematicSvg.querySelectorAll("title").forEach(function (titleEl) {
+        var match = TITLE_RE.exec(titleEl.textContent || "");
+        var shape = titleEl.parentElement;
+        if (!match) { return; }
+        var group = schematicGroups.get(match[1] + "|" + match[2]);
+        if (!group) { shape.style.opacity = ""; return; }
+        var groupMatchesTumor = !tumor || group.tumorTypes.has(tumor);
+        var groupMatchesStatus = Array.from(group.domainStatuses).some(function (s) {
+          return activeStatuses.has(s);
+        });
+        shape.style.opacity = (groupMatchesTumor && groupMatchesStatus) ? "1" : "0.12";
+      });
+    }
+  }
+
+  tumorSelect.addEventListener("change", applyFilters);
+  statusContainer.addEventListener("change", applyFilters);
+  applyFilters();
+
+  // Shared by the lollipop-track points and the mechanistic-interpretation
+  // counter-intuitive-event tables: clear any active filters (so the row
+  // can't be hidden -- both jump sources are drawn independent of the
+  // table's tumor-type/domain-status filters), scroll the matching
+  // #events-table row into view, and briefly highlight it.
+  function jumpToEventRow(eventId) {
+    var row = document.querySelector(
+      '#events-table tbody tr[data-event-id="' + CSS.escape(eventId) + '"]'
+    );
+    if (!row) { return; }
+    tumorSelect.value = "";
+    statusContainer.querySelectorAll("input").forEach(function (i) { i.checked = true; });
+    applyFilters();
+    row.scrollIntoView({ behavior: "smooth", block: "center" });
+    row.classList.add("row-highlight");
+    window.setTimeout(function () { row.classList.remove("row-highlight"); }, 1500);
+  }
+
+  // Hovering or clicking a lollipop-track point (data-event-id, set by
+  // cfh.real_benchmark._domain_track_svg) shows a sample-id tooltip and/or
+  // jumps to that event's row in the table below.
+  var domainTrackFrame = document.getElementById("domain-track-svg");
+  var tooltip = document.getElementById("lollipop-tooltip");
+  if (domainTrackFrame) {
+    domainTrackFrame.querySelectorAll("circle[data-event-id]").forEach(function (circle) {
+      var eventId = circle.getAttribute("data-event-id");
+      if (!eventId) { return; }
+      var matchedEvent = eventsById[eventId];
+      if (tooltip && matchedEvent && matchedEvent.sample_id) {
+        circle.addEventListener("mouseenter", function () {
+          tooltip.textContent = "Sample " + matchedEvent.sample_id;
+          tooltip.hidden = false;
+        });
+        circle.addEventListener("mousemove", function (mouseEvent) {
+          tooltip.style.left = mouseEvent.clientX + 14 + "px";
+          tooltip.style.top = mouseEvent.clientY + 14 + "px";
+        });
+        circle.addEventListener("mouseleave", function () {
+          tooltip.hidden = true;
+        });
+      }
+      if (!document.querySelector('#events-table tbody tr[data-event-id="' + CSS.escape(eventId) + '"]')) {
+        return;
+      }
+      circle.style.cursor = "pointer";
+      circle.addEventListener("click", function () { jumpToEventRow(eventId); });
+    });
+  }
+
+  // Clicking a row in a "Mechanistic interpretation" counter-intuitive-
+  // event table (see cfh.reporting.html_viewer._mechanistic_effect_html)
+  // jumps to that same event in the main events table below.
+  document.querySelectorAll("tr.counter-intuitive-row[data-event-id]").forEach(function (row) {
+    var eventId = row.getAttribute("data-event-id");
+    if (!eventId) { return; }
+    row.addEventListener("click", function () { jumpToEventRow(eventId); });
+  });
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll("table.sortable").forEach(function (table) {
+    var tbody = table.tBodies[0];
+    if (!tbody) { return; }
+    var headers = Array.from(table.querySelectorAll("thead th[data-sort-key]"));
+    var currentKey = null;
+    var currentDir = 1;
+    headers.forEach(function (th, index) {
+      th.addEventListener("click", function () {
+        var key = th.getAttribute("data-sort-key");
+        currentDir = (currentKey === key) ? -currentDir : 1;
+        currentKey = key;
+        headers.forEach(function (h) { h.removeAttribute("data-sort-dir"); });
+        th.setAttribute("data-sort-dir", currentDir === 1 ? "asc" : "desc");
+
+        var rows = Array.from(tbody.querySelectorAll("tr"));
+        rows.sort(function (a, b) {
+          var aCell = a.children[index];
+          var bCell = b.children[index];
+          var aRaw = aCell ? aCell.getAttribute("data-sort") : null;
+          var bRaw = bCell ? bCell.getAttribute("data-sort") : null;
+          var aNum = aRaw === null || aRaw === "" ? NaN : Number(aRaw);
+          var bNum = bRaw === null || bRaw === "" ? NaN : Number(bRaw);
+          var cmp;
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            cmp = aNum - bNum;
+          } else {
+            cmp = String(aRaw).localeCompare(String(bRaw));
+          }
+          return cmp * currentDir;
+        });
+        rows.forEach(function (row) { tbody.appendChild(row); });
+      });
+    });
+  });
+});
+</script>
+</body>
+</html>
