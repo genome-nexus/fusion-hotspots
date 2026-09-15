@@ -674,7 +674,10 @@ document.addEventListener("DOMContentLoaded", function () {
           tooltip.hidden = true;
         });
       }
-      if (!document.querySelector('#events-table tbody tr[data-event-id="' + CSS.escape(eventId) + '"]')) {
+      var matchedRow = document.querySelector(
+        '#events-table tbody tr[data-event-id="' + CSS.escape(eventId) + '"]'
+      );
+      if (!matchedRow) {
         return;
       }
       circle.style.cursor = "pointer";
@@ -839,7 +842,9 @@ def _format_domain_names_html(names: list[str]) -> str:
     return f"{', '.join(_esc(name) for name in unique[:-1])}, and {_esc(unique[-1])}"
 
 
-def _mechanistic_effect_html(summary: dict, tables: dict, *, effect: str, label: str) -> tuple[str, str]:
+def _mechanistic_effect_html(
+    summary: dict, tables: dict, *, effect: str, label: str
+) -> tuple[str, str]:
     """One effect's (``retention``/``disruption``) HTML for the full section
     and, separately, a one-line summary for the top-of-page callout.
     Returns ``("", "")`` when the gene doesn't configure this effect."""
@@ -848,10 +853,11 @@ def _mechanistic_effect_html(summary: dict, tables: dict, *, effect: str, label:
     domain_phrase = _format_domain_names_html(summary.get(f"{effect}_domain_names") or [])
     p_value = summary.get(f"{effect}_fisher_p_value")
     odds_ratio = summary.get(f"{effect}_fisher_odds_ratio")
-    stats_phrase = (
-        f"p={_esc(_format_summary_value(p_value)) if p_value is not None else 'unavailable'}, "
-        f"odds ratio={_esc(_format_summary_value(odds_ratio)) if odds_ratio is not None else 'unavailable'}"
+    p_display = _esc(_format_summary_value(p_value)) if p_value is not None else "unavailable"
+    odds_display = (
+        _esc(_format_summary_value(odds_ratio)) if odds_ratio is not None else "unavailable"
     )
+    stats_phrase = f"p={p_display}, odds ratio={odds_display}"
 
     if not summary.get(f"{effect}_statistically_supported"):
         callout = (
@@ -913,7 +919,7 @@ def _mechanistic_effect_html(summary: dict, tables: dict, *, effect: str, label:
             "<th>Status</th></tr>"
         )
         rows_html = "".join(
-            "<tr class=\"counter-intuitive-row\" data-event-id=\"{event_id_attr}\">"
+            '<tr class="counter-intuitive-row" data-event-id="{event_id_attr}">'
             "<td>{event_id}</td><td>{sample_id}</td><td>{partner}</td>"
             "<td>{breakpoint}</td><td>{status}</td></tr>".format(
                 event_id_attr=_esc(str(row.get("event_id") or "")),
@@ -958,13 +964,13 @@ def _mechanistic_interpretation_section(payload: dict) -> tuple[str, str]:
         # identically.
         if mechanism_note_verified:
             mechanism_note_html = (
-                f'<p><strong>Curated mechanism:</strong> {_esc(str(mechanism_note))}</p>'
+                f"<p><strong>Curated mechanism:</strong> {_esc(str(mechanism_note))}</p>"
             )
         else:
             mechanism_note_html = (
                 '<p class="unverified-mechanism">'
-                '<strong>AI-suggested mechanism (unverified):</strong> '
-                f'{_esc(str(mechanism_note))}</p>'
+                "<strong>AI-suggested mechanism (unverified):</strong> "
+                f"{_esc(str(mechanism_note))}</p>"
             )
         body.append(mechanism_note_html)
         callout_lines.append(mechanism_note_html)
@@ -984,8 +990,8 @@ def _mechanistic_interpretation_section(payload: dict) -> tuple[str, str]:
     if not body:
         return "", ""
 
-    section_html = (
-        '<h2 id="mechanistic-interpretation">Mechanistic interpretation</h2>' + "".join(body)
+    section_html = '<h2 id="mechanistic-interpretation">Mechanistic interpretation</h2>' + "".join(
+        body
     )
     callout_class = (
         "mechanism-callout unverified"

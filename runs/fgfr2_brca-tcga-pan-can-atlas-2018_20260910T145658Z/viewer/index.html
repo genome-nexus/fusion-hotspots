@@ -521,7 +521,10 @@ document.addEventListener("DOMContentLoaded", function () {
           tooltip.hidden = true;
         });
       }
-      if (!document.querySelector('#events-table tbody tr[data-event-id="' + CSS.escape(eventId) + '"]')) {
+      var matchedRow = document.querySelector(
+        '#events-table tbody tr[data-event-id="' + CSS.escape(eventId) + '"]'
+      );
+      if (!matchedRow) {
         return;
       }
       circle.style.cursor = "pointer";

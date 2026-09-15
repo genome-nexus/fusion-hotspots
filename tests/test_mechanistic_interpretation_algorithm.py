@@ -60,7 +60,9 @@ def _retention_significant_with_subcluster() -> tuple[list[FusionEvent], list[Fu
     for index in range(8):
         event_id = f"r{index}"
         events.append(_event(event_id, frame_status="in-frame", partner=f"P{index}"))
-        features.append(_feature(event_id, domain_key="kinase", status="retained", position=100 + index))
+        features.append(
+            _feature(event_id, domain_key="kinase", status="retained", position=100 + index)
+        )
     for index, partner in enumerate(["SHARED", "SHARED", "LONER"]):
         event_id = f"c{index}"
         events.append(_event(event_id, frame_status="in-frame", partner=partner))
@@ -75,7 +77,9 @@ def _retention_significant_with_subcluster() -> tuple[list[FusionEvent], list[Fu
     for index in range(5):
         event_id = f"o{index}"
         events.append(_event(event_id, frame_status="out-of-frame", partner=f"Q{index}"))
-        features.append(_feature(event_id, domain_key="kinase", status="lost", position=300 + index))
+        features.append(
+            _feature(event_id, domain_key="kinase", status="lost", position=300 + index)
+        )
     return events, features
 
 
@@ -85,15 +89,21 @@ def _retention_significant_no_counter_events() -> tuple[list[FusionEvent], list[
     for index in range(8):
         event_id = f"r{index}"
         events.append(_event(event_id, frame_status="in-frame", partner=f"P{index}"))
-        features.append(_feature(event_id, domain_key="kinase", status="retained", position=100 + index))
+        features.append(
+            _feature(event_id, domain_key="kinase", status="retained", position=100 + index)
+        )
     for index in range(5):
         event_id = f"o{index}"
         events.append(_event(event_id, frame_status="out-of-frame", partner=f"Q{index}"))
-        features.append(_feature(event_id, domain_key="kinase", status="lost", position=300 + index))
+        features.append(
+            _feature(event_id, domain_key="kinase", status="lost", position=300 + index)
+        )
     return events, features
 
 
-def _retention_significant_diffuse_counter_events() -> tuple[list[FusionEvent], list[FusionFeature]]:
+def _retention_significant_diffuse_counter_events() -> tuple[
+    list[FusionEvent], list[FusionFeature]
+]:
     """Same clean-separation shape, but the 2 counter events have distinct
     partners -- no partner recurs, so this must land in
     ``"insufficient_recurrence"`` rather than ``"possible_subcluster"``."""
@@ -102,15 +112,21 @@ def _retention_significant_diffuse_counter_events() -> tuple[list[FusionEvent], 
     for index in range(8):
         event_id = f"r{index}"
         events.append(_event(event_id, frame_status="in-frame", partner=f"P{index}"))
-        features.append(_feature(event_id, domain_key="kinase", status="retained", position=100 + index))
+        features.append(
+            _feature(event_id, domain_key="kinase", status="retained", position=100 + index)
+        )
     for index, partner in enumerate(["ALONE1", "ALONE2"]):
         event_id = f"c{index}"
         events.append(_event(event_id, frame_status="in-frame", partner=partner))
-        features.append(_feature(event_id, domain_key="kinase", status="lost", position=200 + index))
+        features.append(
+            _feature(event_id, domain_key="kinase", status="lost", position=200 + index)
+        )
     for index in range(5):
         event_id = f"o{index}"
         events.append(_event(event_id, frame_status="out-of-frame", partner=f"Q{index}"))
-        features.append(_feature(event_id, domain_key="kinase", status="lost", position=300 + index))
+        features.append(
+            _feature(event_id, domain_key="kinase", status="lost", position=300 + index)
+        )
     return events, features
 
 
@@ -124,7 +140,9 @@ def _retention_not_significant() -> tuple[list[FusionEvent], list[FusionFeature]
     for index, (frame_status, status) in enumerate(zip(frames, statuses, strict=True)):
         event_id = f"e{index}"
         events.append(_event(event_id, frame_status=frame_status, partner=f"P{index}"))
-        features.append(_feature(event_id, domain_key="kinase", status=status, position=100 + index))
+        features.append(
+            _feature(event_id, domain_key="kinase", status=status, position=100 + index)
+        )
     return events, features
 
 
@@ -236,11 +254,15 @@ def test_disruption_effect_mirrors_retention_with_opposite_contradicting_status(
     for index, partner in enumerate(["SHARED", "SHARED"]):
         event_id = f"c{index}"
         events.append(_event(event_id, frame_status="in-frame", partner=partner))
-        features.append(_feature(event_id, domain_key="reg", status="retained", position=200 + index))
+        features.append(
+            _feature(event_id, domain_key="reg", status="retained", position=200 + index)
+        )
     for index in range(5):
         event_id = f"o{index}"
         events.append(_event(event_id, frame_status="out-of-frame", partner=f"Q{index}"))
-        features.append(_feature(event_id, domain_key="reg", status="retained", position=300 + index))
+        features.append(
+            _feature(event_id, domain_key="reg", status="retained", position=300 + index)
+        )
 
     upstream = _run_domain_results(events, features, _GENE_BOTH_DOMAINS)
     result = MechanisticInterpretationAlgorithm().run(

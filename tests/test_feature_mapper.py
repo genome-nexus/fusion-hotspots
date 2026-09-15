@@ -227,7 +227,8 @@ def test_coordinate_override_skips_the_live_source_lookup_entirely():
 
     assert feature.Domain_retention_flags["c_tail"] == "disrupted"
     assert "C-terminal autoinhibitory tail" in feature.Disrupted_domains
-    domain_source.fetch.assert_called_once()  # still fetched (for other domains), never matched against
+    # Still fetched (for other domains), never matched against.
+    domain_source.fetch.assert_called_once()
 
 
 def test_coordinate_override_wins_even_when_a_live_match_would_also_exist():

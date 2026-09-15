@@ -91,7 +91,9 @@ def _failed(result: Optional[AlgorithmResult]) -> bool:
     return any(str(warning).startswith("Algorithm failed") for warning in (result.Warnings or []))
 
 
-def _statistically_supported(result: Optional[AlgorithmResult]) -> tuple[bool, float | None, float | None]:
+def _statistically_supported(
+    result: Optional[AlgorithmResult],
+) -> tuple[bool, float | None, float | None]:
     """``fisher_p_value < _ALPHA`` and ``fisher_odds_ratio > 1``.
 
     A positive-infinite odds ratio (a "clean separation" 2x2 table, e.g. a
@@ -105,11 +107,20 @@ def _statistically_supported(result: Optional[AlgorithmResult]) -> tuple[bool, f
     summary = result.Summary or {}
     p_value = summary.get("fisher_p_value")
     odds_ratio = summary.get("fisher_odds_ratio")
-    p_value = p_value if isinstance(p_value, (int, float)) and not isinstance(p_value, bool) else None
-    odds_ratio = (
-        odds_ratio if isinstance(odds_ratio, (int, float)) and not isinstance(odds_ratio, bool) else None
+    p_value = (
+        p_value if isinstance(p_value, (int, float)) and not isinstance(p_value, bool) else None
     )
-    if p_value is None or odds_ratio is None or not math.isfinite(p_value) or math.isnan(odds_ratio):
+    odds_ratio = (
+        odds_ratio
+        if isinstance(odds_ratio, (int, float)) and not isinstance(odds_ratio, bool)
+        else None
+    )
+    if (
+        p_value is None
+        or odds_ratio is None
+        or not math.isfinite(p_value)
+        or math.isnan(odds_ratio)
+    ):
         return False, p_value, odds_ratio
     return (p_value < _ALPHA and odds_ratio > 1), p_value, odds_ratio
 
@@ -219,7 +230,9 @@ def _analyze_effect(
             {
                 "event_id": event_id,
                 "sample_id": event.Sample_id if event else None,
-                "partner_gene": _partner_gene(event, gene_config.gene_symbol) if event else "unknown",
+                "partner_gene": _partner_gene(event, gene_config.gene_symbol)
+                if event
+                else "unknown",
                 "breakpoint_protein_position": breakpoint_position,
                 "domain_status": status,
             }
@@ -229,14 +242,18 @@ def _analyze_effect(
     partner_counts: dict[str, int] = {}
     for row in counter_events:
         partner_counts[row["partner_gene"]] = partner_counts.get(row["partner_gene"], 0) + 1
-    recurrent_partners = sorted(
+    recurrent_pairs = sorted(
         (
-            {"partner_gene": partner, "count": partner_count}
+            (partner, partner_count)
             for partner, partner_count in partner_counts.items()
             if partner_count >= _RECURRENT_PARTNER_THRESHOLD
         ),
-        key=lambda row: (-row["count"], row["partner_gene"]),
+        key=lambda pair: (-pair[1], pair[0]),
     )
+    recurrent_partners = [
+        {"partner_gene": partner, "count": partner_count}
+        for partner, partner_count in recurrent_pairs
+    ]
 
     if count == 0:
         confidence = "none"
@@ -248,7 +265,9 @@ def _analyze_effect(
     summary_fields[f"{prefix}_counter_intuitive_confidence"] = confidence
     summary_fields[f"{prefix}_counter_intuitive_count"] = count
     summary_fields[f"{prefix}_counter_intuitive_total"] = total
-    summary_fields[f"{prefix}_counter_intuitive_percent"] = (100.0 * count / total) if total else None
+    summary_fields[f"{prefix}_counter_intuitive_percent"] = (
+        (100.0 * count / total) if total else None
+    )
     summary_fields[f"{prefix}_recurrent_partner_threshold"] = _RECURRENT_PARTNER_THRESHOLD
 
     tables: dict[str, Any] = {}

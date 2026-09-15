@@ -411,7 +411,11 @@ class TestMechanisticInterpretationSection:
             tmp_path, self._payload_with_mechanistic_interpretation(), with_svgs=False
         )
         html = build_run_viewer(run_dir).read_text()
-        stat_grid_html = html[html.index('<div class="stat-grid">') : html.index("</div>", html.index('<div class="stat-grid">'))]
+        stat_grid_html = html[
+            html.index('<div class="stat-grid">') : html.index(
+                "</div>", html.index('<div class="stat-grid">')
+            )
+        ]
         assert "Mechanism Note" not in stat_grid_html
         assert "MECHANISM NOTE" not in html
         # The mechanism_note text is legitimately present once (in the
@@ -444,9 +448,9 @@ class TestMechanisticInterpretationSection:
         run_dir = _write_gene_run(tmp_path, payload, with_svgs=False)
         html = build_run_viewer(run_dir).read_text()
         assert "too weak to draw a conclusion" in html
-        assert "AGK" not in html.split("Mechanistic interpretation", 1)[1].split("</h2>", 1)[1][
-            :500
-        ]
+        assert (
+            "AGK" not in html.split("Mechanistic interpretation", 1)[1].split("</h2>", 1)[1][:500]
+        )
 
     def test_section_omitted_when_algorithm_result_failed(self, tmp_path):
         payload = self._payload_with_mechanistic_interpretation()
