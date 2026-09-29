@@ -237,8 +237,14 @@ Suggested reading order:
 6. **Prioritize partners.** Read `composite_score` together with `frequency`.
    Cutpoint proximity contributes only when the corrected cutpoint p < 0.05, and
    gene-level components are shared by every partner of a gene.
-7. **Consider confounding.** Tests pool tumor types; use the `oncotree_code` column in
-   `results.tsv` to check whether a result is driven by one tissue.
+7. **Consider confounding.** The Fisher and permutation tests pool tumor types.
+   `domain_retention` and `domain_disruption` also report `tumor_type_stratified`: a
+   Cochran-Mantel-Haenszel test across OncoTree strata with the Mantel-Haenszel common
+   odds ratio, and the per-stratum tables in `frame_domain_contingency_tables_by_tumor_type`.
+   The cohort summary carries `retention_cmh_p_value` / `retention_cmh_q_value` (BH across
+   genes as a separate family, not used for `fdr_significant`). A pooled association that
+   disappears after stratification is likely tumor-type composition. CMH is two-sided,
+   while the pooled Fisher test is one-sided.
 
 ### Co-occurrence discovery
 
