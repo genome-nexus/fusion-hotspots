@@ -233,7 +233,7 @@ _SUMMARY_KEYS_WITH_DEDICATED_RENDERING = frozenset({"mechanism_note", "mechanism
 """Scalar summary fields excluded from the generic stat grid because they
 already have a dedicated, purpose-built rendering elsewhere on the page
 (see ``_mechanistic_interpretation_section``) -- showing ``mechanism_note``
-a second time as a generic stat-grid cell duplicates the mechanism callout
+a second time as a generic stat-grid cell duplicates that section
 and, worse, blows up the grid layout: a stat cell's CSS (18px bold, no
 wrapping consideration) is sized for a short number/percentage, not a
 multi-sentence paragraph."""
@@ -326,13 +326,6 @@ table.events tr.row-highlight { background: #fff3cd; transition: background 1.2s
   background: #1a1a1a; color: #fff; font-size: 12px; line-height: 1.3;
   padding: 4px 8px; border-radius: 4px; white-space: nowrap;
 }
-.mechanism-callout {
-  background: #f5f8fc; border: 1px solid #cfe0f0; border-radius: 8px;
-  padding: 12px 16px; margin: 0 0 16px; font-size: 13px;
-}
-.mechanism-callout p { margin: 4px 0; }
-.mechanism-callout p.panel-note { padding-left: 0; }
-.mechanism-callout.unverified { background: #fff4e5; border-color: #f0dca6; }
 p.unverified-mechanism { color: #9a6700; }
 tr.counter-intuitive-row { cursor: pointer; }
 tr.counter-intuitive-row:hover { background: #f0f0f0; }
@@ -842,14 +835,11 @@ def _format_domain_names_html(names: list[str]) -> str:
     return f"{', '.join(_esc(name) for name in unique[:-1])}, and {_esc(unique[-1])}"
 
 
-def _mechanistic_effect_html(
-    summary: dict, tables: dict, *, effect: str, label: str
-) -> tuple[str, str]:
-    """One effect's (``retention``/``disruption``) HTML for the full section
-    and, separately, a one-line summary for the top-of-page callout.
-    Returns ``("", "")`` when the gene doesn't configure this effect."""
+def _mechanistic_effect_html(summary: dict, tables: dict, *, effect: str, label: str) -> str:
+    """One effect's (``retention``/``disruption``) HTML for the mechanistic
+    interpretation section; ``""`` when the gene doesn't configure it."""
     if not summary.get(f"{effect}_domains_configured"):
-        return "", ""
+        return ""
     domain_phrase = _format_domain_names_html(summary.get(f"{effect}_domain_names") or [])
     p_value = summary.get(f"{effect}_fisher_p_value")
     odds_ratio = summary.get(f"{effect}_fisher_odds_ratio")
@@ -871,11 +861,10 @@ def _mechanistic_effect_html(
         reason = (
             "no Fisher test result available" if p_value is None else "nominal Fisher gate not met"
         )
-        callout = (
-            f"<strong>{domain_phrase} {label}:</strong> {reason} "
-            f"({stats_phrase}; {q_phrase}) &mdash; too weak to draw a conclusion."
+        return (
+            f"<p><strong>{domain_phrase} {label}:</strong> {reason} "
+            f"({stats_phrase}; {q_phrase}) &mdash; too weak to draw a conclusion.</p>"
         )
-        return f"<p>{callout}</p>", callout
 
     confidence = summary.get(f"{effect}_counter_intuitive_confidence")
     count = summary.get(f"{effect}_counter_intuitive_count") or 0
@@ -887,8 +876,7 @@ def _mechanistic_effect_html(
         f"({stats_phrase}; {q_phrase}; {evidence_phrase})"
     )
     if confidence == "none":
-        callout = f"{supported_phrase}; no counter-intuitive events observed."
-        return f"<p>{callout}</p>", callout
+        return f"<p>{supported_phrase}; no counter-intuitive events observed.</p>"
 
     percent_text = f"{percent:.1f}%" if isinstance(percent, (int, float)) else "?"
     body = [
@@ -901,10 +889,6 @@ def _mechanistic_effect_html(
             f"{_esc(str(row.get('partner_gene')))} (&times;{_esc(str(row.get('count')))})"
             for row in recurrent
         )
-        callout = (
-            f"{supported_phrase}; {count}/{total} events ({percent_text}) show the opposite "
-            f"status, recurring around {partner_phrase} &mdash; descriptive recurrence flag."
-        )
         body.append(
             f'<p class="panel-note">{partner_phrase} recur among just these counter-intuitive '
             "events &mdash; a descriptive count threshold, not a statistical subcluster "
@@ -912,10 +896,6 @@ def _mechanistic_effect_html(
         )
     else:
         threshold = summary.get(f"{effect}_recurrent_partner_threshold")
-        callout = (
-            f"{supported_phrase}; {count}/{total} events ({percent_text}) show the opposite "
-            "status; no partner reaches the recurrence threshold."
-        )
         body.append(
             '<p class="panel-note">Spread across distinct partner genes with no partner '
             f"recurring {_esc(str(threshold))}+ times among them &mdash; "
@@ -948,31 +928,27 @@ def _mechanistic_effect_html(
             f'{effect}-counter-intuitive-table">'
             f"<thead>{header}</thead><tbody>{rows_html}</tbody></table></div>"
         )
-    return "".join(body), callout
+    return "".join(body)
 
 
-def _mechanistic_interpretation_section(payload: dict) -> tuple[str, str]:
-    """The full "Mechanistic interpretation" section (curated mechanism
-    text plus ``mechanistic_interpretation``'s nominal-test and descriptive
-    counter-intuitive-event flagging) and, separately, a compact
-    top-of-page callout summarizing the same findings in one glance.
-    Returns ``("", "")`` when there is nothing to say (no curated
-    ``mechanism_note`` and no configured retention/disruption domains)."""
+def _mechanistic_interpretation_section(payload: dict) -> str:
+    """The "Mechanistic interpretation" section: curated mechanism text plus
+    ``mechanistic_interpretation``'s nominal-test and descriptive
+    counter-intuitive-event flagging. Returns ``""`` when there is nothing
+    to say (no curated ``mechanism_note`` and no configured
+    retention/disruption domains)."""
     summary = payload.get("summary") or {}
     mechanism_note = summary.get("mechanism_note")
     mechanism_note_verified = summary.get("mechanism_note_verified", True)
     result = _algorithm_result(payload, "mechanistic_interpretation")
 
     body: list[str] = []
-    callout_lines: list[str] = []
     if mechanism_note:
-        # The curated "why" leads both the callout and the full section --
-        # this is the actual functional/mechanistic reason a reader wants
-        # at a glance, not just the statistical support for it. An
+        # The curated "why" leads the section -- the functional reason a
+        # reader wants first, not just its statistical support. An
         # AI-drafted note not yet human-verified (see
         # GeneConfig.mechanism_note_verified) gets a visibly distinct label
-        # and callout color -- the two trust levels are never presented
-        # identically.
+        # and color -- the two trust levels are never presented identically.
         if mechanism_note_verified:
             mechanism_note_html = (
                 f"<p><strong>Curated mechanism:</strong> {_esc(str(mechanism_note))}</p>"
@@ -984,39 +960,16 @@ def _mechanistic_interpretation_section(payload: dict) -> tuple[str, str]:
                 f"{_esc(str(mechanism_note))}</p>"
             )
         body.append(mechanism_note_html)
-        callout_lines.append(mechanism_note_html)
 
     if result is not None and not _algorithm_failed(result):
         algo_summary = result.get("Summary") or {}
         tables = result.get("Tables") or {}
         for effect, label in (("retention", "retention"), ("disruption", "disruption")):
-            effect_html, effect_callout = _mechanistic_effect_html(
-                algo_summary, tables, effect=effect, label=label
-            )
-            if effect_html:
-                body.append(effect_html)
-            if effect_callout:
-                callout_lines.append(f"<p>{effect_callout}</p>")
+            body.append(_mechanistic_effect_html(algo_summary, tables, effect=effect, label=label))
 
-    if not body:
-        return "", ""
-
-    section_html = '<h2 id="mechanistic-interpretation">Mechanistic interpretation</h2>' + "".join(
-        body
-    )
-    callout_class = (
-        "mechanism-callout unverified"
-        if mechanism_note and not mechanism_note_verified
-        else "mechanism-callout"
-    )
-    callout_html = (
-        f'<div class="{callout_class}">{"".join(callout_lines)}'
-        '<p class="panel-note"><a href="#mechanistic-interpretation">'
-        "See full mechanistic interpretation below.</a></p></div>"
-        if callout_lines
-        else ""
-    )
-    return section_html, callout_html
+    if not any(body):
+        return ""
+    return '<h2 id="mechanistic-interpretation">Mechanistic interpretation</h2>' + "".join(body)
 
 
 def _joint_partner_section(payload: dict) -> str:
@@ -1241,7 +1194,7 @@ def _render_gene_page(
             f'<div class="svg-frame" id="domain-track-svg">{domain_svg}</div>'
         )
 
-    mechanistic_section_html, mechanism_callout_html = _mechanistic_interpretation_section(payload)
+    mechanistic_section_html = _mechanistic_interpretation_section(payload)
     sections.append(mechanistic_section_html)
     sections.append(_composite_score_section(payload))
 
@@ -1270,7 +1223,6 @@ def _render_gene_page(
         + f"""  {back_html}
   <h1>{gene_symbol}{badge_html}</h1>
   <p class="subtitle">{study_id}</p>
-  {mechanism_callout_html}
   <div class="stat-grid">{stat_cells}</div>
   {"".join(sections)}
 </div>
@@ -1316,7 +1268,7 @@ def _render_gene_pair_page(
         else ""
     )
 
-    mechanistic_section_html, mechanism_callout_html = _mechanistic_interpretation_section(payload)
+    mechanistic_section_html = _mechanistic_interpretation_section(payload)
     sections = [
         _joint_partner_section(payload),
         mechanistic_section_html,
@@ -1336,7 +1288,6 @@ def _render_gene_pair_page(
         + f"""  {back_html}
   <h1>{gene_symbol}{badge_html}</h1>
   <p class="subtitle">{study_id} &mdash; gene-pair (joint-partner) fusion enrichment</p>
-  {mechanism_callout_html}
   <div class="stat-grid">{stat_cells}</div>
   {"".join(sections)}
 </div>
