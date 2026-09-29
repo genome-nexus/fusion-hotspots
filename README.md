@@ -147,6 +147,92 @@ cBioPortal Datahub are: `acc`, `blca`, `brca`, `cesc`, `chol`, `coadread`,
 
 These commands make unauthenticated requests to both public services.
 
+## Key features
+
+Each registered algorithm writes one `AlgorithmResult` (`Summary`, `Tables`,
+`Warnings`) per gene. Optional algorithms are no-ops unless the gene config or
+study supplies their inputs.
+
+| Algorithm | Question it answers | Output to read | Runs when |
+| --- | --- | --- | --- |
+| `frequency` | Which partners occur, and how often? | `Partner_gene_counts` (events, samples, patients) | Always |
+| `domain_retention` | Are in-frame fusions enriched for retaining the key domain? | Fisher p/OR, permutation p, 2×2 table | Always |
+| `domain_disruption` | Are in-frame fusions enriched for *losing* a configured domain? | Same as retention | `disruption_required_domains` set |
+| `exon_retention` | Is a target exon retained? | Retention rate per exon | Exon hint configured |
+| `confidence_stats` | In-frame rate (Wilson CI) and read support, retained vs not | MLE/CI per group, Welch t-test | Always (gene-agnostic defaults) |
+| `cutpoint_detection` | Is there one protein position that best separates retained from lost? | Inferred cutpoint (aa), max-statistic corrected p | Always |
+| `window_detection` | Is there an internal protein window that separates them? | Best window, corrected p | Always |
+| `genomic_position_recurrence` | Do breakpoints pile up at the same DNA coordinate, or only after exon clamping? | Genomic clusters vs protein positions | Always |
+| `joint_partner` | Is an ordered pair (e.g. EML4→ALK) enriched over a marginal-independence null? | Pair Fisher test | `gene_pair` configs |
+| `mutation_cooccurrence` | Are fusions co-occurring with, or exclusive of, a comparator mutation/CNA? | Fisher p, direction, eligible-sample counts | `mutual_exclusivity_targets` set |
+| `expression_association` | Does target-gene mRNA differ by fusion status or domain status? | Welch/Mann-Whitney per comparison | Study has an mRNA profile |
+| `mechanistic_interpretation` | Which events run counter to a nominally supported retention/disruption pattern? | Counter-pattern events, recurrent-partner flag, Fisher q in scans | Always |
+| `composite_score` | Which partners should be reviewed first? | Ranked partner table (heuristic, not a probability) | Always |
+
+Cross-run tools:
+
+- `cfh cohort-scan`: every recurrently altered gene, with auto-configured genes
+  and BH-FDR across all genes' p-values.
+- `cfh compare-genes`: BH-FDR across saved runs.
+- `cfh compare-cohorts`: CMH across cohorts; `--require-patient-disjoint`
+  enforces independence.
+- `python -m cfh.stats.calibration`: synthetic null/power stress tests.
+- `python -m cfh.stats.independent_validation`: held-out ranking comparison.
+
+## Analyzing a cohort scan
+
+```bash
+cfh cohort-scan msk_impact_50k_2026 --output-dir runs --no-pdf   # --quiet hides per-gene progress
+```
+
+The run writes `runs/cohort-scan_<study>_<timestamp>/`:
+
+| File | Use it for |
+| --- | --- |
+| `cohort_scan/summary.tsv` / `summary.json` | One row per gated gene: status, counts, frame and domain-retention percentages, retention/disruption Fisher p and q, minimum q, top composite partner |
+| `cohort_scan/summary.md` | FDR-significant genes, honorable mentions (top raw p among non-significant genes), warnings |
+| `cohort_scan/manhattan.svg` | Genome-wide view of per-gene significance |
+| `cohort_scan/gene_reports/<gene>/` | Full per-gene run for significant, honorable-mention, and curated genes: `results.json`, event-level `results.tsv`, `report.md`, `outliers.tsv`, figures |
+| `viewer/index.html` | Static HTML browser for the above (on by default; `--no-html` skips it) |
+
+Suggested reading order:
+
+1. **Check the gate and failures.** Compare `genes_after_gating` with `status == "ok"`.
+   Unresolved genes (no Genome Nexus transcript) are listed in the warnings.
+2. **Identify which test made a gene significant.** `fdr_significant` and
+   `min_fdr_adjusted_q_value` use the smallest q across *every* test for that gene.
+   For a domain claim, read `retention_fisher_q_value` / `disruption_fisher_q_value`
+   instead. To list the driving tests for a gene with a saved report:
+
+   ```python
+   from pathlib import Path
+   from cfh.gene_comparison import collect_p_values
+
+   run = Path("runs/<scan>/cohort_scan/gene_reports/ntrk3")
+   for row in sorted(collect_p_values([run]), key=lambda r: r["raw_p"])[:5]:
+       print(row["algorithm"], row["test"], row["raw_p"])
+   ```
+
+   A significant `confidence_stats:welch_t_test` compares tumor read support
+   between retained and non-retained events. It reflects call quality, not
+   breakpoint selection, and can rest on very small groups (check `n_b`).
+3. **Check the counting units.** Each gene report's `summary` lists `total_fusions`,
+   `sample_count`, `known_patient_count`, and `inference_counting_unit`. When samples
+   greatly exceed patients, event-level permutation p-values are anti-conservative
+   (see [CALIBRATION.md](CALIBRATION.md)).
+4. **Read the domain evidence.** `domain_retention` gives the frame × domain 2×2
+   table, Fisher and permutation p. `cutpoint_detection` / `window_detection` locate
+   the boundary and compare it with Pfam coordinates. `genomic_position_recurrence`
+   separates true DNA hotspots from exon-boundary clamping.
+5. **Review exceptions.** In `mechanistic_interpretation`, look at counter-pattern
+   events and recurrent-partner flags. The HTML viewer shows curated mechanism notes
+   beside them.
+6. **Prioritize partners.** Read `composite_score` together with `frequency`.
+   Cutpoint proximity contributes only when the corrected cutpoint p < 0.05, and
+   gene-level components are shared by every partner of a gene.
+7. **Consider confounding.** Tests pool tumor types; use the `oncotree_code` column in
+   `results.tsv` to check whether a result is driven by one tissue.
+
 ## Repository layout
 
 ```
