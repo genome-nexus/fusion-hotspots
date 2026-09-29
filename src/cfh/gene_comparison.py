@@ -14,6 +14,10 @@ SIGNIFICANCE_LEVEL = 0.05
 
 # These are the final inferential p-values exposed by registered algorithms.
 # A label is included because some algorithms expose independent test families.
+# confidence_stats' Welch read-support p-value is deliberately absent: it tracks
+# call quality rather than breakpoint selection, often rests on tiny groups, and
+# was the sole driver of most cohort-scan FDR hits (#114). It stays in each
+# gene's own results.
 _SUMMARY_P_VALUES: dict[str, tuple[tuple[str, tuple[str, ...]], ...]] = {
     "domain_retention": (
         ("fisher", ("fisher_p_value",)),
@@ -28,7 +32,6 @@ _SUMMARY_P_VALUES: dict[str, tuple[tuple[str, tuple[str, ...]], ...]] = {
     # corrected_p_value already accounts for scanning candidate windows.
     "window_detection": (("permutation_corrected", ("corrected_p_value",)),),
     "joint_partner": (("enrichment", ("p_value",)),),
-    "confidence_stats": (("welch_t_test", ("ttest", "p_value")),),
     "expression_association": (
         ("fusion_positive_vs_negative", ("fusion_positive_vs_negative", "p_value")),
         ("domain_retention_split", ("domain_retention_split", "p_value")),

@@ -190,6 +190,26 @@ def test_missing_optional_comparators_are_skipped(tmp_path):
     assert collect_p_values([run]) == []
 
 
+def test_confidence_stats_welch_p_value_is_excluded_from_the_family(tmp_path):
+    run = tmp_path / "run"
+    _write_artifact(
+        run,
+        "NTRK3",
+        "study_one",
+        [
+            {
+                "Algorithm": "confidence_stats",
+                "Summary": {"ttest": {"p_value": 1e-6, "n_a": 35, "n_b": 2}},
+            },
+            {"Algorithm": "domain_retention", "Summary": {"fisher_p_value": 0.1}},
+        ],
+    )
+
+    rows = collect_p_values([run])
+
+    assert [(row["algorithm"], row["test"]) for row in rows] == [("domain_retention", "fisher")]
+
+
 def test_new_hypotheses_join_the_same_bh_family(tmp_path):
     first = tmp_path / "first"
     second = tmp_path / "second"

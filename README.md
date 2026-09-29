@@ -107,9 +107,11 @@ q-value, and whether the result is significant at `q < 0.05`. All p-values
 collected by one invocation form a single correction family.
 
 The correction family includes retention/disruption Fisher and permutation
-tests, corrected cutpoint/window scans, pair enrichment, confidence Welch
-tests, both expression comparisons, and each mutation/CNA comparator test.
-Composite scores are rankings and are not included as p-values.
+tests, corrected cutpoint/window scans, pair enrichment, both expression
+comparisons, and each mutation/CNA comparator test. Composite scores are
+rankings and are not included as p-values. The `confidence_stats` Welch
+read-support test is reported per gene but excluded from the family: it
+reflects call quality, not breakpoint selection (#114).
 
 Cohort scans fetch expression and comparator inputs when those algorithms
 are requested and the gene/study configuration supplies the required metadata.
@@ -217,9 +219,10 @@ Suggested reading order:
        print(row["algorithm"], row["test"], row["raw_p"])
    ```
 
-   A significant `confidence_stats:welch_t_test` compares tumor read support
-   between retained and non-retained events. It reflects call quality, not
-   breakpoint selection, and can rest on very small groups (check `n_b`).
+   The `confidence_stats` Welch test (tumor read support, retained vs
+   non-retained) is not in this family and never makes a gene significant. It
+   reflects call quality, not breakpoint selection, and can rest on very small
+   groups (check `n_b` in the gene's results).
 3. **Check the counting units.** Each gene report's `summary` lists `total_fusions`,
    `sample_count`, and `known_patient_count`. Before any inferential test, repeated
    observations of one fusion in one patient (same partner, role, and protein junction)
