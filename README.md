@@ -233,6 +233,30 @@ Suggested reading order:
 7. **Consider confounding.** Tests pool tumor types; use the `oncotree_code` column in
    `results.tsv` to check whether a result is driven by one tissue.
 
+### Co-occurrence discovery
+
+`cfh cohort-scan <study> --discover-cooccurrence` additionally tests every analyzed
+fusion gene against every panel gene × alteration type (mutation, amplification,
+deep deletion), with no curated targets needed. It writes
+`cohort_scan/cooccurrence_discovery.tsv` / `.json` and a summary section.
+
+- **Assay eligibility:** each pair uses only samples whose SV panel covers the fusion
+  gene and whose mutation or CNA panel covers the comparator gene.
+- **Tumor type:** the test is Cochran-Mantel-Haenszel stratified by OncoTree code;
+  `mh_common_odds_ratio` < 1 means mutual exclusivity. Pooled odds ratios are shown
+  only for comparison.
+- **Sparse pairs:** pairs failing the Mantel-Fleiss criterion (expected co-occurrence
+  too close to its bounds for the chi-square approximation) get no p-value.
+- **Multiplicity:** q-values are BH-adjusted across all tested pairs as their own
+  family; they never affect `fdr_significant` in the main summary.
+- **Hypermutation:** `--hypermutated-min-mutations N` excludes samples with at least
+  `N` panel mutations.
+
+The TSV keeps pairs with q < 0.25 plus each fusion gene's five smallest-p pairs.
+Copy-number co-occurrence with a gene near the fusion locus (e.g. CDK12 fusions with
+ERBB2 amplification on 17q12) usually reflects a rearrangement inside the same
+amplicon, not two independent events. Samples are the counting unit.
+
 ## Repository layout
 
 ```

@@ -319,6 +319,18 @@ def analyze(
     "genes by raw Fisher p-value among genes that did NOT survive genome-wide FDR correction.",
 )
 @click.option(
+    "--discover-cooccurrence",
+    is_flag=True,
+    help="Also test every analyzed fusion gene against every panel gene x alteration type "
+    "(tumor-type-stratified, separate FDR family); writes cooccurrence_discovery.tsv/.json.",
+)
+@click.option(
+    "--hypermutated-min-mutations",
+    type=click.IntRange(min=1),
+    default=None,
+    help="With --discover-cooccurrence, exclude samples with at least this many panel mutations.",
+)
+@click.option(
     "--progress/--quiet",
     default=True,
     show_default=True,
@@ -336,6 +348,8 @@ def cohort_scan(
     cache_dir: Path | None,
     pdf: bool,
     honorable_mention_count: int,
+    discover_cooccurrence: bool,
+    hypermutated_min_mutations: int | None,
     progress: bool,
     html: bool,
 ) -> None:
@@ -352,6 +366,8 @@ def cohort_scan(
             max_genes=max_genes,
             cache_dir=cache_dir or (output_dir / ".cohort_scan_cache"),
             progress=(lambda line: click.echo(line, err=True)) if progress else None,
+            discover_cooccurrence=discover_cooccurrence,
+            hypermutated_min_mutations=hypermutated_min_mutations,
         )
         paths = write_cohort_scan_outputs(
             result, output_dir, pdf=pdf, honorable_mention_count=honorable_mention_count
@@ -390,6 +406,7 @@ def cohort_scan(
         "summary_pdf",
         "manuscript_markdown",
         "manuscript_pdf",
+        "cooccurrence_discovery_tsv",
         "viewer",
     ):
         if kind in paths:
