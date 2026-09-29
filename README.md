@@ -198,7 +198,11 @@ The run writes `runs/cohort-scan_<study>_<timestamp>/`:
 Suggested reading order:
 
 1. **Check the gate and failures.** Compare `genes_after_gating` with `status == "ok"`.
-   Unresolved genes (no Genome Nexus transcript) are listed in the warnings.
+   Genes the Genome Nexus batch call cannot configure are retried with the
+   single-gene endpoint, accepted only when its Ensembl gene ID matches HGNC's
+   (`transcript_source` records which path was used). Non-coding genes
+   (`config_source == "non_coding"`) and still-unresolved genes are listed
+   separately in the warnings.
 2. **Identify which test made a gene significant.** `fdr_significant` and
    `min_fdr_adjusted_q_value` use the smallest q across *every* test for that gene.
    For a domain claim, read `retention_fisher_q_value` / `disruption_fisher_q_value`

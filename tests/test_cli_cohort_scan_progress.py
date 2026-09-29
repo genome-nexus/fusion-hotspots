@@ -18,6 +18,7 @@ def _fake_result():
         curated_gene_count=0,
         auto_config_gene_count=0,
         unresolved_gene_count=0,
+        non_coding_gene_count=0,
         significant_genes=[],
         warnings=[],
     )

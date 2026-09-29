@@ -381,7 +381,7 @@ def cohort_scan(
         f"{result.total_genes_before_gating} genes had SV records in {study_id}; "
         f"{result.genes_after_gating} passed the >= {min_distinct_patients}-patient gate "
         f"({result.curated_gene_count} curated, {result.auto_config_gene_count} auto-configured, "
-        f"{result.unresolved_gene_count} unresolved)."
+        f"{result.non_coding_gene_count} non-coding, {result.unresolved_gene_count} unresolved)."
     )
     click.echo(f"Analyzed {ok_count} genes successfully, {failed_count} failed/skipped.")
     click.echo(f"FDR-significant genes (q<0.05): {len(result.significant_genes)}")

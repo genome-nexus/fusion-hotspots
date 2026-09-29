@@ -38,6 +38,7 @@ from cfh.cohort.recurrence import (
     fetch_cohort_gene_recurrence,
     gate_genes_by_recurrence,
 )
+from cfh.cohort.transcript_fallback import resolve_with_fallback
 from cfh.gene_comparison import collect_p_values_from_algorithm_results
 from cfh.genes.registry import GeneConfig, load_gene_config
 from cfh.ingestion import cbioportal_api
@@ -73,11 +74,14 @@ class GeneScanOutcome:
     entrez_gene_id: int | None
     distinct_patient_count: int
     total_sv_count: int
-    config_source: str  # "curated" | "auto" | "unresolved"
+    config_source: str  # "curated" | "auto" | "non_coding" | "unresolved"
     status: str  # "ok" | "failed"
     run: RealBenchmarkRun | None = None
     error: str | None = None
     p_value_rows: list[dict] = field(default_factory=list)
+    # "genome_nexus_batch" | "genome_nexus_single_gene_hgnc_verified" for
+    # auto configs; None for curated, non-coding, and unresolved genes.
+    transcript_source: str | None = None
 
 
 @dataclass
@@ -96,6 +100,8 @@ class CohortScanResult:
     # Opt-in hypothesis-free co-occurrence scan (a separate FDR family); see
     # cfh.cohort.cooccurrence_discovery. None when not requested or failed.
     cooccurrence_discovery: dict | None = None
+    non_coding_gene_count: int = 0
+    fallback_resolved_gene_count: int = 0
 
     @property
     def total_genes_before_gating(self) -> int:
@@ -112,15 +118,17 @@ def _resolve_configs(
     genome_nexus_base_url: str,
     genome_nexus_cache_dir: Path | None,
     pfam_description_cache_dir: Path | None,
+    hgnc_cache_dir: Path | None = None,
     session: "requests.Session | None" = None,
-) -> tuple[dict[str, GeneConfig], dict[str, str], list[str]]:
+) -> _ConfigResolution:
     """Resolve one ``GeneConfig`` per candidate gene: curated configs always
     win; everything else is auto-generated in as few Genome Nexus batch
-    calls as possible. Returns ``(config_by_gene, source_by_gene,
-    unresolved_gene_symbols)``.
+    calls as possible. Genes the batch call cannot configure go through the
+    HGNC-verified single-gene fallback (:mod:`cfh.cohort.transcript_fallback`).
     """
     config_by_gene: dict[str, GeneConfig] = {}
     source_by_gene: dict[str, str] = {}
+    transcript_source_by_gene: dict[str, str] = {}
     needs_auto: list[GeneRecurrence] = []
 
     for gene in candidate_genes:
@@ -140,25 +148,73 @@ def _resolve_configs(
         session=session,
     )
 
-    unresolved: list[str] = []
+    needs_fallback: list[GeneRecurrence] = []
     for gene in needs_auto:
         canonical = batch.by_gene_symbol.get(gene.hugo_gene_symbol)
-        if canonical is None:
-            unresolved.append(gene.hugo_gene_symbol)
-            continue
-        auto_config = build_auto_gene_config(
-            gene.hugo_gene_symbol,
-            gene.entrez_gene_id,
-            canonical,
-            description_source=description_source,
+        auto_config = (
+            build_auto_gene_config(
+                gene.hugo_gene_symbol,
+                gene.entrez_gene_id,
+                canonical,
+                description_source=description_source,
+            )
+            if canonical is not None
+            else None
         )
         if auto_config is None:
-            unresolved.append(gene.hugo_gene_symbol)
+            needs_fallback.append(gene)
             continue
         config_by_gene[gene.hugo_gene_symbol] = auto_config
         source_by_gene[gene.hugo_gene_symbol] = "auto"
+        transcript_source_by_gene[gene.hugo_gene_symbol] = "genome_nexus_batch"
 
-    return config_by_gene, source_by_gene, unresolved
+    unresolved: dict[str, str] = {}
+    non_coding: dict[str, str] = {}
+    fallback_client = GenomeNexusClient(base_url=genome_nexus_base_url, session=session)
+    for gene in needs_fallback:
+        symbol = gene.hugo_gene_symbol
+        resolution = resolve_with_fallback(
+            symbol,
+            gene.entrez_gene_id,
+            genome_nexus_client=fallback_client,
+            session=session,
+            hgnc_cache_dir=hgnc_cache_dir,
+        )
+        auto_config = (
+            build_auto_gene_config(
+                symbol,
+                gene.entrez_gene_id,
+                resolution.canonical,
+                description_source=description_source,
+            )
+            if resolution.canonical is not None
+            else None
+        )
+        if auto_config is not None:
+            config_by_gene[symbol] = auto_config
+            source_by_gene[symbol] = "auto"
+            transcript_source_by_gene[symbol] = "genome_nexus_single_gene_hgnc_verified"
+        elif resolution.status == "non_coding":
+            non_coding[symbol] = resolution.reason
+        else:
+            unresolved[symbol] = resolution.reason
+
+    return _ConfigResolution(
+        config_by_gene=config_by_gene,
+        source_by_gene=source_by_gene,
+        transcript_source_by_gene=transcript_source_by_gene,
+        unresolved=unresolved,
+        non_coding=non_coding,
+    )
+
+
+@dataclass
+class _ConfigResolution:
+    config_by_gene: dict[str, GeneConfig]
+    source_by_gene: dict[str, str]
+    transcript_source_by_gene: dict[str, str]
+    unresolved: dict[str, str]  # symbol -> reason
+    non_coding: dict[str, str]  # symbol -> reason
 
 
 def _adaptive_algorithm_params(adaptive: bool, n_permutations_small: int) -> dict[str, dict]:
@@ -255,13 +311,17 @@ def run_cohort_scan(
 
     genome_nexus_cache_dir = cache_dir / "genome_nexus_canonical_transcripts" if cache_dir else None
     pfam_description_cache_dir = cache_dir / "pfam_descriptions" if cache_dir else None
-    config_by_gene, source_by_gene, unresolved = _resolve_configs(
+    resolution = _resolve_configs(
         candidate_genes,
         genome_nexus_base_url=genome_nexus_base_url,
         genome_nexus_cache_dir=genome_nexus_cache_dir,
         pfam_description_cache_dir=pfam_description_cache_dir,
+        hgnc_cache_dir=cache_dir / "hgnc" if cache_dir else None,
         session=session,
     )
+    config_by_gene = resolution.config_by_gene
+    source_by_gene = resolution.source_by_gene
+    unresolved = resolution.unresolved
 
     genome_nexus_client = GenomeNexusClient(base_url=genome_nexus_base_url, session=session)
     algorithm_params = _adaptive_algorithm_params(adaptive, n_permutations_small)
@@ -275,15 +335,22 @@ def run_cohort_scan(
         symbol = gene.hugo_gene_symbol
         config = config_by_gene.get(symbol)
         if config is None:
+            is_non_coding = symbol in resolution.non_coding
+            reason = resolution.non_coding.get(symbol) or unresolved.get(symbol)
             outcomes.append(
                 GeneScanOutcome(
                     gene_symbol=symbol,
                     entrez_gene_id=gene.entrez_gene_id,
                     distinct_patient_count=gene.distinct_patient_count,
                     total_sv_count=gene.total_sv_count,
-                    config_source="unresolved",
+                    config_source="non_coding" if is_non_coding else "unresolved",
                     status="failed",
-                    error="No canonical transcript/protein could be resolved for this gene.",
+                    error=(
+                        f"Non-coding gene: {reason}."
+                        if is_non_coding
+                        else "No canonical transcript/protein could be resolved for this gene"
+                        + (f": {reason}." if reason else ".")
+                    ),
                 )
             )
             _report_progress(progress, index, len(candidate_genes), outcomes[-1], started)
@@ -361,6 +428,7 @@ def run_cohort_scan(
                     status="ok",
                     run=run,
                     p_value_rows=p_value_rows,
+                    transcript_source=resolution.transcript_source_by_gene.get(symbol),
                 )
             )
         except Exception as exc:  # noqa: BLE001 - a single gene must never abort the scan
@@ -434,6 +502,21 @@ def run_cohort_scan(
             f"{len(unresolved)} gated gene(s) had no resolvable canonical transcript in "
             f"Genome Nexus and were skipped: {', '.join(sorted(unresolved))}"
         )
+    if resolution.non_coding:
+        warnings.append(
+            f"{len(resolution.non_coding)} gated gene(s) are non-coding per HGNC; domain "
+            f"analysis does not apply: {', '.join(sorted(resolution.non_coding))}"
+        )
+    fallback_resolved = sorted(
+        symbol
+        for symbol, source in resolution.transcript_source_by_gene.items()
+        if source == "genome_nexus_single_gene_hgnc_verified"
+    )
+    if fallback_resolved:
+        warnings.append(
+            f"{len(fallback_resolved)} gated gene(s) were resolved by the HGNC-verified "
+            f"single-gene fallback: {', '.join(fallback_resolved)}"
+        )
 
     cooccurrence_discovery = None
     if discover_cooccurrence:
@@ -457,6 +540,8 @@ def run_cohort_scan(
         curated_gene_count=sum(1 for source in source_by_gene.values() if source == "curated"),
         auto_config_gene_count=sum(1 for source in source_by_gene.values() if source == "auto"),
         unresolved_gene_count=len(unresolved),
+        non_coding_gene_count=len(resolution.non_coding),
+        fallback_resolved_gene_count=len(fallback_resolved),
         gene_outcomes=outcomes,
         fdr_rows=fdr_rows,
         significant_genes=significant_genes,
