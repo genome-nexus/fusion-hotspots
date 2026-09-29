@@ -800,3 +800,21 @@ def test_discovery_failure_degrades_to_warning(mock_session, monkeypatch):
     )
     assert result.cooccurrence_discovery is None
     assert any("Co-occurrence discovery was skipped" in w for w in result.warnings)
+
+
+def test_summary_rows_carry_stratified_cmh_as_a_separate_family(mock_session):
+    from cfh.cohort.outputs import build_summary_rows
+
+    result = run_cohort_scan(
+        _STUDY_ID,
+        min_distinct_patients=5,
+        n_permutations=20,
+        adaptive=False,
+        session=mock_session,
+        algorithm_names=["domain_retention", "frequency"],
+    )
+    rows = build_summary_rows(result)
+    for row in rows:
+        assert "retention_cmh_p_value" in row
+        assert (row["retention_cmh_q_value"] is None) == (row["retention_cmh_p_value"] is None)
+    assert not any("cmh" in fdr_row["test"] for fdr_row in result.fdr_rows)

@@ -33,8 +33,9 @@ from cfh.stats.breakpoint_tests import (
     permutation_null_classifier,
     permutation_null_test,
 )
+from cfh.stats.stratification import stratified_cmh_summary, stratified_frame_domain_tables
 
-VERSION = "0.3.0"
+VERSION = "0.4.0"
 _DEFAULT_FULL_N_PERMUTATIONS = 10_000
 
 
@@ -75,6 +76,9 @@ class DomainDisruptionAlgorithm(Algorithm):
             events, features, gene_config, domains=domains, hit_statuses=DISRUPTED_STATUSES
         )
         odds_ratio, fisher_p_value = fishers_frame_domain_test(table)
+        tables_by_tumor_type = stratified_frame_domain_tables(
+            events, features, gene_config, domains=domains, hit_statuses=DISRUPTED_STATUSES
+        )
 
         seed = params.get("seed", 42)
         genome_nexus_client = params.get("genome_nexus_client")
@@ -116,6 +120,8 @@ class DomainDisruptionAlgorithm(Algorithm):
             "permutation_null_classifier": permutation_null_classifier(
                 features, gene_config, domains=domains
             ),
+            # Reported alongside the pooled Fisher test; not in the FDR family.
+            "tumor_type_stratified": stratified_cmh_summary(tables_by_tumor_type),
         }
         if budget["adaptive"]:
             summary["adaptive_permutations"] = {
@@ -137,6 +143,10 @@ class DomainDisruptionAlgorithm(Algorithm):
             Summary=summary,
             Tables={
                 "frame_domain_contingency_table": table,
+                "frame_domain_contingency_tables_by_tumor_type": [
+                    {"stratum": stratum, "table": stratum_table}
+                    for stratum, stratum_table in tables_by_tumor_type.items()
+                ],
                 "domain_disruption_descriptives": domain_retention_descriptive_table(
                     features, gene_config, domains=domains
                 ),

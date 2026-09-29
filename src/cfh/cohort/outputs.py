@@ -41,6 +41,7 @@ from cfh.reporting.manuscript_text import (
     render_manuscript_title,
 )
 from cfh.reporting.pdf import render_cohort_summary_pdf, render_manuscript_pdf
+from cfh.stats.multiple_testing import benjamini_hochberg
 
 _MANHATTAN_SVG_FILENAME = "manhattan.svg"
 _MANUSCRIPT_MARKDOWN_FILENAME = "paper.md"
@@ -98,6 +99,10 @@ _SUMMARY_FIELDNAMES = [
     "retention_fisher_fdr_significant",
     "disruption_fisher_q_value",
     "disruption_fisher_fdr_significant",
+    "retention_cmh_p_value",
+    "retention_cmh_q_value",
+    "retention_mh_common_odds_ratio",
+    "retention_informative_tumor_types",
     "top_composite_score",
     "top_composite_partner_gene",
     "error",
@@ -141,9 +146,25 @@ def build_summary_rows(result: CohortScanResult) -> list[dict]:
         and row.get("algorithm") in {"domain_retention", "domain_disruption"}
     }
     significant = set(result.significant_genes)
+    stratified_by_gene = {
+        outcome.gene_symbol: _algorithm_summary(outcome.run, "domain_retention").get(
+            "tumor_type_stratified"
+        )
+        or {}
+        for outcome in result.gene_outcomes
+    }
+    # The stratified CMH p-values form their own correction family, separate
+    # from the main FDR family that decides ``fdr_significant``.
+    cmh_hypotheses = [
+        (gene, "domain_retention:cmh", stratified["cmh_p_value"])
+        for gene, stratified in stratified_by_gene.items()
+        if isinstance(stratified.get("cmh_p_value"), float)
+    ]
+    cmh_q = {gene: q for gene, _, _, q in benjamini_hochberg(cmh_hypotheses)}
     rows: list[dict] = []
     for outcome in result.gene_outcomes:
         summary = outcome.run.summary if outcome.run is not None else {}
+        stratified = stratified_by_gene[outcome.gene_symbol]
         retention = _algorithm_summary(outcome.run, "domain_retention")
         disruption = _algorithm_summary(outcome.run, "domain_disruption")
         top_score, top_partner = _top_composite(outcome.run)
@@ -182,6 +203,10 @@ def build_summary_rows(result: CohortScanResult) -> list[dict]:
                 "retention_fisher_fdr_significant": (
                     None if retention_q is None else retention_q < result.significance_level
                 ),
+                "retention_cmh_p_value": stratified.get("cmh_p_value"),
+                "retention_cmh_q_value": cmh_q.get(outcome.gene_symbol),
+                "retention_mh_common_odds_ratio": stratified.get("mh_common_odds_ratio"),
+                "retention_informative_tumor_types": stratified.get("informative_strata"),
                 "disruption_fisher_q_value": disruption_q,
                 "disruption_fisher_fdr_significant": (
                     None if disruption_q is None else disruption_q < result.significance_level
@@ -369,7 +394,10 @@ def _write_summary_markdown(
         [
             "The minimum q-value and gene-level FDR flag may come from any tested algorithm. "
             "The retention/disruption Fisher q-value columns refer only to those effects; "
-            "blank means that specific test had no corrected q-value.",
+            "blank means that specific test had no corrected q-value. "
+            "The retention CMH columns stratify that test by OncoTree code; their "
+            "q-values are BH-adjusted across genes as a separate family and do not "
+            "affect the gene-level FDR flag.",
             "",
         ]
     )
