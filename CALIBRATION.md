@@ -32,3 +32,32 @@ python -m cfh.stats.independent_validation discovery.json validation.json --k 5
 Candidate labels must be independently sourced binary truth labels, and scores must be frozen from discovery patients before examining validation labels. The tool checks complete, comparable, disjoint patient IDs and finite paired scores. It reports descriptive average precision and precision at `k`, plus differences. Equal scores are grouped for average precision, and boundary ties receive fractional credit for precision at `k`; candidate order does not decide ties. The tool cannot verify the origins of the scores or labels. Without externally labeled, patient-disjoint data, no independent validation result can be claimed.
 
 `cfh compare-cohorts --require-patient-disjoint` adds a stricter guard to the pooled cohort comparison: every supplied event must carry a patient ID, both artifacts must declare the same `patient_id_namespace`, and neither patient nor sample IDs may overlap. Existing saved artifacts without that metadata can still produce nominal descriptive comparisons, but cannot pass the strict guard. Matching strings alone do not prove that external registries resolved patient identity correctly.
+
+## Reproducible pilot
+
+The [saved pilot](runs/calibration_20260929_seed42.json) used 50 replicates per
+scenario, 24 patients, 99 permutations, seed 42, and a 100-aa window. Rates below
+are scan-level rejections at `p < 0.05`, not across-gene FDR estimates.
+
+| Simulation | Cutpoint | Window |
+| --- | ---: | ---: |
+| Independent null | 3/50 (6%) | 1/50 (2%) |
+| Uneven-position null | 4/50 (8%) | 1/50 (2%) |
+| Planted cutpoint | 48/50 (96%) | 11/50 (22%) |
+| Planted narrow window | 3/50 (6%) | 7/50 (14%) |
+| Mapped boundary pile-up null | 2/50 (4%) | 2/50 (4%) |
+| Repeated-patient null | 30/50 (60%) | 44/50 (88%) |
+
+The JSON includes Wilson 95% intervals. With only 50 replicates, these are
+preliminary estimates for the specified simulations. For example, the repeated-
+patient null intervals are 46.2–72.4% and 76.2–94.4%; the independent-null intervals
+are 2.1–16.2% and 0.4–10.5%.
+
+The repeated-patient scenario copies each patient's position and label three
+times, then tests those copies with the existing event-level label permutation.
+The result demonstrates a violated exchangeability assumption. **Patient-aware
+inference is still required**; retaining patient IDs, sample-level expression
+deduplication, and overlap guards do not repair that permutation null. The weak
+planted-window sensitivity also argues for assessing power under realistic event
+counts and effect sizes before interpreting an absent signal. No external ranking
+validation was performed because independent labeled inputs were not supplied.
