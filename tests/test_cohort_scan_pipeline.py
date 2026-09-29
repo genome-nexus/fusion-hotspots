@@ -456,6 +456,9 @@ def test_cohort_scan_gracefully_skips_gene_genome_nexus_cannot_resolve(mock_sess
         return response
 
     mock_session.post.side_effect = _post_missing_fake1
+    # The HGNC-verified fallback must reject a single-gene payload whose
+    # Ensembl gene ID differs from HGNC's, keeping the gene unresolved.
+    _with_hgnc_record(mock_session, ensembl_gene_id="ENSG_NOT_FAKE1")
 
     result = run_cohort_scan(
         _STUDY_ID,
@@ -469,11 +472,92 @@ def test_cohort_scan_gracefully_skips_gene_genome_nexus_cannot_resolve(mock_sess
     outcomes_by_gene = {outcome.gene_symbol: outcome for outcome in result.gene_outcomes}
     assert outcomes_by_gene["FAKE1"].config_source == "unresolved"
     assert outcomes_by_gene["FAKE1"].status == "failed"
+    assert "ENSG_NOT_FAKE1" in outcomes_by_gene["FAKE1"].error
     assert result.unresolved_gene_count == 1
+    assert result.fallback_resolved_gene_count == 0
     assert any("FAKE1" in warning for warning in result.warnings)
     # Everything else still ran fine.
     assert outcomes_by_gene["BRAF"].status == "ok"
     assert outcomes_by_gene["FAKE2"].status == "ok"
+    assert outcomes_by_gene["FAKE2"].transcript_source == "genome_nexus_batch"
+
+
+def _with_hgnc_record(mock_session, *, ensembl_gene_id, locus_group="protein-coding gene"):
+    base_get = mock_session.get.side_effect
+
+    def _get(url, params=None, **kwargs):
+        if "rest.genenames.org/fetch/" in url:
+            response = MagicMock(status_code=200)
+            response.json.return_value = {
+                "response": {
+                    "docs": [
+                        {
+                            "symbol": "FAKE1",
+                            "ensembl_gene_id": ensembl_gene_id,
+                            "locus_group": locus_group,
+                        }
+                    ]
+                }
+            }
+            return response
+        return base_get(url, params=params, **kwargs)
+
+    mock_session.get.side_effect = _get
+
+
+def _drop_fake1_from_batch(mock_session):
+    base_post = mock_session.post.side_effect
+
+    def _post(url, json=None, **kwargs):
+        if url.endswith("/ensembl/canonical-transcript/hgnc"):
+            json = [symbol for symbol in json if symbol != "FAKE1"]
+        return base_post(url, json=json, **kwargs)
+
+    mock_session.post.side_effect = _post
+
+
+def test_cohort_scan_recovers_batch_miss_with_hgnc_verified_fallback(mock_session, tmp_path):
+    _drop_fake1_from_batch(mock_session)
+    _with_hgnc_record(mock_session, ensembl_gene_id="ENSG_FAKE1")
+
+    result = run_cohort_scan(
+        _STUDY_ID,
+        min_distinct_patients=5,
+        n_permutations=20,
+        adaptive=False,
+        cache_dir=tmp_path / "cache",
+        session=mock_session,
+        algorithm_names=["frequency"],
+    )
+
+    fake1 = next(o for o in result.gene_outcomes if o.gene_symbol == "FAKE1")
+    assert fake1.status == "ok"
+    assert fake1.config_source == "auto"
+    assert fake1.transcript_source == "genome_nexus_single_gene_hgnc_verified"
+    assert result.fallback_resolved_gene_count == 1
+    assert result.unresolved_gene_count == 0
+    assert (tmp_path / "cache" / "hgnc" / "entrez_id_9001.json").exists()
+
+
+def test_cohort_scan_labels_non_coding_genes_separately(mock_session):
+    _drop_fake1_from_batch(mock_session)
+    _with_hgnc_record(mock_session, ensembl_gene_id="ENSG_FAKE1", locus_group="non-coding RNA")
+
+    result = run_cohort_scan(
+        _STUDY_ID,
+        min_distinct_patients=5,
+        n_permutations=20,
+        adaptive=False,
+        session=mock_session,
+        algorithm_names=["frequency"],
+    )
+
+    fake1 = next(o for o in result.gene_outcomes if o.gene_symbol == "FAKE1")
+    assert fake1.config_source == "non_coding"
+    assert fake1.error.startswith("Non-coding gene")
+    assert result.non_coding_gene_count == 1
+    assert result.unresolved_gene_count == 0
+    assert any("non-coding per HGNC" in warning for warning in result.warnings)
 
 
 @pytest.mark.parametrize("gene_symbol", ["BRAF", "RET"])

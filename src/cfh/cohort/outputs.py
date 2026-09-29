@@ -83,6 +83,7 @@ such a gene would invent a verdict about a q-value that was never derived."""
 _SUMMARY_FIELDNAMES = [
     "gene_symbol",
     "config_source",
+    "transcript_source",
     "status",
     "distinct_patient_count",
     "total_sv_count",
@@ -153,6 +154,7 @@ def build_summary_rows(result: CohortScanResult) -> list[dict]:
             {
                 "gene_symbol": outcome.gene_symbol,
                 "config_source": outcome.config_source,
+                "transcript_source": outcome.transcript_source,
                 "status": outcome.status,
                 "distinct_patient_count": outcome.distinct_patient_count,
                 "total_sv_count": outcome.total_sv_count,
@@ -295,7 +297,11 @@ def _write_summary_markdown(
         f"recurrence gate: {result.genes_after_gating}",
         f"- Curated gene configs used: {result.curated_gene_count}",
         f"- Auto-generated gene configs used: {result.auto_config_gene_count}",
-        f"- Genes gated in but unresolvable (no Genome Nexus canonical transcript): "
+        f"- Auto-generated configs resolved by the HGNC-verified single-gene fallback: "
+        f"{result.fallback_resolved_gene_count}",
+        f"- Genes gated in but non-coding per HGNC (domain analysis not applicable): "
+        f"{result.non_coding_gene_count}",
+        f"- Genes gated in but unresolvable (no verified protein-coding transcript): "
         f"{result.unresolved_gene_count}",
         f"- FDR-significant genes (q < 0.05) after Benjamini-Hochberg correction across "
         f"all {len(rows)} scanned genes: {len(result.significant_genes)}",
@@ -968,6 +974,8 @@ def write_cohort_scan_outputs(
             "curated_gene_count": result.curated_gene_count,
             "auto_config_gene_count": result.auto_config_gene_count,
             "unresolved_gene_count": result.unresolved_gene_count,
+            "non_coding_gene_count": result.non_coding_gene_count,
+            "fallback_resolved_gene_count": result.fallback_resolved_gene_count,
             "significant_genes": result.significant_genes,
             "significance_level": result.significance_level,
             "generated_at": generated_at,
@@ -1026,6 +1034,8 @@ def write_cohort_scan_outputs(
         "curated_gene_count": result.curated_gene_count,
         "auto_config_gene_count": result.auto_config_gene_count,
         "unresolved_gene_count": result.unresolved_gene_count,
+        "non_coding_gene_count": result.non_coding_gene_count,
+        "fallback_resolved_gene_count": result.fallback_resolved_gene_count,
         "significant_genes": result.significant_genes,
         "significance_level": result.significance_level,
         "generated_at": generated_at,
