@@ -29,6 +29,7 @@ live-fetch step) still no-ops gracefully, with a warning distinct from the
 
 from __future__ import annotations
 
+import hashlib
 import json
 from datetime import datetime, timezone
 from typing import Any
@@ -227,7 +228,11 @@ class MutationCooccurrenceAlgorithm(Algorithm):
                     "eligibility_source": (
                         "joint_assay_metadata" if eligibility is not None else "caller_asserted"
                     ),
-                    "eligible_sample_ids": sorted(eligible),
+                    # A digest, not the ID list: on a 50k-sample cohort the
+                    # list would add ~50k strings to every row of results.json.
+                    "eligible_sample_ids_sha256": hashlib.sha256(
+                        "\n".join(sorted(eligible)).encode()
+                    ).hexdigest(),
                     "fusion_positive_sample_count": len(fusion_samples),
                     "comparator_altered_sample_count": len(comparator_samples),
                     "both_altered_sample_count": table[0][0],

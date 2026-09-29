@@ -248,3 +248,16 @@ def test_expression_by_sample_is_never_echoed_into_parameters():
     )
     assert "expression_by_sample" not in result.Parameters
     assert "cohort_sample_ids" not in result.Parameters
+
+
+def test_empty_eligible_universe_is_not_reported_as_missing_input():
+    events = [FusionEvent(Event_id="e0", Cohort="c", Sample_id="POS0")]
+    result = ExpressionAssociationAlgorithm().run(
+        events,
+        [],
+        None,
+        {"expression_by_sample": {"POS0": 1.0, "NEG0": 0.0}, "cohort_sample_ids": []},
+    )
+    assert "fusion_positive_vs_negative" not in result.Summary
+    assert not any("no cohort_sample_ids" in warning for warning in result.Warnings)
+    assert any("established SV assay coverage" in warning for warning in result.Warnings)

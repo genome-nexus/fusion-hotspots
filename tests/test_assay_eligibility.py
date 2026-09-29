@@ -144,3 +144,29 @@ def test_expression_background_requires_sv_coverage(monkeypatch):
     assert params["cohort_sample_ids"] == ["A"]
     assert set(params["expression_by_sample"]) == {"A", "B"}
     assert "1 measured samples excluded" in warning
+
+
+def test_shared_cache_fetches_panel_data_once_across_genes():
+    session = MagicMock()
+    session.post.return_value.json.return_value = [
+        {"sampleId": "S1", "profiled": True, "genePanelId": "A"},
+        {"sampleId": "S2", "profiled": True, "genePanelId": "A"},
+    ]
+    session.get.return_value.json.return_value = {"genes": [{"entrezGeneId": 673}]}
+    cache: dict = {}
+    first = cbioportal_api.fetch_gene_panel_eligibility(
+        "sv", "all", 673, session=session, cache=cache
+    )
+    second = cbioportal_api.fetch_gene_panel_eligibility(
+        "sv", "all", 5979, session=session, cache=cache
+    )
+    assert first == {"S1": True, "S2": True}
+    assert second == {"S1": False, "S2": False}
+    assert session.post.call_count == 1
+    assert session.get.call_count == 1
+
+    cbioportal_api.fetch_gene_panel_eligibility(
+        "mutations", "all", 673, session=session, cache=cache
+    )
+    assert session.post.call_count == 2
+    assert session.get.call_count == 1

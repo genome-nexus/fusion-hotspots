@@ -318,6 +318,12 @@ def analyze(
     help="Size of the 'honorable mentions' highly ranked non-FDR-significant tier: the top N "
     "genes by raw Fisher p-value among genes that did NOT survive genome-wide FDR correction.",
 )
+@click.option(
+    "--progress/--quiet",
+    default=True,
+    show_default=True,
+    help="Print one progress line per analyzed gene to stderr.",
+)
 @_HTML_OPTION
 def cohort_scan(
     study_id: str,
@@ -330,6 +336,7 @@ def cohort_scan(
     cache_dir: Path | None,
     pdf: bool,
     honorable_mention_count: int,
+    progress: bool,
     html: bool,
 ) -> None:
     """Genome-wide fusion-hotspot scan: gate cohort-wide SV recurrence, run
@@ -344,6 +351,7 @@ def cohort_scan(
             n_permutations_small=n_permutations_small,
             max_genes=max_genes,
             cache_dir=cache_dir or (output_dir / ".cohort_scan_cache"),
+            progress=(lambda line: click.echo(line, err=True)) if progress else None,
         )
         paths = write_cohort_scan_outputs(
             result, output_dir, pdf=pdf, honorable_mention_count=honorable_mention_count

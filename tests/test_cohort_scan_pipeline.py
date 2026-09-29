@@ -624,3 +624,21 @@ def test_manhattan_svg_is_wired_into_all_three_cohort_scan_outputs(mock_session,
         page.extract_text() or "" for page in PdfReader(str(paths["summary_pdf"])).pages
     )
     assert "manhattan" in pdf_text
+
+
+def test_cohort_scan_reports_progress_once_per_candidate_gene(mock_session, tmp_path):
+    lines: list[str] = []
+    result = run_cohort_scan(
+        _STUDY_ID,
+        min_distinct_patients=5,
+        n_permutations=20,
+        adaptive=False,
+        cache_dir=tmp_path / "cache",
+        session=mock_session,
+        algorithm_names=["frequency"],
+        progress=lines.append,
+    )
+    total = len(result.gene_outcomes)
+    assert len(lines) == total
+    for index, (line, outcome) in enumerate(zip(lines, result.gene_outcomes, strict=True), 1):
+        assert line.startswith(f"[{index}/{total}] {outcome.gene_symbol}: {outcome.status} (")

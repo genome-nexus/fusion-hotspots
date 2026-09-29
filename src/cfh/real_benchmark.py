@@ -1229,6 +1229,7 @@ def _fetch_mutual_exclusivity_params(
     *,
     base_url: str = cbioportal_api.DEFAULT_BASE_URL,
     session: requests.Session | None = None,
+    panel_cache: dict | None = None,
 ) -> tuple[dict[str, dict] | None, list[str]]:
     """Best-effort live fetch of the comparator alteration + cohort-sample-
     universe data ``mutation_cooccurrence`` needs, for a gene that opts in
@@ -1270,6 +1271,7 @@ def _fetch_mutual_exclusivity_params(
                 config.entrez_gene_id,
                 base_url=base_url,
                 session=session,
+                cache=panel_cache,
             )
         except (requests.RequestException, ValueError, TypeError) as exc:
             warnings.append(f"SV assay eligibility unavailable: {exc}")
@@ -1354,6 +1356,7 @@ def _fetch_mutual_exclusivity_params(
                 target.entrez_gene_id,
                 base_url=base_url,
                 session=session,
+                cache=panel_cache,
             )
             eligible_sample_ids_by_target[target_key] = sorted(
                 sample
@@ -1389,6 +1392,7 @@ def _fetch_expression_association_params(
     *,
     base_url: str = cbioportal_api.DEFAULT_BASE_URL,
     session: requests.Session | None = None,
+    panel_cache: dict | None = None,
 ) -> tuple[dict[str, Any], str | None]:
     """Best-effort live mRNA-expression fetch feeding the
     ``expression_association`` algorithm.
@@ -1438,6 +1442,7 @@ def _fetch_expression_association_params(
             config.entrez_gene_id,
             base_url=base_url,
             session=session,
+            cache=panel_cache,
         )
         eligible_samples = sorted(
             sample for sample in expression_by_sample if sv_eligibility.get(sample) is True
@@ -1504,9 +1509,10 @@ def run_real_benchmark(
         name: dict(value) for name, value in (algorithm_params or {}).items()
     }
     extra_warnings: list[str] = []
+    panel_cache: dict = {}
     if config.mutual_exclusivity_targets:
         mutual_exclusivity_params, fetch_warnings = _fetch_mutual_exclusivity_params(
-            config, study_id, study_config
+            config, study_id, study_config, panel_cache=panel_cache
         )
         extra_warnings.extend(fetch_warnings)
         if mutual_exclusivity_params:
@@ -1529,7 +1535,7 @@ def run_real_benchmark(
 
     resolved_algorithm_params: dict[str, dict] = dict(caller_algorithm_params)
     expression_params, expression_warning = _fetch_expression_association_params(
-        config, study_config, study_id
+        config, study_config, study_id, panel_cache=panel_cache
     )
     if expression_params:
         resolved_algorithm_params["expression_association"] = {

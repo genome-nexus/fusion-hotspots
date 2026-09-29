@@ -4,11 +4,11 @@ This is the capstone aggregation algorithm: it consumes the already-computed
 :class:`~cfh.model.algorithm_result.AlgorithmResult` objects produced by the
 other registered algorithms (run via :func:`cfh.orchestrator.run.run_algorithms`)
 and combines them into a single, interpretable, per-fusion-partner ranked
-    prioritization score. It is not a calibrated probability of functional
-    relevance. It never re-runs a Fisher's-exact
-test, a permutation test, or an MLE/CI computation itself -- those numbers
-are read straight out of the upstream results' ``Summary`` blocks. The only
-new computation this module performs is (a) a documented normalization of
+prioritization score. It is not a calibrated probability of functional
+relevance. It never re-runs a Fisher's-exact test, a permutation test, or
+an MLE/CI computation itself -- those numbers are read straight out of the
+upstream results' ``Summary`` blocks. The only new computation this module
+performs is (a) a documented normalization of
 each upstream number onto a common ``[0, 1]`` scale, (b) joining each
 partner gene's own breakpoints against an already-inferred cutpoint to
 measure per-partner proximity, and (c) a weighted average of whichever
@@ -46,8 +46,8 @@ p-value)
     average for that gene -- never treated as zero evidence.
 
 ``cutpoint_proximity`` (present only when ``cutpoint_detection`` produced a
-    determinable cutpoint with corrected p < 0.05, and only for partners with at least one mapped
-breakpoint)
+determinable cutpoint with corrected p < 0.05, and only for partners with at
+least one mapped breakpoint)
     The one genuinely partner-varying statistical sub-score. For each
     partner, the mean absolute distance (in amino acids) between that
     partner's mapped breakpoints and the already-inferred cutpoint

@@ -260,8 +260,8 @@ is fetched through the [cBioPortal API](https://www.cbioportal.org/api/v3/api-do
 Unprofiled samples and unknown coverage are excluded; missing panel metadata is
 conservatively treated as unknown, including studies that do not document their
 genome-wide coverage. An unavailable eligibility source skips the comparison.
-Each tested target records its eligible sample IDs and exclusion counts. This
-follows the distinction between assayed and off-panel genes described in the
+Each tested target records its eligible sample count, a SHA-256 digest of the
+sorted eligible sample IDs, and exclusion counts. This follows the distinction between assayed and off-panel genes described in the
 [cBioPortal profiling FAQ](https://docs.cbioportal.org/user-guide/faq/).
 
 The live fusion-positive/negative expression comparison likewise requires SV gene

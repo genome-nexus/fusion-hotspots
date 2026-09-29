@@ -14,6 +14,8 @@ as that gene's own outcome -- it never aborts the whole scan.
 
 from __future__ import annotations
 
+import time
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -163,6 +165,26 @@ def _adaptive_algorithm_params(adaptive: bool, n_permutations_small: int) -> dic
     }
 
 
+def _report_progress(
+    progress: Callable[[str], None] | None,
+    index: int,
+    total: int,
+    outcome: GeneScanOutcome,
+    started: float,
+) -> None:
+    if progress is None:
+        return
+    detail = (
+        f"{len(outcome.run.events)} events"
+        if outcome.run is not None
+        else outcome.error or outcome.status
+    )
+    progress(
+        f"[{index}/{total}] {outcome.gene_symbol}: {outcome.status} "
+        f"({time.monotonic() - started:.1f}s; {detail})"
+    )
+
+
 def run_cohort_scan(
     study_id: str,
     *,
@@ -176,6 +198,7 @@ def run_cohort_scan(
     cbioportal_base_url: str = cbioportal_api.DEFAULT_BASE_URL,
     cache_dir: str | Path | None = None,
     session: "requests.Session | None" = None,
+    progress: Callable[[str], None] | None = None,
 ) -> CohortScanResult:
     """Run the full genome-wide cohort scan for ``study_id``.
 
@@ -190,6 +213,9 @@ def run_cohort_scan(
     analyzed (after sorting by recurrence), for a bounded test/demo run;
     the reported ``total_genes_before_gating``/``genes_after_gating``
     counts are unaffected by this cap and always describe the full cohort.
+
+    ``progress``, when supplied, receives one human-readable line per
+    analyzed gene (index, symbol, status, elapsed seconds).
     """
     algorithm_names = algorithm_names or list_algorithms()
     cache_dir = Path(cache_dir) if cache_dir else None
@@ -230,7 +256,10 @@ def run_cohort_scan(
 
     outcomes: list[GeneScanOutcome] = []
     warnings: list[str] = []
-    for gene in candidate_genes:
+    # Gene-panel coverage is gene-independent, so share it across genes.
+    panel_cache: dict = {}
+    for index, gene in enumerate(candidate_genes, start=1):
+        started = time.monotonic()
         symbol = gene.hugo_gene_symbol
         config = config_by_gene.get(symbol)
         if config is None:
@@ -245,6 +274,7 @@ def run_cohort_scan(
                     error="No canonical transcript/protein could be resolved for this gene.",
                 )
             )
+            _report_progress(progress, index, len(candidate_genes), outcomes[-1], started)
             continue
 
         try:
@@ -263,14 +293,24 @@ def run_cohort_scan(
             evidence_warnings: list[str] = []
             if "mutation_cooccurrence" in algorithm_names and config.mutual_exclusivity_targets:
                 comparator_params, fetch_warnings = _fetch_mutual_exclusivity_params(
-                    config, study_id, study_config, base_url=cbioportal_base_url, session=session
+                    config,
+                    study_id,
+                    study_config,
+                    base_url=cbioportal_base_url,
+                    session=session,
+                    panel_cache=panel_cache,
                 )
                 evidence_warnings.extend(fetch_warnings)
                 if comparator_params:
                     gene_algorithm_params.update(comparator_params)
             if "expression_association" in algorithm_names:
                 expression_params, expression_warning = _fetch_expression_association_params(
-                    config, study_config, study_id, base_url=cbioportal_base_url, session=session
+                    config,
+                    study_config,
+                    study_id,
+                    base_url=cbioportal_base_url,
+                    session=session,
+                    panel_cache=panel_cache,
                 )
                 if expression_params:
                     gene_algorithm_params["expression_association"] = expression_params
@@ -323,6 +363,7 @@ def run_cohort_scan(
                     error=f"{type(exc).__name__}: {exc}",
                 )
             )
+        _report_progress(progress, index, len(candidate_genes), outcomes[-1], started)
 
     all_p_rows = [row for outcome in outcomes for row in outcome.p_value_rows]
     hypotheses = [

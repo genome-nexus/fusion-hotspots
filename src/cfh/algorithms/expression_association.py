@@ -233,10 +233,16 @@ class ExpressionAssociationAlgorithm(Algorithm):
         cohort_sample_ids: Optional[list[str]],
         gene_name: str,
     ) -> tuple[Optional[dict[str, Any]], Optional[str]]:
-        if not cohort_sample_ids:
+        if cohort_sample_ids is None:
             return None, (
                 f"{gene_name}: fusion-positive-vs-negative expression comparison skipped; "
                 "no cohort_sample_ids was supplied to determine the fusion-negative group."
+            )
+        if not cohort_sample_ids:
+            return None, (
+                f"{gene_name}: fusion-positive-vs-negative expression comparison skipped; "
+                "no sample had both established SV assay coverage and measured expression, "
+                "so no fusion-negative group could be defined."
             )
         positive_sample_ids = {event.Sample_id for event in events if event.Sample_id} & set(
             cohort_sample_ids
