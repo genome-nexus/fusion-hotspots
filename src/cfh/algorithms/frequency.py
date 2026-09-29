@@ -30,16 +30,28 @@ def _partner_gene(event: FusionEvent, target_gene: str) -> str:
     return "unknown"
 
 
-def _deduplication_key(event: FusionEvent) -> str:
-    """Use patient identity when present, preserving events without one."""
-    return event.Patient_id or event.Sample_id or event.Event_id
+def _deduplication_key(event: FusionEvent, partner_gene: str) -> tuple[str, str, str, str]:
+    """Count a partner once per patient, falling back to sample or event identity.
+
+    The identity type and cohort are part of the key so unrelated records
+    cannot collide when identifiers are reused across cohorts or namespaces.
+    """
+    if event.Patient_id:
+        return (event.Cohort, "patient", event.Patient_id, partner_gene)
+    if event.Sample_id:
+        return (event.Cohort, "sample", event.Sample_id, partner_gene)
+    return (event.Cohort, "event", event.Event_id, partner_gene)
+
+
+def _identity_count(events: list[FusionEvent], field: str) -> int:
+    return len({(event.Cohort, value) for event in events if (value := getattr(event, field))})
 
 
 @register("frequency")
 class FrequencyAnalysis(Algorithm):
     """Count fusion partner genes for the configured target gene."""
 
-    VERSION = "1.0.0"
+    VERSION = "1.1.0"
 
     def run(
         self,
@@ -48,24 +60,63 @@ class FrequencyAnalysis(Algorithm):
         gene_config: GeneConfig,
         params: dict,
     ) -> AlgorithmResult:
-        """Return partner-gene counts, optionally retaining one event per patient."""
+        """Return partner counts, optionally counting each patient-partner once."""
         del features
         dedup_by_patient = bool(params.get("dedup_by_patient", False))
+        partners = [_partner_gene(event, gene_config.gene_symbol) for event in events]
         analyzed_events = events
+        analyzed_partners = partners
         if dedup_by_patient:
-            seen: set[str] = set()
+            seen: set[tuple[str, str, str, str]] = set()
             analyzed_events = []
-            for event in events:
-                key = _deduplication_key(event)
+            analyzed_partners = []
+            for event, partner in zip(events, partners, strict=True):
+                key = _deduplication_key(event, partner)
                 if key not in seen:
                     seen.add(key)
                     analyzed_events.append(event)
+                    analyzed_partners.append(partner)
 
-        counts = Counter(_partner_gene(event, gene_config.gene_symbol) for event in analyzed_events)
+        counts = Counter(analyzed_partners)
+        raw_counts = Counter(partners)
         table = [
-            {"Partner_gene": partner_gene, "Event_count": count}
+            {
+                "Partner_gene": partner_gene,
+                # Legacy field: under patient deduplication this counts
+                # patient-partner units, not raw fusion events.
+                "Event_count": count,
+                "Raw_event_count": raw_counts[partner_gene],
+                "Sample_count": _identity_count(
+                    [
+                        event
+                        for event, partner in zip(events, partners, strict=True)
+                        if partner == partner_gene
+                    ],
+                    "Sample_id",
+                ),
+                "Patient_count": _identity_count(
+                    [
+                        event
+                        for event, partner in zip(events, partners, strict=True)
+                        if partner == partner_gene
+                    ],
+                    "Patient_id",
+                ),
+            }
             for partner_gene, count in sorted(counts.items())
         ]
+
+        missing_patient_events = sum(not event.Patient_id for event in events)
+        missing_patient_with_sample = sum(
+            not event.Patient_id and bool(event.Sample_id) for event in events
+        )
+        warnings = []
+        if dedup_by_patient and missing_patient_events:
+            warnings.append(
+                f"Patient_id is missing for {missing_patient_events} input events; "
+                f"deduplication used Sample_id for {missing_patient_with_sample} and "
+                f"Event_id for {missing_patient_events - missing_patient_with_sample}."
+            )
 
         return AlgorithmResult(
             Algorithm="frequency",
@@ -73,10 +124,17 @@ class FrequencyAnalysis(Algorithm):
             Parameters={"dedup_by_patient": dedup_by_patient},
             Summary={
                 "input_event_count": len(events),
+                "input_sample_count": _identity_count(events, "Sample_id"),
+                "input_patient_count": _identity_count(events, "Patient_id"),
+                "input_missing_patient_id_event_count": missing_patient_events,
                 "analyzed_event_count": len(analyzed_events),
+                "counted_unit_count": len(analyzed_events),
+                "analyzed_sample_count": _identity_count(analyzed_events, "Sample_id"),
+                "analyzed_patient_count": _identity_count(analyzed_events, "Patient_id"),
+                "count_unit": "patient_partner" if dedup_by_patient else "event",
                 "unique_partner_gene_count": len(counts),
             },
             Tables={"Partner_gene_counts": table},
-            Warnings=[],
+            Warnings=warnings,
             Created_at=datetime.now(timezone.utc),
         )

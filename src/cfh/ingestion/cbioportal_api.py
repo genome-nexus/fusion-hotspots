@@ -48,6 +48,7 @@ def _retry_sleep_seconds(backoff_seconds: float, attempt: int) -> float:
 
 _API_TO_NORMALIZED_COLUMNS = {
     "sampleId": "Sample_Id",
+    "patientId": "Patient_Id",
     "site1HugoSymbol": "Site1_Hugo_Symbol",
     "site1Chromosome": "Site1_Chromosome",
     "site1Position": "Site1_Position",
@@ -366,8 +367,8 @@ def fetch_sample_tumor_types(
     session: requests.Session | None = None,
     timeout: float = 30,
 ) -> pd.DataFrame:
-    """Fetch optional sample annotations without changing patient/grouping metadata."""
-    columns = ["Sample_id", "Tumor_type", "Oncotree_code"]
+    """Fetch sample annotations, retaining patient identity when the API supplies it."""
+    columns = ["Sample_id", "Patient_id", "Tumor_type", "Oncotree_code"]
     ids = sorted(set(sample_ids))
     if not ids:
         return pd.DataFrame(columns=columns)
@@ -392,5 +393,63 @@ def fetch_sample_tumor_types(
         if sample_id in ids and field:
             row = rows.setdefault(sample_id, dict.fromkeys(columns))
             row["Sample_id"] = sample_id
+            if record.get("patientId"):
+                row["Patient_id"] = record["patientId"]
             row[field] = record.get("value") or None
     return pd.DataFrame(rows.values(), columns=columns)
+
+
+def fetch_gene_panel_eligibility(
+    molecular_profile_id: str,
+    sample_list_id: str,
+    entrez_gene_id: int,
+    *,
+    base_url: str = DEFAULT_BASE_URL,
+    session: requests.Session | None = None,
+    timeout: float = 30,
+) -> dict[str, bool | None]:
+    """Resolve gene-specific assay eligibility from profile and panel metadata.
+
+    An absent panel is unknown coverage, not a negative call. Only explicit
+    profile participation AND panel membership establish eligibility. This is
+    deliberately conservative for studies that omit coverage metadata.
+    """
+    session = session or requests.Session()
+    response = session.post(
+        f"{base_url.rstrip('/')}/molecular-profiles/{molecular_profile_id}/gene-panel-data/fetch",
+        json={"sampleListId": sample_list_id},
+        timeout=timeout,
+    )
+    response.raise_for_status()
+    records = response.json()
+    if not isinstance(records, list):
+        raise ValueError("Gene-panel data must be a list")
+    panels: dict[str, set[int]] = {}
+    eligibility: dict[str, bool | None] = {}
+    for record in records:
+        if not isinstance(record, dict) or not record.get("sampleId"):
+            raise ValueError("Gene-panel data contains a record without sampleId")
+        sample_id = str(record["sampleId"])
+        panel = record.get("genePanelId")
+        eligible: bool | None = None
+        if record.get("profiled") is False:
+            eligible = False
+        elif record.get("profiled") is True and panel and panel != "NA":
+            if panel not in panels:
+                panel_response = session.get(
+                    f"{base_url.rstrip('/')}/gene-panels/{panel}", timeout=timeout
+                )
+                panel_response.raise_for_status()
+                panel_payload = panel_response.json()
+                genes = panel_payload.get("genes") if isinstance(panel_payload, dict) else None
+                if not isinstance(genes, list) or any(
+                    not isinstance(gene, dict) or not isinstance(gene.get("entrezGeneId"), int)
+                    for gene in genes
+                ):
+                    raise ValueError(f"Gene panel {panel!r} has invalid gene membership")
+                panels[panel] = {gene["entrezGeneId"] for gene in genes}
+            eligible = entrez_gene_id in panels[panel]
+        if sample_id in eligibility and eligibility[sample_id] != eligible:
+            raise ValueError(f"Conflicting profile eligibility for sample {sample_id!r}")
+        eligibility[sample_id] = eligible
+    return eligibility

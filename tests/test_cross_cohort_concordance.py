@@ -92,6 +92,35 @@ def test_reject_duplicate_cohort_and_mixed_genes(tmp_path):
         compare_cohort_runs([first])
 
 
+def test_patient_disjoint_guard_rejects_overlap_and_missing_ids(tmp_path):
+    first = write_run(tmp_path, "one")
+    second = write_run(tmp_path, "two")
+    with pytest.raises(ValueError, match="requires patient IDs"):
+        compare_cohort_runs([first, second], require_patient_disjoint=True)
+
+    for path, patient in ((first, "P1"), (second, "P1")):
+        payload = json.loads(path.read_text())
+        payload["events"] = [{"sample_id": path.stem, "patient_id": patient}]
+        payload["patient_id_namespace"] = "registry-1"
+        path.write_text(json.dumps(payload))
+    report = compare_cohort_runs([first, second])
+    assert report["patient_overlaps"][0]["shared_patient_id_count"] == 1
+    assert report["patient_disjoint_observed_events"] is False
+    with pytest.raises(ValueError, match="shared patient IDs"):
+        compare_cohort_runs([first, second], require_patient_disjoint=True)
+
+    payload = json.loads(second.read_text())
+    payload["events"][0]["patient_id"] = "P2"
+    second.write_text(json.dumps(payload))
+    report = compare_cohort_runs([first, second], require_patient_disjoint=True)
+    assert report["patient_disjoint_observed_events"] is True
+    cli = CliRunner().invoke(
+        main, ["compare-cohorts", str(first), str(second), "--require-patient-disjoint"]
+    )
+    assert cli.exit_code == 0, cli.output
+    assert json.loads(cli.output)["patient_disjoint_observed_events"] is True
+
+
 @pytest.mark.parametrize("payload", ["{}", "null", "not json", '{"gene_symbol": "X"}'])
 def test_bad_artifacts_are_cli_errors(tmp_path, payload):
     bad = tmp_path / "bad.json"
@@ -100,3 +129,24 @@ def test_bad_artifacts_are_cli_errors(tmp_path, payload):
     result = CliRunner().invoke(main, ["compare-cohorts", str(bad), str(good)])
     assert result.exit_code == 1
     assert "Invalid run artifact" in result.output
+
+
+def test_strict_cli_rejects_unknown_identity_and_accepts_disjoint_declared_namespace(tmp_path):
+    paths = [write_run(tmp_path, study) for study in ("one", "two")]
+    args = ["compare-cohorts", *map(str, paths), "--require-patient-disjoint"]
+    result = CliRunner().invoke(main, args)
+    assert result.exit_code == 1
+    assert "requires patient IDs" in result.output
+    for index, path in enumerate(paths):
+        payload = json.loads(path.read_text())
+        payload["events"] = [{"patient_id": f"P{index}", "sample_id": f"S{index}"}]
+        payload["patient_id_namespace"] = "shared-registry"
+        path.write_text(json.dumps(payload))
+    result = CliRunner().invoke(main, args)
+    assert result.exit_code == 0, result.output
+    assert json.loads(result.output)["patient_disjoint_observed_events"] is True
+    payload["patient_id_namespace"] = "incomparable-registry"
+    paths[-1].write_text(json.dumps(payload))
+    result = CliRunner().invoke(main, args)
+    assert result.exit_code == 1
+    assert "shared patient ID namespace" in result.output

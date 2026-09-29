@@ -93,6 +93,10 @@ _SUMMARY_FIELDNAMES = [
     "permutation_p_value",
     "min_fdr_adjusted_q_value",
     "fdr_significant",
+    "retention_fisher_q_value",
+    "retention_fisher_fdr_significant",
+    "disruption_fisher_q_value",
+    "disruption_fisher_fdr_significant",
     "top_composite_score",
     "top_composite_partner_gene",
     "error",
@@ -129,6 +133,12 @@ def build_summary_rows(result: CohortScanResult) -> list[dict]:
     last, tie-broken by descending recurrence).
     """
     min_q_by_gene = per_gene_min_q_value(result)
+    fisher_q = {
+        (row["gene"], row["algorithm"]): row["bh_adjusted_q"]
+        for row in result.fdr_rows
+        if row.get("test") == "fisher"
+        and row.get("algorithm") in {"domain_retention", "domain_disruption"}
+    }
     significant = set(result.significant_genes)
     rows: list[dict] = []
     for outcome in result.gene_outcomes:
@@ -137,6 +147,8 @@ def build_summary_rows(result: CohortScanResult) -> list[dict]:
         disruption = _algorithm_summary(outcome.run, "domain_disruption")
         top_score, top_partner = _top_composite(outcome.run)
         q_value = min_q_by_gene.get(outcome.gene_symbol)
+        retention_q = fisher_q.get((outcome.gene_symbol, "domain_retention"))
+        disruption_q = fisher_q.get((outcome.gene_symbol, "domain_disruption"))
         rows.append(
             {
                 "gene_symbol": outcome.gene_symbol,
@@ -164,6 +176,14 @@ def build_summary_rows(result: CohortScanResult) -> list[dict]:
                 # "did not reach FDR significance" verdict for a gene that
                 # was never actually tested.
                 "fdr_significant": None if q_value is None else outcome.gene_symbol in significant,
+                "retention_fisher_q_value": retention_q,
+                "retention_fisher_fdr_significant": (
+                    None if retention_q is None else retention_q < result.significance_level
+                ),
+                "disruption_fisher_q_value": disruption_q,
+                "disruption_fisher_fdr_significant": (
+                    None if disruption_q is None else disruption_q < result.significance_level
+                ),
                 "top_composite_score": top_score,
                 "top_composite_partner_gene": top_partner,
                 "error": outcome.error,
@@ -339,6 +359,14 @@ def _write_summary_markdown(
         ]
     )
     lines.extend(["## Scanned genes (sorted by significance)", ""])
+    lines.extend(
+        [
+            "The minimum q-value and gene-level FDR flag may come from any tested algorithm. "
+            "The retention/disruption Fisher q-value columns refer only to those effects; "
+            "blank means that specific test had no corrected q-value.",
+            "",
+        ]
+    )
     lines.append("| " + " | ".join(_SUMMARY_FIELDNAMES) + " |")
     lines.append("|" + "---|" * len(_SUMMARY_FIELDNAMES))
     for row in rows:

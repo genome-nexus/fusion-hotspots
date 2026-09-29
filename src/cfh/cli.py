@@ -99,10 +99,19 @@ def compare_genes(run_artifacts: tuple[Path, ...], output_path: Path) -> None:
     type=click.Path(path_type=Path, dir_okay=False),
     help="Optional JSON report path; the report is always printed to stdout.",
 )
-def compare_cohorts(run_artifacts: tuple[Path, ...], output_path: Path | None) -> None:
+@click.option(
+    "--require-patient-disjoint",
+    is_flag=True,
+    help="Reject incomplete patient metadata or overlapping patients before comparing cohorts.",
+)
+def compare_cohorts(
+    run_artifacts: tuple[Path, ...], output_path: Path | None, require_patient_disjoint: bool
+) -> None:
     """CMH-test saved frame/domain tables for one gene across cohorts (offline)."""
     try:
-        report = compare_cohort_runs(list(run_artifacts))
+        report = compare_cohort_runs(
+            list(run_artifacts), require_patient_disjoint=require_patient_disjoint
+        )
         rendered = json.dumps(report, indent=2, allow_nan=False) + "\n"
         if output_path is not None:
             output_path.parent.mkdir(parents=True, exist_ok=True)

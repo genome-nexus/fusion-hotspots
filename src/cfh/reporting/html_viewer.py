@@ -858,11 +858,22 @@ def _mechanistic_effect_html(
         _esc(_format_summary_value(odds_ratio)) if odds_ratio is not None else "unavailable"
     )
     stats_phrase = f"p={p_display}, odds ratio={odds_display}"
+    q_value = summary.get(f"{effect}_fdr_q_value")
+    if isinstance(q_value, (int, float)) and not isinstance(q_value, bool):
+        q_phrase = f"Fisher FDR q={_esc(_format_summary_value(q_value))}"
+        fdr_supported = summary.get(f"{effect}_fdr_significant") is True
+        evidence_phrase = "FDR-supported association" if fdr_supported else "not FDR-significant"
+    else:
+        q_phrase = "Fisher FDR q unavailable"
+        evidence_phrase = "FDR support unknown"
 
     if not summary.get(f"{effect}_statistically_supported"):
+        reason = (
+            "no Fisher test result available" if p_value is None else "nominal Fisher gate not met"
+        )
         callout = (
-            f"<strong>{domain_phrase} {label}:</strong> not statistically significant "
-            f"({stats_phrase}) &mdash; too weak to draw a conclusion."
+            f"<strong>{domain_phrase} {label}:</strong> {reason} "
+            f"({stats_phrase}; {q_phrase}) &mdash; too weak to draw a conclusion."
         )
         return f"<p>{callout}</p>", callout
 
@@ -872,7 +883,8 @@ def _mechanistic_effect_html(
     percent = summary.get(f"{effect}_counter_intuitive_percent")
 
     supported_phrase = (
-        f"<strong>{domain_phrase} {label}:</strong> statistically supported ({stats_phrase})"
+        f"<strong>{domain_phrase} {label}:</strong> nominal Fisher association "
+        f"({stats_phrase}; {q_phrase}; {evidence_phrase})"
     )
     if confidence == "none":
         callout = f"{supported_phrase}; no counter-intuitive events observed."
@@ -883,7 +895,7 @@ def _mechanistic_effect_html(
         f"<p>{supported_phrase}, but {count}/{total} in-frame events ({percent_text}) "
         "show the opposite status.</p>"
     ]
-    if confidence == "possible_subcluster":
+    if confidence in {"recurrent_partner_heuristic", "possible_subcluster"}:
         recurrent = tables.get(f"{effect}_counter_intuitive_recurrent_partners") or []
         partner_phrase = ", ".join(
             f"{_esc(str(row.get('partner_gene')))} (&times;{_esc(str(row.get('count')))})"
@@ -891,25 +903,24 @@ def _mechanistic_effect_html(
         )
         callout = (
             f"{supported_phrase}; {count}/{total} events ({percent_text}) show the opposite "
-            f"status, recurring around {partner_phrase} &mdash; flagged as a possible subcluster."
+            f"status, recurring around {partner_phrase} &mdash; descriptive recurrence flag."
         )
         body.append(
             f'<p class="panel-note">{partner_phrase} recur among just these counter-intuitive '
-            "events &mdash; a candidate subgroup that may follow a distinct, not-yet-curated "
-            "mechanism. Flagged for manual curator review, not asserted as a confirmed "
-            "alternate mechanism.</p>"
+            "events &mdash; a descriptive count threshold, not a statistical subcluster "
+            "test. Flagged for manual review; no alternate mechanism is inferred.</p>"
         )
     else:
         threshold = summary.get(f"{effect}_recurrent_partner_threshold")
         callout = (
             f"{supported_phrase}; {count}/{total} events ({percent_text}) show the opposite "
-            "status, spread across distinct partners &mdash; consistent with background noise."
+            "status; no partner reaches the recurrence threshold."
         )
         body.append(
             '<p class="panel-note">Spread across distinct partner genes with no partner '
-            f"recurring {_esc(str(threshold))}+ times among them &mdash; consistent with "
-            "background noise or individual passenger events rather than a distinct recurrent "
-            "subgroup; too weak to infer an alternate mechanism from this cohort alone.</p>"
+            f"recurring {_esc(str(threshold))}+ times among them &mdash; "
+            "this descriptive rule did not flag a recurrent partner. This does not establish "
+            "that these events are background noise or passengers.</p>"
         )
 
     events_table = tables.get(f"{effect}_counter_intuitive_events") or []
@@ -942,7 +953,7 @@ def _mechanistic_effect_html(
 
 def _mechanistic_interpretation_section(payload: dict) -> tuple[str, str]:
     """The full "Mechanistic interpretation" section (curated mechanism
-    text plus ``mechanistic_interpretation``'s purely-statistical
+    text plus ``mechanistic_interpretation``'s nominal-test and descriptive
     counter-intuitive-event flagging) and, separately, a compact
     top-of-page callout summarizing the same findings in one glance.
     Returns ``("", "")`` when there is nothing to say (no curated

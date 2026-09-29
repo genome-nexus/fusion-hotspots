@@ -334,6 +334,40 @@ def run_cohort_scan(
         for row, (_, _, _, q_value) in zip(all_p_rows, adjusted, strict=True)
     ]
 
+    # The mechanism algorithm runs before cross-gene correction. Add only
+    # the q-value for this effect's Fisher test; a gene's minimum q-value
+    # may belong to a different algorithm and cannot support this claim.
+    fisher_q = {
+        (row["gene"], row["algorithm"]): row["bh_adjusted_q"]
+        for row in fdr_rows
+        if row["test"] == "fisher" and row["algorithm"] in {"domain_retention", "domain_disruption"}
+    }
+    for outcome in outcomes:
+        if outcome.run is None:
+            continue
+        mechanism = next(
+            (
+                item
+                for item in outcome.run.results
+                if item.Algorithm == "mechanistic_interpretation"
+            ),
+            None,
+        )
+        if mechanism is None or not mechanism.Summary:
+            continue
+        for effect in ("retention", "disruption"):
+            q_value = fisher_q.get((outcome.gene_symbol, f"domain_{effect}"))
+            if q_value is None:
+                continue
+            mechanism.Summary[f"{effect}_fdr_q_value"] = q_value
+            mechanism.Summary[f"{effect}_fdr_significant"] = q_value < significance_level
+            mechanism.Summary[f"{effect}_fisher_evidence_status"] = (
+                "fdr_supported"
+                if mechanism.Summary.get(f"{effect}_nominal_fisher_supported")
+                and q_value < significance_level
+                else "not_fdr_supported"
+            )
+
     per_gene_min_q: dict[str, float] = {}
     for row in fdr_rows:
         gene = row["gene"]

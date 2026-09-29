@@ -196,6 +196,16 @@ def mock_session() -> MagicMock:
                 if entrez_id in entrez_ids
             )
             response.json.return_value = _sv_calls_for_gene(gene_symbol)
+        elif url.endswith("/gene-panel-data/fetch"):
+            assert "/molecular-profiles/" in url
+            assert json["sampleListId"] in {f"{_STUDY_ID}_all", f"{_STUDY_ID}_eligible"}
+            response.json.return_value = [
+                {"sampleId": sample_id, "profiled": True, "genePanelId": "TEST"}
+                for sample_id in (
+                    [call["sampleId"] for gene in _GENE_SPECS for call in _sv_calls_for_gene(gene)]
+                    + ["NEG-1", "NEG-2"]
+                )
+            ]
         elif url.endswith("/ensembl/canonical-transcript/hgnc"):
             requested = json
             payloads = []
@@ -209,6 +219,11 @@ def mock_session() -> MagicMock:
 
     def _get(url, params=None, **kwargs):
         response = MagicMock(status_code=200)
+        if url.endswith("/gene-panels/TEST"):
+            response.json.return_value = {
+                "genes": [{"entrezGeneId": spec[0]} for spec in _GENE_SPECS.values()]
+            }
+            return response
         if url.endswith("/sample-ids"):
             response.json.return_value = [
                 call["sampleId"] for call in _sv_calls_for_gene("BRAF")
@@ -295,6 +310,22 @@ def test_cohort_scan_end_to_end_offline(mock_session, tmp_path):
     assert fdr_genes == {"BRAF", "RET", "FAKE1"}
     assert len(fdr_genes) > 2
     assert all(0.0 <= row["bh_adjusted_q"] <= 1.0 for row in result.fdr_rows)
+    braf_fisher = next(
+        row
+        for row in result.fdr_rows
+        if row["gene"] == "BRAF"
+        and row["algorithm"] == "domain_retention"
+        and row["test"] == "fisher"
+    )
+    braf_mechanism = next(
+        item
+        for item in outcomes_by_gene["BRAF"].run.results
+        if item.Algorithm == "mechanistic_interpretation"
+    )
+    assert braf_mechanism.Summary["retention_fdr_q_value"] == braf_fisher["bh_adjusted_q"]
+    assert braf_mechanism.Summary["retention_fdr_significant"] == (
+        braf_fisher["bh_adjusted_q"] < result.significance_level
+    )
 
     # Adaptive permutations actually ran (small budget requested).
     braf_domain_retention = next(
@@ -401,6 +432,14 @@ def test_cohort_scan_gracefully_skips_gene_genome_nexus_cannot_resolve(mock_sess
                 symbol for symbol, (eid, *_r) in _GENE_SPECS.items() if eid in entrez_ids
             )
             response.json.return_value = _sv_calls_for_gene(gene_symbol)
+        elif url.endswith("/gene-panel-data/fetch"):
+            assert "/molecular-profiles/" in url
+            assert json["sampleListId"] in {f"{_STUDY_ID}_all", f"{_STUDY_ID}_eligible"}
+            response.json.return_value = [
+                {"sampleId": call["sampleId"], "profiled": True, "genePanelId": "TEST"}
+                for gene in _GENE_SPECS
+                for call in _sv_calls_for_gene(gene)
+            ]
         elif url.endswith("/ensembl/canonical-transcript/hgnc"):
             payloads = []
             for symbol in json:

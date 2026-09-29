@@ -67,7 +67,9 @@ def _domain_result(
     )
 
 
-def _cutpoint_result(*, determinable: bool, inferred_cutpoint_aa=None) -> AlgorithmResult:
+def _cutpoint_result(
+    *, determinable: bool, inferred_cutpoint_aa=None, corrected_p_value=0.01
+) -> AlgorithmResult:
     return AlgorithmResult(
         Algorithm="cutpoint_detection",
         Summary={
@@ -78,7 +80,7 @@ def _cutpoint_result(*, determinable: bool, inferred_cutpoint_aa=None) -> Algori
             "observed_statistic_neg_log10_p": None,
             "observed_p_value": None,
             "observed_odds_ratio": None,
-            "corrected_p_value": None,
+            "corrected_p_value": corrected_p_value if determinable else None,
             "known_domain_boundary_comparison": None,
         },
         Tables={},
@@ -128,6 +130,33 @@ def _events_and_features(partner_positions: dict[str, list[int]]) -> tuple[list,
 def test_algorithm_registered():
     assert registry.get("composite_score") is CompositeScoreAlgorithm
     assert "composite_score" in registry.list_algorithms()
+
+
+@pytest.mark.parametrize("corrected_p", [None, 0.05, 0.8])
+def test_cutpoint_component_requires_significant_corrected_p(corrected_p):
+    events, features = _events_and_features({"PARTNER_A": [500]})
+    result = CompositeScoreAlgorithm().run(
+        events,
+        features,
+        _FAKE_GENE,
+        {
+            "algorithm_results": [
+                _frequency_result({"PARTNER_A": 1}),
+                _cutpoint_result(
+                    determinable=True,
+                    inferred_cutpoint_aa=500,
+                    corrected_p_value=corrected_p,
+                ),
+            ]
+        },
+    )
+    row = result.Tables["composite_evidence_ranking"][0]
+    assert row["Cutpoint_proximity_score"] is None
+    assert "cutpoint_proximity" not in row["Components_applicable"]
+    assert result.Summary["score_interpretation"] == (
+        "prioritization_heuristic_not_probability_or_significance"
+    )
+    assert any("corrected cutpoint p-value" in warning for warning in result.Warnings)
 
 
 def test_clipped_neg_log10_saturates_and_bounds_to_unit_interval():

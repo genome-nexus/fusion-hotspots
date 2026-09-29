@@ -346,6 +346,17 @@ class TestMechanisticInterpretationSection:
         assert 'class="mechanism-callout"' in html
         assert "See full mechanistic interpretation below" in html
 
+    def test_effect_specific_fdr_verdict_is_separate_from_nominal_gate(self, tmp_path):
+        payload = self._payload_with_mechanistic_interpretation()
+        summary = payload["algorithm_results"][0]["Summary"]
+        summary["retention_fdr_q_value"] = 0.2
+        summary["retention_fdr_significant"] = False
+        html = build_run_viewer(_write_gene_run(tmp_path, payload, with_svgs=False)).read_text()
+        assert "nominal Fisher association" in html
+        assert "Fisher FDR q=0.2" in html
+        assert "not FDR-significant" in html
+        assert "FDR-supported association" not in html
+
     def test_callout_leads_with_the_curated_mechanism_not_just_statistics(self, tmp_path):
         """Regression: the top-of-page callout used to show only the
         statistical support lines (p-value/odds-ratio/counter-intuitive
@@ -364,8 +375,11 @@ class TestMechanisticInterpretationSection:
         assert "Curated mechanism" in callout_html
         # The curated "why" leads the callout, before the statistical lines.
         assert callout_html.index("Curated mechanism") < callout_html.index(
-            "statistically supported"
+            "nominal Fisher association"
         )
+        assert "FDR support unknown" in callout_html
+        assert "descriptive recurrence flag" in callout_html
+        assert "not a statistical subcluster test" in html
 
     def test_unverified_mechanism_note_gets_a_visibly_distinct_label_and_style(self, tmp_path):
         """A mechanism_note drafted by an AI tool (e.g. OpenEvidence) and not
@@ -776,9 +790,8 @@ def test_viewer_builds_successfully_against_the_real_committed_run(tmp_path, run
 
 
 def test_building_the_viewer_never_modifies_any_pre_existing_run_file(tmp_path):
-    """Purely additive: building the viewer for the real committed BRAF run
-    must not change a single byte of results.json/results.tsv/report.md/
-    the existing SVGs -- only new files under viewer/ may appear."""
+    """Building the viewer must preserve the real committed run's source
+    artifacts; generated viewer HTML may change as report wording evolves."""
     scratch = tmp_path / BRAF_RUN_DIR.name
     shutil.copytree(BRAF_RUN_DIR, scratch)
 
@@ -786,7 +799,7 @@ def test_building_the_viewer_never_modifies_any_pre_existing_run_file(tmp_path):
         return {
             str(path.relative_to(scratch)): hashlib.sha256(path.read_bytes()).hexdigest()
             for path in sorted(scratch.rglob("*"))
-            if path.is_file()
+            if path.is_file() and "viewer" not in path.relative_to(scratch).parts
         }
 
     before = _hashes()

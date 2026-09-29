@@ -274,3 +274,24 @@ def test_tcga_pan_cancer_event_info_supplies_explicit_fusion_order():
     assert event.Frame_status == "in-frame"
     assert event.Five_prime_gene == "MACF1"
     assert event.Three_prime_gene == "BRAF"
+
+
+def test_raw_patient_identity_fills_missing_clinical_identity():
+    from cfh.ingestion.cbioportal_api import structural_variants_to_dataframe
+
+    raw = structural_variants_to_dataframe(
+        [
+            {
+                "sampleId": "S",
+                "patientId": "RAW-PATIENT",
+                "site1HugoSymbol": "PARTNER",
+                "site2HugoSymbol": "BRAF",
+                "eventInfo": "Protein Fusion: in frame {PARTNER:BRAF}",
+            }
+        ]
+    )
+    assert normalize(raw, None, "study")[0].Patient_id == "RAW-PATIENT"
+    clinical = pd.DataFrame([{"Sample_id": "S", "Patient_id": float("nan")}], dtype=object)
+    assert normalize(raw, clinical, "study")[0].Patient_id == "RAW-PATIENT"
+    clinical.loc[0, "Patient_id"] = "CLINICAL-PATIENT"
+    assert normalize(raw, clinical, "study")[0].Patient_id == "CLINICAL-PATIENT"

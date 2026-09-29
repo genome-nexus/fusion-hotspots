@@ -234,3 +234,74 @@ for independence assumptions. The implementation uses the standard formula and
 SciPy's chi-square survival function, with no additional dependency; its
 numerical regression uses the published
 [Berkeley admissions CMH example](https://www.markirwin.net/stat149/Lecture/Lecture8.pdf).
+
+### Observation units and assay eligibility
+
+Live ingestion preserves patient IDs supplied by the SV and clinical APIs. Run
+summaries report event, sample, known-patient, and missing-patient counts. Domain
+and spatial tests still use events: these counts do **not** establish patient
+independence, and repeated biopsies require a patient-level design before their
+p-values can support replication.
+
+`frequency` with `dedup_by_patient=True` counts each patient–partner combination
+once, retaining different partners in the same patient. Missing patient identity
+falls back to sample, then event identity, with a warning. `count_unit` identifies
+the denominator; the legacy `Event_count` column counts those units when deduplication
+is enabled, and `Raw_event_count` preserves the input count.
+
+Expression domain comparisons use one measurement per sample. Samples with both
+retained and non-retained fusion events are excluded from that split and counted
+in its diagnostics. Repeated biopsies remain separate samples and are warned
+about when patient identity reveals them.
+
+Live mutation/CNA co-occurrence intersects the study sample list with documented
+coverage for the target SV gene and comparator gene/assay. Gene-panel membership
+is fetched through the [cBioPortal API](https://www.cbioportal.org/api/v3/api-docs).
+Unprofiled samples and unknown coverage are excluded; missing panel metadata is
+conservatively treated as unknown, including studies that do not document their
+genome-wide coverage. An unavailable eligibility source skips the comparison.
+Each tested target records its eligible sample IDs and exclusion counts. This
+follows the distinction between assayed and off-panel genes described in the
+[cBioPortal profiling FAQ](https://docs.cbioportal.org/user-guide/faq/).
+
+The live fusion-positive/negative expression comparison likewise requires SV gene
+coverage and measured expression. If coverage is unavailable, the domain split
+can still run on observed fusion samples, but no fusion-negative group is inferred.
+Offline callers supplying only `cohort_sample_ids` are explicitly asserting that
+those samples form an eligible universe. Co-occurrence calls outside that universe
+are excluded; they never enlarge its denominator. These comparisons remain
+unadjusted for tumor type and should be run in prespecified tissue strata when
+that confounding matters.
+
+### Interpretation and validation
+
+Mechanistic summaries separate nominal Fisher evidence from the matching
+FDR-adjusted result. Standalone runs have unknown cross-gene FDR; cohort scans
+attach the corresponding retention/disruption Fisher q-value, rather than a
+minimum q-value from another algorithm. Recurrent counter-pattern partners are
+a descriptive review flag, not a statistical subcluster test. Curated mechanism
+notes provide biological context, not functional validation of individual events.
+
+The composite score is a prioritization heuristic, not a driver probability.
+Cutpoint proximity requires a significant scan-corrected cutpoint p-value. Other
+components can share gene-level evidence across partners, so independent ranking
+validation remains necessary.
+
+Run deterministic synthetic calibration with:
+
+```bash
+python -m cfh.stats.calibration --replicates 100 --n-patients 24 \
+  --n-permutations 999 --seed 42 --family-size 100 > calibration.json
+```
+
+The benchmark reports rejection rates and Wilson intervals under an independent
+null, a planted label-associated window, a mapping pile-up null, and a repeated-
+patient stress case. It calibrates **label separation**, not excess breakpoint
+density or driver classification. The permutation-resolution diagnostic reports
+whether the selected budget can resolve small p-values relevant to a correction
+family; it does not establish FDR control. Small smoke runs only verify execution.
+Actual replication and composite-versus-recurrence performance require independent,
+patient-disjoint cohorts with suitable coverage and separately reviewed labels.
+
+See [CALIBRATION.md](CALIBRATION.md) for the held-out ranking input schema,
+permutation-budget controls, and strict patient-disjoint cohort comparison.

@@ -15,9 +15,19 @@ from cfh.ingestion import cbioportal_api
 from cfh.real_benchmark import _fetch_mutual_exclusivity_params
 
 
+@pytest.fixture(autouse=True)
+def _profile_eligibility(monkeypatch):
+    monkeypatch.setattr(
+        cbioportal_api,
+        "fetch_gene_panel_eligibility",
+        MagicMock(return_value={"S1": True, "S2": True}),
+    )
+
+
 def _config() -> GeneConfig:
     return GeneConfig(
         gene_symbol="FUSION",
+        entrez_gene_id=100,
         canonical_transcript_id="NM_000001",
         protein_id="P00001",
         mutual_exclusivity_targets=[

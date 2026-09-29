@@ -236,6 +236,8 @@ def normalize(
         sample_id = row.get("Sample_Id")
         clinical_row = clinical_lookup.get(sample_id, {}) if sample_id else {}
         patient_id = clinical_row.get("Patient_id")
+        if pd.isna(patient_id) or not patient_id:
+            patient_id = row.get("Patient_Id")
 
         gene1, gene2 = row.get("Site1_Hugo_Symbol"), row.get("Site2_Hugo_Symbol")
         if gene1 and gene2 and gene1 == gene2:

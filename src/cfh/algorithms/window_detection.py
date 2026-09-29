@@ -237,6 +237,8 @@ class WindowDetectionAlgorithm(Algorithm):
             "mapping_sensitivity": overall_mapping_sensitivity,
             "best_window_mapping_sensitivity": best_window_mapping_sensitivity,
         }
+        if "permutation_resolution" in budget:
+            summary["permutation_resolution"] = budget["permutation_resolution"]
         if budget["adaptive"]:
             summary["adaptive_permutations"] = {
                 "enabled": True,

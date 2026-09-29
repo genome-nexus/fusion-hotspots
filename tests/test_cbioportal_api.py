@@ -138,7 +138,7 @@ def test_structural_variant_api_rows_are_adapted_to_production_normalizer_schema
     assert rows.loc[0, "Event_Info"] == "Protein Fusion: in frame  {KIAA1549:BRAF}"
     assert rows.loc[0, "Source_row_number"] == 1
     assert rows.loc[0, "Tumor_Variant_Count"] == 35
-    assert rows.loc[0, "Extra_fields"]["patientId"] == "PATIENT-001"
+    assert rows.loc[0, "Patient_Id"] == "PATIENT-001"
 
 
 def test_fetch_molecular_data_posts_expected_body_with_sample_list_id():
@@ -241,7 +241,7 @@ def test_fetch_sample_tumor_types_joins_by_sample_and_handles_null(value):
     ]
     result = cbioportal_api.fetch_sample_tumor_types("study", ["S1", "S1"], session=session)
     assert result.to_dict("records") == [
-        {"Sample_id": "S1", "Tumor_type": value, "Oncotree_code": "PA"}
+        {"Sample_id": "S1", "Patient_id": None, "Tumor_type": value, "Oncotree_code": "PA"}
     ]
     assert session.post.call_args.kwargs["json"] == {
         "ids": ["S1"],
@@ -259,7 +259,7 @@ def test_fetch_sample_tumor_types_unavailable_and_empty():
     with pytest.warns(UserWarning, match="Sample tumor annotations unavailable"):
         result = cbioportal_api.fetch_sample_tumor_types("study", ["S1"], session=session)
     assert result.empty
-    assert list(result.columns) == ["Sample_id", "Tumor_type", "Oncotree_code"]
+    assert list(result.columns) == ["Sample_id", "Patient_id", "Tumor_type", "Oncotree_code"]
 
 
 def test_fetch_mutations_posts_expected_body_without_real_network():

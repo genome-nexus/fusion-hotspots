@@ -33,22 +33,17 @@ def build_cooccurrence_contingency_table(
     """Build the 2x2 table ``[[both, fusion_only], [comparator_only, neither]]``.
 
     Rows are fusion status (positive, negative); columns are the configured
-    comparator's alteration status (altered, not). The table's total is the
-    size of the union of ``cohort_sample_ids`` with the two alteration sets
-    -- in the expected case both alteration sets are subsets of the cohort
-    universe and the total is simply the cohort size, but a sample outside
-    the supplied cohort universe still contributes to its own row/column
-    rather than being silently dropped.
+    comparator's alteration status (altered, not). The declared eligible
+    cohort is the entire universe; out-of-universe calls cannot expand it.
     """
     cohort = set(cohort_sample_ids)
-    fusion_positive = set(fusion_positive_sample_ids)
-    comparator_altered = set(comparator_altered_sample_ids)
-    universe = cohort | fusion_positive | comparator_altered
+    fusion_positive = set(fusion_positive_sample_ids) & cohort
+    comparator_altered = set(comparator_altered_sample_ids) & cohort
 
     both = len(fusion_positive & comparator_altered)
     fusion_only = len(fusion_positive - comparator_altered)
     comparator_only = len(comparator_altered - fusion_positive)
-    neither = len(universe) - both - fusion_only - comparator_only
+    neither = len(cohort) - both - fusion_only - comparator_only
     return [[both, fusion_only], [comparator_only, neither]]
 
 

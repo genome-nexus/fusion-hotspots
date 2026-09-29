@@ -186,6 +186,8 @@ class CutpointDetectionAlgorithm(Algorithm):
             "corrected_p_value": scan_result["corrected_p_value"],
             "known_domain_boundary_comparison": boundary_comparison,
         }
+        if "permutation_resolution" in budget:
+            summary["permutation_resolution"] = budget["permutation_resolution"]
         if budget["adaptive"]:
             summary["adaptive_permutations"] = {
                 "enabled": True,

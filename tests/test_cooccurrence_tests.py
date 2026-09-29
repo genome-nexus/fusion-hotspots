@@ -17,15 +17,15 @@ def test_build_cooccurrence_contingency_table_partitions_the_cohort():
     assert table == [[1, 2], [1, 6]]
 
 
-def test_build_cooccurrence_contingency_table_counts_samples_outside_the_cohort_universe():
+def test_build_cooccurrence_contingency_table_excludes_samples_outside_the_cohort_universe():
     cohort = ["S1", "S2"]
     fusion_positive = {"S1", "S3"}  # S3 not in cohort
     comparator_altered: set[str] = set()
 
     table = build_cooccurrence_contingency_table(fusion_positive, comparator_altered, cohort)
 
-    # union universe = {S1,S2,S3}; both=0, fusion_only=2 (S1,S3), comparator_only=0, neither=1 (S2)
-    assert table == [[0, 2], [0, 1]]
+    # S3 is not eligible; the table total must equal the declared cohort size.
+    assert table == [[0, 1], [0, 1]]
 
 
 def test_fishers_cooccurrence_test_detects_clean_mutual_exclusivity():

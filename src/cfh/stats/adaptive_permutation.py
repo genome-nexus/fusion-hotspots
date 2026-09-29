@@ -24,9 +24,33 @@ adds a new code path alongside it.
 
 from __future__ import annotations
 
+import math
+from typing import Any
+
 DEFAULT_SMALL_N_PERMUTATIONS = 100
 DEFAULT_SIGNIFICANCE_THRESHOLD = 0.05
 DEFAULT_BORDERLINE_FACTOR = 2.0
+
+
+def permutation_resolution(n_permutations: int, *, family_size: int = 1) -> dict:
+    """Report attainable empirical p-value precision for a correction family.
+
+    ``family_size`` is the number of predeclared hypotheses to be corrected
+    outside a scan, not the number of candidate positions within one scan.
+    The latter are already handled by each scan's max-statistic permutation.
+    This is a diagnostic only; it does not estimate or guarantee FDR.
+    """
+    if n_permutations <= 0 or family_size <= 0:
+        raise ValueError("n_permutations and family_size must be positive")
+    floor = 1.0 / (n_permutations + 1)
+    return {
+        "n_permutations": n_permutations,
+        "family_size": family_size,
+        "minimum_empirical_p_value": floor,
+        "minimum_bonferroni_adjusted_p_value": min(1.0, family_size * floor),
+        "bh_first_rank_raw_adjustment_at_floor": min(1.0, family_size * floor),
+        "permutations_for_strict_0_05_first_rank": math.floor(family_size / 0.05),
+    }
 
 
 def is_borderline(
@@ -73,10 +97,29 @@ def resolve_permutation_budget(params: dict, *, default_full_n: int) -> dict:
             around it still count as borderline. Default
             :data:`DEFAULT_BORDERLINE_FACTOR`.
     """
-    return {
+    budget: dict[str, Any] = {
         "adaptive": bool(params.get("adaptive", False)),
         "small_n": int(params.get("n_permutations_small", DEFAULT_SMALL_N_PERMUTATIONS)),
         "full_n": int(params.get("n_permutations", default_full_n)),
         "threshold": float(params.get("significance_threshold", DEFAULT_SIGNIFICANCE_THRESHOLD)),
         "factor": float(params.get("borderline_factor", DEFAULT_BORDERLINE_FACTOR)),
     }
+    if "correction_family_size" in params:
+        raw_family_size = params["correction_family_size"]
+        if isinstance(raw_family_size, bool) or not isinstance(raw_family_size, int):
+            raise ValueError("correction_family_size must be a positive integer")
+        family_size = raw_family_size
+        resolution = permutation_resolution(budget["full_n"], family_size=family_size)
+        if not 0 < budget["threshold"] < 1:
+            raise ValueError("significance_threshold must be between 0 and 1")
+        if budget["adaptive"]:
+            raise ValueError("correction_family_size requires a fixed, non-adaptive budget")
+        required = math.floor(family_size / budget["threshold"])
+        if budget["full_n"] < required:
+            raise ValueError(
+                f"n_permutations={budget['full_n']} cannot resolve a first-rank "
+                f"family-size-{family_size} p-value below {budget['threshold']}; "
+                f"use at least {required} fixed permutations"
+            )
+        budget["permutation_resolution"] = resolution
+    return budget

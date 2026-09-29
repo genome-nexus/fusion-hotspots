@@ -1,10 +1,11 @@
-"""Composite evidence-for-functional-relevance score.
+"""Composite prioritization heuristic for fusion partners.
 
 This is the capstone aggregation algorithm: it consumes the already-computed
 :class:`~cfh.model.algorithm_result.AlgorithmResult` objects produced by the
 other registered algorithms (run via :func:`cfh.orchestrator.run.run_algorithms`)
 and combines them into a single, interpretable, per-fusion-partner ranked
-"evidence for functional relevance" score. It never re-runs a Fisher's-exact
+    prioritization score. It is not a calibrated probability of functional
+    relevance. It never re-runs a Fisher's-exact
 test, a permutation test, or an MLE/CI computation itself -- those numbers
 are read straight out of the upstream results' ``Summary`` blocks. The only
 new computation this module performs is (a) a documented normalization of
@@ -45,7 +46,7 @@ p-value)
     average for that gene -- never treated as zero evidence.
 
 ``cutpoint_proximity`` (present only when ``cutpoint_detection`` produced a
-determinable cutpoint, and only for partners with at least one mapped
+    determinable cutpoint with corrected p < 0.05, and only for partners with at least one mapped
 breakpoint)
     The one genuinely partner-varying statistical sub-score. For each
     partner, the mean absolute distance (in amino acids) between that
@@ -106,7 +107,7 @@ from cfh.model.fusion_event import FusionEvent
 from cfh.model.fusion_feature import FusionFeature
 
 ALGORITHM_NAME = "composite_score"
-ALGORITHM_VERSION = "0.1.0"
+ALGORITHM_VERSION = "0.2.0"
 
 DEFAULT_WEIGHTS: dict[str, float] = {
     "recurrence": 0.30,
@@ -117,6 +118,7 @@ DEFAULT_WEIGHTS: dict[str, float] = {
 }
 
 DEFAULT_NEG_LOG10_P_CAP = 10.0
+CUTPOINT_CORRECTED_P_ALPHA = 0.05
 
 
 def _validate_weight_keys(overrides: dict[str, Any]) -> None:
@@ -248,6 +250,14 @@ def _cutpoint_proximity_scores(
     summary = result.Summary or {}
     if not summary.get("determinable"):
         return {}, None
+    corrected_p = summary.get("corrected_p_value")
+    if (
+        isinstance(corrected_p, bool)
+        or not isinstance(corrected_p, (int, float))
+        or not math.isfinite(corrected_p)
+        or not 0 <= corrected_p < CUTPOINT_CORRECTED_P_ALPHA
+    ):
+        return {}, None
     cutpoint = summary.get("inferred_cutpoint_aa")
     if cutpoint is None:
         return {}, None
@@ -284,7 +294,7 @@ def _cutpoint_proximity_scores(
 @register(ALGORITHM_NAME)
 class CompositeScoreAlgorithm(Algorithm):
     """Aggregate other algorithms' already-computed results into one ranked
-    "evidence for functional relevance" score per fusion partner.
+    prioritization score per fusion partner, not a significance test.
 
     See the module docstring for the full sub-score/combination formula.
 
@@ -435,8 +445,9 @@ class CompositeScoreAlgorithm(Algorithm):
             )
         if not cutpoint_scores_by_partner:
             warnings.append(
-                "cutpoint_proximity sub-score excluded: no determinable cutpoint_detection "
-                "result (or no mapped breakpoints) was supplied."
+                "cutpoint_proximity sub-score excluded: corrected cutpoint p-value was "
+                "missing or >= 0.05, cutpoint was not determinable, or mapped "
+                "breakpoints were unavailable."
             )
         if confidence_score is None:
             warnings.append(
@@ -447,8 +458,13 @@ class CompositeScoreAlgorithm(Algorithm):
         return AlgorithmResult(
             Algorithm=ALGORITHM_NAME,
             Algorithm_version=ALGORITHM_VERSION,
-            Parameters={"weights": weights, "neg_log10_p_cap": cap},
+            Parameters={
+                "weights": weights,
+                "neg_log10_p_cap": cap,
+                "cutpoint_corrected_p_alpha": CUTPOINT_CORRECTED_P_ALPHA,
+            },
             Summary={
+                "score_interpretation": "prioritization_heuristic_not_probability_or_significance",
                 "gene_symbol": gene_config.gene_symbol if gene_config else None,
                 "n_partners_ranked": len(rows),
                 "total_events": total_events,
