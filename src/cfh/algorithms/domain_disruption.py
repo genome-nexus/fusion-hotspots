@@ -30,10 +30,11 @@ from cfh.stats.breakpoint_tests import (
     build_frame_domain_contingency_table,
     domain_retention_descriptive_table,
     fishers_frame_domain_test,
+    permutation_null_classifier,
     permutation_null_test,
 )
 
-VERSION = "0.2.0"
+VERSION = "0.3.0"
 _DEFAULT_FULL_N_PERMUTATIONS = 10_000
 
 
@@ -112,6 +113,9 @@ class DomainDisruptionAlgorithm(Algorithm):
             "fisher_p_value": fisher_p_value,
             "permutation_empirical_p_value": permutation_p_value,
             "observed_in_frame_disruption_rate": observed_rate,
+            "permutation_null_classifier": permutation_null_classifier(
+                features, gene_config, domains=domains
+            ),
         }
         if budget["adaptive"]:
             summary["adaptive_permutations"] = {

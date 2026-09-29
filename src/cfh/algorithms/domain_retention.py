@@ -13,6 +13,7 @@ from cfh.stats.breakpoint_tests import (
     build_frame_domain_contingency_table,
     domain_retention_descriptive_table,
     fishers_frame_domain_test,
+    permutation_null_classifier,
     permutation_null_test,
 )
 
@@ -73,6 +74,7 @@ class DomainRetentionAlgorithm(Algorithm):
             "fisher_p_value": fisher_p_value,
             "permutation_empirical_p_value": permutation_p_value,
             "observed_in_frame_retention_rate": observed_rate,
+            "permutation_null_classifier": permutation_null_classifier(features, gene_config),
         }
         if budget["adaptive"]:
             summary["adaptive_permutations"] = {
@@ -85,7 +87,7 @@ class DomainRetentionAlgorithm(Algorithm):
 
         return AlgorithmResult(
             Algorithm="domain_retention",
-            Algorithm_version="0.2.0",
+            Algorithm_version="0.3.0",
             Parameters={
                 "seed": seed,
                 "n_permutations": n_permutations,
