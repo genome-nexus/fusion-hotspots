@@ -221,7 +221,10 @@ Suggested reading order:
    greatly exceed patients, event-level permutation p-values are anti-conservative
    (see [CALIBRATION.md](CALIBRATION.md)).
 4. **Read the domain evidence.** `domain_retention` gives the frame × domain 2×2
-   table, Fisher and permutation p. `cutpoint_detection` / `window_detection` locate
+   table, Fisher and permutation p. The permutation null samples breakpoints across
+   the transcript and classifies each from the domain's coordinates and the observed
+   5'/3' roles (`permutation_null_classifier: domain_coordinates`); features lacking
+   coordinates fall back to the nearest observed label. `cutpoint_detection` / `window_detection` locate
    the boundary and compare it with Pfam coordinates. `genomic_position_recurrence`
    separates true DNA hotspots from exon-boundary clamping.
 5. **Review exceptions.** In `mechanistic_interpretation`, look at counter-pattern

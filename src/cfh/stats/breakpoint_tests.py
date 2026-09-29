@@ -20,6 +20,7 @@ import numpy as np
 from scipy.stats import fisher_exact
 
 from cfh.genes.registry import GeneConfig, KeyDomain
+from cfh.mapping.feature_mapper import classify_domain_retention
 from cfh.mapping.genome_nexus_source import (
     GenomeNexusClient,
     cds_bounds_from_utrs,
@@ -125,11 +126,14 @@ def permutation_null_test(
     callers can omit the client; then the observed resolved protein positions
     are resampled as a deterministic, conservative fallback.
 
-    Genome Nexus describes exon coordinates but ``FusionFeature`` deliberately
-    stores only the final domain call, so the null classifier is fitted from
-    the available mapped breakpoint/domain observations by nearest resolved
-    protein position.  This keeps the statistic usable for pre-annotated
-    fixture data while avoiding another network-only domain lookup.
+    Each simulated in-frame breakpoint keeps the role (5' or 3' partner) of
+    the observed in-frame event it replaces, and its domain status is computed
+    directly from the target domain's coordinates with the mapper's own
+    :func:`~cfh.mapping.feature_mapper.classify_domain_retention` rule. The
+    coordinates come from the observed features' ``Domain_retention_details``,
+    so no extra lookup is needed. Features without coordinates or roles (e.g.
+    pre-annotated fixtures) fall back to the earlier nearest-observed-label
+    rule; :func:`permutation_null_classifier` reports which rule applies.
     """
     if n_permutations <= 0:
         raise ValueError("n_permutations must be positive")
@@ -149,6 +153,9 @@ def permutation_null_test(
     observed_hits = sum(status in hit_statuses for _, _, status in in_frame_records)
     observed_rate = observed_hits / len(in_frame_records)
     reference_positions, reference_statuses = _reference_positions(records)
+    bounds = _domain_bounds((feature for _, feature, _ in records), target_key)
+    roles = [feature.Role for _, feature, _ in in_frame_records]
+    use_coordinates = bounds is not None and all(role in _ROLES for role in roles)
     rng = np.random.default_rng(seed)
 
     genomic_mapper = _genome_nexus_mapper(gene_config, genome_nexus_client)
@@ -160,16 +167,49 @@ def permutation_null_test(
             )
         else:
             sampled_positions = genomic_mapper(rng, len(in_frame_records))
-        hits = sum(
-            _nearest_status(int(position), reference_positions, reference_statuses) in hit_statuses
-            for position in sampled_positions
-        )
+        if use_coordinates:
+            assert bounds is not None
+            hits = sum(
+                classify_domain_retention(bounds[0], bounds[1], int(position), role) in hit_statuses
+                for position, role in zip(sampled_positions, roles, strict=True)
+            )
+        else:
+            hits = sum(
+                _nearest_status(int(position), reference_positions, reference_statuses)
+                in hit_statuses
+                for position in sampled_positions
+            )
         null_rates.append(hits / len(in_frame_records))
 
     empirical_p_value = (1 + sum(rate >= observed_rate for rate in null_rates)) / (
         n_permutations + 1
     )
     return float(empirical_p_value), float(observed_rate), tuple(null_rates)
+
+
+def permutation_null_classifier(
+    features: list[FusionFeature],
+    gene_config: GeneConfig,
+    *,
+    domains: list[KeyDomain] | None = None,
+) -> str:
+    """Name the status rule :func:`permutation_null_test` will use.
+
+    ``"domain_coordinates"`` when every in-frame target feature has a role and
+    the target domain's coordinates are known; otherwise
+    ``"nearest_observed_label"``.
+    """
+    domains = gene_config.key_domains if domains is None else domains
+    target_key = _target_domain_key(domains, gene_config.gene_symbol)
+    target = [
+        feature
+        for feature in _target_features(features, gene_config)
+        if _domain_status(feature, target_key) is not None
+    ]
+    has_roles = bool(target) and all(feature.Role in _ROLES for feature in target)
+    if has_roles and _domain_bounds(target, target_key) is not None:
+        return "domain_coordinates"
+    return "nearest_observed_label"
 
 
 def gene_breakpoint_domain_status_records(
@@ -316,6 +356,26 @@ def _reference_positions(
     if not positions:
         raise ValueError("permutation test requires at least one mapped protein breakpoint")
     return np.asarray(positions, dtype=int), statuses
+
+
+_ROLES = frozenset({"five_prime", "three_prime"})
+
+
+def _domain_bounds(features: Iterable[FusionFeature], domain_key: str) -> tuple[int, int] | None:
+    """The target domain's (start, end) as recorded on the mapped features.
+
+    Every feature of one gene is mapped against the same domain definition,
+    so the recorded coordinates agree; disagreement returns ``None`` rather
+    than choosing one silently.
+    """
+    bounds = {
+        (detail.Domain_start_aa, detail.Domain_end_aa)
+        for feature in features
+        if (detail := (feature.Domain_retention_details or {}).get(domain_key)) is not None
+        and detail.Domain_start_aa is not None
+        and detail.Domain_end_aa is not None
+    }
+    return next(iter(bounds)) if len(bounds) == 1 else None
 
 
 def _nearest_status(position: int, reference_positions: np.ndarray, statuses: list[str]) -> str:
