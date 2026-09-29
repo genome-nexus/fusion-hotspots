@@ -74,6 +74,10 @@ from cfh.reporting.palette import (
 from cfh.reporting.pdf import render_pdf_report
 from cfh.reporting.svg_utils import escape_xml_attr, escape_xml_text
 from cfh.stats.breakpoint_tests import build_frame_domain_contingency_table
+from cfh.stats.observation_units import (
+    DEFAULT_OBSERVATION_UNIT,
+    collapse_repeated_observations,
+)
 from cfh.studies.registry import StudyConfig, load_study_config
 
 _DELETION_EVENT_INFO_PATTERN = re.compile(
@@ -694,9 +698,16 @@ def analyze_structural_variant_calls_with_config(
     algorithm_names: list[str] | None = None,
     algorithm_params: dict[str, dict] | None = None,
     extra_warnings: list[str] | None = None,
+    observation_unit: str = DEFAULT_OBSERVATION_UNIT,
 ) -> RealBenchmarkRun:
     """Normalize and analyze already-fetched cBioPortal SV API objects
     against an already-resolved ``GeneConfig``.
+
+    ``observation_unit="patient"`` (the default) collapses repeated
+    observations of one fusion in one patient before every inferential
+    algorithm (see :mod:`cfh.stats.observation_units`); descriptive counts,
+    the event table, and ``frequency`` still use every mapped event.
+    ``"event"`` restores the previous event-level inputs.
 
     This is the config-agnostic core :func:`analyze_structural_variant_calls`
     delegates to after resolving a curated config by gene symbol. Callers
@@ -954,11 +965,23 @@ def analyze_structural_variant_calls_with_config(
             }
         )
 
+    analysis_events, analysis_features, collapse_report = collapse_repeated_observations(
+        events, features, config.gene_symbol, observation_unit=observation_unit
+    )
+    collapsed_event_ids = {event.Event_id for event in events} - {
+        event.Event_id for event in analysis_events
+    }
+    if collapse_report.collapsed_event_count:
+        warnings.append(
+            f"Collapsed {collapse_report.collapsed_event_count} repeated observation(s) of the "
+            f"same fusion in {collapse_report.patients_with_repeats} patient(s) before "
+            "inferential tests (observation_unit='patient')."
+        )
     in_frame_mapped = has_key_domain and any(
         event.Frame_status == "in-frame"
         and (feature.Domain_retention_flags or {}).get(target_key)
         in {"retained", "lost", "disrupted"}
-        for event, feature in zip(events, features, strict=True)
+        for event, feature in zip(analysis_events, analysis_features, strict=True)
     )
     if not has_key_domain:
         domain_result = _no_key_domain_result(config)
@@ -971,14 +994,14 @@ def analyze_structural_variant_calls_with_config(
         )
         warnings.append(message)
         domain_result = _unavailable_domain_result(
-            message, events, features, config, n_permutations
+            message, analysis_events, analysis_features, config, n_permutations
         )
     else:
         try:
             domain_result = run_algorithms(
                 ["domain_retention"],
-                events,
-                features,
+                analysis_events,
+                analysis_features,
                 config,
                 {
                     "domain_retention": {
@@ -998,15 +1021,32 @@ def analyze_structural_variant_calls_with_config(
             message = f"Domain-retention statistics are unavailable: {exc}"
             warnings.append(message)
             domain_result = _unavailable_domain_result(
-                message, events, features, config, n_permutations
+                message, analysis_events, analysis_features, config, n_permutations
             )
     selected_events = [event for _, event in selected]
+    analysis_selected_events = [
+        event for event in selected_events if event.Event_id not in collapsed_event_ids
+    ]
     requested_algorithms = algorithm_names or ["domain_retention", "frequency"]
-    other_algorithms = [name for name in requested_algorithms if name != "domain_retention"]
+    other_algorithms = [
+        name for name in requested_algorithms if name not in {"domain_retention", "frequency"}
+    ]
+    # Descriptive partner counts use every event (frequency has its own
+    # optional patient deduplication); dependents such as composite_score
+    # receive this result through extra_results.
+    upstream_results = [domain_result]
+    if "frequency" in requested_algorithms:
+        upstream_results += run_algorithms(
+            ["frequency"],
+            selected_events,
+            features,
+            config,
+            {"frequency": {"dedup_by_patient": False, **algorithm_params.get("frequency", {})}},
+        )
     other_results = run_algorithms(
         other_algorithms,
-        selected_events,
-        features,
+        analysis_selected_events,
+        analysis_features,
         config,
         {
             "confidence_stats": {
@@ -1048,9 +1088,9 @@ def analyze_structural_variant_calls_with_config(
                 }
             },
         },
-        extra_results=[domain_result],
+        extra_results=upstream_results,
     )
-    results_by_name = {result.Algorithm: result for result in [domain_result, *other_results]}
+    results_by_name = {result.Algorithm: result for result in [*upstream_results, *other_results]}
     results = [results_by_name[name] for name in requested_algorithms if name in results_by_name]
     frequency_result = results_by_name.get("frequency")
     if frequency_result is None:
@@ -1130,8 +1170,11 @@ def analyze_structural_variant_calls_with_config(
             {event.Patient_id for event in selected_events if event.Patient_id}
         ),
         "missing_patient_id_event_count": sum(not event.Patient_id for event in selected_events),
-        "inference_counting_unit": "event",
+        "inference_counting_unit": (
+            "patient_distinct_fusion" if observation_unit == "patient" else "event"
+        ),
         "patient_independence_established": False,
+        **collapse_report.as_summary(),
         "mapped_fusions": len(features),
         "skipped_fusions": total - len(features),
         "in_frame_count": in_frame_count,

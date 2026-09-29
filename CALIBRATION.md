@@ -61,3 +61,34 @@ deduplication, and overlap guards do not repair that permutation null. The weak
 planted-window sensitivity also argues for assessing power under realistic event
 counts and effect sizes before interpreting an absent signal. No external ranking
 validation was performed because independent labeled inputs were not supplied.
+
+## Patient-level observation unit
+
+The live pipeline now collapses repeated observations of one fusion in one
+patient before any inferential test (`observation_unit="patient"`, the default;
+see `cfh.stats.observation_units`). The same collapse is available to the
+simulations:
+
+```sh
+python -m cfh.stats.calibration --replicates 200 --n-permutations 99 --seed 42 --observation-unit event
+python -m cfh.stats.calibration --replicates 200 --n-permutations 99 --seed 42 --observation-unit patient
+```
+
+Both runs are checked in as
+[`calibration_20260929_seed42_n200_event.json`](runs/calibration_20260929_seed42_n200_event.json)
+and [`calibration_20260929_seed42_n200_patient.json`](runs/calibration_20260929_seed42_n200_patient.json).
+They use identical seeds, so every scenario except the repeated-patient null is
+unchanged. Cells are rejections/200 at `p < 0.05` (Wilson 95% interval):
+
+| Simulation | Cutpoint, event unit | Cutpoint, patient unit | Window, event unit | Window, patient unit |
+| --- | ---: | ---: | ---: | ---: |
+| Independent null | 5 (1.1–5.7%) | 5 (1.1–5.7%) | 4 (0.8–5.0%) | 4 (0.8–5.0%) |
+| Uneven-position null | 6 (1.4–6.4%) | 6 (1.4–6.4%) | 9 (2.4–8.3%) | 9 (2.4–8.3%) |
+| Mapped boundary pile-up null | 8 (2.0–7.7%) | 8 (2.0–7.7%) | 7 (1.7–7.0%) | 7 (1.7–7.0%) |
+| **Repeated-patient null** | **130 (58.2–71.3%)** | **11 (3.1–9.6%)** | **168 (78.3–88.4%)** | **4 (0.8–5.0%)** |
+| Planted cutpoint | 192 (92.3–98.0%) | 192 (92.3–98.0%) | 53 (20.9–33.0%) | 53 (20.9–33.0%) |
+| Planted narrow window | 5 (1.1–5.7%) | 5 (1.1–5.7%) | 36 (13.3–23.9%) | 36 (13.3–23.9%) |
+
+Collapsing identical repeat observations restores the repeated-patient null to
+roughly nominal rejection. It does not address dependence between *distinct*
+fusions in one patient, which the simulations do not model.

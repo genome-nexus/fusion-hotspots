@@ -68,3 +68,22 @@ def test_family_budget_requires_fixed_attainable_resolution():
         {"n_permutations": 2000, "correction_family_size": 100}, default_full_n=100
     )
     assert result["permutation_resolution"]["minimum_empirical_p_value"] < 0.0005
+
+
+def test_patient_unit_collapses_repeated_observations():
+    from cfh.stats.calibration import collapse_patient_observations
+
+    positions, statuses, patients = collapse_patient_observations(
+        [10, 10, 10, 20, 20],
+        ["lost", "lost", "lost", "retained", "retained"],
+        ["P1", "P1", "P1", "P2", "P3"],
+    )
+    assert positions == [10, 20, 20]
+    assert patients == ["P1", "P2", "P3"]
+    assert statuses == ["lost", "retained", "retained"]
+    report = calibrate_scans(
+        replicates=2, n_patients=12, n_permutations=19, seed=13, observation_unit="patient"
+    )
+    assert report["observation_unit"] == "patient"
+    with pytest.raises(ValueError):
+        calibrate_scans(replicates=1, observation_unit="sample")
