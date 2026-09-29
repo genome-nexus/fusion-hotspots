@@ -150,6 +150,68 @@ def test_domain_retention_split_reuses_confidence_stats_default_grouping():
     assert split["mean_a"] > split["mean_b"]
 
 
+def test_domain_split_counts_each_sample_once_and_excludes_conflicting_statuses():
+    config = load_gene_config("RET")
+    sample_statuses = [
+        ("S0", "retained"),
+        ("S0", "retained"),
+        ("S1", "retained"),
+        ("S2", "retained"),
+        ("S3", "lost"),
+        ("S4", "disrupted"),
+        ("S5", "retained"),
+        ("S5", "lost"),
+    ]
+    events = [
+        FusionEvent(Event_id=f"e{i}", Cohort="c", Sample_id=sample_id)
+        for i, (sample_id, _) in enumerate(sample_statuses)
+    ]
+    features = [
+        FusionFeature(
+            Event_id=event.Event_id, Gene="RET", Domain_retention_flags={"kinase": status}
+        )
+        for event, (_, status) in zip(events, sample_statuses, strict=True)
+    ]
+    result = ExpressionAssociationAlgorithm().run(
+        events,
+        features,
+        config,
+        {"expression_by_sample": {f"S{i}": float(i) for i in range(6)}},
+    )
+
+    split = result.Summary["domain_retention_split"]
+    assert split["analysis_unit"] == "sample"
+    assert split["n_a"] == 3
+    assert split["n_b"] == 2
+    assert split["n_ambiguous_samples_excluded"] == 1
+    assert any(
+        "1 sample with both retained and not-retained" in warning for warning in result.Warnings
+    )
+
+
+def test_expression_warns_when_known_patient_has_repeated_profiled_biopsies():
+    events = [
+        FusionEvent(Event_id="e0", Cohort="c", Patient_id="P0", Sample_id="POS0"),
+        FusionEvent(Event_id="e1", Cohort="c", Patient_id="P0", Sample_id="POS1"),
+    ]
+    expression_by_sample = {"POS0": 5.0, "POS1": 5.2, "NEG0": 0.1, "NEG1": 0.2}
+    result = ExpressionAssociationAlgorithm().run(
+        events,
+        [],
+        None,
+        {
+            "expression_by_sample": expression_by_sample,
+            "cohort_sample_ids": list(expression_by_sample),
+        },
+    )
+
+    assert result.Summary["fusion_positive_vs_negative"]["analysis_unit"] == "sample"
+    assert result.Summary["fusion_positive_vs_negative"]["n_fusion_positive"] == 2
+    assert any(
+        "1 known patient has multiple profiled samples" in warning for warning in result.Warnings
+    )
+
+
 def test_domain_retention_split_skipped_when_gene_has_no_key_domains():
     from cfh.genes.registry import GeneConfig
 
@@ -186,3 +248,16 @@ def test_expression_by_sample_is_never_echoed_into_parameters():
     )
     assert "expression_by_sample" not in result.Parameters
     assert "cohort_sample_ids" not in result.Parameters
+
+
+def test_empty_eligible_universe_is_not_reported_as_missing_input():
+    events = [FusionEvent(Event_id="e0", Cohort="c", Sample_id="POS0")]
+    result = ExpressionAssociationAlgorithm().run(
+        events,
+        [],
+        None,
+        {"expression_by_sample": {"POS0": 1.0, "NEG0": 0.0}, "cohort_sample_ids": []},
+    )
+    assert "fusion_positive_vs_negative" not in result.Summary
+    assert not any("no cohort_sample_ids" in warning for warning in result.Warnings)
+    assert any("established SV assay coverage" in warning for warning in result.Warnings)

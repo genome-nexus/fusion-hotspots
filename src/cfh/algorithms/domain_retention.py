@@ -13,8 +13,10 @@ from cfh.stats.breakpoint_tests import (
     build_frame_domain_contingency_table,
     domain_retention_descriptive_table,
     fishers_frame_domain_test,
+    permutation_null_classifier,
     permutation_null_test,
 )
+from cfh.stats.stratification import stratified_cmh_summary, stratified_frame_domain_tables
 
 _DEFAULT_FULL_N_PERMUTATIONS = 10_000
 
@@ -39,6 +41,7 @@ class DomainRetentionAlgorithm(Algorithm):
         params = params or {}
         table = build_frame_domain_contingency_table(events, features, gene_config)
         odds_ratio, fisher_p_value = fishers_frame_domain_test(table)
+        tables_by_tumor_type = stratified_frame_domain_tables(events, features, gene_config)
 
         seed = params.get("seed", 42)
         genome_nexus_client = params.get("genome_nexus_client")
@@ -73,6 +76,9 @@ class DomainRetentionAlgorithm(Algorithm):
             "fisher_p_value": fisher_p_value,
             "permutation_empirical_p_value": permutation_p_value,
             "observed_in_frame_retention_rate": observed_rate,
+            "permutation_null_classifier": permutation_null_classifier(features, gene_config),
+            # Reported alongside the pooled Fisher test; not in the FDR family.
+            "tumor_type_stratified": stratified_cmh_summary(tables_by_tumor_type),
         }
         if budget["adaptive"]:
             summary["adaptive_permutations"] = {
@@ -85,7 +91,7 @@ class DomainRetentionAlgorithm(Algorithm):
 
         return AlgorithmResult(
             Algorithm="domain_retention",
-            Algorithm_version="0.2.0",
+            Algorithm_version="0.4.0",
             Parameters={
                 "seed": seed,
                 "n_permutations": n_permutations,
@@ -94,6 +100,10 @@ class DomainRetentionAlgorithm(Algorithm):
             Summary=summary,
             Tables={
                 "frame_domain_contingency_table": table,
+                "frame_domain_contingency_tables_by_tumor_type": [
+                    {"stratum": stratum, "table": stratum_table}
+                    for stratum, stratum_table in tables_by_tumor_type.items()
+                ],
                 "domain_retention_descriptives": domain_retention_descriptive_table(
                     features, gene_config
                 ),

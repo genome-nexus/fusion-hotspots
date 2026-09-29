@@ -106,7 +106,7 @@ def _retention_significant_diffuse_counter_events() -> tuple[
 ]:
     """Same clean-separation shape, but the 2 counter events have distinct
     partners -- no partner recurs, so this must land in
-    ``"insufficient_recurrence"`` rather than ``"possible_subcluster"``."""
+    ``"no_recurrent_partner_observed"`` rather than a recurrence flag."""
     events: list[FusionEvent] = []
     features: list[FusionFeature] = []
     for index in range(8):
@@ -215,7 +215,9 @@ def test_diffuse_counter_events_are_insufficient_recurrence():
     )
     assert result.Summary["retention_statistically_supported"] is True
     assert result.Summary["retention_counter_intuitive_count"] == 2
-    assert result.Summary["retention_counter_intuitive_confidence"] == "insufficient_recurrence"
+    assert (
+        result.Summary["retention_counter_intuitive_confidence"] == "no_recurrent_partner_observed"
+    )
     assert "retention_counter_intuitive_recurrent_partners" not in (result.Tables or {})
     events_table = result.Tables["retention_counter_intuitive_events"]
     assert {row["partner_gene"] for row in events_table} == {"ALONE1", "ALONE2"}
@@ -234,7 +236,11 @@ def test_recurrent_partner_among_counter_events_is_possible_subcluster():
     # in-frame retention claim's population.
     assert result.Summary["retention_counter_intuitive_total"] == 11
     assert result.Summary["retention_counter_intuitive_percent"] == pytest.approx(100.0 * 3 / 11)
-    assert result.Summary["retention_counter_intuitive_confidence"] == "possible_subcluster"
+    assert result.Summary["retention_counter_intuitive_confidence"] == "recurrent_partner_heuristic"
+    assert result.Summary["retention_recurrence_evidence_type"] == "descriptive_heuristic"
+    assert result.Summary["retention_fdr_q_value"] is None
+    assert result.Summary["retention_fdr_significant"] is None
+    assert result.Summary["retention_fisher_evidence_status"] == "nominal_support_fdr_unknown"
     recurrent = result.Tables["retention_counter_intuitive_recurrent_partners"]
     assert recurrent == [{"partner_gene": "SHARED", "count": 2}]
     events_table = result.Tables["retention_counter_intuitive_events"]
@@ -269,11 +275,35 @@ def test_disruption_effect_mirrors_retention_with_opposite_contradicting_status(
         events, features, _GENE_BOTH_DOMAINS, {"algorithm_results": upstream}
     )
     assert result.Summary["disruption_statistically_supported"] is True
-    assert result.Summary["disruption_counter_intuitive_confidence"] == "possible_subcluster"
+    assert (
+        result.Summary["disruption_counter_intuitive_confidence"] == "recurrent_partner_heuristic"
+    )
     recurrent = result.Tables["disruption_counter_intuitive_recurrent_partners"]
     assert recurrent == [{"partner_gene": "SHARED", "count": 2}]
     events_table = result.Tables["disruption_counter_intuitive_events"]
     assert all(row["domain_status"] == "retained" for row in events_table)
+
+
+def test_only_first_configured_domain_is_labeled_as_tested():
+    config = GeneConfig(
+        gene_symbol="FAKE1",
+        canonical_transcript_id="NM_000001",
+        protein_id="P00001",
+        key_domains=[
+            KeyDomain(name="Tested kinase", source="test", key="kinase", accession="PF00001"),
+            KeyDomain(
+                name="Untested second domain", source="test", key="other", accession="PF00002"
+            ),
+        ],
+    )
+    events, features = _retention_significant_no_counter_events()
+    upstream = _run_domain_results(events, features, config)
+    result = MechanisticInterpretationAlgorithm().run(
+        events, features, config, {"algorithm_results": upstream}
+    )
+    assert result.Summary["retention_domain_names"] == ["Tested kinase"]
+    assert result.Summary["retention_tested_domain_accession"] == "PF00001"
+    assert result.Summary["retention_configured_domain_count"] == 2
 
 
 def test_no_domains_configured_is_not_applicable_for_both_effects():
@@ -322,4 +352,7 @@ def test_wired_through_orchestrator_dependency_injection():
     by_name = {result.Algorithm: result for result in results}
     mechanistic = by_name["mechanistic_interpretation"]
     assert not mechanistic.Warnings
-    assert mechanistic.Summary["retention_counter_intuitive_confidence"] == "possible_subcluster"
+    assert (
+        mechanistic.Summary["retention_counter_intuitive_confidence"]
+        == "recurrent_partner_heuristic"
+    )

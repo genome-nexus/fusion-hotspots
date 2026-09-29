@@ -72,6 +72,50 @@ def test_frequency_counts_all_events_and_patient_deduplication_changes_counts():
     assert sum(row["Event_count"] for row in deduplicated.Tables["Partner_gene_counts"]) == 3
 
 
+def test_frequency_patient_dedup_keeps_distinct_partners_and_reports_identity_units():
+    events = _events()
+    events[1] = events[1].model_copy(update={"Site2_gene": "NTRK1"})
+    events.extend(
+        [
+            FusionEvent(
+                Event_id="event-5",
+                Cohort="test",
+                Sample_id="sample-5",
+                Site1_gene="BRAF",
+                Site2_gene="AGK",
+            ),
+            FusionEvent(
+                Event_id="event-6",
+                Cohort="test",
+                Sample_id="sample-5",
+                Site1_gene="BRAF",
+                Site2_gene="AGK",
+            ),
+            FusionEvent(
+                Event_id="event-7",
+                Cohort="test",
+                Site1_gene="BRAF",
+                Site2_gene="AGK",
+            ),
+        ]
+    )
+
+    result = FrequencyAnalysis().run(events, [], _gene_config(), {"dedup_by_patient": True})
+    rows = {row["Partner_gene"]: row for row in result.Tables["Partner_gene_counts"]}
+
+    assert rows["NTRK1"]["Event_count"] == 1
+    assert rows["AGK"]["Event_count"] == 3  # patient, sample fallback, event fallback
+    assert rows["AGK"]["Raw_event_count"] == 4
+    assert rows["AGK"]["Sample_count"] == 2
+    assert rows["AGK"]["Patient_count"] == 1
+    assert result.Summary["input_event_count"] == 7
+    assert result.Summary["input_sample_count"] == 5
+    assert result.Summary["input_patient_count"] == 3
+    assert result.Summary["analyzed_event_count"] == 6
+    assert result.Summary["count_unit"] == "patient_partner"
+    assert "Sample_id for 2 and Event_id for 1" in result.Warnings[0]
+
+
 def test_exon_retention_fraction_is_exact_for_hand_built_features():
     events = _events()
     features = [

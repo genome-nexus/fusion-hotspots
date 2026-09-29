@@ -780,6 +780,11 @@ def test_tcga_study_config_selects_profile_and_grch38_genome_nexus(monkeypatch):
     the cohort-sample-list/mutation fetches used for that must be mocked
     here too, or this test would otherwise attempt a real network call.
     """
+    monkeypatch.setattr(
+        cbioportal_api,
+        "fetch_gene_panel_eligibility",
+        MagicMock(return_value={"TCGA-SAMPLE": True, "TCGA-OTHER": True}),
+    )
     fetched_calls = [{"sampleId": "TCGA-SAMPLE"}]
     monkeypatch.setattr(
         cbioportal_api,
@@ -840,6 +845,12 @@ def test_tcga_study_config_selects_profile_and_grch38_genome_nexus(monkeypatch):
         algorithm_params={
             "mutation_cooccurrence": {
                 "cohort_sample_ids": ["TCGA-SAMPLE", "TCGA-OTHER"],
+                "eligible_sample_ids_by_target": {
+                    comparator_target_key(load_gene_config("BRAF").mutual_exclusivity_targets[0]): [
+                        "TCGA-OTHER",
+                        "TCGA-SAMPLE",
+                    ]
+                },
                 "comparator_alterations": [],
                 "comparator_availability": {
                     comparator_target_key(
@@ -905,16 +916,24 @@ def test_serialized_clinical_annotations_preserve_statistics(
     assert after["events"][1]["tumor_type"] is None
     assert after["events"][1]["oncotree_code"] is None
     assert enriched.events[0].Tumor_type == after["events"][0]["tumor_type"]
-    for payload in (before, after):
-        payload.pop("retrieved_at")
-        for result in payload["algorithm_results"]:
-            result.pop("Created_at")
-            result.pop("Input_fingerprint")  # includes the newly populated annotations
-            result["Summary"].pop("Runtime_seconds", None)
-        for row in payload["events"]:
-            row.pop("tumor_type")
-            row.pop("oncotree_code")
-    assert json.dumps(before).encode() == json.dumps(after).encode()
+    assert after["events"][0]["patient_id"] == "MUST-NOT-CHANGE-GROUPING"
+    assert enriched.events[0].Patient_id == "MUST-NOT-CHANGE-GROUPING"
+    assert after["summary"]["known_patient_count"] == 1
+    assert after["summary"]["missing_patient_id_event_count"] == 1
+    assert after["summary"]["patient_independence_established"] is False
+    for field in (
+        "fisher_p_value",
+        "fisher_odds_ratio",
+        "frame_domain_contingency_table",
+        "total_fusions",
+        "in_frame_count",
+    ):
+        assert before["summary"][field] == after["summary"][field]
+    for old, new in zip(before["summary"]["partner_counts"], after["summary"]["partner_counts"]):
+        assert old["Partner_gene"] == new["Partner_gene"]
+        assert old["Event_count"] == new["Event_count"]
+        assert old["Sample_count"] == new["Sample_count"]
+    assert after["summary"]["partner_counts"][0]["Patient_count"] == 1
 
 
 def test_mechanistic_interpretation_lines_labels_verified_mechanism_note_as_curated():
@@ -938,3 +957,61 @@ def test_mechanistic_interpretation_lines_labels_unverified_mechanism_note_disti
 def test_mechanistic_interpretation_lines_defaults_to_verified_when_flag_omitted():
     lines = benchmark_module._mechanistic_interpretation_lines(None, "Some mechanism text.")
     assert "**Curated mechanism:** Some mechanism text." in lines
+
+
+def test_mechanistic_markdown_labels_nominal_fdr_and_recurrence_separately():
+    summary = {
+        "retention_domains_configured": True,
+        "retention_domain_names": ["kinase"],
+        "retention_fisher_p_value": 0.01,
+        "retention_fisher_odds_ratio": 4,
+        "retention_statistically_supported": True,
+        "retention_fdr_q_value": 0.2,
+        "retention_fdr_significant": False,
+        "retention_counter_intuitive_confidence": "recurrent_partner_heuristic",
+        "retention_counter_intuitive_count": 2,
+        "retention_counter_intuitive_total": 10,
+        "retention_counter_intuitive_percent": 20,
+    }
+    tables = {
+        "retention_counter_intuitive_recurrent_partners": [{"partner_gene": "PARTNER", "count": 2}]
+    }
+    report = "\n".join(
+        benchmark_module._mechanistic_effect_lines(
+            summary, tables, effect="retention", label="retention"
+        )
+    )
+    assert "nominal p=0.01" in report
+    assert "q=0.2; does not pass FDR" in report
+    assert "PARTNER (x2)" in report
+    assert "descriptive recurrence heuristic" in report
+    assert "not a statistical subcluster test" in report
+
+
+@pytest.mark.parametrize(("unit", "expected_table_total"), [("patient", 2), ("event", 3)])
+def test_repeat_biopsies_are_collapsed_before_inference(
+    genome_nexus_canonical_transcript_fixture_path, unit, expected_table_total
+):
+    client = _genome_nexus_client(genome_nexus_canonical_transcript_fixture_path)
+    calls = [
+        {**_call("S1"), "patientId": "P1"},
+        {**_call("S2"), "patientId": "P1"},  # repeat biopsy of the same fusion
+        {**_call("S3"), "patientId": "P2"},
+    ]
+    run = analyze_structural_variant_calls_with_config(
+        calls,
+        load_gene_config("BRAF"),
+        "test",
+        genome_nexus_client=client,
+        n_permutations=5,
+        algorithm_names=["domain_retention", "frequency"],
+        observation_unit=unit,
+    )
+    results = {result.Algorithm: result for result in run.results}
+    table = results["domain_retention"].Tables["frame_domain_contingency_table"]
+    assert sum(sum(row) for row in table) == expected_table_total
+    # Descriptive counts and partner frequencies still see every event.
+    assert run.summary["total_fusions"] == 3
+    assert results["frequency"].Summary["input_event_count"] == 3
+    assert run.summary["observation_unit"] == unit
+    assert run.summary["collapsed_repeat_observation_count"] == 3 - expected_table_total

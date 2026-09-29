@@ -74,6 +74,10 @@ from cfh.reporting.palette import (
 from cfh.reporting.pdf import render_pdf_report
 from cfh.reporting.svg_utils import escape_xml_attr, escape_xml_text
 from cfh.stats.breakpoint_tests import build_frame_domain_contingency_table
+from cfh.stats.observation_units import (
+    DEFAULT_OBSERVATION_UNIT,
+    collapse_repeated_observations,
+)
 from cfh.studies.registry import StudyConfig, load_study_config
 
 _DELETION_EVENT_INFO_PATTERN = re.compile(
@@ -489,55 +493,87 @@ def run_gene_pair_benchmark(
     n_permutations: int = 1_000,
     algorithm_params: dict[str, dict] | None = None,
 ) -> RealBenchmarkRun:
-    """Live joint-partner benchmark for a ``gene_pair`` config (e.g. EML4-ALK).
+    """Test an ordered pair against all oriented protein fusions in a study.
 
-    Before this, a ``gene_pair`` config could not run through
-    ``cfh analyze``/``cfh real-benchmark`` at all: the single-gene
-    ``_load_benchmark_config`` path requires ``gene_symbol``/
-    ``entrez_gene_id``/``key_domains``, none of which a ``gene_pair``
-    config declares by design (see PR #62). This is the dedicated
-    gene-pair path those CLI commands now route to instead of erroring.
-
-    Reuses the existing single-gene ingestion/normalization pipeline --
-    :func:`run_real_benchmark` itself -- once per curated partner gene (see
-    :func:`_partner_component_configs`), pools their already-mapped
-    ``events`` (deduplicated by ``Event_id``, since a fusion between two
-    curated partners would otherwise be fetched twice), and tests the
-    configured ordered pair for enrichment via
-    :class:`~cfh.algorithms.joint_partner.JointPartnerMode`, which
-    deliberately only needs gene-pair identities, not domain/breakpoint
-    data. No breakpoint mapping, domain classification, or PDF report is
-    produced here -- those are single-gene-domain concepts that don't apply
-    to a pair-enrichment result.
+    The marginal-independence null needs a cohort-wide background. Discover
+    every SV-associated Entrez ID, fetch its records in bounded batches from
+    the study's configured SV profile, deduplicate records returned for both
+    partner genes, and normalize once. Pair identity needs no transcript or
+    domain mapping and no curated single-gene config for either partner.
     """
     if pair_config.gene_pair is None:
         raise RealBenchmarkInputError("run_gene_pair_benchmark requires a gene_pair GeneConfig")
+    if n_permutations <= 0:
+        raise RealBenchmarkInputError("n_permutations must be positive")
     gene5, gene3 = pair_config.gene_pair
-    component_configs = _partner_component_configs(pair_config)
-
-    pooled_events: dict[str, FusionEvent] = {}
-    pooled_rows: list[dict] = []
+    study_config = load_study_config(study_id)
+    profile_id = (
+        study_config.molecular_profile_id(study_id)
+        if study_config
+        else f"{study_id}_structural_variants"
+    )
+    batch_size = 100
     warnings: list[str] = []
-    endpoints: list[str] = []
-    raw_count_total = 0
-    profile_ids: list[str] = []
-    for component in component_configs:
-        component_run = run_real_benchmark(
-            component.gene_symbol, study_id, n_permutations=n_permutations
+    try:
+        discovered = cbioportal_api.fetch_structural_variant_genes([study_id])
+        gene_ids = sorted(
+            {
+                int(record["entrezGeneId"])
+                for record in discovered
+                if record.get("entrezGeneId") is not None
+            }
         )
-        for event in component_run.events:
-            pooled_events[event.Event_id] = event
-        pooled_rows.extend(component_run.rows)
-        warnings.extend(
-            f"[{component.gene_symbol}] {warning}" for warning in component_run.warnings
-        )
-        endpoints.extend(
-            endpoint for endpoint in component_run.endpoints if endpoint not in endpoints
-        )
-        raw_count_total += component_run.raw_structural_variant_count
-        profile_ids.append(component_run.molecular_profile_id)
+        unique_calls: dict[str, dict] = {}
+        for start in range(0, len(gene_ids), batch_size):
+            batch = gene_ids[start : start + batch_size]
+            for call in cbioportal_api.fetch_structural_variants(batch, [profile_id]):
+                sv_id = call.get("structuralVariantId")
+                key = (
+                    f"id:{sv_id}"
+                    if sv_id is not None
+                    else "payload:" + json.dumps(call, sort_keys=True, default=str)
+                )
+                unique_calls.setdefault(key, call)
+    except requests.RequestException as exc:
+        raise RealBenchmarkNetworkError(
+            f"cBioPortal cohort-wide structural-variant fetch failed for {study_id} "
+            f"and profile {profile_id}: {exc}. Check the study ID, network access, "
+            "and https://www.cbioportal.org availability, then retry."
+        ) from exc
 
-    events = list(pooled_events.values())
+    calls = list(unique_calls.values())
+    raw = cbioportal_api.structural_variants_to_dataframe(calls)
+    normalized = normalize(raw, None, study_id)
+    selected = [
+        (row.to_dict(), event)
+        for (_, row), event in zip(raw.iterrows(), normalized, strict=True)
+        if event.Is_protein_fusion is True
+        and event.Site1_gene
+        and event.Site2_gene
+        and event.Site1_gene != event.Site2_gene
+        and event.Five_prime_gene
+        and event.Three_prime_gene
+        and "fusion" in str(event.Event_info or event.Annotation or "").lower()
+    ]
+    events = [event for _, event in selected]
+    rows = [
+        {
+            **event.model_dump(),
+            "is_configured_pair": (event.Five_prime_gene, event.Three_prime_gene) == (gene5, gene3),
+        }
+        for _, event in selected
+    ]
+    if not gene_ids:
+        warnings.append(f"No structural-variant genes were discovered for {study_id}.")
+    if len(events) < len(calls):
+        warnings.append(
+            f"Excluded {len(calls) - len(events)} of {len(calls)} unique structural-variant "
+            "records without a complete, oriented protein-fusion annotation."
+        )
+    warnings.append(
+        "The Fisher test counts fusion events; multiple events from one sample or patient "
+        "may not be independent observations."
+    )
     joint_partner_params = {
         "joint_partner": dict((algorithm_params or {}).get("joint_partner", {}))
     }
@@ -551,8 +587,12 @@ def run_gene_pair_benchmark(
 
     summary = {
         "gene_pair": [gene5, gene3],
-        "component_genes": [component.gene_symbol for component in component_configs],
-        "raw_structural_variant_count": raw_count_total,
+        "component_genes": [gene5, gene3],
+        "background_scope": "all_discovered_study_sv_genes",
+        "count_unit": "fusion_event",
+        "discovered_gene_count": len(gene_ids),
+        "query_batch_count": (len(gene_ids) + batch_size - 1) // batch_size,
+        "raw_structural_variant_count": len(calls),
         "total_fusions": len(events),
         "mapped_fusions": len(events),
         "in_frame_count": sum(event.Frame_status == "in-frame" for event in events),
@@ -569,16 +609,19 @@ def run_gene_pair_benchmark(
     return RealBenchmarkRun(
         gene_symbol=f"{gene5}-{gene3}",
         study_id=study_id,
-        molecular_profile_id=",".join(dict.fromkeys(profile_ids)),
+        molecular_profile_id=profile_id,
         retrieved_at=datetime.now(timezone.utc),
-        raw_structural_variant_count=raw_count_total,
+        raw_structural_variant_count=len(calls),
         events=events,
         features=[],
-        rows=pooled_rows,
+        rows=rows,
         results=[joint_result],
         summary=summary,
         warnings=warnings,
-        endpoints=endpoints,
+        endpoints=[
+            f"{cbioportal_api.DEFAULT_BASE_URL}/structuralvariant-genes/fetch",
+            f"{cbioportal_api.DEFAULT_BASE_URL}/structural-variant/fetch",
+        ],
         is_gene_pair=True,
     )
 
@@ -655,9 +698,16 @@ def analyze_structural_variant_calls_with_config(
     algorithm_names: list[str] | None = None,
     algorithm_params: dict[str, dict] | None = None,
     extra_warnings: list[str] | None = None,
+    observation_unit: str = DEFAULT_OBSERVATION_UNIT,
 ) -> RealBenchmarkRun:
     """Normalize and analyze already-fetched cBioPortal SV API objects
     against an already-resolved ``GeneConfig``.
+
+    ``observation_unit="patient"`` (the default) collapses repeated
+    observations of one fusion in one patient before every inferential
+    algorithm (see :mod:`cfh.stats.observation_units`); descriptive counts,
+    the event table, and ``frequency`` still use every mapped event.
+    ``"event"`` restores the previous event-level inputs.
 
     This is the config-agnostic core :func:`analyze_structural_variant_calls`
     delegates to after resolving a curated config by gene symbol. Callers
@@ -691,12 +741,11 @@ def analyze_structural_variant_calls_with_config(
     client = genome_nexus_client or GenomeNexusClient()
 
     raw = cbioportal_api.structural_variants_to_dataframe(calls)
-    # Restrict enrichment to annotations: patient IDs/panel metadata must not
-    # change the existing statistical inputs or grouping.
+    # Preserve identity so downstream algorithms can state their counting unit.
     clinical_annotations = None
     if clinical_df is not None:
         clinical_annotations = clinical_df.reindex(
-            columns=["Sample_id", "Tumor_type", "Oncotree_code"]
+            columns=["Sample_id", "Patient_id", "Tumor_type", "Oncotree_code"]
         ).astype(object)
         clinical_annotations = clinical_annotations.fillna("")
     normalized = normalize(raw, clinical_annotations, study_id)
@@ -916,11 +965,23 @@ def analyze_structural_variant_calls_with_config(
             }
         )
 
+    analysis_events, analysis_features, collapse_report = collapse_repeated_observations(
+        events, features, config.gene_symbol, observation_unit=observation_unit
+    )
+    collapsed_event_ids = {event.Event_id for event in events} - {
+        event.Event_id for event in analysis_events
+    }
+    if collapse_report.collapsed_event_count:
+        warnings.append(
+            f"Collapsed {collapse_report.collapsed_event_count} repeated observation(s) of the "
+            f"same fusion in {collapse_report.patients_with_repeats} patient(s) before "
+            "inferential tests (observation_unit='patient')."
+        )
     in_frame_mapped = has_key_domain and any(
         event.Frame_status == "in-frame"
         and (feature.Domain_retention_flags or {}).get(target_key)
         in {"retained", "lost", "disrupted"}
-        for event, feature in zip(events, features, strict=True)
+        for event, feature in zip(analysis_events, analysis_features, strict=True)
     )
     if not has_key_domain:
         domain_result = _no_key_domain_result(config)
@@ -933,14 +994,14 @@ def analyze_structural_variant_calls_with_config(
         )
         warnings.append(message)
         domain_result = _unavailable_domain_result(
-            message, events, features, config, n_permutations
+            message, analysis_events, analysis_features, config, n_permutations
         )
     else:
         try:
             domain_result = run_algorithms(
                 ["domain_retention"],
-                events,
-                features,
+                analysis_events,
+                analysis_features,
                 config,
                 {
                     "domain_retention": {
@@ -960,15 +1021,32 @@ def analyze_structural_variant_calls_with_config(
             message = f"Domain-retention statistics are unavailable: {exc}"
             warnings.append(message)
             domain_result = _unavailable_domain_result(
-                message, events, features, config, n_permutations
+                message, analysis_events, analysis_features, config, n_permutations
             )
     selected_events = [event for _, event in selected]
+    analysis_selected_events = [
+        event for event in selected_events if event.Event_id not in collapsed_event_ids
+    ]
     requested_algorithms = algorithm_names or ["domain_retention", "frequency"]
-    other_algorithms = [name for name in requested_algorithms if name != "domain_retention"]
+    other_algorithms = [
+        name for name in requested_algorithms if name not in {"domain_retention", "frequency"}
+    ]
+    # Descriptive partner counts use every event (frequency has its own
+    # optional patient deduplication); dependents such as composite_score
+    # receive this result through extra_results.
+    upstream_results = [domain_result]
+    if "frequency" in requested_algorithms:
+        upstream_results += run_algorithms(
+            ["frequency"],
+            selected_events,
+            features,
+            config,
+            {"frequency": {"dedup_by_patient": False, **algorithm_params.get("frequency", {})}},
+        )
     other_results = run_algorithms(
         other_algorithms,
-        selected_events,
-        features,
+        analysis_selected_events,
+        analysis_features,
         config,
         {
             "confidence_stats": {
@@ -1010,9 +1088,9 @@ def analyze_structural_variant_calls_with_config(
                 }
             },
         },
-        extra_results=[domain_result],
+        extra_results=upstream_results,
     )
-    results_by_name = {result.Algorithm: result for result in [domain_result, *other_results]}
+    results_by_name = {result.Algorithm: result for result in [*upstream_results, *other_results]}
     results = [results_by_name[name] for name in requested_algorithms if name in results_by_name]
     frequency_result = results_by_name.get("frequency")
     if frequency_result is None:
@@ -1087,6 +1165,16 @@ def analyze_structural_variant_calls_with_config(
     summary = {
         "raw_structural_variant_count": len(calls),
         "total_fusions": total,
+        "sample_count": len({event.Sample_id for event in selected_events if event.Sample_id}),
+        "known_patient_count": len(
+            {event.Patient_id for event in selected_events if event.Patient_id}
+        ),
+        "missing_patient_id_event_count": sum(not event.Patient_id for event in selected_events),
+        "inference_counting_unit": (
+            "patient_distinct_fusion" if observation_unit == "patient" else "event"
+        ),
+        "patient_independence_established": False,
+        **collapse_report.as_summary(),
         "mapped_fusions": len(features),
         "skipped_fusions": total - len(features),
         "in_frame_count": in_frame_count,
@@ -1184,6 +1272,7 @@ def _fetch_mutual_exclusivity_params(
     *,
     base_url: str = cbioportal_api.DEFAULT_BASE_URL,
     session: requests.Session | None = None,
+    panel_cache: dict | None = None,
 ) -> tuple[dict[str, dict] | None, list[str]]:
     """Best-effort live fetch of the comparator alteration + cohort-sample-
     universe data ``mutation_cooccurrence`` needs, for a gene that opts in
@@ -1213,6 +1302,24 @@ def _fetch_mutual_exclusivity_params(
 
     comparator_alterations: list[dict] = []
     comparator_availability: dict[str, bool] = {}
+    eligible_sample_ids_by_target: dict[str, list[str]] = {}
+    sv_eligibility: dict[str, bool | None] = {}
+    if config.entrez_gene_id is not None:
+        try:
+            sv_eligibility = cbioportal_api.fetch_gene_panel_eligibility(
+                study_config.molecular_profile_id(study_id)
+                if study_config
+                else f"{study_id}_structural_variants",
+                sample_list_id,
+                config.entrez_gene_id,
+                base_url=base_url,
+                session=session,
+                cache=panel_cache,
+            )
+        except (requests.RequestException, ValueError, TypeError) as exc:
+            warnings.append(f"SV assay eligibility unavailable: {exc}")
+    if not sv_eligibility:
+        warnings.append("SV gene coverage was not established; comparator tests will be skipped.")
     for target in config.mutual_exclusivity_targets:
         target_key = comparator_target_key(target)
         if target.entrez_gene_id is None:
@@ -1283,6 +1390,30 @@ def _fetch_mutual_exclusivity_params(
             continue
         comparator_alterations.extend(event.model_dump() for event in events)
         comparator_availability[target_key] = True
+        try:
+            comparator_eligibility = cbioportal_api.fetch_gene_panel_eligibility(
+                mutation_profile_id
+                if target.alteration_type == "point_mutation"
+                else cna_profile_id,
+                sample_list_id,
+                target.entrez_gene_id,
+                base_url=base_url,
+                session=session,
+                cache=panel_cache,
+            )
+            eligible_sample_ids_by_target[target_key] = sorted(
+                sample
+                for sample in cohort_sample_ids
+                if sv_eligibility.get(sample) is True and comparator_eligibility.get(sample) is True
+            )
+            excluded = len(set(cohort_sample_ids)) - len(eligible_sample_ids_by_target[target_key])
+            if excluded:
+                warnings.append(
+                    f"{target.gene} {target.alteration_type}: {excluded} cohort samples excluded "
+                    "because joint gene/assay coverage was not established."
+                )
+        except (requests.RequestException, ValueError, TypeError) as exc:
+            warnings.append(f"Comparator assay eligibility unavailable for {target.gene}: {exc}")
 
     return (
         {
@@ -1290,6 +1421,7 @@ def _fetch_mutual_exclusivity_params(
                 "cohort_sample_ids": cohort_sample_ids,
                 "comparator_alterations": comparator_alterations,
                 "comparator_availability": comparator_availability,
+                "eligible_sample_ids_by_target": eligible_sample_ids_by_target,
             }
         },
         warnings,
@@ -1303,6 +1435,7 @@ def _fetch_expression_association_params(
     *,
     base_url: str = cbioportal_api.DEFAULT_BASE_URL,
     session: requests.Session | None = None,
+    panel_cache: dict | None = None,
 ) -> tuple[dict[str, Any], str | None]:
     """Best-effort live mRNA-expression fetch feeding the
     ``expression_association`` algorithm.
@@ -1341,11 +1474,36 @@ def _fetch_expression_association_params(
             f"No mRNA-expression records were returned for {config.gene_symbol} from "
             f"{profile_id}; expression_association analysis was skipped."
         )
+    warning = None
+    eligible_samples: list[str] = []
+    try:
+        if config.entrez_gene_id is None:
+            raise ValueError("target gene has no Entrez ID")
+        sv_eligibility = cbioportal_api.fetch_gene_panel_eligibility(
+            study_config.molecular_profile_id(study_id),
+            study_config.all_sample_list_id(study_id),
+            config.entrez_gene_id,
+            base_url=base_url,
+            session=session,
+            cache=panel_cache,
+        )
+        eligible_samples = sorted(
+            sample for sample in expression_by_sample if sv_eligibility.get(sample) is True
+        )
+        excluded = len(expression_by_sample) - len(eligible_samples)
+        if excluded:
+            warning = (
+                f"Expression comparison: {excluded} measured samples excluded from the "
+                "fusion-positive/negative denominator because SV gene coverage was not established."
+            )
+    except (requests.RequestException, ValueError, TypeError) as exc:
+        warning = f"Expression fusion-status comparison lacks SV assay eligibility: {exc}"
     return {
         "expression_by_sample": expression_by_sample,
-        "cohort_sample_ids": list(expression_by_sample.keys()),
+        "cohort_sample_ids": eligible_samples,
+        "eligibility_source": "sv_gene_coverage_and_measured_expression",
         "expression_field": "mRNA expression z-score",
-    }, None
+    }, warning
 
 
 def run_real_benchmark(
@@ -1394,9 +1552,10 @@ def run_real_benchmark(
         name: dict(value) for name, value in (algorithm_params or {}).items()
     }
     extra_warnings: list[str] = []
+    panel_cache: dict = {}
     if config.mutual_exclusivity_targets:
         mutual_exclusivity_params, fetch_warnings = _fetch_mutual_exclusivity_params(
-            config, study_id, study_config
+            config, study_id, study_config, panel_cache=panel_cache
         )
         extra_warnings.extend(fetch_warnings)
         if mutual_exclusivity_params:
@@ -1419,7 +1578,7 @@ def run_real_benchmark(
 
     resolved_algorithm_params: dict[str, dict] = dict(caller_algorithm_params)
     expression_params, expression_warning = _fetch_expression_association_params(
-        config, study_config, study_id
+        config, study_config, study_id, panel_cache=panel_cache
     )
     if expression_params:
         resolved_algorithm_params["expression_association"] = {
@@ -1498,13 +1657,22 @@ def _mechanistic_effect_lines(summary: dict, tables: dict, *, effect: str, label
     )
     p_value = summary.get(f"{effect}_fisher_p_value")
     odds_ratio = summary.get(f"{effect}_fisher_odds_ratio")
-    stats_phrase = f"p={_format_stat(p_value)}, odds ratio={_format_stat(odds_ratio)}"
+    q_value = summary.get(f"{effect}_fdr_q_value")
+    fdr_phrase = (
+        "FDR not assessed"
+        if q_value is None
+        else f"q={_format_stat(q_value)}; "
+        + ("passes FDR" if summary.get(f"{effect}_fdr_significant") else "does not pass FDR")
+    )
+    stats_phrase = (
+        f"nominal p={_format_stat(p_value)}, odds ratio={_format_stat(odds_ratio)}; {fdr_phrase}"
+    )
 
     if not summary.get(f"{effect}_statistically_supported"):
         return [
-            f"**{domain_phrase} {label}:** not statistically significant ({stats_phrase}) -- "
-            "too weak to say what this gene's fusions require, let alone characterize which "
-            "events run counter to it.",
+            f"**{domain_phrase} {label}:** "
+            + ("not tested" if p_value is None else "nominal support not established")
+            + f" ({stats_phrase}). No counter-pattern classification was made.",
             "",
         ]
 
@@ -1515,32 +1683,31 @@ def _mechanistic_effect_lines(summary: dict, tables: dict, *, effect: str, label
 
     if confidence == "none":
         return [
-            f"**{domain_phrase} {label}:** statistically supported ({stats_phrase}). All "
+            f"**{domain_phrase} {label}:** nominal Fisher support ({stats_phrase}). All "
             f"{total} in-frame events with a determinate status match it -- no "
             "counter-intuitive events observed.",
             "",
         ]
 
     lines = [
-        f"**{domain_phrase} {label}:** statistically supported ({stats_phrase}), but "
+        f"**{domain_phrase} {label}:** nominal Fisher support ({stats_phrase}), but "
         f"{count}/{total} in-frame events ({percent:.1f}%) show the opposite status.",
         "",
     ]
-    if confidence == "possible_subcluster":
+    if confidence in {"possible_subcluster", "recurrent_partner_heuristic"}:
         recurrent = tables.get(f"{effect}_counter_intuitive_recurrent_partners") or []
         partner_phrase = ", ".join(f"{row['partner_gene']} (x{row['count']})" for row in recurrent)
         lines.append(
-            f"{partner_phrase} recur among just these counter-intuitive events -- a candidate "
-            "subgroup that may follow a distinct, not-yet-curated mechanism. This is flagged "
-            "for manual curator review, not asserted as a confirmed alternate mechanism."
+            f"{partner_phrase} recur among these counter-intuitive events. This descriptive "
+            "recurrence heuristic flags records for curator review; it is not a statistical "
+            "subcluster test or evidence of an alternate mechanism."
         )
     else:
         threshold = summary.get(f"{effect}_recurrent_partner_threshold")
         lines.append(
             f"Spread across distinct partner genes with no partner recurring {threshold}+ "
-            "times among them -- consistent with background noise or individual passenger "
-            "events rather than a distinct recurrent subgroup; too weak to infer an "
-            "alternate mechanism from this cohort alone."
+            "times among them. The descriptive recurrence threshold is unmet; this does "
+            "not establish that these events are passengers or background noise."
         )
     lines.append("")
 
@@ -2271,13 +2438,14 @@ def _gene_pair_markdown_summary(run: RealBenchmarkRun) -> str:
     lines += [
         "## Method",
         "",
-        "Structural-variant records were live-fetched for "
-        f"{', '.join(summary['component_genes'])} (the pair member(s) with a curated "
-        "single-gene config) through the same cBioPortal/Genome Nexus ingestion, "
-        "normalization, and breakpoint-mapping pipeline used for single-gene analysis "
-        "(see `run_real_benchmark`), then pooled (deduplicated by event id) and tested "
-        f"via `JointPartnerMode` for whether the configured ordered pair {gene5}->{gene3} "
-        "is enriched relative to a marginal-independence null.",
+        "Structural-variant genes were discovered across the study, and their records "
+        "were fetched in batches from its SV molecular profile. Repeated API records "
+        "were deduplicated by structural-variant ID (or full payload when absent), then "
+        "normalized once. The background includes all complete, oriented protein-fusion "
+        "events, without requiring transcript mapping or curated partner configs. "
+        f"`JointPartnerMode` tests whether {gene5}->{gene3} is enriched relative to "
+        "an event-level marginal-independence null. Assay and tumor-type heterogeneity "
+        "and multiple events per patient can violate this null's assumptions.",
         "",
         "## Results",
         "",

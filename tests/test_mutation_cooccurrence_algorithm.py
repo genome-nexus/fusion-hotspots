@@ -239,3 +239,25 @@ def test_real_braf_config_opts_in_and_ret_does_not():
 
     ret_result = MutationCooccurrenceAlgorithm().run([], [], ret_config, {})
     assert ret_result.Summary == {"targets": []}
+
+
+def test_rows_record_eligible_sample_digest_not_id_list():
+    import hashlib
+
+    cohort_sample_ids = [f"S{i}" for i in range(1, 21)]
+    result = MutationCooccurrenceAlgorithm().run(
+        [_event(f"evt-{i}", f"S{i}") for i in range(1, 9)],
+        [],
+        _TARGET_GENE_WITH_COMPARATOR,
+        {
+            "cohort_sample_ids": list(reversed(cohort_sample_ids)),
+            "comparator_alterations": [_comparator_row(f"S{i}") for i in range(9, 17)],
+        },
+    )
+    row = result.Summary["targets"][0]
+    assert "eligible_sample_ids" not in row
+    assert row["cohort_sample_count"] == 20
+    assert (
+        row["eligible_sample_ids_sha256"]
+        == hashlib.sha256("\n".join(sorted(cohort_sample_ids)).encode()).hexdigest()
+    )

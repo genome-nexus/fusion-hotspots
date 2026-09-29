@@ -72,7 +72,7 @@ from cfh.model.fusion_feature import FusionFeature
 from cfh.stats.ttest import welch_t_test
 
 ALGORITHM_NAME = "expression_association"
-ALGORITHM_VERSION = "0.1.0"
+ALGORITHM_VERSION = "0.2.0"
 
 _SHAPIRO_MIN_N = 3
 _NORMALITY_ALPHA = 0.05
@@ -143,8 +143,8 @@ class ExpressionAssociationAlgorithm(Algorithm):
             sample. Omit (or pass empty) for a clean no-op result -- the
             expected outcome for a cohort with no mRNA-expression molecular
             profile at all.
-        cohort_sample_ids (list, optional): every ``Sample_id`` profiled for
-            expression in this cohort. Required only for the
+        cohort_sample_ids (list, optional): every ``Sample_id`` assessed for
+            both fusion status and expression in this cohort. Required only for the
             ``fusion_positive_vs_negative`` comparison, to determine the
             fusion-negative sample set; without it, that comparison is
             skipped (with a warning) and only ``domain_retention_split`` can
@@ -176,7 +176,7 @@ class ExpressionAssociationAlgorithm(Algorithm):
 
         expression_field = params.get("expression_field", "mRNA expression")
         warnings: list[str] = []
-        summary: dict[str, Any] = {"expression_field": expression_field}
+        summary: dict[str, Any] = {"expression_field": expression_field, "analysis_unit": "sample"}
 
         summary_fp_fn, warning_fp_fn = self._fusion_positive_vs_negative(
             events, expression_by_sample, params.get("cohort_sample_ids"), gene_name
@@ -193,6 +193,26 @@ class ExpressionAssociationAlgorithm(Algorithm):
             summary["domain_retention_split"] = summary_split
         if warning_split:
             warnings.append(warning_split)
+
+        # Expression values are keyed by sample. Repeated biopsies from a
+        # known patient therefore remain separate observations; flag the
+        # resulting dependence instead of presenting them as independent
+        # patients.
+        samples_by_patient: dict[tuple[str, str], set[str]] = {}
+        for event in events:
+            if event.Patient_id and event.Sample_id in expression_by_sample:
+                samples_by_patient.setdefault((event.Cohort, event.Patient_id), set()).add(
+                    event.Sample_id
+                )
+        repeated_patient_count = sum(len(samples) > 1 for samples in samples_by_patient.values())
+        if repeated_patient_count:
+            warnings.append(
+                f"{gene_name}: expression comparisons use one observation per sample; "
+                f"{repeated_patient_count} known "
+                f"{'patient has' if repeated_patient_count == 1 else 'patients have'} "
+                "multiple profiled samples, "
+                "so observations may not be independent."
+            )
 
         if "fusion_positive_vs_negative" not in summary and "domain_retention_split" not in summary:
             summary = {}
@@ -213,12 +233,20 @@ class ExpressionAssociationAlgorithm(Algorithm):
         cohort_sample_ids: Optional[list[str]],
         gene_name: str,
     ) -> tuple[Optional[dict[str, Any]], Optional[str]]:
-        if not cohort_sample_ids:
+        if cohort_sample_ids is None:
             return None, (
                 f"{gene_name}: fusion-positive-vs-negative expression comparison skipped; "
                 "no cohort_sample_ids was supplied to determine the fusion-negative group."
             )
-        positive_sample_ids = {event.Sample_id for event in events if event.Sample_id}
+        if not cohort_sample_ids:
+            return None, (
+                f"{gene_name}: fusion-positive-vs-negative expression comparison skipped; "
+                "no sample had both established SV assay coverage and measured expression, "
+                "so no fusion-negative group could be defined."
+            )
+        positive_sample_ids = {event.Sample_id for event in events if event.Sample_id} & set(
+            cohort_sample_ids
+        )
         negative_sample_ids = set(cohort_sample_ids) - positive_sample_ids
         positive_values = [
             expression_by_sample[sample_id]
@@ -238,6 +266,7 @@ class ExpressionAssociationAlgorithm(Algorithm):
             )
         test_result = _run_two_group_test(positive_values, negative_values)
         return {
+            "analysis_unit": "sample",
             "n_fusion_positive": len(positive_values),
             "n_fusion_negative": len(negative_values),
             **test_result,
@@ -262,8 +291,7 @@ class ExpressionAssociationAlgorithm(Algorithm):
         group_value_map = domain_params.get("group_value_map") or {}
 
         features_by_event = {feature.Event_id: feature for feature in features}
-        retained_values: list[float] = []
-        not_retained_values: list[float] = []
+        statuses_by_sample: dict[str, set[str]] = {}
         for event in events:
             if not event.Sample_id or event.Sample_id not in expression_by_sample:
                 continue
@@ -274,26 +302,51 @@ class ExpressionAssociationAlgorithm(Algorithm):
             mapped_value = group_value_map.get(raw_value, raw_value)
             if mapped_value not in ("retained", "not_retained"):
                 continue
-            expression_value = expression_by_sample[event.Sample_id]
-            if mapped_value == "retained":
-                retained_values.append(expression_value)
-            else:
-                not_retained_values.append(expression_value)
+            statuses_by_sample.setdefault(event.Sample_id, set()).add(mapped_value)
+
+        ambiguous_samples = {
+            sample_id for sample_id, statuses in statuses_by_sample.items() if len(statuses) > 1
+        }
+        retained_values = [
+            expression_by_sample[sample_id]
+            for sample_id, statuses in statuses_by_sample.items()
+            if statuses == {"retained"}
+        ]
+        not_retained_values = [
+            expression_by_sample[sample_id]
+            for sample_id, statuses in statuses_by_sample.items()
+            if statuses == {"not_retained"}
+        ]
+        ambiguous_note = (
+            f" {len(ambiguous_samples)} "
+            f"{'sample' if len(ambiguous_samples) == 1 else 'samples'} "
+            "with both retained and not-retained "
+            f"events {'was' if len(ambiguous_samples) == 1 else 'were'} excluded."
+            if ambiguous_samples
+            else ""
+        )
 
         if len(retained_values) < _MIN_GROUP_N or len(not_retained_values) < _MIN_GROUP_N:
             return None, (
                 f"{gene_name}: domain-retention expression-split comparison skipped; "
                 f"each group needs >={_MIN_GROUP_N} fusion-positive samples with expression "
                 f"data (retained={len(retained_values)}, not_retained={len(not_retained_values)})."
+                f"{ambiguous_note}"
             )
         test_result = _run_two_group_test(retained_values, not_retained_values)
         return {
+            "analysis_unit": "sample",
             "group_a_label": "retained",
             "group_b_label": "not_retained",
             "n_a": len(retained_values),
             "n_b": len(not_retained_values),
+            "n_ambiguous_samples_excluded": len(ambiguous_samples),
             **test_result,
-        }, None
+        }, (
+            f"{gene_name}: domain-retention expression split:{ambiguous_note}"
+            if ambiguous_samples
+            else None
+        )
 
     @staticmethod
     def _no_op_result(warning: str) -> AlgorithmResult:

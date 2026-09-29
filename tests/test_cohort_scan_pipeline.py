@@ -12,12 +12,15 @@ Pfam domain, one with none at all).
 from __future__ import annotations
 
 import json
+from collections import Counter
 from unittest.mock import MagicMock
 
 import pytest
 import requests
 
 from cfh.cohort import scan as scan_module
+from cfh.cohort.cooccurrence_data import DiscoveryInputs
+from cfh.cohort.cooccurrence_discovery import SampleRecord
 from cfh.cohort.outputs import build_summary_rows, write_cohort_scan_outputs
 from cfh.cohort.scan import genes_needing_full_report, run_cohort_scan
 from cfh.ingestion import cbioportal_api
@@ -196,6 +199,16 @@ def mock_session() -> MagicMock:
                 if entrez_id in entrez_ids
             )
             response.json.return_value = _sv_calls_for_gene(gene_symbol)
+        elif url.endswith("/gene-panel-data/fetch"):
+            assert "/molecular-profiles/" in url
+            assert json["sampleListId"] in {f"{_STUDY_ID}_all", f"{_STUDY_ID}_eligible"}
+            response.json.return_value = [
+                {"sampleId": sample_id, "profiled": True, "genePanelId": "TEST"}
+                for sample_id in (
+                    [call["sampleId"] for gene in _GENE_SPECS for call in _sv_calls_for_gene(gene)]
+                    + ["NEG-1", "NEG-2"]
+                )
+            ]
         elif url.endswith("/ensembl/canonical-transcript/hgnc"):
             requested = json
             payloads = []
@@ -209,6 +222,11 @@ def mock_session() -> MagicMock:
 
     def _get(url, params=None, **kwargs):
         response = MagicMock(status_code=200)
+        if url.endswith("/gene-panels/TEST"):
+            response.json.return_value = {
+                "genes": [{"entrezGeneId": spec[0]} for spec in _GENE_SPECS.values()]
+            }
+            return response
         if url.endswith("/sample-ids"):
             response.json.return_value = [
                 call["sampleId"] for call in _sv_calls_for_gene("BRAF")
@@ -295,6 +313,22 @@ def test_cohort_scan_end_to_end_offline(mock_session, tmp_path):
     assert fdr_genes == {"BRAF", "RET", "FAKE1"}
     assert len(fdr_genes) > 2
     assert all(0.0 <= row["bh_adjusted_q"] <= 1.0 for row in result.fdr_rows)
+    braf_fisher = next(
+        row
+        for row in result.fdr_rows
+        if row["gene"] == "BRAF"
+        and row["algorithm"] == "domain_retention"
+        and row["test"] == "fisher"
+    )
+    braf_mechanism = next(
+        item
+        for item in outcomes_by_gene["BRAF"].run.results
+        if item.Algorithm == "mechanistic_interpretation"
+    )
+    assert braf_mechanism.Summary["retention_fdr_q_value"] == braf_fisher["bh_adjusted_q"]
+    assert braf_mechanism.Summary["retention_fdr_significant"] == (
+        braf_fisher["bh_adjusted_q"] < result.significance_level
+    )
 
     # Adaptive permutations actually ran (small budget requested).
     braf_domain_retention = next(
@@ -401,6 +435,14 @@ def test_cohort_scan_gracefully_skips_gene_genome_nexus_cannot_resolve(mock_sess
                 symbol for symbol, (eid, *_r) in _GENE_SPECS.items() if eid in entrez_ids
             )
             response.json.return_value = _sv_calls_for_gene(gene_symbol)
+        elif url.endswith("/gene-panel-data/fetch"):
+            assert "/molecular-profiles/" in url
+            assert json["sampleListId"] in {f"{_STUDY_ID}_all", f"{_STUDY_ID}_eligible"}
+            response.json.return_value = [
+                {"sampleId": call["sampleId"], "profiled": True, "genePanelId": "TEST"}
+                for gene in _GENE_SPECS
+                for call in _sv_calls_for_gene(gene)
+            ]
         elif url.endswith("/ensembl/canonical-transcript/hgnc"):
             payloads = []
             for symbol in json:
@@ -414,6 +456,9 @@ def test_cohort_scan_gracefully_skips_gene_genome_nexus_cannot_resolve(mock_sess
         return response
 
     mock_session.post.side_effect = _post_missing_fake1
+    # The HGNC-verified fallback must reject a single-gene payload whose
+    # Ensembl gene ID differs from HGNC's, keeping the gene unresolved.
+    _with_hgnc_record(mock_session, ensembl_gene_id="ENSG_NOT_FAKE1")
 
     result = run_cohort_scan(
         _STUDY_ID,
@@ -427,11 +472,92 @@ def test_cohort_scan_gracefully_skips_gene_genome_nexus_cannot_resolve(mock_sess
     outcomes_by_gene = {outcome.gene_symbol: outcome for outcome in result.gene_outcomes}
     assert outcomes_by_gene["FAKE1"].config_source == "unresolved"
     assert outcomes_by_gene["FAKE1"].status == "failed"
+    assert "ENSG_NOT_FAKE1" in outcomes_by_gene["FAKE1"].error
     assert result.unresolved_gene_count == 1
+    assert result.fallback_resolved_gene_count == 0
     assert any("FAKE1" in warning for warning in result.warnings)
     # Everything else still ran fine.
     assert outcomes_by_gene["BRAF"].status == "ok"
     assert outcomes_by_gene["FAKE2"].status == "ok"
+    assert outcomes_by_gene["FAKE2"].transcript_source == "genome_nexus_batch"
+
+
+def _with_hgnc_record(mock_session, *, ensembl_gene_id, locus_group="protein-coding gene"):
+    base_get = mock_session.get.side_effect
+
+    def _get(url, params=None, **kwargs):
+        if "rest.genenames.org/fetch/" in url:
+            response = MagicMock(status_code=200)
+            response.json.return_value = {
+                "response": {
+                    "docs": [
+                        {
+                            "symbol": "FAKE1",
+                            "ensembl_gene_id": ensembl_gene_id,
+                            "locus_group": locus_group,
+                        }
+                    ]
+                }
+            }
+            return response
+        return base_get(url, params=params, **kwargs)
+
+    mock_session.get.side_effect = _get
+
+
+def _drop_fake1_from_batch(mock_session):
+    base_post = mock_session.post.side_effect
+
+    def _post(url, json=None, **kwargs):
+        if url.endswith("/ensembl/canonical-transcript/hgnc"):
+            json = [symbol for symbol in json if symbol != "FAKE1"]
+        return base_post(url, json=json, **kwargs)
+
+    mock_session.post.side_effect = _post
+
+
+def test_cohort_scan_recovers_batch_miss_with_hgnc_verified_fallback(mock_session, tmp_path):
+    _drop_fake1_from_batch(mock_session)
+    _with_hgnc_record(mock_session, ensembl_gene_id="ENSG_FAKE1")
+
+    result = run_cohort_scan(
+        _STUDY_ID,
+        min_distinct_patients=5,
+        n_permutations=20,
+        adaptive=False,
+        cache_dir=tmp_path / "cache",
+        session=mock_session,
+        algorithm_names=["frequency"],
+    )
+
+    fake1 = next(o for o in result.gene_outcomes if o.gene_symbol == "FAKE1")
+    assert fake1.status == "ok"
+    assert fake1.config_source == "auto"
+    assert fake1.transcript_source == "genome_nexus_single_gene_hgnc_verified"
+    assert result.fallback_resolved_gene_count == 1
+    assert result.unresolved_gene_count == 0
+    assert (tmp_path / "cache" / "hgnc" / "entrez_id_9001.json").exists()
+
+
+def test_cohort_scan_labels_non_coding_genes_separately(mock_session):
+    _drop_fake1_from_batch(mock_session)
+    _with_hgnc_record(mock_session, ensembl_gene_id="ENSG_FAKE1", locus_group="non-coding RNA")
+
+    result = run_cohort_scan(
+        _STUDY_ID,
+        min_distinct_patients=5,
+        n_permutations=20,
+        adaptive=False,
+        session=mock_session,
+        algorithm_names=["frequency"],
+    )
+
+    fake1 = next(o for o in result.gene_outcomes if o.gene_symbol == "FAKE1")
+    assert fake1.config_source == "non_coding"
+    assert fake1.error.startswith("Non-coding gene")
+    assert result.non_coding_gene_count == 1
+    assert result.unresolved_gene_count == 0
+    assert any("non-coding per HGNC" in warning for warning in result.warnings)
 
 
 @pytest.mark.parametrize("gene_symbol", ["BRAF", "RET"])
@@ -585,3 +711,110 @@ def test_manhattan_svg_is_wired_into_all_three_cohort_scan_outputs(mock_session,
         page.extract_text() or "" for page in PdfReader(str(paths["summary_pdf"])).pages
     )
     assert "manhattan" in pdf_text
+
+
+def test_cohort_scan_reports_progress_once_per_candidate_gene(mock_session, tmp_path):
+    lines: list[str] = []
+    result = run_cohort_scan(
+        _STUDY_ID,
+        min_distinct_patients=5,
+        n_permutations=20,
+        adaptive=False,
+        cache_dir=tmp_path / "cache",
+        session=mock_session,
+        algorithm_names=["frequency"],
+        progress=lines.append,
+    )
+    total = len(result.gene_outcomes)
+    assert len(lines) == total
+    for index, (line, outcome) in enumerate(zip(lines, result.gene_outcomes, strict=True), 1):
+        assert line.startswith(f"[{index}/{total}] {outcome.gene_symbol}: {outcome.status} (")
+
+
+# --- co-occurrence discovery wiring ------------------------------------------
+
+
+def _fake_inputs(*_args, **_kwargs):
+    braf_samples = sorted({call["sampleId"] for call in _sv_calls_for_gene("BRAF")})
+    others = [f"NEG-{i}" for i in range(200)]
+    samples = [SampleRecord(s, "PA", "P", "P", "P") for s in braf_samples + others]
+    return DiscoveryInputs(
+        samples=samples,
+        panel_genes={"P": {"BRAF", "RET", "FAKE1", "FAKE2", "KRAS"}},
+        alterations={("KRAS", "mutation"): set(others[:60])},
+        mutation_count_by_sample=Counter({others[0]: 500}),
+        warnings=["example loader warning"],
+    )
+
+
+def test_scan_runs_discovery_only_when_requested_and_writes_outputs(
+    mock_session, monkeypatch, tmp_path
+):
+    loader = MagicMock(side_effect=_fake_inputs)
+    monkeypatch.setattr(scan_module, "load_discovery_inputs", loader)
+    kwargs = dict(
+        min_distinct_patients=5,
+        n_permutations=20,
+        adaptive=False,
+        session=mock_session,
+        algorithm_names=["frequency"],
+    )
+    plain = run_cohort_scan(_STUDY_ID, **kwargs)
+    assert plain.cooccurrence_discovery is None
+    loader.assert_not_called()
+
+    result = run_cohort_scan(
+        _STUDY_ID, discover_cooccurrence=True, hypermutated_min_mutations=100, **kwargs
+    )
+    discovery = result.cooccurrence_discovery
+    assert discovery["excluded_sample_count"] == 1
+    assert discovery["hypermutated_min_mutations"] == 100
+    braf = next(r for r in discovery["rows"] if r["fusion_gene"] == "BRAF")
+    assert braf["comparator_gene"] == "KRAS"
+    assert braf["both_samples"] == 0
+    assert any("example loader warning" in w for w in result.warnings)
+    # Discovery never enters the main FDR family.
+    assert not any("KRAS" in row["test"] for row in result.fdr_rows)
+
+    paths = write_cohort_scan_outputs(result, tmp_path, pdf=False)
+    payload = json.loads(paths["cooccurrence_discovery_json"].read_text())
+    assert payload["tested_pair_count"] == discovery["tested_pair_count"]
+    assert paths["cooccurrence_discovery_tsv"].read_text().startswith("fusion_gene\t")
+    assert "Co-occurrence discovery" in paths["summary_markdown"].read_text()
+
+
+def test_discovery_failure_degrades_to_warning(mock_session, monkeypatch):
+    monkeypatch.setattr(
+        scan_module,
+        "load_discovery_inputs",
+        MagicMock(side_effect=requests.ConnectionError("portal down")),
+    )
+    result = run_cohort_scan(
+        _STUDY_ID,
+        min_distinct_patients=5,
+        n_permutations=20,
+        adaptive=False,
+        session=mock_session,
+        algorithm_names=["frequency"],
+        discover_cooccurrence=True,
+    )
+    assert result.cooccurrence_discovery is None
+    assert any("Co-occurrence discovery was skipped" in w for w in result.warnings)
+
+
+def test_summary_rows_carry_stratified_cmh_as_a_separate_family(mock_session):
+    from cfh.cohort.outputs import build_summary_rows
+
+    result = run_cohort_scan(
+        _STUDY_ID,
+        min_distinct_patients=5,
+        n_permutations=20,
+        adaptive=False,
+        session=mock_session,
+        algorithm_names=["domain_retention", "frequency"],
+    )
+    rows = build_summary_rows(result)
+    for row in rows:
+        assert "retention_cmh_p_value" in row
+        assert (row["retention_cmh_q_value"] is None) == (row["retention_cmh_p_value"] is None)
+    assert not any("cmh" in fdr_row["test"] for fdr_row in result.fdr_rows)

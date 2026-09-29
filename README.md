@@ -147,6 +147,133 @@ cBioPortal Datahub are: `acc`, `blca`, `brca`, `cesc`, `chol`, `coadread`,
 
 These commands make unauthenticated requests to both public services.
 
+## Key features
+
+Each registered algorithm writes one `AlgorithmResult` (`Summary`, `Tables`,
+`Warnings`) per gene. Optional algorithms are no-ops unless the gene config or
+study supplies their inputs.
+
+| Algorithm | Question it answers | Output to read | Runs when |
+| --- | --- | --- | --- |
+| `frequency` | Which partners occur, and how often? | `Partner_gene_counts` (events, samples, patients) | Always |
+| `domain_retention` | Are in-frame fusions enriched for retaining the key domain? | Fisher p/OR, permutation p, 2×2 table | Always |
+| `domain_disruption` | Are in-frame fusions enriched for *losing* a configured domain? | Same as retention | `disruption_required_domains` set |
+| `exon_retention` | Is a target exon retained? | Retention rate per exon | Exon hint configured |
+| `confidence_stats` | In-frame rate (Wilson CI) and read support, retained vs not | MLE/CI per group, Welch t-test | Always (gene-agnostic defaults) |
+| `cutpoint_detection` | Is there one protein position that best separates retained from lost? | Inferred cutpoint (aa), max-statistic corrected p | Always |
+| `window_detection` | Is there an internal protein window that separates them? | Best window, corrected p | Always |
+| `genomic_position_recurrence` | Do breakpoints pile up at the same DNA coordinate, or only after exon clamping? | Genomic clusters vs protein positions | Always |
+| `joint_partner` | Is an ordered pair (e.g. EML4→ALK) enriched over a marginal-independence null? | Pair Fisher test | `gene_pair` configs |
+| `mutation_cooccurrence` | Are fusions co-occurring with, or exclusive of, a comparator mutation/CNA? | Fisher p, direction, eligible-sample counts | `mutual_exclusivity_targets` set |
+| `expression_association` | Does target-gene mRNA differ by fusion status or domain status? | Welch/Mann-Whitney per comparison | Study has an mRNA profile |
+| `mechanistic_interpretation` | Which events run counter to a nominally supported retention/disruption pattern? | Counter-pattern events, recurrent-partner flag, Fisher q in scans | Always |
+| `composite_score` | Which partners should be reviewed first? | Ranked partner table (heuristic, not a probability) | Always |
+
+Cross-run tools:
+
+- `cfh cohort-scan`: every recurrently altered gene, with auto-configured genes
+  and BH-FDR across all genes' p-values.
+- `cfh compare-genes`: BH-FDR across saved runs.
+- `cfh compare-cohorts`: CMH across cohorts; `--require-patient-disjoint`
+  enforces independence.
+- `python -m cfh.stats.calibration`: synthetic null/power stress tests.
+- `python -m cfh.stats.independent_validation`: held-out ranking comparison.
+
+## Analyzing a cohort scan
+
+```bash
+cfh cohort-scan msk_impact_50k_2026 --output-dir runs --no-pdf   # --quiet hides per-gene progress
+```
+
+The run writes `runs/cohort-scan_<study>_<timestamp>/`:
+
+| File | Use it for |
+| --- | --- |
+| `cohort_scan/summary.tsv` / `summary.json` | One row per gated gene: status, counts, frame and domain-retention percentages, retention/disruption Fisher p and q, minimum q, top composite partner |
+| `cohort_scan/summary.md` | FDR-significant genes, honorable mentions (top raw p among non-significant genes), warnings |
+| `cohort_scan/manhattan.svg` | Genome-wide view of per-gene significance |
+| `cohort_scan/gene_reports/<gene>/` | Full per-gene run for significant, honorable-mention, and curated genes: `results.json`, event-level `results.tsv`, `report.md`, `outliers.tsv`, figures |
+| `viewer/index.html` | Static HTML browser for the above (on by default; `--no-html` skips it) |
+
+Suggested reading order:
+
+1. **Check the gate and failures.** Compare `genes_after_gating` with `status == "ok"`.
+   Genes the Genome Nexus batch call cannot configure are retried with the
+   single-gene endpoint, accepted only when its Ensembl gene ID matches HGNC's
+   (`transcript_source` records which path was used). Non-coding genes
+   (`config_source == "non_coding"`) and still-unresolved genes are listed
+   separately in the warnings.
+2. **Identify which test made a gene significant.** `fdr_significant` and
+   `min_fdr_adjusted_q_value` use the smallest q across *every* test for that gene.
+   For a domain claim, read `retention_fisher_q_value` / `disruption_fisher_q_value`
+   instead. To list the driving tests for a gene with a saved report:
+
+   ```python
+   from pathlib import Path
+   from cfh.gene_comparison import collect_p_values
+
+   run = Path("runs/<scan>/cohort_scan/gene_reports/ntrk3")
+   for row in sorted(collect_p_values([run]), key=lambda r: r["raw_p"])[:5]:
+       print(row["algorithm"], row["test"], row["raw_p"])
+   ```
+
+   A significant `confidence_stats:welch_t_test` compares tumor read support
+   between retained and non-retained events. It reflects call quality, not
+   breakpoint selection, and can rest on very small groups (check `n_b`).
+3. **Check the counting units.** Each gene report's `summary` lists `total_fusions`,
+   `sample_count`, and `known_patient_count`. Before any inferential test, repeated
+   observations of one fusion in one patient (same partner, role, and protein junction)
+   are collapsed to one (`inference_counting_unit: patient_distinct_fusion`);
+   `collapsed_repeat_observation_count` and `patients_with_repeated_observations` show
+   how many. Descriptive counts, the events table, and `frequency` keep every event.
+   Distinct fusions in one patient still count separately (see
+   [CALIBRATION.md](CALIBRATION.md)).
+4. **Read the domain evidence.** `domain_retention` gives the frame × domain 2×2
+   table, Fisher and permutation p. The permutation null samples breakpoints across
+   the transcript and classifies each from the domain's coordinates and the observed
+   5'/3' roles (`permutation_null_classifier: domain_coordinates`); features lacking
+   coordinates fall back to the nearest observed label. `cutpoint_detection` / `window_detection` locate
+   the boundary and compare it with Pfam coordinates. `genomic_position_recurrence`
+   separates true DNA hotspots from exon-boundary clamping.
+5. **Review exceptions.** In `mechanistic_interpretation`, look at counter-pattern
+   events and recurrent-partner flags. The HTML viewer shows curated mechanism notes
+   beside them.
+6. **Prioritize partners.** Read `composite_score` together with `frequency`.
+   Cutpoint proximity contributes only when the corrected cutpoint p < 0.05, and
+   gene-level components are shared by every partner of a gene.
+7. **Consider confounding.** The Fisher and permutation tests pool tumor types.
+   `domain_retention` and `domain_disruption` also report `tumor_type_stratified`: a
+   Cochran-Mantel-Haenszel test across OncoTree strata with the Mantel-Haenszel common
+   odds ratio, and the per-stratum tables in `frame_domain_contingency_tables_by_tumor_type`.
+   The cohort summary carries `retention_cmh_p_value` / `retention_cmh_q_value` (BH across
+   genes as a separate family, not used for `fdr_significant`). A pooled association that
+   disappears after stratification is likely tumor-type composition. CMH is two-sided,
+   while the pooled Fisher test is one-sided.
+
+### Co-occurrence discovery
+
+`cfh cohort-scan <study> --discover-cooccurrence` additionally tests every analyzed
+fusion gene against every panel gene × alteration type (mutation, amplification,
+deep deletion), with no curated targets needed. It writes
+`cohort_scan/cooccurrence_discovery.tsv` / `.json` and a summary section.
+
+- **Assay eligibility:** each pair uses only samples whose SV panel covers the fusion
+  gene and whose mutation or CNA panel covers the comparator gene.
+- **Tumor type:** the test is Cochran-Mantel-Haenszel stratified by OncoTree code;
+  `mh_common_odds_ratio` < 1 means mutual exclusivity. Pooled odds ratios are shown
+  only for comparison.
+- **Sparse pairs:** pairs failing the Mantel-Fleiss criterion (expected co-occurrence
+  too close to its bounds for the chi-square approximation) get no p-value.
+- **Multiplicity:** q-values are BH-adjusted across all tested pairs as their own
+  family; they never affect `fdr_significant` in the main summary.
+- **Hypermutation:** `--hypermutated-min-mutations N` excludes samples with at least
+  `N` panel mutations.
+
+The TSV keeps pairs with q < 0.25 plus each fusion gene's five smallest-p pairs.
+Copy-number co-occurrence with a gene near the fusion locus (e.g. CDK12 fusions with
+ERBB2 amplification on 17q12) usually reflects a rearrangement inside the same
+amplicon, not two independent events. Samples are the counting unit.
+
 ## Repository layout
 
 ```
@@ -234,3 +361,74 @@ for independence assumptions. The implementation uses the standard formula and
 SciPy's chi-square survival function, with no additional dependency; its
 numerical regression uses the published
 [Berkeley admissions CMH example](https://www.markirwin.net/stat149/Lecture/Lecture8.pdf).
+
+### Observation units and assay eligibility
+
+Live ingestion preserves patient IDs supplied by the SV and clinical APIs. Run
+summaries report event, sample, known-patient, and missing-patient counts. Domain
+and spatial tests still use events: these counts do **not** establish patient
+independence, and repeated biopsies require a patient-level design before their
+p-values can support replication.
+
+`frequency` with `dedup_by_patient=True` counts each patient–partner combination
+once, retaining different partners in the same patient. Missing patient identity
+falls back to sample, then event identity, with a warning. `count_unit` identifies
+the denominator; the legacy `Event_count` column counts those units when deduplication
+is enabled, and `Raw_event_count` preserves the input count.
+
+Expression domain comparisons use one measurement per sample. Samples with both
+retained and non-retained fusion events are excluded from that split and counted
+in its diagnostics. Repeated biopsies remain separate samples and are warned
+about when patient identity reveals them.
+
+Live mutation/CNA co-occurrence intersects the study sample list with documented
+coverage for the target SV gene and comparator gene/assay. Gene-panel membership
+is fetched through the [cBioPortal API](https://www.cbioportal.org/api/v3/api-docs).
+Unprofiled samples and unknown coverage are excluded; missing panel metadata is
+conservatively treated as unknown, including studies that do not document their
+genome-wide coverage. An unavailable eligibility source skips the comparison.
+Each tested target records its eligible sample count, a SHA-256 digest of the
+sorted eligible sample IDs, and exclusion counts. This follows the distinction between assayed and off-panel genes described in the
+[cBioPortal profiling FAQ](https://docs.cbioportal.org/user-guide/faq/).
+
+The live fusion-positive/negative expression comparison likewise requires SV gene
+coverage and measured expression. If coverage is unavailable, the domain split
+can still run on observed fusion samples, but no fusion-negative group is inferred.
+Offline callers supplying only `cohort_sample_ids` are explicitly asserting that
+those samples form an eligible universe. Co-occurrence calls outside that universe
+are excluded; they never enlarge its denominator. These comparisons remain
+unadjusted for tumor type and should be run in prespecified tissue strata when
+that confounding matters.
+
+### Interpretation and validation
+
+Mechanistic summaries separate nominal Fisher evidence from the matching
+FDR-adjusted result. Standalone runs have unknown cross-gene FDR; cohort scans
+attach the corresponding retention/disruption Fisher q-value, rather than a
+minimum q-value from another algorithm. Recurrent counter-pattern partners are
+a descriptive review flag, not a statistical subcluster test. Curated mechanism
+notes provide biological context, not functional validation of individual events.
+
+The composite score is a prioritization heuristic, not a driver probability.
+Cutpoint proximity requires a significant scan-corrected cutpoint p-value. Other
+components can share gene-level evidence across partners, so independent ranking
+validation remains necessary.
+
+Run deterministic synthetic calibration with:
+
+```bash
+python -m cfh.stats.calibration --replicates 100 --n-patients 24 \
+  --n-permutations 999 --seed 42 --family-size 100 > calibration.json
+```
+
+The benchmark reports rejection rates and Wilson intervals under an independent
+null, a planted label-associated window, a mapping pile-up null, and a repeated-
+patient stress case. It calibrates **label separation**, not excess breakpoint
+density or driver classification. The permutation-resolution diagnostic reports
+whether the selected budget can resolve small p-values relevant to a correction
+family; it does not establish FDR control. Small smoke runs only verify execution.
+Actual replication and composite-versus-recurrence performance require independent,
+patient-disjoint cohorts with suitable coverage and separately reviewed labels.
+
+See [CALIBRATION.md](CALIBRATION.md) for the held-out ranking input schema,
+permutation-budget controls, and strict patient-disjoint cohort comparison.

@@ -1,0 +1,94 @@
+# Offline calibration and held-out ranking checks
+
+Run `python -m cfh.stats.calibration --replicates 50 --n-permutations 99 --seed 42` to simulate null labels, uneven breakpoint density, intronic boundary snapping, repeated patient observations, and planted cutpoint/window signals. The JSON reports rejection rates and Wilson 95% intervals at the strict `p < 0.05` decision rule. The cutpoint and window tests permute outcome labels and use the maximum scanned statistic. These simulations do not test genomic breakpoint density, cross-gene FDR, or real clinical validity. The repeated-patient null intentionally violates event-level exchangeability; a high rejection rate there is a warning, not a corrected estimate.
+
+An empirical scan p-value from `N` permutations cannot be smaller than `1/(N+1)`. For a predeclared family of `m` hypotheses, pass `correction_family_size=m` with a fixed `n_permutations` to the algorithm. The budget resolver rejects adaptive mode and budgets too small for the *raw* first-rank BH or Bonferroni threshold to fall strictly below `0.05`. This is a precision check. It does not establish family-wide FDR control, valid exchangeability, or independence between patients. Candidate positions within one scan are already handled by that scan's maximum-statistic permutation and should not be counted as the across-gene family.
+
+For an external ranking comparison, prepare two JSON files and run:
+
+```sh
+python -m cfh.stats.independent_validation discovery.json validation.json --k 5
+```
+
+`discovery.json` declares patients used to fit both frozen scores:
+
+```json
+{"patient_id_namespace": "registry-v1", "patient_ids": ["D1", "D2"]}
+```
+
+`validation.json` declares patients used for external labels and the same candidate set for both scores:
+
+```json
+{
+  "patient_id_namespace": "registry-v1",
+  "patient_ids": ["V1", "V2"],
+  "candidates": [
+    {"candidate_id": "PARTNER_A", "label": 1, "composite_score": 0.8, "recurrence_score": 0.4},
+    {"candidate_id": "PARTNER_B", "label": 0, "composite_score": 0.2, "recurrence_score": 0.6}
+  ]
+}
+```
+
+Candidate labels must be independently sourced binary truth labels, and scores must be frozen from discovery patients before examining validation labels. The tool checks complete, comparable, disjoint patient IDs and finite paired scores. It reports descriptive average precision and precision at `k`, plus differences. Equal scores are grouped for average precision, and boundary ties receive fractional credit for precision at `k`; candidate order does not decide ties. The tool cannot verify the origins of the scores or labels. Without externally labeled, patient-disjoint data, no independent validation result can be claimed.
+
+`cfh compare-cohorts --require-patient-disjoint` adds a stricter guard to the pooled cohort comparison: every supplied event must carry a patient ID, both artifacts must declare the same `patient_id_namespace`, and neither patient nor sample IDs may overlap. Existing saved artifacts without that metadata can still produce nominal descriptive comparisons, but cannot pass the strict guard. Matching strings alone do not prove that external registries resolved patient identity correctly.
+
+## Reproducible pilot
+
+The [saved pilot](runs/calibration_20260929_seed42.json) used 50 replicates per
+scenario, 24 patients, 99 permutations, seed 42, and a 100-aa window. Rates below
+are scan-level rejections at `p < 0.05`, not across-gene FDR estimates.
+
+| Simulation | Cutpoint | Window |
+| --- | ---: | ---: |
+| Independent null | 3/50 (6%) | 1/50 (2%) |
+| Uneven-position null | 4/50 (8%) | 1/50 (2%) |
+| Planted cutpoint | 48/50 (96%) | 11/50 (22%) |
+| Planted narrow window | 3/50 (6%) | 7/50 (14%) |
+| Mapped boundary pile-up null | 2/50 (4%) | 2/50 (4%) |
+| Repeated-patient null | 30/50 (60%) | 44/50 (88%) |
+
+The JSON includes Wilson 95% intervals. With only 50 replicates, these are
+preliminary estimates for the specified simulations. For example, the repeated-
+patient null intervals are 46.2–72.4% and 76.2–94.4%; the independent-null intervals
+are 2.1–16.2% and 0.4–10.5%.
+
+The repeated-patient scenario copies each patient's position and label three
+times, then tests those copies with the existing event-level label permutation.
+The result demonstrates a violated exchangeability assumption. **Patient-aware
+inference is still required**; retaining patient IDs, sample-level expression
+deduplication, and overlap guards do not repair that permutation null. The weak
+planted-window sensitivity also argues for assessing power under realistic event
+counts and effect sizes before interpreting an absent signal. No external ranking
+validation was performed because independent labeled inputs were not supplied.
+
+## Patient-level observation unit
+
+The live pipeline now collapses repeated observations of one fusion in one
+patient before any inferential test (`observation_unit="patient"`, the default;
+see `cfh.stats.observation_units`). The same collapse is available to the
+simulations:
+
+```sh
+python -m cfh.stats.calibration --replicates 200 --n-permutations 99 --seed 42 --observation-unit event
+python -m cfh.stats.calibration --replicates 200 --n-permutations 99 --seed 42 --observation-unit patient
+```
+
+Both runs are checked in as
+[`calibration_20260929_seed42_n200_event.json`](runs/calibration_20260929_seed42_n200_event.json)
+and [`calibration_20260929_seed42_n200_patient.json`](runs/calibration_20260929_seed42_n200_patient.json).
+They use identical seeds, so every scenario except the repeated-patient null is
+unchanged. Cells are rejections/200 at `p < 0.05` (Wilson 95% interval):
+
+| Simulation | Cutpoint, event unit | Cutpoint, patient unit | Window, event unit | Window, patient unit |
+| --- | ---: | ---: | ---: | ---: |
+| Independent null | 5 (1.1–5.7%) | 5 (1.1–5.7%) | 4 (0.8–5.0%) | 4 (0.8–5.0%) |
+| Uneven-position null | 6 (1.4–6.4%) | 6 (1.4–6.4%) | 9 (2.4–8.3%) | 9 (2.4–8.3%) |
+| Mapped boundary pile-up null | 8 (2.0–7.7%) | 8 (2.0–7.7%) | 7 (1.7–7.0%) | 7 (1.7–7.0%) |
+| **Repeated-patient null** | **130 (58.2–71.3%)** | **11 (3.1–9.6%)** | **168 (78.3–88.4%)** | **4 (0.8–5.0%)** |
+| Planted cutpoint | 192 (92.3–98.0%) | 192 (92.3–98.0%) | 53 (20.9–33.0%) | 53 (20.9–33.0%) |
+| Planted narrow window | 5 (1.1–5.7%) | 5 (1.1–5.7%) | 36 (13.3–23.9%) | 36 (13.3–23.9%) |
+
+Collapsing identical repeat observations restores the repeated-patient null to
+roughly nominal rejection. It does not address dependence between *distinct*
+fusions in one patient, which the simulations do not model.

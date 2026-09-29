@@ -41,6 +41,7 @@ from cfh.reporting.manuscript_text import (
     render_manuscript_title,
 )
 from cfh.reporting.pdf import render_cohort_summary_pdf, render_manuscript_pdf
+from cfh.stats.multiple_testing import benjamini_hochberg
 
 _MANHATTAN_SVG_FILENAME = "manhattan.svg"
 _MANUSCRIPT_MARKDOWN_FILENAME = "paper.md"
@@ -83,6 +84,7 @@ such a gene would invent a verdict about a q-value that was never derived."""
 _SUMMARY_FIELDNAMES = [
     "gene_symbol",
     "config_source",
+    "transcript_source",
     "status",
     "distinct_patient_count",
     "total_sv_count",
@@ -93,6 +95,14 @@ _SUMMARY_FIELDNAMES = [
     "permutation_p_value",
     "min_fdr_adjusted_q_value",
     "fdr_significant",
+    "retention_fisher_q_value",
+    "retention_fisher_fdr_significant",
+    "disruption_fisher_q_value",
+    "disruption_fisher_fdr_significant",
+    "retention_cmh_p_value",
+    "retention_cmh_q_value",
+    "retention_mh_common_odds_ratio",
+    "retention_informative_tumor_types",
     "top_composite_score",
     "top_composite_partner_gene",
     "error",
@@ -129,18 +139,43 @@ def build_summary_rows(result: CohortScanResult) -> list[dict]:
     last, tie-broken by descending recurrence).
     """
     min_q_by_gene = per_gene_min_q_value(result)
+    fisher_q = {
+        (row["gene"], row["algorithm"]): row["bh_adjusted_q"]
+        for row in result.fdr_rows
+        if row.get("test") == "fisher"
+        and row.get("algorithm") in {"domain_retention", "domain_disruption"}
+    }
     significant = set(result.significant_genes)
+    stratified_by_gene = {
+        outcome.gene_symbol: _algorithm_summary(outcome.run, "domain_retention").get(
+            "tumor_type_stratified"
+        )
+        or {}
+        for outcome in result.gene_outcomes
+    }
+    # The stratified CMH p-values form their own correction family, separate
+    # from the main FDR family that decides ``fdr_significant``.
+    cmh_hypotheses = [
+        (gene, "domain_retention:cmh", stratified["cmh_p_value"])
+        for gene, stratified in stratified_by_gene.items()
+        if isinstance(stratified.get("cmh_p_value"), float)
+    ]
+    cmh_q = {gene: q for gene, _, _, q in benjamini_hochberg(cmh_hypotheses)}
     rows: list[dict] = []
     for outcome in result.gene_outcomes:
         summary = outcome.run.summary if outcome.run is not None else {}
+        stratified = stratified_by_gene[outcome.gene_symbol]
         retention = _algorithm_summary(outcome.run, "domain_retention")
         disruption = _algorithm_summary(outcome.run, "domain_disruption")
         top_score, top_partner = _top_composite(outcome.run)
         q_value = min_q_by_gene.get(outcome.gene_symbol)
+        retention_q = fisher_q.get((outcome.gene_symbol, "domain_retention"))
+        disruption_q = fisher_q.get((outcome.gene_symbol, "domain_disruption"))
         rows.append(
             {
                 "gene_symbol": outcome.gene_symbol,
                 "config_source": outcome.config_source,
+                "transcript_source": outcome.transcript_source,
                 "status": outcome.status,
                 "distinct_patient_count": outcome.distinct_patient_count,
                 "total_sv_count": outcome.total_sv_count,
@@ -164,6 +199,18 @@ def build_summary_rows(result: CohortScanResult) -> list[dict]:
                 # "did not reach FDR significance" verdict for a gene that
                 # was never actually tested.
                 "fdr_significant": None if q_value is None else outcome.gene_symbol in significant,
+                "retention_fisher_q_value": retention_q,
+                "retention_fisher_fdr_significant": (
+                    None if retention_q is None else retention_q < result.significance_level
+                ),
+                "retention_cmh_p_value": stratified.get("cmh_p_value"),
+                "retention_cmh_q_value": cmh_q.get(outcome.gene_symbol),
+                "retention_mh_common_odds_ratio": stratified.get("mh_common_odds_ratio"),
+                "retention_informative_tumor_types": stratified.get("informative_strata"),
+                "disruption_fisher_q_value": disruption_q,
+                "disruption_fisher_fdr_significant": (
+                    None if disruption_q is None else disruption_q < result.significance_level
+                ),
                 "top_composite_score": top_score,
                 "top_composite_partner_gene": top_partner,
                 "error": outcome.error,
@@ -275,7 +322,11 @@ def _write_summary_markdown(
         f"recurrence gate: {result.genes_after_gating}",
         f"- Curated gene configs used: {result.curated_gene_count}",
         f"- Auto-generated gene configs used: {result.auto_config_gene_count}",
-        f"- Genes gated in but unresolvable (no Genome Nexus canonical transcript): "
+        f"- Auto-generated configs resolved by the HGNC-verified single-gene fallback: "
+        f"{result.fallback_resolved_gene_count}",
+        f"- Genes gated in but non-coding per HGNC (domain analysis not applicable): "
+        f"{result.non_coding_gene_count}",
+        f"- Genes gated in but unresolvable (no verified protein-coding transcript): "
         f"{result.unresolved_gene_count}",
         f"- FDR-significant genes (q < 0.05) after Benjamini-Hochberg correction across "
         f"all {len(rows)} scanned genes: {len(result.significant_genes)}",
@@ -339,6 +390,17 @@ def _write_summary_markdown(
         ]
     )
     lines.extend(["## Scanned genes (sorted by significance)", ""])
+    lines.extend(
+        [
+            "The minimum q-value and gene-level FDR flag may come from any tested algorithm. "
+            "The retention/disruption Fisher q-value columns refer only to those effects; "
+            "blank means that specific test had no corrected q-value. "
+            "The retention CMH columns stratify that test by OncoTree code; their "
+            "q-values are BH-adjusted across genes as a separate family and do not "
+            "affect the gene-level FDR flag.",
+            "",
+        ]
+    )
     lines.append("| " + " | ".join(_SUMMARY_FIELDNAMES) + " |")
     lines.append("|" + "---|" * len(_SUMMARY_FIELDNAMES))
     for row in rows:
@@ -766,6 +828,110 @@ def _write_manuscript_pdf(
     )
 
 
+_DISCOVERY_FIELDNAMES = [
+    "fusion_gene",
+    "comparator_gene",
+    "alteration_type",
+    "direction",
+    "cmh_q_value",
+    "cmh_p_value",
+    "mh_common_odds_ratio",
+    "pooled_odds_ratio",
+    "both_samples",
+    "expected_both_samples",
+    "fusion_samples",
+    "comparator_samples",
+    "eligible_samples",
+    "informative_strata",
+    "mantel_fleiss_satisfied",
+    "same_gene",
+]
+DISCOVERY_REPORT_Q = 0.25
+DISCOVERY_TOP_PER_FUSION_GENE = 5
+
+
+def select_discovery_rows(rows: list[dict]) -> list[dict]:
+    """Rows worth writing: every pair with q < ``DISCOVERY_REPORT_Q`` plus the
+    ``DISCOVERY_TOP_PER_FUSION_GENE`` smallest-p pairs of each fusion gene,
+    sorted by q then p. The full tested set is summarized, not written."""
+    tested = [row for row in rows if row.get("cmh_p_value") is not None]
+    keep = {id(row) for row in tested if row["cmh_q_value"] < DISCOVERY_REPORT_Q}
+    by_gene: dict[str, list[dict]] = {}
+    for row in tested:
+        by_gene.setdefault(row["fusion_gene"], []).append(row)
+    for gene_rows in by_gene.values():
+        gene_rows.sort(key=lambda row: row["cmh_p_value"])
+        keep.update(id(row) for row in gene_rows[:DISCOVERY_TOP_PER_FUSION_GENE])
+    return sorted(
+        (row for row in tested if id(row) in keep),
+        key=lambda row: (row["cmh_q_value"], row["cmh_p_value"], row["fusion_gene"]),
+    )
+
+
+def _write_discovery_outputs(discovery: dict, destination: Path) -> dict[str, Path]:
+    selected = select_discovery_rows(discovery["rows"])
+    tsv_path = destination / "cooccurrence_discovery.tsv"
+    with tsv_path.open("w", newline="") as handle:
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=_DISCOVERY_FIELDNAMES,
+            delimiter="\t",
+            lineterminator="\n",
+            extrasaction="ignore",
+        )
+        writer.writeheader()
+        writer.writerows(selected)
+    json_path = destination / "cooccurrence_discovery.json"
+    metadata = {key: value for key, value in discovery.items() if key != "rows"}
+    metadata["significant_pair_count"] = sum(
+        1
+        for row in discovery["rows"]
+        if row.get("cmh_q_value") is not None and row["cmh_q_value"] < 0.05
+    )
+    metadata["written_rows"] = len(selected)
+    metadata["written_row_rule"] = (
+        f"q < {DISCOVERY_REPORT_Q}, plus the {DISCOVERY_TOP_PER_FUSION_GENE} smallest-p "
+        "tested pairs of each fusion gene"
+    )
+    json_path.write_text(
+        json.dumps(_json_safe({**metadata, "rows": selected}), indent=2, allow_nan=False) + "\n"
+    )
+    return {"cooccurrence_discovery_tsv": tsv_path, "cooccurrence_discovery_json": json_path}
+
+
+def _discovery_markdown(discovery: dict, limit: int = 25) -> list[str]:
+    significant = [
+        row for row in select_discovery_rows(discovery["rows"]) if row["cmh_q_value"] < 0.05
+    ]
+    lines = [
+        "## Co-occurrence discovery (separate FDR family)",
+        "",
+        f"{discovery['tested_pair_count']} fusion-gene x comparator pairs were tested with a "
+        "CMH test stratified by OncoTree code, restricted to samples whose panels cover both "
+        f"genes; {len(significant)} have BH q < 0.05 within this family. "
+        f"{discovery['untestable_pair_count']} sparse pairs failed the Mantel-Fleiss criterion "
+        "and were not tested. Copy-number co-occurrence with a nearby gene often reflects a "
+        "rearrangement inside an amplicon or deletion rather than two independent events.",
+        "",
+    ]
+    if significant:
+        lines += [
+            "| fusion gene | comparator | alteration | direction | both | expected | MH OR | q |",
+            "|---|---|---|---|---|---|---|---|",
+        ]
+        for row in significant[:limit]:
+            odds = row["mh_common_odds_ratio"]
+            lines.append(
+                f"| {row['fusion_gene']} | {row['comparator_gene']} | {row['alteration_type']} "
+                f"| {row['direction']} | {row['both_samples']} "
+                f"| {row['expected_both_samples']:.1f} "
+                f"| {odds if isinstance(odds, str) else f'{odds:.3g}'} "
+                f"| {row['cmh_q_value']:.2g} |"
+            )
+        lines.append("")
+    return lines
+
+
 def write_cohort_scan_outputs(
     result: CohortScanResult,
     output_dir: str | Path,
@@ -836,6 +1002,8 @@ def write_cohort_scan_outputs(
             "curated_gene_count": result.curated_gene_count,
             "auto_config_gene_count": result.auto_config_gene_count,
             "unresolved_gene_count": result.unresolved_gene_count,
+            "non_coding_gene_count": result.non_coding_gene_count,
+            "fallback_resolved_gene_count": result.fallback_resolved_gene_count,
             "significant_genes": result.significant_genes,
             "significance_level": result.significance_level,
             "generated_at": generated_at,
@@ -849,6 +1017,11 @@ def write_cohort_scan_outputs(
 
     markdown_path = destination / "summary.md"
     _write_summary_markdown(result, rows, honorable_mentions, markdown_path)
+    discovery_paths: dict[str, Path] = {}
+    if result.cooccurrence_discovery is not None:
+        discovery_paths = _write_discovery_outputs(result.cooccurrence_discovery, destination)
+        with markdown_path.open("a") as handle:
+            handle.write("\n".join(["", *_discovery_markdown(result.cooccurrence_discovery)]))
 
     paths = {
         "run_directory": destination,
@@ -856,6 +1029,7 @@ def write_cohort_scan_outputs(
         "summary_json": json_path,
         "summary_markdown": markdown_path,
         "manhattan_svg": manhattan_svg_path,
+        **discovery_paths,
     }
 
     if pdf:
@@ -888,6 +1062,8 @@ def write_cohort_scan_outputs(
         "curated_gene_count": result.curated_gene_count,
         "auto_config_gene_count": result.auto_config_gene_count,
         "unresolved_gene_count": result.unresolved_gene_count,
+        "non_coding_gene_count": result.non_coding_gene_count,
+        "fallback_resolved_gene_count": result.fallback_resolved_gene_count,
         "significant_genes": result.significant_genes,
         "significance_level": result.significance_level,
         "generated_at": generated_at,

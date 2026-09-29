@@ -30,12 +30,24 @@ from cfh.real_benchmark import (
     run_gene_pair_benchmark,
     run_real_benchmark,
 )
+from cfh.stats.joint_partner_stats import calculate_pair_enrichment
 
 
 def _genome_nexus_client(fixture_path):
     client = MagicMock(spec=GenomeNexusClient)
     client.fetch_canonical_transcript.return_value = json.loads(fixture_path.read_text())
     return client
+
+
+def _mock_cohort_sv(monkeypatch, calls, *, gene_ids=(238, 2851, 5624)):
+    monkeypatch.setattr(
+        cbioportal_api,
+        "fetch_structural_variant_genes",
+        MagicMock(return_value=[{"entrezGeneId": gene_id} for gene_id in gene_ids]),
+    )
+    fetch = MagicMock(return_value=calls)
+    monkeypatch.setattr(cbioportal_api, "fetch_structural_variants", fetch)
+    return fetch
 
 
 def _eml4_alk_call(sample_id, *, partner="EML4", breakpoint=140493152):
@@ -136,7 +148,7 @@ def test_gene_pair_benchmark_pools_component_events_and_computes_enrichment(
     calls = [_eml4_alk_call(f"EML4-{i}") for i in range(8)] + [
         _eml4_alk_call(f"OTHER-{i}", partner="OTHERGENE") for i in range(2)
     ]
-    monkeypatch.setattr(cbioportal_api, "fetch_structural_variants", MagicMock(return_value=calls))
+    _mock_cohort_sv(monkeypatch, calls)
     monkeypatch.setattr(
         cbioportal_api, "fetch_sample_tumor_types", MagicMock(return_value=pd.DataFrame())
     )
@@ -147,7 +159,9 @@ def test_gene_pair_benchmark_pools_component_events_and_computes_enrichment(
     assert run.is_gene_pair is True
     assert run.gene_symbol == "EML4-ALK"
     assert run.summary["gene_pair"] == ["EML4", "ALK"]
-    assert run.summary["component_genes"] == ["ALK"]
+    assert run.summary["component_genes"] == ["EML4", "ALK"]
+    assert run.summary["background_scope"] == "all_discovered_study_sv_genes"
+    assert run.summary["count_unit"] == "fusion_event"
     assert run.summary["eligible_event_count"] == 10
     assert run.summary["observed_count"] == 8
     assert run.summary["fisher_p_value"] is not None
@@ -157,6 +171,57 @@ def test_gene_pair_benchmark_pools_component_events_and_computes_enrichment(
     assert run.results[0].Algorithm == "joint_partner"
     assert run.summary["mechanism_note"] == pair_config.mechanism_note
     assert "dimerization" in run.summary["mechanism_note"].lower()
+
+
+def test_gene_pair_background_includes_unrelated_fusions_and_deduplicates_batch_overlap(
+    monkeypatch,
+):
+    def fusion_call(sample_id, gene5, gene3):
+        return {
+            "sampleId": sample_id,
+            "site1HugoSymbol": gene5,
+            "site2HugoSymbol": gene3,
+            "connectionType": "5to3",
+            "eventInfo": f"Protein Fusion: in frame {{{gene5}:{gene3}}}",
+        }
+
+    target_calls = [fusion_call(f"T{i}", "EML4", "ALK") for i in range(4)]
+    target_marginal_calls = [
+        *[fusion_call(f"F{i}", "EML4", "OTHER") for i in range(2)],
+        *[fusion_call(f"G{i}", "ANOTHER", "ALK") for i in range(2)],
+    ]
+    unrelated_calls = [fusion_call(f"U{i}", "UNRELATED5", "UNRELATED3") for i in range(12)]
+    discovery = MagicMock(return_value=[{"entrezGeneId": gene_id} for gene_id in range(1, 102)])
+    fetch = MagicMock(
+        side_effect=[
+            [*target_calls, *target_marginal_calls],
+            [*target_calls, *unrelated_calls],
+        ]
+    )
+    monkeypatch.setattr(cbioportal_api, "fetch_structural_variant_genes", discovery)
+    monkeypatch.setattr(cbioportal_api, "fetch_structural_variants", fetch)
+    monkeypatch.setattr(
+        benchmark_module,
+        "GenomeNexusClient",
+        MagicMock(side_effect=AssertionError("pair mode must not call Genome Nexus")),
+    )
+
+    run = run_gene_pair_benchmark(load_gene_config("eml4-alk"), "msk_impact_50k_2026")
+
+    assert discovery.call_args.args == (["msk_impact_50k_2026"],)
+    assert len(fetch.call_args_list) == 2
+    assert len(fetch.call_args_list[0].args[0]) == 100
+    assert fetch.call_args_list[1].args == ([101], ["msk_impact_50k_2026_structural_variants"])
+    assert run.raw_structural_variant_count == 20  # four overlapping calls counted once
+    assert run.summary["eligible_event_count"] == 20
+    assert run.summary["observed_count"] == 4
+    assert run.summary["expected_count"] == pytest.approx(1.8)
+    assert run.summary["discovered_gene_count"] == 101
+    assert run.summary["query_batch_count"] == 2
+    target_only_null = calculate_pair_enrichment(run.events[:8], "EML4", "ALK")
+    assert target_only_null.expected_count == pytest.approx(4.5)
+    assert run.summary["expected_count"] < target_only_null.expected_count
+    assert len([row for row in run.rows if row["is_configured_pair"]]) == 4
 
 
 def test_gene_pair_benchmark_pools_component_events_for_tmprss2_erg_and_surfaces_mechanism_note(
@@ -173,7 +238,7 @@ def test_gene_pair_benchmark_pools_component_events_for_tmprss2_erg_and_surfaces
     calls = [_tmprss2_erg_call(f"TMPRSS2-{i}") for i in range(8)] + [
         _tmprss2_erg_call(f"OTHER-{i}", partner="OTHERGENE") for i in range(2)
     ]
-    monkeypatch.setattr(cbioportal_api, "fetch_structural_variants", MagicMock(return_value=calls))
+    _mock_cohort_sv(monkeypatch, calls)
     monkeypatch.setattr(
         cbioportal_api, "fetch_sample_tumor_types", MagicMock(return_value=pd.DataFrame())
     )
@@ -184,7 +249,7 @@ def test_gene_pair_benchmark_pools_component_events_for_tmprss2_erg_and_surfaces
     assert run.is_gene_pair is True
     assert run.gene_symbol == "TMPRSS2-ERG"
     assert run.summary["gene_pair"] == ["TMPRSS2", "ERG"]
-    assert run.summary["component_genes"] == ["ERG"]
+    assert run.summary["component_genes"] == ["TMPRSS2", "ERG"]
     assert run.summary["eligible_event_count"] == 10
     assert run.summary["observed_count"] == 8
     assert run.summary["fisher_p_value"] is not None
@@ -218,7 +283,7 @@ def test_run_real_benchmark_routes_a_gene_pair_symbol_automatically(
     client = _genome_nexus_client(genome_nexus_canonical_transcript_fixture_path)
     monkeypatch.setattr(benchmark_module, "GenomeNexusClient", MagicMock(return_value=client))
     calls = [_eml4_alk_call(f"S{i}") for i in range(5)]
-    monkeypatch.setattr(cbioportal_api, "fetch_structural_variants", MagicMock(return_value=calls))
+    _mock_cohort_sv(monkeypatch, calls)
     monkeypatch.setattr(
         cbioportal_api, "fetch_sample_tumor_types", MagicMock(return_value=pd.DataFrame())
     )
@@ -237,7 +302,7 @@ def test_gene_pair_cli_analyze_writes_a_run_directory_instead_of_erroring(
     calls = [_eml4_alk_call(f"S{i}") for i in range(6)] + [
         _eml4_alk_call("O1", partner="OTHERGENE")
     ]
-    monkeypatch.setattr(cbioportal_api, "fetch_structural_variants", MagicMock(return_value=calls))
+    _mock_cohort_sv(monkeypatch, calls)
     monkeypatch.setattr(
         cbioportal_api, "fetch_sample_tumor_types", MagicMock(return_value=pd.DataFrame())
     )
@@ -280,7 +345,7 @@ def test_gene_pair_cli_real_benchmark_also_routes_through_joint_partner(
     client = _genome_nexus_client(genome_nexus_canonical_transcript_fixture_path)
     monkeypatch.setattr(benchmark_module, "GenomeNexusClient", MagicMock(return_value=client))
     calls = [_eml4_alk_call(f"S{i}") for i in range(4)]
-    monkeypatch.setattr(cbioportal_api, "fetch_structural_variants", MagicMock(return_value=calls))
+    _mock_cohort_sv(monkeypatch, calls)
     monkeypatch.setattr(
         cbioportal_api, "fetch_sample_tumor_types", MagicMock(return_value=pd.DataFrame())
     )

@@ -1,0 +1,158 @@
+{
+  "scope": "cutpoint/window label-separation tests; no breakpoint-density test exists here",
+  "seed": 42,
+  "alpha": 0.05,
+  "n_patients": 24,
+  "n_permutations": 99,
+  "widths": [
+    100
+  ],
+  "permutation_resolution": {
+    "n_permutations": 99,
+    "family_size": 100,
+    "minimum_empirical_p_value": 0.01,
+    "minimum_bonferroni_adjusted_p_value": 1.0,
+    "bh_first_rank_raw_adjustment_at_floor": 1.0,
+    "permutations_for_strict_0_05_first_rank": 2000
+  },
+  "scenarios": {
+    "iid_null": {
+      "cutpoint": {
+        "rejections": 3,
+        "replicates": 50,
+        "determinable": 50,
+        "rate": 0.06,
+        "wilson_95_interval": [
+          0.02061497034897397,
+          0.16217091688838173
+        ]
+      },
+      "window": {
+        "rejections": 1,
+        "replicates": 50,
+        "determinable": 50,
+        "rate": 0.02,
+        "wilson_95_interval": [
+          0.003539259271646236,
+          0.10495443589637815
+        ]
+      }
+    },
+    "uneven_null": {
+      "cutpoint": {
+        "rejections": 4,
+        "replicates": 50,
+        "determinable": 50,
+        "rate": 0.08,
+        "wilson_95_interval": [
+          0.03154951408859298,
+          0.18838246918342838
+        ]
+      },
+      "window": {
+        "rejections": 1,
+        "replicates": 50,
+        "determinable": 50,
+        "rate": 0.02,
+        "wilson_95_interval": [
+          0.003539259271646236,
+          0.10495443589637815
+        ]
+      }
+    },
+    "planted_cutpoint": {
+      "cutpoint": {
+        "rejections": 48,
+        "replicates": 50,
+        "determinable": 50,
+        "rate": 0.96,
+        "wilson_95_interval": [
+          0.8653990931249297,
+          0.9889611156723802
+        ]
+      },
+      "window": {
+        "rejections": 11,
+        "replicates": 50,
+        "determinable": 50,
+        "rate": 0.22,
+        "wilson_95_interval": [
+          0.1275391597021442,
+          0.3524154958125367
+        ]
+      }
+    },
+    "planted_window": {
+      "cutpoint": {
+        "rejections": 3,
+        "replicates": 50,
+        "determinable": 50,
+        "rate": 0.06,
+        "wilson_95_interval": [
+          0.02061497034897397,
+          0.16217091688838173
+        ]
+      },
+      "window": {
+        "rejections": 7,
+        "replicates": 50,
+        "determinable": 50,
+        "rate": 0.14,
+        "wilson_95_interval": [
+          0.06950833427016294,
+          0.2618619371058554
+        ]
+      }
+    },
+    "mapped_pile_null": {
+      "cutpoint": {
+        "rejections": 2,
+        "replicates": 50,
+        "determinable": 50,
+        "rate": 0.04,
+        "wilson_95_interval": [
+          0.011038884327619805,
+          0.1346009068750702
+        ]
+      },
+      "window": {
+        "rejections": 2,
+        "replicates": 50,
+        "determinable": 50,
+        "rate": 0.04,
+        "wilson_95_interval": [
+          0.011038884327619805,
+          0.1346009068750702
+        ]
+      }
+    },
+    "repeated_null": {
+      "cutpoint": {
+        "rejections": 30,
+        "replicates": 50,
+        "determinable": 50,
+        "rate": 0.6,
+        "wilson_95_interval": [
+          0.4618143774758936,
+          0.7239161026974346
+        ]
+      },
+      "window": {
+        "rejections": 44,
+        "replicates": 50,
+        "determinable": 50,
+        "rate": 0.88,
+        "wilson_95_interval": [
+          0.7619518261679701,
+          0.9438239984906773
+        ]
+      }
+    }
+  },
+  "notes": [
+    "Planted-window rejection rate is sensitivity only for the specified synthetic effect.",
+    "Repeated-patient scenario retains duplicate events intentionally; rates do not represent patient-level permutation validity.",
+    "Intervals describe simulation uncertainty, not uncertainty in a real cohort.",
+    "Across-gene FDR is not established by these scan-level simulations."
+  ]
+}

@@ -14,6 +14,8 @@ as that gene's own outcome -- it never aborts the whole scan.
 
 from __future__ import annotations
 
+import time
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -27,6 +29,8 @@ from cfh.cohort.auto_config import (
     batch_fetch_canonical_transcripts,
     build_auto_gene_config,
 )
+from cfh.cohort.cooccurrence_data import load_discovery_inputs
+from cfh.cohort.cooccurrence_discovery import discover_cooccurrence
 from cfh.cohort.recurrence import (
     DEFAULT_MIN_DISTINCT_PATIENTS,
     GeneRecurrence,
@@ -34,6 +38,7 @@ from cfh.cohort.recurrence import (
     fetch_cohort_gene_recurrence,
     gate_genes_by_recurrence,
 )
+from cfh.cohort.transcript_fallback import resolve_with_fallback
 from cfh.gene_comparison import collect_p_values_from_algorithm_results
 from cfh.genes.registry import GeneConfig, load_gene_config
 from cfh.ingestion import cbioportal_api
@@ -69,11 +74,14 @@ class GeneScanOutcome:
     entrez_gene_id: int | None
     distinct_patient_count: int
     total_sv_count: int
-    config_source: str  # "curated" | "auto" | "unresolved"
+    config_source: str  # "curated" | "auto" | "non_coding" | "unresolved"
     status: str  # "ok" | "failed"
     run: RealBenchmarkRun | None = None
     error: str | None = None
     p_value_rows: list[dict] = field(default_factory=list)
+    # "genome_nexus_batch" | "genome_nexus_single_gene_hgnc_verified" for
+    # auto configs; None for curated, non-coding, and unresolved genes.
+    transcript_source: str | None = None
 
 
 @dataclass
@@ -89,6 +97,11 @@ class CohortScanResult:
     significant_genes: list[str]
     significance_level: float = DEFAULT_SIGNIFICANCE_LEVEL
     warnings: list[str] = field(default_factory=list)
+    # Opt-in hypothesis-free co-occurrence scan (a separate FDR family); see
+    # cfh.cohort.cooccurrence_discovery. None when not requested or failed.
+    cooccurrence_discovery: dict | None = None
+    non_coding_gene_count: int = 0
+    fallback_resolved_gene_count: int = 0
 
     @property
     def total_genes_before_gating(self) -> int:
@@ -105,15 +118,17 @@ def _resolve_configs(
     genome_nexus_base_url: str,
     genome_nexus_cache_dir: Path | None,
     pfam_description_cache_dir: Path | None,
+    hgnc_cache_dir: Path | None = None,
     session: "requests.Session | None" = None,
-) -> tuple[dict[str, GeneConfig], dict[str, str], list[str]]:
+) -> _ConfigResolution:
     """Resolve one ``GeneConfig`` per candidate gene: curated configs always
     win; everything else is auto-generated in as few Genome Nexus batch
-    calls as possible. Returns ``(config_by_gene, source_by_gene,
-    unresolved_gene_symbols)``.
+    calls as possible. Genes the batch call cannot configure go through the
+    HGNC-verified single-gene fallback (:mod:`cfh.cohort.transcript_fallback`).
     """
     config_by_gene: dict[str, GeneConfig] = {}
     source_by_gene: dict[str, str] = {}
+    transcript_source_by_gene: dict[str, str] = {}
     needs_auto: list[GeneRecurrence] = []
 
     for gene in candidate_genes:
@@ -133,25 +148,73 @@ def _resolve_configs(
         session=session,
     )
 
-    unresolved: list[str] = []
+    needs_fallback: list[GeneRecurrence] = []
     for gene in needs_auto:
         canonical = batch.by_gene_symbol.get(gene.hugo_gene_symbol)
-        if canonical is None:
-            unresolved.append(gene.hugo_gene_symbol)
-            continue
-        auto_config = build_auto_gene_config(
-            gene.hugo_gene_symbol,
-            gene.entrez_gene_id,
-            canonical,
-            description_source=description_source,
+        auto_config = (
+            build_auto_gene_config(
+                gene.hugo_gene_symbol,
+                gene.entrez_gene_id,
+                canonical,
+                description_source=description_source,
+            )
+            if canonical is not None
+            else None
         )
         if auto_config is None:
-            unresolved.append(gene.hugo_gene_symbol)
+            needs_fallback.append(gene)
             continue
         config_by_gene[gene.hugo_gene_symbol] = auto_config
         source_by_gene[gene.hugo_gene_symbol] = "auto"
+        transcript_source_by_gene[gene.hugo_gene_symbol] = "genome_nexus_batch"
 
-    return config_by_gene, source_by_gene, unresolved
+    unresolved: dict[str, str] = {}
+    non_coding: dict[str, str] = {}
+    fallback_client = GenomeNexusClient(base_url=genome_nexus_base_url, session=session)
+    for gene in needs_fallback:
+        symbol = gene.hugo_gene_symbol
+        resolution = resolve_with_fallback(
+            symbol,
+            gene.entrez_gene_id,
+            genome_nexus_client=fallback_client,
+            session=session,
+            hgnc_cache_dir=hgnc_cache_dir,
+        )
+        auto_config = (
+            build_auto_gene_config(
+                symbol,
+                gene.entrez_gene_id,
+                resolution.canonical,
+                description_source=description_source,
+            )
+            if resolution.canonical is not None
+            else None
+        )
+        if auto_config is not None:
+            config_by_gene[symbol] = auto_config
+            source_by_gene[symbol] = "auto"
+            transcript_source_by_gene[symbol] = "genome_nexus_single_gene_hgnc_verified"
+        elif resolution.status == "non_coding":
+            non_coding[symbol] = resolution.reason
+        else:
+            unresolved[symbol] = resolution.reason
+
+    return _ConfigResolution(
+        config_by_gene=config_by_gene,
+        source_by_gene=source_by_gene,
+        transcript_source_by_gene=transcript_source_by_gene,
+        unresolved=unresolved,
+        non_coding=non_coding,
+    )
+
+
+@dataclass
+class _ConfigResolution:
+    config_by_gene: dict[str, GeneConfig]
+    source_by_gene: dict[str, str]
+    transcript_source_by_gene: dict[str, str]
+    unresolved: dict[str, str]  # symbol -> reason
+    non_coding: dict[str, str]  # symbol -> reason
 
 
 def _adaptive_algorithm_params(adaptive: bool, n_permutations_small: int) -> dict[str, dict]:
@@ -161,6 +224,26 @@ def _adaptive_algorithm_params(adaptive: bool, n_permutations_small: int) -> dic
         name: {"adaptive": True, "n_permutations_small": n_permutations_small}
         for name in ADAPTIVE_ALGORITHMS
     }
+
+
+def _report_progress(
+    progress: Callable[[str], None] | None,
+    index: int,
+    total: int,
+    outcome: GeneScanOutcome,
+    started: float,
+) -> None:
+    if progress is None:
+        return
+    detail = (
+        f"{len(outcome.run.events)} events"
+        if outcome.run is not None
+        else outcome.error or outcome.status
+    )
+    progress(
+        f"[{index}/{total}] {outcome.gene_symbol}: {outcome.status} "
+        f"({time.monotonic() - started:.1f}s; {detail})"
+    )
 
 
 def run_cohort_scan(
@@ -176,6 +259,9 @@ def run_cohort_scan(
     cbioportal_base_url: str = cbioportal_api.DEFAULT_BASE_URL,
     cache_dir: str | Path | None = None,
     session: "requests.Session | None" = None,
+    progress: Callable[[str], None] | None = None,
+    discover_cooccurrence: bool = False,
+    hypermutated_min_mutations: int | None = None,
 ) -> CohortScanResult:
     """Run the full genome-wide cohort scan for ``study_id``.
 
@@ -190,6 +276,14 @@ def run_cohort_scan(
     analyzed (after sorting by recurrence), for a bounded test/demo run;
     the reported ``total_genes_before_gating``/``genes_after_gating``
     counts are unaffected by this cap and always describe the full cohort.
+
+    ``progress``, when supplied, receives one human-readable line per
+    analyzed gene (index, symbol, status, elapsed seconds).
+
+    ``discover_cooccurrence`` additionally tests every analyzed fusion gene
+    against every panel gene x alteration type, stratified by tumor type
+    (see :mod:`cfh.cohort.cooccurrence_discovery`). Samples with at least
+    ``hypermutated_min_mutations`` panel mutations are excluded from it.
     """
     algorithm_names = algorithm_names or list_algorithms()
     cache_dir = Path(cache_dir) if cache_dir else None
@@ -217,34 +311,49 @@ def run_cohort_scan(
 
     genome_nexus_cache_dir = cache_dir / "genome_nexus_canonical_transcripts" if cache_dir else None
     pfam_description_cache_dir = cache_dir / "pfam_descriptions" if cache_dir else None
-    config_by_gene, source_by_gene, unresolved = _resolve_configs(
+    resolution = _resolve_configs(
         candidate_genes,
         genome_nexus_base_url=genome_nexus_base_url,
         genome_nexus_cache_dir=genome_nexus_cache_dir,
         pfam_description_cache_dir=pfam_description_cache_dir,
+        hgnc_cache_dir=cache_dir / "hgnc" if cache_dir else None,
         session=session,
     )
+    config_by_gene = resolution.config_by_gene
+    source_by_gene = resolution.source_by_gene
+    unresolved = resolution.unresolved
 
     genome_nexus_client = GenomeNexusClient(base_url=genome_nexus_base_url, session=session)
     algorithm_params = _adaptive_algorithm_params(adaptive, n_permutations_small)
 
     outcomes: list[GeneScanOutcome] = []
     warnings: list[str] = []
-    for gene in candidate_genes:
+    # Gene-panel coverage is gene-independent, so share it across genes.
+    panel_cache: dict = {}
+    for index, gene in enumerate(candidate_genes, start=1):
+        started = time.monotonic()
         symbol = gene.hugo_gene_symbol
         config = config_by_gene.get(symbol)
         if config is None:
+            is_non_coding = symbol in resolution.non_coding
+            reason = resolution.non_coding.get(symbol) or unresolved.get(symbol)
             outcomes.append(
                 GeneScanOutcome(
                     gene_symbol=symbol,
                     entrez_gene_id=gene.entrez_gene_id,
                     distinct_patient_count=gene.distinct_patient_count,
                     total_sv_count=gene.total_sv_count,
-                    config_source="unresolved",
+                    config_source="non_coding" if is_non_coding else "unresolved",
                     status="failed",
-                    error="No canonical transcript/protein could be resolved for this gene.",
+                    error=(
+                        f"Non-coding gene: {reason}."
+                        if is_non_coding
+                        else "No canonical transcript/protein could be resolved for this gene"
+                        + (f": {reason}." if reason else ".")
+                    ),
                 )
             )
+            _report_progress(progress, index, len(candidate_genes), outcomes[-1], started)
             continue
 
         try:
@@ -263,14 +372,24 @@ def run_cohort_scan(
             evidence_warnings: list[str] = []
             if "mutation_cooccurrence" in algorithm_names and config.mutual_exclusivity_targets:
                 comparator_params, fetch_warnings = _fetch_mutual_exclusivity_params(
-                    config, study_id, study_config, base_url=cbioportal_base_url, session=session
+                    config,
+                    study_id,
+                    study_config,
+                    base_url=cbioportal_base_url,
+                    session=session,
+                    panel_cache=panel_cache,
                 )
                 evidence_warnings.extend(fetch_warnings)
                 if comparator_params:
                     gene_algorithm_params.update(comparator_params)
             if "expression_association" in algorithm_names:
                 expression_params, expression_warning = _fetch_expression_association_params(
-                    config, study_config, study_id, base_url=cbioportal_base_url, session=session
+                    config,
+                    study_config,
+                    study_id,
+                    base_url=cbioportal_base_url,
+                    session=session,
+                    panel_cache=panel_cache,
                 )
                 if expression_params:
                     gene_algorithm_params["expression_association"] = expression_params
@@ -309,6 +428,7 @@ def run_cohort_scan(
                     status="ok",
                     run=run,
                     p_value_rows=p_value_rows,
+                    transcript_source=resolution.transcript_source_by_gene.get(symbol),
                 )
             )
         except Exception as exc:  # noqa: BLE001 - a single gene must never abort the scan
@@ -323,6 +443,7 @@ def run_cohort_scan(
                     error=f"{type(exc).__name__}: {exc}",
                 )
             )
+        _report_progress(progress, index, len(candidate_genes), outcomes[-1], started)
 
     all_p_rows = [row for outcome in outcomes for row in outcome.p_value_rows]
     hypotheses = [
@@ -333,6 +454,40 @@ def run_cohort_scan(
         {**row, "bh_adjusted_q": q_value}
         for row, (_, _, _, q_value) in zip(all_p_rows, adjusted, strict=True)
     ]
+
+    # The mechanism algorithm runs before cross-gene correction. Add only
+    # the q-value for this effect's Fisher test; a gene's minimum q-value
+    # may belong to a different algorithm and cannot support this claim.
+    fisher_q = {
+        (row["gene"], row["algorithm"]): row["bh_adjusted_q"]
+        for row in fdr_rows
+        if row["test"] == "fisher" and row["algorithm"] in {"domain_retention", "domain_disruption"}
+    }
+    for outcome in outcomes:
+        if outcome.run is None:
+            continue
+        mechanism = next(
+            (
+                item
+                for item in outcome.run.results
+                if item.Algorithm == "mechanistic_interpretation"
+            ),
+            None,
+        )
+        if mechanism is None or not mechanism.Summary:
+            continue
+        for effect in ("retention", "disruption"):
+            q_value = fisher_q.get((outcome.gene_symbol, f"domain_{effect}"))
+            if q_value is None:
+                continue
+            mechanism.Summary[f"{effect}_fdr_q_value"] = q_value
+            mechanism.Summary[f"{effect}_fdr_significant"] = q_value < significance_level
+            mechanism.Summary[f"{effect}_fisher_evidence_status"] = (
+                "fdr_supported"
+                if mechanism.Summary.get(f"{effect}_nominal_fisher_supported")
+                and q_value < significance_level
+                else "not_fdr_supported"
+            )
 
     per_gene_min_q: dict[str, float] = {}
     for row in fdr_rows:
@@ -347,6 +502,36 @@ def run_cohort_scan(
             f"{len(unresolved)} gated gene(s) had no resolvable canonical transcript in "
             f"Genome Nexus and were skipped: {', '.join(sorted(unresolved))}"
         )
+    if resolution.non_coding:
+        warnings.append(
+            f"{len(resolution.non_coding)} gated gene(s) are non-coding per HGNC; domain "
+            f"analysis does not apply: {', '.join(sorted(resolution.non_coding))}"
+        )
+    fallback_resolved = sorted(
+        symbol
+        for symbol, source in resolution.transcript_source_by_gene.items()
+        if source == "genome_nexus_single_gene_hgnc_verified"
+    )
+    if fallback_resolved:
+        warnings.append(
+            f"{len(fallback_resolved)} gated gene(s) were resolved by the HGNC-verified "
+            f"single-gene fallback: {', '.join(fallback_resolved)}"
+        )
+
+    cooccurrence_discovery = None
+    if discover_cooccurrence:
+        cooccurrence_discovery = _run_cooccurrence_discovery(
+            study_id,
+            study_config,
+            profile_id,
+            outcomes,
+            base_url=cbioportal_base_url,
+            session=session,
+            panel_cache=panel_cache,
+            hypermutated_min_mutations=hypermutated_min_mutations,
+            warnings=warnings,
+            progress=progress,
+        )
 
     return CohortScanResult(
         study_id=study_id,
@@ -355,12 +540,82 @@ def run_cohort_scan(
         curated_gene_count=sum(1 for source in source_by_gene.values() if source == "curated"),
         auto_config_gene_count=sum(1 for source in source_by_gene.values() if source == "auto"),
         unresolved_gene_count=len(unresolved),
+        non_coding_gene_count=len(resolution.non_coding),
+        fallback_resolved_gene_count=len(fallback_resolved),
         gene_outcomes=outcomes,
         fdr_rows=fdr_rows,
         significant_genes=significant_genes,
         significance_level=significance_level,
         warnings=warnings,
+        cooccurrence_discovery=cooccurrence_discovery,
     )
+
+
+def _run_cooccurrence_discovery(
+    study_id: str,
+    study_config,
+    sv_profile_id: str,
+    outcomes: list[GeneScanOutcome],
+    *,
+    base_url: str,
+    session: "requests.Session | None",
+    panel_cache: dict,
+    hypermutated_min_mutations: int | None,
+    warnings: list[str],
+    progress: Callable[[str], None] | None,
+) -> dict | None:
+    fusion_samples = {
+        outcome.gene_symbol: {event.Sample_id for event in outcome.run.events if event.Sample_id}
+        for outcome in outcomes
+        if outcome.status == "ok" and outcome.run is not None
+    }
+    if progress is not None:
+        progress(f"Co-occurrence discovery: fetching cohort-wide alterations for {study_id}")
+    try:
+        inputs = load_discovery_inputs(
+            study_id,
+            sv_profile_id=sv_profile_id,
+            mutation_profile_id=study_config.mutation_profile_id(study_id)
+            if study_config
+            else None,
+            cna_profile_id=study_config.discrete_cna_profile_id(study_id) if study_config else None,
+            sample_list_id=(
+                study_config.all_sample_list_id(study_id) if study_config else f"{study_id}_all"
+            ),
+            base_url=base_url,
+            session=session,
+            panel_cache=panel_cache,
+        )
+    except (requests.RequestException, ValueError, KeyError, TypeError) as exc:
+        warnings.append(
+            f"Co-occurrence discovery was skipped: cohort-wide inputs were unavailable "
+            f"({type(exc).__name__}: {exc})."
+        )
+        return None
+    warnings.extend(f"Co-occurrence discovery: {warning}" for warning in inputs.warnings)
+    excluded = (
+        {
+            sample_id
+            for sample_id, count in inputs.mutation_count_by_sample.items()
+            if count >= hypermutated_min_mutations
+        }
+        if hypermutated_min_mutations is not None
+        else set()
+    )
+    if progress is not None:
+        progress(
+            f"Co-occurrence discovery: testing {len(fusion_samples)} fusion genes x "
+            f"{len(inputs.alterations)} comparators"
+        )
+    report = discover_cooccurrence(
+        inputs.samples,
+        inputs.panel_genes,
+        fusion_samples,
+        inputs.alterations,
+        excluded_samples=excluded,
+    )
+    report["hypermutated_min_mutations"] = hypermutated_min_mutations
+    return report
 
 
 def per_gene_min_q_value(result: CohortScanResult) -> dict[str, float]:

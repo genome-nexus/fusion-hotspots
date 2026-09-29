@@ -343,35 +343,41 @@ class TestMechanisticInterpretationSection:
         assert "Loss-of-autoinhibition: curated test mechanism text." in html
         assert "possible_subcluster" not in html  # not a raw enum leak
         assert "AGK (&times;2)" in html
-        assert 'class="mechanism-callout"' in html
-        assert "See full mechanistic interpretation below" in html
+        # The section is the single rendering; the old top-of-page summary
+        # card repeated it verbatim and was removed.
+        assert "mechanism-callout" not in html
+        assert "See full mechanistic interpretation below" not in html
 
-    def test_callout_leads_with_the_curated_mechanism_not_just_statistics(self, tmp_path):
-        """Regression: the top-of-page callout used to show only the
-        statistical support lines (p-value/odds-ratio/counter-intuitive
-        confidence) and omit the actual curated "why" entirely, even
-        though it was present in the full section below. A reader glancing
-        at just the callout must see the functional/mechanistic reason,
-        not only how statistically confident the finding is."""
+    def test_effect_specific_fdr_verdict_is_separate_from_nominal_gate(self, tmp_path):
+        payload = self._payload_with_mechanistic_interpretation()
+        summary = payload["algorithm_results"][0]["Summary"]
+        summary["retention_fdr_q_value"] = 0.2
+        summary["retention_fdr_significant"] = False
+        html = build_run_viewer(_write_gene_run(tmp_path, payload, with_svgs=False)).read_text()
+        assert "nominal Fisher association" in html
+        assert "Fisher FDR q=0.2" in html
+        assert "not FDR-significant" in html
+        assert "FDR-supported association" not in html
+
+    def test_section_leads_with_the_curated_mechanism_not_just_statistics(self, tmp_path):
+        """The curated functional "why" leads the mechanistic section,
+        before the statistical support lines."""
         run_dir = _write_gene_run(
             tmp_path, self._payload_with_mechanistic_interpretation(), with_svgs=False
         )
-        html = build_run_viewer(run_dir).read_text()
-        callout_start = html.index('<div class="mechanism-callout">')
-        callout_end = html.index("</div>", callout_start) + len("</div>")
-        callout_html = html[callout_start:callout_end]
-        assert "Loss-of-autoinhibition: curated test mechanism text." in callout_html
-        assert "Curated mechanism" in callout_html
-        # The curated "why" leads the callout, before the statistical lines.
-        assert callout_html.index("Curated mechanism") < callout_html.index(
-            "statistically supported"
+        section_html = _mechanistic_section(build_run_viewer(run_dir).read_text())
+        assert "Loss-of-autoinhibition: curated test mechanism text." in section_html
+        assert section_html.index("Curated mechanism") < section_html.index(
+            "nominal Fisher association"
         )
+        assert "FDR support unknown" in section_html
+        assert "not a statistical subcluster test" in section_html
 
     def test_unverified_mechanism_note_gets_a_visibly_distinct_label_and_style(self, tmp_path):
         """A mechanism_note drafted by an AI tool (e.g. OpenEvidence) and not
         yet independently verified (GeneConfig.mechanism_note_verified=False)
         must never be presented identically to a human-cross-checked one --
-        distinct label, distinct callout color."""
+        distinct label, distinct color."""
         payload = self._payload_with_mechanistic_interpretation()
         payload["summary"]["mechanism_note_verified"] = False
         run_dir = _write_gene_run(tmp_path, payload, with_svgs=False)
@@ -379,13 +385,10 @@ class TestMechanisticInterpretationSection:
 
         assert "AI-suggested mechanism (unverified)" in html
         assert "<strong>Curated mechanism:</strong>" not in html
-        assert 'class="mechanism-callout unverified"' in html
-
-        callout_start = html.index('<div class="mechanism-callout unverified">')
-        callout_end = html.index("</div>", callout_start) + len("</div>")
-        callout_html = html[callout_start:callout_end]
-        assert "AI-suggested mechanism (unverified)" in callout_html
-        assert "Loss-of-autoinhibition: curated test mechanism text." in callout_html
+        section_html = _mechanistic_section(html)
+        assert '<p class="unverified-mechanism">' in section_html
+        assert "AI-suggested mechanism (unverified)" in section_html
+        assert "Loss-of-autoinhibition: curated test mechanism text." in section_html
 
     def test_verified_mechanism_note_keeps_the_curated_label_and_default_style(self, tmp_path):
         """Explicit regression guard: a config that leaves
@@ -397,15 +400,15 @@ class TestMechanisticInterpretationSection:
         html = build_run_viewer(run_dir).read_text()
 
         assert "AI-suggested mechanism (unverified)" not in html
-        assert 'class="mechanism-callout unverified"' not in html
-        assert '<div class="mechanism-callout">' in html
+        assert 'class="unverified-mechanism"' not in html
+        assert "<strong>Curated mechanism:</strong>" in _mechanistic_section(html)
 
     def test_mechanism_note_never_duplicates_into_the_generic_stat_grid(self, tmp_path):
         """Regression: mechanism_note (a multi-sentence paragraph) used to
         pass _scalar_summary_items' generic filter (not a list/dict) and
         get rendered a second time as an ordinary stat-grid cell -- whose
         CSS (18px bold, sized for a short number) blew up into a huge card
-        duplicating the mechanism callout above it. Neither mechanism_note
+        duplicating the mechanism text. Neither mechanism_note
         nor mechanism_note_verified may appear as a stat-grid label."""
         run_dir = _write_gene_run(
             tmp_path, self._payload_with_mechanistic_interpretation(), with_svgs=False
@@ -418,9 +421,8 @@ class TestMechanisticInterpretationSection:
         ]
         assert "Mechanism Note" not in stat_grid_html
         assert "MECHANISM NOTE" not in html
-        # The mechanism_note text is legitimately present once (in the
-        # callout/section), never as a second, generic stat-grid cell.
-        assert html.count("Loss-of-autoinhibition: curated test mechanism text.") == 2
+        # The mechanism_note text appears exactly once, in the section.
+        assert html.count("Loss-of-autoinhibition: curated test mechanism text.") == 1
 
     def test_counter_intuitive_events_table_links_back_to_events_table(self, tmp_path):
         run_dir = _write_gene_run(
@@ -537,9 +539,9 @@ class TestGenePairPage:
         assert result is not None
         assert "Gene-pair enrichment test" not in result.read_text()
 
-    def test_gene_pair_mechanism_note_shows_in_the_callout(self, tmp_path):
+    def test_gene_pair_mechanism_note_shows_in_the_section(self, tmp_path):
         """Gene-pair pages have no mechanistic_interpretation algorithm
-        result at all (it no-ops for gene_pair configs) -- the callout must
+        result at all (it no-ops for gene_pair configs) -- the section must
         still show the curated mechanism_note by itself, not only appear
         when statistical support lines are also present."""
         payload = self._gene_pair_payload()
@@ -548,10 +550,16 @@ class TestGenePairPage:
         )
         run_dir = _write_gene_run(tmp_path, payload, with_svgs=False)
         html = build_run_viewer(run_dir).read_text()
-        callout_start = html.index('<div class="mechanism-callout">')
-        callout_end = html.index("</div>", callout_start) + len("</div>")
-        callout_html = html[callout_start:callout_end]
-        assert "Promoter-swap/expression-driven fusion, not domain-retention." in callout_html
+        assert "Promoter-swap/expression-driven fusion, not domain-retention." in (
+            _mechanistic_section(html)
+        )
+        assert html.count("Promoter-swap/expression-driven fusion, not domain-retention.") == 1
+
+
+def _mechanistic_section(html: str) -> str:
+    start = html.index('<h2 id="mechanistic-interpretation">')
+    end = html.find("<h2", start + 1)
+    return html[start : end if end != -1 else len(html)]
 
 
 class TestGenomicClusteringSection:
@@ -776,9 +784,8 @@ def test_viewer_builds_successfully_against_the_real_committed_run(tmp_path, run
 
 
 def test_building_the_viewer_never_modifies_any_pre_existing_run_file(tmp_path):
-    """Purely additive: building the viewer for the real committed BRAF run
-    must not change a single byte of results.json/results.tsv/report.md/
-    the existing SVGs -- only new files under viewer/ may appear."""
+    """Building the viewer must preserve the real committed run's source
+    artifacts; generated viewer HTML may change as report wording evolves."""
     scratch = tmp_path / BRAF_RUN_DIR.name
     shutil.copytree(BRAF_RUN_DIR, scratch)
 
@@ -786,7 +793,7 @@ def test_building_the_viewer_never_modifies_any_pre_existing_run_file(tmp_path):
         return {
             str(path.relative_to(scratch)): hashlib.sha256(path.read_bytes()).hexdigest()
             for path in sorted(scratch.rglob("*"))
-            if path.is_file()
+            if path.is_file() and "viewer" not in path.relative_to(scratch).parts
         }
 
     before = _hashes()

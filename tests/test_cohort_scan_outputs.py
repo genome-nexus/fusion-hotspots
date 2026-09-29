@@ -239,6 +239,25 @@ def _stub_out_full_gene_report_writing(monkeypatch):
     monkeypatch.setattr("cfh.cohort.outputs.write_outputs", lambda *a, **k: {})
 
 
+def test_summary_keeps_each_domain_fisher_q_separate_from_gene_minimum():
+    from cfh.cohort.outputs import build_summary_rows
+
+    outcome = _outcome("GENE", "curated")
+    outcome.run.summary = {"fisher_p_value": 0.001}
+    outcome.run.results = []
+    result = _result([outcome], significant_genes=["GENE"])
+    result.fdr_rows = [
+        {"gene": "GENE", "algorithm": "joint_partner", "test": "enrichment", "bh_adjusted_q": 0.01},
+        {"gene": "GENE", "algorithm": "domain_retention", "test": "fisher", "bh_adjusted_q": 0.2},
+    ]
+    row = build_summary_rows(result)[0]
+    assert row["min_fdr_adjusted_q_value"] == 0.01
+    assert row["retention_fisher_q_value"] == 0.2
+    assert row["retention_fisher_fdr_significant"] is False
+    assert row["disruption_fisher_q_value"] is None
+    assert row["disruption_fisher_fdr_significant"] is None
+
+
 def test_summary_json_carries_an_additive_machine_readable_honorable_mentions_field(
     tmp_path, monkeypatch
 ):

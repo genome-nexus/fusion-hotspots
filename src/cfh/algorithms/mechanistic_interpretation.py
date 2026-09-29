@@ -4,25 +4,23 @@ algorithm for domain retention/disruption.
 This is a pure aggregation algorithm, in the same spirit as
 ``composite_score``: it never re-runs a Fisher's-exact test or a
 permutation test itself, and it never guesses at biology. It only answers
-two gene-agnostic, purely statistical questions from the already-computed
+two gene-agnostic questions from the already-computed
 ``domain_retention``/``domain_disruption`` :class:`AlgorithmResult` objects
 and the per-event domain-status calls the mapping layer already produced:
 
-1. Is this gene's configured domain-retention (or domain-disruption)
-   finding itself statistically supported (the same ``p < 0.05`` and
+1. Does this gene's configured domain-retention (or domain-disruption)
+   finding pass a nominal Fisher gate (the same ``p < 0.05`` and
    ``odds ratio > 1`` gate :func:`cfh.reporting.domain_names.domain_interpretation_sentence`
    already uses to decide whether the report asserts anything at all)? If
-   not, there is no statistically-established "expected" pattern for any
+   not, this nominal gate does not establish an "expected" pattern for any
    event to be counter to, and this module says so rather than picking a
    side.
 
-2. Among events that run counter to a *supported* pattern (e.g. domain
-   *lost* despite a significant retention enrichment), is that minority
-   recurrent enough -- the same partner gene appearing repeatedly among
-   just the counter events -- to be statistically distinguishable from
-   background noise, or is it a diffuse, non-recurrent scatter consistent
-   with individual passenger events/classification noise at this cohort
-   size?
+2. Among events that run counter to a *nominally supported* pattern (e.g. domain
+   *lost* despite a nominal retention enrichment), is that minority
+   recurrent by a descriptive rule -- the same partner gene appearing at
+   least twice among counter events? This is not a statistical test of a
+   subcluster or evidence that diffuse events are background noise.
 
 Answering *why* a counter-intuitive event might still be oncogenic is
 deliberately out of scope here: that is a human-curator judgment call
@@ -52,20 +50,15 @@ from cfh.model.fusion_feature import FusionFeature
 from cfh.stats.breakpoint_tests import gene_breakpoint_domain_status_event_records
 
 ALGORITHM_NAME = "mechanistic_interpretation"
-ALGORITHM_VERSION = "1.0.0"
+ALGORITHM_VERSION = "1.1.0"
 
 _ALPHA = 0.05
-"""Same significance threshold :func:`cfh.reporting.domain_names.domain_interpretation_sentence`
-uses -- kept identical so this module's "statistically supported" verdict
-never contradicts that sentence's own gate."""
+"""Nominal Fisher threshold; cross-gene FDR is computed downstream."""
 
 _RECURRENT_PARTNER_THRESHOLD = 2
-"""A partner gene must appear at least this many times among the
-counter-intuitive events specifically (not the whole cohort) before that
-subgroup is called a candidate cluster rather than background noise. An
-explicit, documented, small integer -- not tuned per gene -- exactly the
-same kind of fixed, defensible threshold as ``composite_score``'s
-``neg_log10_p_cap``."""
+"""A descriptive review flag when a partner occurs at least twice among
+counter-intuitive events (not the whole cohort). This fixed threshold is
+not calibrated to a null distribution and is not a subcluster test."""
 
 _RETENTION_CONTRADICTING_STATUSES = {"lost", "disrupted"}
 _DISRUPTION_CONTRADICTING_STATUS = "retained"
@@ -91,7 +84,7 @@ def _failed(result: Optional[AlgorithmResult]) -> bool:
     return any(str(warning).startswith("Algorithm failed") for warning in (result.Warnings or []))
 
 
-def _statistically_supported(
+def _nominal_fisher_supported(
     result: Optional[AlgorithmResult],
 ) -> tuple[bool, float | None, float | None]:
     """``fisher_p_value < _ALPHA`` and ``fisher_odds_ratio > 1``.
@@ -100,8 +93,8 @@ def _statistically_supported(
     gene where every in-frame fusion retains the domain and no other event
     does -- see ``fishers_frame_domain_test``'s own docstring on this being
     an expected, not a numerical-bug, outcome) is treated as supported: it
-    is the *most*, not least, significant possible result, so only
-    ``p_value``'s finiteness is required, never ``odds_ratio``'s."""
+    can be a valid effect estimate; significance is determined by the
+    Fisher p-value, so only its finiteness is required."""
     if result is None or _failed(result):
         return False, None, None
     summary = result.Summary or {}
@@ -174,7 +167,14 @@ def _analyze_effect(
             {
                 f"{prefix}_domains_configured": False,
                 f"{prefix}_domain_names": [],
+                f"{prefix}_tested_domain_accession": None,
+                f"{prefix}_configured_domain_count": 0,
                 f"{prefix}_statistically_supported": False,
+                f"{prefix}_nominal_fisher_supported": False,
+                f"{prefix}_fdr_q_value": None,
+                f"{prefix}_fdr_significant": None,
+                f"{prefix}_fisher_evidence_status": "not_tested",
+                f"{prefix}_recurrence_evidence_type": "descriptive_heuristic",
                 f"{prefix}_fisher_p_value": None,
                 f"{prefix}_fisher_odds_ratio": None,
                 f"{prefix}_counter_intuitive_confidence": "not_applicable",
@@ -185,12 +185,29 @@ def _analyze_effect(
             {},
         )
 
-    supported, p_value, odds_ratio = _statistically_supported(algorithm_result)
-    domain_names = _configured_domain_names(domains)
+    supported, p_value, odds_ratio = _nominal_fisher_supported(algorithm_result)
+    # The upstream domain-status test and event-record helper use only the
+    # first configured domain. Listing later domains here would imply they
+    # were tested, especially for multi-domain disruption configurations.
+    tested_domain = domains[0]
+    domain_names = _configured_domain_names([tested_domain])
     summary_fields: dict[str, Any] = {
         f"{prefix}_domains_configured": True,
         f"{prefix}_domain_names": domain_names,
+        f"{prefix}_tested_domain_accession": tested_domain.accession,
+        f"{prefix}_configured_domain_count": len(domains),
         f"{prefix}_statistically_supported": supported,
+        f"{prefix}_nominal_fisher_supported": supported,
+        f"{prefix}_fdr_q_value": None,
+        f"{prefix}_fdr_significant": None,
+        f"{prefix}_fisher_evidence_status": (
+            "nominal_support_fdr_unknown"
+            if supported
+            else "nominal_not_supported"
+            if p_value is not None
+            else "not_tested"
+        ),
+        f"{prefix}_recurrence_evidence_type": "descriptive_heuristic",
         f"{prefix}_fisher_p_value": p_value,
         f"{prefix}_fisher_odds_ratio": odds_ratio,
     }
@@ -258,9 +275,9 @@ def _analyze_effect(
     if count == 0:
         confidence = "none"
     elif recurrent_partners:
-        confidence = "possible_subcluster"
+        confidence = "recurrent_partner_heuristic"
     else:
-        confidence = "insufficient_recurrence"
+        confidence = "no_recurrent_partner_observed"
 
     summary_fields[f"{prefix}_counter_intuitive_confidence"] = confidence
     summary_fields[f"{prefix}_counter_intuitive_count"] = count
@@ -281,9 +298,8 @@ def _analyze_effect(
 @register(ALGORITHM_NAME)
 class MechanisticInterpretationAlgorithm(Algorithm):
     """Flag domain-status events that run counter to this gene's own
-    statistically-supported retention/disruption pattern, and judge purely
-    from partner-gene recurrence whether that minority looks like a
-    candidate subcluster or background noise. See the module docstring for
+    nominally supported retention/disruption pattern, and flag repeated
+    partners descriptively. See the module docstring for
     the full rationale and scope boundary."""
 
     VERSION = ALGORITHM_VERSION

@@ -29,6 +29,7 @@ live-fetch step) still no-ops gracefully, with a warning distinct from the
 
 from __future__ import annotations
 
+import hashlib
 import json
 from datetime import datetime, timezone
 from typing import Any
@@ -45,7 +46,7 @@ from cfh.stats.cooccurrence_tests import (
 )
 
 ALGORITHM_NAME = "mutation_cooccurrence"
-ALGORITHM_VERSION = "0.1.0"
+ALGORITHM_VERSION = "0.2.0"
 
 
 def _target_label(target: MutualExclusivityTarget) -> str:
@@ -108,8 +109,11 @@ class MutationCooccurrenceAlgorithm(Algorithm):
     module docstring for the full opt-in/data-availability contract.
 
     Expected ``params`` keys (both required for a non-no-op result):
-        cohort_sample_ids (list[str]): every profiled sample in the cohort
-            -- the 2x2 test's background universe.
+        cohort_sample_ids (list[str]): the caller-declared background universe.
+        eligible_sample_ids_by_target (dict[str, list[str]], optional):
+            samples assessed for both genes/assays, keyed by comparator_target_key.
+            Missing targets fail closed. The live caller always supplies this.
+            Offline callers omitting it assert that their universe is eligible.
         comparator_alterations (list[dict]): per-sample alteration records
             (``AlterationEvent.model_dump()`` shape: ``Sample_id``,
             ``Gene``, ``Alteration_type``, ``Protein_change``) for every
@@ -165,11 +169,11 @@ class MutationCooccurrenceAlgorithm(Algorithm):
         if unmatched:
             warnings.append(
                 f"{len(unmatched)} fusion-positive sample(s) were not found in the "
-                "supplied cohort_sample_ids universe; they were still counted as "
-                "fusion-positive in the contingency table."
+                "supplied cohort_sample_ids universe; they were excluded."
             )
 
         rows: list[dict[str, Any]] = []
+        eligibility = params.get("eligible_sample_ids_by_target")
         for target in targets:
             target_key = comparator_target_key(target)
             if has_availability_sidecar and not (
@@ -181,9 +185,26 @@ class MutationCooccurrenceAlgorithm(Algorithm):
                     "its co-occurrence/mutual-exclusivity test was skipped."
                 )
                 continue
-            comparator_samples = _comparator_sample_ids(comparator_alterations, target)
+            if eligibility is not None:
+                if not isinstance(eligibility, dict) or target_key not in eligibility:
+                    warnings.append(
+                        f"Joint assay eligibility for {_target_label(target)} was unavailable; "
+                        "its co-occurrence/mutual-exclusivity test was skipped."
+                    )
+                    continue
+                eligible = cohort_sample_id_set & set(eligibility[target_key])
+            else:
+                eligible = cohort_sample_id_set
+            if not eligible:
+                warnings.append(
+                    f"No jointly assessed samples for {_target_label(target)}; skipped."
+                )
+                continue
+            all_comparator_samples = _comparator_sample_ids(comparator_alterations, target)
+            comparator_samples = all_comparator_samples & eligible
+            fusion_samples = fusion_positive_sample_ids & eligible
             table = build_cooccurrence_contingency_table(
-                fusion_positive_sample_ids, comparator_samples, cohort_sample_id_set
+                fusion_samples, comparator_samples, eligible
             )
             odds_ratio, p_value, direction = fishers_cooccurrence_test(table)
             rows.append(
@@ -196,8 +217,23 @@ class MutationCooccurrenceAlgorithm(Algorithm):
                     "odds_ratio": odds_ratio,
                     "p_value": p_value,
                     "direction": direction,
-                    "cohort_sample_count": len(cohort_sample_id_set),
-                    "fusion_positive_sample_count": len(fusion_positive_sample_ids),
+                    "cohort_sample_count": len(eligible),
+                    "supplied_cohort_sample_count": len(cohort_sample_id_set),
+                    "excluded_cohort_sample_count": len(cohort_sample_id_set - eligible),
+                    "excluded_fusion_positive_sample_count": len(
+                        fusion_positive_sample_ids - eligible
+                    ),
+                    "excluded_comparator_sample_count": len(all_comparator_samples - eligible),
+                    "counting_unit": "sample",
+                    "eligibility_source": (
+                        "joint_assay_metadata" if eligibility is not None else "caller_asserted"
+                    ),
+                    # A digest, not the ID list: on a 50k-sample cohort the
+                    # list would add ~50k strings to every row of results.json.
+                    "eligible_sample_ids_sha256": hashlib.sha256(
+                        "\n".join(sorted(eligible)).encode()
+                    ).hexdigest(),
+                    "fusion_positive_sample_count": len(fusion_samples),
                     "comparator_altered_sample_count": len(comparator_samples),
                     "both_altered_sample_count": table[0][0],
                 }

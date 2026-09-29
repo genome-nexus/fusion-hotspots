@@ -99,10 +99,19 @@ def compare_genes(run_artifacts: tuple[Path, ...], output_path: Path) -> None:
     type=click.Path(path_type=Path, dir_okay=False),
     help="Optional JSON report path; the report is always printed to stdout.",
 )
-def compare_cohorts(run_artifacts: tuple[Path, ...], output_path: Path | None) -> None:
+@click.option(
+    "--require-patient-disjoint",
+    is_flag=True,
+    help="Reject incomplete patient metadata or overlapping patients before comparing cohorts.",
+)
+def compare_cohorts(
+    run_artifacts: tuple[Path, ...], output_path: Path | None, require_patient_disjoint: bool
+) -> None:
     """CMH-test saved frame/domain tables for one gene across cohorts (offline)."""
     try:
-        report = compare_cohort_runs(list(run_artifacts))
+        report = compare_cohort_runs(
+            list(run_artifacts), require_patient_disjoint=require_patient_disjoint
+        )
         rendered = json.dumps(report, indent=2, allow_nan=False) + "\n"
         if output_path is not None:
             output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -309,6 +318,24 @@ def analyze(
     help="Size of the 'honorable mentions' highly ranked non-FDR-significant tier: the top N "
     "genes by raw Fisher p-value among genes that did NOT survive genome-wide FDR correction.",
 )
+@click.option(
+    "--discover-cooccurrence",
+    is_flag=True,
+    help="Also test every analyzed fusion gene against every panel gene x alteration type "
+    "(tumor-type-stratified, separate FDR family); writes cooccurrence_discovery.tsv/.json.",
+)
+@click.option(
+    "--hypermutated-min-mutations",
+    type=click.IntRange(min=1),
+    default=None,
+    help="With --discover-cooccurrence, exclude samples with at least this many panel mutations.",
+)
+@click.option(
+    "--progress/--quiet",
+    default=True,
+    show_default=True,
+    help="Print one progress line per analyzed gene to stderr.",
+)
 @_HTML_OPTION
 def cohort_scan(
     study_id: str,
@@ -321,6 +348,9 @@ def cohort_scan(
     cache_dir: Path | None,
     pdf: bool,
     honorable_mention_count: int,
+    discover_cooccurrence: bool,
+    hypermutated_min_mutations: int | None,
+    progress: bool,
     html: bool,
 ) -> None:
     """Genome-wide fusion-hotspot scan: gate cohort-wide SV recurrence, run
@@ -335,6 +365,9 @@ def cohort_scan(
             n_permutations_small=n_permutations_small,
             max_genes=max_genes,
             cache_dir=cache_dir or (output_dir / ".cohort_scan_cache"),
+            progress=(lambda line: click.echo(line, err=True)) if progress else None,
+            discover_cooccurrence=discover_cooccurrence,
+            hypermutated_min_mutations=hypermutated_min_mutations,
         )
         paths = write_cohort_scan_outputs(
             result, output_dir, pdf=pdf, honorable_mention_count=honorable_mention_count
@@ -348,7 +381,7 @@ def cohort_scan(
         f"{result.total_genes_before_gating} genes had SV records in {study_id}; "
         f"{result.genes_after_gating} passed the >= {min_distinct_patients}-patient gate "
         f"({result.curated_gene_count} curated, {result.auto_config_gene_count} auto-configured, "
-        f"{result.unresolved_gene_count} unresolved)."
+        f"{result.non_coding_gene_count} non-coding, {result.unresolved_gene_count} unresolved)."
     )
     click.echo(f"Analyzed {ok_count} genes successfully, {failed_count} failed/skipped.")
     click.echo(f"FDR-significant genes (q<0.05): {len(result.significant_genes)}")
@@ -373,6 +406,7 @@ def cohort_scan(
         "summary_pdf",
         "manuscript_markdown",
         "manuscript_pdf",
+        "cooccurrence_discovery_tsv",
         "viewer",
     ):
         if kind in paths:
