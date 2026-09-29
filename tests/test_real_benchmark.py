@@ -986,3 +986,32 @@ def test_mechanistic_markdown_labels_nominal_fdr_and_recurrence_separately():
     assert "PARTNER (x2)" in report
     assert "descriptive recurrence heuristic" in report
     assert "not a statistical subcluster test" in report
+
+
+@pytest.mark.parametrize(("unit", "expected_table_total"), [("patient", 2), ("event", 3)])
+def test_repeat_biopsies_are_collapsed_before_inference(
+    genome_nexus_canonical_transcript_fixture_path, unit, expected_table_total
+):
+    client = _genome_nexus_client(genome_nexus_canonical_transcript_fixture_path)
+    calls = [
+        {**_call("S1"), "patientId": "P1"},
+        {**_call("S2"), "patientId": "P1"},  # repeat biopsy of the same fusion
+        {**_call("S3"), "patientId": "P2"},
+    ]
+    run = analyze_structural_variant_calls_with_config(
+        calls,
+        load_gene_config("BRAF"),
+        "test",
+        genome_nexus_client=client,
+        n_permutations=5,
+        algorithm_names=["domain_retention", "frequency"],
+        observation_unit=unit,
+    )
+    results = {result.Algorithm: result for result in run.results}
+    table = results["domain_retention"].Tables["frame_domain_contingency_table"]
+    assert sum(sum(row) for row in table) == expected_table_total
+    # Descriptive counts and partner frequencies still see every event.
+    assert run.summary["total_fusions"] == 3
+    assert results["frequency"].Summary["input_event_count"] == 3
+    assert run.summary["observation_unit"] == unit
+    assert run.summary["collapsed_repeat_observation_count"] == 3 - expected_table_total

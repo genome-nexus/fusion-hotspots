@@ -75,6 +75,28 @@ def simulated_observations(
     return positions, statuses, patient_ids
 
 
+def collapse_patient_observations(
+    positions: Sequence[int], statuses: Sequence[str], patient_ids: Sequence[str]
+) -> tuple[list[int], list[str], list[str]]:
+    """Keep one observation per (patient, position), as the live pipeline does.
+
+    Mirrors :func:`cfh.stats.observation_units.collapse_repeated_observations`
+    for simulated data, where every observation shares one partner and role.
+    """
+    seen: set[tuple[str, int]] = set()
+    kept_positions: list[int] = []
+    kept_statuses: list[str] = []
+    kept_patients: list[str] = []
+    for position, status, patient in zip(positions, statuses, patient_ids, strict=True):
+        if (patient, position) in seen:
+            continue
+        seen.add((patient, position))
+        kept_positions.append(position)
+        kept_statuses.append(status)
+        kept_patients.append(patient)
+    return kept_positions, kept_statuses, kept_patients
+
+
 def calibrate_scans(
     *,
     replicates: int = 20,
@@ -84,8 +106,12 @@ def calibrate_scans(
     alpha: float = 0.05,
     family_size: int = 1,
     widths: Sequence[int] = (100,),
+    observation_unit: str = "event",
 ) -> dict[str, Any]:
     """Return empirical rejection rates, Wilson intervals and diagnostics.
+
+    ``observation_unit="patient"`` collapses repeated observations of one
+    patient before scanning, matching the live pipeline's default.
 
     A null rejection rate estimates the false-positive rate for that
     simulation's data-generating process; the planted rate estimates power
@@ -95,6 +121,8 @@ def calibrate_scans(
         raise ValueError("replicates must be positive and alpha between 0 and 1")
     if not widths or any(width <= 0 for width in widths):
         raise ValueError("widths must contain positive values")
+    if observation_unit not in {"event", "patient"}:
+        raise ValueError("observation_unit must be 'event' or 'patient'")
     resolution = permutation_resolution(n_permutations, family_size=family_size)
     rng = np.random.default_rng(seed)
     scenarios: dict[str, Any] = {}
@@ -112,6 +140,10 @@ def calibrate_scans(
             positions, statuses, patient_ids = simulated_observations(
                 scenario, rng, n_patients=n_patients
             )
+            if observation_unit == "patient":
+                positions, statuses, patient_ids = collapse_patient_observations(
+                    positions, statuses, patient_ids
+                )
             run_seed = int(rng.integers(0, 2**32))
             event_ids = [f"E{i}" for i in range(len(positions))]
             results = {
@@ -149,6 +181,7 @@ def calibrate_scans(
         "n_patients": n_patients,
         "n_permutations": n_permutations,
         "widths": list(widths),
+        "observation_unit": observation_unit,
         "permutation_resolution": resolution,
         "scenarios": scenarios,
         "notes": [
@@ -168,6 +201,12 @@ def main() -> None:
     parser.add_argument("--n-permutations", type=int, default=99)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--family-size", type=int, default=1)
+    parser.add_argument(
+        "--observation-unit",
+        choices=("event", "patient"),
+        default="event",
+        help="Collapse repeated patient observations before scanning (null scenarios only).",
+    )
     args = parser.parse_args()
     report = calibrate_scans(
         replicates=args.replicates,
@@ -175,6 +214,7 @@ def main() -> None:
         n_permutations=args.n_permutations,
         seed=args.seed,
         family_size=args.family_size,
+        observation_unit=args.observation_unit,
     )
     print(json.dumps(report, indent=2, allow_nan=False))
 

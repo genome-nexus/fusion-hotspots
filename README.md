@@ -221,9 +221,13 @@ Suggested reading order:
    between retained and non-retained events. It reflects call quality, not
    breakpoint selection, and can rest on very small groups (check `n_b`).
 3. **Check the counting units.** Each gene report's `summary` lists `total_fusions`,
-   `sample_count`, `known_patient_count`, and `inference_counting_unit`. When samples
-   greatly exceed patients, event-level permutation p-values are anti-conservative
-   (see [CALIBRATION.md](CALIBRATION.md)).
+   `sample_count`, and `known_patient_count`. Before any inferential test, repeated
+   observations of one fusion in one patient (same partner, role, and protein junction)
+   are collapsed to one (`inference_counting_unit: patient_distinct_fusion`);
+   `collapsed_repeat_observation_count` and `patients_with_repeated_observations` show
+   how many. Descriptive counts, the events table, and `frequency` keep every event.
+   Distinct fusions in one patient still count separately (see
+   [CALIBRATION.md](CALIBRATION.md)).
 4. **Read the domain evidence.** `domain_retention` gives the frame × domain 2×2
    table, Fisher and permutation p. The permutation null samples breakpoints across
    the transcript and classifies each from the domain's coordinates and the observed
