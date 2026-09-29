@@ -12,12 +12,15 @@ Pfam domain, one with none at all).
 from __future__ import annotations
 
 import json
+from collections import Counter
 from unittest.mock import MagicMock
 
 import pytest
 import requests
 
 from cfh.cohort import scan as scan_module
+from cfh.cohort.cooccurrence_data import DiscoveryInputs
+from cfh.cohort.cooccurrence_discovery import SampleRecord
 from cfh.cohort.outputs import build_summary_rows, write_cohort_scan_outputs
 from cfh.cohort.scan import genes_needing_full_report, run_cohort_scan
 from cfh.ingestion import cbioportal_api
@@ -642,3 +645,74 @@ def test_cohort_scan_reports_progress_once_per_candidate_gene(mock_session, tmp_
     assert len(lines) == total
     for index, (line, outcome) in enumerate(zip(lines, result.gene_outcomes, strict=True), 1):
         assert line.startswith(f"[{index}/{total}] {outcome.gene_symbol}: {outcome.status} (")
+
+
+# --- co-occurrence discovery wiring ------------------------------------------
+
+
+def _fake_inputs(*_args, **_kwargs):
+    braf_samples = sorted({call["sampleId"] for call in _sv_calls_for_gene("BRAF")})
+    others = [f"NEG-{i}" for i in range(200)]
+    samples = [SampleRecord(s, "PA", "P", "P", "P") for s in braf_samples + others]
+    return DiscoveryInputs(
+        samples=samples,
+        panel_genes={"P": {"BRAF", "RET", "FAKE1", "FAKE2", "KRAS"}},
+        alterations={("KRAS", "mutation"): set(others[:60])},
+        mutation_count_by_sample=Counter({others[0]: 500}),
+        warnings=["example loader warning"],
+    )
+
+
+def test_scan_runs_discovery_only_when_requested_and_writes_outputs(
+    mock_session, monkeypatch, tmp_path
+):
+    loader = MagicMock(side_effect=_fake_inputs)
+    monkeypatch.setattr(scan_module, "load_discovery_inputs", loader)
+    kwargs = dict(
+        min_distinct_patients=5,
+        n_permutations=20,
+        adaptive=False,
+        session=mock_session,
+        algorithm_names=["frequency"],
+    )
+    plain = run_cohort_scan(_STUDY_ID, **kwargs)
+    assert plain.cooccurrence_discovery is None
+    loader.assert_not_called()
+
+    result = run_cohort_scan(
+        _STUDY_ID, discover_cooccurrence=True, hypermutated_min_mutations=100, **kwargs
+    )
+    discovery = result.cooccurrence_discovery
+    assert discovery["excluded_sample_count"] == 1
+    assert discovery["hypermutated_min_mutations"] == 100
+    braf = next(r for r in discovery["rows"] if r["fusion_gene"] == "BRAF")
+    assert braf["comparator_gene"] == "KRAS"
+    assert braf["both_samples"] == 0
+    assert any("example loader warning" in w for w in result.warnings)
+    # Discovery never enters the main FDR family.
+    assert not any("KRAS" in row["test"] for row in result.fdr_rows)
+
+    paths = write_cohort_scan_outputs(result, tmp_path, pdf=False)
+    payload = json.loads(paths["cooccurrence_discovery_json"].read_text())
+    assert payload["tested_pair_count"] == discovery["tested_pair_count"]
+    assert paths["cooccurrence_discovery_tsv"].read_text().startswith("fusion_gene\t")
+    assert "Co-occurrence discovery" in paths["summary_markdown"].read_text()
+
+
+def test_discovery_failure_degrades_to_warning(mock_session, monkeypatch):
+    monkeypatch.setattr(
+        scan_module,
+        "load_discovery_inputs",
+        MagicMock(side_effect=requests.ConnectionError("portal down")),
+    )
+    result = run_cohort_scan(
+        _STUDY_ID,
+        min_distinct_patients=5,
+        n_permutations=20,
+        adaptive=False,
+        session=mock_session,
+        algorithm_names=["frequency"],
+        discover_cooccurrence=True,
+    )
+    assert result.cooccurrence_discovery is None
+    assert any("Co-occurrence discovery was skipped" in w for w in result.warnings)

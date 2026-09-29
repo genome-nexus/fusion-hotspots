@@ -29,6 +29,8 @@ from cfh.cohort.auto_config import (
     batch_fetch_canonical_transcripts,
     build_auto_gene_config,
 )
+from cfh.cohort.cooccurrence_data import load_discovery_inputs
+from cfh.cohort.cooccurrence_discovery import discover_cooccurrence
 from cfh.cohort.recurrence import (
     DEFAULT_MIN_DISTINCT_PATIENTS,
     GeneRecurrence,
@@ -91,6 +93,9 @@ class CohortScanResult:
     significant_genes: list[str]
     significance_level: float = DEFAULT_SIGNIFICANCE_LEVEL
     warnings: list[str] = field(default_factory=list)
+    # Opt-in hypothesis-free co-occurrence scan (a separate FDR family); see
+    # cfh.cohort.cooccurrence_discovery. None when not requested or failed.
+    cooccurrence_discovery: dict | None = None
 
     @property
     def total_genes_before_gating(self) -> int:
@@ -199,6 +204,8 @@ def run_cohort_scan(
     cache_dir: str | Path | None = None,
     session: "requests.Session | None" = None,
     progress: Callable[[str], None] | None = None,
+    discover_cooccurrence: bool = False,
+    hypermutated_min_mutations: int | None = None,
 ) -> CohortScanResult:
     """Run the full genome-wide cohort scan for ``study_id``.
 
@@ -216,6 +223,11 @@ def run_cohort_scan(
 
     ``progress``, when supplied, receives one human-readable line per
     analyzed gene (index, symbol, status, elapsed seconds).
+
+    ``discover_cooccurrence`` additionally tests every analyzed fusion gene
+    against every panel gene x alteration type, stratified by tumor type
+    (see :mod:`cfh.cohort.cooccurrence_discovery`). Samples with at least
+    ``hypermutated_min_mutations`` panel mutations are excluded from it.
     """
     algorithm_names = algorithm_names or list_algorithms()
     cache_dir = Path(cache_dir) if cache_dir else None
@@ -423,6 +435,21 @@ def run_cohort_scan(
             f"Genome Nexus and were skipped: {', '.join(sorted(unresolved))}"
         )
 
+    cooccurrence_discovery = None
+    if discover_cooccurrence:
+        cooccurrence_discovery = _run_cooccurrence_discovery(
+            study_id,
+            study_config,
+            profile_id,
+            outcomes,
+            base_url=cbioportal_base_url,
+            session=session,
+            panel_cache=panel_cache,
+            hypermutated_min_mutations=hypermutated_min_mutations,
+            warnings=warnings,
+            progress=progress,
+        )
+
     return CohortScanResult(
         study_id=study_id,
         min_distinct_patients=min_distinct_patients,
@@ -435,7 +462,75 @@ def run_cohort_scan(
         significant_genes=significant_genes,
         significance_level=significance_level,
         warnings=warnings,
+        cooccurrence_discovery=cooccurrence_discovery,
     )
+
+
+def _run_cooccurrence_discovery(
+    study_id: str,
+    study_config,
+    sv_profile_id: str,
+    outcomes: list[GeneScanOutcome],
+    *,
+    base_url: str,
+    session: "requests.Session | None",
+    panel_cache: dict,
+    hypermutated_min_mutations: int | None,
+    warnings: list[str],
+    progress: Callable[[str], None] | None,
+) -> dict | None:
+    fusion_samples = {
+        outcome.gene_symbol: {event.Sample_id for event in outcome.run.events if event.Sample_id}
+        for outcome in outcomes
+        if outcome.status == "ok" and outcome.run is not None
+    }
+    if progress is not None:
+        progress(f"Co-occurrence discovery: fetching cohort-wide alterations for {study_id}")
+    try:
+        inputs = load_discovery_inputs(
+            study_id,
+            sv_profile_id=sv_profile_id,
+            mutation_profile_id=study_config.mutation_profile_id(study_id)
+            if study_config
+            else None,
+            cna_profile_id=study_config.discrete_cna_profile_id(study_id) if study_config else None,
+            sample_list_id=(
+                study_config.all_sample_list_id(study_id) if study_config else f"{study_id}_all"
+            ),
+            base_url=base_url,
+            session=session,
+            panel_cache=panel_cache,
+        )
+    except (requests.RequestException, ValueError, KeyError, TypeError) as exc:
+        warnings.append(
+            f"Co-occurrence discovery was skipped: cohort-wide inputs were unavailable "
+            f"({type(exc).__name__}: {exc})."
+        )
+        return None
+    warnings.extend(f"Co-occurrence discovery: {warning}" for warning in inputs.warnings)
+    excluded = (
+        {
+            sample_id
+            for sample_id, count in inputs.mutation_count_by_sample.items()
+            if count >= hypermutated_min_mutations
+        }
+        if hypermutated_min_mutations is not None
+        else set()
+    )
+    if progress is not None:
+        progress(
+            f"Co-occurrence discovery: testing {len(fusion_samples)} fusion genes x "
+            f"{len(inputs.alterations)} comparators"
+        )
+    report = discover_cooccurrence(
+        inputs.samples,
+        inputs.panel_genes,
+        fusion_samples,
+        inputs.alterations,
+        excluded_samples=excluded,
+    )
+    report["hypermutated_min_mutations"] = hypermutated_min_mutations
+    return report
 
 
 def per_gene_min_q_value(result: CohortScanResult) -> dict[str, float]:
