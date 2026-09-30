@@ -92,3 +92,29 @@ unchanged. Cells are rejections/200 at `p < 0.05` (Wilson 95% interval):
 Collapsing identical repeat observations restores the repeated-patient null to
 roughly nominal rejection. It does not address dependence between *distinct*
 fusions in one patient, which the simulations do not model.
+
+## Cohort-scan FDR family without the read-support t-test
+
+The `confidence_stats` Welch test (tumor read support, retained vs
+non-retained events) is no longer part of the cross-gene BH family (#114). On
+the MSK-IMPACT 50k cohort (`cfh cohort-scan msk_impact_50k_2026`, 544 genes
+past the 5-patient gate, 538 analyzable), this changes the result:
+
+| Gene | Min q, with Welch | Min q, without | Retention Fisher q, without | Welch groups (retained / not) |
+| --- | ---: | ---: | ---: | ---: |
+| ETV6 | 0.049 | 0.158 | 0.158 | 46 / 19 |
+| NTRK3 | 0.0015 | 0.166 | 0.883 | 35 / 2 |
+| ROS1 | 0.0017 | 0.166 | 1.000 | 89 / 11 |
+| FLI1 | 0.023 | 0.166 | 0.701 | 99 / 7 |
+
+With the Welch test, 4 genes were FDR-significant, 3 of them only because of
+it. Without it, **no gene reaches q < 0.05**; the smallest q is ETV6's 0.158.
+ETV6's q rises even though its p-value is unchanged, because the many tiny
+Welch p-values no longer rank ahead of it.
+
+These numbers come from two scans of this branch on 2026-09-29. Transient
+cBioPortal 503 errors and timeouts dropped 8 genes from the first run and 17
+different genes from the second, but every analyzable gene completed in at
+least one run. Both runs found no significant genes (min q 0.163 and 0.158),
+and every completed gene's Fisher and permutation p-values match the earlier
+scan exactly. The table shows the second run.
