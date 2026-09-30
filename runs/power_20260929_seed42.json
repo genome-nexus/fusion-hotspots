@@ -1,0 +1,415 @@
+{
+  "scope": "power of cutpoint/window label-separation scans for planted signals",
+  "seed": 42,
+  "alpha": 0.05,
+  "n_permutations": 99,
+  "widths": [
+    25,
+    50,
+    100,
+    200
+  ],
+  "cutpoint_aa": 500,
+  "window_aa": [
+    400,
+    500
+  ],
+  "effect_definition": "absolute difference in retained probability inside vs outside",
+  "rows": [
+    {
+      "signal": "cutpoint",
+      "n_events": 10,
+      "effect": 0.4,
+      "rejections": 5,
+      "replicates": 100,
+      "determinable": 100,
+      "power": 0.05,
+      "wilson_95_interval": [
+        0.02154367915436796,
+        0.11175046923191913
+      ]
+    },
+    {
+      "signal": "cutpoint",
+      "n_events": 10,
+      "effect": 0.6,
+      "rejections": 15,
+      "replicates": 100,
+      "determinable": 100,
+      "power": 0.15,
+      "wilson_95_interval": [
+        0.0930598528365663,
+        0.23283559590832364
+      ]
+    },
+    {
+      "signal": "cutpoint",
+      "n_events": 10,
+      "effect": 0.8,
+      "rejections": 41,
+      "replicates": 100,
+      "determinable": 100,
+      "power": 0.41,
+      "wilson_95_interval": [
+        0.3186731302113651,
+        0.5079856994658921
+      ]
+    },
+    {
+      "signal": "cutpoint",
+      "n_events": 25,
+      "effect": 0.4,
+      "rejections": 30,
+      "replicates": 100,
+      "determinable": 100,
+      "power": 0.3,
+      "wilson_95_interval": [
+        0.2189488529493276,
+        0.3958485463334666
+      ]
+    },
+    {
+      "signal": "cutpoint",
+      "n_events": 25,
+      "effect": 0.6,
+      "rejections": 75,
+      "replicates": 100,
+      "determinable": 100,
+      "power": 0.75,
+      "wilson_95_interval": [
+        0.656955364519384,
+        0.8245478863771232
+      ]
+    },
+    {
+      "signal": "cutpoint",
+      "n_events": 25,
+      "effect": 0.8,
+      "rejections": 96,
+      "replicates": 100,
+      "determinable": 100,
+      "power": 0.96,
+      "wilson_95_interval": [
+        0.9016292856411208,
+        0.9843366960084523
+      ]
+    },
+    {
+      "signal": "cutpoint",
+      "n_events": 50,
+      "effect": 0.4,
+      "rejections": 57,
+      "replicates": 100,
+      "determinable": 100,
+      "power": 0.57,
+      "wilson_95_interval": [
+        0.47215389549212305,
+        0.6626670147588988
+      ]
+    },
+    {
+      "signal": "cutpoint",
+      "n_events": 50,
+      "effect": 0.6,
+      "rejections": 98,
+      "replicates": 100,
+      "determinable": 100,
+      "power": 0.98,
+      "wilson_95_interval": [
+        0.929988209271456,
+        0.9944980324498376
+      ]
+    },
+    {
+      "signal": "cutpoint",
+      "n_events": 50,
+      "effect": 0.8,
+      "rejections": 100,
+      "replicates": 100,
+      "determinable": 100,
+      "power": 1.0,
+      "wilson_95_interval": [
+        0.9630065017930143,
+        1.0
+      ]
+    },
+    {
+      "signal": "cutpoint",
+      "n_events": 100,
+      "effect": 0.4,
+      "rejections": 92,
+      "replicates": 100,
+      "determinable": 100,
+      "power": 0.92,
+      "wilson_95_interval": [
+        0.8500189229905127,
+        0.9589065385156194
+      ]
+    },
+    {
+      "signal": "cutpoint",
+      "n_events": 100,
+      "effect": 0.6,
+      "rejections": 100,
+      "replicates": 100,
+      "determinable": 100,
+      "power": 1.0,
+      "wilson_95_interval": [
+        0.9630065017930143,
+        1.0
+      ]
+    },
+    {
+      "signal": "cutpoint",
+      "n_events": 100,
+      "effect": 0.8,
+      "rejections": 100,
+      "replicates": 100,
+      "determinable": 100,
+      "power": 1.0,
+      "wilson_95_interval": [
+        0.9630065017930143,
+        1.0
+      ]
+    },
+    {
+      "signal": "cutpoint",
+      "n_events": 250,
+      "effect": 0.4,
+      "rejections": 100,
+      "replicates": 100,
+      "determinable": 100,
+      "power": 1.0,
+      "wilson_95_interval": [
+        0.9630065017930143,
+        1.0
+      ]
+    },
+    {
+      "signal": "cutpoint",
+      "n_events": 250,
+      "effect": 0.6,
+      "rejections": 100,
+      "replicates": 100,
+      "determinable": 100,
+      "power": 1.0,
+      "wilson_95_interval": [
+        0.9630065017930143,
+        1.0
+      ]
+    },
+    {
+      "signal": "cutpoint",
+      "n_events": 250,
+      "effect": 0.8,
+      "rejections": 100,
+      "replicates": 100,
+      "determinable": 100,
+      "power": 1.0,
+      "wilson_95_interval": [
+        0.9630065017930143,
+        1.0
+      ]
+    },
+    {
+      "signal": "window",
+      "n_events": 10,
+      "effect": 0.4,
+      "rejections": 0,
+      "replicates": 100,
+      "determinable": 90,
+      "power": 0.0,
+      "wilson_95_interval": [
+        3.469446951953614e-18,
+        0.03699349820698568
+      ]
+    },
+    {
+      "signal": "window",
+      "n_events": 10,
+      "effect": 0.6,
+      "rejections": 1,
+      "replicates": 100,
+      "determinable": 88,
+      "power": 0.01,
+      "wilson_95_interval": [
+        0.0017674320641406505,
+        0.054486196178705315
+      ]
+    },
+    {
+      "signal": "window",
+      "n_events": 10,
+      "effect": 0.8,
+      "rejections": 0,
+      "replicates": 100,
+      "determinable": 76,
+      "power": 0.0,
+      "wilson_95_interval": [
+        3.469446951953614e-18,
+        0.03699349820698568
+      ]
+    },
+    {
+      "signal": "window",
+      "n_events": 25,
+      "effect": 0.4,
+      "rejections": 7,
+      "replicates": 100,
+      "determinable": 100,
+      "power": 0.07,
+      "wilson_95_interval": [
+        0.03431926106727268,
+        0.137495147390735
+      ]
+    },
+    {
+      "signal": "window",
+      "n_events": 25,
+      "effect": 0.6,
+      "rejections": 12,
+      "replicates": 100,
+      "determinable": 100,
+      "power": 0.12,
+      "wilson_95_interval": [
+        0.06999406437019488,
+        0.19812099426711421
+      ]
+    },
+    {
+      "signal": "window",
+      "n_events": 25,
+      "effect": 0.8,
+      "rejections": 30,
+      "replicates": 100,
+      "determinable": 99,
+      "power": 0.3,
+      "wilson_95_interval": [
+        0.2189488529493276,
+        0.3958485463334666
+      ]
+    },
+    {
+      "signal": "window",
+      "n_events": 50,
+      "effect": 0.4,
+      "rejections": 12,
+      "replicates": 100,
+      "determinable": 100,
+      "power": 0.12,
+      "wilson_95_interval": [
+        0.06999406437019488,
+        0.19812099426711421
+      ]
+    },
+    {
+      "signal": "window",
+      "n_events": 50,
+      "effect": 0.6,
+      "rejections": 30,
+      "replicates": 100,
+      "determinable": 100,
+      "power": 0.3,
+      "wilson_95_interval": [
+        0.2189488529493276,
+        0.3958485463334666
+      ]
+    },
+    {
+      "signal": "window",
+      "n_events": 50,
+      "effect": 0.8,
+      "rejections": 63,
+      "replicates": 100,
+      "determinable": 100,
+      "power": 0.63,
+      "wilson_95_interval": [
+        0.5322052958094291,
+        0.7181763946567546
+      ]
+    },
+    {
+      "signal": "window",
+      "n_events": 100,
+      "effect": 0.4,
+      "rejections": 20,
+      "replicates": 100,
+      "determinable": 100,
+      "power": 0.2,
+      "wilson_95_interval": [
+        0.1333669333310325,
+        0.2888291655931589
+      ]
+    },
+    {
+      "signal": "window",
+      "n_events": 100,
+      "effect": 0.6,
+      "rejections": 70,
+      "replicates": 100,
+      "determinable": 100,
+      "power": 0.7,
+      "wilson_95_interval": [
+        0.6041514536665332,
+        0.7810511470506724
+      ]
+    },
+    {
+      "signal": "window",
+      "n_events": 100,
+      "effect": 0.8,
+      "rejections": 91,
+      "replicates": 100,
+      "determinable": 100,
+      "power": 0.91,
+      "wilson_95_interval": [
+        0.837737871472837,
+        0.9519274599974348
+      ]
+    },
+    {
+      "signal": "window",
+      "n_events": 250,
+      "effect": 0.4,
+      "rejections": 73,
+      "replicates": 100,
+      "determinable": 100,
+      "power": 0.73,
+      "wilson_95_interval": [
+        0.6356788323205499,
+        0.8073041585042365
+      ]
+    },
+    {
+      "signal": "window",
+      "n_events": 250,
+      "effect": 0.6,
+      "rejections": 100,
+      "replicates": 100,
+      "determinable": 100,
+      "power": 1.0,
+      "wilson_95_interval": [
+        0.9630065017930143,
+        1.0
+      ]
+    },
+    {
+      "signal": "window",
+      "n_events": 250,
+      "effect": 0.8,
+      "rejections": 100,
+      "replicates": 100,
+      "determinable": 100,
+      "power": 1.0,
+      "wilson_95_interval": [
+        0.9630065017930143,
+        1.0
+      ]
+    }
+  ],
+  "notes": [
+    "Events are independent; repeated-patient dependence is not modeled.",
+    "Positions are uniform on 1..1000 aa; real genes have clustered breakpoints.",
+    "Adaptive escalation beyond the first permutation stage is not modeled."
+  ]
+}

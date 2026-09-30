@@ -118,3 +118,39 @@ different genes from the second, but every analyzable gene completed in at
 least one run. Both runs found no significant genes (min q 0.163 and 0.158),
 and every completed gene's Fisher and permutation p-values match the earlier
 scan exactly. The table shows the second run.
+
+## Power of the cutpoint and window scans
+
+```sh
+python -m cfh.stats.calibration --power-grid --replicates 100 --n-permutations 99 --seed 42
+```
+
+The run is checked in as
+[`power_20260929_seed42.json`](runs/power_20260929_seed42.json). Each cell plants
+one signal in independent events at uniform positions on a 1,000-aa protein:
+either a cutpoint at 500 aa or a window at 400–500 aa. The effect is the absolute
+difference in retained probability inside vs outside (0.8 means 90% vs 10%). The
+window scan uses the production widths (25, 50, 100, 200 aa). Cells are
+rejections/100 at `p < 0.05` (Wilson 95% interval):
+
+| Events | Cutpoint, effect 0.4 | Cutpoint, 0.6 | Cutpoint, 0.8 | Window, effect 0.4 | Window, 0.6 | Window, 0.8 |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 10 | 5 (2–11%) | 15 (9–23%) | 41 (32–51%) | 0 (0–4%)\* | 1 (0–5%)\* | 0 (0–4%)\* |
+| 25 | 30 (22–40%) | 75 (66–82%) | 96 (90–98%) | 7 (3–14%) | 12 (7–20%) | 30 (22–40%) |
+| 50 | 57 (47–66%) | 98 (93–99%) | 100 (96–100%) | 12 (7–20%) | 30 (22–40%) | 63 (53–72%) |
+| 100 | 92 (85–96%) | 100 (96–100%) | 100 (96–100%) | 20 (13–29%) | 70 (60–78%) | 91 (84–95%) |
+| 250 | 100 (96–100%) | 100 (96–100%) | 100 (96–100%) | 73 (64–81%) | 100 (96–100%) | 100 (96–100%) |
+
+\* At 10 events the window scan could not produce a result in 10, 12 and 24 of
+the 100 replicates, which count as non-rejections.
+
+The cutpoint scan has at least 75% power from 25 events at a strong effect
+(0.6) and from 100 events at a moderate one (0.4). The window scan is much
+weaker: below 50 events it rarely detects even a strong window, and at 100
+events it needs an effect of about 0.6. In the MSK-IMPACT 50k scan the median
+gene has 5 analyzable events; 490 of 538 genes have fewer than 25 and only 13
+have 100 or more. For most genes, then, even the cutpoint scan is underpowered,
+and an absent signal is weak evidence of absence. These are single-scan rates before cross-gene FDR,
+with independent events (repeated-patient dependence is not modeled), uniform
+positions (real breakpoints cluster), and no adaptive escalation beyond the
+first permutation stage.
