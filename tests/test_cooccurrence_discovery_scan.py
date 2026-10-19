@@ -79,3 +79,49 @@ def test_loader_builds_samples_panels_and_alterations_from_api():
     assert inputs.alterations == {("KRAS", "mutation"): {"S1"}, ("BRAF", "amplification"): {"S1"}}
     assert inputs.panel_genes == {"P": {"KRAS", "BRAF"}}
     assert any("no ONCOTREE_CODE" in w for w in inputs.warnings)
+
+
+def test_loader_falls_back_to_cancer_type_when_oncotree_code_is_missing():
+    session = MagicMock()
+
+    def _post(url, json=None, **kwargs):
+        response = MagicMock()
+        if url.endswith("/gene-panel-data/fetch"):
+            response.json.return_value = [
+                {"sampleId": sample, "profiled": True, "genePanelId": "P"}
+                for sample in ("S1", "S2", "S3")
+            ]
+        else:
+            response.json.return_value = []
+        return response
+
+    def _get(url, params=None, **kwargs):
+        response = MagicMock()
+        if url.endswith("/gene-panels/P"):
+            response.json.return_value = {"genes": []}
+        elif params["attributeId"] == "ONCOTREE_CODE":
+            response.json.return_value = [{"sampleId": "S1", "value": "LUAD"}]
+        elif params["attributeId"] == "CANCER_TYPE":
+            response.json.return_value = [
+                {"sampleId": "S1", "value": "Non-Small Cell Lung Cancer"},
+                {"sampleId": "S2", "value": "Thyroid Cancer"},
+            ]
+        else:
+            raise AssertionError(params)
+        return response
+
+    session.post.side_effect = _post
+    session.get.side_effect = _get
+    inputs = load_discovery_inputs(
+        "study",
+        sv_profile_id="sv",
+        mutation_profile_id=None,
+        cna_profile_id=None,
+        sample_list_id="all",
+        base_url="https://portal.example/api",
+        session=session,
+    )
+    strata = {record.sample_id: record.stratum for record in inputs.samples}
+    assert strata == {"S1": "LUAD", "S2": "Thyroid Cancer", "S3": "UNKNOWN"}
+    assert any("1 samples had no ONCOTREE_CODE and are stratified by" in w for w in inputs.warnings)
+    assert any("1 samples had no ONCOTREE_CODE or CANCER_TYPE" in w for w in inputs.warnings)
