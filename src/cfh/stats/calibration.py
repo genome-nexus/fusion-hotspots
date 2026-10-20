@@ -18,7 +18,12 @@ import numpy as np
 
 from cfh.stats.adaptive_permutation import permutation_resolution
 from cfh.stats.cutpoint_scan import detect_cutpoint
-from cfh.stats.window_scan import detect_window
+from cfh.stats.window_scan import DEFAULT_WIDTHS, detect_window
+
+DEFAULT_POWER_SIZES: tuple[int, ...] = (10, 25, 50, 100, 250)
+DEFAULT_POWER_EFFECTS: tuple[float, ...] = (0.4, 0.6, 0.8)
+POWER_WINDOW_AA: tuple[int, int] = (400, 500)
+POWER_CUTPOINT_AA = 500
 
 
 def wilson_interval(successes: int, trials: int, z: float = 1.959963984540054) -> list[float]:
@@ -194,6 +199,144 @@ def calibrate_scans(
     }
 
 
+def planted_observations(
+    kind: str, n_events: int, effect: float, rng: np.random.Generator
+) -> tuple[list[int], list[str]]:
+    """Independent events with a planted retained-probability difference.
+
+    Positions are uniform on 1..1000 aa. Inside the signal region (positions
+    <= 500 for ``cutpoint``; 400..500 for ``window``) an event is retained
+    with probability ``0.5 + effect / 2``; outside, ``0.5 - effect / 2``.
+    ``effect`` is therefore the absolute difference in retained probability.
+    """
+    if kind not in {"cutpoint", "window"}:
+        raise ValueError(f"Unknown planted signal: {kind}")
+    if not 0 <= effect <= 1:
+        raise ValueError("effect must be between 0 and 1")
+    if n_events < 1:
+        raise ValueError("n_events must be positive")
+    positions = rng.integers(1, 1001, size=n_events)
+    if kind == "cutpoint":
+        inside = positions <= POWER_CUTPOINT_AA
+    else:
+        inside = (positions >= POWER_WINDOW_AA[0]) & (positions <= POWER_WINDOW_AA[1])
+    labels = rng.random(n_events) < np.where(inside, 0.5 + effect / 2, 0.5 - effect / 2)
+    return positions.astype(int).tolist(), ["retained" if label else "lost" for label in labels]
+
+
+def power_grid(
+    *,
+    sizes: Sequence[int] = DEFAULT_POWER_SIZES,
+    effects: Sequence[float] = DEFAULT_POWER_EFFECTS,
+    replicates: int = 50,
+    n_permutations: int = 99,
+    seed: int = 42,
+    alpha: float = 0.05,
+    widths: Sequence[int] = DEFAULT_WIDTHS,
+    signals: Sequence[str] = ("cutpoint", "window"),
+) -> dict[str, Any]:
+    """Rejection rate of each scan against its own planted signal.
+
+    Each (signal, events, effect) cell runs ``replicates`` independent
+    simulations. The cutpoint scan is tested on a planted cutpoint and the
+    window scan on a planted 100-aa internal window, using the production
+    window widths by default. ``n_permutations`` matches the cohort scan's
+    first adaptive stage (100 draws); borderline results there escalate to a
+    larger budget, which this grid does not model.
+    """
+    if replicates <= 0 or not 0 < alpha < 1:
+        raise ValueError("replicates must be positive and alpha between 0 and 1")
+    if not sizes or not effects:
+        raise ValueError("sizes and effects must be nonempty")
+    if not signals or set(signals) - {"cutpoint", "window"}:
+        raise ValueError("signals must be a nonempty subset of {'cutpoint', 'window'}")
+    rng = np.random.default_rng(seed)
+    rows: list[dict[str, Any]] = []
+    for kind in signals:
+        for n_events in sizes:
+            for effect in effects:
+                rejections = 0
+                determinable = 0
+                for _ in range(replicates):
+                    positions, statuses = planted_observations(kind, n_events, effect, rng)
+                    run_seed = int(rng.integers(0, 2**32))
+                    if kind == "cutpoint":
+                        result = detect_cutpoint(
+                            positions, statuses, seed=run_seed, n_permutations=n_permutations
+                        )
+                    else:
+                        result = detect_window(
+                            positions,
+                            statuses,
+                            [f"E{i}" for i in range(n_events)],
+                            seed=run_seed,
+                            n_permutations=n_permutations,
+                            widths=widths,
+                        )
+                    determinable += bool(result["determinable"])
+                    p_value = result["corrected_p_value"]
+                    rejections += p_value is not None and p_value < alpha
+                rows.append(
+                    {
+                        "signal": kind,
+                        "n_events": n_events,
+                        "effect": effect,
+                        "rejections": rejections,
+                        "replicates": replicates,
+                        "determinable": determinable,
+                        "power": rejections / replicates,
+                        "wilson_95_interval": wilson_interval(rejections, replicates),
+                    }
+                )
+    return {
+        "scope": "power of cutpoint/window label-separation scans for planted signals",
+        "seed": seed,
+        "alpha": alpha,
+        "n_permutations": n_permutations,
+        "widths": list(widths),
+        "cutpoint_aa": POWER_CUTPOINT_AA,
+        "window_aa": list(POWER_WINDOW_AA),
+        "effect_definition": "absolute difference in retained probability inside vs outside",
+        "rows": rows,
+        "notes": [
+            "Events are independent; repeated-patient dependence is not modeled.",
+            "Positions are uniform on 1..1000 aa; real genes have clustered breakpoints.",
+            "Adaptive escalation beyond the first permutation stage is not modeled.",
+        ],
+    }
+
+
+def power_markdown(report: dict[str, Any]) -> str:
+    """Render a power grid as one Markdown table per signal."""
+    effects = sorted({row["effect"] for row in report["rows"]})
+    lines = [
+        f"Power at alpha={report['alpha']} with {report['n_permutations']} permutations, "
+        f"seed {report['seed']}. Cells: rejections/replicates (Wilson 95% interval).",
+        "",
+    ]
+    for kind in ("cutpoint", "window"):
+        rows = [row for row in report["rows"] if row["signal"] == kind]
+        if not rows:
+            continue
+        lines += [
+            f"**Planted {kind}**",
+            "",
+            "| Events | " + " | ".join(f"effect {effect:g}" for effect in effects) + " |",
+            "| ---: |" + " ---: |" * len(effects),
+        ]
+        for n_events in sorted({row["n_events"] for row in rows}):
+            cells = []
+            for effect in effects:
+                row = next(r for r in rows if r["n_events"] == n_events and r["effect"] == effect)
+                low, high = row["wilson_95_interval"]
+                cells.append(
+                    f"{row['rejections']}/{row['replicates']} ({100 * low:.0f}–{100 * high:.0f}%)"
+                )
+            lines.append(f"| {n_events} | " + " | ".join(cells) + " |")
+        lines.append("")
+    return "\n".join(lines)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--replicates", type=int, default=20)
@@ -207,7 +350,27 @@ def main() -> None:
         default="event",
         help="Collapse repeated patient observations before scanning (null scenarios only).",
     )
+    parser.add_argument(
+        "--power-grid",
+        action="store_true",
+        help="Estimate power over --sizes x --effects instead of running the null scenarios.",
+    )
+    parser.add_argument("--sizes", type=int, nargs="+", default=list(DEFAULT_POWER_SIZES))
+    parser.add_argument("--effects", type=float, nargs="+", default=list(DEFAULT_POWER_EFFECTS))
+    parser.add_argument(
+        "--markdown", action="store_true", help="With --power-grid, print a Markdown table."
+    )
     args = parser.parse_args()
+    if args.power_grid:
+        report = power_grid(
+            sizes=args.sizes,
+            effects=args.effects,
+            replicates=args.replicates,
+            n_permutations=args.n_permutations,
+            seed=args.seed,
+        )
+        print(power_markdown(report) if args.markdown else json.dumps(report, indent=2))
+        return
     report = calibrate_scans(
         replicates=args.replicates,
         n_patients=args.n_patients,
