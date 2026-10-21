@@ -25,7 +25,7 @@ from cfh.mapping.genome_nexus_source import GenomeNexusClient, resolve_domains
 from cfh.model.algorithm_result import AlgorithmResult
 from cfh.model.fusion_event import FusionEvent
 from cfh.model.fusion_feature import FusionFeature
-from cfh.stats.adaptive_permutation import is_borderline, resolve_permutation_budget
+from cfh.stats.adaptive_permutation import resolve_permutation_budget, run_permutation_budget
 from cfh.stats.breakpoint_tests import gene_breakpoint_domain_status_records
 from cfh.stats.cutpoint_scan import detect_cutpoint
 
@@ -139,31 +139,11 @@ class CutpointDetectionAlgorithm(Algorithm):
         positions = [position for position, _ in records]
         statuses = [status for _, status in records]
 
-        n_permutations = budget["full_n"] if not budget["adaptive"] else budget["small_n"]
-        scan_result = detect_cutpoint(
-            positions,
-            statuses,
-            seed=seed,
-            n_permutations=n_permutations,
+        scan_result, n_permutations, escalated = run_permutation_budget(
+            lambda n: detect_cutpoint(positions, statuses, seed=seed, n_permutations=n),
+            lambda result: result["corrected_p_value"],
+            budget,
         )
-        escalated = False
-        if (
-            budget["adaptive"]
-            and scan_result["determinable"]
-            and is_borderline(
-                scan_result["corrected_p_value"],
-                threshold=budget["threshold"],
-                factor=budget["factor"],
-            )
-        ):
-            escalated = True
-            n_permutations = budget["full_n"]
-            scan_result = detect_cutpoint(
-                positions,
-                statuses,
-                seed=seed,
-                n_permutations=n_permutations,
-            )
 
         boundary_comparison = None
         warnings: list[str] = []
@@ -194,6 +174,7 @@ class CutpointDetectionAlgorithm(Algorithm):
                 "n_permutations_small": budget["small_n"],
                 "n_permutations_full": budget["full_n"],
                 "n_permutations_used": n_permutations,
+                "n_permutations_max": budget["max_n"],
                 "escalated_to_full": escalated,
             }
 

@@ -47,6 +47,18 @@ _MANHATTAN_SVG_FILENAME = "manhattan.svg"
 _MANUSCRIPT_MARKDOWN_FILENAME = "paper.md"
 _MANUSCRIPT_PDF_FILENAME = "paper.pdf"
 
+_FDR_FAMILY_FIELDNAMES = [
+    "gene",
+    "algorithm",
+    "test",
+    "raw_p",
+    "bh_adjusted_q",
+    "n_permutations",
+    "at_permutation_floor",
+    "resolution_limited",
+]
+"""One row per hypothesis in the scan's Benjamini-Hochberg family."""
+
 DEFAULT_HONORABLE_MENTION_COUNT = 15
 """Default size of the "honorable mentions" / highly ranked non-FDR-significant
 tier: the top N genes by raw Fisher p-value among genes that did NOT survive
@@ -1015,6 +1027,18 @@ def write_cohort_scan_outputs(
     )
     json_path.write_text(json.dumps(payload, indent=2, allow_nan=False) + "\n")
 
+    fdr_family_path = destination / "fdr_family.tsv"
+    with fdr_family_path.open("w", newline="") as handle:
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=_FDR_FAMILY_FIELDNAMES,
+            delimiter="\t",
+            lineterminator="\n",
+            extrasaction="ignore",
+        )
+        writer.writeheader()
+        writer.writerows(sorted(result.fdr_rows, key=lambda row: row["bh_adjusted_q"]))
+
     markdown_path = destination / "summary.md"
     _write_summary_markdown(result, rows, honorable_mentions, markdown_path)
     discovery_paths: dict[str, Path] = {}
@@ -1027,6 +1051,7 @@ def write_cohort_scan_outputs(
         "run_directory": destination,
         "summary_tsv": tsv_path,
         "summary_json": json_path,
+        "fdr_family_tsv": fdr_family_path,
         "summary_markdown": markdown_path,
         "manhattan_svg": manhattan_svg_path,
         **discovery_paths,

@@ -5,10 +5,11 @@ a label/breakpoint permutation test (``domain_retention``,
 Running the full configured ``n_permutations`` (thousands) for every gene
 in a genome-wide scan is wasteful when a result is nowhere near the
 significance threshold. Adaptive mode instead runs a small permutation
-budget first and only escalates to the full budget when that small-N
-result is "borderline" -- close enough to the significance threshold that
-the small-N Monte Carlo estimate's own noise could plausibly flip the
-significance call.
+budget first and escalates to the full budget unless that small-N result
+is clearly non-significant. A result still at its permutation floor after
+that is escalated tenfold at a time up to ``n_permutations_max``: an
+empirical p-value cannot fall below ``1/(n + 1)``, so the strongest
+signals need the largest budgets to survive genome-wide correction.
 
 Both the small and full runs reuse the exact same ``seed``, so a given
 ``(seed, n_permutations)`` pair always reproduces the same result -- exactly
@@ -75,6 +76,66 @@ def is_borderline(
     return lower <= p_value <= upper
 
 
+def should_escalate(
+    p_value: float | None,
+    *,
+    threshold: float = DEFAULT_SIGNIFICANCE_THRESHOLD,
+    factor: float = DEFAULT_BORDERLINE_FACTOR,
+) -> bool:
+    """Whether a small-N result needs the full budget: anything not clearly
+    non-significant (``p <= factor * threshold``).
+
+    Unlike :func:`is_borderline`, this includes results far *below* the
+    threshold. Those sit at or near the small budget's floor
+    ``1/(small_n + 1)``, which is too coarse to survive correction across a
+    genome-wide family, so they need more permutations most of all.
+    """
+    if p_value is None:
+        return False
+    if factor <= 0:
+        raise ValueError(f"factor must be positive; got {factor!r}")
+    return p_value <= min(1.0, threshold * factor)
+
+
+def at_permutation_floor(p_value: float | None, n_permutations: int) -> bool:
+    """Whether ``p_value`` is the smallest value ``n_permutations`` can give."""
+    return p_value is not None and p_value <= 1.0 / (n_permutations + 1) * (1 + 1e-9)
+
+
+def run_permutation_budget(run, p_value_of, budget: dict) -> tuple[Any, int, bool]:
+    """Run a seeded permutation test under ``budget``.
+
+    ``run(n)`` performs the test with ``n`` permutations and ``p_value_of``
+    extracts its p-value. Adaptive budgets start at ``small_n`` and move to
+    ``full_n`` when :func:`should_escalate` says so. Then, for every budget,
+    a result still at its permutation floor is rerun with ten times the
+    permutations, up to ``max_n``, so the strongest signals are resolved
+    finely enough to be compared across a correction family.
+
+    Returns ``(result, n_permutations_used, escalated)``.
+    """
+    n_permutations = budget["small_n"] if budget["adaptive"] else budget["full_n"]
+    result = run(n_permutations)
+    escalated = False
+    if (
+        budget["adaptive"]
+        and budget["full_n"] > n_permutations
+        and should_escalate(
+            p_value_of(result), threshold=budget["threshold"], factor=budget["factor"]
+        )
+    ):
+        n_permutations = budget["full_n"]
+        result = run(n_permutations)
+        escalated = True
+    while budget["max_n"] > n_permutations and at_permutation_floor(
+        p_value_of(result), n_permutations
+    ):
+        n_permutations = min(n_permutations * 10, budget["max_n"])
+        result = run(n_permutations)
+        escalated = True
+    return result, n_permutations, escalated
+
+
 def resolve_permutation_budget(params: dict, *, default_full_n: int) -> dict:
     """Resolve the adaptive-permutation knobs from an algorithm's ``params``.
 
@@ -96,6 +157,9 @@ def resolve_permutation_budget(params: dict, *, default_full_n: int) -> dict:
         borderline_factor (float): how many multiples of the threshold
             around it still count as borderline. Default
             :data:`DEFAULT_BORDERLINE_FACTOR`.
+        n_permutations_max (int): the largest budget a result still at its
+            permutation floor may escalate to. Default ``n_permutations``
+            (no escalation past the full budget).
     """
     budget: dict[str, Any] = {
         "adaptive": bool(params.get("adaptive", False)),
@@ -104,6 +168,7 @@ def resolve_permutation_budget(params: dict, *, default_full_n: int) -> dict:
         "threshold": float(params.get("significance_threshold", DEFAULT_SIGNIFICANCE_THRESHOLD)),
         "factor": float(params.get("borderline_factor", DEFAULT_BORDERLINE_FACTOR)),
     }
+    budget["max_n"] = max(budget["full_n"], int(params.get("n_permutations_max", budget["full_n"])))
     if "correction_family_size" in params:
         raw_family_size = params["correction_family_size"]
         if isinstance(raw_family_size, bool) or not isinstance(raw_family_size, int):

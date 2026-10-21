@@ -47,6 +47,7 @@ from dataclasses import dataclass
 import numpy as np
 
 from cfh.stats.cutpoint_scan import fishers_cutpoint_test
+from cfh.stats.max_statistic_permutation import empirical_p_value, null_max_statistics
 
 DEFAULT_WIDTHS: tuple[int, ...] = (25, 50, 100, 200)
 DEFAULT_MIN_EVENTS_PER_WINDOW = 4
@@ -298,19 +299,16 @@ def detect_window(
     best = _best_scan_row(scan)
     observed_statistic = best["neg_log10_p_value"]
 
-    rng = np.random.default_rng(seed)
-    null_max_statistics: list[float] = []
-    for _ in range(n_permutations):
-        permuted_statuses = rng.permutation(np.asarray(statuses, dtype=object)).tolist()
-        permuted_max = max(
-            _evaluate_candidate(candidate, permuted_statuses, positive_status)["neg_log10_p_value"]
-            for candidate in candidates
-        )
-        null_max_statistics.append(permuted_max)
-
-    corrected_p_value = (1 + sum(stat >= observed_statistic for stat in null_max_statistics)) / (
-        n_permutations + 1
+    membership = np.zeros((len(candidates), len(positions)), dtype=bool)
+    for row, candidate in enumerate(candidates):
+        membership[row, list(candidate.inside_indices)] = True
+    null_statistics = null_max_statistics(
+        membership,
+        [status == positive_status for status in statuses],
+        seed=seed,
+        n_permutations=n_permutations,
     )
+    corrected_p_value = empirical_p_value(observed_statistic, null_statistics)
 
     return {
         "determinable": True,
@@ -326,5 +324,5 @@ def detect_window(
         "corrected_p_value": float(corrected_p_value),
         "scan": scan,
         "top_windows": dedup_windows_by_event_mask(scan),
-        "null_max_statistics": tuple(null_max_statistics),
+        "null_max_statistics": tuple(float(stat) for stat in null_statistics),
     }
