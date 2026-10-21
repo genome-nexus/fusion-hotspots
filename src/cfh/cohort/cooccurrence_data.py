@@ -3,9 +3,10 @@
 Fetches, once per cohort scan: each sample's gene panel for the SV, mutation,
 and discrete-CNA profiles; each panel's gene list; every panel gene's
 mutated, amplified, and deep-deleted samples; and each sample's OncoTree
-code. Mutations use cBioPortal's ``ID`` projection, so every imported
-mutation record counts (cBioPortal study imports normally omit silent and
-non-coding variants, but this module does not re-filter them).
+code, or its cancer type when the study has no OncoTree code. Mutations use
+cBioPortal's ``ID`` projection, so every imported mutation record counts
+(cBioPortal study imports normally omit silent and non-coding variants, but
+this module does not re-filter them).
 """
 
 from __future__ import annotations
@@ -192,31 +193,52 @@ def load_discovery_inputs(
                 if symbol and sample_id and cna_type:
                     alterations.setdefault((symbol, cna_type), set()).add(sample_id)
 
-    response = session.get(
-        f"{base}/studies/{study_id}/clinical-data",
-        params={
-            "clinicalDataType": "SAMPLE",
-            "attributeId": "ONCOTREE_CODE",
-            "pageSize": "10000000",
-        },
-        timeout=timeout,
-    )
-    response.raise_for_status()
-    oncotree = {
-        str(record["sampleId"]): str(record["value"])
-        for record in response.json()
-        if record.get("sampleId") and record.get("value")
-    }
-    missing_stratum = sum(1 for sample_id in sv_panels if sample_id not in oncotree)
+    def sample_attribute(attribute_id: str) -> dict[str, str]:
+        response = session.get(
+            f"{base}/studies/{study_id}/clinical-data",
+            params={
+                "clinicalDataType": "SAMPLE",
+                "attributeId": attribute_id,
+                "pageSize": "10000000",
+            },
+            timeout=timeout,
+        )
+        response.raise_for_status()
+        return {
+            str(record["sampleId"]): str(record["value"])
+            for record in response.json()
+            if record.get("sampleId") and record.get("value")
+        }
+
+    # Same fallback order as the gene-level tests (stats.stratification.
+    # tumor_type_stratum): OncoTree code, then free-text cancer type. Some
+    # studies (e.g. pan_origimed_2020) carry only CANCER_TYPE, and without
+    # the fallback the whole cohort would collapse into one unstratified
+    # UNKNOWN stratum.
+    strata = sample_attribute("ONCOTREE_CODE")
+    if any(sample_id not in strata for sample_id in sv_panels):
+        cancer_types = sample_attribute("CANCER_TYPE")
+        fallback = {
+            sample_id: cancer_types[sample_id]
+            for sample_id in sv_panels
+            if sample_id not in strata and sample_id in cancer_types
+        }
+        if fallback:
+            warnings.append(
+                f"{len(fallback)} samples had no ONCOTREE_CODE and are stratified by "
+                "CANCER_TYPE instead."
+            )
+        strata.update(fallback)
+    missing_stratum = sum(1 for sample_id in sv_panels if sample_id not in strata)
     if missing_stratum:
         warnings.append(
-            f"{missing_stratum} samples had no ONCOTREE_CODE and form one "
+            f"{missing_stratum} samples had no ONCOTREE_CODE or CANCER_TYPE and form one "
             f"{UNKNOWN_STRATUM} stratum."
         )
     samples = [
         SampleRecord(
             sample_id=sample_id,
-            stratum=oncotree.get(sample_id, UNKNOWN_STRATUM),
+            stratum=strata.get(sample_id, UNKNOWN_STRATUM),
             sv_panel=sv_panel,
             mutation_panel=profile_panels["mutation"].get(sample_id),
             cna_panel=profile_panels["cna"].get(sample_id),
