@@ -1,4 +1,6 @@
 import socket
+import subprocess
+from functools import cache
 from pathlib import Path
 
 import pytest
@@ -77,8 +79,15 @@ def latest_run_dir(prefix: str) -> Path:
     commits a new one, which silently breaks any test pinning the old name
     with a ``FileNotFoundError`` unrelated to the change that prompted the
     regeneration. This glob-based lookup is immune to that by construction.
+
+    Only directories git tracks count, so an uncommitted local scan (e.g. one
+    being reviewed before it is committed) never replaces the committed run
+    the tests were written against. Outside a git checkout every match counts.
     """
-    candidates = sorted(RUNS_DIR.glob(f"{prefix}_*"))
+    tracked = _tracked_run_names()
+    candidates = sorted(
+        path for path in RUNS_DIR.glob(f"{prefix}_*") if tracked is None or path.name in tracked
+    )
     if not candidates:
         pytest.skip(f"no committed real run directory found for {prefix!r} under {RUNS_DIR}")
     return candidates[-1]
@@ -101,3 +110,19 @@ def _block_real_network_calls(request, monkeypatch):
 
     monkeypatch.setattr(socket, "create_connection", _blocked)
     yield
+
+
+@cache
+def _tracked_run_names() -> frozenset[str] | None:
+    """Top-level names under ``runs/`` that git tracks, or None without git."""
+    try:
+        listed = subprocess.run(
+            ["git", "ls-files", "-z", "--", "runs"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            check=True,
+            text=True,
+        ).stdout
+    except (OSError, subprocess.CalledProcessError):
+        return None
+    return frozenset(path.split("/")[1] for path in listed.split("\0") if path.count("/") >= 1)
