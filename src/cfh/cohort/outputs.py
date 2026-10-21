@@ -313,6 +313,7 @@ def _write_summary_markdown(
     honorable_mentions: list[dict],
     path: Path,
 ) -> None:
+    tested_gene_count = sum(1 for outcome in result.gene_outcomes if outcome.status == "ok")
     lines = [
         f"# Genome-wide fusion-hotspot cohort scan: {result.study_id}",
         "",
@@ -328,8 +329,17 @@ def _write_summary_markdown(
         f"{result.non_coding_gene_count}",
         f"- Genes gated in but unresolvable (no verified protein-coding transcript): "
         f"{result.unresolved_gene_count}",
+        f"- Genes in the FDR family (analyzed successfully): {tested_gene_count} of "
+        f"{len(rows)} gated genes",
+        f"- Genes missing from the FDR family because of network errors: "
+        f"{len(result.transient_failure_genes)}"
+        + (
+            f" ({', '.join(result.transient_failure_genes)})"
+            if result.transient_failure_genes
+            else ""
+        ),
         f"- FDR-significant genes (q < 0.05) after Benjamini-Hochberg correction across "
-        f"all {len(rows)} scanned genes: {len(result.significant_genes)}",
+        f"those {tested_gene_count} genes: {len(result.significant_genes)}",
         "",
     ]
     if result.warnings:
@@ -1005,6 +1015,7 @@ def write_cohort_scan_outputs(
             "non_coding_gene_count": result.non_coding_gene_count,
             "fallback_resolved_gene_count": result.fallback_resolved_gene_count,
             "significant_genes": result.significant_genes,
+            "transient_failure_genes": result.transient_failure_genes,
             "significance_level": result.significance_level,
             "generated_at": generated_at,
             "algorithms_run": algorithms_run,
