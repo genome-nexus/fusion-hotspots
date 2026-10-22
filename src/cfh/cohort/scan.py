@@ -59,11 +59,12 @@ DEFAULT_N_PERMUTATIONS_SMALL = 100
 # floor, 1e-5, can pass first-rank BH at q < 0.05 in a family of up to 5,000.
 DEFAULT_N_PERMUTATIONS_MAX = 100_000
 DEFAULT_SIGNIFICANCE_LEVEL = 0.05
+# The cutpoint and window scans are descriptive (see gene_comparison), so
+# they keep the fixed base budget instead of escalating.
 ADAPTIVE_ALGORITHMS = (
     "domain_retention",
     "domain_disruption",
-    "cutpoint_detection",
-    "window_detection",
+    "junction_concentration",
 )
 
 

@@ -330,8 +330,8 @@ def test_markdown_cutpoint_line_states_the_exon_the_inferred_position_falls_in(
     cutpoint_lines = [line for line in report.splitlines() if line.startswith("- Cutpoint")]
 
     assert cutpoint_lines == [
-        "- Cutpoint detection: inferred breakpoint 138 aa (exon 3); "
-        "corrected permutation p=0.431373."
+        "- Cutpoint detection (descriptive): inferred breakpoint 138 aa (exon 3); "
+        "label-permutation p=0.431373, not a selection test."
     ]
 
 

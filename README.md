@@ -107,11 +107,14 @@ q-value, and whether the result is significant at `q < 0.05`. All p-values
 collected by one invocation form a single correction family.
 
 The correction family includes retention/disruption Fisher and permutation
-tests, corrected cutpoint/window scans, pair enrichment, both expression
+tests, the junction-concentration test, pair enrichment, both expression
 comparisons, and each mutation/CNA comparator test. Composite scores are
 rankings and are not included as p-values. The `confidence_stats` Welch
 read-support test is reported per gene but excluded from the family: it
-reflects call quality, not breakpoint selection (#114).
+reflects call quality, not breakpoint selection (#114). The cutpoint and window
+scans are excluded too: they permute retained/lost labels that breakpoint
+position already determines, so they find a clean split at the domain edge even
+in uniformly random breakpoints. Their boundaries remain descriptive output.
 
 Cohort scans fetch expression and comparator inputs when those algorithms
 are requested and the gene/study configuration supplies the required metadata.
@@ -162,8 +165,9 @@ study supplies their inputs.
 | `domain_disruption` | Are in-frame fusions enriched for *losing* a configured domain? | Same as retention | `disruption_required_domains` set |
 | `exon_retention` | Is a target exon retained? | Retention rate per exon | Exon hint configured |
 | `confidence_stats` | In-frame rate (Wilson CI) and read support, retained vs not | MLE/CI per group, Welch t-test | Always (gene-agnostic defaults) |
-| `cutpoint_detection` | Is there one protein position that best separates retained from lost? | Inferred cutpoint (aa), max-statistic corrected p | Always |
-| `window_detection` | Is there an internal protein window that separates them? | Best window, corrected p | Always |
+| `junction_concentration` | Does one exon hold more of the gene's fusion junctions than random breakage predicts? | Top junction (observed vs random-breakage share), permutation p; see the panel caveat | Always |
+| `cutpoint_detection` | Where is the protein position that best separates retained from lost? | Inferred cutpoint (aa); descriptive, its p-value is not a selection test | Always |
+| `window_detection` | Is there an internal protein window that separates them? | Best window; descriptive, like the cutpoint | Always |
 | `genomic_position_recurrence` | Do breakpoints pile up at the same DNA coordinate, or only after exon clamping? | Genomic clusters vs protein positions | Always |
 | `joint_partner` | Is an ordered pair (e.g. EML4→ALK) enriched over a marginal-independence null? | Pair Fisher test | `gene_pair` configs |
 | `mutation_cooccurrence` | Are fusions co-occurring with, or exclusive of, a comparator mutation/CNA? | Fisher p, direction, eligible-sample counts | `mutual_exclusivity_targets` set |
@@ -210,8 +214,8 @@ Suggested reading order:
 0. **Check the positive controls first.** `cfh eval-controls runs/<scan>` scores
    the scan against textbook fusion biology listed with sources in
    `src/cfh/benchmarks/positive_controls.yaml`: kinase or ETS-domain retention for
-   ALK, RET, ROS1, BRAF, FGFR2, NTRK1, NTRK3 and ERG at genome-wide FDR, their
-   literature junction exons and partners, and four co-occurrence pairs (ERG–SPOP,
+   ALK, RET, ROS1, BRAF, FGFR2, NTRK1, NTRK3 and ERG at genome-wide FDR, junction
+   concentration for the same genes, their literature junction exons and partners, and four co-occurrence pairs (ERG–SPOP,
    ALK–EGFR, ALK–KRAS, ERG–PTEN). It writes `positive_controls.tsv`. If these fail,
    the scan's silence on other genes says little.
 1. **Check the gate and failures.** Compare `genes_after_gating` with `status == "ok"`.
@@ -239,12 +243,14 @@ Suggested reading order:
    reflects call quality, not breakpoint selection, and can rest on very small
    groups (check `n_b` in the gene's results).
 3. **Check the counting units.** Each gene report's `summary` lists `total_fusions`,
-   `sample_count`, and `known_patient_count`. Before any inferential test, repeated
-   observations of one fusion in one patient (same partner, role, and protein junction)
-   are collapsed to one (`inference_counting_unit: patient_distinct_fusion`);
-   `collapsed_repeat_observation_count` and `patients_with_repeated_observations` show
-   how many. Descriptive counts, the events table, and `frequency` keep every event.
-   Distinct fusions in one patient still count separately (see
+   `sample_count`, and `known_patient_count`. Before any inferential test, each
+   patient counts once per gene (`inference_counting_unit: patient`): repeated
+   observations of one fusion (same partner, role, and protein junction) collapse to
+   one, and of a patient's distinct fusions of the gene one representative is kept
+   (determinate frame first, then earliest sample). `collapsed_repeat_observation_count`
+   and `merged_distinct_fusion_count` show how many of each were dropped. Descriptive
+   counts, the events table, and `frequency` keep every event. A patient with fusions
+   in several genes still contributes to each gene's tests (see
    [CALIBRATION.md](CALIBRATION.md)).
 4. **Read the domain evidence.** `domain_retention` gives the frame × domain 2×2
    table, Fisher and permutation p. The permutation null samples breakpoints across
@@ -254,15 +260,24 @@ Suggested reading order:
    the boundary and compare it with Pfam coordinates. Their labels are a function of
    breakpoint position and role, so a clean split at the domain boundary exists by
    construction; their p-values say there are enough events on both sides, not
-   that breakpoints are selected. The permutation retention test is the selection test. `genomic_position_recurrence`
+   that breakpoints are selected, and they are not in the FDR family. The
+   permutation retention test is the selection test. `genomic_position_recurrence`
    separates true DNA hotspots from exon-boundary clamping.
-5. **Review exceptions.** In `mechanistic_interpretation`, look at counter-pattern
+5. **Read the junction evidence, with the panel caveat.** `junction_concentration`
+   asks whether one exon holds more of the gene's junctions than breakpoints drawn
+   uniformly along the gene would put there, keeping each fusion's 5'/3' role and
+   using the same exon mapping as the observed calls. `top_junction` gives the
+   observed share and the random-breakage share; breakpoints outside the canonical
+   transcript are left out (`n_outside_transcript`). See
+   [the panel caveat](#panel-capture-and-the-junction-concentration-test) before
+   reading its p-value on panel data.
+6. **Review exceptions.** In `mechanistic_interpretation`, look at counter-pattern
    events and recurrent-partner flags. The HTML viewer shows curated mechanism notes
    beside them.
-6. **Prioritize partners.** Read `composite_score` together with `frequency`.
+7. **Prioritize partners.** Read `composite_score` together with `frequency`.
    Cutpoint proximity contributes only when the corrected cutpoint p < 0.05, and
    gene-level components are shared by every partner of a gene.
-7. **Consider confounding.** The Fisher and permutation tests pool tumor types.
+8. **Consider confounding.** The Fisher and permutation tests pool tumor types.
    `domain_retention` and `domain_disruption` also report `tumor_type_stratified`: a
    Cochran-Mantel-Haenszel test across OncoTree strata with the Mantel-Haenszel common
    odds ratio, and the per-stratum tables in `frame_domain_contingency_tables_by_tumor_type`.
@@ -383,13 +398,42 @@ SciPy's chi-square survival function, with no additional dependency; its
 numerical regression uses the published
 [Berkeley admissions CMH example](https://www.markirwin.net/stat149/Lecture/Lecture8.pdf).
 
+### Panel capture and the junction-concentration test
+
+The junction-concentration null assumes a breakpoint anywhere in the gene would be
+detected. MSK-IMPACT and other hybrid-capture panels sequence only selected
+introns of each fusion gene, chosen because known fusions break there. A
+breakpoint in an intron the panel does not capture is never called, so the
+observed junctions are concentrated at the captured introns partly by assay
+design. What that does to the results:
+
+- **The p-value overstates the evidence.** On panel data a significant
+  `junction_concentration` result means the junctions are more concentrated than
+  whole-gene random breakage, which the assay itself guarantees to some degree.
+  It does not show, on its own, that the concentration is biological.
+- **The design is circular.** Introns were chosen for capture because fusions
+  were known to break there, so the panel finds them there again.
+- **Genes with uncaptured hotspots are missed.** Fusions at an intron the panel
+  does not tile are absent, which can hide a real hotspot or, for genes the panel
+  barely tiles, leave too few events to test.
+- **The domain-retention test inherits a milder form.** Its null also draws
+  breakpoints across the whole gene, so which retention outcomes are detectable
+  is shaped by capture too.
+
+The repository does not include the panel's bait coordinates. With them, the null
+could redraw breakpoints only within captured regions. Until then, read
+`junction_concentration` on panel data as "consistent with" a hotspot and confirm
+it in a cohort sequenced without intron selection (whole genome or RNA, such as
+the TCGA replication runs). `panel_capture_caveat` in each result repeats this.
+
 ### Observation units and assay eligibility
 
 Live ingestion preserves patient IDs supplied by the SV and clinical APIs. Run
-summaries report event, sample, known-patient, and missing-patient counts. Domain
-and spatial tests still use events: these counts do **not** establish patient
-independence, and repeated biopsies require a patient-level design before their
-p-values can support replication.
+summaries report event, sample, known-patient, and missing-patient counts. Domain,
+spatial, and junction tests count each patient once per gene (see the reading
+order above); `patient_independence_established` is true when every event had a
+patient ID. Patients with fusions in several genes still contribute to each gene's
+test, so the cross-gene family is not fully patient-independent.
 
 `frequency` with `dedup_by_patient=True` counts each patient–partner combination
 once, retaining different partners in the same patient. Missing patient identity

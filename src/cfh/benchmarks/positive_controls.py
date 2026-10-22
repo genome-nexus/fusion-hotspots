@@ -64,19 +64,27 @@ def _fdr_q(fdr_rows: list[dict[str, str]], gene: str, algorithm: str, test: str)
     return None
 
 
-def _selection_check(control, fdr_rows, alpha) -> dict[str, str]:
+# check name -> (algorithm, label) of the FDR-family permutation test it reads.
+_FDR_CHECKS = {
+    "selection": ("domain_retention", "retention"),
+    "concentration": ("junction_concentration", "junction-concentration"),
+}
+
+
+def _fdr_check(control, fdr_rows, alpha, check) -> dict[str, str]:
     gene, source = control["gene"], control["source"]
-    q_value = _fdr_q(fdr_rows, gene, "domain_retention", "permutation")
+    algorithm, label = _FDR_CHECKS[check]
+    q_value = _fdr_q(fdr_rows, gene, algorithm, "permutation")
     if q_value is None:
         return _check(
             gene,
-            "selection",
+            check,
             NOT_EVALUABLE,
-            "no domain-retention permutation p-value in the FDR family",
+            f"no {label} permutation p-value in the FDR family",
             source,
         )
     status = PASS if q_value < alpha else FAIL
-    return _check(gene, "selection", status, f"retention permutation q = {q_value:.2g}", source)
+    return _check(gene, check, status, f"{label} permutation q = {q_value:.2g}", source)
 
 
 def _junction_check(control, events, min_fraction) -> dict[str, str]:
@@ -115,7 +123,7 @@ def _partner_check(control, events) -> dict[str, str]:
 
 
 def _breakpoint_checks(control, scan_directory, fdr_rows, alpha, min_fraction):
-    checks = [_selection_check(control, fdr_rows, alpha)]
+    checks = [_fdr_check(control, fdr_rows, alpha, check) for check in _FDR_CHECKS]
     results_path = scan_directory / "gene_reports" / control["gene"].lower() / "results.json"
     needed = (["junction"] if "junction_exons" in control else []) + ["partner"]
     if not results_path.exists():

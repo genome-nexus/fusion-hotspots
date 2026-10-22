@@ -30,21 +30,47 @@ def _collapse(pairs, **kwargs):
     return collapse_repeated_observations(events, features, "BRAF", **kwargs)
 
 
-def test_repeat_biopsies_collapse_but_distinct_fusions_remain():
+_REPEATS_AND_DISTINCT_FUSIONS = [
+    ("E1", {}),
+    ("E2", {}),  # same patient, partner, junction: repeat observation
+    ("E3", {"partner": "AGAP3"}),  # different partner in same patient
+    ("E4", {"aa": 500}),  # different junction in same patient
+    ("E5", {"patient": "P2"}),
+]
+
+
+def test_patient_unit_collapses_repeats_but_keeps_distinct_fusions():
     events, features, report = _collapse(
-        [
-            _pair("E1"),
-            _pair("E2"),  # same patient, partner, junction: repeat observation
-            _pair("E3", partner="AGAP3"),  # different partner in same patient
-            _pair("E4", aa=500),  # different junction in same patient
-            _pair("E5", patient="P2"),
-        ]
+        [_pair(event_id, **kwargs) for event_id, kwargs in _REPEATS_AND_DISTINCT_FUSIONS],
+        observation_unit="patient",
     )
     assert [event.Event_id for event in events] == ["E1", "E3", "E4", "E5"]
     assert [feature.Event_id for feature in features] == ["E1", "E3", "E4", "E5"]
     assert report.collapsed_event_count == 1
     assert report.patients_with_repeats == 1
     assert report.as_summary()["analyzed_observation_count"] == 4
+    assert report.merged_distinct_fusion_count == 0
+
+
+def test_default_patient_gene_unit_counts_each_patient_once():
+    events, features, report = _collapse(
+        [_pair(event_id, **kwargs) for event_id, kwargs in _REPEATS_AND_DISTINCT_FUSIONS]
+    )
+    assert [event.Event_id for event in events] == ["E1", "E5"]
+    assert [feature.Event_id for feature in features] == ["E1", "E5"]
+    summary = report.as_summary()
+    assert summary["observation_unit"] == "patient_gene"
+    assert summary["collapsed_repeat_observation_count"] == 1
+    assert summary["merged_distinct_fusion_count"] == 2
+    assert summary["patients_with_multiple_distinct_fusions"] == 1
+    assert summary["analyzed_observation_count"] == 2
+
+
+def test_patient_gene_representative_prefers_a_determinate_frame():
+    events, _, _ = _collapse(
+        [_pair("E1", frame="unknown"), _pair("E2", partner="AGAP3", frame="out-of-frame")]
+    )
+    assert [event.Event_id for event in events] == ["E2"]
 
 
 def test_missing_patient_falls_back_to_sample_identity():

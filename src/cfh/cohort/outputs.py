@@ -343,6 +343,12 @@ def _write_summary_markdown(
         f"- FDR-significant genes (q < 0.05) after Benjamini-Hochberg correction across "
         f"all {len(rows)} scanned genes: {len(result.significant_genes)}",
         "",
+        "Junction concentration compares each gene's junctions with breakpoints drawn "
+        "uniformly along the gene. On a capture panel that sequences only selected "
+        "introns, junctions are concentrated partly by assay design, so that test's "
+        "p-values overstate the evidence for biological hotspots. Confirm them in a "
+        "cohort sequenced without intron selection (see the README's panel caveat).",
+        "",
     ]
     if result.warnings:
         lines.extend(["## Warnings", ""])
