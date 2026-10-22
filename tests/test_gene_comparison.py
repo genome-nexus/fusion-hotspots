@@ -45,8 +45,8 @@ def test_compare_gene_runs_collects_applicable_final_p_values_and_adjusts_togeth
         "study_two",
         [
             {
-                "Algorithm": "cutpoint_detection",
-                "Summary": {"observed_p_value": 0.0001, "corrected_p_value": 0.03},
+                "Algorithm": "joint_partner",
+                "Summary": {"p_value": 0.03},
             }
         ],
     )
@@ -56,7 +56,7 @@ def test_compare_gene_runs_collects_applicable_final_p_values_and_adjusts_togeth
     assert [(row["algorithm"], row["test"]) for row in rows] == [
         ("domain_retention", "fisher"),
         ("domain_retention", "permutation"),
-        ("cutpoint_detection", "permutation_corrected"),
+        ("joint_partner", "enrichment"),
     ]
     assert [row["bh_adjusted_q"] for row in rows] == pytest.approx([0.03, 0.04, 0.04])
     assert [row["significant_at_q_lt_0_05"] for row in rows] == ["y", "y", "y"]
@@ -102,7 +102,7 @@ def test_collects_window_expression_and_each_mutation_comparator_once(tmp_path):
         "GENE_A",
         "study_one",
         [
-            {"Algorithm": "window_detection", "Summary": {"corrected_p_value": 0.01}},
+            {"Algorithm": "joint_partner", "Summary": {"p_value": 0.01}},
             {
                 "Algorithm": "expression_association",
                 "Summary": {
@@ -141,7 +141,7 @@ def test_collects_window_expression_and_each_mutation_comparator_once(tmp_path):
     rows = collect_p_values([run])
 
     assert [(row["algorithm"], row["test"], row["raw_p"]) for row in rows] == [
-        ("window_detection", "permutation_corrected", 0.01),
+        ("joint_partner", "enrichment", 0.01),
         ("expression_association", "fusion_positive_vs_negative", 0.02),
         ("expression_association", "domain_retention_split", 0.03),
         ("mutation_cooccurrence", "cooccurrence:BRAF:point_mutation:V600E", 0.04),
@@ -210,6 +210,28 @@ def test_confidence_stats_welch_p_value_is_excluded_from_the_family(tmp_path):
     assert [(row["algorithm"], row["test"]) for row in rows] == [("domain_retention", "fisher")]
 
 
+def test_scans_and_junction_concentration_stay_out_of_the_main_family(tmp_path):
+    run = tmp_path / "run"
+    _write_artifact(
+        run,
+        "RET",
+        "study_one",
+        [
+            {"Algorithm": "cutpoint_detection", "Summary": {"corrected_p_value": 1e-4}},
+            {"Algorithm": "window_detection", "Summary": {"corrected_p_value": 1e-4}},
+            {
+                "Algorithm": "junction_concentration",
+                "Summary": {"permutation_empirical_p_value": 1e-4},
+            },
+            {"Algorithm": "domain_retention", "Summary": {"fisher_p_value": 0.1}},
+        ],
+    )
+
+    rows = collect_p_values([run])
+
+    assert [(row["algorithm"], row["test"]) for row in rows] == [("domain_retention", "fisher")]
+
+
 def test_new_hypotheses_join_the_same_bh_family(tmp_path):
     first = tmp_path / "first"
     second = tmp_path / "second"
@@ -218,7 +240,7 @@ def test_new_hypotheses_join_the_same_bh_family(tmp_path):
         "GENE_A",
         "study_one",
         [
-            {"Algorithm": "window_detection", "Summary": {"corrected_p_value": 0.01}},
+            {"Algorithm": "joint_partner", "Summary": {"p_value": 0.01}},
             {
                 "Algorithm": "mutation_cooccurrence",
                 "Summary": {

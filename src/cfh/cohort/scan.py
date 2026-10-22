@@ -59,11 +59,12 @@ DEFAULT_N_PERMUTATIONS_SMALL = 100
 # floor, 1e-5, can pass first-rank BH at q < 0.05 in a family of up to 5,000.
 DEFAULT_N_PERMUTATIONS_MAX = 100_000
 DEFAULT_SIGNIFICANCE_LEVEL = 0.05
+# The cutpoint and window scans are descriptive (see gene_comparison), so
+# they keep the fixed base budget instead of escalating.
 ADAPTIVE_ALGORITHMS = (
     "domain_retention",
     "domain_disruption",
-    "cutpoint_detection",
-    "window_detection",
+    "junction_concentration",
 )
 
 
@@ -106,6 +107,11 @@ class CohortScanResult:
     cooccurrence_discovery: dict | None = None
     non_coding_gene_count: int = 0
     fallback_resolved_gene_count: int = 0
+    # Junction-concentration p-values, BH-corrected as their own family: on a
+    # capture panel the random-breakage null is biased toward significance,
+    # so these rows never decide ``significant_genes``.
+    concentration_rows: list[dict] = field(default_factory=list)
+    junction_hotspot_candidates: list[str] = field(default_factory=list)
 
     @property
     def total_genes_before_gating(self) -> int:
@@ -259,6 +265,47 @@ def _annotate_permutation_resolution(fdr_rows: list[dict], significance_level: f
         row["resolution_limited"] = floor and row["bh_adjusted_q"] >= significance_level
         limited += row["resolution_limited"]
     return limited
+
+
+def _junction_concentration_family(
+    outcomes: list[GeneScanOutcome], significance_level: float
+) -> list[dict]:
+    """BH-correct each gene's junction-concentration p-value as its own family."""
+    rows: list[dict] = []
+    for outcome in outcomes:
+        if outcome.run is None:
+            continue
+        result = next(
+            (item for item in outcome.run.results if item.Algorithm == "junction_concentration"),
+            None,
+        )
+        summary = (result.Summary or {}) if result is not None else {}
+        raw_p = summary.get("permutation_empirical_p_value")
+        if not isinstance(raw_p, float):
+            continue
+        assert result is not None
+        top = summary.get("top_junction") or {}
+        rows.append(
+            {
+                "gene": outcome.gene_symbol,
+                "algorithm": "junction_concentration",
+                "test": "permutation",
+                "raw_p": raw_p,
+                "n_permutations": (result.Parameters or {}).get("n_permutations"),
+                "n_events_analyzed": summary.get("n_events_analyzed"),
+                "top_junction_role": top.get("role"),
+                "top_junction_exon": top.get("junction_exon"),
+                "observed_share": top.get("observed_share"),
+                "random_breakage_share": top.get("random_breakage_share"),
+            }
+        )
+    adjusted = benjamini_hochberg(
+        [(row["gene"], "junction_concentration:permutation", row["raw_p"]) for row in rows]
+    )
+    for row, (_, _, _, q_value) in zip(rows, adjusted, strict=True):
+        row["bh_adjusted_q"] = q_value
+    _annotate_permutation_resolution(rows, significance_level)
+    return rows
 
 
 def _report_progress(
@@ -545,6 +592,10 @@ def run_cohort_scan(
     significant_genes = sorted(
         gene for gene, q_value in per_gene_min_q.items() if q_value < significance_level
     )
+    concentration_rows = _junction_concentration_family(outcomes, significance_level)
+    junction_hotspot_candidates = sorted(
+        row["gene"] for row in concentration_rows if row["bh_adjusted_q"] < significance_level
+    )
 
     if unresolved:
         warnings.append(
@@ -597,6 +648,8 @@ def run_cohort_scan(
         significance_level=significance_level,
         warnings=warnings,
         cooccurrence_discovery=cooccurrence_discovery,
+        concentration_rows=concentration_rows,
+        junction_hotspot_candidates=junction_hotspot_candidates,
     )
 
 

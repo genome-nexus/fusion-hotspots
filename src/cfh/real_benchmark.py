@@ -703,11 +703,12 @@ def analyze_structural_variant_calls_with_config(
     """Normalize and analyze already-fetched cBioPortal SV API objects
     against an already-resolved ``GeneConfig``.
 
-    ``observation_unit="patient"`` (the default) collapses repeated
-    observations of one fusion in one patient before every inferential
-    algorithm (see :mod:`cfh.stats.observation_units`); descriptive counts,
+    ``observation_unit="patient_gene"`` (the default) counts each patient
+    once per gene before every inferential algorithm: repeat observations of
+    one fusion collapse, and so do a patient's distinct fusions of the gene
+    (see :mod:`cfh.stats.observation_units`). ``"patient"`` collapses only the
+    repeats, and ``"event"`` restores event-level inputs. Descriptive counts,
     the event table, and ``frequency`` still use every mapped event.
-    ``"event"`` restores the previous event-level inputs.
 
     This is the config-agnostic core :func:`analyze_structural_variant_calls`
     delegates to after resolving a curated config by gene symbol. Callers
@@ -975,7 +976,14 @@ def analyze_structural_variant_calls_with_config(
         warnings.append(
             f"Collapsed {collapse_report.collapsed_event_count} repeated observation(s) of the "
             f"same fusion in {collapse_report.patients_with_repeats} patient(s) before "
-            "inferential tests (observation_unit='patient')."
+            f"inferential tests (observation_unit={observation_unit!r})."
+        )
+    if collapse_report.merged_distinct_fusion_count:
+        warnings.append(
+            f"Kept one of several distinct {config.gene_symbol} fusions in "
+            f"{collapse_report.patients_with_multiple_fusions} patient(s), dropping "
+            f"{collapse_report.merged_distinct_fusion_count} so each patient counts once "
+            "in inferential tests."
         )
     in_frame_mapped = has_key_domain and any(
         event.Frame_status == "in-frame"
@@ -1069,6 +1077,12 @@ def analyze_structural_variant_calls_with_config(
                 "mapping_sensitivity": mapping_sensitivity,
                 **algorithm_params.get("window_detection", {}),
             },
+            "junction_concentration": {
+                "n_permutations": n_permutations,
+                "genome_nexus_client": client,
+                "genomic_breakpoints": genomic_breakpoints,
+                **algorithm_params.get("junction_concentration", {}),
+            },
             "genomic_position_recurrence": {
                 "genomic_breakpoints": genomic_breakpoints,
                 **algorithm_params.get("genomic_position_recurrence", {}),
@@ -1082,6 +1096,7 @@ def analyze_structural_variant_calls_with_config(
                     "frequency",
                     "cutpoint_detection",
                     "window_detection",
+                    "junction_concentration",
                     "genomic_position_recurrence",
                     "domain_retention",
                     "domain_disruption",
@@ -1170,10 +1185,16 @@ def analyze_structural_variant_calls_with_config(
             {event.Patient_id for event in selected_events if event.Patient_id}
         ),
         "missing_patient_id_event_count": sum(not event.Patient_id for event in selected_events),
-        "inference_counting_unit": (
-            "patient_distinct_fusion" if observation_unit == "patient" else "event"
+        "inference_counting_unit": {
+            "patient_gene": "patient",
+            "patient": "patient_distinct_fusion",
+            "event": "event",
+        }[observation_unit],
+        # Within this gene's tests; a patient with fusions in several genes
+        # still contributes to each gene's family member.
+        "patient_independence_established": (
+            observation_unit == "patient_gene" and not collapse_report.identity_fallback_counts
         ),
-        "patient_independence_established": False,
         **collapse_report.as_summary(),
         "mapped_fusions": len(features),
         "skipped_fusions": total - len(features),
@@ -1948,9 +1969,10 @@ def markdown_summary(
             cutpoint_summary["inferred_cutpoint_aa"],
         )
         lines.append(
-            "- Cutpoint detection: inferred breakpoint "
+            "- Cutpoint detection (descriptive): inferred breakpoint "
             f"{cutpoint_summary['inferred_cutpoint_aa']} aa ({cutpoint_exon_label}); "
-            f"corrected permutation p={_format_stat(cutpoint_summary['corrected_p_value'])}."
+            f"label-permutation p={_format_stat(cutpoint_summary['corrected_p_value'])}, "
+            "not a selection test."
         )
     elif cutpoint:
         lines.append(

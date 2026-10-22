@@ -311,6 +311,13 @@ def test_cohort_scan_end_to_end_offline(mock_session, tmp_path):
     # no-ops/fails for it and it legitimately contributes zero hypotheses.
     fdr_genes = {row["gene"] for row in result.fdr_rows}
     assert fdr_genes == {"BRAF", "RET", "FAKE1"}
+    assert not any(row["algorithm"] == "junction_concentration" for row in result.fdr_rows)
+    # Junction concentration needs no domain, so FAKE2 is tested there, in a
+    # family of its own that never sets significant_genes.
+    concentration_genes = {row["gene"] for row in result.concentration_rows}
+    assert "FAKE2" in concentration_genes
+    assert all(0.0 <= row["bh_adjusted_q"] <= 1.0 for row in result.concentration_rows)
+    assert set(result.junction_hotspot_candidates) <= concentration_genes
     assert len(fdr_genes) > 2
     assert all(0.0 <= row["bh_adjusted_q"] <= 1.0 for row in result.fdr_rows)
     braf_fisher = next(

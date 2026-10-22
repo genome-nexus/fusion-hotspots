@@ -79,6 +79,17 @@ def scan_dir(tmp_path):
             },
         ],
     )
+    _write_tsv(
+        scan / "junction_concentration_family.tsv",
+        [
+            {
+                "gene": "ALK",
+                "algorithm": "junction_concentration",
+                "test": "permutation",
+                "bh_adjusted_q": "0.002",
+            }
+        ],
+    )
     events = [_event(20, "EML4")] * 8 + [_event(19, "EML4"), _event(20, "KIF5B")]
     (scan / "gene_reports" / "alk" / "results.json").write_text(json.dumps({"events": events}))
     _write_tsv(
@@ -109,7 +120,13 @@ def test_scores_each_check_against_the_scan(scan_dir):
     assert checks[("ALK", "junction")]["status"] == PASS
     assert "90% of 10" in checks[("ALK", "junction")]["detail"]
     assert checks[("ALK", "partner")]["status"] == PASS
+    assert checks[("ALK", "concentration")]["status"] == PASS
+    assert (
+        "junction-concentration permutation q = 0.002"
+        in (checks[("ALK", "concentration")]["detail"])
+    )
     assert checks[("NTRK3", "selection")]["status"] == FAIL
+    assert checks[("NTRK3", "concentration")]["status"] == NOT_EVALUABLE
     # No per-gene report: the partner check cannot be scored, and NTRK3 has no
     # junction expectation at all.
     assert checks[("NTRK3", "partner")]["status"] == NOT_EVALUABLE

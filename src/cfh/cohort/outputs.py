@@ -59,6 +59,16 @@ _FDR_FAMILY_FIELDNAMES = [
 ]
 """One row per hypothesis in the scan's Benjamini-Hochberg family."""
 
+_CONCENTRATION_FAMILY_FIELDNAMES = [
+    *_FDR_FAMILY_FIELDNAMES,
+    "n_events_analyzed",
+    "top_junction_role",
+    "top_junction_exon",
+    "observed_share",
+    "random_breakage_share",
+]
+"""One row per gene in the separate junction-concentration family."""
+
 DEFAULT_HONORABLE_MENTION_COUNT = 15
 """Default size of the "honorable mentions" / highly ranked non-FDR-significant
 tier: the top N genes by raw Fisher p-value among genes that did NOT survive
@@ -115,6 +125,8 @@ _SUMMARY_FIELDNAMES = [
     "retention_cmh_q_value",
     "retention_mh_common_odds_ratio",
     "retention_informative_tumor_types",
+    "junction_concentration_p_value",
+    "junction_concentration_q_value",
     "top_composite_score",
     "top_composite_partner_gene",
     "error",
@@ -173,6 +185,7 @@ def build_summary_rows(result: CohortScanResult) -> list[dict]:
         if isinstance(stratified.get("cmh_p_value"), float)
     ]
     cmh_q = {gene: q for gene, _, _, q in benjamini_hochberg(cmh_hypotheses)}
+    concentration = {row["gene"]: row for row in result.concentration_rows}
     rows: list[dict] = []
     for outcome in result.gene_outcomes:
         summary = outcome.run.summary if outcome.run is not None else {}
@@ -219,6 +232,12 @@ def build_summary_rows(result: CohortScanResult) -> list[dict]:
                 "retention_cmh_q_value": cmh_q.get(outcome.gene_symbol),
                 "retention_mh_common_odds_ratio": stratified.get("mh_common_odds_ratio"),
                 "retention_informative_tumor_types": stratified.get("informative_strata"),
+                "junction_concentration_p_value": (
+                    concentration.get(outcome.gene_symbol) or {}
+                ).get("raw_p"),
+                "junction_concentration_q_value": (
+                    concentration.get(outcome.gene_symbol) or {}
+                ).get("bh_adjusted_q"),
                 "disruption_fisher_q_value": disruption_q,
                 "disruption_fisher_fdr_significant": (
                     None if disruption_q is None else disruption_q < result.significance_level
@@ -343,6 +362,10 @@ def _write_summary_markdown(
         f"- FDR-significant genes (q < 0.05) after Benjamini-Hochberg correction across "
         f"all {len(rows)} scanned genes: {len(result.significant_genes)}",
         "",
+        f"- Junction-hotspot candidates (separate FDR family, q < "
+        f"{result.significance_level:g}): {len(result.junction_hotspot_candidates)} of "
+        f"{len(result.concentration_rows)} tested",
+        "",
     ]
     if result.warnings:
         lines.extend(["## Warnings", ""])
@@ -401,15 +424,18 @@ def _write_summary_markdown(
             "",
         ]
     )
+    lines.extend(_junction_hotspot_markdown(result))
     lines.extend(["## Scanned genes (sorted by significance)", ""])
     lines.extend(
         [
-            "The minimum q-value and gene-level FDR flag may come from any tested algorithm. "
+            "The minimum q-value and gene-level FDR flag may come from any tested algorithm "
+            "in the main family. "
             "The retention/disruption Fisher q-value columns refer only to those effects; "
             "blank means that specific test had no corrected q-value. "
             "The retention CMH columns stratify that test by OncoTree code; their "
             "q-values are BH-adjusted across genes as a separate family and do not "
-            "affect the gene-level FDR flag.",
+            "affect the gene-level FDR flag. The junction-concentration columns are "
+            "likewise their own family.",
             "",
         ]
     )
@@ -420,6 +446,44 @@ def _write_summary_markdown(
         lines.append(f"| {cells} |")
     lines.append("")
     path.write_text("\n".join(lines))
+
+
+def _junction_hotspot_markdown(result: CohortScanResult) -> list[str]:
+    candidates = [
+        row
+        for row in sorted(
+            result.concentration_rows, key=lambda row: (row["bh_adjusted_q"], row["gene"])
+        )
+        if row["bh_adjusted_q"] < result.significance_level
+    ]
+    lines = [
+        "## Junction-hotspot candidates (separate FDR family)",
+        "",
+        "Junction concentration asks whether one exon holds more of a gene's fusion "
+        "junctions than breakpoints drawn uniformly along the gene would put there. Its "
+        f"p-values are BH-adjusted across the {len(result.concentration_rows)} tested genes "
+        "as their own family and never make a gene FDR-significant. On a capture panel "
+        "that sequences every exon but only selected introns, breakpoints near exons are "
+        "detected far more often than ones deep in introns, so junctions concentrate "
+        "partly by assay design and these p-values overstate the evidence. Treat the "
+        "genes below as candidates to confirm in a cohort sequenced without intron "
+        "selection (see the README's panel caveat).",
+        "",
+    ]
+    if not candidates:
+        return [*lines, "No gene reached the threshold.", ""]
+    lines.append("| gene | top junction | observed share | random-breakage share | q |")
+    lines.append("|---|---|---|---|---|")
+    for row in candidates:
+        role = "5'" if row["top_junction_role"] == "five_prime" else "3'"
+        lines.append(
+            f"| {row['gene']} | exon {row['top_junction_exon']} ({role}) | "
+            f"{_format_cell(row['observed_share'])} | "
+            f"{_format_cell(row['random_breakage_share'])} | "
+            f"{_format_cell(row['bh_adjusted_q'])} |"
+        )
+    lines.append("")
+    return lines
 
 
 def _write_summary_pdf(
@@ -1017,6 +1081,7 @@ def write_cohort_scan_outputs(
             "non_coding_gene_count": result.non_coding_gene_count,
             "fallback_resolved_gene_count": result.fallback_resolved_gene_count,
             "significant_genes": result.significant_genes,
+            "junction_hotspot_candidates": result.junction_hotspot_candidates,
             "significance_level": result.significance_level,
             "generated_at": generated_at,
             "algorithms_run": algorithms_run,
@@ -1039,6 +1104,20 @@ def write_cohort_scan_outputs(
         writer.writeheader()
         writer.writerows(sorted(result.fdr_rows, key=lambda row: row["bh_adjusted_q"]))
 
+    concentration_path = destination / "junction_concentration_family.tsv"
+    with concentration_path.open("w", newline="") as handle:
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=_CONCENTRATION_FAMILY_FIELDNAMES,
+            delimiter="\t",
+            lineterminator="\n",
+            extrasaction="ignore",
+        )
+        writer.writeheader()
+        writer.writerows(
+            sorted(result.concentration_rows, key=lambda row: (row["bh_adjusted_q"], row["gene"]))
+        )
+
     markdown_path = destination / "summary.md"
     _write_summary_markdown(result, rows, honorable_mentions, markdown_path)
     discovery_paths: dict[str, Path] = {}
@@ -1052,6 +1131,7 @@ def write_cohort_scan_outputs(
         "summary_tsv": tsv_path,
         "summary_json": json_path,
         "fdr_family_tsv": fdr_family_path,
+        "junction_concentration_family_tsv": concentration_path,
         "summary_markdown": markdown_path,
         "manhattan_svg": manhattan_svg_path,
         **discovery_paths,
