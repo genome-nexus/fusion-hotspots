@@ -192,13 +192,28 @@ The run writes `runs/cohort-scan_<study>_<timestamp>/`:
 | File | Use it for |
 | --- | --- |
 | `cohort_scan/summary.tsv` / `summary.json` | One row per gated gene: status, counts, frame and domain-retention percentages, retention/disruption Fisher p and q, minimum q, top composite partner |
+| `cohort_scan/fdr_family.tsv` | Every hypothesis in the BH family: raw p, q, permutations used, and `resolution_limited` when a permutation p-value sits at its floor `1/(n+1)` without reaching significance |
 | `cohort_scan/summary.md` | FDR-significant genes, honorable mentions (top raw p among non-significant genes), warnings |
 | `cohort_scan/manhattan.svg` | Genome-wide view of per-gene significance |
 | `cohort_scan/gene_reports/<gene>/` | Full per-gene run for significant, honorable-mention, and curated genes: `results.json`, event-level `results.tsv`, `report.md`, `outliers.tsv`, figures |
 | `viewer/index.html` | Static HTML browser for the above (on by default; `--no-html` skips it) |
 
+Permutation tests start at `--n-permutations-small` (100) and move to
+`--n-permutations` (1,000) unless clearly non-significant (p > 0.1). A result still
+at its floor is rerun with ten times the permutations up to `--n-permutations-max`
+(100,000), because a p-value of 1/101 cannot pass BH across a family of thousands
+of tests however strong the signal. A `resolution_limited` row in `fdr_family.tsv`
+means the budget, not the data, decided that call.
+
 Suggested reading order:
 
+0. **Check the positive controls first.** `cfh eval-controls runs/<scan>` scores
+   the scan against textbook fusion biology listed with sources in
+   `src/cfh/benchmarks/positive_controls.yaml`: kinase or ETS-domain retention for
+   ALK, RET, ROS1, BRAF, FGFR2, NTRK1, NTRK3 and ERG at genome-wide FDR, their
+   literature junction exons and partners, and four co-occurrence pairs (ERG–SPOP,
+   ALK–EGFR, ALK–KRAS, ERG–PTEN). It writes `positive_controls.tsv`. If these fail,
+   the scan's silence on other genes says little.
 1. **Check the gate and failures.** Compare `genes_after_gating` with `status == "ok"`.
    Genes the Genome Nexus batch call cannot configure are retried with the
    single-gene endpoint, accepted only when its Ensembl gene ID matches HGNC's
@@ -236,7 +251,10 @@ Suggested reading order:
    the transcript and classifies each from the domain's coordinates and the observed
    5'/3' roles (`permutation_null_classifier: domain_coordinates`); features lacking
    coordinates fall back to the nearest observed label. `cutpoint_detection` / `window_detection` locate
-   the boundary and compare it with Pfam coordinates. `genomic_position_recurrence`
+   the boundary and compare it with Pfam coordinates. Their labels are a function of
+   breakpoint position and role, so a clean split at the domain boundary exists by
+   construction; their p-values say there are enough events on both sides, not
+   that breakpoints are selected. The permutation retention test is the selection test. `genomic_position_recurrence`
    separates true DNA hotspots from exon-boundary clamping.
 5. **Review exceptions.** In `mechanistic_interpretation`, look at counter-pattern
    events and recurrent-partner flags. The HTML viewer shows curated mechanism notes
