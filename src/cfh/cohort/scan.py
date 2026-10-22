@@ -42,8 +42,10 @@ from cfh.cohort.transcript_fallback import resolve_with_fallback
 from cfh.gene_comparison import collect_p_values_from_algorithm_results
 from cfh.genes.registry import GeneConfig, load_gene_config
 from cfh.ingestion import cbioportal_api
+from cfh.ingestion.http import retrying_session
 from cfh.mapping.genome_nexus_source import GenomeNexusClient
 from cfh.real_benchmark import (
+    RealBenchmarkNetworkError,
     RealBenchmarkRun,
     _fetch_expression_association_params,
     _fetch_mutual_exclusivity_params,
@@ -59,6 +61,8 @@ DEFAULT_N_PERMUTATIONS_SMALL = 100
 # floor, 1e-5, can pass first-rank BH at q < 0.05 in a family of up to 5,000.
 DEFAULT_N_PERMUTATIONS_MAX = 100_000
 DEFAULT_SIGNIFICANCE_LEVEL = 0.05
+DEFAULT_TRANSIENT_RETRY_PASSES = 2
+DEFAULT_TRANSIENT_RETRY_DELAY_SECONDS = 60.0
 ADAPTIVE_ALGORITHMS = (
     "domain_retention",
     "domain_disruption",
@@ -86,6 +90,8 @@ class GeneScanOutcome:
     # "genome_nexus_batch" | "genome_nexus_single_gene_hgnc_verified" for
     # auto configs; None for curated, non-coding, and unresolved genes.
     transcript_source: str | None = None
+    # True when the gene failed on a network error that a retry may fix.
+    transient: bool = False
 
 
 @dataclass
@@ -106,6 +112,9 @@ class CohortScanResult:
     cooccurrence_discovery: dict | None = None
     non_coding_gene_count: int = 0
     fallback_resolved_gene_count: int = 0
+    # Genes still failing on network errors after every retry pass; they are
+    # missing from the FDR family.
+    transient_failure_genes: list[str] = field(default_factory=list)
 
     @property
     def total_genes_before_gating(self) -> int:
@@ -261,6 +270,21 @@ def _annotate_permutation_resolution(fdr_rows: list[dict], significance_level: f
     return limited
 
 
+def _is_transient(exc: BaseException) -> bool:
+    """Whether a gene's failure was a network error worth retrying.
+
+    Connection errors, timeouts and 429/5xx responses are; a 4xx response or
+    an error in our own code is not. ``RealBenchmarkNetworkError`` wraps a
+    ``requests`` error raised during Genome Nexus lookups.
+    """
+    if isinstance(exc, requests.HTTPError):
+        status = exc.response.status_code if exc.response is not None else None
+        return status is None or status == 429 or status >= 500
+    if isinstance(exc, (requests.ConnectionError, requests.Timeout, RealBenchmarkNetworkError)):
+        return True
+    return isinstance(exc.__cause__, requests.RequestException) and _is_transient(exc.__cause__)
+
+
 def _report_progress(
     progress: Callable[[str], None] | None,
     index: int,
@@ -298,6 +322,8 @@ def run_cohort_scan(
     progress: Callable[[str], None] | None = None,
     discover_cooccurrence: bool = False,
     hypermutated_min_mutations: int | None = None,
+    transient_retry_passes: int = DEFAULT_TRANSIENT_RETRY_PASSES,
+    transient_retry_delay_seconds: float = DEFAULT_TRANSIENT_RETRY_DELAY_SECONDS,
 ) -> CohortScanResult:
     """Run the full genome-wide cohort scan for ``study_id``.
 
@@ -323,6 +349,7 @@ def run_cohort_scan(
     """
     algorithm_names = algorithm_names or list_algorithms()
     cache_dir = Path(cache_dir) if cache_dir else None
+    session = session or retrying_session()
 
     study_config = load_study_config(study_id)
     profile_id = (
@@ -364,36 +391,12 @@ def run_cohort_scan(
         adaptive, n_permutations_small, n_permutations_max
     )
 
-    outcomes: list[GeneScanOutcome] = []
     warnings: list[str] = []
     # Gene-panel coverage is gene-independent, so share it across genes.
     panel_cache: dict = {}
-    for index, gene in enumerate(candidate_genes, start=1):
-        started = time.monotonic()
-        symbol = gene.hugo_gene_symbol
-        config = config_by_gene.get(symbol)
-        if config is None:
-            is_non_coding = symbol in resolution.non_coding
-            reason = resolution.non_coding.get(symbol) or unresolved.get(symbol)
-            outcomes.append(
-                GeneScanOutcome(
-                    gene_symbol=symbol,
-                    entrez_gene_id=gene.entrez_gene_id,
-                    distinct_patient_count=gene.distinct_patient_count,
-                    total_sv_count=gene.total_sv_count,
-                    config_source="non_coding" if is_non_coding else "unresolved",
-                    status="failed",
-                    error=(
-                        f"Non-coding gene: {reason}."
-                        if is_non_coding
-                        else "No canonical transcript/protein could be resolved for this gene"
-                        + (f": {reason}." if reason else ".")
-                    ),
-                )
-            )
-            _report_progress(progress, index, len(candidate_genes), outcomes[-1], started)
-            continue
 
+    def _scan_gene(gene: GeneRecurrence, config: GeneConfig) -> GeneScanOutcome:
+        symbol = gene.hugo_gene_symbol
         try:
             if gene.entrez_gene_id is None:
                 raise ValueError("cBioPortal recurrence record had no entrezGeneId")
@@ -459,32 +462,77 @@ def run_cohort_scan(
             run.endpoints.append(
                 f"{cbioportal_base_url.rstrip('/')}/studies/{study_id}/clinical-data/fetch"
             )
-            outcomes.append(
-                GeneScanOutcome(
-                    gene_symbol=symbol,
-                    entrez_gene_id=gene.entrez_gene_id,
-                    distinct_patient_count=gene.distinct_patient_count,
-                    total_sv_count=gene.total_sv_count,
-                    config_source=source_by_gene.get(symbol, "unresolved"),
-                    status="ok",
-                    run=run,
-                    p_value_rows=p_value_rows,
-                    transcript_source=resolution.transcript_source_by_gene.get(symbol),
-                )
+            return GeneScanOutcome(
+                gene_symbol=symbol,
+                entrez_gene_id=gene.entrez_gene_id,
+                distinct_patient_count=gene.distinct_patient_count,
+                total_sv_count=gene.total_sv_count,
+                config_source=source_by_gene.get(symbol, "unresolved"),
+                status="ok",
+                run=run,
+                p_value_rows=p_value_rows,
+                transcript_source=resolution.transcript_source_by_gene.get(symbol),
             )
         except Exception as exc:  # noqa: BLE001 - a single gene must never abort the scan
-            outcomes.append(
-                GeneScanOutcome(
-                    gene_symbol=symbol,
-                    entrez_gene_id=gene.entrez_gene_id,
-                    distinct_patient_count=gene.distinct_patient_count,
-                    total_sv_count=gene.total_sv_count,
-                    config_source=source_by_gene.get(symbol, "unresolved"),
-                    status="failed",
-                    error=f"{type(exc).__name__}: {exc}",
-                )
+            return GeneScanOutcome(
+                gene_symbol=symbol,
+                entrez_gene_id=gene.entrez_gene_id,
+                distinct_patient_count=gene.distinct_patient_count,
+                total_sv_count=gene.total_sv_count,
+                config_source=source_by_gene.get(symbol, "unresolved"),
+                status="failed",
+                error=f"{type(exc).__name__}: {exc}",
+                transient=_is_transient(exc),
             )
-        _report_progress(progress, index, len(candidate_genes), outcomes[-1], started)
+
+    def _record(index: int, gene: GeneRecurrence) -> GeneScanOutcome:
+        started = time.monotonic()
+        symbol = gene.hugo_gene_symbol
+        config = config_by_gene.get(symbol)
+        if config is None:
+            is_non_coding = symbol in resolution.non_coding
+            reason = resolution.non_coding.get(symbol) or unresolved.get(symbol)
+            outcome = GeneScanOutcome(
+                gene_symbol=symbol,
+                entrez_gene_id=gene.entrez_gene_id,
+                distinct_patient_count=gene.distinct_patient_count,
+                total_sv_count=gene.total_sv_count,
+                config_source="non_coding" if is_non_coding else "unresolved",
+                status="failed",
+                error=(
+                    f"Non-coding gene: {reason}."
+                    if is_non_coding
+                    else "No canonical transcript/protein could be resolved for this gene"
+                    + (f": {reason}." if reason else ".")
+                ),
+            )
+        else:
+            outcome = _scan_gene(gene, config)
+        _report_progress(progress, index, len(candidate_genes), outcome, started)
+        return outcome
+
+    outcomes = [_record(index, gene) for index, gene in enumerate(candidate_genes, start=1)]
+    # Network failures are usually brief; give them more chances after the
+    # main pass so the FDR family does not depend on which genes hit one.
+    for _ in range(transient_retry_passes):
+        retry_indices = [index for index, outcome in enumerate(outcomes) if outcome.transient]
+        if not retry_indices:
+            break
+        if progress is not None:
+            progress(
+                f"Retrying {len(retry_indices)} gene(s) that failed on network errors "
+                f"in {transient_retry_delay_seconds:.0f}s"
+            )
+        time.sleep(transient_retry_delay_seconds)
+        for index in retry_indices:
+            outcomes[index] = _record(index + 1, candidate_genes[index])
+    transient_failures = sorted(outcome.gene_symbol for outcome in outcomes if outcome.transient)
+    if transient_failures:
+        warnings.append(
+            f"{len(transient_failures)} gene(s) still failed on network errors after "
+            f"{transient_retry_passes} retry pass(es) and are missing from the FDR family: "
+            f"{', '.join(transient_failures)}"
+        )
 
     all_p_rows = [row for outcome in outcomes for row in outcome.p_value_rows]
     hypotheses = [
@@ -597,6 +645,7 @@ def run_cohort_scan(
         significance_level=significance_level,
         warnings=warnings,
         cooccurrence_discovery=cooccurrence_discovery,
+        transient_failure_genes=transient_failures,
     )
 
 
