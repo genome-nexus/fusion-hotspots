@@ -27,6 +27,8 @@ from collections.abc import Sequence
 import numpy as np
 from scipy.stats import fisher_exact
 
+from cfh.stats.max_statistic_permutation import empirical_p_value, null_max_statistics
+
 _POSITIVE_STATUS_DEFAULT = "retained"
 
 
@@ -163,16 +165,17 @@ def detect_cutpoint(
     best = _best_scan_row(scan)
     observed_statistic = best["neg_log10_p_value"]
 
-    rng = np.random.default_rng(seed)
-    null_max_statistics: list[float] = []
-    for _ in range(n_permutations):
-        permuted_statuses = rng.permutation(np.asarray(statuses, dtype=object)).tolist()
-        permuted_scan = scan_cutpoints(positions, permuted_statuses, positive_status)
-        null_max_statistics.append(max(row["neg_log10_p_value"] for row in permuted_scan))
-
-    corrected_p_value = (1 + sum(stat >= observed_statistic for stat in null_max_statistics)) / (
-        n_permutations + 1
+    position_array = np.asarray(positions)
+    membership = np.stack(
+        [position_array <= cutpoint for cutpoint in candidate_cutpoints(positions)]
     )
+    null_statistics = null_max_statistics(
+        membership,
+        [status == positive_status for status in statuses],
+        seed=seed,
+        n_permutations=n_permutations,
+    )
+    corrected_p_value = empirical_p_value(observed_statistic, null_statistics)
 
     return {
         "determinable": True,
@@ -183,5 +186,5 @@ def detect_cutpoint(
         "observed_odds_ratio": best["odds_ratio"],
         "corrected_p_value": float(corrected_p_value),
         "scan": scan,
-        "null_max_statistics": tuple(null_max_statistics),
+        "null_max_statistics": tuple(float(stat) for stat in null_statistics),
     }

@@ -8,7 +8,7 @@ from cfh.genes.registry import GeneConfig
 from cfh.model.algorithm_result import AlgorithmResult
 from cfh.model.fusion_event import FusionEvent
 from cfh.model.fusion_feature import FusionFeature
-from cfh.stats.adaptive_permutation import is_borderline, resolve_permutation_budget
+from cfh.stats.adaptive_permutation import resolve_permutation_budget, run_permutation_budget
 from cfh.stats.breakpoint_tests import (
     build_frame_domain_contingency_table,
     domain_retention_descriptive_table,
@@ -47,29 +47,20 @@ class DomainRetentionAlgorithm(Algorithm):
         genome_nexus_client = params.get("genome_nexus_client")
         budget = resolve_permutation_budget(params, default_full_n=_DEFAULT_FULL_N_PERMUTATIONS)
 
-        n_permutations = budget["full_n"] if not budget["adaptive"] else budget["small_n"]
-        permutation_p_value, observed_rate, null_rates = permutation_null_test(
-            events,
-            features,
-            gene_config,
-            seed=seed,
-            n_permutations=n_permutations,
-            genome_nexus_client=genome_nexus_client,
-        )
-        escalated = False
-        if budget["adaptive"] and is_borderline(
-            permutation_p_value, threshold=budget["threshold"], factor=budget["factor"]
-        ):
-            escalated = True
-            n_permutations = budget["full_n"]
-            permutation_p_value, observed_rate, null_rates = permutation_null_test(
-                events,
-                features,
-                gene_config,
-                seed=seed,
-                n_permutations=n_permutations,
-                genome_nexus_client=genome_nexus_client,
+        (permutation_p_value, observed_rate, null_rates), n_permutations, escalated = (
+            run_permutation_budget(
+                lambda n: permutation_null_test(
+                    events,
+                    features,
+                    gene_config,
+                    seed=seed,
+                    n_permutations=n,
+                    genome_nexus_client=genome_nexus_client,
+                ),
+                lambda result: result[0],
+                budget,
             )
+        )
 
         summary = {
             "fisher_odds_ratio": odds_ratio,
@@ -86,6 +77,7 @@ class DomainRetentionAlgorithm(Algorithm):
                 "n_permutations_small": budget["small_n"],
                 "n_permutations_full": budget["full_n"],
                 "n_permutations_used": n_permutations,
+                "n_permutations_max": budget["max_n"],
                 "escalated_to_full": escalated,
             }
 

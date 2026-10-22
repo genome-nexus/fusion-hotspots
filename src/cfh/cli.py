@@ -10,7 +10,11 @@ import click
 from cfh.algorithms.cross_cohort_concordance import compare_cohort_runs
 from cfh.cohort.outputs import DEFAULT_HONORABLE_MENTION_COUNT, write_cohort_scan_outputs
 from cfh.cohort.recurrence import DEFAULT_MIN_DISTINCT_PATIENTS
-from cfh.cohort.scan import DEFAULT_N_PERMUTATIONS_SMALL, run_cohort_scan
+from cfh.cohort.scan import (
+    DEFAULT_N_PERMUTATIONS_MAX,
+    DEFAULT_N_PERMUTATIONS_SMALL,
+    run_cohort_scan,
+)
 from cfh.gene_comparison import compare_gene_runs, write_comparison_tsv
 from cfh.genes.registry import available_genes, load_gene_config
 from cfh.real_benchmark import RealBenchmarkError, run_analysis, run_real_benchmark, write_outputs
@@ -281,14 +285,22 @@ def analyze(
     "--adaptive/--no-adaptive",
     default=True,
     show_default=True,
-    help="Start permutation tests at a small budget and only escalate to "
-    "--n-permutations when the small-N result is borderline.",
+    help="Start permutation tests at a small budget and escalate to "
+    "--n-permutations unless the small-N result is clearly non-significant.",
 )
 @click.option(
     "--n-permutations-small",
     type=click.IntRange(min=1),
     default=DEFAULT_N_PERMUTATIONS_SMALL,
     show_default=True,
+)
+@click.option(
+    "--n-permutations-max",
+    type=click.IntRange(min=1),
+    default=DEFAULT_N_PERMUTATIONS_MAX,
+    show_default=True,
+    help="Rerun a permutation test still at its floor 1/(n+1) with ten times the "
+    "permutations, up to this budget, so the strongest signals can pass genome-wide FDR.",
 )
 @click.option(
     "--max-genes",
@@ -344,6 +356,7 @@ def cohort_scan(
     n_permutations: int,
     adaptive: bool,
     n_permutations_small: int,
+    n_permutations_max: int,
     max_genes: int | None,
     cache_dir: Path | None,
     pdf: bool,
@@ -363,6 +376,7 @@ def cohort_scan(
             n_permutations=n_permutations,
             adaptive=adaptive,
             n_permutations_small=n_permutations_small,
+            n_permutations_max=n_permutations_max,
             max_genes=max_genes,
             cache_dir=cache_dir or (output_dir / ".cohort_scan_cache"),
             progress=(lambda line: click.echo(line, err=True)) if progress else None,
@@ -402,6 +416,7 @@ def cohort_scan(
         "run_directory",
         "summary_tsv",
         "summary_json",
+        "fdr_family_tsv",
         "summary_markdown",
         "summary_pdf",
         "manuscript_markdown",

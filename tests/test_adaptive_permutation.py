@@ -16,8 +16,11 @@ from cfh.stats.adaptive_permutation import (
     DEFAULT_BORDERLINE_FACTOR,
     DEFAULT_SIGNIFICANCE_THRESHOLD,
     DEFAULT_SMALL_N_PERMUTATIONS,
+    at_permutation_floor,
     is_borderline,
     resolve_permutation_budget,
+    run_permutation_budget,
+    should_escalate,
 )
 
 
@@ -72,6 +75,7 @@ def test_resolve_permutation_budget_honors_adaptive_overrides():
         "full_n": 2_000,
         "threshold": 0.01,
         "factor": 3.0,
+        "max_n": 2_000,
     }
 
 
@@ -138,7 +142,9 @@ def test_domain_retention_non_adaptive_default_matches_existing_behavior():
     assert "adaptive_permutations" not in (result.Summary or {})
 
 
-def test_domain_retention_adaptive_uses_small_budget_when_not_borderline():
+def test_domain_retention_adaptive_escalates_a_clearly_significant_result():
+    """A clean 6/0 vs 0/8 separation sits at the small budget's floor, which is
+    too coarse for a genome-wide family, so it must get the full budget."""
     events, features = _clearly_significant_events_and_features()
     config = load_gene_config("braf")
 
@@ -158,10 +164,33 @@ def test_domain_retention_adaptive_uses_small_budget_when_not_borderline():
     assert adaptive_info["enabled"] is True
     assert adaptive_info["n_permutations_small"] == 50
     assert adaptive_info["n_permutations_full"] == 5_000
-    # A clean 6/0 vs 0/8 separation is nowhere near p=0.05: no escalation needed.
-    assert adaptive_info["escalated_to_full"] is False
-    assert adaptive_info["n_permutations_used"] == 50
-    assert result.Parameters["n_permutations"] == 50
+    assert adaptive_info["escalated_to_full"] is True
+    assert adaptive_info["n_permutations_used"] == 5_000
+    assert result.Parameters["n_permutations"] == 5_000
+
+
+def test_domain_retention_adaptive_keeps_small_budget_when_clearly_null(monkeypatch):
+    import cfh.algorithms.domain_retention as module
+
+    events, features = _clearly_significant_events_and_features()
+    config = load_gene_config("braf")
+    calls: list[int] = []
+
+    def _fake_permutation_null_test(*args, **kwargs):
+        calls.append(kwargs["n_permutations"])
+        return 0.9, 0.5, tuple()
+
+    monkeypatch.setattr(module, "permutation_null_test", _fake_permutation_null_test)
+
+    result = DomainRetentionAlgorithm().run(
+        events,
+        features,
+        config,
+        {"seed": 1, "n_permutations": 3_000, "adaptive": True, "n_permutations_small": 100},
+    )
+
+    assert calls == [100]
+    assert result.Summary["adaptive_permutations"]["escalated_to_full"] is False
 
 
 def test_domain_retention_adaptive_is_deterministic_for_a_fixed_seed():
@@ -284,3 +313,67 @@ def test_cutpoint_detection_adaptive_is_deterministic_for_a_fixed_seed():
     second = CutpointDetectionAlgorithm().run(events, features, config, dict(params))
 
     assert first.Summary == second.Summary
+
+
+# --- Escalation rule and floor-driven escalation -----------------------------
+
+
+def test_should_escalate_includes_results_far_below_threshold():
+    assert should_escalate(0.0001, threshold=0.05, factor=2.0) is True
+    assert should_escalate(0.05, threshold=0.05, factor=2.0) is True
+    assert should_escalate(0.1, threshold=0.05, factor=2.0) is True
+    assert should_escalate(0.11, threshold=0.05, factor=2.0) is False
+    assert should_escalate(None) is False
+
+
+def test_at_permutation_floor():
+    assert at_permutation_floor(1 / 101, 100) is True
+    assert at_permutation_floor(2 / 101, 100) is False
+    assert at_permutation_floor(None, 100) is False
+
+
+def _floor_until(n_with_exceedance: int):
+    """A fake test whose p-value sits at its floor below ``n_with_exceedance``."""
+    calls: list[int] = []
+
+    def run(n: int) -> float:
+        calls.append(n)
+        return 1 / (n + 1) if n < n_with_exceedance else 5 / (n + 1)
+
+    return run, calls
+
+
+def test_run_permutation_budget_escalates_floor_results_up_to_max():
+    run, calls = _floor_until(10**9)
+    budget = resolve_permutation_budget(
+        {"adaptive": True, "n_permutations": 1_000, "n_permutations_max": 50_000},
+        default_full_n=1_000,
+    )
+
+    p_value, used, escalated = run_permutation_budget(run, lambda p: p, budget)
+
+    assert calls == [100, 1_000, 10_000, 50_000]
+    assert used == 50_000
+    assert escalated is True
+    assert p_value == 1 / 50_001
+
+
+def test_run_permutation_budget_stops_once_off_the_floor():
+    run, calls = _floor_until(5_000)
+    budget = resolve_permutation_budget(
+        {"n_permutations": 1_000, "n_permutations_max": 1_000_000}, default_full_n=1_000
+    )
+
+    _, used, _ = run_permutation_budget(run, lambda p: p, budget)
+
+    assert calls == [1_000, 10_000]
+    assert used == 10_000
+
+
+def test_run_permutation_budget_without_max_never_exceeds_full_budget():
+    run, calls = _floor_until(10**9)
+    budget = resolve_permutation_budget({"n_permutations": 1_000}, default_full_n=1_000)
+
+    run_permutation_budget(run, lambda p: p, budget)
+
+    assert calls == [1_000]

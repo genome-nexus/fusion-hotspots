@@ -49,11 +49,15 @@ from cfh.real_benchmark import (
     _fetch_mutual_exclusivity_params,
     analyze_structural_variant_calls_with_config,
 )
+from cfh.stats.adaptive_permutation import at_permutation_floor
 from cfh.stats.multiple_testing import benjamini_hochberg
 from cfh.studies.registry import load_study_config
 
 DEFAULT_N_PERMUTATIONS = 1_000
 DEFAULT_N_PERMUTATIONS_SMALL = 100
+# A test still at its permutation floor escalates up to this budget. Its
+# floor, 1e-5, can pass first-rank BH at q < 0.05 in a family of up to 5,000.
+DEFAULT_N_PERMUTATIONS_MAX = 100_000
 DEFAULT_SIGNIFICANCE_LEVEL = 0.05
 ADAPTIVE_ALGORITHMS = (
     "domain_retention",
@@ -217,13 +221,44 @@ class _ConfigResolution:
     non_coding: dict[str, str]  # symbol -> reason
 
 
-def _adaptive_algorithm_params(adaptive: bool, n_permutations_small: int) -> dict[str, dict]:
-    if not adaptive:
-        return {}
-    return {
-        name: {"adaptive": True, "n_permutations_small": n_permutations_small}
-        for name in ADAPTIVE_ALGORITHMS
-    }
+def _adaptive_algorithm_params(
+    adaptive: bool, n_permutations_small: int, n_permutations_max: int
+) -> dict[str, dict]:
+    params: dict = {"n_permutations_max": n_permutations_max}
+    if adaptive:
+        params.update(adaptive=True, n_permutations_small=n_permutations_small)
+    return {name: dict(params) for name in ADAPTIVE_ALGORITHMS}
+
+
+def _permutation_counts(run: RealBenchmarkRun) -> dict[str, int]:
+    """Permutations each adaptive algorithm actually used, by algorithm."""
+    counts: dict[str, int] = {}
+    for result in run.results:
+        n_permutations = (result.Parameters or {}).get("n_permutations")
+        if result.Algorithm in ADAPTIVE_ALGORITHMS and isinstance(n_permutations, int):
+            counts[result.Algorithm] = n_permutations
+    return counts
+
+
+def _annotate_permutation_resolution(fdr_rows: list[dict], significance_level: float) -> int:
+    """Mark permutation p-values at their floor that did not reach significance.
+
+    A result at ``1/(n + 1)`` may be stronger than ``n`` permutations can show,
+    so a non-significant q-value there says more about the budget than the
+    data. Returns how many rows are so limited.
+    """
+    limited = 0
+    for row in fdr_rows:
+        n_permutations = row.get("n_permutations")
+        floor = (
+            at_permutation_floor(row["raw_p"], n_permutations)
+            if n_permutations is not None and row["test"] != "fisher"
+            else False
+        )
+        row["at_permutation_floor"] = floor
+        row["resolution_limited"] = floor and row["bh_adjusted_q"] >= significance_level
+        limited += row["resolution_limited"]
+    return limited
 
 
 def _report_progress(
@@ -253,6 +288,7 @@ def run_cohort_scan(
     n_permutations: int = DEFAULT_N_PERMUTATIONS,
     adaptive: bool = True,
     n_permutations_small: int = DEFAULT_N_PERMUTATIONS_SMALL,
+    n_permutations_max: int = DEFAULT_N_PERMUTATIONS_MAX,
     significance_level: float = DEFAULT_SIGNIFICANCE_LEVEL,
     algorithm_names: list[str] | None = None,
     max_genes: int | None = None,
@@ -324,7 +360,9 @@ def run_cohort_scan(
     unresolved = resolution.unresolved
 
     genome_nexus_client = GenomeNexusClient(base_url=genome_nexus_base_url, session=session)
-    algorithm_params = _adaptive_algorithm_params(adaptive, n_permutations_small)
+    algorithm_params = _adaptive_algorithm_params(
+        adaptive, n_permutations_small, n_permutations_max
+    )
 
     outcomes: list[GeneScanOutcome] = []
     warnings: list[str] = []
@@ -415,6 +453,9 @@ def run_cohort_scan(
             p_value_rows = collect_p_values_from_algorithm_results(
                 symbol, study_id, run.results, source=f"cohort_scan:{symbol}"
             )
+            permutation_counts = _permutation_counts(run)
+            for row in p_value_rows:
+                row["n_permutations"] = permutation_counts.get(row["algorithm"])
             run.endpoints.append(
                 f"{cbioportal_base_url.rstrip('/')}/studies/{study_id}/clinical-data/fetch"
             )
@@ -454,6 +495,14 @@ def run_cohort_scan(
         {**row, "bh_adjusted_q": q_value}
         for row, (_, _, _, q_value) in zip(all_p_rows, adjusted, strict=True)
     ]
+
+    resolution_limited = _annotate_permutation_resolution(fdr_rows, significance_level)
+    if resolution_limited:
+        warnings.append(
+            f"{resolution_limited} permutation p-value(s) sit at their permutation floor "
+            f"without reaching q < {significance_level}; more permutations "
+            "(--n-permutations-max) could change these calls"
+        )
 
     # The mechanism algorithm runs before cross-gene correction. Add only
     # the q-value for this effect's Fisher test; a gene's minimum q-value
