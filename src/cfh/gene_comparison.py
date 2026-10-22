@@ -21,6 +21,8 @@ SIGNIFICANCE_LEVEL = 0.05
 # permute retained/lost labels that breakpoint position already determines,
 # so they find a split at the domain edge even in random breakpoints. Their
 # boundaries stay in each gene's results as descriptive output.
+# junction_concentration is corrected as its own family by the cohort scan:
+# on capture-panel data its random-breakage null favors significance.
 _SUMMARY_P_VALUES: dict[str, tuple[tuple[str, tuple[str, ...]], ...]] = {
     "domain_retention": (
         ("fisher", ("fisher_p_value",)),
@@ -30,8 +32,6 @@ _SUMMARY_P_VALUES: dict[str, tuple[tuple[str, tuple[str, ...]], ...]] = {
         ("fisher", ("fisher_p_value",)),
         ("permutation", ("permutation_empirical_p_value",)),
     ),
-    # Breakpoints redrawn along the gene; see cfh.stats.junction_concentration.
-    "junction_concentration": (("permutation", ("permutation_empirical_p_value",)),),
     "joint_partner": (("enrichment", ("p_value",)),),
     "expression_association": (
         ("fusion_positive_vs_negative", ("fusion_positive_vs_negative", "p_value")),

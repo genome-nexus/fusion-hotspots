@@ -107,14 +107,18 @@ q-value, and whether the result is significant at `q < 0.05`. All p-values
 collected by one invocation form a single correction family.
 
 The correction family includes retention/disruption Fisher and permutation
-tests, the junction-concentration test, pair enrichment, both expression
-comparisons, and each mutation/CNA comparator test. Composite scores are
+tests, pair enrichment, both expression comparisons, and each mutation/CNA
+comparator test. Composite scores are
 rankings and are not included as p-values. The `confidence_stats` Welch
 read-support test is reported per gene but excluded from the family: it
 reflects call quality, not breakpoint selection (#114). The cutpoint and window
 scans are excluded too: they permute retained/lost labels that breakpoint
 position already determines, so they find a clean split at the domain edge even
-in uniformly random breakpoints. Their boundaries remain descriptive output.
+in uniformly random breakpoints. Their boundaries remain descriptive output. Cohort
+scans correct the junction-concentration test as a family of its own
+(`junction_concentration_family.tsv`, `junction_hotspot_candidates` in
+`summary.json`); it never makes a gene FDR-significant, because on capture-panel
+data its null favors significance (see the panel caveat below).
 
 Cohort scans fetch expression and comparator inputs when those algorithms
 are requested and the gene/study configuration supplies the required metadata.
@@ -268,9 +272,11 @@ Suggested reading order:
    uniformly along the gene would put there, keeping each fusion's 5'/3' role and
    using the same exon mapping as the observed calls. `top_junction` gives the
    observed share and the random-breakage share; breakpoints outside the canonical
-   transcript are left out (`n_outside_transcript`). See
+   transcript are left out (`n_outside_transcript`). Cohort scans BH-correct it across
+   genes as a separate family and list the genes below q < 0.05 as
+   `junction_hotspot_candidates`; it never sets `fdr_significant`. See
    [the panel caveat](#panel-capture-and-the-junction-concentration-test) before
-   reading its p-value on panel data.
+   reading it on panel data.
 6. **Review exceptions.** In `mechanistic_interpretation`, look at counter-pattern
    events and recurrent-partner flags. The HTML viewer shows curated mechanism notes
    beside them.
@@ -419,6 +425,12 @@ design. What that does to the results:
 - **The domain-retention test inherits a milder form.** Its null also draws
   breakpoints across the whole gene, so which retention outcomes are detectable
   is shaped by capture too.
+
+In the 2026-10-22 MSK-IMPACT scan, every textbook control gene was concentrated,
+but so were tumor suppressors such as APC, ARID1A, KMT2C, NOTCH1, SPEN and KDM6A,
+some with under 20 events. APC's top junction is its large last exon (90% observed
+against 8% under random breakage). That pattern fits exon-biased detection rather
+than fusion biology, and is why the test is its own family.
 
 The repository does not include the panel's bait coordinates. With them, the null
 could redraw breakpoints only within captured regions. Until then, read

@@ -152,10 +152,8 @@ def test_algorithm_tests_inside_the_transcript_and_reports_the_caveat():
     assert summary["top_junction"]["junction_exon"] == 4
     assert summary["permutation_empirical_p_value"] < 0.01
     assert summary["panel_capture_caveat"] == PANEL_CAPTURE_CAVEAT
-    rows = collect_p_values_from_algorithm_results("GENE", "study", [result], source="test")
-    assert [(row["algorithm"], row["test"]) for row in rows] == [
-        ("junction_concentration", "permutation")
-    ]
+    # Corrected by the cohort scan as its own family, not the main one.
+    assert collect_p_values_from_algorithm_results("GENE", "study", [result], source="t") == []
 
 
 def test_algorithm_is_not_determinable_without_a_client_or_enough_events():
@@ -171,4 +169,3 @@ def test_algorithm_is_not_determinable_without_a_client_or_enough_events():
     assert "Genome Nexus" in without_client.Summary["reason"]
     assert too_few.Summary["determinable"] is False
     assert too_few.Summary["permutation_empirical_p_value"] is None
-    assert collect_p_values_from_algorithm_results("GENE", "s", [too_few], source="t") == []

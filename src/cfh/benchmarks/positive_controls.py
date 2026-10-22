@@ -64,7 +64,7 @@ def _fdr_q(fdr_rows: list[dict[str, str]], gene: str, algorithm: str, test: str)
     return None
 
 
-# check name -> (algorithm, label) of the FDR-family permutation test it reads.
+# check name -> (algorithm, label) of the permutation test whose q-value it reads.
 _FDR_CHECKS = {
     "selection": ("domain_retention", "retention"),
     "concentration": ("junction_concentration", "junction-concentration"),
@@ -80,7 +80,7 @@ def _fdr_check(control, fdr_rows, alpha, check) -> dict[str, str]:
             gene,
             check,
             NOT_EVALUABLE,
-            f"no {label} permutation p-value in the FDR family",
+            f"no {label} permutation q-value in the scan",
             source,
         )
     status = PASS if q_value < alpha else FAIL
@@ -199,6 +199,10 @@ def evaluate_positive_controls(
             f"{fdr_path} not found; positive controls need a scan that writes fdr_family.tsv"
         )
     fdr_rows = _read_tsv(fdr_path)
+    # Junction concentration is its own family; its q-values live beside the main one.
+    concentration_path = scan_directory / "junction_concentration_family.tsv"
+    if concentration_path.exists():
+        fdr_rows += _read_tsv(concentration_path)
     discovery_path = scan_directory / "cooccurrence_discovery.tsv"
     discovery_rows = _read_tsv(discovery_path) if discovery_path.exists() else None
 

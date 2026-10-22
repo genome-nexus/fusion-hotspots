@@ -72,17 +72,22 @@ def scan_dir(tmp_path):
                 "bh_adjusted_q": "0.001",
             },
             {
-                "gene": "ALK",
-                "algorithm": "junction_concentration",
-                "test": "permutation",
-                "bh_adjusted_q": "0.002",
-            },
-            {
                 "gene": "NTRK3",
                 "algorithm": "domain_retention",
                 "test": "permutation",
                 "bh_adjusted_q": "0.3",
             },
+        ],
+    )
+    _write_tsv(
+        scan / "junction_concentration_family.tsv",
+        [
+            {
+                "gene": "ALK",
+                "algorithm": "junction_concentration",
+                "test": "permutation",
+                "bh_adjusted_q": "0.002",
+            }
         ],
     )
     events = [_event(20, "EML4")] * 8 + [_event(19, "EML4"), _event(20, "KIF5B")]
