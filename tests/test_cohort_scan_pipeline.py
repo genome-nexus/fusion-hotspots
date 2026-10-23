@@ -22,9 +22,11 @@ from cfh.cohort import scan as scan_module
 from cfh.cohort.cooccurrence_data import DiscoveryInputs
 from cfh.cohort.cooccurrence_discovery import SampleRecord
 from cfh.cohort.outputs import build_summary_rows, write_cohort_scan_outputs
-from cfh.cohort.scan import genes_needing_full_report, run_cohort_scan
+from cfh.cohort.scan import _is_transient, genes_needing_full_report, run_cohort_scan
 from cfh.ingestion import cbioportal_api
+from cfh.ingestion.http import retrying_session
 from cfh.mapping.genome_nexus_source import GenomeNexusClient
+from cfh.real_benchmark import RealBenchmarkNetworkError
 from cfh.studies.registry import StudyConfig
 
 _STUDY_ID = "test_cohort_study"
@@ -825,3 +827,93 @@ def test_summary_rows_carry_stratified_cmh_as_a_separate_family(mock_session):
         assert "retention_cmh_p_value" in row
         assert (row["retention_cmh_q_value"] is None) == (row["retention_cmh_p_value"] is None)
     assert not any("cmh" in fdr_row["test"] for fdr_row in result.fdr_rows)
+
+
+def _fail_fake1_sv_fetch(mock_session, exc_factory, times):
+    """Make FAKE1's SV fetch raise ``exc_factory()`` for its first ``times`` calls."""
+    original_side_effect = mock_session.post.side_effect
+    calls = {"count": 0}
+
+    def _flaky_post(url, json=None, **kwargs):
+        if url.endswith("/structural-variant/fetch") and 9001 in json["entrezGeneIds"]:
+            calls["count"] += 1
+            if calls["count"] <= times:
+                raise exc_factory()
+        return original_side_effect(url, json=json, **kwargs)
+
+    mock_session.post.side_effect = _flaky_post
+    return calls
+
+
+def _scan_with_retries(mock_session, tmp_path, passes):
+    return run_cohort_scan(
+        _STUDY_ID,
+        min_distinct_patients=5,
+        n_permutations=50,
+        adaptive=True,
+        n_permutations_small=10,
+        cache_dir=tmp_path / "cache",
+        session=mock_session,
+        transient_retry_passes=passes,
+        transient_retry_delay_seconds=0,
+    )
+
+
+def test_cohort_scan_retries_genes_that_failed_on_network_errors(mock_session, tmp_path):
+    calls = _fail_fake1_sv_fetch(
+        mock_session, lambda: requests.Timeout("simulated read timeout"), times=1
+    )
+
+    result = _scan_with_retries(mock_session, tmp_path, passes=2)
+
+    outcomes_by_gene = {outcome.gene_symbol: outcome for outcome in result.gene_outcomes}
+    assert calls["count"] == 2
+    assert outcomes_by_gene["FAKE1"].status == "ok"
+    assert result.transient_failure_genes == []
+    assert any(row["gene"] == "FAKE1" for row in result.fdr_rows)
+
+
+def test_cohort_scan_reports_genes_still_failing_after_retries(mock_session, tmp_path):
+    calls = _fail_fake1_sv_fetch(
+        mock_session, lambda: requests.ConnectionError("simulated DNS failure"), times=10
+    )
+
+    result = _scan_with_retries(mock_session, tmp_path, passes=2)
+
+    assert calls["count"] == 3
+    assert result.transient_failure_genes == ["FAKE1"]
+    assert any("missing from the FDR family: FAKE1" in warning for warning in result.warnings)
+    assert not any(row["gene"] == "FAKE1" for row in result.fdr_rows)
+
+
+def test_cohort_scan_does_not_retry_non_network_failures(mock_session, tmp_path):
+    calls = _fail_fake1_sv_fetch(mock_session, lambda: ValueError("bad payload"), times=10)
+
+    result = _scan_with_retries(mock_session, tmp_path, passes=2)
+
+    assert calls["count"] == 1
+    assert result.transient_failure_genes == []
+
+
+@pytest.mark.parametrize(
+    ("exc", "expected"),
+    [
+        (requests.ConnectionError(), True),
+        (requests.Timeout(), True),
+        (requests.HTTPError(response=MagicMock(status_code=503)), True),
+        (requests.HTTPError(response=MagicMock(status_code=429)), True),
+        (requests.HTTPError(response=MagicMock(status_code=404)), False),
+        (RealBenchmarkNetworkError("Genome Nexus lookup failed"), True),
+        (ValueError("bad payload"), False),
+    ],
+)
+def test_is_transient(exc, expected):
+    assert _is_transient(exc) is expected
+
+
+def test_retrying_session_retries_connection_errors_and_read_timeouts():
+    session = retrying_session(retries=4)
+
+    retry = session.get_adapter("https://www.cbioportal.org").max_retries
+    assert (retry.connect, retry.read, retry.status) == (4, 4, 0)
+    assert retry.allowed_methods is None  # POST /fetch calls are reads too
