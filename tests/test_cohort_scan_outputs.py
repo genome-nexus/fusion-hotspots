@@ -488,3 +488,44 @@ def test_real_committed_run_honorable_mentions_are_precise_and_ranked_by_p_value
 
     for mention in mentions:
         assert mention["gene_symbol"] not in payload["significant_genes"]
+
+
+def test_junction_concentration_is_written_as_its_own_family(tmp_path, monkeypatch):
+    _stub_out_full_gene_report_writing(monkeypatch)
+    outcomes = [_outcome("SIGGENE", "auto"), _outcome("HOTGENE", "auto")]
+    for outcome in outcomes:
+        outcome.run.summary = {"total_fusions": 10, "fisher_p_value": 0.5}
+        outcome.run.results = []
+    result = _result(outcomes, significant_genes=["SIGGENE"])
+    result.fdr_rows = [{"gene": "SIGGENE", "bh_adjusted_q": 0.001}]
+    result.concentration_rows = [
+        {
+            "gene": "HOTGENE",
+            "algorithm": "junction_concentration",
+            "test": "permutation",
+            "raw_p": 1e-5,
+            "bh_adjusted_q": 2e-5,
+            "top_junction_role": "five_prime",
+            "top_junction_exon": 16,
+            "observed_share": 0.9,
+            "random_breakage_share": 0.08,
+        }
+    ]
+    result.junction_hotspot_candidates = ["HOTGENE"]
+
+    paths = write_cohort_scan_outputs(result, tmp_path / "runs", pdf=False)
+
+    family = paths["junction_concentration_family_tsv"].read_text().splitlines()
+    assert family[0].startswith("gene\talgorithm\ttest\traw_p\tbh_adjusted_q")
+    assert family[1].startswith("HOTGENE\tjunction_concentration")
+    assert "HOTGENE" not in paths["fdr_family_tsv"].read_text()
+    payload = json.loads(paths["summary_json"].read_text())
+    assert payload["significant_genes"] == ["SIGGENE"]
+    assert payload["junction_hotspot_candidates"] == ["HOTGENE"]
+    hot = next(gene for gene in payload["genes"] if gene["gene_symbol"] == "HOTGENE")
+    assert hot["junction_concentration_q_value"] == 2e-5
+    assert hot["fdr_significant"] is None
+    markdown = paths["summary_markdown"].read_text()
+    section = markdown[markdown.index("## Junction-hotspot candidates") :]
+    assert "never make a gene FDR-significant" in section
+    assert "| HOTGENE | exon 16 (5') |" in section

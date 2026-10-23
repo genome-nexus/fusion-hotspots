@@ -2,12 +2,15 @@
 
 from __future__ import annotations
 
+import csv
 import json
 from pathlib import Path
 
 import click
 
 from cfh.algorithms.cross_cohort_concordance import compare_cohort_runs
+from cfh.benchmarks.positive_controls import evaluate_positive_controls
+from cfh.benchmarks.positive_controls import summarize as summarize_controls
 from cfh.cohort.outputs import DEFAULT_HONORABLE_MENTION_COUNT, write_cohort_scan_outputs
 from cfh.cohort.recurrence import DEFAULT_MIN_DISTINCT_PATIENTS
 from cfh.cohort.scan import (
@@ -428,6 +431,45 @@ def cohort_scan(
             click.echo(f"{kind}: {paths[kind]}")
     for gene_symbol, gene_paths in paths.get("gene_reports", {}).items():
         click.echo(f"gene_report[{gene_symbol}]: {gene_paths['run_directory']}")
+
+
+@main.command("eval-controls")
+@click.argument("run_directory", type=click.Path(path_type=Path, exists=True, file_okay=False))
+@click.option("--alpha", type=click.FloatRange(0, 1), default=0.05, show_default=True)
+@click.option(
+    "--output",
+    "output_path",
+    type=click.Path(path_type=Path, dir_okay=False),
+    default=None,
+    help="TSV to write. Defaults to <scan directory>/positive_controls.tsv.",
+)
+def eval_controls(run_directory: Path, alpha: float, output_path: Path | None) -> None:
+    """Score a finished cohort scan against textbook fusion biology."""
+    try:
+        checks = evaluate_positive_controls(run_directory, alpha=alpha)
+    except FileNotFoundError as exc:
+        raise click.ClickException(str(exc)) from None
+    scan_directory = run_directory / "cohort_scan"
+    output_path = (
+        output_path
+        or (scan_directory if scan_directory.is_dir() else run_directory) / "positive_controls.tsv"
+    )
+    with output_path.open("w", newline="") as handle:
+        writer = csv.DictWriter(
+            handle, fieldnames=list(checks[0]), delimiter="\t", lineterminator="\n"
+        )
+        writer.writeheader()
+        writer.writerows(checks)
+    for check in checks:
+        click.echo(
+            f"{check['status'].upper():<14} {check['control']:<32} "
+            f"{check['check']:<13} {check['detail']}"
+        )
+    counts = summarize_controls(checks)
+    click.echo(
+        f"{counts['pass']} passed, {counts['fail']} failed, "
+        f"{counts['not_evaluable']} not evaluable; written to {output_path}"
+    )
 
 
 @main.command("report")
