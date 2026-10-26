@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="200" viewBox="0 0 920 200">
+<rect width="920" height="200" fill="white"/>
+<text x="60" y="28" font-family="sans-serif" font-size="16">AGO2 domain-retention track</text>
+<rect x="542.4" y="34.0" width="278.5" height="16.0" fill="#62b36f" opacity="0.55"/>
+<text x="820.9" y="46.0" font-family="sans-serif" font-size="9.5" text-anchor="end">Piwi domain (518-817)</text>
+<line x1="60.0" y1="63.0" x2="860.0" y2="63.0" stroke="#444444" stroke-width="4"/>
+<circle cx="630.9" cy="71.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0037757-T01-IM6-24"><title>event EVT-P-0037757-T01-IM6-24; sample P-0037757-T01-IM6; partner POLB; breakpoint aa 613; domain truncated</title></circle>
+<circle cx="264.0" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0005188-T02-IM6-25"><title>event EVT-P-0005188-T02-IM6-25; sample P-0005188-T02-IM6; partner PTK2; breakpoint aa 219; domain retained</title></circle>
+<circle cx="668.1" cy="85.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0016571-T01-IM6-26"><title>event EVT-P-0016571-T01-IM6-26; sample P-0016571-T01-IM6; partner PTK2; breakpoint aa 653; domain truncated</title></circle>
+<circle cx="154.1" cy="92.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0015814-T05-IM7-27"><title>event EVT-P-0015814-T05-IM7-27; sample P-0015814-T05-IM7; partner PTK2; breakpoint aa 101; domain lost</title></circle>
+<circle cx="67.5" cy="99.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0066796-T02-IM7-28"><title>event EVT-P-0066796-T02-IM7-28; sample P-0066796-T02-IM7; partner PTK2; breakpoint aa 8; domain lost</title></circle>
+<circle cx="733.3" cy="71.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0039159-T01-IM6-29"><title>event EVT-P-0039159-T01-IM6-29; sample P-0039159-T01-IM6; partner PTK2; breakpoint aa 723; domain truncated</title></circle>
+<circle cx="305.9" cy="78.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0063858-T02-IM7-30"><title>event EVT-P-0063858-T02-IM7-30; sample P-0063858-T02-IM7; partner SAMD12; breakpoint aa 264; domain lost</title></circle>
+<circle cx="453.9" cy="85.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0059476-T01-IM7-31"><title>event EVT-P-0059476-T01-IM7-31; sample P-0059476-T01-IM7; partner TRAPPC9; breakpoint aa 423; domain lost</title></circle>
+<circle cx="271.4" cy="92.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0066230-T02-IM7-32"><title>event EVT-P-0066230-T02-IM7-32; sample P-0066230-T02-IM7; partner TRAPPC9; breakpoint aa 227; domain lost</title></circle>
+<circle cx="603.0" cy="99.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0066481-T01-IM7-33"><title>event EVT-P-0066481-T01-IM7-33; sample P-0066481-T01-IM7; partner TRAPPC9; breakpoint aa 583; domain truncated</title></circle>
+<circle cx="534.0" cy="71.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0035619-T01-IM6-34"><title>event EVT-P-0035619-T01-IM6-34; sample P-0035619-T01-IM6; partner COL22A1; breakpoint aa 509; domain lost</title></circle>
+<circle cx="379.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0039584-T01-IM6-35"><title>event EVT-P-0039584-T01-IM6-35; sample P-0039584-T01-IM6; partner FER1L6; breakpoint aa 343; domain retained</title></circle>
+<circle cx="127.1" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0065414-T01-IM7-36"><title>event EVT-P-0065414-T01-IM7-36; sample P-0065414-T01-IM7; partner MRPL48; breakpoint aa 72; domain retained</title></circle>
+<circle cx="598.3" cy="92.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0024944-T01-IM6-40"><title>event EVT-P-0024944-T01-IM6-40; sample P-0024944-T01-IM6; partner TRAPPC9; breakpoint aa 578; domain truncated</title></circle>
+<circle cx="465.1" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0059084-T01-IM7-41"><title>event EVT-P-0059084-T01-IM7-41; sample P-0059084-T01-IM7; partner TRAPPC9; breakpoint aa 435; domain retained</title></circle>
+<circle cx="692.4" cy="71.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0063424-T01-IM7-42"><title>event EVT-P-0063424-T01-IM7-42; sample P-0063424-T01-IM7; partner TRAPPC9; breakpoint aa 679; domain truncated</title></circle>
+<circle cx="379.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0059625-T01-IM7-43"><title>event EVT-P-0059625-T01-IM7-43; sample P-0059625-T01-IM7; partner TRAPPC9; breakpoint aa 343; domain retained</title></circle>
+<circle cx="379.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0059625-T02-IM7-44"><title>event EVT-P-0059625-T02-IM7-44; sample P-0059625-T02-IM7; partner TRAPPC9; breakpoint aa 343; domain retained</title></circle>
+<circle cx="495.9" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0061336-T01-IM7-45"><title>event EVT-P-0061336-T01-IM7-45; sample P-0061336-T01-IM7; partner TRAPPC9; breakpoint aa 468; domain retained</title></circle>
+<circle cx="509.8" cy="99.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0021826-T01-IM6-46"><title>event EVT-P-0021826-T01-IM6-46; sample P-0021826-T01-IM6; partner TRAPPC9; breakpoint aa 483; domain lost</title></circle>
+<circle cx="765.9" cy="71.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0019967-T01-IM6-47"><title>event EVT-P-0019967-T01-IM6-47; sample P-0019967-T01-IM6; partner TRAPPC9; breakpoint aa 758; domain truncated</title></circle>
+<circle cx="765.9" cy="78.0" r="3" fill="#f2a93b" stroke="none" stroke-width="0" data-event-id="EVT-P-0019967-T02-IM6-48"><title>event EVT-P-0019967-T02-IM6-48; sample P-0019967-T02-IM6; partner TRAPPC9; breakpoint aa 758; domain truncated</title></circle>
+<line x1="60.0" y1="114.0" x2="860.0" y2="114.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="860.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
+<text x="60.0" y="128.0" font-family="sans-serif" font-size="9">1</text>
+<text x="860.0" y="128.0" font-family="sans-serif" font-size="9" text-anchor="end">859 aa</text>
+<line x1="60.9" y1="132.0" x2="60.9" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="60.9" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 60.9 137.0)">E1</text>
+<line x1="67.5" y1="132.0" x2="67.5" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="67.5" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 67.5 137.0)">E2</text>
+<line x1="127.1" y1="132.0" x2="127.1" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="127.1" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 127.1 137.0)">E3</text>
+<line x1="165.2" y1="132.0" x2="165.2" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="165.2" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 165.2 137.0)">E4</text>
+<line x1="221.1" y1="132.0" x2="221.1" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="221.1" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 221.1 137.0)">E5</text>
+<line x1="264.0" y1="132.0" x2="264.0" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="264.0" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 264.0 137.0)">E6</text>
+<line x1="305.9" y1="132.0" x2="305.9" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="305.9" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 305.9 137.0)">E7</text>
+<line x1="332.9" y1="132.0" x2="332.9" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="332.9" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 332.9 137.0)">E8</text>
+<line x1="379.4" y1="132.0" x2="379.4" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="379.4" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 379.4 137.0)">E9</text>
+<line x1="416.7" y1="132.0" x2="416.7" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="416.7" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 416.7 137.0)">E10</text>
+<line x1="454.9" y1="132.0" x2="454.9" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="454.9" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 454.9 137.0)">E11</text>
+<line x1="495.9" y1="132.0" x2="495.9" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="495.9" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 495.9 137.0)">E12</text>
+<line x1="553.6" y1="132.0" x2="553.6" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="553.6" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 553.6 137.0)">E13</text>
+<line x1="603.0" y1="132.0" x2="603.0" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="603.0" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 603.0 137.0)">E14</text>
+<line x1="631.8" y1="132.0" x2="631.8" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="631.8" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 631.8 137.0)">E15</text>
+<line x1="692.4" y1="132.0" x2="692.4" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="692.4" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 692.4 137.0)">E16</text>
+<line x1="734.3" y1="132.0" x2="734.3" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="734.3" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 734.3 137.0)">E17</text>
+<line x1="765.9" y1="132.0" x2="765.9" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="765.9" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 765.9 137.0)">E18</text>
+<line x1="827.4" y1="132.0" x2="827.4" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="827.4" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 827.4 137.0)">E19</text>
+<line x1="153.1" y1="114.0" x2="153.1" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="153.1" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">100</text>
+<line x1="246.3" y1="114.0" x2="246.3" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="246.3" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">200</text>
+<line x1="339.4" y1="114.0" x2="339.4" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="339.4" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">300</text>
+<line x1="432.5" y1="114.0" x2="432.5" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="432.5" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">400</text>
+<line x1="525.7" y1="114.0" x2="525.7" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="525.7" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">500</text>
+<line x1="618.8" y1="114.0" x2="618.8" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="618.8" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">600</text>
+<line x1="711.9" y1="114.0" x2="711.9" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="711.9" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">700</text>
+<line x1="805.1" y1="114.0" x2="805.1" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="805.1" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">800</text>
+<circle cx="60" cy="167.0" r="4" fill="#2878b5"/><text x="70" y="172.0" font-family="sans-serif" font-size="12">fully retained</text>
+<circle cx="180" cy="167.0" r="4" fill="#f2a93b"/><text x="190" y="172.0" font-family="sans-serif" font-size="12">truncated</text>
+<circle cx="275" cy="167.0" r="4" fill="#777777"/><text x="285" y="172.0" font-family="sans-serif" font-size="12">fully lost</text>
+<circle cx="365" cy="167.0" r="4" fill="white" stroke="#d62728" stroke-width="1.5"/><text x="375" y="172.0" font-family="sans-serif" font-size="12">reference discrepancy</text>
+<rect x="60" y="180.0" width="12" height="10" fill="#62b36f" opacity="0.55"/><text x="80" y="189.0" font-family="sans-serif" font-size="12">configured key-domain span (name/range labeled above; a second or later configured domain gets its own distinct shade)</text>
+</svg>

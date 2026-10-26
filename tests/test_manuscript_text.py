@@ -211,9 +211,9 @@ def test_manuscript_abstract_never_claims_a_gated_gene_was_analyzed_when_it_was_
     recurrence-gate count with the actually-successfully-analyzed count (a
     gene can be gated in but left unresolvable, or resolved but still fail
     during analysis). The real committed msk_impact_50k_2026 run has exactly
-    this shape: 544 genes passed the gate, but only 524 were successfully
-    analyzed -- the other 20 had no resolvable canonical transcript in
-    Genome Nexus (``config_source == "unresolved"``). The exact count (and
+    this shape: 544 genes passed the gate, but only 538 were successfully
+    analyzed -- 4 had no resolvable canonical transcript in Genome Nexus
+    (``config_source == "unresolved"``) and 2 are non-coding. The exact count (and
     which specific genes/failure mode account for the gap) shifts whenever
     the run is regenerated against live cBioPortal/Genome Nexus data; what
     must always hold is that the abstract states whatever the real analyzed
@@ -226,11 +226,11 @@ def test_manuscript_abstract_never_claims_a_gated_gene_was_analyzed_when_it_was_
     n_scanned = len(payload["genes"])
     n_analyzed = sum(1 for row in payload["genes"] if row.get("status") == "ok")
     assert n_scanned == payload["genes_after_gating"] == 544
-    assert n_analyzed == 524
-    assert n_analyzed < n_scanned  # gap: 20 genes unresolved in Genome Nexus.
+    assert n_analyzed == 538
+    assert n_analyzed < n_scanned  # gap: 4 unresolved in Genome Nexus, 2 non-coding.
 
     for text in (abstract, methods):
-        assert "524 of the 544 attempted genes were successfully analyzed" in text
+        assert "538 of the 544 attempted genes were successfully analyzed" in text
         # Never claims the full 544 (or the 524 curated+auto) were analyzed.
         assert "544 gated genes were successfully analyzed" not in text
         assert "544 were analyzed" not in text
@@ -335,7 +335,7 @@ def test_manuscript_methods_uses_real_gating_and_config_counts():
 def test_manuscript_methods_p_value_correction_count_matches_q_bearing_genes_not_all_scanned():
     """Regression test for the real internal contradiction found in the
     committed msk_impact_50k_2026 report: Methods said all 544 scanned
-    genes' p-values were corrected while the Results caption said only 359
+    genes' p-values were corrected while the Results caption said only some
     genes had a q-value -- Methods must instead cite the actual number of
     genes that produced a computable p-value (which is what the correction
     was really applied across), not the raw scanned-gene count."""
@@ -344,7 +344,7 @@ def test_manuscript_methods_p_value_correction_count_matches_q_bearing_genes_not
     caption = render_manhattan_caption(payload)
 
     n_with_q = sum(1 for row in payload["genes"] if row.get("min_fdr_adjusted_q_value") is not None)
-    assert n_with_q == 359
+    assert n_with_q == 285
     assert f"across the {n_with_q} genes that produced at least one computable p-value" in methods
     # Never claims correction was applied across all 544 scanned genes.
     assert "across all 544" not in methods
@@ -550,8 +550,8 @@ def test_discussion_bullets_p_value_count_matches_methods_not_raw_scanned_count(
     methods = render_manuscript_methods(payload)
 
     joined = " ".join(bullets)
-    assert "across the 359 genes that produced at least one computable p-value" in joined
-    assert "across the 359 genes that produced at least one computable p-value" in methods
+    assert "across the 285 genes that produced at least one computable p-value" in joined
+    assert "across the 285 genes that produced at least one computable p-value" in methods
 
 
 def test_discussion_bullets_omit_auto_config_caveat_when_no_auto_configured_genes():

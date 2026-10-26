@@ -1,0 +1,1454 @@
+{
+  "gene_symbol": "TPM3",
+  "study_id": "msk_impact_50k_2026",
+  "molecular_profile_id": "msk_impact_50k_2026_structural_variants",
+  "retrieved_at": "2026-10-26T20:04:02.059762+00:00",
+  "summary": {
+    "raw_structural_variant_count": 14,
+    "total_fusions": 14,
+    "sample_count": 14,
+    "known_patient_count": 11,
+    "missing_patient_id_event_count": 0,
+    "inference_counting_unit": "patient",
+    "patient_independence_established": true,
+    "observation_unit": "patient_gene",
+    "input_mapped_event_count": 14,
+    "analyzed_observation_count": 11,
+    "collapsed_repeat_observation_count": 3,
+    "patients_with_repeated_observations": 3,
+    "observation_identity_fallbacks": {},
+    "frame_conflict_groups": 0,
+    "merged_distinct_fusion_count": 0,
+    "patients_with_multiple_distinct_fusions": 0,
+    "mapped_fusions": 14,
+    "skipped_fusions": 0,
+    "in_frame_count": 11,
+    "out_of_frame_count": 0,
+    "known_frame_count": 11,
+    "unknown_frame_count": 3,
+    "in_frame_percent": 100.0,
+    "kinase_retained_count": 9,
+    "kinase_retained_percent": 64.28571428571429,
+    "in_frame_kinase_retained_count": 6,
+    "fisher_odds_ratio": 0.0,
+    "fisher_p_value": 1.0,
+    "permutation_p_value": 1.999980000199998e-05,
+    "frame_domain_contingency_table": [
+      [
+        6,
+        2
+      ],
+      [
+        3,
+        0
+      ]
+    ],
+    "partner_counts": [
+      {
+        "Partner_gene": "NTRK1",
+        "Event_count": 12,
+        "Raw_event_count": 12,
+        "Sample_count": 12,
+        "Patient_count": 9
+      },
+      {
+        "Partner_gene": "ROS1",
+        "Event_count": 2,
+        "Raw_event_count": 2,
+        "Sample_count": 2,
+        "Patient_count": 2
+      }
+    ],
+    "domain_accession": "PF00261",
+    "domain_start_aa": 49,
+    "domain_end_aa": 284,
+    "key_domains": [
+      {
+        "name": "Tropomyosin",
+        "accession": "PF00261",
+        "start_aa": 49,
+        "end_aa": 284
+      }
+    ],
+    "fusion_annotation_crosscheck": {
+      "agree": 14,
+      "disagree": 0,
+      "unavailable": 0
+    },
+    "configured_key_domains": [
+      {
+        "name": "Tropomyosin",
+        "source": "genome_nexus",
+        "key": "auto_key_domain",
+        "accession": "PF00261",
+        "start_aa": null,
+        "end_aa": null
+      }
+    ],
+    "configured_disruption_required_domains": []
+  },
+  "warnings": [
+    "Collapsed 3 repeated observation(s) of the same fusion in 3 patient(s) before inferential tests (observation_unit='patient_gene')."
+  ],
+  "events": [
+    {
+      "event_id": "EVT-P-0003207-T01-IM5-1",
+      "sample_id": "P-0003207-T01-IM5",
+      "patient_id": "P-0003207",
+      "tumor_type": "Non-Small Cell Lung Cancer",
+      "oncotree_code": "LUAD",
+      "fusion_name": "ROS1-TPM3",
+      "partner_gene": "ROS1",
+      "frame_status": "in-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 154135010,
+      "breakpoint_exon": 10,
+      "breakpoint_protein_position": 286,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 286,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Tropomyosin",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "NA | Protein fusion: in frame (TPM3-ROS1)",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0028865-T02-IM6-2",
+      "sample_id": "P-0028865-T02-IM6",
+      "patient_id": "P-0028865",
+      "tumor_type": "Non-Small Cell Lung Cancer",
+      "oncotree_code": "LUAD",
+      "fusion_name": "ROS1-TPM3",
+      "partner_gene": "ROS1",
+      "frame_status": "in-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 154133648,
+      "breakpoint_exon": 10,
+      "breakpoint_protein_position": 286,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 286,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Tropomyosin",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "TPM3 (NM_001278190) - ROS1 (NM_002944) fusion (TPM3 exons 1-6 with ROS1 exons 35-43): t(1;6)(q21.3;q22.1)(chr1:g.154133648::chr6:g.117643589) | Protein Fusion: in frame  {TPM3:ROS1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0014143-T01-IM5-3",
+      "sample_id": "P-0014143-T01-IM5",
+      "patient_id": "P-0014143",
+      "tumor_type": "Colorectal Cancer",
+      "oncotree_code": "COAD",
+      "fusion_name": "TPM3-NTRK1",
+      "partner_gene": "NTRK1",
+      "frame_status": "in-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 154138845,
+      "breakpoint_exon": 10,
+      "breakpoint_protein_position": 286,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 286,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Tropomyosin",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "TPM3 (NM_152263) - NTRK1 (NM_002529) fusion (TPM3 exons 1-10 fused in-frame to NTRK1 exons 9-17): c.*1568:TPM3_c.1178-173:NTRK1inv | Protein fusion: in frame (TPM3-NTRK1)",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0021170-T02-IM6-4",
+      "sample_id": "P-0021170-T02-IM6",
+      "patient_id": "P-0021170",
+      "tumor_type": "Soft Tissue Sarcoma",
+      "oncotree_code": "SARCNOS",
+      "fusion_name": "TPM3-NTRK1",
+      "partner_gene": "NTRK1",
+      "frame_status": "in-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 154142641,
+      "breakpoint_exon": 8,
+      "breakpoint_protein_position": 259,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 258,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "hybrid junction codon: fusion-annotation reports the last complete 5-prime residue, exactly one less than this project's hybrid-junction-inclusive residue; expected convention difference, not a disagreement",
+      "domain_status": "disrupted",
+      "domain_retained_fraction": 0.8940677966101694,
+      "domain_is_truncated": true,
+      "retained_domains": "",
+      "lost_domains": "",
+      "disrupted_domains": "Tropomyosin",
+      "source_annotation_text": "TPM3 (NM_152263) - NTRK1 (NM_002529) fusion (TPM3 exons 1-8 fused to NTRK1 exons 12-17): c.775+235:TPM3_c.1355-94:NTRK1inv | Protein Fusion: in frame  {TPM3:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0021170-T03-IM6-5",
+      "sample_id": "P-0021170-T03-IM6",
+      "patient_id": "P-0021170",
+      "tumor_type": "Soft Tissue Sarcoma",
+      "oncotree_code": "SARCNOS",
+      "fusion_name": "TPM3-NTRK1",
+      "partner_gene": "NTRK1",
+      "frame_status": "in-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 154142641,
+      "breakpoint_exon": 8,
+      "breakpoint_protein_position": 259,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 258,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "hybrid junction codon: fusion-annotation reports the last complete 5-prime residue, exactly one less than this project's hybrid-junction-inclusive residue; expected convention difference, not a disagreement",
+      "domain_status": "disrupted",
+      "domain_retained_fraction": 0.8940677966101694,
+      "domain_is_truncated": true,
+      "retained_domains": "",
+      "lost_domains": "",
+      "disrupted_domains": "Tropomyosin",
+      "source_annotation_text": "TPM3 (NM_152263) - NTRK1 (NM_002529) fusion (TPM3 exons 1-8 fused to NTRK1 exons 12-17): c.775+235:TPM3_c.1355-94:NTRK1inv | Protein Fusion: in frame  {TPM3:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0021467-T01-IM6-6",
+      "sample_id": "P-0021467-T01-IM6",
+      "patient_id": "P-0021467",
+      "tumor_type": "Glioma",
+      "oncotree_code": "GB",
+      "fusion_name": "TPM3-NTRK1",
+      "partner_gene": "NTRK1",
+      "frame_status": "in-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 154139761,
+      "breakpoint_exon": 10,
+      "breakpoint_protein_position": 286,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 286,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Tropomyosin",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "TPM3 (NM_152263) - NTRK1 (NM_002529) fusion (TPM3 exons 1-6 fused in-frame to NTRK1 exons 9-17): c.*652:TPM3_c.1178-137:NTRK1inv | Protein Fusion: in frame  {TPM3:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0025815-T02-IM6-7",
+      "sample_id": "P-0025815-T02-IM6",
+      "patient_id": "P-0025815",
+      "tumor_type": "Soft Tissue Sarcoma",
+      "oncotree_code": "SARCNOS",
+      "fusion_name": "TPM3-NTRK1",
+      "partner_gene": "NTRK1",
+      "frame_status": "in-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 154134381,
+      "breakpoint_exon": 10,
+      "breakpoint_protein_position": 286,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 286,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Tropomyosin",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "TPM3 (NM_152263) - NTRK1 (NM_002529) fusion (TPM3  exons 1-6 with NTRK1 exons 10-17): c.*6032:TPM3_c.1195+38:NTRK1inv | Protein Fusion: in frame  {TPM3:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0026375-T01-IM6-8",
+      "sample_id": "P-0026375-T01-IM6",
+      "patient_id": "P-0026375",
+      "tumor_type": "Thyroid Cancer",
+      "oncotree_code": "THPA",
+      "fusion_name": "TPM3-NTRK1",
+      "partner_gene": "NTRK1",
+      "frame_status": "in-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 154142521,
+      "breakpoint_exon": 8,
+      "breakpoint_protein_position": 259,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 258,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "hybrid junction codon: fusion-annotation reports the last complete 5-prime residue, exactly one less than this project's hybrid-junction-inclusive residue; expected convention difference, not a disagreement",
+      "domain_status": "disrupted",
+      "domain_retained_fraction": 0.8940677966101694,
+      "domain_is_truncated": true,
+      "retained_domains": "",
+      "lost_domains": "",
+      "disrupted_domains": "Tropomyosin",
+      "source_annotation_text": "TPM3 (NM_152263) - NTRK1 (NM_002529) fusion (TPM3 exons 1-8 fused to NTRK1 exons 9-17): c.775+355:TPM3_c.1178-129:NTRK1inv | Protein Fusion: in frame  {TPM3:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0026375-T04-IM6-9",
+      "sample_id": "P-0026375-T04-IM6",
+      "patient_id": "P-0026375",
+      "tumor_type": "Thyroid Cancer",
+      "oncotree_code": "THAP",
+      "fusion_name": "TPM3-NTRK1",
+      "partner_gene": "NTRK1",
+      "frame_status": "in-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 154142521,
+      "breakpoint_exon": 8,
+      "breakpoint_protein_position": 259,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 258,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "hybrid junction codon: fusion-annotation reports the last complete 5-prime residue, exactly one less than this project's hybrid-junction-inclusive residue; expected convention difference, not a disagreement",
+      "domain_status": "disrupted",
+      "domain_retained_fraction": 0.8940677966101694,
+      "domain_is_truncated": true,
+      "retained_domains": "",
+      "lost_domains": "",
+      "disrupted_domains": "Tropomyosin",
+      "source_annotation_text": "TPM3 (NM_152263) - NTRK1 (NM_002529) fusion: c.775+355:TPM3_c.1178-129:NTRK1inv | Protein Fusion: in frame  {TPM3:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0046877-T02-IM6-10",
+      "sample_id": "P-0046877-T02-IM6",
+      "patient_id": "P-0046877",
+      "tumor_type": "Thyroid Cancer",
+      "oncotree_code": "THPA",
+      "fusion_name": "TPM3-NTRK1",
+      "partner_gene": "NTRK1",
+      "frame_status": "in-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 154142216,
+      "breakpoint_exon": 8,
+      "breakpoint_protein_position": 259,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 258,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "hybrid junction codon: fusion-annotation reports the last complete 5-prime residue, exactly one less than this project's hybrid-junction-inclusive residue; expected convention difference, not a disagreement",
+      "domain_status": "disrupted",
+      "domain_retained_fraction": 0.8940677966101694,
+      "domain_is_truncated": true,
+      "retained_domains": "",
+      "lost_domains": "",
+      "disrupted_domains": "Tropomyosin",
+      "source_annotation_text": "TPM3 (NM_152263) - NTRK1 (NM_002529) fusion: c.776-357:TPM3_c.1177+60:NTRK1inv | Protein Fusion: in frame  {TPM3:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0049078-T01-IM6-11",
+      "sample_id": "P-0049078-T01-IM6",
+      "patient_id": "P-0049078",
+      "tumor_type": "Colorectal Cancer",
+      "oncotree_code": "COAD",
+      "fusion_name": "TPM3-NTRK1",
+      "partner_gene": "NTRK1",
+      "frame_status": "unknown",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 154136376,
+      "breakpoint_exon": 10,
+      "breakpoint_protein_position": 286,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 286,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Tropomyosin",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "TPM3 (NM_001278190) - NTRK1 (NM_002529)  fusion: c.395-6179:TPM3_ c.963:NTRK1inv | Protein Fusion: mid-exon  {TPM3:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0049078-T04-IM6-12",
+      "sample_id": "P-0049078-T04-IM6",
+      "patient_id": "P-0049078",
+      "tumor_type": "Colorectal Cancer",
+      "oncotree_code": "COAD",
+      "fusion_name": "TPM3-NTRK1",
+      "partner_gene": "NTRK1",
+      "frame_status": "unknown",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 154136376,
+      "breakpoint_exon": 10,
+      "breakpoint_protein_position": 286,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 286,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Tropomyosin",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "TPM3 (NM_001278190) - NTRK1 (NM_002529)  fusion: c.395-6179:TPM3_ c.963:NTRK1inv | Protein Fusion: mid-exon  {TPM3:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0050767-T01-IM6-13",
+      "sample_id": "P-0050767-T01-IM6",
+      "patient_id": "P-0050767",
+      "tumor_type": "Thyroid Cancer",
+      "oncotree_code": "THPA",
+      "fusion_name": "TPM3-NTRK1",
+      "partner_gene": "NTRK1",
+      "frame_status": "in-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 154130851,
+      "breakpoint_exon": 10,
+      "breakpoint_protein_position": 286,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 286,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Tropomyosin",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "TPM3(NM_153469) - NTRK1 (NM_002529) Fusion(TPM3 exon 12 with NTRK1 exon12): c.665-654:TPM3_c.1355-60:NTRK1inv | Protein Fusion: in frame  {TPM3:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0069266-T01-IM7-14",
+      "sample_id": "P-0069266-T01-IM7",
+      "patient_id": "P-0069266",
+      "tumor_type": "Thyroid Cancer",
+      "oncotree_code": "THPA",
+      "fusion_name": "TPM3-NTRK1",
+      "partner_gene": "NTRK1",
+      "frame_status": "unknown",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 154141499,
+      "breakpoint_exon": 9,
+      "breakpoint_protein_position": 285,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 284,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "hybrid junction codon: fusion-annotation reports the last complete 5-prime residue, exactly one less than this project's hybrid-junction-inclusive residue; expected convention difference, not a disagreement",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Tropomyosin",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "TPM3 (NM_152263) - NTRK1 (NM_002529) fusion: c.854+282:TPM3_c.1027:NTRK1inv | Protein Fusion: mid-exon  {TPM3:NTRK1}",
+      "source_site2_effect_on_frame": "NA"
+    }
+  ],
+  "algorithm_results": [
+    {
+      "Algorithm": "composite_score",
+      "Algorithm_version": "0.2.0",
+      "Parameters": {
+        "weights": {
+          "recurrence": 0.3,
+          "domain_retention": 0.25,
+          "domain_disruption": 0.2,
+          "cutpoint_proximity": 0.15,
+          "confidence_certainty": 0.1
+        },
+        "neg_log10_p_cap": 10.0,
+        "cutpoint_corrected_p_alpha": 0.05
+      },
+      "Summary": {
+        "score_interpretation": "prioritization_heuristic_not_probability_or_significance",
+        "gene_symbol": "TPM3",
+        "n_partners_ranked": 2,
+        "total_events": 14,
+        "components_applicable": {
+          "recurrence": true,
+          "domain_retention": true,
+          "domain_disruption": false,
+          "cutpoint_proximity": true,
+          "confidence_certainty": true
+        },
+        "domain_retention_p_value_used": 1.999980000199998e-05,
+        "domain_disruption_p_value_used": null,
+        "inferred_cutpoint_aa": 259,
+        "Runtime_seconds": 0.0001400420442223549
+      },
+      "Tables": {
+        "composite_evidence_ranking": [
+          {
+            "Partner_gene": "NTRK1",
+            "Event_count": 12,
+            "Recurrence_score": 0.8571428571428571,
+            "Domain_retention_score": 0.46989743472591233,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": 0.3374485596707819,
+            "Confidence_certainty_score": 0.5240843401713946,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.5970536672401149,
+            "Rank": 1
+          },
+          {
+            "Partner_gene": "ROS1",
+            "Event_count": 2,
+            "Recurrence_score": 0.14285714285714285,
+            "Domain_retention_score": 0.46989743472591233,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": 0.0,
+            "Confidence_certainty_score": 0.5240843401713946,
+            "Components_applicable": [
+              "confidence_certainty",
+              "cutpoint_proximity",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.2659249194447005,
+            "Rank": 2
+          }
+        ]
+      },
+      "Warnings": [
+        "domain_disruption sub-score excluded: the supplied result had no applicable p-value (e.g. disruption_required_domains not configured for this gene)."
+      ],
+      "Created_at": "2026-10-26T20:04:02.058746Z",
+      "Input_fingerprint": "9afde569b2365ed7c7e1a5e4197648fe7784a7b91a2cbe4fc27ff4458b0a5929"
+    },
+    {
+      "Algorithm": "confidence_stats",
+      "Algorithm_version": "1.0.0",
+      "Parameters": {
+        "group_field": "Domain_retention_flags",
+        "group_key": "auto_key_domain",
+        "group_value_map": {
+          "retained": "retained",
+          "lost": "not_retained",
+          "disrupted": "not_retained",
+          "unknown": null
+        },
+        "group_values": [
+          "retained",
+          "not_retained"
+        ],
+        "outcome_field": "Frame_status",
+        "outcome_success_value": "in-frame",
+        "outcome_valid_values": [
+          "in-frame",
+          "out-of-frame"
+        ],
+        "numeric_field": "Tumor_variant_count"
+      },
+      "Summary": {
+        "group_field": "Domain_retention_flags",
+        "group_a_label": "retained",
+        "group_b_label": "not_retained",
+        "n_group_a": 8,
+        "n_group_b": 3,
+        "mle": {
+          "outcome_field": "Frame_status",
+          "groups": {
+            "retained": {
+              "n": 6,
+              "successes": 6,
+              "point_estimate": 1.0,
+              "ci_low": 0.6096657120978346,
+              "ci_high": 1.0,
+              "method": "wilson"
+            },
+            "not_retained": {
+              "n": 3,
+              "successes": 3,
+              "point_estimate": 1.0,
+              "ci_low": 0.43850296824495455,
+              "ci_high": 1.0,
+              "method": "wilson"
+            }
+          }
+        },
+        "ttest": {
+          "numeric_field": "Tumor_variant_count",
+          "group_a_label": "retained",
+          "group_b_label": "not_retained",
+          "n_a": 8,
+          "n_b": 3,
+          "t_statistic": -2.080156945968221,
+          "p_value": 0.09279837108866823,
+          "df": 4.933451551559599,
+          "mean_a": 26.75,
+          "mean_b": 62.666666666666664
+        },
+        "Runtime_seconds": 0.06948825001018122
+      },
+      "Tables": null,
+      "Warnings": [],
+      "Created_at": "2026-10-26T20:04:02.032725Z",
+      "Input_fingerprint": "9afde569b2365ed7c7e1a5e4197648fe7784a7b91a2cbe4fc27ff4458b0a5929"
+    },
+    {
+      "Algorithm": "cutpoint_detection",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 1000,
+        "adaptive": false
+      },
+      "Summary": {
+        "determinable": true,
+        "reason": null,
+        "n_events_analyzed": 11,
+        "inferred_cutpoint_aa": 259,
+        "observed_statistic_neg_log10_p": 2.2174839442139063,
+        "observed_p_value": 0.006060606060606061,
+        "observed_odds_ratio": 0.0,
+        "corrected_p_value": 0.003996003996003996,
+        "known_domain_boundary_comparison": {
+          "nearest_known_domain_boundary_aa": 284,
+          "distance_aa": -25
+        },
+        "Runtime_seconds": 0.031111958029214293
+      },
+      "Tables": {
+        "cutpoint_scan": [
+          {
+            "cutpoint": 259,
+            "n_positive_at_or_below": 0,
+            "n_positive_above": 8,
+            "n_negative_at_or_below": 3,
+            "n_negative_above": 0,
+            "odds_ratio": 0.0,
+            "p_value": 0.006060606060606061,
+            "neg_log10_p_value": 2.2174839442139063
+          },
+          {
+            "cutpoint": 285,
+            "n_positive_at_or_below": 1,
+            "n_positive_above": 7,
+            "n_negative_at_or_below": 3,
+            "n_negative_above": 0,
+            "odds_ratio": 0.0,
+            "p_value": 0.024242424242424242,
+            "neg_log10_p_value": 1.615423952885944
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-10-26T20:04:02.057790Z",
+      "Input_fingerprint": "9afde569b2365ed7c7e1a5e4197648fe7784a7b91a2cbe4fc27ff4458b0a5929"
+    },
+    {
+      "Algorithm": "domain_disruption",
+      "Algorithm_version": "0.4.0",
+      "Parameters": {},
+      "Summary": {
+        "fisher_odds_ratio": null,
+        "fisher_p_value": null,
+        "permutation_empirical_p_value": null,
+        "observed_in_frame_disruption_rate": null,
+        "Runtime_seconds": 2.9291026294231415e-05
+      },
+      "Tables": {},
+      "Warnings": [
+        "TPM3 has no disruption_required_domains configured; domain-disruption analysis was skipped."
+      ],
+      "Created_at": "2026-10-26T20:04:02.033864Z",
+      "Input_fingerprint": "9afde569b2365ed7c7e1a5e4197648fe7784a7b91a2cbe4fc27ff4458b0a5929"
+    },
+    {
+      "Algorithm": "domain_retention",
+      "Algorithm_version": "0.4.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 100000,
+        "adaptive": true
+      },
+      "Summary": {
+        "fisher_odds_ratio": 0.0,
+        "fisher_p_value": 1.0,
+        "permutation_empirical_p_value": 1.999980000199998e-05,
+        "observed_in_frame_retention_rate": 0.6666666666666666,
+        "permutation_null_classifier": "domain_coordinates",
+        "tumor_type_stratified": {
+          "stratified_by": "oncotree_code",
+          "cmh_statistic": 1.0,
+          "cmh_p_value": 0.31731050786291115,
+          "mh_common_odds_ratio": 0.0,
+          "direction": "negative",
+          "informative_strata": 1,
+          "total_strata": 5,
+          "unknown_stratum_observations": 0
+        },
+        "adaptive_permutations": {
+          "enabled": true,
+          "n_permutations_small": 100,
+          "n_permutations_full": 1000,
+          "n_permutations_used": 100000,
+          "n_permutations_max": 100000,
+          "escalated_to_full": true
+        },
+        "Runtime_seconds": 8.011559375037905
+      },
+      "Tables": {
+        "frame_domain_contingency_table": [
+          [
+            6,
+            2
+          ],
+          [
+            3,
+            0
+          ]
+        ],
+        "frame_domain_contingency_tables_by_tumor_type": [
+          {
+            "stratum": "COAD",
+            "table": [
+              [
+                1,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          {
+            "stratum": "GB",
+            "table": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          {
+            "stratum": "LUAD",
+            "table": [
+              [
+                2,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          {
+            "stratum": "SARCNOS",
+            "table": [
+              [
+                1,
+                0
+              ],
+              [
+                1,
+                0
+              ]
+            ]
+          },
+          {
+            "stratum": "THPA",
+            "table": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                0
+              ]
+            ]
+          }
+        ],
+        "domain_retention_descriptives": [
+          {
+            "Domain_key": "auto_key_domain",
+            "Domain_name": "Tropomyosin",
+            "Quantitative_call_count": 11,
+            "Fully_retained_count": 8,
+            "Truncated_count": 3,
+            "Fully_lost_count": 0,
+            "Mean_retained_fraction_among_non_retained_calls": 0.8940677966101694
+          }
+        ],
+        "permutation_null_retention_rates": {
+          "omitted_from_artifact": true,
+          "count": 100000
+        }
+      },
+      "Warnings": [],
+      "Created_at": "2026-10-26T20:04:01.959559Z",
+      "Input_fingerprint": "9afde569b2365ed7c7e1a5e4197648fe7784a7b91a2cbe4fc27ff4458b0a5929"
+    },
+    {
+      "Algorithm": "exon_retention",
+      "Algorithm_version": "1.0.0",
+      "Parameters": {
+        "target_exon": 2
+      },
+      "Summary": {
+        "target_exon": 2,
+        "retained_event_count": 11,
+        "total_event_count": 11,
+        "retained_fraction": 1.0,
+        "Runtime_seconds": 8.687499212101102e-05
+      },
+      "Tables": {
+        "Exon_retention": [
+          {
+            "Exon": 2,
+            "Retained_event_count": 11,
+            "Total_event_count": 11,
+            "Retained_fraction": 1.0
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-10-26T20:04:02.033985Z",
+      "Input_fingerprint": "9afde569b2365ed7c7e1a5e4197648fe7784a7b91a2cbe4fc27ff4458b0a5929"
+    },
+    {
+      "Algorithm": "expression_association",
+      "Algorithm_version": "0.2.0",
+      "Parameters": {},
+      "Summary": {
+        "Runtime_seconds": 5.924998549744487e-05
+      },
+      "Tables": null,
+      "Warnings": [
+        "No mRNA expression data was available for TPM3 in this cohort; expression-association analysis was skipped."
+      ],
+      "Created_at": "2026-10-26T20:04:02.035907Z",
+      "Input_fingerprint": "9afde569b2365ed7c7e1a5e4197648fe7784a7b91a2cbe4fc27ff4458b0a5929"
+    },
+    {
+      "Algorithm": "frequency",
+      "Algorithm_version": "1.1.0",
+      "Parameters": {
+        "dedup_by_patient": false
+      },
+      "Summary": {
+        "input_event_count": 14,
+        "input_sample_count": 14,
+        "input_patient_count": 11,
+        "input_missing_patient_id_event_count": 0,
+        "analyzed_event_count": 14,
+        "counted_unit_count": 14,
+        "analyzed_sample_count": 14,
+        "analyzed_patient_count": 11,
+        "count_unit": "event",
+        "unique_partner_gene_count": 2,
+        "Runtime_seconds": 0.0001676660031080246
+      },
+      "Tables": {
+        "Partner_gene_counts": [
+          {
+            "Partner_gene": "NTRK1",
+            "Event_count": 12,
+            "Raw_event_count": 12,
+            "Sample_count": 12,
+            "Patient_count": 9
+          },
+          {
+            "Partner_gene": "ROS1",
+            "Event_count": 2,
+            "Raw_event_count": 2,
+            "Sample_count": 2,
+            "Patient_count": 2
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-10-26T20:04:01.962238Z",
+      "Input_fingerprint": "20e139d9de7f9f09fab3a7fb402031739013803fb3b2c02c3fdf3de80c47ec77"
+    },
+    {
+      "Algorithm": "genomic_position_recurrence",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "bin_size_bp": 1000
+      },
+      "Summary": {
+        "determinable": true,
+        "reason": null,
+        "n_events_analyzed": 11,
+        "n_events_excluded_missing_position": 0,
+        "n_events_excluded_other_build": 0,
+        "n_events_excluded_other_reported_build": 0,
+        "n_events_unknown_build": 0,
+        "n_events_excluded_unknown_build": 0,
+        "reference_build": "GRCh37",
+        "reference_build_counts": {
+          "GRCh37": 11
+        },
+        "bin_size_bp": 1000,
+        "n_distinct_genomic_positions": 11,
+        "top_genomic_bin": {
+          "chromosome": "1",
+          "bin_start": 154142000,
+          "bin_end": 154143000,
+          "n_events": 3,
+          "event_ids": [
+            "EVT-P-0021170-T02-IM6-4",
+            "EVT-P-0026375-T01-IM6-8",
+            "EVT-P-0046877-T02-IM6-10"
+          ]
+        },
+        "n_positions_shared_by_multiple_events": 0,
+        "genomic_vs_protein_clustering_note": "The 3 events sharing protein position 259 aa use 3 distinct genomic positions spanning 425 bp -- the protein-position recurrence is broader than any single genomic hotspot, consistent with independent intronic breakpoints mapped (or clamped) onto the same protein/exon boundary rather than one shared DNA lesion.",
+        "Runtime_seconds": 0.0001254999660886824
+      },
+      "Tables": {
+        "genomic_bin_recurrence": [
+          {
+            "chromosome": "1",
+            "bin_start": 154142000,
+            "bin_end": 154143000,
+            "n_events": 3,
+            "event_ids": [
+              "EVT-P-0021170-T02-IM6-4",
+              "EVT-P-0026375-T01-IM6-8",
+              "EVT-P-0046877-T02-IM6-10"
+            ]
+          },
+          {
+            "chromosome": "1",
+            "bin_start": 154130000,
+            "bin_end": 154131000,
+            "n_events": 1,
+            "event_ids": [
+              "EVT-P-0050767-T01-IM6-13"
+            ]
+          },
+          {
+            "chromosome": "1",
+            "bin_start": 154133000,
+            "bin_end": 154134000,
+            "n_events": 1,
+            "event_ids": [
+              "EVT-P-0028865-T02-IM6-2"
+            ]
+          },
+          {
+            "chromosome": "1",
+            "bin_start": 154134000,
+            "bin_end": 154135000,
+            "n_events": 1,
+            "event_ids": [
+              "EVT-P-0025815-T02-IM6-7"
+            ]
+          },
+          {
+            "chromosome": "1",
+            "bin_start": 154135000,
+            "bin_end": 154136000,
+            "n_events": 1,
+            "event_ids": [
+              "EVT-P-0003207-T01-IM5-1"
+            ]
+          },
+          {
+            "chromosome": "1",
+            "bin_start": 154136000,
+            "bin_end": 154137000,
+            "n_events": 1,
+            "event_ids": [
+              "EVT-P-0049078-T01-IM6-11"
+            ]
+          },
+          {
+            "chromosome": "1",
+            "bin_start": 154138000,
+            "bin_end": 154139000,
+            "n_events": 1,
+            "event_ids": [
+              "EVT-P-0014143-T01-IM5-3"
+            ]
+          },
+          {
+            "chromosome": "1",
+            "bin_start": 154139000,
+            "bin_end": 154140000,
+            "n_events": 1,
+            "event_ids": [
+              "EVT-P-0021467-T01-IM6-6"
+            ]
+          },
+          {
+            "chromosome": "1",
+            "bin_start": 154141000,
+            "bin_end": 154142000,
+            "n_events": 1,
+            "event_ids": [
+              "EVT-P-0069266-T01-IM7-14"
+            ]
+          }
+        ],
+        "exact_position_recurrence": [],
+        "protein_position_genomic_spread": [
+          {
+            "protein_position_aa": 286,
+            "n_events": 7,
+            "n_distinct_genomic_positions": 7,
+            "genomic_span_bp": 8910,
+            "spans_multiple_chromosomes": false
+          },
+          {
+            "protein_position_aa": 259,
+            "n_events": 3,
+            "n_distinct_genomic_positions": 3,
+            "genomic_span_bp": 425,
+            "spans_multiple_chromosomes": false
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-10-26T20:04:02.059497Z",
+      "Input_fingerprint": "9afde569b2365ed7c7e1a5e4197648fe7784a7b91a2cbe4fc27ff4458b0a5929"
+    },
+    {
+      "Algorithm": "joint_partner",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {},
+      "Summary": {
+        "Runtime_seconds": 1.383305061608553e-05
+      },
+      "Tables": {},
+      "Warnings": [
+        "TPM3 has no gene_pair configured; joint-partner analysis was skipped."
+      ],
+      "Created_at": "2026-10-26T20:04:02.035130Z",
+      "Input_fingerprint": "9afde569b2365ed7c7e1a5e4197648fe7784a7b91a2cbe4fc27ff4458b0a5929"
+    },
+    {
+      "Algorithm": "junction_concentration",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 100,
+        "min_events": 5,
+        "adaptive": true
+      },
+      "Summary": {
+        "determinable": false,
+        "reason": "4 event(s) with a known junction exon inside the transcript; at least 5 are needed",
+        "n_events_analyzed": 4,
+        "n_outside_transcript": 7,
+        "permutation_empirical_p_value": null,
+        "Runtime_seconds": 9.3792041298002e-05
+      },
+      "Tables": {
+        "junction_counts": []
+      },
+      "Warnings": [
+        "4 event(s) with a known junction exon inside the transcript; at least 5 are needed"
+      ],
+      "Created_at": "2026-10-26T20:04:02.035081Z",
+      "Input_fingerprint": "9afde569b2365ed7c7e1a5e4197648fe7784a7b91a2cbe4fc27ff4458b0a5929"
+    },
+    {
+      "Algorithm": "mechanistic_interpretation",
+      "Algorithm_version": "1.1.0",
+      "Parameters": {
+        "alpha": 0.05,
+        "recurrent_partner_threshold": 2
+      },
+      "Summary": {
+        "retention_domains_configured": true,
+        "retention_domain_names": [
+          "Tropomyosin"
+        ],
+        "retention_tested_domain_accession": "PF00261",
+        "retention_configured_domain_count": 1,
+        "retention_statistically_supported": false,
+        "retention_nominal_fisher_supported": false,
+        "retention_fdr_q_value": 1.0,
+        "retention_fdr_significant": false,
+        "retention_fisher_evidence_status": "not_fdr_supported",
+        "retention_recurrence_evidence_type": "descriptive_heuristic",
+        "retention_fisher_p_value": 1.0,
+        "retention_fisher_odds_ratio": 0.0,
+        "retention_counter_intuitive_confidence": "not_applicable",
+        "retention_counter_intuitive_count": 0,
+        "retention_counter_intuitive_total": 0,
+        "retention_counter_intuitive_percent": null,
+        "disruption_domains_configured": false,
+        "disruption_domain_names": [],
+        "disruption_tested_domain_accession": null,
+        "disruption_configured_domain_count": 0,
+        "disruption_statistically_supported": false,
+        "disruption_nominal_fisher_supported": false,
+        "disruption_fdr_q_value": null,
+        "disruption_fdr_significant": null,
+        "disruption_fisher_evidence_status": "not_tested",
+        "disruption_recurrence_evidence_type": "descriptive_heuristic",
+        "disruption_fisher_p_value": null,
+        "disruption_fisher_odds_ratio": null,
+        "disruption_counter_intuitive_confidence": "not_applicable",
+        "disruption_counter_intuitive_count": 0,
+        "disruption_counter_intuitive_total": 0,
+        "disruption_counter_intuitive_percent": null,
+        "Runtime_seconds": 5.408399738371372e-05
+      },
+      "Tables": {},
+      "Warnings": [],
+      "Created_at": "2026-10-26T20:04:02.059356Z",
+      "Input_fingerprint": "9afde569b2365ed7c7e1a5e4197648fe7784a7b91a2cbe4fc27ff4458b0a5929"
+    },
+    {
+      "Algorithm": "mutation_cooccurrence",
+      "Algorithm_version": "0.2.0",
+      "Parameters": {},
+      "Summary": {
+        "targets": [],
+        "Runtime_seconds": 3.0124967452138662e-05
+      },
+      "Tables": {},
+      "Warnings": [
+        "TPM3 has no mutual_exclusivity_targets configured; co-occurrence/mutual-exclusivity analysis was skipped."
+      ],
+      "Created_at": "2026-10-26T20:04:02.039275Z",
+      "Input_fingerprint": "9afde569b2365ed7c7e1a5e4197648fe7784a7b91a2cbe4fc27ff4458b0a5929"
+    },
+    {
+      "Algorithm": "window_detection",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 1000,
+        "widths": [
+          25,
+          50,
+          100,
+          200
+        ],
+        "min_events_per_window": 4,
+        "adaptive": false
+      },
+      "Summary": {
+        "determinable": true,
+        "reason": null,
+        "n_events_analyzed": 11,
+        "widths_tested_aa": [
+          25,
+          50,
+          100,
+          200
+        ],
+        "min_events_per_window": 4,
+        "n_candidate_windows": 7,
+        "n_distinct_candidate_windows_by_event_mask": 2,
+        "best_window": {
+          "start_aa": 286,
+          "end_aa": 311,
+          "width_aa": 25
+        },
+        "observed_statistic_neg_log10_p": 1.615423952885944,
+        "observed_p_value": 0.024242424242424242,
+        "observed_odds_ratio": null,
+        "corrected_p_value": 0.028971028971028972,
+        "known_domain_boundary_comparison": {
+          "start_aa": {
+            "nearest_known_domain_boundary_aa": 284,
+            "distance_aa": 2
+          },
+          "end_aa": {
+            "nearest_known_domain_boundary_aa": 284,
+            "distance_aa": 27
+          }
+        },
+        "mapping_sensitivity": {
+          "available": true,
+          "n_events": 11,
+          "n_exact": 0,
+          "n_clamped_or_approximate": 11,
+          "n_unknown": 0,
+          "fraction_clamped_or_approximate": 1.0
+        },
+        "best_window_mapping_sensitivity": {
+          "available": true,
+          "n_events": 7,
+          "n_exact": 0,
+          "n_clamped_or_approximate": 7,
+          "n_unknown": 0,
+          "fraction_clamped_or_approximate": 1.0
+        },
+        "Runtime_seconds": 0.0219281250028871
+      },
+      "Tables": {
+        "window_scan": [
+          {
+            "start_aa": 85,
+            "end_aa": 285,
+            "width_aa": 200,
+            "n_events_inside": 4,
+            "n_events_outside": 7,
+            "n_positive_inside": 1,
+            "n_positive_outside": 7,
+            "odds_ratio": 0.0,
+            "p_value": 0.024242424242424242,
+            "neg_log10_p_value": 1.615423952885944,
+            "event_ids_inside": [
+              "EVT-P-0021170-T02-IM6-4",
+              "EVT-P-0026375-T01-IM6-8",
+              "EVT-P-0046877-T02-IM6-10",
+              "EVT-P-0069266-T01-IM7-14"
+            ]
+          },
+          {
+            "start_aa": 185,
+            "end_aa": 285,
+            "width_aa": 100,
+            "n_events_inside": 4,
+            "n_events_outside": 7,
+            "n_positive_inside": 1,
+            "n_positive_outside": 7,
+            "odds_ratio": 0.0,
+            "p_value": 0.024242424242424242,
+            "neg_log10_p_value": 1.615423952885944,
+            "event_ids_inside": [
+              "EVT-P-0021170-T02-IM6-4",
+              "EVT-P-0026375-T01-IM6-8",
+              "EVT-P-0046877-T02-IM6-10",
+              "EVT-P-0069266-T01-IM7-14"
+            ]
+          },
+          {
+            "start_aa": 235,
+            "end_aa": 285,
+            "width_aa": 50,
+            "n_events_inside": 4,
+            "n_events_outside": 7,
+            "n_positive_inside": 1,
+            "n_positive_outside": 7,
+            "odds_ratio": 0.0,
+            "p_value": 0.024242424242424242,
+            "neg_log10_p_value": 1.615423952885944,
+            "event_ids_inside": [
+              "EVT-P-0021170-T02-IM6-4",
+              "EVT-P-0026375-T01-IM6-8",
+              "EVT-P-0046877-T02-IM6-10",
+              "EVT-P-0069266-T01-IM7-14"
+            ]
+          },
+          {
+            "start_aa": 286,
+            "end_aa": 311,
+            "width_aa": 25,
+            "n_events_inside": 7,
+            "n_events_outside": 4,
+            "n_positive_inside": 7,
+            "n_positive_outside": 1,
+            "odds_ratio": null,
+            "p_value": 0.024242424242424242,
+            "neg_log10_p_value": 1.615423952885944,
+            "event_ids_inside": [
+              "EVT-P-0003207-T01-IM5-1",
+              "EVT-P-0014143-T01-IM5-3",
+              "EVT-P-0021467-T01-IM6-6",
+              "EVT-P-0025815-T02-IM6-7",
+              "EVT-P-0028865-T02-IM6-2",
+              "EVT-P-0049078-T01-IM6-11",
+              "EVT-P-0050767-T01-IM6-13"
+            ]
+          },
+          {
+            "start_aa": 286,
+            "end_aa": 336,
+            "width_aa": 50,
+            "n_events_inside": 7,
+            "n_events_outside": 4,
+            "n_positive_inside": 7,
+            "n_positive_outside": 1,
+            "odds_ratio": null,
+            "p_value": 0.024242424242424242,
+            "neg_log10_p_value": 1.615423952885944,
+            "event_ids_inside": [
+              "EVT-P-0003207-T01-IM5-1",
+              "EVT-P-0014143-T01-IM5-3",
+              "EVT-P-0021467-T01-IM6-6",
+              "EVT-P-0025815-T02-IM6-7",
+              "EVT-P-0028865-T02-IM6-2",
+              "EVT-P-0049078-T01-IM6-11",
+              "EVT-P-0050767-T01-IM6-13"
+            ]
+          },
+          {
+            "start_aa": 286,
+            "end_aa": 386,
+            "width_aa": 100,
+            "n_events_inside": 7,
+            "n_events_outside": 4,
+            "n_positive_inside": 7,
+            "n_positive_outside": 1,
+            "odds_ratio": null,
+            "p_value": 0.024242424242424242,
+            "neg_log10_p_value": 1.615423952885944,
+            "event_ids_inside": [
+              "EVT-P-0003207-T01-IM5-1",
+              "EVT-P-0014143-T01-IM5-3",
+              "EVT-P-0021467-T01-IM6-6",
+              "EVT-P-0025815-T02-IM6-7",
+              "EVT-P-0028865-T02-IM6-2",
+              "EVT-P-0049078-T01-IM6-11",
+              "EVT-P-0050767-T01-IM6-13"
+            ]
+          },
+          {
+            "start_aa": 286,
+            "end_aa": 486,
+            "width_aa": 200,
+            "n_events_inside": 7,
+            "n_events_outside": 4,
+            "n_positive_inside": 7,
+            "n_positive_outside": 1,
+            "odds_ratio": null,
+            "p_value": 0.024242424242424242,
+            "neg_log10_p_value": 1.615423952885944,
+            "event_ids_inside": [
+              "EVT-P-0003207-T01-IM5-1",
+              "EVT-P-0014143-T01-IM5-3",
+              "EVT-P-0021467-T01-IM6-6",
+              "EVT-P-0025815-T02-IM6-7",
+              "EVT-P-0028865-T02-IM6-2",
+              "EVT-P-0049078-T01-IM6-11",
+              "EVT-P-0050767-T01-IM6-13"
+            ]
+          }
+        ],
+        "top_windows": [
+          {
+            "start_aa": 286,
+            "end_aa": 311,
+            "width_aa": 25,
+            "n_events_inside": 7,
+            "n_events_outside": 4,
+            "n_positive_inside": 7,
+            "n_positive_outside": 1,
+            "odds_ratio": null,
+            "p_value": 0.024242424242424242,
+            "neg_log10_p_value": 1.615423952885944,
+            "event_ids_inside": [
+              "EVT-P-0003207-T01-IM5-1",
+              "EVT-P-0014143-T01-IM5-3",
+              "EVT-P-0021467-T01-IM6-6",
+              "EVT-P-0025815-T02-IM6-7",
+              "EVT-P-0028865-T02-IM6-2",
+              "EVT-P-0049078-T01-IM6-11",
+              "EVT-P-0050767-T01-IM6-13"
+            ]
+          },
+          {
+            "start_aa": 235,
+            "end_aa": 285,
+            "width_aa": 50,
+            "n_events_inside": 4,
+            "n_events_outside": 7,
+            "n_positive_inside": 1,
+            "n_positive_outside": 7,
+            "odds_ratio": 0.0,
+            "p_value": 0.024242424242424242,
+            "neg_log10_p_value": 1.615423952885944,
+            "event_ids_inside": [
+              "EVT-P-0021170-T02-IM6-4",
+              "EVT-P-0026375-T01-IM6-8",
+              "EVT-P-0046877-T02-IM6-10",
+              "EVT-P-0069266-T01-IM7-14"
+            ]
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-10-26T20:04:02.058042Z",
+      "Input_fingerprint": "9afde569b2365ed7c7e1a5e4197648fe7784a7b91a2cbe4fc27ff4458b0a5929"
+    }
+  ],
+  "reference": null,
+  "gene_track": {
+    "protein_length": 285,
+    "domains": [
+      {
+        "name": "Tropomyosin",
+        "accession": "PF00261",
+        "start_aa": 49,
+        "end_aa": 284
+      }
+    ],
+    "exon_boundaries_aa": [
+      {
+        "exon_rank": 1,
+        "start_aa": 1,
+        "end_aa": 39
+      },
+      {
+        "exon_rank": 2,
+        "start_aa": 40,
+        "end_aa": 81
+      },
+      {
+        "exon_rank": 3,
+        "start_aa": 82,
+        "end_aa": 126
+      },
+      {
+        "exon_rank": 4,
+        "start_aa": 126,
+        "end_aa": 165
+      },
+      {
+        "exon_rank": 5,
+        "start_aa": 166,
+        "end_aa": 189
+      },
+      {
+        "exon_rank": 6,
+        "start_aa": 189,
+        "end_aa": 214
+      },
+      {
+        "exon_rank": 7,
+        "start_aa": 215,
+        "end_aa": 235
+      },
+      {
+        "exon_rank": 8,
+        "start_aa": 236,
+        "end_aa": 259
+      },
+      {
+        "exon_rank": 9,
+        "start_aa": 259,
+        "end_aa": 285
+      },
+      {
+        "exon_rank": 10,
+        "start_aa": 285,
+        "end_aa": 286
+      }
+    ]
+  },
+  "intragenic_deletions": []
+}

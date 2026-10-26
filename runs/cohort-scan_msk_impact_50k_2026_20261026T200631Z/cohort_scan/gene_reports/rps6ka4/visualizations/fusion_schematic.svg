@@ -1,0 +1,294 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="432" viewBox="0 0 1000 432">
+<rect width="1000" height="432" fill="white"/>
+<text x="60" y="24" font-family="sans-serif" font-size="15">RPS6KA4 fusion-transcript schematic</text>
+<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555555">Fusion order varies by row; follow each row's 5' and 3' labels (RPS6KA4 portion is domain-colored, exon ticks). Partner-gene blocks share one color; row labels identify each partner.</text>
+<rect x="60.0" y="56.0" width="138.5" height="22" fill="#8064a2"><title>Partner gene BAD; RPS6KA4–BAD fusion, breakpoint RPS6KA4 aa 191; samples P-0007565-T02-IM6, P-0007565-T06-IM7</title></rect>
+<rect x="198.5" y="56.0" width="421.5" height="22" fill="#e2e2e2"><title>RPS6KA4 backbone (191-772 aa, no domain); domain status retained; RPS6KA4–BAD fusion, breakpoint RPS6KA4 aa 191; samples P-0007565-T02-IM6, P-0007565-T06-IM7</title></rect>
+<rect x="292.8" y="56.0" width="31.9" height="22" fill="#2878b5"><title>Protein kinase C terminal domain retained (321-365 aa); RPS6KA4–BAD fusion, breakpoint RPS6KA4 aa 191; samples P-0007565-T02-IM6, P-0007565-T06-IM7</title></rect>
+<text x="308.8" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protei…</text>
+<rect x="361.8" y="56.0" width="186.4" height="22" fill="#2878b5"><title>Protein kinase domain retained (416-673 aa); RPS6KA4–BAD fusion, breakpoint RPS6KA4 aa 191; samples P-0007565-T02-IM6, P-0007565-T06-IM7</title></rect>
+<text x="455.0" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<rect x="198.5" y="56.0" width="79.8" height="22" fill="#f2a93b"><title>Protein kinase domain truncated (191-301 aa); RPS6KA4–BAD fusion, breakpoint RPS6KA4 aa 191; samples P-0007565-T02-IM6, P-0007565-T06-IM7</title></rect>
+<text x="238.4" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase dom…</text>
+<line x1="218.1" y1="56.0" x2="218.1" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="242.8" y1="56.0" x2="242.8" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="279.8" y1="56.0" x2="279.8" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="319.7" y1="56.0" x2="319.7" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="350.9" y1="56.0" x2="350.9" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="382.8" y1="56.0" x2="382.8" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="406.0" y1="56.0" x2="406.0" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="448.1" y1="56.0" x2="448.1" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="495.2" y1="56.0" x2="495.2" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="533.7" y1="56.0" x2="533.7" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="573.6" y1="56.0" x2="573.6" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="198.5" y1="55.0" x2="198.5" y2="79.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; RPS6KA4–BAD fusion, breakpoint RPS6KA4 aa 191; samples P-0007565-T02-IM6, P-0007565-T06-IM7</title></line>
+<text x="64.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="70.5" font-family="sans-serif" font-size="9.5">BAD (x2) – Protein kinase domain retained – Pancreatic Cancer</text>
+<rect x="60.0" y="82.0" width="13.8" height="22" fill="#8064a2"><title>Partner gene FERMT3; RPS6KA4–FERMT3 fusion, breakpoint RPS6KA4 aa 19; sample P-0031756-T01-IM6</title></rect>
+<rect x="73.8" y="82.0" width="546.2" height="22" fill="#e2e2e2"><title>RPS6KA4 backbone (19-772 aa, no domain); domain status retained; RPS6KA4–FERMT3 fusion, breakpoint RPS6KA4 aa 19; sample P-0031756-T01-IM6</title></rect>
+<rect x="292.8" y="82.0" width="31.9" height="22" fill="#2878b5"><title>Protein kinase C terminal domain retained (321-365 aa); RPS6KA4–FERMT3 fusion, breakpoint RPS6KA4 aa 19; sample P-0031756-T01-IM6</title></rect>
+<text x="308.8" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protei…</text>
+<rect x="361.8" y="82.0" width="186.4" height="22" fill="#2878b5"><title>Protein kinase domain retained (416-673 aa); RPS6KA4–FERMT3 fusion, breakpoint RPS6KA4 aa 19; sample P-0031756-T01-IM6</title></rect>
+<text x="455.0" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<rect x="83.9" y="82.0" width="194.4" height="22" fill="#2878b5"><title>Protein kinase domain retained (33-301 aa); RPS6KA4–FERMT3 fusion, breakpoint RPS6KA4 aa 19; sample P-0031756-T01-IM6</title></rect>
+<text x="181.1" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="91.2" y1="82.0" x2="91.2" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="144.1" y1="82.0" x2="144.1" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="172.4" y1="82.0" x2="172.4" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="198.5" y1="82.0" x2="198.5" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="218.1" y1="82.0" x2="218.1" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="242.8" y1="82.0" x2="242.8" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="279.8" y1="82.0" x2="279.8" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="319.7" y1="82.0" x2="319.7" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="350.9" y1="82.0" x2="350.9" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="382.8" y1="82.0" x2="382.8" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="406.0" y1="82.0" x2="406.0" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="448.1" y1="82.0" x2="448.1" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="495.2" y1="82.0" x2="495.2" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="533.7" y1="82.0" x2="533.7" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="573.6" y1="82.0" x2="573.6" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="73.8" y1="81.0" x2="73.8" y2="105.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; RPS6KA4–FERMT3 fusion, breakpoint RPS6KA4 aa 19; sample P-0031756-T01-IM6</title></line>
+<text x="64.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="96.5" font-family="sans-serif" font-size="9.5">FERMT3 – Protein kinase domain retained – Non-Small Cell Lung Cancer</text>
+<rect x="60.0" y="108.0" width="138.5" height="22" fill="#8064a2"><title>Partner gene MARK2; RPS6KA4–MARK2 fusion, breakpoint RPS6KA4 aa 191; sample P-0039225-T01-IM6</title></rect>
+<rect x="198.5" y="108.0" width="421.5" height="22" fill="#e2e2e2"><title>RPS6KA4 backbone (191-772 aa, no domain); domain status retained; RPS6KA4–MARK2 fusion, breakpoint RPS6KA4 aa 191; sample P-0039225-T01-IM6</title></rect>
+<rect x="292.8" y="108.0" width="31.9" height="22" fill="#2878b5"><title>Protein kinase C terminal domain retained (321-365 aa); RPS6KA4–MARK2 fusion, breakpoint RPS6KA4 aa 191; sample P-0039225-T01-IM6</title></rect>
+<text x="308.8" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protei…</text>
+<rect x="361.8" y="108.0" width="186.4" height="22" fill="#2878b5"><title>Protein kinase domain retained (416-673 aa); RPS6KA4–MARK2 fusion, breakpoint RPS6KA4 aa 191; sample P-0039225-T01-IM6</title></rect>
+<text x="455.0" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<rect x="198.5" y="108.0" width="79.8" height="22" fill="#f2a93b"><title>Protein kinase domain truncated (191-301 aa); RPS6KA4–MARK2 fusion, breakpoint RPS6KA4 aa 191; sample P-0039225-T01-IM6</title></rect>
+<text x="238.4" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase dom…</text>
+<line x1="218.1" y1="108.0" x2="218.1" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="242.8" y1="108.0" x2="242.8" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="279.8" y1="108.0" x2="279.8" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="319.7" y1="108.0" x2="319.7" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="350.9" y1="108.0" x2="350.9" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="382.8" y1="108.0" x2="382.8" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="406.0" y1="108.0" x2="406.0" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="448.1" y1="108.0" x2="448.1" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="495.2" y1="108.0" x2="495.2" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="533.7" y1="108.0" x2="533.7" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="573.6" y1="108.0" x2="573.6" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="198.5" y1="107.0" x2="198.5" y2="131.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; RPS6KA4–MARK2 fusion, breakpoint RPS6KA4 aa 191; sample P-0039225-T01-IM6</title></line>
+<text x="64.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="122.5" font-family="sans-serif" font-size="9.5">MARK2 – Protein kinase domain retained – Breast Cancer</text>
+<rect x="60.0" y="134.0" width="138.5" height="22" fill="#8064a2"><title>Partner gene TTYH2; RPS6KA4–TTYH2 fusion, breakpoint RPS6KA4 aa 191; sample P-0039225-T01-IM6</title></rect>
+<rect x="198.5" y="134.0" width="421.5" height="22" fill="#e2e2e2"><title>RPS6KA4 backbone (191-772 aa, no domain); domain status retained; RPS6KA4–TTYH2 fusion, breakpoint RPS6KA4 aa 191; sample P-0039225-T01-IM6</title></rect>
+<rect x="292.8" y="134.0" width="31.9" height="22" fill="#2878b5"><title>Protein kinase C terminal domain retained (321-365 aa); RPS6KA4–TTYH2 fusion, breakpoint RPS6KA4 aa 191; sample P-0039225-T01-IM6</title></rect>
+<text x="308.8" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protei…</text>
+<rect x="361.8" y="134.0" width="186.4" height="22" fill="#2878b5"><title>Protein kinase domain retained (416-673 aa); RPS6KA4–TTYH2 fusion, breakpoint RPS6KA4 aa 191; sample P-0039225-T01-IM6</title></rect>
+<text x="455.0" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<rect x="198.5" y="134.0" width="79.8" height="22" fill="#f2a93b"><title>Protein kinase domain truncated (191-301 aa); RPS6KA4–TTYH2 fusion, breakpoint RPS6KA4 aa 191; sample P-0039225-T01-IM6</title></rect>
+<text x="238.4" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase dom…</text>
+<line x1="218.1" y1="134.0" x2="218.1" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="242.8" y1="134.0" x2="242.8" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="279.8" y1="134.0" x2="279.8" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="319.7" y1="134.0" x2="319.7" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="350.9" y1="134.0" x2="350.9" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="382.8" y1="134.0" x2="382.8" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="406.0" y1="134.0" x2="406.0" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="448.1" y1="134.0" x2="448.1" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="495.2" y1="134.0" x2="495.2" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="533.7" y1="134.0" x2="533.7" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="573.6" y1="134.0" x2="573.6" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="198.5" y1="133.0" x2="198.5" y2="157.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; RPS6KA4–TTYH2 fusion, breakpoint RPS6KA4 aa 191; sample P-0039225-T01-IM6</title></line>
+<text x="64.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="148.5" font-family="sans-serif" font-size="9.5">TTYH2 – Protein kinase domain retained – Breast Cancer</text>
+<rect x="60.0" y="160.0" width="151.6" height="22" fill="#8064a2"><title>Partner gene PLEKHA7; RPS6KA4–PLEKHA7 fusion, breakpoint RPS6KA4 aa 209; sample P-0037180-T01-IM6</title></rect>
+<rect x="211.6" y="160.0" width="408.4" height="22" fill="#e2e2e2"><title>RPS6KA4 backbone (209-772 aa, no domain); domain status retained; RPS6KA4–PLEKHA7 fusion, breakpoint RPS6KA4 aa 209; sample P-0037180-T01-IM6</title></rect>
+<rect x="292.8" y="160.0" width="31.9" height="22" fill="#2878b5"><title>Protein kinase C terminal domain retained (321-365 aa); RPS6KA4–PLEKHA7 fusion, breakpoint RPS6KA4 aa 209; sample P-0037180-T01-IM6</title></rect>
+<text x="308.8" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protei…</text>
+<rect x="361.8" y="160.0" width="186.4" height="22" fill="#2878b5"><title>Protein kinase domain retained (416-673 aa); RPS6KA4–PLEKHA7 fusion, breakpoint RPS6KA4 aa 209; sample P-0037180-T01-IM6</title></rect>
+<text x="455.0" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<rect x="211.6" y="160.0" width="66.7" height="22" fill="#f2a93b"><title>Protein kinase domain truncated (209-301 aa); RPS6KA4–PLEKHA7 fusion, breakpoint RPS6KA4 aa 209; sample P-0037180-T01-IM6</title></rect>
+<text x="245.0" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase…</text>
+<line x1="218.1" y1="160.0" x2="218.1" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="242.8" y1="160.0" x2="242.8" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="279.8" y1="160.0" x2="279.8" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="319.7" y1="160.0" x2="319.7" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="350.9" y1="160.0" x2="350.9" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="382.8" y1="160.0" x2="382.8" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="406.0" y1="160.0" x2="406.0" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="448.1" y1="160.0" x2="448.1" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="495.2" y1="160.0" x2="495.2" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="533.7" y1="160.0" x2="533.7" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="573.6" y1="160.0" x2="573.6" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="211.6" y1="159.0" x2="211.6" y2="183.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; RPS6KA4–PLEKHA7 fusion, breakpoint RPS6KA4 aa 209; sample P-0037180-T01-IM6</title></line>
+<text x="64.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="174.5" font-family="sans-serif" font-size="9.5">PLEKHA7 – Protein kinase domain retained – Colorectal Cancer</text>
+<rect x="217.4" y="186.0" width="402.6" height="22" fill="#8064a2"><title>Partner gene EEFSEC; RPS6KA4–EEFSEC fusion, breakpoint RPS6KA4 aa 217; sample P-0040997-T01-IM6</title></rect>
+<rect x="60.0" y="186.0" width="157.4" height="22" fill="#e2e2e2"><title>RPS6KA4 backbone (0-217 aa, no domain); domain status lost; RPS6KA4–EEFSEC fusion, breakpoint RPS6KA4 aa 217; sample P-0040997-T01-IM6</title></rect>
+<rect x="83.9" y="186.0" width="133.5" height="22" fill="#f2a93b"><title>Protein kinase domain truncated (33-217 aa); RPS6KA4–EEFSEC fusion, breakpoint RPS6KA4 aa 217; sample P-0040997-T01-IM6</title></rect>
+<text x="150.7" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="60.7" y1="186.0" x2="60.7" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="73.8" y1="186.0" x2="73.8" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="91.2" y1="186.0" x2="91.2" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="144.1" y1="186.0" x2="144.1" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="172.4" y1="186.0" x2="172.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="198.5" y1="186.0" x2="198.5" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="217.4" y1="185.0" x2="217.4" y2="209.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; RPS6KA4–EEFSEC fusion, breakpoint RPS6KA4 aa 217; sample P-0040997-T01-IM6</title></line>
+<text x="64.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="200.5" font-family="sans-serif" font-size="9.5">EEFSEC – Protein kinase domain lost – Germ Cell Tumor</text>
+<rect x="60.0" y="212.0" width="259.7" height="22" fill="#8064a2"><title>Partner gene DOCK2; RPS6KA4–DOCK2 fusion, breakpoint RPS6KA4 aa 358; sample P-0012674-T01-IM5</title></rect>
+<rect x="319.7" y="212.0" width="300.3" height="22" fill="#e2e2e2"><title>RPS6KA4 backbone (358-772 aa, no domain); domain status retained; RPS6KA4–DOCK2 fusion, breakpoint RPS6KA4 aa 358; sample P-0012674-T01-IM5</title></rect>
+<rect x="319.7" y="212.0" width="5.1" height="22" fill="#f2a93b"><title>Protein kinase C terminal domain truncated (358-365 aa); RPS6KA4–DOCK2 fusion, breakpoint RPS6KA4 aa 358; sample P-0012674-T01-IM5</title></rect>
+<rect x="361.8" y="212.0" width="186.4" height="22" fill="#2878b5"><title>Protein kinase domain retained (416-673 aa); RPS6KA4–DOCK2 fusion, breakpoint RPS6KA4 aa 358; sample P-0012674-T01-IM5</title></rect>
+<text x="455.0" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="350.9" y1="212.0" x2="350.9" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="382.8" y1="212.0" x2="382.8" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="406.0" y1="212.0" x2="406.0" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="448.1" y1="212.0" x2="448.1" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="495.2" y1="212.0" x2="495.2" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="533.7" y1="212.0" x2="533.7" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="573.6" y1="212.0" x2="573.6" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="319.7" y1="211.0" x2="319.7" y2="235.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; RPS6KA4–DOCK2 fusion, breakpoint RPS6KA4 aa 358; sample P-0012674-T01-IM5</title></line>
+<text x="64.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="226.5" font-family="sans-serif" font-size="9.5">DOCK2 – Protein kinase domain retained – Breast Cancer</text>
+<rect x="60.0" y="238.0" width="427.3" height="22" fill="#8064a2"><title>Partner gene STIP1; RPS6KA4–STIP1 fusion, breakpoint RPS6KA4 aa 589; sample P-0048702-T01-IM6</title></rect>
+<rect x="487.3" y="238.0" width="132.7" height="22" fill="#e2e2e2"><title>RPS6KA4 backbone (589-772 aa, no domain); domain status truncated; RPS6KA4–STIP1 fusion, breakpoint RPS6KA4 aa 589; sample P-0048702-T01-IM6</title></rect>
+<rect x="487.3" y="238.0" width="60.9" height="22" fill="#f2a93b"><title>Protein kinase domain truncated (589-673 aa); RPS6KA4–STIP1 fusion, breakpoint RPS6KA4 aa 589; sample P-0048702-T01-IM6</title></rect>
+<text x="517.7" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase…</text>
+<line x1="495.2" y1="238.0" x2="495.2" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="533.7" y1="238.0" x2="533.7" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="573.6" y1="238.0" x2="573.6" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="487.3" y1="237.0" x2="487.3" y2="261.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; RPS6KA4–STIP1 fusion, breakpoint RPS6KA4 aa 589; sample P-0048702-T01-IM6</title></line>
+<text x="64.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="252.5" font-family="sans-serif" font-size="9.5">STIP1 – Protein kinase domain truncated – Non-Small Cell Lung Cancer</text>
+<rect x="494.5" y="264.0" width="125.5" height="22" fill="#8064a2"><title>Partner gene GPR137; RPS6KA4–GPR137 fusion, breakpoint RPS6KA4 aa 599; sample P-0022310-T01-IM6</title></rect>
+<rect x="60.0" y="264.0" width="434.5" height="22" fill="#e2e2e2"><title>RPS6KA4 backbone (0-599 aa, no domain); domain status truncated; RPS6KA4–GPR137 fusion, breakpoint RPS6KA4 aa 599; sample P-0022310-T01-IM6</title></rect>
+<rect x="292.8" y="264.0" width="31.9" height="22" fill="#2878b5"><title>Protein kinase C terminal domain retained (321-365 aa); RPS6KA4–GPR137 fusion, breakpoint RPS6KA4 aa 599; sample P-0022310-T01-IM6</title></rect>
+<text x="308.8" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protei…</text>
+<rect x="361.8" y="264.0" width="132.7" height="22" fill="#f2a93b"><title>Protein kinase domain truncated (416-599 aa); RPS6KA4–GPR137 fusion, breakpoint RPS6KA4 aa 599; sample P-0022310-T01-IM6</title></rect>
+<text x="428.1" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<rect x="83.9" y="264.0" width="194.4" height="22" fill="#2878b5"><title>Protein kinase domain retained (33-301 aa); RPS6KA4–GPR137 fusion, breakpoint RPS6KA4 aa 599; sample P-0022310-T01-IM6</title></rect>
+<text x="181.1" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="60.7" y1="264.0" x2="60.7" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="73.8" y1="264.0" x2="73.8" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="91.2" y1="264.0" x2="91.2" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="144.1" y1="264.0" x2="144.1" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="172.4" y1="264.0" x2="172.4" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="198.5" y1="264.0" x2="198.5" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="218.1" y1="264.0" x2="218.1" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="242.8" y1="264.0" x2="242.8" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="279.8" y1="264.0" x2="279.8" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="319.7" y1="264.0" x2="319.7" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="350.9" y1="264.0" x2="350.9" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="382.8" y1="264.0" x2="382.8" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="406.0" y1="264.0" x2="406.0" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="448.1" y1="264.0" x2="448.1" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="494.5" y1="263.0" x2="494.5" y2="287.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; RPS6KA4–GPR137 fusion, breakpoint RPS6KA4 aa 599; sample P-0022310-T01-IM6</title></line>
+<text x="64.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="278.5" font-family="sans-serif" font-size="9.5">GPR137 – Protein kinase domain truncated – Breast Cancer</text>
+<rect x="533.7" y="290.0" width="86.3" height="22" fill="#8064a2"><title>Partner gene SLC22A9; RPS6KA4–SLC22A9 fusion, breakpoint RPS6KA4 aa 653; sample P-0050067-T01-IM6</title></rect>
+<rect x="60.0" y="290.0" width="473.7" height="22" fill="#e2e2e2"><title>RPS6KA4 backbone (0-653 aa, no domain); domain status truncated; RPS6KA4–SLC22A9 fusion, breakpoint RPS6KA4 aa 653; sample P-0050067-T01-IM6</title></rect>
+<rect x="292.8" y="290.0" width="31.9" height="22" fill="#2878b5"><title>Protein kinase C terminal domain retained (321-365 aa); RPS6KA4–SLC22A9 fusion, breakpoint RPS6KA4 aa 653; sample P-0050067-T01-IM6</title></rect>
+<text x="308.8" y="304.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protei…</text>
+<rect x="361.8" y="290.0" width="171.9" height="22" fill="#f2a93b"><title>Protein kinase domain truncated (416-653 aa); RPS6KA4–SLC22A9 fusion, breakpoint RPS6KA4 aa 653; sample P-0050067-T01-IM6</title></rect>
+<text x="447.7" y="304.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<rect x="83.9" y="290.0" width="194.4" height="22" fill="#2878b5"><title>Protein kinase domain retained (33-301 aa); RPS6KA4–SLC22A9 fusion, breakpoint RPS6KA4 aa 653; sample P-0050067-T01-IM6</title></rect>
+<text x="181.1" y="304.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="60.7" y1="290.0" x2="60.7" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="73.8" y1="290.0" x2="73.8" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="91.2" y1="290.0" x2="91.2" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="144.1" y1="290.0" x2="144.1" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="172.4" y1="290.0" x2="172.4" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="198.5" y1="290.0" x2="198.5" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="218.1" y1="290.0" x2="218.1" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="242.8" y1="290.0" x2="242.8" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="279.8" y1="290.0" x2="279.8" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="319.7" y1="290.0" x2="319.7" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="350.9" y1="290.0" x2="350.9" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="382.8" y1="290.0" x2="382.8" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="406.0" y1="290.0" x2="406.0" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="448.1" y1="290.0" x2="448.1" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="495.2" y1="290.0" x2="495.2" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="533.7" y1="289.0" x2="533.7" y2="313.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; RPS6KA4–SLC22A9 fusion, breakpoint RPS6KA4 aa 653; sample P-0050067-T01-IM6</title></line>
+<text x="64.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="304.5" font-family="sans-serif" font-size="9.5">SLC22A9 – Protein kinase domain truncated – Soft Tissue Sarcoma</text>
+<rect x="542.4" y="316.0" width="77.6" height="22" fill="#8064a2"><title>Partner gene MACROD1; RPS6KA4–MACROD1 fusion, breakpoint RPS6KA4 aa 665; sample P-0027460-T01-IM6</title></rect>
+<rect x="60.0" y="316.0" width="482.4" height="22" fill="#e2e2e2"><title>RPS6KA4 backbone (0-665 aa, no domain); domain status truncated; RPS6KA4–MACROD1 fusion, breakpoint RPS6KA4 aa 665; sample P-0027460-T01-IM6</title></rect>
+<rect x="292.8" y="316.0" width="31.9" height="22" fill="#2878b5"><title>Protein kinase C terminal domain retained (321-365 aa); RPS6KA4–MACROD1 fusion, breakpoint RPS6KA4 aa 665; sample P-0027460-T01-IM6</title></rect>
+<text x="308.8" y="330.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protei…</text>
+<rect x="361.8" y="316.0" width="180.6" height="22" fill="#f2a93b"><title>Protein kinase domain truncated (416-665 aa); RPS6KA4–MACROD1 fusion, breakpoint RPS6KA4 aa 665; sample P-0027460-T01-IM6</title></rect>
+<text x="452.1" y="330.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<rect x="83.9" y="316.0" width="194.4" height="22" fill="#2878b5"><title>Protein kinase domain retained (33-301 aa); RPS6KA4–MACROD1 fusion, breakpoint RPS6KA4 aa 665; sample P-0027460-T01-IM6</title></rect>
+<text x="181.1" y="330.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Protein kinase domain</text>
+<line x1="60.7" y1="316.0" x2="60.7" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="73.8" y1="316.0" x2="73.8" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="91.2" y1="316.0" x2="91.2" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="144.1" y1="316.0" x2="144.1" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="172.4" y1="316.0" x2="172.4" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="198.5" y1="316.0" x2="198.5" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="218.1" y1="316.0" x2="218.1" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="242.8" y1="316.0" x2="242.8" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="279.8" y1="316.0" x2="279.8" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="319.7" y1="316.0" x2="319.7" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="350.9" y1="316.0" x2="350.9" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="382.8" y1="316.0" x2="382.8" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="406.0" y1="316.0" x2="406.0" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="448.1" y1="316.0" x2="448.1" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="495.2" y1="316.0" x2="495.2" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="533.7" y1="316.0" x2="533.7" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="542.4" y1="315.0" x2="542.4" y2="339.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; RPS6KA4–MACROD1 fusion, breakpoint RPS6KA4 aa 665; sample P-0027460-T01-IM6</title></line>
+<text x="64.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="330.5" font-family="sans-serif" font-size="9.5">MACROD1 – Protein kinase domain truncated – Esophagogastric Cancer</text>
+<line x1="60.0" y1="346.0" x2="620.0" y2="346.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="341.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="620.0" y="341.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
+<text x="60.0" y="360.0" font-family="sans-serif" font-size="9">1</text>
+<text x="620.0" y="360.0" font-family="sans-serif" font-size="9" text-anchor="end">772 aa</text>
+<line x1="60.7" y1="364.0" x2="60.7" y2="368.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="60.7" y="369.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 60.7 369.0)">E1</text>
+<line x1="73.8" y1="364.0" x2="73.8" y2="368.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="73.8" y="369.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 73.8 369.0)">E2</text>
+<line x1="91.2" y1="364.0" x2="91.2" y2="368.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="91.2" y="369.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 91.2 369.0)">E3</text>
+<line x1="144.1" y1="364.0" x2="144.1" y2="368.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="144.1" y="369.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 144.1 369.0)">E4</text>
+<line x1="172.4" y1="364.0" x2="172.4" y2="368.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="172.4" y="369.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 172.4 369.0)">E5</text>
+<line x1="198.5" y1="364.0" x2="198.5" y2="368.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="198.5" y="369.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 198.5 369.0)">E6</text>
+<line x1="218.1" y1="364.0" x2="218.1" y2="368.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="218.1" y="369.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 218.1 369.0)">E7</text>
+<line x1="242.8" y1="364.0" x2="242.8" y2="368.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="242.8" y="369.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 242.8 369.0)">E8</text>
+<line x1="279.8" y1="364.0" x2="279.8" y2="368.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="279.8" y="369.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 279.8 369.0)">E9</text>
+<line x1="319.7" y1="364.0" x2="319.7" y2="368.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="319.7" y="369.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 319.7 369.0)">E10</text>
+<line x1="350.9" y1="364.0" x2="350.9" y2="368.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="350.9" y="369.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 350.9 369.0)">E11</text>
+<line x1="382.8" y1="364.0" x2="382.8" y2="368.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="382.8" y="369.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 382.8 369.0)">E12</text>
+<line x1="406.0" y1="364.0" x2="406.0" y2="368.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="406.0" y="369.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 406.0 369.0)">E13</text>
+<line x1="448.1" y1="364.0" x2="448.1" y2="368.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="448.1" y="369.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 448.1 369.0)">E14</text>
+<line x1="495.2" y1="364.0" x2="495.2" y2="368.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="495.2" y="369.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 495.2 369.0)">E15</text>
+<line x1="533.7" y1="364.0" x2="533.7" y2="368.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="533.7" y="369.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 533.7 369.0)">E16</text>
+<line x1="573.6" y1="364.0" x2="573.6" y2="368.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="573.6" y="369.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 573.6 369.0)">E17</text>
+<rect x="60.0" y="377.0" width="12" height="10" fill="#2878b5"/>
+<text x="76.0" y="386.0" font-family="sans-serif" font-size="9">domain retained</text>
+<rect x="227.0" y="377.0" width="12" height="10" fill="#f2a93b"/>
+<text x="243.0" y="386.0" font-family="sans-serif" font-size="9">domain truncated</text>
+<rect x="403.0" y="377.0" width="12" height="10" fill="#e2e2e2"/>
+<text x="419.0" y="386.0" font-family="sans-serif" font-size="9">target backbone (no domain)</text>
+<rect x="678.0" y="377.0" width="12" height="10" fill="#d62728"/>
+<text x="694.0" y="386.0" font-family="sans-serif" font-size="9">breakpoint</text>
+<text x="60" y="422.0" font-family="sans-serif" font-size="9" fill="#555555">Partner-block colors are decorative; row labels identify partners.</text>
+</svg>

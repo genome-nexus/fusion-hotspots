@@ -1,0 +1,402 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="510" viewBox="0 0 1000 510">
+<rect width="1000" height="510" fill="white"/>
+<text x="60" y="24" font-family="sans-serif" font-size="15">KIF5B fusion-transcript schematic</text>
+<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555555">Fusion order varies by row; follow each row's 5' and 3' labels (KIF5B portion is domain-colored, exon ticks). Partner-gene blocks share one color; row labels identify each partner.</text>
+<rect x="394.4" y="56.0" width="225.6" height="22" fill="#8064a2"><title>Partner gene RET; KIF5B–RET fusion, breakpoint KIF5B aa 575; samples P-0000208-T02-IM5, P-0008289-T01-IM5, P-0002694-T02-IM5, P-0002873-T01-IM3, P-0009514-T01-IM5 (+62 more)</title></rect>
+<rect x="60.0" y="56.0" width="334.4" height="22" fill="#e2e2e2"><title>KIF5B backbone (0-575 aa, no domain); domain status retained; KIF5B–RET fusion, breakpoint KIF5B aa 575; samples P-0000208-T02-IM5, P-0008289-T01-IM5, P-0002694-T02-IM5, P-0002873-T01-IM3, P-0009514-T01-IM5 (+62 more)</title></rect>
+<rect x="68.1" y="56.0" width="180.9" height="22" fill="#2878b5"><title>Kinesin motor domain retained (14-325 aa); KIF5B–RET fusion, breakpoint KIF5B aa 575; samples P-0000208-T02-IM5, P-0008289-T01-IM5, P-0002694-T02-IM5, P-0002873-T01-IM3, P-0009514-T01-IM5 (+62 more)</title></rect>
+<text x="158.6" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Kinesin motor domain</text>
+<line x1="60.6" y1="56.0" x2="60.6" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="85.0" y1="56.0" x2="85.0" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="101.9" y1="56.0" x2="101.9" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="116.4" y1="56.0" x2="116.4" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="136.8" y1="56.0" x2="136.8" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.1" y1="56.0" x2="146.1" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="157.1" y1="56.0" x2="157.1" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="174.0" y1="56.0" x2="174.0" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="198.4" y1="56.0" x2="198.4" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="218.8" y1="56.0" x2="218.8" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="246.7" y1="56.0" x2="246.7" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="275.7" y1="56.0" x2="275.7" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="313.5" y1="56.0" x2="313.5" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="326.9" y1="56.0" x2="326.9" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="367.0" y1="56.0" x2="367.0" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="394.4" y1="55.0" x2="394.4" y2="79.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KIF5B–RET fusion, breakpoint KIF5B aa 575; samples P-0000208-T02-IM5, P-0008289-T01-IM5, P-0002694-T02-IM5, P-0002873-T01-IM3, P-0009514-T01-IM5 (+62 more)</title></line>
+<text x="64.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="70.5" font-family="sans-serif" font-size="9.5">RET (x67) – Kinesin motor domain retained – Non-Small Cell Lung Cancer</text>
+<rect x="431.0" y="82.0" width="189.0" height="22" fill="#8064a2"><title>Partner gene RET; KIF5B–RET fusion, breakpoint KIF5B aa 638; samples P-0020273-T02-IM6, P-0032407-T01-IM6, P-0039474-T01-IM6, P-0039474-T02-IM6, P-0048968-T01-IM6 (+2 more)</title></rect>
+<rect x="60.0" y="82.0" width="371.0" height="22" fill="#e2e2e2"><title>KIF5B backbone (0-638 aa, no domain); domain status retained; KIF5B–RET fusion, breakpoint KIF5B aa 638; samples P-0020273-T02-IM6, P-0032407-T01-IM6, P-0039474-T01-IM6, P-0039474-T02-IM6, P-0048968-T01-IM6 (+2 more)</title></rect>
+<rect x="68.1" y="82.0" width="180.9" height="22" fill="#2878b5"><title>Kinesin motor domain retained (14-325 aa); KIF5B–RET fusion, breakpoint KIF5B aa 638; samples P-0020273-T02-IM6, P-0032407-T01-IM6, P-0039474-T01-IM6, P-0039474-T02-IM6, P-0048968-T01-IM6 (+2 more)</title></rect>
+<text x="158.6" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Kinesin motor domain</text>
+<line x1="60.6" y1="82.0" x2="60.6" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="85.0" y1="82.0" x2="85.0" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="101.9" y1="82.0" x2="101.9" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="116.4" y1="82.0" x2="116.4" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="136.8" y1="82.0" x2="136.8" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.1" y1="82.0" x2="146.1" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="157.1" y1="82.0" x2="157.1" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="174.0" y1="82.0" x2="174.0" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="198.4" y1="82.0" x2="198.4" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="218.8" y1="82.0" x2="218.8" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="246.7" y1="82.0" x2="246.7" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="275.7" y1="82.0" x2="275.7" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="313.5" y1="82.0" x2="313.5" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="326.9" y1="82.0" x2="326.9" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="367.0" y1="82.0" x2="367.0" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="395.0" y1="82.0" x2="395.0" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.0" y1="81.0" x2="431.0" y2="105.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KIF5B–RET fusion, breakpoint KIF5B aa 638; samples P-0020273-T02-IM6, P-0032407-T01-IM6, P-0039474-T01-IM6, P-0039474-T02-IM6, P-0048968-T01-IM6 (+2 more)</title></line>
+<text x="64.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="96.5" font-family="sans-serif" font-size="9.5">RET (x7) – Kinesin motor domain retained – Non-Small Cell Lung Cancer, Small Cell Lung Cancer</text>
+<rect x="553.1" y="108.0" width="66.9" height="22" fill="#8064a2"><title>Partner gene RET; KIF5B–RET fusion, breakpoint KIF5B aa 848; samples P-0017214-T01-IM6, P-0017214-T02-IM6, P-0026693-T01-IM6, P-0043007-T01-IM6, P-0043007-T02-IM6</title></rect>
+<rect x="60.0" y="108.0" width="493.1" height="22" fill="#e2e2e2"><title>KIF5B backbone (0-848 aa, no domain); domain status retained; KIF5B–RET fusion, breakpoint KIF5B aa 848; samples P-0017214-T01-IM6, P-0017214-T02-IM6, P-0026693-T01-IM6, P-0043007-T01-IM6, P-0043007-T02-IM6</title></rect>
+<rect x="68.1" y="108.0" width="180.9" height="22" fill="#2878b5"><title>Kinesin motor domain retained (14-325 aa); KIF5B–RET fusion, breakpoint KIF5B aa 848; samples P-0017214-T01-IM6, P-0017214-T02-IM6, P-0026693-T01-IM6, P-0043007-T01-IM6, P-0043007-T02-IM6</title></rect>
+<text x="158.6" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Kinesin motor domain</text>
+<line x1="60.6" y1="108.0" x2="60.6" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="85.0" y1="108.0" x2="85.0" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="101.9" y1="108.0" x2="101.9" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="116.4" y1="108.0" x2="116.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="136.8" y1="108.0" x2="136.8" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.1" y1="108.0" x2="146.1" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="157.1" y1="108.0" x2="157.1" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="174.0" y1="108.0" x2="174.0" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="198.4" y1="108.0" x2="198.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="218.8" y1="108.0" x2="218.8" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="246.7" y1="108.0" x2="246.7" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="275.7" y1="108.0" x2="275.7" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="313.5" y1="108.0" x2="313.5" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="326.9" y1="108.0" x2="326.9" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="367.0" y1="108.0" x2="367.0" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="395.0" y1="108.0" x2="395.0" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.6" y1="108.0" x2="431.6" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="454.3" y1="108.0" x2="454.3" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="466.5" y1="108.0" x2="466.5" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="487.4" y1="108.0" x2="487.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="507.2" y1="108.0" x2="507.2" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="519.4" y1="108.0" x2="519.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="533.4" y1="108.0" x2="533.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="553.1" y1="107.0" x2="553.1" y2="131.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KIF5B–RET fusion, breakpoint KIF5B aa 848; samples P-0017214-T01-IM6, P-0017214-T02-IM6, P-0026693-T01-IM6, P-0043007-T01-IM6, P-0043007-T02-IM6</title></line>
+<text x="64.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="122.5" font-family="sans-serif" font-size="9.5">RET (x5) – Kinesin motor domain retained – Non-Small Cell Lung Cancer</text>
+<rect x="595.6" y="134.0" width="24.4" height="22" fill="#8064a2"><title>Partner gene ALK; KIF5B–ALK fusion, breakpoint KIF5B aa 921; samples P-0062804-T03-IM7, P-0005711-T02-IM6, P-0008764-T01-IM5, P-0008764-T02-IM6, P-0017924-T01-IM6</title></rect>
+<rect x="60.0" y="134.0" width="535.6" height="22" fill="#e2e2e2"><title>KIF5B backbone (0-921 aa, no domain); domain status retained; KIF5B–ALK fusion, breakpoint KIF5B aa 921; samples P-0062804-T03-IM7, P-0005711-T02-IM6, P-0008764-T01-IM5, P-0008764-T02-IM6, P-0017924-T01-IM6</title></rect>
+<rect x="68.1" y="134.0" width="180.9" height="22" fill="#2878b5"><title>Kinesin motor domain retained (14-325 aa); KIF5B–ALK fusion, breakpoint KIF5B aa 921; samples P-0062804-T03-IM7, P-0005711-T02-IM6, P-0008764-T01-IM5, P-0008764-T02-IM6, P-0017924-T01-IM6</title></rect>
+<text x="158.6" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Kinesin motor domain</text>
+<line x1="60.6" y1="134.0" x2="60.6" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="85.0" y1="134.0" x2="85.0" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="101.9" y1="134.0" x2="101.9" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="116.4" y1="134.0" x2="116.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="136.8" y1="134.0" x2="136.8" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.1" y1="134.0" x2="146.1" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="157.1" y1="134.0" x2="157.1" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="174.0" y1="134.0" x2="174.0" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="198.4" y1="134.0" x2="198.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="218.8" y1="134.0" x2="218.8" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="246.7" y1="134.0" x2="246.7" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="275.7" y1="134.0" x2="275.7" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="313.5" y1="134.0" x2="313.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="326.9" y1="134.0" x2="326.9" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="367.0" y1="134.0" x2="367.0" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="395.0" y1="134.0" x2="395.0" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.6" y1="134.0" x2="431.6" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="454.3" y1="134.0" x2="454.3" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="466.5" y1="134.0" x2="466.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="487.4" y1="134.0" x2="487.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="507.2" y1="134.0" x2="507.2" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="519.4" y1="134.0" x2="519.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="533.4" y1="134.0" x2="533.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="553.7" y1="134.0" x2="553.7" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="595.6" y1="133.0" x2="595.6" y2="157.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KIF5B–ALK fusion, breakpoint KIF5B aa 921; samples P-0062804-T03-IM7, P-0005711-T02-IM6, P-0008764-T01-IM5, P-0008764-T02-IM6, P-0017924-T01-IM6</title></line>
+<text x="64.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="148.5" font-family="sans-serif" font-size="9.5">ALK (x5) – Kinesin motor domain retained – Non-Small Cell Lung Cancer, Soft Tissue Sarcoma</text>
+<rect x="595.6" y="160.0" width="24.4" height="22" fill="#8064a2"><title>Partner gene MET; KIF5B–MET fusion, breakpoint KIF5B aa 921; samples P-0033090-T01-IM6, P-0043854-T01-IM6</title></rect>
+<rect x="60.0" y="160.0" width="535.6" height="22" fill="#e2e2e2"><title>KIF5B backbone (0-921 aa, no domain); domain status retained; KIF5B–MET fusion, breakpoint KIF5B aa 921; samples P-0033090-T01-IM6, P-0043854-T01-IM6</title></rect>
+<rect x="68.1" y="160.0" width="180.9" height="22" fill="#2878b5"><title>Kinesin motor domain retained (14-325 aa); KIF5B–MET fusion, breakpoint KIF5B aa 921; samples P-0033090-T01-IM6, P-0043854-T01-IM6</title></rect>
+<text x="158.6" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Kinesin motor domain</text>
+<line x1="60.6" y1="160.0" x2="60.6" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="85.0" y1="160.0" x2="85.0" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="101.9" y1="160.0" x2="101.9" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="116.4" y1="160.0" x2="116.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="136.8" y1="160.0" x2="136.8" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.1" y1="160.0" x2="146.1" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="157.1" y1="160.0" x2="157.1" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="174.0" y1="160.0" x2="174.0" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="198.4" y1="160.0" x2="198.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="218.8" y1="160.0" x2="218.8" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="246.7" y1="160.0" x2="246.7" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="275.7" y1="160.0" x2="275.7" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="313.5" y1="160.0" x2="313.5" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="326.9" y1="160.0" x2="326.9" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="367.0" y1="160.0" x2="367.0" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="395.0" y1="160.0" x2="395.0" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.6" y1="160.0" x2="431.6" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="454.3" y1="160.0" x2="454.3" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="466.5" y1="160.0" x2="466.5" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="487.4" y1="160.0" x2="487.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="507.2" y1="160.0" x2="507.2" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="519.4" y1="160.0" x2="519.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="533.4" y1="160.0" x2="533.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="553.7" y1="160.0" x2="553.7" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="595.6" y1="159.0" x2="595.6" y2="183.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KIF5B–MET fusion, breakpoint KIF5B aa 921; samples P-0033090-T01-IM6, P-0043854-T01-IM6</title></line>
+<text x="64.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="174.5" font-family="sans-serif" font-size="9.5">MET (x2) – Kinesin motor domain retained – Non-Small Cell Lung Cancer</text>
+<rect x="595.6" y="186.0" width="24.4" height="22" fill="#8064a2"><title>Partner gene RET; KIF5B–RET fusion, breakpoint KIF5B aa 921; samples P-0024225-T01-IM6, P-0027991-T01-IM6</title></rect>
+<rect x="60.0" y="186.0" width="535.6" height="22" fill="#e2e2e2"><title>KIF5B backbone (0-921 aa, no domain); domain status retained; KIF5B–RET fusion, breakpoint KIF5B aa 921; samples P-0024225-T01-IM6, P-0027991-T01-IM6</title></rect>
+<rect x="68.1" y="186.0" width="180.9" height="22" fill="#2878b5"><title>Kinesin motor domain retained (14-325 aa); KIF5B–RET fusion, breakpoint KIF5B aa 921; samples P-0024225-T01-IM6, P-0027991-T01-IM6</title></rect>
+<text x="158.6" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Kinesin motor domain</text>
+<line x1="60.6" y1="186.0" x2="60.6" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="85.0" y1="186.0" x2="85.0" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="101.9" y1="186.0" x2="101.9" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="116.4" y1="186.0" x2="116.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="136.8" y1="186.0" x2="136.8" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.1" y1="186.0" x2="146.1" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="157.1" y1="186.0" x2="157.1" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="174.0" y1="186.0" x2="174.0" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="198.4" y1="186.0" x2="198.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="218.8" y1="186.0" x2="218.8" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="246.7" y1="186.0" x2="246.7" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="275.7" y1="186.0" x2="275.7" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="313.5" y1="186.0" x2="313.5" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="326.9" y1="186.0" x2="326.9" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="367.0" y1="186.0" x2="367.0" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="395.0" y1="186.0" x2="395.0" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.6" y1="186.0" x2="431.6" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="454.3" y1="186.0" x2="454.3" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="466.5" y1="186.0" x2="466.5" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="487.4" y1="186.0" x2="487.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="507.2" y1="186.0" x2="507.2" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="519.4" y1="186.0" x2="519.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="533.4" y1="186.0" x2="533.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="553.7" y1="186.0" x2="553.7" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="595.6" y1="185.0" x2="595.6" y2="209.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KIF5B–RET fusion, breakpoint KIF5B aa 921; samples P-0024225-T01-IM6, P-0027991-T01-IM6</title></line>
+<text x="64.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="200.5" font-family="sans-serif" font-size="9.5">RET (x2) – Kinesin motor domain retained – Non-Small Cell Lung Cancer</text>
+<rect x="394.4" y="212.0" width="225.6" height="22" fill="#8064a2"><title>Partner gene ARID5B; KIF5B–ARID5B fusion, breakpoint KIF5B aa 575; sample P-0052330-T01-IM6</title></rect>
+<rect x="60.0" y="212.0" width="334.4" height="22" fill="#e2e2e2"><title>KIF5B backbone (0-575 aa, no domain); domain status retained; KIF5B–ARID5B fusion, breakpoint KIF5B aa 575; sample P-0052330-T01-IM6</title></rect>
+<rect x="68.1" y="212.0" width="180.9" height="22" fill="#2878b5"><title>Kinesin motor domain retained (14-325 aa); KIF5B–ARID5B fusion, breakpoint KIF5B aa 575; sample P-0052330-T01-IM6</title></rect>
+<text x="158.6" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Kinesin motor domain</text>
+<line x1="60.6" y1="212.0" x2="60.6" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="85.0" y1="212.0" x2="85.0" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="101.9" y1="212.0" x2="101.9" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="116.4" y1="212.0" x2="116.4" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="136.8" y1="212.0" x2="136.8" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.1" y1="212.0" x2="146.1" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="157.1" y1="212.0" x2="157.1" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="174.0" y1="212.0" x2="174.0" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="198.4" y1="212.0" x2="198.4" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="218.8" y1="212.0" x2="218.8" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="246.7" y1="212.0" x2="246.7" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="275.7" y1="212.0" x2="275.7" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="313.5" y1="212.0" x2="313.5" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="326.9" y1="212.0" x2="326.9" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="367.0" y1="212.0" x2="367.0" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="394.4" y1="211.0" x2="394.4" y2="235.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KIF5B–ARID5B fusion, breakpoint KIF5B aa 575; sample P-0052330-T01-IM6</title></line>
+<text x="64.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="226.5" font-family="sans-serif" font-size="9.5">ARID5B – Kinesin motor domain retained – Ampullary Cancer</text>
+<rect x="394.4" y="238.0" width="225.6" height="22" fill="#8064a2"><title>Partner gene EGFR; KIF5B–EGFR fusion, breakpoint KIF5B aa 575; sample P-0021038-T01-IM6</title></rect>
+<rect x="60.0" y="238.0" width="334.4" height="22" fill="#e2e2e2"><title>KIF5B backbone (0-575 aa, no domain); domain status retained; KIF5B–EGFR fusion, breakpoint KIF5B aa 575; sample P-0021038-T01-IM6</title></rect>
+<rect x="68.1" y="238.0" width="180.9" height="22" fill="#2878b5"><title>Kinesin motor domain retained (14-325 aa); KIF5B–EGFR fusion, breakpoint KIF5B aa 575; sample P-0021038-T01-IM6</title></rect>
+<text x="158.6" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Kinesin motor domain</text>
+<line x1="60.6" y1="238.0" x2="60.6" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="85.0" y1="238.0" x2="85.0" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="101.9" y1="238.0" x2="101.9" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="116.4" y1="238.0" x2="116.4" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="136.8" y1="238.0" x2="136.8" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.1" y1="238.0" x2="146.1" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="157.1" y1="238.0" x2="157.1" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="174.0" y1="238.0" x2="174.0" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="198.4" y1="238.0" x2="198.4" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="218.8" y1="238.0" x2="218.8" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="246.7" y1="238.0" x2="246.7" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="275.7" y1="238.0" x2="275.7" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="313.5" y1="238.0" x2="313.5" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="326.9" y1="238.0" x2="326.9" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="367.0" y1="238.0" x2="367.0" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="394.4" y1="237.0" x2="394.4" y2="261.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KIF5B–EGFR fusion, breakpoint KIF5B aa 575; sample P-0021038-T01-IM6</title></line>
+<text x="64.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="252.5" font-family="sans-serif" font-size="9.5">EGFR – Kinesin motor domain retained – Non-Small Cell Lung Cancer</text>
+<rect x="60.0" y="264.0" width="335.0" height="22" fill="#8064a2"><title>Partner gene RET; KIF5B–RET fusion, breakpoint KIF5B aa 576; sample P-0003125-T01-IM5</title></rect>
+<rect x="395.0" y="264.0" width="225.0" height="22" fill="#e2e2e2"><title>KIF5B backbone (576-963 aa, no domain); domain status lost; KIF5B–RET fusion, breakpoint KIF5B aa 576; sample P-0003125-T01-IM5</title></rect>
+<line x1="431.6" y1="264.0" x2="431.6" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="454.3" y1="264.0" x2="454.3" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="466.5" y1="264.0" x2="466.5" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="487.4" y1="264.0" x2="487.4" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="507.2" y1="264.0" x2="507.2" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="519.4" y1="264.0" x2="519.4" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="533.4" y1="264.0" x2="533.4" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="553.7" y1="264.0" x2="553.7" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="595.6" y1="264.0" x2="595.6" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="395.0" y1="263.0" x2="395.0" y2="287.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; KIF5B–RET fusion, breakpoint KIF5B aa 576; sample P-0003125-T01-IM5</title></line>
+<text x="64.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="278.5" font-family="sans-serif" font-size="9.5">RET – Kinesin motor domain lost – Non-Small Cell Lung Cancer</text>
+<rect x="405.4" y="290.0" width="214.6" height="22" fill="#8064a2"><title>Partner gene RET; KIF5B–RET fusion, breakpoint KIF5B aa 594; sample P-0013825-T01-IM5</title></rect>
+<rect x="60.0" y="290.0" width="345.4" height="22" fill="#e2e2e2"><title>KIF5B backbone (0-594 aa, no domain); domain status retained; KIF5B–RET fusion, breakpoint KIF5B aa 594; sample P-0013825-T01-IM5</title></rect>
+<rect x="68.1" y="290.0" width="180.9" height="22" fill="#2878b5"><title>Kinesin motor domain retained (14-325 aa); KIF5B–RET fusion, breakpoint KIF5B aa 594; sample P-0013825-T01-IM5</title></rect>
+<text x="158.6" y="304.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Kinesin motor domain</text>
+<line x1="60.6" y1="290.0" x2="60.6" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="85.0" y1="290.0" x2="85.0" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="101.9" y1="290.0" x2="101.9" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="116.4" y1="290.0" x2="116.4" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="136.8" y1="290.0" x2="136.8" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.1" y1="290.0" x2="146.1" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="157.1" y1="290.0" x2="157.1" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="174.0" y1="290.0" x2="174.0" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="198.4" y1="290.0" x2="198.4" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="218.8" y1="290.0" x2="218.8" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="246.7" y1="290.0" x2="246.7" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="275.7" y1="290.0" x2="275.7" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="313.5" y1="290.0" x2="313.5" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="326.9" y1="290.0" x2="326.9" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="367.0" y1="290.0" x2="367.0" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="395.0" y1="290.0" x2="395.0" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="405.4" y1="289.0" x2="405.4" y2="313.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KIF5B–RET fusion, breakpoint KIF5B aa 594; sample P-0013825-T01-IM5</title></line>
+<text x="64.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="304.5" font-family="sans-serif" font-size="9.5">RET – Kinesin motor domain retained – Non-Small Cell Lung Cancer</text>
+<rect x="60.0" y="316.0" width="371.6" height="22" fill="#8064a2"><title>Partner gene RET; KIF5B–RET fusion, breakpoint KIF5B aa 639; sample P-0018069-T01-IM6</title></rect>
+<rect x="431.6" y="316.0" width="188.4" height="22" fill="#e2e2e2"><title>KIF5B backbone (639-963 aa, no domain); domain status lost; KIF5B–RET fusion, breakpoint KIF5B aa 639; sample P-0018069-T01-IM6</title></rect>
+<line x1="454.3" y1="316.0" x2="454.3" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="466.5" y1="316.0" x2="466.5" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="487.4" y1="316.0" x2="487.4" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="507.2" y1="316.0" x2="507.2" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="519.4" y1="316.0" x2="519.4" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="533.4" y1="316.0" x2="533.4" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="553.7" y1="316.0" x2="553.7" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="595.6" y1="316.0" x2="595.6" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.6" y1="315.0" x2="431.6" y2="339.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; KIF5B–RET fusion, breakpoint KIF5B aa 639; sample P-0018069-T01-IM6</title></line>
+<text x="64.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="330.5" font-family="sans-serif" font-size="9.5">RET – Kinesin motor domain lost – Non-Small Cell Lung Cancer</text>
+<rect x="465.9" y="342.0" width="154.1" height="22" fill="#8064a2"><title>Partner gene RET; KIF5B–RET fusion, breakpoint KIF5B aa 698; sample P-0008101-T01-IM5</title></rect>
+<rect x="60.0" y="342.0" width="405.9" height="22" fill="#e2e2e2"><title>KIF5B backbone (0-698 aa, no domain); domain status retained; KIF5B–RET fusion, breakpoint KIF5B aa 698; sample P-0008101-T01-IM5</title></rect>
+<rect x="68.1" y="342.0" width="180.9" height="22" fill="#2878b5"><title>Kinesin motor domain retained (14-325 aa); KIF5B–RET fusion, breakpoint KIF5B aa 698; sample P-0008101-T01-IM5</title></rect>
+<text x="158.6" y="356.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Kinesin motor domain</text>
+<line x1="60.6" y1="342.0" x2="60.6" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="85.0" y1="342.0" x2="85.0" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="101.9" y1="342.0" x2="101.9" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="116.4" y1="342.0" x2="116.4" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="136.8" y1="342.0" x2="136.8" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.1" y1="342.0" x2="146.1" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="157.1" y1="342.0" x2="157.1" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="174.0" y1="342.0" x2="174.0" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="198.4" y1="342.0" x2="198.4" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="218.8" y1="342.0" x2="218.8" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="246.7" y1="342.0" x2="246.7" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="275.7" y1="342.0" x2="275.7" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="313.5" y1="342.0" x2="313.5" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="326.9" y1="342.0" x2="326.9" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="367.0" y1="342.0" x2="367.0" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="395.0" y1="342.0" x2="395.0" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.6" y1="342.0" x2="431.6" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="454.3" y1="342.0" x2="454.3" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="465.9" y1="341.0" x2="465.9" y2="365.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KIF5B–RET fusion, breakpoint KIF5B aa 698; sample P-0008101-T01-IM5</title></line>
+<text x="64.0" y="356.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="356.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="356.5" font-family="sans-serif" font-size="9.5">RET – Kinesin motor domain retained – Non-Small Cell Lung Cancer</text>
+<rect x="487.4" y="368.0" width="132.6" height="22" fill="#8064a2"><title>Partner gene RET; KIF5B–RET fusion, breakpoint KIF5B aa 735; sample P-0064951-T01-IM7</title></rect>
+<rect x="60.0" y="368.0" width="427.4" height="22" fill="#e2e2e2"><title>KIF5B backbone (0-735 aa, no domain); domain status retained; KIF5B–RET fusion, breakpoint KIF5B aa 735; sample P-0064951-T01-IM7</title></rect>
+<rect x="68.1" y="368.0" width="180.9" height="22" fill="#2878b5"><title>Kinesin motor domain retained (14-325 aa); KIF5B–RET fusion, breakpoint KIF5B aa 735; sample P-0064951-T01-IM7</title></rect>
+<text x="158.6" y="382.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Kinesin motor domain</text>
+<line x1="60.6" y1="368.0" x2="60.6" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="85.0" y1="368.0" x2="85.0" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="101.9" y1="368.0" x2="101.9" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="116.4" y1="368.0" x2="116.4" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="136.8" y1="368.0" x2="136.8" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.1" y1="368.0" x2="146.1" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="157.1" y1="368.0" x2="157.1" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="174.0" y1="368.0" x2="174.0" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="198.4" y1="368.0" x2="198.4" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="218.8" y1="368.0" x2="218.8" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="246.7" y1="368.0" x2="246.7" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="275.7" y1="368.0" x2="275.7" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="313.5" y1="368.0" x2="313.5" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="326.9" y1="368.0" x2="326.9" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="367.0" y1="368.0" x2="367.0" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="395.0" y1="368.0" x2="395.0" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.6" y1="368.0" x2="431.6" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="454.3" y1="368.0" x2="454.3" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="466.5" y1="368.0" x2="466.5" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="487.4" y1="367.0" x2="487.4" y2="391.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KIF5B–RET fusion, breakpoint KIF5B aa 735; sample P-0064951-T01-IM7</title></line>
+<text x="64.0" y="382.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="382.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="382.5" font-family="sans-serif" font-size="9.5">RET – Kinesin motor domain retained – Cancer of Unknown Primary</text>
+<rect x="60.0" y="394.0" width="493.7" height="22" fill="#8064a2"><title>Partner gene RET; KIF5B–RET fusion, breakpoint KIF5B aa 849; sample P-0043704-T01-IM6</title></rect>
+<rect x="553.7" y="394.0" width="66.3" height="22" fill="#e2e2e2"><title>KIF5B backbone (849-963 aa, no domain); domain status lost; KIF5B–RET fusion, breakpoint KIF5B aa 849; sample P-0043704-T01-IM6</title></rect>
+<line x1="595.6" y1="394.0" x2="595.6" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="553.7" y1="393.0" x2="553.7" y2="417.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; KIF5B–RET fusion, breakpoint KIF5B aa 849; sample P-0043704-T01-IM6</title></line>
+<text x="64.0" y="408.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="408.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="408.5" font-family="sans-serif" font-size="9.5">RET – Kinesin motor domain lost – Non-Small Cell Lung Cancer</text>
+<line x1="60.0" y1="424.0" x2="620.0" y2="424.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="419.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="620.0" y="419.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
+<text x="60.0" y="438.0" font-family="sans-serif" font-size="9">1</text>
+<text x="620.0" y="438.0" font-family="sans-serif" font-size="9" text-anchor="end">963 aa</text>
+<line x1="60.6" y1="442.0" x2="60.6" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="60.6" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 60.6 447.0)">E1</text>
+<line x1="85.0" y1="442.0" x2="85.0" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="85.0" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 85.0 447.0)">E2</text>
+<line x1="101.9" y1="442.0" x2="101.9" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="101.9" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 101.9 447.0)">E3</text>
+<line x1="116.4" y1="442.0" x2="116.4" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="116.4" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 116.4 447.0)">E4</text>
+<line x1="136.8" y1="442.0" x2="136.8" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="136.8" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 136.8 447.0)">E5</text>
+<line x1="146.1" y1="442.0" x2="146.1" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="146.1" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 146.1 447.0)">E6</text>
+<line x1="157.1" y1="442.0" x2="157.1" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="157.1" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 157.1 447.0)">E7</text>
+<line x1="174.0" y1="442.0" x2="174.0" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="174.0" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 174.0 447.0)">E8</text>
+<line x1="198.4" y1="442.0" x2="198.4" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="198.4" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 198.4 447.0)">E9</text>
+<line x1="218.8" y1="442.0" x2="218.8" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="218.8" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 218.8 447.0)">E10</text>
+<line x1="246.7" y1="442.0" x2="246.7" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="246.7" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 246.7 447.0)">E11</text>
+<line x1="275.7" y1="442.0" x2="275.7" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="275.7" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 275.7 447.0)">E12</text>
+<line x1="313.5" y1="442.0" x2="313.5" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="313.5" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 313.5 447.0)">E13</text>
+<line x1="326.9" y1="442.0" x2="326.9" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="326.9" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 326.9 447.0)">E14</text>
+<line x1="367.0" y1="442.0" x2="367.0" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="367.0" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 367.0 447.0)">E15</text>
+<line x1="395.0" y1="442.0" x2="395.0" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="395.0" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 395.0 447.0)">E16</text>
+<line x1="431.6" y1="442.0" x2="431.6" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="431.6" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 431.6 447.0)">E17</text>
+<line x1="454.3" y1="442.0" x2="454.3" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="454.3" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 454.3 447.0)">E18</text>
+<line x1="466.5" y1="442.0" x2="466.5" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="466.5" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 466.5 447.0)">E19</text>
+<line x1="487.4" y1="442.0" x2="487.4" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="487.4" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 487.4 447.0)">E20</text>
+<line x1="507.2" y1="442.0" x2="507.2" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="507.2" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 507.2 447.0)">E21</text>
+<line x1="519.4" y1="442.0" x2="519.4" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="519.4" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 519.4 447.0)">E22</text>
+<line x1="533.4" y1="442.0" x2="533.4" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="533.4" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 533.4 447.0)">E23</text>
+<line x1="553.7" y1="442.0" x2="553.7" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="553.7" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 553.7 447.0)">E24</text>
+<line x1="595.6" y1="442.0" x2="595.6" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="595.6" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 595.6 447.0)">E25</text>
+<rect x="60.0" y="455.0" width="12" height="10" fill="#2878b5"/>
+<text x="76.0" y="464.0" font-family="sans-serif" font-size="9">domain retained</text>
+<rect x="227.0" y="455.0" width="12" height="10" fill="#f2a93b"/>
+<text x="243.0" y="464.0" font-family="sans-serif" font-size="9">domain truncated</text>
+<rect x="403.0" y="455.0" width="12" height="10" fill="#e2e2e2"/>
+<text x="419.0" y="464.0" font-family="sans-serif" font-size="9">target backbone (no domain)</text>
+<rect x="678.0" y="455.0" width="12" height="10" fill="#d62728"/>
+<text x="694.0" y="464.0" font-family="sans-serif" font-size="9">breakpoint</text>
+<text x="60" y="500.0" font-family="sans-serif" font-size="9" fill="#555555">Partner-block colors are decorative; row labels identify partners.</text>
+</svg>
