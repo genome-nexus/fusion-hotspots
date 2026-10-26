@@ -1,4 +1,4 @@
-"""Collapse repeated observations of one fusion in one patient.
+"""Collapse repeated observations so each patient counts once.
 
 Repeat biopsies and re-sequenced samples from the same patient report the same
 rearrangement several times. Every domain and spatial test in this package
@@ -11,9 +11,11 @@ nominal 5%).
 The ``patient`` unit keeps one representative per
 ``(cohort, patient, partner gene, target role, junction protein position)``.
 Distinct rearrangements in one patient remain separate observations, so this
-unit removes repeated measurement, not every possible within-patient
-dependence. Events without a patient ID fall back to their sample ID, then to
-their event ID, and are counted in the report.
+unit removes repeated measurement only. The ``patient_gene`` unit (the
+default) then keeps one of a patient's distinct rearrangements of the gene,
+so every test sees each patient once (#96). Events without a patient ID fall
+back to their sample ID, then to their event ID, and are counted in the
+report.
 """
 
 from __future__ import annotations
@@ -23,8 +25,8 @@ from dataclasses import dataclass, field
 from cfh.model.fusion_event import FusionEvent
 from cfh.model.fusion_feature import FusionFeature
 
-OBSERVATION_UNITS = ("patient", "event")
-DEFAULT_OBSERVATION_UNIT = "patient"
+OBSERVATION_UNITS = ("patient_gene", "patient", "event")
+DEFAULT_OBSERVATION_UNIT = "patient_gene"
 
 _DETERMINATE_FRAMES = ("in-frame", "out-of-frame")
 
@@ -38,6 +40,8 @@ class CollapseReport:
     patients_with_repeats: int = 0
     identity_fallback_counts: dict[str, int] = field(default_factory=dict)
     frame_conflict_groups: int = 0
+    merged_distinct_fusion_count: int = 0
+    patients_with_multiple_fusions: int = 0
 
     def as_summary(self) -> dict:
         return {
@@ -48,6 +52,8 @@ class CollapseReport:
             "patients_with_repeated_observations": self.patients_with_repeats,
             "observation_identity_fallbacks": dict(self.identity_fallback_counts),
             "frame_conflict_groups": self.frame_conflict_groups,
+            "merged_distinct_fusion_count": self.merged_distinct_fusion_count,
+            "patients_with_multiple_distinct_fusions": self.patients_with_multiple_fusions,
         }
 
 
@@ -124,14 +130,31 @@ def collapse_repeated_observations(
             frames = {events[i].Frame_status for i in indices} & set(_DETERMINATE_FRAMES)
             frame_conflicts += len(frames) > 1
 
+    repeats_dropped = len(events) - len(keep)
+    merged = 0
+    patients_with_multiple: set[tuple] = set()
+    if observation_unit == "patient_gene":
+        by_patient: dict[tuple, list[int]] = {}
+        for index in keep:
+            event = events[index]
+            by_patient.setdefault((event.Cohort, *_identity(event)), []).append(index)
+        keep = set()
+        for patient, indices in by_patient.items():
+            keep.add(min(indices, key=lambda i: _representative_rank(events[i])))
+            if len(indices) > 1:
+                merged += len(indices) - 1
+                patients_with_multiple.add(patient)
+
     kept = sorted(keep)
     report = CollapseReport(
-        observation_unit="patient",
+        observation_unit=observation_unit,
         input_event_count=len(events),
         output_event_count=len(kept),
-        collapsed_event_count=len(events) - len(kept),
+        collapsed_event_count=repeats_dropped,
         patients_with_repeats=len(patients_with_repeats),
         identity_fallback_counts=fallbacks,
         frame_conflict_groups=frame_conflicts,
+        merged_distinct_fusion_count=merged,
+        patients_with_multiple_fusions=len(patients_with_multiple),
     )
     return [events[i] for i in kept], [features[i] for i in kept], report

@@ -38,6 +38,7 @@ cfh = "cfh.cli:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
+"cfh.benchmarks" = ["*.yaml"]
 "cfh.genes" = ["configs/*.yaml"]
 "cfh.studies" = ["configs/*.yaml"]
 

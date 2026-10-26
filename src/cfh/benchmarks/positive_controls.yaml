@@ -1,0 +1,82 @@
+# Textbook fusion biology a scan must recover before its other calls are
+# trusted. Every expectation comes from the literature, not from our runs.
+#
+# Breakpoint controls check, per gene:
+#   selection: the configured key domain's permutation retention test
+#     (in-frame retention vs breakpoints redrawn along the gene) passes the
+#     scan's genome-wide FDR. This is the test that measures selection.
+#   junction: among events where the gene plays `role`, the modal junction
+#     exon is in `junction_exons` and at least `min_junction_fraction` of
+#     events use one of them. For a three_prime gene the exon is the first
+#     one kept; for a five_prime gene, the last one kept. Omitted where exon
+#     numbering differs between the literature's transcript and ours.
+#   partner: the most frequent partner is one of `partners`.
+#
+# Co-occurrence controls check that the pair passes the discovery family's
+# FDR in the stated direction.
+
+breakpoint_controls:
+  - gene: ALK
+    role: three_prime
+    junction_exons: [20]
+    partners: [EML4]
+    source: Soda et al., Nature 2007 (EML4-ALK joins ALK exon 20)
+  - gene: RET
+    role: three_prime
+    junction_exons: [12]
+    partners: [KIF5B, CCDC6]
+    source: >-
+      Grieco et al., Cell 1990 (CCDC6-RET); Kohno et al., Nat Med 2012
+      (KIF5B-RET); both join RET exon 12
+  - gene: ROS1
+    role: three_prime
+    junction_exons: [32, 34, 35]
+    partners: [CD74, SLC34A2, EZR]
+    source: Takeuchi et al., Nat Med 2012 (ROS1 fusions join exon 32, 34 or 35)
+  - gene: BRAF
+    role: three_prime
+    junction_exons: [9, 10, 11]
+    partners: [KIAA1549]
+    source: >-
+      Jones et al., Cancer Res 2008 (KIAA1549-BRAF joins BRAF exon 9, 10 or 11)
+  - gene: FGFR2
+    role: five_prime
+    junction_exons: [17]
+    partners: [BICC1]
+    source: >-
+      Wu et al., Cancer Discov 2013; Arai et al., Hepatology 2014 (FGFR2 keeps
+      exons 1-17 and loses the exon 18 C-terminal tail)
+  - gene: NTRK1
+    role: three_prime
+    partners: [TPM3, LMNA, TPR]
+    source: Vaishnavi et al., Cancer Discov 2015 (NTRK1 fusions keep the kinase)
+  - gene: NTRK3
+    role: three_prime
+    partners: [ETV6]
+    source: Knezevich et al., Nat Genet 1998 (ETV6-NTRK3 keeps the NTRK3 kinase)
+  - gene: ERG
+    role: three_prime
+    partners: [TMPRSS2]
+    source: Tomlins et al., Science 2005 (TMPRSS2-ERG keeps the ERG ETS domain)
+
+cooccurrence_controls:
+  - fusion_gene: ERG
+    comparator_gene: SPOP
+    alteration_type: mutation
+    direction: mutually_exclusive
+    source: Barbieri et al., Nat Genet 2012
+  - fusion_gene: ALK
+    comparator_gene: EGFR
+    alteration_type: mutation
+    direction: mutually_exclusive
+    source: Gainor et al., Clin Cancer Res 2013
+  - fusion_gene: ALK
+    comparator_gene: KRAS
+    alteration_type: mutation
+    direction: mutually_exclusive
+    source: Gainor et al., Clin Cancer Res 2013
+  - fusion_gene: ERG
+    comparator_gene: PTEN
+    alteration_type: deep_deletion
+    direction: co_occurring
+    source: King et al., Nat Genet 2009; Carver et al., Nat Genet 2009

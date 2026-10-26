@@ -301,9 +301,10 @@ def test_results_summary_ret_orders_canonically_and_covers_excluded_algorithms()
     assert by_name["cutpoint_detection"] == (
         "Cutpoint detection scanned 10 mapped breakpoints for the protein position that "
         "best separates domain-retained from lost/disrupted fusions; the inferred "
-        "cutpoint was position 1063 aa (exon 15; permutation-corrected p=0.0009, "
-        "statistically significant at alpha=0.05). This is 63 aa from the nearest "
-        "configured domain boundary at 1000 aa."
+        "cutpoint was position 1063 aa (exon 15; label-permutation p=0.0009). This boundary "
+        "is descriptive: retained/lost status follows from breakpoint position, so a clean "
+        "split exists by construction and the p-value is not evidence of selection. This "
+        "is 63 aa from the nearest configured domain boundary at 1000 aa."
     )
     # Inapplicable/excluded: confidence_stats failed with no group_field configured.
     assert by_name["confidence_stats"] == (
@@ -352,8 +353,10 @@ def test_cutpoint_detection_paragraph_states_exon_boundary_when_position_is_ambi
     assert paragraph == (
         "Cutpoint detection scanned 179 mapped breakpoints for the protein position that "
         "best separates domain-retained from lost/disrupted fusions; the inferred "
-        "cutpoint was position 327 aa (exon 7/8 boundary; permutation-corrected "
-        "p=0.035964, statistically significant at alpha=0.05)."
+        "cutpoint was position 327 aa (exon 7/8 boundary; label-permutation "
+        "p=0.035964). This boundary is descriptive: retained/lost status follows from "
+        "breakpoint position, so a clean split exists by construction and the p-value is "
+        "not evidence of selection."
     )
 
 
@@ -378,10 +381,7 @@ def test_cutpoint_detection_paragraph_states_exon_unavailable_without_gene_track
 
     paragraph = render_results_summary(payload)[0]["paragraph"]
 
-    assert (
-        "(exon position unavailable; permutation-corrected p=0.2, "
-        "not statistically significant at alpha=0.05)." in paragraph
-    )
+    assert "(exon position unavailable; label-permutation p=0.2)." in paragraph
 
 
 def test_cutpoint_detection_not_determinable_states_reason_explicitly():

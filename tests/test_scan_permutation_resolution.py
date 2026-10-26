@@ -13,13 +13,15 @@ def test_every_permutation_algorithm_gets_the_max_budget_even_without_adaptive()
     params = _adaptive_algorithm_params(False, 100, 50_000)
 
     assert set(params) == set(ADAPTIVE_ALGORITHMS)
+    # The descriptive scans keep their fixed base budget.
+    assert not {"cutpoint_detection", "window_detection"} & set(params)
     assert all(value == {"n_permutations_max": 50_000} for value in params.values())
 
 
 def test_adaptive_params_carry_small_and_max_budgets():
     params = _adaptive_algorithm_params(True, 100, 50_000)
 
-    assert params["cutpoint_detection"] == {
+    assert params["junction_concentration"] == {
         "n_permutations_max": 50_000,
         "adaptive": True,
         "n_permutations_small": 100,

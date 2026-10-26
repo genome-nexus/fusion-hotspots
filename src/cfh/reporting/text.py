@@ -40,6 +40,7 @@ CANONICAL_ALGORITHM_ORDER = [
     "frequency",
     "domain_retention",
     "domain_disruption",
+    "junction_concentration",
     "cutpoint_detection",
     "confidence_stats",
     "composite_score",
@@ -49,6 +50,7 @@ _HEADINGS = {
     "frequency": "Fusion partner frequency",
     "domain_retention": "Domain retention",
     "domain_disruption": "Domain disruption",
+    "junction_concentration": "Junction concentration",
     "cutpoint_detection": "Cutpoint detection",
     "confidence_stats": "Corroborating confidence statistics",
     "composite_score": "Composite evidence score",
@@ -333,15 +335,14 @@ def _cutpoint_detection_paragraph(result: dict, payload: dict) -> str:
     exon_label = exon_label_for_protein_position(
         (payload.get("gene_track") or {}).get("exon_boundaries_aa"), cutpoint
     )
-    sig = significance_clause(corrected_p)
-    sentence = (
+    sentences = [
         f"Cutpoint detection scanned {n if n is not None else 'an unknown number of'} mapped "
         "breakpoints for the protein position that best separates domain-retained from "
         f"lost/disrupted fusions; the inferred cutpoint was position {cutpoint} aa "
-        f"({exon_label}; permutation-corrected p={format_stat(corrected_p)}"
-    )
-    sentence += f", {sig})." if sig else ")."
-    sentences = [sentence]
+        f"({exon_label}; label-permutation p={format_stat(corrected_p)}). This boundary is "
+        "descriptive: retained/lost status follows from breakpoint position, so a clean "
+        "split exists by construction and the p-value is not evidence of selection."
+    ]
 
     boundary = summary.get("known_domain_boundary_comparison")
     if boundary:
@@ -350,6 +351,34 @@ def _cutpoint_detection_paragraph(result: dict, payload: dict) -> str:
             f"boundary at {boundary.get('nearest_known_domain_boundary_aa')} aa."
         )
     return " ".join(sentences)
+
+
+def _junction_concentration_paragraph(result: dict, payload: dict) -> str:
+    del payload
+    summary = result.get("Summary") or {}
+    if not summary.get("determinable"):
+        reason = summary.get("reason") or "insufficient data"
+        return f"Junction concentration could not be tested for this run: {reason}"
+
+    top = summary.get("top_junction") or {}
+    p_value = summary.get("permutation_empirical_p_value")
+    role = "5'" if top.get("role") == "five_prime" else "3'"
+    sentence = (
+        f"{_percent(top.get('observed_share'))} of {top.get('role_event_count')} fusions "
+        f"with this gene as the {role} partner join at exon {top.get('junction_exon')}, "
+        f"against {_percent(top.get('random_breakage_share'))} expected if breakpoints fell "
+        "at random along the gene; this is the most over-represented junction "
+        f"(empirical p={format_stat(p_value)}, corrected for testing every exon"
+    )
+    sig = significance_clause(p_value)
+    sentence += f", {sig})." if sig else ")."
+    caveat = summary.get("panel_capture_caveat")
+    return f"{sentence} {caveat}" if caveat else sentence
+
+
+def _percent(value: Any) -> str:
+    share = _finite(value)
+    return "an unknown share" if share is None else f"{share:.0%}"
 
 
 def _confidence_stats_paragraph(result: dict, payload: dict) -> str:
@@ -442,6 +471,7 @@ _PARAGRAPH_BUILDERS = {
     "frequency": _frequency_paragraph,
     "domain_retention": _domain_retention_paragraph,
     "domain_disruption": _domain_disruption_paragraph,
+    "junction_concentration": _junction_concentration_paragraph,
     "cutpoint_detection": _cutpoint_detection_paragraph,
     "confidence_stats": _confidence_stats_paragraph,
 }
