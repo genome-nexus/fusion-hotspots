@@ -465,10 +465,11 @@ def test_write_cohort_scan_outputs_records_algorithms_actually_run_not_the_live_
 
 def test_real_committed_run_honorable_mentions_are_precise_and_ranked_by_p_value():
     """Validates against the real, already-committed genome-wide
-    ``msk_impact_50k_2026`` run: only ETV6 is FDR-significant, but RET,
-    FGFR2, ALK, EGFR, BRAF, FGFR3, and NTRK1 form a real biologically
-    sensible second tier of well-known fusion-driver genes that should be
-    visible as honorable mentions, not silently folded into 543
+    ``msk_impact_50k_2026`` run: the textbook kinase drivers (ALK, RET,
+    ROS1, BRAF, FGFR2, ...) are FDR-significant, and the curated drivers
+    that fall short for lack of power -- NTRK1, NTRK3 and FLI1 -- form a
+    real, biologically sensible second tier that should be visible as
+    honorable mentions, not silently folded into hundreds of
     undifferentiated non-significant rows.
     """
     payload = json.loads(REAL_COHORT_SCAN_SUMMARY_JSON.read_text())
@@ -477,9 +478,9 @@ def test_real_committed_run_honorable_mentions_are_precise_and_ranked_by_p_value
 
     assert mentions, "expected a non-empty honorable-mentions tier"
     mention_genes = [m["gene_symbol"] for m in mentions]
-    assert "ETV6" not in mention_genes  # the one real FDR-significant gene
+    assert not set(mention_genes) & set(payload["significant_genes"])
 
-    expected_second_tier = {"RET", "FGFR2", "ALK", "EGFR", "BRAF", "FGFR3", "NTRK1"}
+    expected_second_tier = {"NTRK1", "NTRK3", "FLI1"}
     assert expected_second_tier <= set(mention_genes[: len(expected_second_tier) + 3])
 
     # Strictly ascending raw p-value order.

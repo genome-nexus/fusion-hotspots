@@ -240,12 +240,11 @@ def test_rejects_invalid_significance_level(bad_level):
         render_manhattan_svg([], significance_level=bad_level)
 
 
-def test_real_committed_cohort_scan_run_places_etv6_above_and_ret_braf_below_threshold():
+def test_real_committed_cohort_scan_run_places_drivers_above_and_ntrk1_below_threshold():
     """Locked to the latest committed cohort-scan run's real numbers. Exact
-    q-values shift slightly whenever the run is regenerated (e.g. corrected
-    breakpoint-to-exon mapping feeding a genome-wide FDR correction), but
-    ETV6 stays the one significant gene among these three and RET/BRAF stay
-    non-significant.
+    q-values shift slightly whenever the run is regenerated, but once strong
+    permutation results can escalate past their floor, ETV6, RET and BRAF
+    are FDR-significant and NTRK1 (too few in-frame events) is not.
     """
     payload = json.loads(REAL_COHORT_SCAN_SUMMARY_JSON.read_text())
     rows = payload["genes"]
@@ -253,49 +252,52 @@ def test_real_committed_cohort_scan_run_places_etv6_above_and_ret_braf_below_thr
 
     genes_by_symbol = {row["gene_symbol"]: row for row in rows}
     etv6, ret, braf = genes_by_symbol["ETV6"], genes_by_symbol["RET"], genes_by_symbol["BRAF"]
+    ntrk1 = genes_by_symbol["NTRK1"]
     assert etv6["fdr_significant"] is True
-    assert ret["fdr_significant"] is False
-    assert braf["fdr_significant"] is False
-    assert math.isclose(etv6["min_fdr_adjusted_q_value"], 0.0025719, rel_tol=1e-3)
-    assert math.isclose(ret["min_fdr_adjusted_q_value"], 0.1065963, rel_tol=1e-3)
-    assert math.isclose(braf["min_fdr_adjusted_q_value"], 0.1675381, rel_tol=1e-3)
+    assert ret["fdr_significant"] is True
+    assert braf["fdr_significant"] is True
+    assert ntrk1["fdr_significant"] is False
+    assert math.isclose(etv6["min_fdr_adjusted_q_value"], 0.0006243, rel_tol=1e-3)
+    assert math.isclose(ret["min_fdr_adjusted_q_value"], 0.0006243, rel_tol=1e-3)
+    assert math.isclose(braf["min_fdr_adjusted_q_value"], 0.0006243, rel_tol=1e-3)
+    assert math.isclose(ntrk1["min_fdr_adjusted_q_value"], 0.3201465, rel_tol=1e-3)
 
     svg = render_manhattan_svg(rows, significance_level=0.05)
     threshold_y = _threshold_line_y(svg)
 
-    etv6_y = _circle_cy(svg, "ETV6")
-    ret_y = _circle_cy(svg, "RET")
-    braf_y = _circle_cy(svg, "BRAF")
-
     # SVG y grows downward, so "visually above the dashed line" means a
     # smaller cy than the threshold line's y1/y2.
-    assert etv6_y < threshold_y, "ETV6 must plot above the FDR threshold line"
-    assert ret_y > threshold_y, "RET must plot below the FDR threshold line"
-    assert braf_y > threshold_y, "BRAF must plot below the FDR threshold line"
-
-    # The one significant gene is labeled by symbol.
-    assert ">ETV6<" in svg
+    for gene in ("ETV6", "RET", "BRAF"):
+        assert _circle_cy(svg, gene) < threshold_y, f"{gene} must plot above the FDR threshold"
+        assert f">{gene}<" in svg, f"significant gene {gene} must be labeled"
+    assert _circle_cy(svg, "NTRK1") > threshold_y, "NTRK1 must plot below the FDR threshold"
 
 
 def test_real_committed_manhattan_svg_labels_near_miss_curated_genes_not_partner_genes():
     """End-to-end regression check against the actual, already-committed
     ``manhattan.svg`` written by ``write_cohort_scan_outputs`` for the real
     544-gene genome-wide run (not just ``render_manhattan_svg`` called in
-    isolation). BRAF and NTRK1 -- hand-curated genes ranking 5th and 10th by
-    raw p-value among the non-significant genes -- must have real ``<text>``
-    labels, and the fusion-partner genes that previously crowded them out of
-    the label budget must not.
+    isolation). Every label must belong to an FDR-significant gene or a
+    priority gene (curated or honorable mention): a fusion-partner gene may
+    be labeled only when it is significant in its own right (as PRKACA,
+    EML4, KIAA1549 and ATF1 now are), never by filling a spare slot.
     """
     svg = REAL_COHORT_SCAN_MANHATTAN_SVG.read_text()
+    payload = json.loads(REAL_COHORT_SCAN_SUMMARY_JSON.read_text())
+    significant = set(payload["significant_genes"])
+    priority = {row["gene_symbol"] for row in payload["genes"] if row["config_source"] == "curated"}
+    priority |= {m["gene_symbol"] for m in payload["honorable_mentions"]}
 
-    assert ">BRAF<" in svg, "BRAF (curated, near-miss) lost its label to a lower-priority gene"
-    assert ">NTRK1<" in svg, "NTRK1 (curated, near-miss) lost its label to a lower-priority gene"
+    labels = set(re.findall(r">([A-Z0-9-]+)</text>", svg))
+    assert ">BRAF<" in svg, "BRAF (curated, significant) lost its label"
+    assert labels <= significant | priority
 
     for partner_gene in _FORMERLY_CROWDING_PARTNER_GENES:
-        assert f">{partner_gene}<" not in svg, (
-            f"{partner_gene} (a fusion-partner gene, not a priority gene) should not occupy a "
-            "label slot ahead of a curated/near-miss primary gene"
-        )
+        if partner_gene not in significant:
+            assert f">{partner_gene}<" not in svg, (
+                f"{partner_gene} (a non-significant fusion-partner gene) should not occupy a "
+                "label slot ahead of a curated/near-miss primary gene"
+            )
 
     # Partner-gene context is preserved as a tooltip rather than lost outright.
     braf_circle = re.search(r'<circle[^>]*data-gene="BRAF"[^>]*>.*?</circle>', svg, re.DOTALL)
@@ -317,7 +319,12 @@ def test_priority_genes_derived_from_real_summary_json_reproduce_the_committed_s
 
     svg = render_manhattan_svg(rows, significance_level=0.05, priority_genes=priority_genes)
 
+    def labels(text):
+        return set(re.findall(r">([A-Z0-9-]+)</text>", text))
+
     assert ">BRAF<" in svg
-    assert ">NTRK1<" in svg
+    assert labels(svg) == labels(REAL_COHORT_SCAN_MANHATTAN_SVG.read_text())
+    significant = set(payload["significant_genes"])
     for partner_gene in _FORMERLY_CROWDING_PARTNER_GENES:
-        assert f">{partner_gene}<" not in svg
+        if partner_gene not in significant:
+            assert f">{partner_gene}<" not in svg
