@@ -1,0 +1,2474 @@
+{
+  "gene_symbol": "FH",
+  "study_id": "msk_impact_50k_2026",
+  "molecular_profile_id": "msk_impact_50k_2026_structural_variants",
+  "retrieved_at": "2026-10-26T20:02:45.249901+00:00",
+  "summary": {
+    "raw_structural_variant_count": 30,
+    "total_fusions": 16,
+    "sample_count": 16,
+    "known_patient_count": 15,
+    "missing_patient_id_event_count": 0,
+    "inference_counting_unit": "patient",
+    "patient_independence_established": true,
+    "observation_unit": "patient_gene",
+    "input_mapped_event_count": 15,
+    "analyzed_observation_count": 14,
+    "collapsed_repeat_observation_count": 1,
+    "patients_with_repeated_observations": 1,
+    "observation_identity_fallbacks": {},
+    "frame_conflict_groups": 0,
+    "merged_distinct_fusion_count": 0,
+    "patients_with_multiple_distinct_fusions": 0,
+    "mapped_fusions": 15,
+    "skipped_fusions": 1,
+    "in_frame_count": 1,
+    "out_of_frame_count": 5,
+    "known_frame_count": 6,
+    "unknown_frame_count": 9,
+    "in_frame_percent": 16.666666666666668,
+    "kinase_retained_count": 2,
+    "kinase_retained_percent": 13.333333333333334,
+    "in_frame_kinase_retained_count": 1,
+    "fisher_odds_ratio": "inf",
+    "fisher_p_value": 0.14285714285714285,
+    "permutation_p_value": 0.10891089108910891,
+    "frame_domain_contingency_table": [
+      [
+        1,
+        1
+      ],
+      [
+        0,
+        12
+      ]
+    ],
+    "partner_counts": [
+      {
+        "Partner_gene": "ARID4B",
+        "Event_count": 1,
+        "Raw_event_count": 1,
+        "Sample_count": 1,
+        "Patient_count": 1
+      },
+      {
+        "Partner_gene": "DGKH",
+        "Event_count": 5,
+        "Raw_event_count": 5,
+        "Sample_count": 5,
+        "Patient_count": 4
+      },
+      {
+        "Partner_gene": "FMN2",
+        "Event_count": 1,
+        "Raw_event_count": 1,
+        "Sample_count": 1,
+        "Patient_count": 1
+      },
+      {
+        "Partner_gene": "MAFTRR",
+        "Event_count": 1,
+        "Raw_event_count": 1,
+        "Sample_count": 1,
+        "Patient_count": 1
+      },
+      {
+        "Partner_gene": "NOTCH1",
+        "Event_count": 1,
+        "Raw_event_count": 1,
+        "Sample_count": 1,
+        "Patient_count": 1
+      },
+      {
+        "Partner_gene": "PDE1C",
+        "Event_count": 1,
+        "Raw_event_count": 1,
+        "Sample_count": 1,
+        "Patient_count": 1
+      },
+      {
+        "Partner_gene": "RGS7",
+        "Event_count": 2,
+        "Raw_event_count": 2,
+        "Sample_count": 2,
+        "Patient_count": 2
+      },
+      {
+        "Partner_gene": "RYR2",
+        "Event_count": 1,
+        "Raw_event_count": 1,
+        "Sample_count": 1,
+        "Patient_count": 1
+      },
+      {
+        "Partner_gene": "SLC35F3",
+        "Event_count": 1,
+        "Raw_event_count": 1,
+        "Sample_count": 1,
+        "Patient_count": 1
+      },
+      {
+        "Partner_gene": "TRMT1L",
+        "Event_count": 1,
+        "Raw_event_count": 1,
+        "Sample_count": 1,
+        "Patient_count": 1
+      },
+      {
+        "Partner_gene": "unknown",
+        "Event_count": 1,
+        "Raw_event_count": 1,
+        "Sample_count": 1,
+        "Patient_count": 1
+      }
+    ],
+    "domain_accession": "PF00206",
+    "domain_start_aa": 58,
+    "domain_end_aa": 389,
+    "key_domains": [
+      {
+        "name": "Lyase",
+        "accession": "PF00206",
+        "start_aa": 58,
+        "end_aa": 389
+      }
+    ],
+    "fusion_annotation_crosscheck": {
+      "agree": 15,
+      "disagree": 0,
+      "unavailable": 0
+    },
+    "configured_key_domains": [
+      {
+        "name": "Lyase",
+        "source": "genome_nexus",
+        "key": "auto_key_domain",
+        "accession": "PF00206",
+        "start_aa": null,
+        "end_aa": null
+      }
+    ],
+    "configured_disruption_required_domains": []
+  },
+  "warnings": [
+    "Skipped EVT-P-0048251-T01-IM6-30 (TRMT1L-FH): ValueError: could not determine 5'/3' role for FH in EVT-P-0048251-T01-IM6-30; Event_Info='Antisense Fusion'",
+    "Collapsed 1 repeated observation(s) of the same fusion in 1 patient(s) before inferential tests (observation_unit='patient_gene')."
+  ],
+  "events": [
+    {
+      "event_id": "EVT-P-0048392-T01-IM6-1",
+      "sample_id": "P-0048392-T01-IM6",
+      "patient_id": "P-0048392",
+      "tumor_type": "Breast Cancer",
+      "oncotree_code": "BRCA",
+      "fusion_name": null,
+      "partner_gene": "unknown",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 241680684,
+      "breakpoint_exon": 2,
+      "breakpoint_protein_position": 45,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 45,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Lyase",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "FH (NM_000143) rearrangement: c.133-68:FH_chr1:g.240716629inv | Transcript Fusion {MIR1273E:FH}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0062340-T01-IM7-5",
+      "sample_id": "P-0062340-T01-IM7",
+      "patient_id": "P-0062340",
+      "tumor_type": "Non-Small Cell Lung Cancer",
+      "oncotree_code": "LUAD",
+      "fusion_name": "ARID4B-FH",
+      "partner_gene": "ARID4B",
+      "frame_status": "out-of-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 241665896,
+      "breakpoint_exon": 8,
+      "breakpoint_protein_position": 370,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 370,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "disrupted",
+      "domain_retained_fraction": 0.060240963855421686,
+      "domain_is_truncated": true,
+      "retained_domains": "",
+      "lost_domains": "",
+      "disrupted_domains": "Lyase",
+      "source_annotation_text": "ARID4B (NM_016374) - FH (NM_000143) rearrangement: c.1841+5245:ARID4B_c.1109-26:FHdup | Protein Fusion: out of frame  {ARID4B:FH}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0018108-T02-IM6-7",
+      "sample_id": "P-0018108-T02-IM6",
+      "patient_id": "P-0018108",
+      "tumor_type": "Non-Small Cell Lung Cancer",
+      "oncotree_code": "LUSC",
+      "fusion_name": "DGKH-FH",
+      "partner_gene": "DGKH",
+      "frame_status": "unknown",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 241667340,
+      "breakpoint_exon": 7,
+      "breakpoint_protein_position": 370,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 369,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "hybrid junction codon: fusion-annotation reports the last complete 5-prime residue, exactly one less than this project's hybrid-junction-inclusive residue; expected convention difference, not a disagreement",
+      "domain_status": "disrupted",
+      "domain_retained_fraction": 0.9427710843373494,
+      "domain_is_truncated": true,
+      "retained_domains": "",
+      "lost_domains": "",
+      "disrupted_domains": "Lyase",
+      "source_annotation_text": "FH (NM_000143) rearrangement: t(1;13)(q43;q14.11)(chr1:g.241667340::chr13:g.42830153) | Transcript Fusion {FH:DGKH}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0018108-T01-IM6-8",
+      "sample_id": "P-0018108-T01-IM6",
+      "patient_id": "P-0018108",
+      "tumor_type": "Non-Small Cell Lung Cancer",
+      "oncotree_code": "LUSC",
+      "fusion_name": "DGKH-FH",
+      "partner_gene": "DGKH",
+      "frame_status": "unknown",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 241667339,
+      "breakpoint_exon": 7,
+      "breakpoint_protein_position": 370,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 369,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "hybrid junction codon: fusion-annotation reports the last complete 5-prime residue, exactly one less than this project's hybrid-junction-inclusive residue; expected convention difference, not a disagreement",
+      "domain_status": "disrupted",
+      "domain_retained_fraction": 0.9427710843373494,
+      "domain_is_truncated": true,
+      "retained_domains": "",
+      "lost_domains": "",
+      "disrupted_domains": "Lyase",
+      "source_annotation_text": "FH (NM_000143) rearrangement: t(1;13)(q43;q14.11)(chr1:g.241667340::chr13:g.42830153) | Transcript Fusion {FH:DGKH}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0064901-T01-IM7-9",
+      "sample_id": "P-0064901-T01-IM7",
+      "patient_id": "P-0064901",
+      "tumor_type": "Ovarian Cancer",
+      "oncotree_code": "HGSOC",
+      "fusion_name": "DGKH-FH",
+      "partner_gene": "DGKH",
+      "frame_status": "unknown",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 241667338,
+      "breakpoint_exon": 7,
+      "breakpoint_protein_position": 370,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 369,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "hybrid junction codon: fusion-annotation reports the last complete 5-prime residue, exactly one less than this project's hybrid-junction-inclusive residue; expected convention difference, not a disagreement",
+      "domain_status": "disrupted",
+      "domain_retained_fraction": 0.9427710843373494,
+      "domain_is_truncated": true,
+      "retained_domains": "",
+      "lost_domains": "",
+      "disrupted_domains": "Lyase",
+      "source_annotation_text": "FH (NM_000143) rearrangement: t(1;13)(q43;q14.11)(chr1:g.241667338::chr13:g.42830159) | Transcript Fusion {FH:DGKH}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0059435-T01-IM7-10",
+      "sample_id": "P-0059435-T01-IM7",
+      "patient_id": "P-0059435",
+      "tumor_type": "Esophagogastric Cancer",
+      "oncotree_code": "SPDAC",
+      "fusion_name": "DGKH-FH",
+      "partner_gene": "DGKH",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 241661272,
+      "breakpoint_exon": 10,
+      "breakpoint_protein_position": 464,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 464,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "retained_domains": "",
+      "lost_domains": "Lyase",
+      "disrupted_domains": "",
+      "source_annotation_text": "FH (NM_000143) rearrangement: t(1;13)(q43;q14.11)(chr1:g.241661272::chr13:g.42830525) | Transcript Fusion {DGKH:FH}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0059293-T01-IM7-11",
+      "sample_id": "P-0059293-T01-IM7",
+      "patient_id": "P-0059293",
+      "tumor_type": "Cancer of Unknown Primary",
+      "oncotree_code": "CUP",
+      "fusion_name": "DGKH-FH",
+      "partner_gene": "DGKH",
+      "frame_status": "unknown",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 241667341,
+      "breakpoint_exon": 7,
+      "breakpoint_protein_position": 370,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 369,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "hybrid junction codon: fusion-annotation reports the last complete 5-prime residue, exactly one less than this project's hybrid-junction-inclusive residue; expected convention difference, not a disagreement",
+      "domain_status": "disrupted",
+      "domain_retained_fraction": 0.9427710843373494,
+      "domain_is_truncated": true,
+      "retained_domains": "",
+      "lost_domains": "",
+      "disrupted_domains": "Lyase",
+      "source_annotation_text": "FH (NM_000143) rearrangement: t(1;13)(q43;q14.11)(chr1:g.241667341::chr13:g.42830159) | Protein Fusion: mid-exon  {FH:DGKH}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0066922-T02-IM7-20",
+      "sample_id": "P-0066922-T02-IM7",
+      "patient_id": "P-0066922",
+      "tumor_type": "Hepatobiliary Cancer",
+      "oncotree_code": "GBC",
+      "fusion_name": "FMN2-FH",
+      "partner_gene": "FMN2",
+      "frame_status": "unknown",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 241667416,
+      "breakpoint_exon": 7,
+      "breakpoint_protein_position": 345,
+      "is_intronic_breakpoint": false,
+      "fusion_annotation_crosscheck_protein_position": 344,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "hybrid junction codon: fusion-annotation reports the last complete 5-prime residue, exactly one less than this project's hybrid-junction-inclusive residue; expected convention difference, not a disagreement",
+      "domain_status": "disrupted",
+      "domain_retained_fraction": 0.8674698795180723,
+      "domain_is_truncated": true,
+      "retained_domains": "",
+      "lost_domains": "",
+      "disrupted_domains": "Lyase",
+      "source_annotation_text": "FH (NM_000143) rearrangement: c.1034:FH_chr1:g.240469632del | Antisense Fusion",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0060877-T01-IM7-21",
+      "sample_id": "P-0060877-T01-IM7",
+      "patient_id": "P-0060877",
+      "tumor_type": "Colorectal Cancer",
+      "oncotree_code": "COAD",
+      "fusion_name": "MAFTRR-FH",
+      "partner_gene": "MAFTRR",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 241661260,
+      "breakpoint_exon": 10,
+      "breakpoint_protein_position": 467,
+      "is_intronic_breakpoint": false,
+      "fusion_annotation_crosscheck_protein_position": 467,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "retained_domains": "",
+      "lost_domains": "Lyase",
+      "disrupted_domains": "",
+      "source_annotation_text": "FH (NM_000143) rearrangement: t(1;16)(q43;q23.2)(chr1:g.241661260::chr16:g.79754421) | Protein Fusion: mid-exon  {LOC102467146:FH}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0040956-T01-IM6-22",
+      "sample_id": "P-0040956-T01-IM6",
+      "patient_id": "P-0040956",
+      "tumor_type": "Anal Cancer",
+      "oncotree_code": "ANSC",
+      "fusion_name": "NOTCH1-FH",
+      "partner_gene": "NOTCH1",
+      "frame_status": "out-of-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 241672198,
+      "breakpoint_exon": 5,
+      "breakpoint_protein_position": 186,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 186,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "disrupted",
+      "domain_retained_fraction": 0.6144578313253012,
+      "domain_is_truncated": true,
+      "retained_domains": "",
+      "lost_domains": "",
+      "disrupted_domains": "Lyase",
+      "source_annotation_text": "NOTCH1 (NM_017617) - FH (NM_000143) rearrangement: t(1;9)(q43;q34.3)(chr1:g.241672198::chr9:g.139417940) | Protein Fusion: out of frame  {NOTCH1:FH}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0000532-T02-IM5-25",
+      "sample_id": "P-0000532-T02-IM5",
+      "patient_id": "P-0000532",
+      "tumor_type": "Breast Cancer",
+      "oncotree_code": "MDLC",
+      "fusion_name": "PDE1C-FH",
+      "partner_gene": "PDE1C",
+      "frame_status": "out-of-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 241682866,
+      "breakpoint_exon": 1,
+      "breakpoint_protein_position": 44,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 44,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "retained_domains": "",
+      "lost_domains": "Lyase",
+      "disrupted_domains": "",
+      "source_annotation_text": "FH (NM_000143) - PDE1C (NM_001191058) Rearrangement : t(1;7)(1q43;7p14.3)(chr1:g.241682866::chr7:g.31926696) | Protein fusion: out of frame (FH-PDE1C)",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0004918-T02-IM6-26",
+      "sample_id": "P-0004918-T02-IM6",
+      "patient_id": "P-0004918",
+      "tumor_type": "Breast Cancer",
+      "oncotree_code": "IDC",
+      "fusion_name": "RGS7-FH",
+      "partner_gene": "RGS7",
+      "frame_status": "out-of-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 241666009,
+      "breakpoint_exon": 8,
+      "breakpoint_protein_position": 370,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 370,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "disrupted",
+      "domain_retained_fraction": 0.060240963855421686,
+      "domain_is_truncated": true,
+      "retained_domains": "",
+      "lost_domains": "",
+      "disrupted_domains": "Lyase",
+      "source_annotation_text": "RGS7 (NM_002924) - FH (NM_000143) rearrangement: c.79-95591:RGS7_c.1109-139:FHdup | Protein Fusion: out of frame  {RGS7:FH}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0032745-T01-IM6-27",
+      "sample_id": "P-0032745-T01-IM6",
+      "patient_id": "P-0032745",
+      "tumor_type": "Mesothelioma",
+      "oncotree_code": "PLSMESO",
+      "fusion_name": "RGS7-FH",
+      "partner_gene": "RGS7",
+      "frame_status": "out-of-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 241671722,
+      "breakpoint_exon": 5,
+      "breakpoint_protein_position": 246,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 246,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "disrupted",
+      "domain_retained_fraction": 0.5692771084337349,
+      "domain_is_truncated": true,
+      "retained_domains": "",
+      "lost_domains": "",
+      "disrupted_domains": "Lyase",
+      "source_annotation_text": "FH (NM_000143) - RGS7 (NM_002924) rearrangement:  c.738+181:FH_c.386-8492:RGS7del | Protein Fusion: out of frame  {FH:RGS7}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0015961-T03-IM6-28",
+      "sample_id": "P-0015961-T03-IM6",
+      "patient_id": "P-0015961",
+      "tumor_type": "Non-Small Cell Lung Cancer",
+      "oncotree_code": "LUAS",
+      "fusion_name": "RYR2-FH",
+      "partner_gene": "RYR2",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 241680785,
+      "breakpoint_exon": 2,
+      "breakpoint_protein_position": 45,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 45,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "retained_domains": "Lyase",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "RYR2 (NM_001035) - FH (NM_000143) rearrangement: c.48+56557:RYR2_c.133-169:FHinv | Protein Fusion: in frame  {RYR2:FH}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0051358-T01-IM6-29",
+      "sample_id": "P-0051358-T01-IM6",
+      "patient_id": "P-0051358",
+      "tumor_type": "Colorectal Cancer",
+      "oncotree_code": "READ",
+      "fusion_name": "SLC35F3-FH",
+      "partner_gene": "SLC35F3",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 241661231,
+      "breakpoint_exon": 10,
+      "breakpoint_protein_position": 477,
+      "is_intronic_breakpoint": false,
+      "fusion_annotation_crosscheck_protein_position": 477,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "retained_domains": "",
+      "lost_domains": "Lyase",
+      "disrupted_domains": "",
+      "source_annotation_text": "SLC35F3 (NM_173508) - FH (NM_000143) rearrangement: c.283+157829:SLC35F3_c.1430:FHinv | Protein Fusion: mid-exon  {SLC35F3:FH}",
+      "source_site2_effect_on_frame": "NA"
+    }
+  ],
+  "algorithm_results": [
+    {
+      "Algorithm": "composite_score",
+      "Algorithm_version": "0.2.0",
+      "Parameters": {
+        "weights": {
+          "recurrence": 0.3,
+          "domain_retention": 0.25,
+          "domain_disruption": 0.2,
+          "cutpoint_proximity": 0.15,
+          "confidence_certainty": 0.1
+        },
+        "neg_log10_p_cap": 10.0,
+        "cutpoint_corrected_p_alpha": 0.05
+      },
+      "Summary": {
+        "score_interpretation": "prioritization_heuristic_not_probability_or_significance",
+        "gene_symbol": "FH",
+        "n_partners_ranked": 11,
+        "total_events": 16,
+        "components_applicable": {
+          "recurrence": true,
+          "domain_retention": true,
+          "domain_disruption": false,
+          "cutpoint_proximity": false,
+          "confidence_certainty": true
+        },
+        "domain_retention_p_value_used": 0.10891089108910891,
+        "domain_disruption_p_value_used": null,
+        "inferred_cutpoint_aa": null,
+        "Runtime_seconds": 8.041702676564455e-05
+      },
+      "Tables": {
+        "composite_evidence_ranking": [
+          {
+            "Partner_gene": "DGKH",
+            "Event_count": 5,
+            "Recurrence_score": 0.3125,
+            "Domain_retention_score": 0.09629286886244175,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.3860334247970314,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.2406562456850978,
+            "Rank": 1
+          },
+          {
+            "Partner_gene": "RGS7",
+            "Event_count": 2,
+            "Recurrence_score": 0.125,
+            "Domain_retention_score": 0.09629286886244175,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.3860334247970314,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.15411778414663627,
+            "Rank": 2
+          },
+          {
+            "Partner_gene": "ARID4B",
+            "Event_count": 1,
+            "Recurrence_score": 0.0625,
+            "Domain_retention_score": 0.09629286886244175,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.3860334247970314,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.12527163030048244,
+            "Rank": 3
+          },
+          {
+            "Partner_gene": "FMN2",
+            "Event_count": 1,
+            "Recurrence_score": 0.0625,
+            "Domain_retention_score": 0.09629286886244175,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.3860334247970314,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.12527163030048244,
+            "Rank": 4
+          },
+          {
+            "Partner_gene": "MAFTRR",
+            "Event_count": 1,
+            "Recurrence_score": 0.0625,
+            "Domain_retention_score": 0.09629286886244175,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.3860334247970314,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.12527163030048244,
+            "Rank": 5
+          },
+          {
+            "Partner_gene": "NOTCH1",
+            "Event_count": 1,
+            "Recurrence_score": 0.0625,
+            "Domain_retention_score": 0.09629286886244175,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.3860334247970314,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.12527163030048244,
+            "Rank": 6
+          },
+          {
+            "Partner_gene": "PDE1C",
+            "Event_count": 1,
+            "Recurrence_score": 0.0625,
+            "Domain_retention_score": 0.09629286886244175,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.3860334247970314,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.12527163030048244,
+            "Rank": 7
+          },
+          {
+            "Partner_gene": "RYR2",
+            "Event_count": 1,
+            "Recurrence_score": 0.0625,
+            "Domain_retention_score": 0.09629286886244175,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.3860334247970314,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.12527163030048244,
+            "Rank": 8
+          },
+          {
+            "Partner_gene": "SLC35F3",
+            "Event_count": 1,
+            "Recurrence_score": 0.0625,
+            "Domain_retention_score": 0.09629286886244175,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.3860334247970314,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.12527163030048244,
+            "Rank": 9
+          },
+          {
+            "Partner_gene": "TRMT1L",
+            "Event_count": 1,
+            "Recurrence_score": 0.0625,
+            "Domain_retention_score": 0.09629286886244175,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.3860334247970314,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.12527163030048244,
+            "Rank": 10
+          },
+          {
+            "Partner_gene": "unknown",
+            "Event_count": 1,
+            "Recurrence_score": 0.0625,
+            "Domain_retention_score": 0.09629286886244175,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.3860334247970314,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.12527163030048244,
+            "Rank": 11
+          }
+        ]
+      },
+      "Warnings": [
+        "domain_disruption sub-score excluded: the supplied result had no applicable p-value (e.g. disruption_required_domains not configured for this gene).",
+        "cutpoint_proximity sub-score excluded: corrected cutpoint p-value was missing or >= 0.05, cutpoint was not determinable, or mapped breakpoints were unavailable."
+      ],
+      "Created_at": "2026-10-26T20:02:45.248839Z",
+      "Input_fingerprint": "4eabedaaa3bd2c455255c39265363d739a9236f115c85b61eb14833f67a0f34d"
+    },
+    {
+      "Algorithm": "confidence_stats",
+      "Algorithm_version": "1.0.0",
+      "Parameters": {
+        "group_field": "Domain_retention_flags",
+        "group_key": "auto_key_domain",
+        "group_value_map": {
+          "retained": "retained",
+          "lost": "not_retained",
+          "disrupted": "not_retained",
+          "unknown": null
+        },
+        "group_values": [
+          "retained",
+          "not_retained"
+        ],
+        "outcome_field": "Frame_status",
+        "outcome_success_value": "in-frame",
+        "outcome_valid_values": [
+          "in-frame",
+          "out-of-frame"
+        ],
+        "numeric_field": "Tumor_variant_count"
+      },
+      "Summary": {
+        "group_field": "Domain_retention_flags",
+        "group_a_label": "retained",
+        "group_b_label": "not_retained",
+        "n_group_a": 2,
+        "n_group_b": 12,
+        "mle": {
+          "outcome_field": "Frame_status",
+          "groups": {
+            "retained": {
+              "n": 1,
+              "successes": 1,
+              "point_estimate": 1.0,
+              "ci_low": 0.20654931437723745,
+              "ci_high": 1.0,
+              "method": "wilson"
+            },
+            "not_retained": {
+              "n": 5,
+              "successes": 0,
+              "point_estimate": 0.0,
+              "ci_low": 0.0,
+              "ci_high": 0.43448246478317476,
+              "method": "wilson"
+            }
+          }
+        },
+        "ttest": {
+          "numeric_field": "Tumor_variant_count",
+          "group_a_label": "retained",
+          "group_b_label": "not_retained",
+          "n_a": 2,
+          "n_b": 12,
+          "t_statistic": -1.9344291423148703,
+          "p_value": 0.08097664709571417,
+          "df": 10.303037007422143,
+          "mean_a": 12,
+          "mean_b": 29.5
+        },
+        "Runtime_seconds": 0.0013569999719038606
+      },
+      "Tables": null,
+      "Warnings": [],
+      "Created_at": "2026-10-26T20:02:45.199205Z",
+      "Input_fingerprint": "4eabedaaa3bd2c455255c39265363d739a9236f115c85b61eb14833f67a0f34d"
+    },
+    {
+      "Algorithm": "cutpoint_detection",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 1000,
+        "adaptive": false
+      },
+      "Summary": {
+        "determinable": true,
+        "reason": null,
+        "n_events_analyzed": 14,
+        "inferred_cutpoint_aa": 45,
+        "observed_statistic_neg_log10_p": 1.481920137601431,
+        "observed_p_value": 0.032967032967032975,
+        "observed_odds_ratio": null,
+        "corrected_p_value": 0.07092907092907093,
+        "known_domain_boundary_comparison": {
+          "nearest_known_domain_boundary_aa": 58,
+          "distance_aa": -13
+        },
+        "Runtime_seconds": 0.03192345896968618
+      },
+      "Tables": {
+        "cutpoint_scan": [
+          {
+            "cutpoint": 44,
+            "n_positive_at_or_below": 0,
+            "n_positive_above": 2,
+            "n_negative_at_or_below": 1,
+            "n_negative_above": 11,
+            "odds_ratio": 0.0,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0
+          },
+          {
+            "cutpoint": 45,
+            "n_positive_at_or_below": 2,
+            "n_positive_above": 0,
+            "n_negative_at_or_below": 1,
+            "n_negative_above": 11,
+            "odds_ratio": null,
+            "p_value": 0.032967032967032975,
+            "neg_log10_p_value": 1.481920137601431
+          },
+          {
+            "cutpoint": 186,
+            "n_positive_at_or_below": 2,
+            "n_positive_above": 0,
+            "n_negative_at_or_below": 2,
+            "n_negative_above": 10,
+            "odds_ratio": null,
+            "p_value": 0.06593406593406594,
+            "neg_log10_p_value": 1.18089014193745
+          },
+          {
+            "cutpoint": 246,
+            "n_positive_at_or_below": 2,
+            "n_positive_above": 0,
+            "n_negative_at_or_below": 3,
+            "n_negative_above": 9,
+            "odds_ratio": null,
+            "p_value": 0.10989010989010989,
+            "neg_log10_p_value": 0.9590413923210936
+          },
+          {
+            "cutpoint": 345,
+            "n_positive_at_or_below": 2,
+            "n_positive_above": 0,
+            "n_negative_at_or_below": 4,
+            "n_negative_above": 8,
+            "odds_ratio": null,
+            "p_value": 0.1648351648351648,
+            "neg_log10_p_value": 0.7829501332654124
+          },
+          {
+            "cutpoint": 370,
+            "n_positive_at_or_below": 2,
+            "n_positive_above": 0,
+            "n_negative_at_or_below": 9,
+            "n_negative_above": 3,
+            "odds_ratio": null,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0
+          },
+          {
+            "cutpoint": 464,
+            "n_positive_at_or_below": 2,
+            "n_positive_above": 0,
+            "n_negative_at_or_below": 10,
+            "n_negative_above": 2,
+            "odds_ratio": null,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0
+          },
+          {
+            "cutpoint": 467,
+            "n_positive_at_or_below": 2,
+            "n_positive_above": 0,
+            "n_negative_at_or_below": 11,
+            "n_negative_above": 1,
+            "odds_ratio": null,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-10-26T20:02:45.231769Z",
+      "Input_fingerprint": "4eabedaaa3bd2c455255c39265363d739a9236f115c85b61eb14833f67a0f34d"
+    },
+    {
+      "Algorithm": "domain_disruption",
+      "Algorithm_version": "0.4.0",
+      "Parameters": {},
+      "Summary": {
+        "fisher_odds_ratio": null,
+        "fisher_p_value": null,
+        "permutation_empirical_p_value": null,
+        "observed_in_frame_disruption_rate": null,
+        "Runtime_seconds": 1.4791963621973991e-05
+      },
+      "Tables": {},
+      "Warnings": [
+        "FH has no disruption_required_domains configured; domain-disruption analysis was skipped."
+      ],
+      "Created_at": "2026-10-26T20:02:45.201653Z",
+      "Input_fingerprint": "4eabedaaa3bd2c455255c39265363d739a9236f115c85b61eb14833f67a0f34d"
+    },
+    {
+      "Algorithm": "domain_retention",
+      "Algorithm_version": "0.4.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 100,
+        "adaptive": true
+      },
+      "Summary": {
+        "fisher_odds_ratio": null,
+        "fisher_p_value": 0.14285714285714285,
+        "permutation_empirical_p_value": 0.10891089108910891,
+        "observed_in_frame_retention_rate": 1.0,
+        "permutation_null_classifier": "domain_coordinates",
+        "tumor_type_stratified": {
+          "stratified_by": "oncotree_code",
+          "cmh_statistic": null,
+          "cmh_p_value": null,
+          "mh_common_odds_ratio": null,
+          "direction": null,
+          "informative_strata": 0,
+          "total_strata": 14,
+          "unknown_stratum_observations": 0
+        },
+        "adaptive_permutations": {
+          "enabled": true,
+          "n_permutations_small": 100,
+          "n_permutations_full": 1000,
+          "n_permutations_used": 100,
+          "n_permutations_max": 100000,
+          "escalated_to_full": false
+        },
+        "Runtime_seconds": 0.0018741250387392938
+      },
+      "Tables": {
+        "frame_domain_contingency_table": [
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            12
+          ]
+        ],
+        "frame_domain_contingency_tables_by_tumor_type": [
+          {
+            "stratum": "ANSC",
+            "table": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          {
+            "stratum": "BRCA",
+            "table": [
+              [
+                0,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          {
+            "stratum": "COAD",
+            "table": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          {
+            "stratum": "CUP",
+            "table": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          {
+            "stratum": "GBC",
+            "table": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          {
+            "stratum": "HGSOC",
+            "table": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          {
+            "stratum": "IDC",
+            "table": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          {
+            "stratum": "LUAD",
+            "table": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          {
+            "stratum": "LUAS",
+            "table": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          {
+            "stratum": "LUSC",
+            "table": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          {
+            "stratum": "MDLC",
+            "table": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          {
+            "stratum": "PLSMESO",
+            "table": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          {
+            "stratum": "READ",
+            "table": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          {
+            "stratum": "SPDAC",
+            "table": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          }
+        ],
+        "domain_retention_descriptives": [
+          {
+            "Domain_key": "auto_key_domain",
+            "Domain_name": "Lyase",
+            "Quantitative_call_count": 14,
+            "Fully_retained_count": 2,
+            "Truncated_count": 8,
+            "Fully_lost_count": 4,
+            "Mean_retained_fraction_among_non_retained_calls": 0.4166666666666667
+          }
+        ],
+        "permutation_null_retention_rates": {
+          "omitted_from_artifact": true,
+          "count": 100
+        }
+      },
+      "Warnings": [],
+      "Created_at": "2026-10-26T20:02:45.196085Z",
+      "Input_fingerprint": "50d1e5933104b4fefc594ac35a147e71fc694a0fde6807236c154b19e62aecaf"
+    },
+    {
+      "Algorithm": "exon_retention",
+      "Algorithm_version": "1.0.0",
+      "Parameters": {
+        "target_exon": 2
+      },
+      "Summary": {
+        "target_exon": 2,
+        "retained_event_count": 7,
+        "total_event_count": 15,
+        "retained_fraction": 0.4666666666666667,
+        "Runtime_seconds": 4.433299181982875e-05
+      },
+      "Tables": {
+        "Exon_retention": [
+          {
+            "Exon": 2,
+            "Retained_event_count": 7,
+            "Total_event_count": 15,
+            "Retained_fraction": 0.4666666666666667
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-10-26T20:02:45.202488Z",
+      "Input_fingerprint": "4eabedaaa3bd2c455255c39265363d739a9236f115c85b61eb14833f67a0f34d"
+    },
+    {
+      "Algorithm": "expression_association",
+      "Algorithm_version": "0.2.0",
+      "Parameters": {},
+      "Summary": {
+        "Runtime_seconds": 9.25001222640276e-06
+      },
+      "Tables": null,
+      "Warnings": [
+        "No mRNA expression data was available for FH in this cohort; expression-association analysis was skipped."
+      ],
+      "Created_at": "2026-10-26T20:02:45.202529Z",
+      "Input_fingerprint": "4eabedaaa3bd2c455255c39265363d739a9236f115c85b61eb14833f67a0f34d"
+    },
+    {
+      "Algorithm": "frequency",
+      "Algorithm_version": "1.1.0",
+      "Parameters": {
+        "dedup_by_patient": false
+      },
+      "Summary": {
+        "input_event_count": 16,
+        "input_sample_count": 16,
+        "input_patient_count": 15,
+        "input_missing_patient_id_event_count": 0,
+        "analyzed_event_count": 16,
+        "counted_unit_count": 16,
+        "analyzed_sample_count": 16,
+        "analyzed_patient_count": 15,
+        "count_unit": "event",
+        "unique_partner_gene_count": 11,
+        "Runtime_seconds": 8.012499893084168e-05
+      },
+      "Tables": {
+        "Partner_gene_counts": [
+          {
+            "Partner_gene": "ARID4B",
+            "Event_count": 1,
+            "Raw_event_count": 1,
+            "Sample_count": 1,
+            "Patient_count": 1
+          },
+          {
+            "Partner_gene": "DGKH",
+            "Event_count": 5,
+            "Raw_event_count": 5,
+            "Sample_count": 5,
+            "Patient_count": 4
+          },
+          {
+            "Partner_gene": "FMN2",
+            "Event_count": 1,
+            "Raw_event_count": 1,
+            "Sample_count": 1,
+            "Patient_count": 1
+          },
+          {
+            "Partner_gene": "MAFTRR",
+            "Event_count": 1,
+            "Raw_event_count": 1,
+            "Sample_count": 1,
+            "Patient_count": 1
+          },
+          {
+            "Partner_gene": "NOTCH1",
+            "Event_count": 1,
+            "Raw_event_count": 1,
+            "Sample_count": 1,
+            "Patient_count": 1
+          },
+          {
+            "Partner_gene": "PDE1C",
+            "Event_count": 1,
+            "Raw_event_count": 1,
+            "Sample_count": 1,
+            "Patient_count": 1
+          },
+          {
+            "Partner_gene": "RGS7",
+            "Event_count": 2,
+            "Raw_event_count": 2,
+            "Sample_count": 2,
+            "Patient_count": 2
+          },
+          {
+            "Partner_gene": "RYR2",
+            "Event_count": 1,
+            "Raw_event_count": 1,
+            "Sample_count": 1,
+            "Patient_count": 1
+          },
+          {
+            "Partner_gene": "SLC35F3",
+            "Event_count": 1,
+            "Raw_event_count": 1,
+            "Sample_count": 1,
+            "Patient_count": 1
+          },
+          {
+            "Partner_gene": "TRMT1L",
+            "Event_count": 1,
+            "Raw_event_count": 1,
+            "Sample_count": 1,
+            "Patient_count": 1
+          },
+          {
+            "Partner_gene": "unknown",
+            "Event_count": 1,
+            "Raw_event_count": 1,
+            "Sample_count": 1,
+            "Patient_count": 1
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-10-26T20:02:45.197003Z",
+      "Input_fingerprint": "42950fcdc6b7e56db04f3c0bdfcb8b2a48c198216afd97106072cc932b75d541"
+    },
+    {
+      "Algorithm": "genomic_position_recurrence",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "bin_size_bp": 1000
+      },
+      "Summary": {
+        "determinable": true,
+        "reason": null,
+        "n_events_analyzed": 14,
+        "n_events_excluded_missing_position": 0,
+        "n_events_excluded_other_build": 0,
+        "n_events_excluded_other_reported_build": 0,
+        "n_events_unknown_build": 0,
+        "n_events_excluded_unknown_build": 0,
+        "reference_build": "GRCh37",
+        "reference_build_counts": {
+          "GRCh37": 14
+        },
+        "bin_size_bp": 1000,
+        "n_distinct_genomic_positions": 14,
+        "top_genomic_bin": {
+          "chromosome": "1",
+          "bin_start": 241667000,
+          "bin_end": 241668000,
+          "n_events": 4,
+          "event_ids": [
+            "EVT-P-0018108-T01-IM6-8",
+            "EVT-P-0059293-T01-IM7-11",
+            "EVT-P-0064901-T01-IM7-9",
+            "EVT-P-0066922-T02-IM7-20"
+          ]
+        },
+        "n_positions_shared_by_multiple_events": 0,
+        "genomic_vs_protein_clustering_note": "The 2 events sharing protein position 45 aa use 2 distinct genomic positions spanning 101 bp -- the protein-position recurrence is broader than any single genomic hotspot, consistent with independent intronic breakpoints mapped (or clamped) onto the same protein/exon boundary rather than one shared DNA lesion.",
+        "Runtime_seconds": 0.00010562496026977897
+      },
+      "Tables": {
+        "genomic_bin_recurrence": [
+          {
+            "chromosome": "1",
+            "bin_start": 241667000,
+            "bin_end": 241668000,
+            "n_events": 4,
+            "event_ids": [
+              "EVT-P-0018108-T01-IM6-8",
+              "EVT-P-0059293-T01-IM7-11",
+              "EVT-P-0064901-T01-IM7-9",
+              "EVT-P-0066922-T02-IM7-20"
+            ]
+          },
+          {
+            "chromosome": "1",
+            "bin_start": 241661000,
+            "bin_end": 241662000,
+            "n_events": 3,
+            "event_ids": [
+              "EVT-P-0051358-T01-IM6-29",
+              "EVT-P-0059435-T01-IM7-10",
+              "EVT-P-0060877-T01-IM7-21"
+            ]
+          },
+          {
+            "chromosome": "1",
+            "bin_start": 241680000,
+            "bin_end": 241681000,
+            "n_events": 2,
+            "event_ids": [
+              "EVT-P-0015961-T03-IM6-28",
+              "EVT-P-0048392-T01-IM6-1"
+            ]
+          },
+          {
+            "chromosome": "1",
+            "bin_start": 241665000,
+            "bin_end": 241666000,
+            "n_events": 1,
+            "event_ids": [
+              "EVT-P-0062340-T01-IM7-5"
+            ]
+          },
+          {
+            "chromosome": "1",
+            "bin_start": 241666000,
+            "bin_end": 241667000,
+            "n_events": 1,
+            "event_ids": [
+              "EVT-P-0004918-T02-IM6-26"
+            ]
+          },
+          {
+            "chromosome": "1",
+            "bin_start": 241671000,
+            "bin_end": 241672000,
+            "n_events": 1,
+            "event_ids": [
+              "EVT-P-0032745-T01-IM6-27"
+            ]
+          },
+          {
+            "chromosome": "1",
+            "bin_start": 241672000,
+            "bin_end": 241673000,
+            "n_events": 1,
+            "event_ids": [
+              "EVT-P-0040956-T01-IM6-22"
+            ]
+          },
+          {
+            "chromosome": "1",
+            "bin_start": 241682000,
+            "bin_end": 241683000,
+            "n_events": 1,
+            "event_ids": [
+              "EVT-P-0000532-T02-IM5-25"
+            ]
+          }
+        ],
+        "exact_position_recurrence": [],
+        "protein_position_genomic_spread": [
+          {
+            "protein_position_aa": 370,
+            "n_events": 5,
+            "n_distinct_genomic_positions": 5,
+            "genomic_span_bp": 1445,
+            "spans_multiple_chromosomes": false
+          },
+          {
+            "protein_position_aa": 45,
+            "n_events": 2,
+            "n_distinct_genomic_positions": 2,
+            "genomic_span_bp": 101,
+            "spans_multiple_chromosomes": false
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-10-26T20:02:45.249639Z",
+      "Input_fingerprint": "4eabedaaa3bd2c455255c39265363d739a9236f115c85b61eb14833f67a0f34d"
+    },
+    {
+      "Algorithm": "joint_partner",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {},
+      "Summary": {
+        "Runtime_seconds": 9.999959729611874e-06
+      },
+      "Tables": {},
+      "Warnings": [
+        "FH has no gene_pair configured; joint-partner analysis was skipped."
+      ],
+      "Created_at": "2026-10-26T20:02:45.203811Z",
+      "Input_fingerprint": "4eabedaaa3bd2c455255c39265363d739a9236f115c85b61eb14833f67a0f34d"
+    },
+    {
+      "Algorithm": "junction_concentration",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 1000,
+        "min_events": 5,
+        "adaptive": true
+      },
+      "Summary": {
+        "determinable": true,
+        "reason": null,
+        "n_events_analyzed": 14,
+        "n_outside_transcript": 0,
+        "top_junction": {
+          "role": "five_prime",
+          "junction_exon": 7,
+          "count": 4,
+          "role_event_count": 6,
+          "observed_share": 0.6666666666666666,
+          "random_breakage_share": 0.07559005370278442,
+          "excess_neg_log10_p": 3.3641557507141013
+        },
+        "permutation_empirical_p_value": 0.007992007992007992,
+        "null_model": "breakpoints uniform across the gene's genomic span, role kept",
+        "panel_capture_caveat": "The random-breakage null assumes a breakpoint anywhere in the gene would be detected. Capture panels such as MSK-IMPACT tile only selected introns, so concentration on panel data is partly by assay design and this p-value overstates the evidence for biological concentration. Confirm in a cohort sequenced without intron selection (whole genome or RNA).",
+        "adaptive_permutations": {
+          "enabled": true,
+          "n_permutations_small": 100,
+          "n_permutations_full": 1000,
+          "n_permutations_used": 1000,
+          "n_permutations_max": 100000,
+          "escalated_to_full": true
+        },
+        "Runtime_seconds": 0.013220041990280151
+      },
+      "Tables": {
+        "junction_counts": [
+          {
+            "role": "five_prime",
+            "junction_exon": 7,
+            "count": 4,
+            "role_event_count": 6,
+            "observed_share": 0.6666666666666666,
+            "random_breakage_share": 0.07559005370278442,
+            "excess_neg_log10_p": 3.3641557507141013
+          },
+          {
+            "role": "three_prime",
+            "junction_exon": 10,
+            "count": 3,
+            "role_event_count": 8,
+            "observed_share": 0.375,
+            "random_breakage_share": 0.12789385802608422,
+            "excess_neg_log10_p": 1.1469025228149392
+          },
+          {
+            "role": "three_prime",
+            "junction_exon": 2,
+            "count": 2,
+            "role_event_count": 8,
+            "observed_share": 0.25,
+            "random_breakage_share": 0.10871429216119861,
+            "excess_neg_log10_p": 0.6712630418201881
+          },
+          {
+            "role": "three_prime",
+            "junction_exon": 8,
+            "count": 2,
+            "role_event_count": 8,
+            "observed_share": 0.25,
+            "random_breakage_share": 0.07216029604224017,
+            "excess_neg_log10_p": 0.9626118450956878
+          },
+          {
+            "role": "five_prime",
+            "junction_exon": 1,
+            "count": 1,
+            "role_event_count": 6,
+            "observed_share": 0.16666666666666666,
+            "random_breakage_share": 0.1103389142109301,
+            "excess_neg_log10_p": 0.2974375245674
+          },
+          {
+            "role": "five_prime",
+            "junction_exon": 5,
+            "count": 1,
+            "role_event_count": 6,
+            "observed_share": 0.16666666666666666,
+            "random_breakage_share": 0.11810099733742498,
+            "excess_neg_log10_p": 0.2760927041584447
+          },
+          {
+            "role": "three_prime",
+            "junction_exon": 5,
+            "count": 1,
+            "role_event_count": 8,
+            "observed_share": 0.125,
+            "random_breakage_share": 0.1518119048693533,
+            "excess_neg_log10_p": 0.13541666429171684
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-10-26T20:02:45.217411Z",
+      "Input_fingerprint": "4eabedaaa3bd2c455255c39265363d739a9236f115c85b61eb14833f67a0f34d"
+    },
+    {
+      "Algorithm": "mechanistic_interpretation",
+      "Algorithm_version": "1.1.0",
+      "Parameters": {
+        "alpha": 0.05,
+        "recurrent_partner_threshold": 2
+      },
+      "Summary": {
+        "retention_domains_configured": true,
+        "retention_domain_names": [
+          "Lyase"
+        ],
+        "retention_tested_domain_accession": "PF00206",
+        "retention_configured_domain_count": 1,
+        "retention_statistically_supported": false,
+        "retention_nominal_fisher_supported": false,
+        "retention_fdr_q_value": 1.0,
+        "retention_fdr_significant": false,
+        "retention_fisher_evidence_status": "not_fdr_supported",
+        "retention_recurrence_evidence_type": "descriptive_heuristic",
+        "retention_fisher_p_value": 0.14285714285714285,
+        "retention_fisher_odds_ratio": null,
+        "retention_counter_intuitive_confidence": "not_applicable",
+        "retention_counter_intuitive_count": 0,
+        "retention_counter_intuitive_total": 0,
+        "retention_counter_intuitive_percent": null,
+        "disruption_domains_configured": false,
+        "disruption_domain_names": [],
+        "disruption_tested_domain_accession": null,
+        "disruption_configured_domain_count": 0,
+        "disruption_statistically_supported": false,
+        "disruption_nominal_fisher_supported": false,
+        "disruption_fdr_q_value": null,
+        "disruption_fdr_significant": null,
+        "disruption_fisher_evidence_status": "not_tested",
+        "disruption_recurrence_evidence_type": "descriptive_heuristic",
+        "disruption_fisher_p_value": null,
+        "disruption_fisher_odds_ratio": null,
+        "disruption_counter_intuitive_confidence": "not_applicable",
+        "disruption_counter_intuitive_count": 0,
+        "disruption_counter_intuitive_total": 0,
+        "disruption_counter_intuitive_percent": null,
+        "Runtime_seconds": 2.600002335384488e-05
+      },
+      "Tables": {},
+      "Warnings": [],
+      "Created_at": "2026-10-26T20:02:45.249689Z",
+      "Input_fingerprint": "4eabedaaa3bd2c455255c39265363d739a9236f115c85b61eb14833f67a0f34d"
+    },
+    {
+      "Algorithm": "mutation_cooccurrence",
+      "Algorithm_version": "0.2.0",
+      "Parameters": {},
+      "Summary": {
+        "targets": [],
+        "Runtime_seconds": 7.6249707490205765e-06
+      },
+      "Tables": {},
+      "Warnings": [
+        "FH has no mutual_exclusivity_targets configured; co-occurrence/mutual-exclusivity analysis was skipped."
+      ],
+      "Created_at": "2026-10-26T20:02:45.203843Z",
+      "Input_fingerprint": "4eabedaaa3bd2c455255c39265363d739a9236f115c85b61eb14833f67a0f34d"
+    },
+    {
+      "Algorithm": "window_detection",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 1000,
+        "widths": [
+          25,
+          50,
+          100,
+          200
+        ],
+        "min_events_per_window": 4,
+        "adaptive": false
+      },
+      "Summary": {
+        "determinable": true,
+        "reason": null,
+        "n_events_analyzed": 14,
+        "widths_tested_aa": [
+          25,
+          50,
+          100,
+          200
+        ],
+        "min_events_per_window": 4,
+        "n_candidate_windows": 20,
+        "n_distinct_candidate_windows_by_event_mask": 11,
+        "best_window": {
+          "start_aa": -14,
+          "end_aa": 186,
+          "width_aa": 200
+        },
+        "observed_statistic_neg_log10_p": 1.18089014193745,
+        "observed_p_value": 0.06593406593406594,
+        "observed_odds_ratio": null,
+        "corrected_p_value": 0.061938061938061936,
+        "known_domain_boundary_comparison": {
+          "start_aa": {
+            "nearest_known_domain_boundary_aa": 58,
+            "distance_aa": -72
+          },
+          "end_aa": {
+            "nearest_known_domain_boundary_aa": 58,
+            "distance_aa": 128
+          }
+        },
+        "mapping_sensitivity": {
+          "available": true,
+          "n_events": 14,
+          "n_exact": 3,
+          "n_clamped_or_approximate": 11,
+          "n_unknown": 0,
+          "fraction_clamped_or_approximate": 0.7857142857142857
+        },
+        "best_window_mapping_sensitivity": {
+          "available": true,
+          "n_events": 4,
+          "n_exact": 0,
+          "n_clamped_or_approximate": 4,
+          "n_unknown": 0,
+          "fraction_clamped_or_approximate": 1.0
+        },
+        "Runtime_seconds": 0.042163291946053505
+      },
+      "Tables": {
+        "window_scan": [
+          {
+            "start_aa": -14,
+            "end_aa": 186,
+            "width_aa": 200,
+            "n_events_inside": 4,
+            "n_events_outside": 10,
+            "n_positive_inside": 2,
+            "n_positive_outside": 0,
+            "odds_ratio": null,
+            "p_value": 0.06593406593406594,
+            "neg_log10_p_value": 1.18089014193745,
+            "event_ids_inside": [
+              "EVT-P-0000532-T02-IM5-25",
+              "EVT-P-0015961-T03-IM6-28",
+              "EVT-P-0040956-T01-IM6-22",
+              "EVT-P-0048392-T01-IM6-1"
+            ]
+          },
+          {
+            "start_aa": 44,
+            "end_aa": 244,
+            "width_aa": 200,
+            "n_events_inside": 4,
+            "n_events_outside": 10,
+            "n_positive_inside": 2,
+            "n_positive_outside": 0,
+            "odds_ratio": null,
+            "p_value": 0.06593406593406594,
+            "neg_log10_p_value": 1.18089014193745,
+            "event_ids_inside": [
+              "EVT-P-0000532-T02-IM5-25",
+              "EVT-P-0015961-T03-IM6-28",
+              "EVT-P-0040956-T01-IM6-22",
+              "EVT-P-0048392-T01-IM6-1"
+            ]
+          },
+          {
+            "start_aa": 170,
+            "end_aa": 370,
+            "width_aa": 200,
+            "n_events_inside": 8,
+            "n_events_outside": 6,
+            "n_positive_inside": 0,
+            "n_positive_outside": 2,
+            "odds_ratio": 0.0,
+            "p_value": 0.16483516483516483,
+            "neg_log10_p_value": 0.7829501332654124,
+            "event_ids_inside": [
+              "EVT-P-0004918-T02-IM6-26",
+              "EVT-P-0018108-T01-IM6-8",
+              "EVT-P-0032745-T01-IM6-27",
+              "EVT-P-0040956-T01-IM6-22",
+              "EVT-P-0059293-T01-IM7-11",
+              "EVT-P-0062340-T01-IM7-5",
+              "EVT-P-0064901-T01-IM7-9",
+              "EVT-P-0066922-T02-IM7-20"
+            ]
+          },
+          {
+            "start_aa": 186,
+            "end_aa": 386,
+            "width_aa": 200,
+            "n_events_inside": 8,
+            "n_events_outside": 6,
+            "n_positive_inside": 0,
+            "n_positive_outside": 2,
+            "odds_ratio": 0.0,
+            "p_value": 0.16483516483516483,
+            "neg_log10_p_value": 0.7829501332654124,
+            "event_ids_inside": [
+              "EVT-P-0004918-T02-IM6-26",
+              "EVT-P-0018108-T01-IM6-8",
+              "EVT-P-0032745-T01-IM6-27",
+              "EVT-P-0040956-T01-IM6-22",
+              "EVT-P-0059293-T01-IM7-11",
+              "EVT-P-0062340-T01-IM7-5",
+              "EVT-P-0064901-T01-IM7-9",
+              "EVT-P-0066922-T02-IM7-20"
+            ]
+          },
+          {
+            "start_aa": 246,
+            "end_aa": 446,
+            "width_aa": 200,
+            "n_events_inside": 7,
+            "n_events_outside": 7,
+            "n_positive_inside": 0,
+            "n_positive_outside": 2,
+            "odds_ratio": 0.0,
+            "p_value": 0.46153846153846156,
+            "neg_log10_p_value": 0.3357921019231931,
+            "event_ids_inside": [
+              "EVT-P-0004918-T02-IM6-26",
+              "EVT-P-0018108-T01-IM6-8",
+              "EVT-P-0032745-T01-IM6-27",
+              "EVT-P-0059293-T01-IM7-11",
+              "EVT-P-0062340-T01-IM7-5",
+              "EVT-P-0064901-T01-IM7-9",
+              "EVT-P-0066922-T02-IM7-20"
+            ]
+          },
+          {
+            "start_aa": 264,
+            "end_aa": 464,
+            "width_aa": 200,
+            "n_events_inside": 7,
+            "n_events_outside": 7,
+            "n_positive_inside": 0,
+            "n_positive_outside": 2,
+            "odds_ratio": 0.0,
+            "p_value": 0.46153846153846156,
+            "neg_log10_p_value": 0.3357921019231931,
+            "event_ids_inside": [
+              "EVT-P-0004918-T02-IM6-26",
+              "EVT-P-0018108-T01-IM6-8",
+              "EVT-P-0059293-T01-IM7-11",
+              "EVT-P-0059435-T01-IM7-10",
+              "EVT-P-0062340-T01-IM7-5",
+              "EVT-P-0064901-T01-IM7-9",
+              "EVT-P-0066922-T02-IM7-20"
+            ]
+          },
+          {
+            "start_aa": 267,
+            "end_aa": 467,
+            "width_aa": 200,
+            "n_events_inside": 8,
+            "n_events_outside": 6,
+            "n_positive_inside": 0,
+            "n_positive_outside": 2,
+            "odds_ratio": 0.0,
+            "p_value": 0.16483516483516483,
+            "neg_log10_p_value": 0.7829501332654124,
+            "event_ids_inside": [
+              "EVT-P-0004918-T02-IM6-26",
+              "EVT-P-0018108-T01-IM6-8",
+              "EVT-P-0059293-T01-IM7-11",
+              "EVT-P-0059435-T01-IM7-10",
+              "EVT-P-0060877-T01-IM7-21",
+              "EVT-P-0062340-T01-IM7-5",
+              "EVT-P-0064901-T01-IM7-9",
+              "EVT-P-0066922-T02-IM7-20"
+            ]
+          },
+          {
+            "start_aa": 270,
+            "end_aa": 370,
+            "width_aa": 100,
+            "n_events_inside": 6,
+            "n_events_outside": 8,
+            "n_positive_inside": 0,
+            "n_positive_outside": 2,
+            "odds_ratio": 0.0,
+            "p_value": 0.4725274725274724,
+            "neg_log10_p_value": 0.32557293674150717,
+            "event_ids_inside": [
+              "EVT-P-0004918-T02-IM6-26",
+              "EVT-P-0018108-T01-IM6-8",
+              "EVT-P-0059293-T01-IM7-11",
+              "EVT-P-0062340-T01-IM7-5",
+              "EVT-P-0064901-T01-IM7-9",
+              "EVT-P-0066922-T02-IM7-20"
+            ]
+          },
+          {
+            "start_aa": 277,
+            "end_aa": 477,
+            "width_aa": 200,
+            "n_events_inside": 9,
+            "n_events_outside": 5,
+            "n_positive_inside": 0,
+            "n_positive_outside": 2,
+            "odds_ratio": 0.0,
+            "p_value": 0.10989010989010989,
+            "neg_log10_p_value": 0.9590413923210936,
+            "event_ids_inside": [
+              "EVT-P-0004918-T02-IM6-26",
+              "EVT-P-0018108-T01-IM6-8",
+              "EVT-P-0051358-T01-IM6-29",
+              "EVT-P-0059293-T01-IM7-11",
+              "EVT-P-0059435-T01-IM7-10",
+              "EVT-P-0060877-T01-IM7-21",
+              "EVT-P-0062340-T01-IM7-5",
+              "EVT-P-0064901-T01-IM7-9",
+              "EVT-P-0066922-T02-IM7-20"
+            ]
+          },
+          {
+            "start_aa": 320,
+            "end_aa": 370,
+            "width_aa": 50,
+            "n_events_inside": 6,
+            "n_events_outside": 8,
+            "n_positive_inside": 0,
+            "n_positive_outside": 2,
+            "odds_ratio": 0.0,
+            "p_value": 0.4725274725274724,
+            "neg_log10_p_value": 0.32557293674150717,
+            "event_ids_inside": [
+              "EVT-P-0004918-T02-IM6-26",
+              "EVT-P-0018108-T01-IM6-8",
+              "EVT-P-0059293-T01-IM7-11",
+              "EVT-P-0062340-T01-IM7-5",
+              "EVT-P-0064901-T01-IM7-9",
+              "EVT-P-0066922-T02-IM7-20"
+            ]
+          },
+          {
+            "start_aa": 345,
+            "end_aa": 370,
+            "width_aa": 25,
+            "n_events_inside": 6,
+            "n_events_outside": 8,
+            "n_positive_inside": 0,
+            "n_positive_outside": 2,
+            "odds_ratio": 0.0,
+            "p_value": 0.4725274725274724,
+            "neg_log10_p_value": 0.32557293674150717,
+            "event_ids_inside": [
+              "EVT-P-0004918-T02-IM6-26",
+              "EVT-P-0018108-T01-IM6-8",
+              "EVT-P-0059293-T01-IM7-11",
+              "EVT-P-0062340-T01-IM7-5",
+              "EVT-P-0064901-T01-IM7-9",
+              "EVT-P-0066922-T02-IM7-20"
+            ]
+          },
+          {
+            "start_aa": 345,
+            "end_aa": 395,
+            "width_aa": 50,
+            "n_events_inside": 6,
+            "n_events_outside": 8,
+            "n_positive_inside": 0,
+            "n_positive_outside": 2,
+            "odds_ratio": 0.0,
+            "p_value": 0.4725274725274724,
+            "neg_log10_p_value": 0.32557293674150717,
+            "event_ids_inside": [
+              "EVT-P-0004918-T02-IM6-26",
+              "EVT-P-0018108-T01-IM6-8",
+              "EVT-P-0059293-T01-IM7-11",
+              "EVT-P-0062340-T01-IM7-5",
+              "EVT-P-0064901-T01-IM7-9",
+              "EVT-P-0066922-T02-IM7-20"
+            ]
+          },
+          {
+            "start_aa": 345,
+            "end_aa": 445,
+            "width_aa": 100,
+            "n_events_inside": 6,
+            "n_events_outside": 8,
+            "n_positive_inside": 0,
+            "n_positive_outside": 2,
+            "odds_ratio": 0.0,
+            "p_value": 0.4725274725274724,
+            "neg_log10_p_value": 0.32557293674150717,
+            "event_ids_inside": [
+              "EVT-P-0004918-T02-IM6-26",
+              "EVT-P-0018108-T01-IM6-8",
+              "EVT-P-0059293-T01-IM7-11",
+              "EVT-P-0062340-T01-IM7-5",
+              "EVT-P-0064901-T01-IM7-9",
+              "EVT-P-0066922-T02-IM7-20"
+            ]
+          },
+          {
+            "start_aa": 345,
+            "end_aa": 545,
+            "width_aa": 200,
+            "n_events_inside": 9,
+            "n_events_outside": 5,
+            "n_positive_inside": 0,
+            "n_positive_outside": 2,
+            "odds_ratio": 0.0,
+            "p_value": 0.10989010989010989,
+            "neg_log10_p_value": 0.9590413923210936,
+            "event_ids_inside": [
+              "EVT-P-0004918-T02-IM6-26",
+              "EVT-P-0018108-T01-IM6-8",
+              "EVT-P-0051358-T01-IM6-29",
+              "EVT-P-0059293-T01-IM7-11",
+              "EVT-P-0059435-T01-IM7-10",
+              "EVT-P-0060877-T01-IM7-21",
+              "EVT-P-0062340-T01-IM7-5",
+              "EVT-P-0064901-T01-IM7-9",
+              "EVT-P-0066922-T02-IM7-20"
+            ]
+          },
+          {
+            "start_aa": 364,
+            "end_aa": 464,
+            "width_aa": 100,
+            "n_events_inside": 6,
+            "n_events_outside": 8,
+            "n_positive_inside": 0,
+            "n_positive_outside": 2,
+            "odds_ratio": 0.0,
+            "p_value": 0.4725274725274724,
+            "neg_log10_p_value": 0.32557293674150717,
+            "event_ids_inside": [
+              "EVT-P-0004918-T02-IM6-26",
+              "EVT-P-0018108-T01-IM6-8",
+              "EVT-P-0059293-T01-IM7-11",
+              "EVT-P-0059435-T01-IM7-10",
+              "EVT-P-0062340-T01-IM7-5",
+              "EVT-P-0064901-T01-IM7-9"
+            ]
+          },
+          {
+            "start_aa": 367,
+            "end_aa": 467,
+            "width_aa": 100,
+            "n_events_inside": 7,
+            "n_events_outside": 7,
+            "n_positive_inside": 0,
+            "n_positive_outside": 2,
+            "odds_ratio": 0.0,
+            "p_value": 0.46153846153846156,
+            "neg_log10_p_value": 0.3357921019231931,
+            "event_ids_inside": [
+              "EVT-P-0004918-T02-IM6-26",
+              "EVT-P-0018108-T01-IM6-8",
+              "EVT-P-0059293-T01-IM7-11",
+              "EVT-P-0059435-T01-IM7-10",
+              "EVT-P-0060877-T01-IM7-21",
+              "EVT-P-0062340-T01-IM7-5",
+              "EVT-P-0064901-T01-IM7-9"
+            ]
+          },
+          {
+            "start_aa": 370,
+            "end_aa": 395,
+            "width_aa": 25,
+            "n_events_inside": 5,
+            "n_events_outside": 9,
+            "n_positive_inside": 0,
+            "n_positive_outside": 2,
+            "odds_ratio": 0.0,
+            "p_value": 0.5054945054945055,
+            "neg_log10_p_value": 0.29628356063951955,
+            "event_ids_inside": [
+              "EVT-P-0004918-T02-IM6-26",
+              "EVT-P-0018108-T01-IM6-8",
+              "EVT-P-0059293-T01-IM7-11",
+              "EVT-P-0062340-T01-IM7-5",
+              "EVT-P-0064901-T01-IM7-9"
+            ]
+          },
+          {
+            "start_aa": 370,
+            "end_aa": 420,
+            "width_aa": 50,
+            "n_events_inside": 5,
+            "n_events_outside": 9,
+            "n_positive_inside": 0,
+            "n_positive_outside": 2,
+            "odds_ratio": 0.0,
+            "p_value": 0.5054945054945055,
+            "neg_log10_p_value": 0.29628356063951955,
+            "event_ids_inside": [
+              "EVT-P-0004918-T02-IM6-26",
+              "EVT-P-0018108-T01-IM6-8",
+              "EVT-P-0059293-T01-IM7-11",
+              "EVT-P-0062340-T01-IM7-5",
+              "EVT-P-0064901-T01-IM7-9"
+            ]
+          },
+          {
+            "start_aa": 370,
+            "end_aa": 470,
+            "width_aa": 100,
+            "n_events_inside": 7,
+            "n_events_outside": 7,
+            "n_positive_inside": 0,
+            "n_positive_outside": 2,
+            "odds_ratio": 0.0,
+            "p_value": 0.46153846153846156,
+            "neg_log10_p_value": 0.3357921019231931,
+            "event_ids_inside": [
+              "EVT-P-0004918-T02-IM6-26",
+              "EVT-P-0018108-T01-IM6-8",
+              "EVT-P-0059293-T01-IM7-11",
+              "EVT-P-0059435-T01-IM7-10",
+              "EVT-P-0060877-T01-IM7-21",
+              "EVT-P-0062340-T01-IM7-5",
+              "EVT-P-0064901-T01-IM7-9"
+            ]
+          },
+          {
+            "start_aa": 370,
+            "end_aa": 570,
+            "width_aa": 200,
+            "n_events_inside": 8,
+            "n_events_outside": 6,
+            "n_positive_inside": 0,
+            "n_positive_outside": 2,
+            "odds_ratio": 0.0,
+            "p_value": 0.16483516483516483,
+            "neg_log10_p_value": 0.7829501332654124,
+            "event_ids_inside": [
+              "EVT-P-0004918-T02-IM6-26",
+              "EVT-P-0018108-T01-IM6-8",
+              "EVT-P-0051358-T01-IM6-29",
+              "EVT-P-0059293-T01-IM7-11",
+              "EVT-P-0059435-T01-IM7-10",
+              "EVT-P-0060877-T01-IM7-21",
+              "EVT-P-0062340-T01-IM7-5",
+              "EVT-P-0064901-T01-IM7-9"
+            ]
+          }
+        ],
+        "top_windows": [
+          {
+            "start_aa": -14,
+            "end_aa": 186,
+            "width_aa": 200,
+            "n_events_inside": 4,
+            "n_events_outside": 10,
+            "n_positive_inside": 2,
+            "n_positive_outside": 0,
+            "odds_ratio": null,
+            "p_value": 0.06593406593406594,
+            "neg_log10_p_value": 1.18089014193745,
+            "event_ids_inside": [
+              "EVT-P-0000532-T02-IM5-25",
+              "EVT-P-0015961-T03-IM6-28",
+              "EVT-P-0040956-T01-IM6-22",
+              "EVT-P-0048392-T01-IM6-1"
+            ]
+          },
+          {
+            "start_aa": 277,
+            "end_aa": 477,
+            "width_aa": 200,
+            "n_events_inside": 9,
+            "n_events_outside": 5,
+            "n_positive_inside": 0,
+            "n_positive_outside": 2,
+            "odds_ratio": 0.0,
+            "p_value": 0.10989010989010989,
+            "neg_log10_p_value": 0.9590413923210936,
+            "event_ids_inside": [
+              "EVT-P-0004918-T02-IM6-26",
+              "EVT-P-0018108-T01-IM6-8",
+              "EVT-P-0051358-T01-IM6-29",
+              "EVT-P-0059293-T01-IM7-11",
+              "EVT-P-0059435-T01-IM7-10",
+              "EVT-P-0060877-T01-IM7-21",
+              "EVT-P-0062340-T01-IM7-5",
+              "EVT-P-0064901-T01-IM7-9",
+              "EVT-P-0066922-T02-IM7-20"
+            ]
+          },
+          {
+            "start_aa": 170,
+            "end_aa": 370,
+            "width_aa": 200,
+            "n_events_inside": 8,
+            "n_events_outside": 6,
+            "n_positive_inside": 0,
+            "n_positive_outside": 2,
+            "odds_ratio": 0.0,
+            "p_value": 0.16483516483516483,
+            "neg_log10_p_value": 0.7829501332654124,
+            "event_ids_inside": [
+              "EVT-P-0004918-T02-IM6-26",
+              "EVT-P-0018108-T01-IM6-8",
+              "EVT-P-0032745-T01-IM6-27",
+              "EVT-P-0040956-T01-IM6-22",
+              "EVT-P-0059293-T01-IM7-11",
+              "EVT-P-0062340-T01-IM7-5",
+              "EVT-P-0064901-T01-IM7-9",
+              "EVT-P-0066922-T02-IM7-20"
+            ]
+          },
+          {
+            "start_aa": 267,
+            "end_aa": 467,
+            "width_aa": 200,
+            "n_events_inside": 8,
+            "n_events_outside": 6,
+            "n_positive_inside": 0,
+            "n_positive_outside": 2,
+            "odds_ratio": 0.0,
+            "p_value": 0.16483516483516483,
+            "neg_log10_p_value": 0.7829501332654124,
+            "event_ids_inside": [
+              "EVT-P-0004918-T02-IM6-26",
+              "EVT-P-0018108-T01-IM6-8",
+              "EVT-P-0059293-T01-IM7-11",
+              "EVT-P-0059435-T01-IM7-10",
+              "EVT-P-0060877-T01-IM7-21",
+              "EVT-P-0062340-T01-IM7-5",
+              "EVT-P-0064901-T01-IM7-9",
+              "EVT-P-0066922-T02-IM7-20"
+            ]
+          },
+          {
+            "start_aa": 370,
+            "end_aa": 570,
+            "width_aa": 200,
+            "n_events_inside": 8,
+            "n_events_outside": 6,
+            "n_positive_inside": 0,
+            "n_positive_outside": 2,
+            "odds_ratio": 0.0,
+            "p_value": 0.16483516483516483,
+            "neg_log10_p_value": 0.7829501332654124,
+            "event_ids_inside": [
+              "EVT-P-0004918-T02-IM6-26",
+              "EVT-P-0018108-T01-IM6-8",
+              "EVT-P-0051358-T01-IM6-29",
+              "EVT-P-0059293-T01-IM7-11",
+              "EVT-P-0059435-T01-IM7-10",
+              "EVT-P-0060877-T01-IM7-21",
+              "EVT-P-0062340-T01-IM7-5",
+              "EVT-P-0064901-T01-IM7-9"
+            ]
+          },
+          {
+            "start_aa": 367,
+            "end_aa": 467,
+            "width_aa": 100,
+            "n_events_inside": 7,
+            "n_events_outside": 7,
+            "n_positive_inside": 0,
+            "n_positive_outside": 2,
+            "odds_ratio": 0.0,
+            "p_value": 0.46153846153846156,
+            "neg_log10_p_value": 0.3357921019231931,
+            "event_ids_inside": [
+              "EVT-P-0004918-T02-IM6-26",
+              "EVT-P-0018108-T01-IM6-8",
+              "EVT-P-0059293-T01-IM7-11",
+              "EVT-P-0059435-T01-IM7-10",
+              "EVT-P-0060877-T01-IM7-21",
+              "EVT-P-0062340-T01-IM7-5",
+              "EVT-P-0064901-T01-IM7-9"
+            ]
+          },
+          {
+            "start_aa": 246,
+            "end_aa": 446,
+            "width_aa": 200,
+            "n_events_inside": 7,
+            "n_events_outside": 7,
+            "n_positive_inside": 0,
+            "n_positive_outside": 2,
+            "odds_ratio": 0.0,
+            "p_value": 0.46153846153846156,
+            "neg_log10_p_value": 0.3357921019231931,
+            "event_ids_inside": [
+              "EVT-P-0004918-T02-IM6-26",
+              "EVT-P-0018108-T01-IM6-8",
+              "EVT-P-0032745-T01-IM6-27",
+              "EVT-P-0059293-T01-IM7-11",
+              "EVT-P-0062340-T01-IM7-5",
+              "EVT-P-0064901-T01-IM7-9",
+              "EVT-P-0066922-T02-IM7-20"
+            ]
+          },
+          {
+            "start_aa": 264,
+            "end_aa": 464,
+            "width_aa": 200,
+            "n_events_inside": 7,
+            "n_events_outside": 7,
+            "n_positive_inside": 0,
+            "n_positive_outside": 2,
+            "odds_ratio": 0.0,
+            "p_value": 0.46153846153846156,
+            "neg_log10_p_value": 0.3357921019231931,
+            "event_ids_inside": [
+              "EVT-P-0004918-T02-IM6-26",
+              "EVT-P-0018108-T01-IM6-8",
+              "EVT-P-0059293-T01-IM7-11",
+              "EVT-P-0059435-T01-IM7-10",
+              "EVT-P-0062340-T01-IM7-5",
+              "EVT-P-0064901-T01-IM7-9",
+              "EVT-P-0066922-T02-IM7-20"
+            ]
+          },
+          {
+            "start_aa": 345,
+            "end_aa": 370,
+            "width_aa": 25,
+            "n_events_inside": 6,
+            "n_events_outside": 8,
+            "n_positive_inside": 0,
+            "n_positive_outside": 2,
+            "odds_ratio": 0.0,
+            "p_value": 0.4725274725274724,
+            "neg_log10_p_value": 0.32557293674150717,
+            "event_ids_inside": [
+              "EVT-P-0004918-T02-IM6-26",
+              "EVT-P-0018108-T01-IM6-8",
+              "EVT-P-0059293-T01-IM7-11",
+              "EVT-P-0062340-T01-IM7-5",
+              "EVT-P-0064901-T01-IM7-9",
+              "EVT-P-0066922-T02-IM7-20"
+            ]
+          },
+          {
+            "start_aa": 364,
+            "end_aa": 464,
+            "width_aa": 100,
+            "n_events_inside": 6,
+            "n_events_outside": 8,
+            "n_positive_inside": 0,
+            "n_positive_outside": 2,
+            "odds_ratio": 0.0,
+            "p_value": 0.4725274725274724,
+            "neg_log10_p_value": 0.32557293674150717,
+            "event_ids_inside": [
+              "EVT-P-0004918-T02-IM6-26",
+              "EVT-P-0018108-T01-IM6-8",
+              "EVT-P-0059293-T01-IM7-11",
+              "EVT-P-0059435-T01-IM7-10",
+              "EVT-P-0062340-T01-IM7-5",
+              "EVT-P-0064901-T01-IM7-9"
+            ]
+          },
+          {
+            "start_aa": 370,
+            "end_aa": 395,
+            "width_aa": 25,
+            "n_events_inside": 5,
+            "n_events_outside": 9,
+            "n_positive_inside": 0,
+            "n_positive_outside": 2,
+            "odds_ratio": 0.0,
+            "p_value": 0.5054945054945055,
+            "neg_log10_p_value": 0.29628356063951955,
+            "event_ids_inside": [
+              "EVT-P-0004918-T02-IM6-26",
+              "EVT-P-0018108-T01-IM6-8",
+              "EVT-P-0059293-T01-IM7-11",
+              "EVT-P-0062340-T01-IM7-5",
+              "EVT-P-0064901-T01-IM7-9"
+            ]
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-10-26T20:02:45.248095Z",
+      "Input_fingerprint": "4eabedaaa3bd2c455255c39265363d739a9236f115c85b61eb14833f67a0f34d"
+    }
+  ],
+  "reference": null,
+  "gene_track": {
+    "protein_length": 510,
+    "domains": [
+      {
+        "name": "PF10415",
+        "accession": "PF10415",
+        "start_aa": 455,
+        "end_aa": 509
+      },
+      {
+        "name": "Lyase",
+        "accession": "PF00206",
+        "start_aa": 58,
+        "end_aa": 389
+      }
+    ],
+    "exon_boundaries_aa": [
+      {
+        "exon_rank": 1,
+        "start_aa": 1,
+        "end_aa": 44
+      },
+      {
+        "exon_rank": 2,
+        "start_aa": 45,
+        "end_aa": 89
+      },
+      {
+        "exon_rank": 3,
+        "start_aa": 90,
+        "end_aa": 126
+      },
+      {
+        "exon_rank": 4,
+        "start_aa": 127,
+        "end_aa": 185
+      },
+      {
+        "exon_rank": 5,
+        "start_aa": 186,
+        "end_aa": 246
+      },
+      {
+        "exon_rank": 6,
+        "start_aa": 247,
+        "end_aa": 302
+      },
+      {
+        "exon_rank": 7,
+        "start_aa": 302,
+        "end_aa": 370
+      },
+      {
+        "exon_rank": 8,
+        "start_aa": 370,
+        "end_aa": 412
+      },
+      {
+        "exon_rank": 9,
+        "start_aa": 413,
+        "end_aa": 464
+      },
+      {
+        "exon_rank": 10,
+        "start_aa": 464,
+        "end_aa": 511
+      }
+    ]
+  },
+  "intragenic_deletions": []
+}

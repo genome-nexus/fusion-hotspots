@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="302" viewBox="0 0 1000 302">
+<rect width="1000" height="302" fill="white"/>
+<text x="60" y="24" font-family="sans-serif" font-size="15">NRG1 fusion-transcript schematic</text>
+<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555555">Fusion order varies by row; follow each row's 5' and 3' labels (NRG1 portion is domain-colored, exon ticks). Partner-gene blocks share one color; row labels identify each partner.</text>
+<rect x="60.0" y="56.0" width="145.9" height="22" fill="#8064a2"><title>Partner gene CD74; NRG1–CD74 fusion, breakpoint NRG1 aa 168; samples P-0058867-T01-IM7, P-0058935-T02-IM7, P-0060522-T01-IM7, P-0004752-T01-IM5, P-0004752-T02-IM5 (+4 more)</title></rect>
+<rect x="205.9" y="56.0" width="414.1" height="22" fill="#e2e2e2"><title>NRG1 backbone (168-645 aa, no domain); domain status retained; NRG1–CD74 fusion, breakpoint NRG1 aa 168; samples P-0058867-T01-IM7, P-0058935-T02-IM7, P-0060522-T01-IM7, P-0004752-T01-IM5, P-0004752-T02-IM5 (+4 more)</title></rect>
+<rect x="268.4" y="56.0" width="342.9" height="22" fill="#2878b5"><title>Neuregulin intracellular region retained (240-635 aa); NRG1–CD74 fusion, breakpoint NRG1 aa 168; samples P-0058867-T01-IM7, P-0058935-T02-IM7, P-0060522-T01-IM7, P-0004752-T01-IM5, P-0004752-T02-IM5 (+4 more)</title></rect>
+<text x="439.8" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Neuregulin intracellular region</text>
+<line x1="243.2" y1="56.0" x2="243.2" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="260.6" y1="56.0" x2="260.6" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="267.5" y1="56.0" x2="267.5" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="297.0" y1="56.0" x2="297.0" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="334.4" y1="56.0" x2="334.4" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="371.7" y1="56.0" x2="371.7" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.6" y1="56.0" x2="431.6" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="205.9" y1="55.0" x2="205.9" y2="79.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NRG1–CD74 fusion, breakpoint NRG1 aa 168; samples P-0058867-T01-IM7, P-0058935-T02-IM7, P-0060522-T01-IM7, P-0004752-T01-IM5, P-0004752-T02-IM5 (+4 more)</title></line>
+<text x="64.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="70.5" font-family="sans-serif" font-size="9.5">CD74 (x9) – Neuregulin intracellular region retained – Non-Small Cell Lung Cancer, Cancer of Unknown Primary</text>
+<rect x="60.0" y="82.0" width="145.9" height="22" fill="#8064a2"><title>Partner gene NSD3; NRG1–NSD3 fusion, breakpoint NRG1 aa 168; samples P-0028576-T01-IM6, P-0028576-T02-IM6</title></rect>
+<rect x="205.9" y="82.0" width="414.1" height="22" fill="#e2e2e2"><title>NRG1 backbone (168-645 aa, no domain); domain status retained; NRG1–NSD3 fusion, breakpoint NRG1 aa 168; samples P-0028576-T01-IM6, P-0028576-T02-IM6</title></rect>
+<rect x="268.4" y="82.0" width="342.9" height="22" fill="#2878b5"><title>Neuregulin intracellular region retained (240-635 aa); NRG1–NSD3 fusion, breakpoint NRG1 aa 168; samples P-0028576-T01-IM6, P-0028576-T02-IM6</title></rect>
+<text x="439.8" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Neuregulin intracellular region</text>
+<line x1="243.2" y1="82.0" x2="243.2" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="260.6" y1="82.0" x2="260.6" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="267.5" y1="82.0" x2="267.5" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="297.0" y1="82.0" x2="297.0" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="334.4" y1="82.0" x2="334.4" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="371.7" y1="82.0" x2="371.7" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.6" y1="82.0" x2="431.6" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="205.9" y1="81.0" x2="205.9" y2="105.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NRG1–NSD3 fusion, breakpoint NRG1 aa 168; samples P-0028576-T01-IM6, P-0028576-T02-IM6</title></line>
+<text x="64.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="96.5" font-family="sans-serif" font-size="9.5">NSD3 (x2) – Neuregulin intracellular region retained – Prostate Cancer</text>
+<rect x="60.9" y="108.0" width="559.1" height="22" fill="#8064a2"><title>Partner gene FOXA1; NRG1–FOXA1 fusion, breakpoint NRG1 aa 1; sample P-0008795-T01-IM5</title></rect>
+<rect x="60.0" y="108.0" width="0.9" height="22" fill="#e2e2e2"><title>NRG1 backbone (0-1 aa, no domain); domain status lost; NRG1–FOXA1 fusion, breakpoint NRG1 aa 1; sample P-0008795-T01-IM5</title></rect>
+<line x1="60.9" y1="107.0" x2="60.9" y2="131.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; NRG1–FOXA1 fusion, breakpoint NRG1 aa 1; sample P-0008795-T01-IM5</title></line>
+<text x="64.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="122.5" font-family="sans-serif" font-size="9.5">FOXA1 – Neuregulin intracellular region lost – Breast Cancer</text>
+<rect x="60.0" y="134.0" width="0.9" height="22" fill="#8064a2"><title>Partner gene PAK1; NRG1–PAK1 fusion, breakpoint NRG1 aa 1; sample P-0026615-T02-IM6</title></rect>
+<rect x="60.9" y="134.0" width="559.1" height="22" fill="#e2e2e2"><title>NRG1 backbone (1-645 aa, no domain); domain status retained; NRG1–PAK1 fusion, breakpoint NRG1 aa 1; sample P-0026615-T02-IM6</title></rect>
+<rect x="95.6" y="134.0" width="76.4" height="22" fill="#2878b5"><title>Immunoglobulin I-set domain retained (41-129 aa); NRG1–PAK1 fusion, breakpoint NRG1 aa 1; sample P-0026615-T02-IM6</title></rect>
+<text x="133.8" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Immunoglobulin I-…</text>
+<rect x="268.4" y="134.0" width="342.9" height="22" fill="#2878b5"><title>Neuregulin intracellular region retained (240-635 aa); NRG1–PAK1 fusion, breakpoint NRG1 aa 1; sample P-0026615-T02-IM6</title></rect>
+<text x="439.8" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Neuregulin intracellular region</text>
+<line x1="89.5" y1="134.0" x2="89.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="140.7" y1="134.0" x2="140.7" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="176.3" y1="134.0" x2="176.3" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="191.1" y1="134.0" x2="191.1" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="205.9" y1="134.0" x2="205.9" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="243.2" y1="134.0" x2="243.2" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="260.6" y1="134.0" x2="260.6" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="267.5" y1="134.0" x2="267.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="297.0" y1="134.0" x2="297.0" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="334.4" y1="134.0" x2="334.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="371.7" y1="134.0" x2="371.7" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.6" y1="134.0" x2="431.6" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="60.9" y1="133.0" x2="60.9" y2="157.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NRG1–PAK1 fusion, breakpoint NRG1 aa 1; sample P-0026615-T02-IM6</title></line>
+<text x="64.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="148.5" font-family="sans-serif" font-size="9.5">PAK1 – Neuregulin intracellular region retained – Breast Cancer</text>
+<rect x="60.9" y="160.0" width="559.1" height="22" fill="#8064a2"><title>Partner gene RAD51C; NRG1–RAD51C fusion, breakpoint NRG1 aa 1; sample P-0030212-T01-IM6</title></rect>
+<rect x="60.0" y="160.0" width="0.9" height="22" fill="#e2e2e2"><title>NRG1 backbone (0-1 aa, no domain); domain status lost; NRG1–RAD51C fusion, breakpoint NRG1 aa 1; sample P-0030212-T01-IM6</title></rect>
+<line x1="60.9" y1="159.0" x2="60.9" y2="183.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; NRG1–RAD51C fusion, breakpoint NRG1 aa 1; sample P-0030212-T01-IM6</title></line>
+<text x="64.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="174.5" font-family="sans-serif" font-size="9.5">RAD51C – Neuregulin intracellular region lost – Breast Cancer</text>
+<rect x="60.0" y="186.0" width="0.9" height="22" fill="#8064a2"><title>Partner gene VTCN1; NRG1–VTCN1 fusion, breakpoint NRG1 aa 1; sample P-0068238-T01-IM7</title></rect>
+<rect x="60.9" y="186.0" width="559.1" height="22" fill="#e2e2e2"><title>NRG1 backbone (1-645 aa, no domain); domain status retained; NRG1–VTCN1 fusion, breakpoint NRG1 aa 1; sample P-0068238-T01-IM7</title></rect>
+<rect x="95.6" y="186.0" width="76.4" height="22" fill="#2878b5"><title>Immunoglobulin I-set domain retained (41-129 aa); NRG1–VTCN1 fusion, breakpoint NRG1 aa 1; sample P-0068238-T01-IM7</title></rect>
+<text x="133.8" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Immunoglobulin I-…</text>
+<rect x="268.4" y="186.0" width="342.9" height="22" fill="#2878b5"><title>Neuregulin intracellular region retained (240-635 aa); NRG1–VTCN1 fusion, breakpoint NRG1 aa 1; sample P-0068238-T01-IM7</title></rect>
+<text x="439.8" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Neuregulin intracellular region</text>
+<line x1="89.5" y1="186.0" x2="89.5" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="140.7" y1="186.0" x2="140.7" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="176.3" y1="186.0" x2="176.3" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="191.1" y1="186.0" x2="191.1" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="205.9" y1="186.0" x2="205.9" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="243.2" y1="186.0" x2="243.2" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="260.6" y1="186.0" x2="260.6" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="267.5" y1="186.0" x2="267.5" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="297.0" y1="186.0" x2="297.0" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="334.4" y1="186.0" x2="334.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="371.7" y1="186.0" x2="371.7" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.6" y1="186.0" x2="431.6" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="60.9" y1="185.0" x2="60.9" y2="209.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; NRG1–VTCN1 fusion, breakpoint NRG1 aa 1; sample P-0068238-T01-IM7</title></line>
+<text x="64.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="200.5" font-family="sans-serif" font-size="9.5">VTCN1 – Neuregulin intracellular region retained – Cancer of Unknown Primary</text>
+<line x1="60.0" y1="216.0" x2="620.0" y2="216.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="211.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="620.0" y="211.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
+<text x="60.0" y="230.0" font-family="sans-serif" font-size="9">1</text>
+<text x="620.0" y="230.0" font-family="sans-serif" font-size="9" text-anchor="end">645 aa</text>
+<line x1="60.9" y1="234.0" x2="60.9" y2="238.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="60.9" y="239.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 60.9 239.0)">E1</text>
+<line x1="89.5" y1="234.0" x2="89.5" y2="238.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="89.5" y="239.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 89.5 239.0)">E2</text>
+<line x1="140.7" y1="234.0" x2="140.7" y2="238.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="140.7" y="239.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 140.7 239.0)">E3</text>
+<line x1="176.3" y1="234.0" x2="176.3" y2="238.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="176.3" y="239.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 176.3 239.0)">E4</text>
+<line x1="191.1" y1="234.0" x2="191.1" y2="238.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="191.1" y="239.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 191.1 239.0)">E5</text>
+<line x1="205.9" y1="234.0" x2="205.9" y2="238.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="205.9" y="239.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 205.9 239.0)">E6</text>
+<line x1="243.2" y1="234.0" x2="243.2" y2="238.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="243.2" y="239.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 243.2 239.0)">E7</text>
+<line x1="260.6" y1="234.0" x2="260.6" y2="238.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="260.6" y="239.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 260.6 239.0)">E8</text>
+<line x1="267.5" y1="234.0" x2="267.5" y2="238.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="267.5" y="239.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 267.5 239.0)">E9</text>
+<line x1="297.0" y1="234.0" x2="297.0" y2="238.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="297.0" y="239.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 297.0 239.0)">E10</text>
+<line x1="334.4" y1="234.0" x2="334.4" y2="238.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="334.4" y="239.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 334.4 239.0)">E11</text>
+<line x1="371.7" y1="234.0" x2="371.7" y2="238.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="371.7" y="239.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 371.7 239.0)">E12</text>
+<line x1="431.6" y1="234.0" x2="431.6" y2="238.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="431.6" y="239.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 431.6 239.0)">E13</text>
+<rect x="60.0" y="247.0" width="12" height="10" fill="#2878b5"/>
+<text x="76.0" y="256.0" font-family="sans-serif" font-size="9">domain retained</text>
+<rect x="227.0" y="247.0" width="12" height="10" fill="#f2a93b"/>
+<text x="243.0" y="256.0" font-family="sans-serif" font-size="9">domain truncated</text>
+<rect x="403.0" y="247.0" width="12" height="10" fill="#e2e2e2"/>
+<text x="419.0" y="256.0" font-family="sans-serif" font-size="9">target backbone (no domain)</text>
+<rect x="678.0" y="247.0" width="12" height="10" fill="#d62728"/>
+<text x="694.0" y="256.0" font-family="sans-serif" font-size="9">breakpoint</text>
+<text x="60" y="292.0" font-family="sans-serif" font-size="9" fill="#555555">Partner-block colors are decorative; row labels identify partners.</text>
+</svg>

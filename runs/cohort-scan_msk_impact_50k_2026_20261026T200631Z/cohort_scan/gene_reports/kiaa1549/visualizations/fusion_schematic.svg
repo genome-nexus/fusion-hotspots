@@ -1,0 +1,241 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="354" viewBox="0 0 1000 354">
+<rect width="1000" height="354" fill="white"/>
+<text x="60" y="24" font-family="sans-serif" font-size="15">KIAA1549 fusion-transcript schematic</text>
+<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555555">Fusion order varies by row; follow each row's 5' and 3' labels (KIAA1549 portion is domain-colored, exon ticks). Partner-gene blocks share one color; row labels identify each partner.</text>
+<rect x="562.3" y="56.0" width="57.7" height="22" fill="#8064a2"><title>Partner gene BRAF; KIAA1549–BRAF fusion, breakpoint KIAA1549 aa 1749; samples P-0009097-T01-IM5, P-0013777-T01-IM5, P-0014191-T01-IM6, P-0019127-T01-IM6, P-0022404-T01-IM6 (+14 more)</title></rect>
+<rect x="60.0" y="56.0" width="502.3" height="22" fill="#e2e2e2"><title>KIAA1549 backbone (0-1749 aa, no domain); domain status retained; KIAA1549–BRAF fusion, breakpoint KIAA1549 aa 1749; samples P-0009097-T01-IM5, P-0013777-T01-IM5, P-0014191-T01-IM6, P-0019127-T01-IM6, P-0022404-T01-IM6 (+14 more)</title></rect>
+<rect x="357.2" y="56.0" width="191.5" height="22" fill="#2878b5"><title>UPF0606 protein KIAA1549 alpha/beta domain 2 retained (1035-1702 aa); KIAA1549–BRAF fusion, breakpoint KIAA1549 aa 1749; samples P-0009097-T01-IM5, P-0013777-T01-IM5, P-0014191-T01-IM6, P-0019127-T01-IM6, P-0022404-T01-IM6 (+14 more)</title></rect>
+<text x="453.0" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">UPF0606 protein KIAA1549 alpha/beta domain 2</text>
+<line x1="60.3" y1="56.0" x2="60.3" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="78.1" y1="56.0" x2="78.1" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="335.7" y1="56.0" x2="335.7" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="344.3" y1="56.0" x2="344.3" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="361.3" y1="56.0" x2="361.3" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="373.9" y1="56.0" x2="373.9" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="391.4" y1="56.0" x2="391.4" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="397.1" y1="56.0" x2="397.1" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="411.5" y1="56.0" x2="411.5" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="428.5" y1="56.0" x2="428.5" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="446.3" y1="56.0" x2="446.3" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="464.9" y1="56.0" x2="464.9" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="476.1" y1="56.0" x2="476.1" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="495.9" y1="56.0" x2="495.9" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="517.2" y1="56.0" x2="517.2" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="532.1" y1="56.0" x2="532.1" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="562.3" y1="55.0" x2="562.3" y2="79.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KIAA1549–BRAF fusion, breakpoint KIAA1549 aa 1749; samples P-0009097-T01-IM5, P-0013777-T01-IM5, P-0014191-T01-IM6, P-0019127-T01-IM6, P-0022404-T01-IM6 (+14 more)</title></line>
+<text x="64.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="70.5" font-family="sans-serif" font-size="9.5">BRAF (x19) – UPF0606 protein KIAA1549 alpha/beta domain 2 retained – Glioma, Nerve Sheath Tumor</text>
+<rect x="531.8" y="82.0" width="88.2" height="22" fill="#8064a2"><title>Partner gene BRAF; KIAA1549–BRAF fusion, breakpoint KIAA1549 aa 1643; samples P-0012575-T01-IM5, P-0014381-T01-IM6, P-0015540-T01-IM6, P-0016557-T01-IM6, P-0017693-T01-IM6 (+11 more)</title></rect>
+<rect x="60.0" y="82.0" width="471.8" height="22" fill="#e2e2e2"><title>KIAA1549 backbone (0-1643 aa, no domain); domain status truncated; KIAA1549–BRAF fusion, breakpoint KIAA1549 aa 1643; samples P-0012575-T01-IM5, P-0014381-T01-IM6, P-0015540-T01-IM6, P-0016557-T01-IM6, P-0017693-T01-IM6 (+11 more)</title></rect>
+<rect x="357.2" y="82.0" width="174.6" height="22" fill="#f2a93b"><title>UPF0606 protein KIAA1549 alpha/beta domain 2 truncated (1035-1643 aa); KIAA1549–BRAF fusion, breakpoint KIAA1549 aa 1643; samples P-0012575-T01-IM5, P-0014381-T01-IM6, P-0015540-T01-IM6, P-0016557-T01-IM6, P-0017693-T01-IM6 (+11 more)</title></rect>
+<text x="444.5" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">UPF0606 protein KIAA1549 alpha/beta domain…</text>
+<line x1="60.3" y1="82.0" x2="60.3" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="78.1" y1="82.0" x2="78.1" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="335.7" y1="82.0" x2="335.7" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="344.3" y1="82.0" x2="344.3" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="361.3" y1="82.0" x2="361.3" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="373.9" y1="82.0" x2="373.9" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="391.4" y1="82.0" x2="391.4" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="397.1" y1="82.0" x2="397.1" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="411.5" y1="82.0" x2="411.5" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="428.5" y1="82.0" x2="428.5" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="446.3" y1="82.0" x2="446.3" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="464.9" y1="82.0" x2="464.9" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="476.1" y1="82.0" x2="476.1" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="495.9" y1="82.0" x2="495.9" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="517.2" y1="82.0" x2="517.2" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="531.8" y1="81.0" x2="531.8" y2="105.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; KIAA1549–BRAF fusion, breakpoint KIAA1549 aa 1643; samples P-0012575-T01-IM5, P-0014381-T01-IM6, P-0015540-T01-IM6, P-0016557-T01-IM6, P-0017693-T01-IM6 (+11 more)</title></line>
+<text x="64.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="96.5" font-family="sans-serif" font-size="9.5">BRAF (x16) – UPF0606 protein KIAA1549 alpha/beta domain 2 truncated – Glioma, Miscellaneous Neuroepithelial Tumor, Melanoma</text>
+<rect x="446.0" y="108.0" width="174.0" height="22" fill="#8064a2"><title>Partner gene BRAF; KIAA1549–BRAF fusion, breakpoint KIAA1549 aa 1344; samples P-0021127-T01-IM6, P-0035844-T03-IM7, P-0035844-T04-IM7, P-0064872-T01-IM7</title></rect>
+<rect x="60.0" y="108.0" width="386.0" height="22" fill="#e2e2e2"><title>KIAA1549 backbone (0-1344 aa, no domain); domain status truncated; KIAA1549–BRAF fusion, breakpoint KIAA1549 aa 1344; samples P-0021127-T01-IM6, P-0035844-T03-IM7, P-0035844-T04-IM7, P-0064872-T01-IM7</title></rect>
+<rect x="357.2" y="108.0" width="88.7" height="22" fill="#f2a93b"><title>UPF0606 protein KIAA1549 alpha/beta domain 2 truncated (1035-1344 aa); KIAA1549–BRAF fusion, breakpoint KIAA1549 aa 1344; samples P-0021127-T01-IM6, P-0035844-T03-IM7, P-0035844-T04-IM7, P-0064872-T01-IM7</title></rect>
+<text x="401.6" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">UPF0606 protein KIAA…</text>
+<line x1="60.3" y1="108.0" x2="60.3" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="78.1" y1="108.0" x2="78.1" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="335.7" y1="108.0" x2="335.7" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="344.3" y1="108.0" x2="344.3" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="361.3" y1="108.0" x2="361.3" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="373.9" y1="108.0" x2="373.9" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="391.4" y1="108.0" x2="391.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="397.1" y1="108.0" x2="397.1" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="411.5" y1="108.0" x2="411.5" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="428.5" y1="108.0" x2="428.5" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="446.0" y1="107.0" x2="446.0" y2="131.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; KIAA1549–BRAF fusion, breakpoint KIAA1549 aa 1344; samples P-0021127-T01-IM6, P-0035844-T03-IM7, P-0035844-T04-IM7, P-0064872-T01-IM7</title></line>
+<text x="64.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="122.5" font-family="sans-serif" font-size="9.5">BRAF (x4) – UPF0606 protein KIAA1549 alpha/beta domain 2 truncated – Soft Tissue Sarcoma, Breast Cancer, Glioma</text>
+<rect x="476.1" y="134.0" width="143.9" height="22" fill="#8064a2"><title>Partner gene BRAF; KIAA1549–BRAF fusion, breakpoint KIAA1549 aa 1449; sample P-0034117-T01-IM6</title></rect>
+<rect x="60.0" y="134.0" width="416.1" height="22" fill="#e2e2e2"><title>KIAA1549 backbone (0-1449 aa, no domain); domain status truncated; KIAA1549–BRAF fusion, breakpoint KIAA1549 aa 1449; sample P-0034117-T01-IM6</title></rect>
+<rect x="357.2" y="134.0" width="118.9" height="22" fill="#f2a93b"><title>UPF0606 protein KIAA1549 alpha/beta domain 2 truncated (1035-1449 aa); KIAA1549–BRAF fusion, breakpoint KIAA1549 aa 1449; sample P-0034117-T01-IM6</title></rect>
+<text x="416.7" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">UPF0606 protein KIAA1549 alp…</text>
+<line x1="60.3" y1="134.0" x2="60.3" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="78.1" y1="134.0" x2="78.1" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="335.7" y1="134.0" x2="335.7" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="344.3" y1="134.0" x2="344.3" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="361.3" y1="134.0" x2="361.3" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="373.9" y1="134.0" x2="373.9" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="391.4" y1="134.0" x2="391.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="397.1" y1="134.0" x2="397.1" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="411.5" y1="134.0" x2="411.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="428.5" y1="134.0" x2="428.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="446.3" y1="134.0" x2="446.3" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="464.9" y1="134.0" x2="464.9" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="476.1" y1="133.0" x2="476.1" y2="157.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; KIAA1549–BRAF fusion, breakpoint KIAA1549 aa 1449; sample P-0034117-T01-IM6</title></line>
+<text x="64.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="148.5" font-family="sans-serif" font-size="9.5">BRAF – UPF0606 protein KIAA1549 alpha/beta domain 2 truncated – Breast Cancer</text>
+<rect x="544.5" y="160.0" width="75.5" height="22" fill="#8064a2"><title>Partner gene BRAF; KIAA1549–BRAF fusion, breakpoint KIAA1549 aa 1687; sample P-0069024-T04-IM7</title></rect>
+<rect x="60.0" y="160.0" width="484.5" height="22" fill="#e2e2e2"><title>KIAA1549 backbone (0-1687 aa, no domain); domain status truncated; KIAA1549–BRAF fusion, breakpoint KIAA1549 aa 1687; sample P-0069024-T04-IM7</title></rect>
+<rect x="357.2" y="160.0" width="187.2" height="22" fill="#f2a93b"><title>UPF0606 protein KIAA1549 alpha/beta domain 2 truncated (1035-1687 aa); KIAA1549–BRAF fusion, breakpoint KIAA1549 aa 1687; sample P-0069024-T04-IM7</title></rect>
+<text x="450.9" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">UPF0606 protein KIAA1549 alpha/beta domain 2</text>
+<line x1="60.3" y1="160.0" x2="60.3" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="78.1" y1="160.0" x2="78.1" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="335.7" y1="160.0" x2="335.7" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="344.3" y1="160.0" x2="344.3" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="361.3" y1="160.0" x2="361.3" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="373.9" y1="160.0" x2="373.9" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="391.4" y1="160.0" x2="391.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="397.1" y1="160.0" x2="397.1" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="411.5" y1="160.0" x2="411.5" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="428.5" y1="160.0" x2="428.5" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="446.3" y1="160.0" x2="446.3" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="464.9" y1="160.0" x2="464.9" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="476.1" y1="160.0" x2="476.1" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="495.9" y1="160.0" x2="495.9" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="517.2" y1="160.0" x2="517.2" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="532.1" y1="160.0" x2="532.1" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="544.5" y1="159.0" x2="544.5" y2="183.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; KIAA1549–BRAF fusion, breakpoint KIAA1549 aa 1687; sample P-0069024-T04-IM7</title></line>
+<text x="64.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="174.5" font-family="sans-serif" font-size="9.5">BRAF – UPF0606 protein KIAA1549 alpha/beta domain 2 truncated – Glioma</text>
+<rect x="556.8" y="186.0" width="63.2" height="22" fill="#8064a2"><title>Partner gene BRAF; KIAA1549–BRAF fusion, breakpoint KIAA1549 aa 1730; sample P-0045683-T02-IM6</title></rect>
+<rect x="60.0" y="186.0" width="496.8" height="22" fill="#e2e2e2"><title>KIAA1549 backbone (0-1730 aa, no domain); domain status retained; KIAA1549–BRAF fusion, breakpoint KIAA1549 aa 1730; sample P-0045683-T02-IM6</title></rect>
+<rect x="357.2" y="186.0" width="191.5" height="22" fill="#2878b5"><title>UPF0606 protein KIAA1549 alpha/beta domain 2 retained (1035-1702 aa); KIAA1549–BRAF fusion, breakpoint KIAA1549 aa 1730; sample P-0045683-T02-IM6</title></rect>
+<text x="453.0" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">UPF0606 protein KIAA1549 alpha/beta domain 2</text>
+<line x1="60.3" y1="186.0" x2="60.3" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="78.1" y1="186.0" x2="78.1" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="335.7" y1="186.0" x2="335.7" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="344.3" y1="186.0" x2="344.3" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="361.3" y1="186.0" x2="361.3" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="373.9" y1="186.0" x2="373.9" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="391.4" y1="186.0" x2="391.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="397.1" y1="186.0" x2="397.1" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="411.5" y1="186.0" x2="411.5" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="428.5" y1="186.0" x2="428.5" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="446.3" y1="186.0" x2="446.3" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="464.9" y1="186.0" x2="464.9" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="476.1" y1="186.0" x2="476.1" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="495.9" y1="186.0" x2="495.9" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="517.2" y1="186.0" x2="517.2" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="532.1" y1="186.0" x2="532.1" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="556.8" y1="185.0" x2="556.8" y2="209.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KIAA1549–BRAF fusion, breakpoint KIAA1549 aa 1730; sample P-0045683-T02-IM6</title></line>
+<text x="64.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="200.5" font-family="sans-serif" font-size="9.5">BRAF – UPF0606 protein KIAA1549 alpha/beta domain 2 retained – Glioma</text>
+<rect x="562.3" y="212.0" width="57.7" height="22" fill="#8064a2"><title>Partner gene STK11; KIAA1549–STK11 fusion, breakpoint KIAA1549 aa 1749; sample P-0038818-T01-IM6</title></rect>
+<rect x="60.0" y="212.0" width="502.3" height="22" fill="#e2e2e2"><title>KIAA1549 backbone (0-1749 aa, no domain); domain status retained; KIAA1549–STK11 fusion, breakpoint KIAA1549 aa 1749; sample P-0038818-T01-IM6</title></rect>
+<rect x="357.2" y="212.0" width="191.5" height="22" fill="#2878b5"><title>UPF0606 protein KIAA1549 alpha/beta domain 2 retained (1035-1702 aa); KIAA1549–STK11 fusion, breakpoint KIAA1549 aa 1749; sample P-0038818-T01-IM6</title></rect>
+<text x="453.0" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">UPF0606 protein KIAA1549 alpha/beta domain 2</text>
+<line x1="60.3" y1="212.0" x2="60.3" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="78.1" y1="212.0" x2="78.1" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="335.7" y1="212.0" x2="335.7" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="344.3" y1="212.0" x2="344.3" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="361.3" y1="212.0" x2="361.3" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="373.9" y1="212.0" x2="373.9" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="391.4" y1="212.0" x2="391.4" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="397.1" y1="212.0" x2="397.1" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="411.5" y1="212.0" x2="411.5" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="428.5" y1="212.0" x2="428.5" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="446.3" y1="212.0" x2="446.3" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="464.9" y1="212.0" x2="464.9" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="476.1" y1="212.0" x2="476.1" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="495.9" y1="212.0" x2="495.9" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="517.2" y1="212.0" x2="517.2" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="532.1" y1="212.0" x2="532.1" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="562.3" y1="211.0" x2="562.3" y2="235.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KIAA1549–STK11 fusion, breakpoint KIAA1549 aa 1749; sample P-0038818-T01-IM6</title></line>
+<text x="64.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="226.5" font-family="sans-serif" font-size="9.5">STK11 – UPF0606 protein KIAA1549 alpha/beta domain 2 retained – Cancer of Unknown Primary</text>
+<rect x="563.7" y="238.0" width="56.3" height="22" fill="#8064a2"><title>Partner gene BRAF; KIAA1549–BRAF fusion, breakpoint KIAA1549 aa 1754; sample P-0020125-T01-IM6</title></rect>
+<rect x="60.0" y="238.0" width="503.7" height="22" fill="#e2e2e2"><title>KIAA1549 backbone (0-1754 aa, no domain); domain status retained; KIAA1549–BRAF fusion, breakpoint KIAA1549 aa 1754; sample P-0020125-T01-IM6</title></rect>
+<rect x="357.2" y="238.0" width="191.5" height="22" fill="#2878b5"><title>UPF0606 protein KIAA1549 alpha/beta domain 2 retained (1035-1702 aa); KIAA1549–BRAF fusion, breakpoint KIAA1549 aa 1754; sample P-0020125-T01-IM6</title></rect>
+<text x="453.0" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">UPF0606 protein KIAA1549 alpha/beta domain 2</text>
+<line x1="60.3" y1="238.0" x2="60.3" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="78.1" y1="238.0" x2="78.1" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="335.7" y1="238.0" x2="335.7" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="344.3" y1="238.0" x2="344.3" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="361.3" y1="238.0" x2="361.3" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="373.9" y1="238.0" x2="373.9" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="391.4" y1="238.0" x2="391.4" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="397.1" y1="238.0" x2="397.1" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="411.5" y1="238.0" x2="411.5" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="428.5" y1="238.0" x2="428.5" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="446.3" y1="238.0" x2="446.3" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="464.9" y1="238.0" x2="464.9" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="476.1" y1="238.0" x2="476.1" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="495.9" y1="238.0" x2="495.9" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="517.2" y1="238.0" x2="517.2" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="532.1" y1="238.0" x2="532.1" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="562.6" y1="238.0" x2="562.6" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="563.7" y1="237.0" x2="563.7" y2="261.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KIAA1549–BRAF fusion, breakpoint KIAA1549 aa 1754; sample P-0020125-T01-IM6</title></line>
+<text x="64.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="252.5" font-family="sans-serif" font-size="9.5">BRAF – UPF0606 protein KIAA1549 alpha/beta domain 2 retained – Glioma</text>
+<line x1="60.0" y1="268.0" x2="620.0" y2="268.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="263.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="620.0" y="263.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
+<text x="60.0" y="282.0" font-family="sans-serif" font-size="9">1</text>
+<text x="620.0" y="282.0" font-family="sans-serif" font-size="9" text-anchor="end">1950 aa</text>
+<line x1="60.3" y1="286.0" x2="60.3" y2="290.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="60.3" y="291.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 60.3 291.0)">E1</text>
+<line x1="78.1" y1="286.0" x2="78.1" y2="290.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="78.1" y="291.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 78.1 291.0)">E2</text>
+<line x1="335.7" y1="286.0" x2="335.7" y2="290.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="335.7" y="291.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 335.7 291.0)">E3</text>
+<line x1="344.3" y1="286.0" x2="344.3" y2="290.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="344.3" y="291.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 344.3 291.0)">E4</text>
+<line x1="361.3" y1="286.0" x2="361.3" y2="290.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="361.3" y="291.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 361.3 291.0)">E5</text>
+<line x1="373.9" y1="286.0" x2="373.9" y2="290.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="373.9" y="291.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 373.9 291.0)">E6</text>
+<line x1="391.4" y1="286.0" x2="391.4" y2="290.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="391.4" y="291.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 391.4 291.0)">E7</text>
+<line x1="397.1" y1="286.0" x2="397.1" y2="290.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="397.1" y="291.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 397.1 291.0)">E8</text>
+<line x1="411.5" y1="286.0" x2="411.5" y2="290.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="411.5" y="291.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 411.5 291.0)">E9</text>
+<line x1="428.5" y1="286.0" x2="428.5" y2="290.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="428.5" y="291.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 428.5 291.0)">E10</text>
+<line x1="446.3" y1="286.0" x2="446.3" y2="290.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="446.3" y="291.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 446.3 291.0)">E11</text>
+<line x1="464.9" y1="286.0" x2="464.9" y2="290.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="464.9" y="291.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 464.9 291.0)">E12</text>
+<line x1="476.1" y1="286.0" x2="476.1" y2="290.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="476.1" y="291.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 476.1 291.0)">E13</text>
+<line x1="495.9" y1="286.0" x2="495.9" y2="290.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="495.9" y="291.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 495.9 291.0)">E14</text>
+<line x1="517.2" y1="286.0" x2="517.2" y2="290.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="517.2" y="291.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 517.2 291.0)">E15</text>
+<line x1="532.1" y1="286.0" x2="532.1" y2="290.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="532.1" y="291.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 532.1 291.0)">E16</text>
+<line x1="562.6" y1="286.0" x2="562.6" y2="290.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="562.6" y="291.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 562.6 291.0)">E17</text>
+<line x1="566.9" y1="286.0" x2="566.9" y2="290.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="566.9" y="291.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 566.9 291.0)">E18</text>
+<line x1="582.1" y1="286.0" x2="582.1" y2="290.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="582.1" y="291.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 582.1 291.0)">E19</text>
+<line x1="596.2" y1="286.0" x2="596.2" y2="290.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="596.2" y="291.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 596.2 291.0)">E20</text>
+<rect x="60.0" y="299.0" width="12" height="10" fill="#2878b5"/>
+<text x="76.0" y="308.0" font-family="sans-serif" font-size="9">domain retained</text>
+<rect x="227.0" y="299.0" width="12" height="10" fill="#f2a93b"/>
+<text x="243.0" y="308.0" font-family="sans-serif" font-size="9">domain truncated</text>
+<rect x="403.0" y="299.0" width="12" height="10" fill="#e2e2e2"/>
+<text x="419.0" y="308.0" font-family="sans-serif" font-size="9">target backbone (no domain)</text>
+<rect x="678.0" y="299.0" width="12" height="10" fill="#d62728"/>
+<text x="694.0" y="308.0" font-family="sans-serif" font-size="9">breakpoint</text>
+<text x="60" y="344.0" font-family="sans-serif" font-size="9" fill="#555555">Partner-block colors are decorative; row labels identify partners.</text>
+</svg>

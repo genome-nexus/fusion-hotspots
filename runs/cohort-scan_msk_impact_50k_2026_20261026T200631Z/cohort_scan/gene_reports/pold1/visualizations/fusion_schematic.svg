@@ -1,0 +1,403 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="484" viewBox="0 0 1000 484">
+<rect width="1000" height="484" fill="white"/>
+<text x="60" y="24" font-family="sans-serif" font-size="15">POLD1 fusion-transcript schematic</text>
+<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555555">Fusion order varies by row; follow each row's 5' and 3' labels (POLD1 portion is domain-colored, exon ticks). Partner-gene blocks share one color; row labels identify each partner.</text>
+<rect x="60.0" y="56.0" width="9.1" height="22" fill="#8064a2"><title>Partner gene C5AR1; POLD1–C5AR1 fusion, breakpoint POLD1 aa 18; sample P-0069297-T01-IM7</title></rect>
+<rect x="69.1" y="56.0" width="550.9" height="22" fill="#e2e2e2"><title>POLD1 backbone (18-1107 aa, no domain); domain status retained; POLD1–C5AR1 fusion, breakpoint POLD1 aa 18; sample P-0069297-T01-IM7</title></rect>
+<rect x="338.2" y="56.0" width="216.5" height="22" fill="#2878b5"><title>DNA polymerase family B retained (550-978 aa); POLD1–C5AR1 fusion, breakpoint POLD1 aa 18; sample P-0069297-T01-IM7</title></rect>
+<text x="446.5" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">DNA polymerase family B</text>
+<rect x="571.9" y="56.0" width="35.9" height="22" fill="#2878b5"><title>PF14260 retained (1012-1083 aa); POLD1–C5AR1 fusion, breakpoint POLD1 aa 18; sample P-0069297-T01-IM7</title></rect>
+<text x="589.9" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF14260</text>
+<rect x="126.3" y="56.0" width="175.0" height="22" fill="#2878b5"><title>DNA polymerase family B, exonuclease domain retained (131-477 aa); POLD1–C5AR1 fusion, breakpoint POLD1 aa 18; sample P-0069297-T01-IM7</title></rect>
+<text x="213.8" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">DNA polymerase family B, exonuclease domain</text>
+<line x1="94.4" y1="56.0" x2="94.4" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="113.6" y1="56.0" x2="113.6" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="138.4" y1="56.0" x2="138.4" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="159.7" y1="56.0" x2="159.7" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="188.0" y1="56.0" x2="188.0" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="202.1" y1="56.0" x2="202.1" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="223.9" y1="56.0" x2="223.9" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="252.2" y1="56.0" x2="252.2" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="269.9" y1="56.0" x2="269.9" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="293.7" y1="56.0" x2="293.7" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="312.4" y1="56.0" x2="312.4" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="344.8" y1="56.0" x2="344.8" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="359.5" y1="56.0" x2="359.5" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="379.2" y1="56.0" x2="379.2" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="398.4" y1="56.0" x2="398.4" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="423.7" y1="56.0" x2="423.7" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="439.9" y1="56.0" x2="439.9" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="463.2" y1="56.0" x2="463.2" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="492.5" y1="56.0" x2="492.5" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="518.3" y1="56.0" x2="518.3" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="536.0" y1="56.0" x2="536.0" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="558.3" y1="56.0" x2="558.3" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.5" y1="56.0" x2="577.5" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="586.6" y1="56.0" x2="586.6" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="602.8" y1="56.0" x2="602.8" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="69.1" y1="55.0" x2="69.1" y2="79.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; POLD1–C5AR1 fusion, breakpoint POLD1 aa 18; sample P-0069297-T01-IM7</title></line>
+<text x="64.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="70.5" font-family="sans-serif" font-size="9.5">C5AR1 – DNA polymerase family B retained – Small Cell Lung Cancer</text>
+<rect x="60.0" y="82.0" width="86.0" height="22" fill="#8064a2"><title>Partner gene NDUFA3; POLD1–NDUFA3 fusion, breakpoint POLD1 aa 170; sample P-0016377-T01-IM6</title></rect>
+<rect x="146.0" y="82.0" width="474.0" height="22" fill="#e2e2e2"><title>POLD1 backbone (170-1107 aa, no domain); domain status retained; POLD1–NDUFA3 fusion, breakpoint POLD1 aa 170; sample P-0016377-T01-IM6</title></rect>
+<rect x="338.2" y="82.0" width="216.5" height="22" fill="#2878b5"><title>DNA polymerase family B retained (550-978 aa); POLD1–NDUFA3 fusion, breakpoint POLD1 aa 170; sample P-0016377-T01-IM6</title></rect>
+<text x="446.5" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">DNA polymerase family B</text>
+<rect x="571.9" y="82.0" width="35.9" height="22" fill="#2878b5"><title>PF14260 retained (1012-1083 aa); POLD1–NDUFA3 fusion, breakpoint POLD1 aa 170; sample P-0016377-T01-IM6</title></rect>
+<text x="589.9" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF14260</text>
+<rect x="146.0" y="82.0" width="155.3" height="22" fill="#f2a93b"><title>DNA polymerase family B, exonuclease domain truncated (170-477 aa); POLD1–NDUFA3 fusion, breakpoint POLD1 aa 170; sample P-0016377-T01-IM6</title></rect>
+<text x="223.6" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">DNA polymerase family B, exonuclease…</text>
+<line x1="159.7" y1="82.0" x2="159.7" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="188.0" y1="82.0" x2="188.0" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="202.1" y1="82.0" x2="202.1" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="223.9" y1="82.0" x2="223.9" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="252.2" y1="82.0" x2="252.2" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="269.9" y1="82.0" x2="269.9" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="293.7" y1="82.0" x2="293.7" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="312.4" y1="82.0" x2="312.4" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="344.8" y1="82.0" x2="344.8" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="359.5" y1="82.0" x2="359.5" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="379.2" y1="82.0" x2="379.2" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="398.4" y1="82.0" x2="398.4" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="423.7" y1="82.0" x2="423.7" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="439.9" y1="82.0" x2="439.9" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="463.2" y1="82.0" x2="463.2" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="492.5" y1="82.0" x2="492.5" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="518.3" y1="82.0" x2="518.3" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="536.0" y1="82.0" x2="536.0" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="558.3" y1="82.0" x2="558.3" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.5" y1="82.0" x2="577.5" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="586.6" y1="82.0" x2="586.6" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="602.8" y1="82.0" x2="602.8" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.0" y1="81.0" x2="146.0" y2="105.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; POLD1–NDUFA3 fusion, breakpoint POLD1 aa 170; sample P-0016377-T01-IM6</title></line>
+<text x="64.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="96.5" font-family="sans-serif" font-size="9.5">NDUFA3 – DNA polymerase family B retained – Pancreatic Cancer</text>
+<rect x="60.0" y="108.0" width="90.6" height="22" fill="#8064a2"><title>Partner gene LILRB1; POLD1–LILRB1 fusion, breakpoint POLD1 aa 179; sample P-0003038-T01-IM5</title></rect>
+<rect x="150.6" y="108.0" width="469.4" height="22" fill="#e2e2e2"><title>POLD1 backbone (179-1107 aa, no domain); domain status retained; POLD1–LILRB1 fusion, breakpoint POLD1 aa 179; sample P-0003038-T01-IM5</title></rect>
+<rect x="338.2" y="108.0" width="216.5" height="22" fill="#2878b5"><title>DNA polymerase family B retained (550-978 aa); POLD1–LILRB1 fusion, breakpoint POLD1 aa 179; sample P-0003038-T01-IM5</title></rect>
+<text x="446.5" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">DNA polymerase family B</text>
+<rect x="571.9" y="108.0" width="35.9" height="22" fill="#2878b5"><title>PF14260 retained (1012-1083 aa); POLD1–LILRB1 fusion, breakpoint POLD1 aa 179; sample P-0003038-T01-IM5</title></rect>
+<text x="589.9" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF14260</text>
+<rect x="150.6" y="108.0" width="150.7" height="22" fill="#f2a93b"><title>DNA polymerase family B, exonuclease domain truncated (179-477 aa); POLD1–LILRB1 fusion, breakpoint POLD1 aa 179; sample P-0003038-T01-IM5</title></rect>
+<text x="225.9" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">DNA polymerase family B, exonuclease…</text>
+<line x1="159.7" y1="108.0" x2="159.7" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="188.0" y1="108.0" x2="188.0" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="202.1" y1="108.0" x2="202.1" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="223.9" y1="108.0" x2="223.9" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="252.2" y1="108.0" x2="252.2" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="269.9" y1="108.0" x2="269.9" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="293.7" y1="108.0" x2="293.7" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="312.4" y1="108.0" x2="312.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="344.8" y1="108.0" x2="344.8" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="359.5" y1="108.0" x2="359.5" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="379.2" y1="108.0" x2="379.2" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="398.4" y1="108.0" x2="398.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="423.7" y1="108.0" x2="423.7" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="439.9" y1="108.0" x2="439.9" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="463.2" y1="108.0" x2="463.2" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="492.5" y1="108.0" x2="492.5" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="518.3" y1="108.0" x2="518.3" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="536.0" y1="108.0" x2="536.0" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="558.3" y1="108.0" x2="558.3" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.5" y1="108.0" x2="577.5" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="586.6" y1="108.0" x2="586.6" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="602.8" y1="108.0" x2="602.8" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="150.6" y1="107.0" x2="150.6" y2="131.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; POLD1–LILRB1 fusion, breakpoint POLD1 aa 179; sample P-0003038-T01-IM5</title></line>
+<text x="64.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="122.5" font-family="sans-serif" font-size="9.5">LILRB1 – DNA polymerase family B retained – Endometrial Cancer</text>
+<rect x="60.0" y="134.0" width="128.0" height="22" fill="#8064a2"><title>Partner gene NR1H2; POLD1–NR1H2 fusion, breakpoint POLD1 aa 253; sample P-0051640-T01-IM6</title></rect>
+<rect x="188.0" y="134.0" width="432.0" height="22" fill="#e2e2e2"><title>POLD1 backbone (253-1107 aa, no domain); domain status retained; POLD1–NR1H2 fusion, breakpoint POLD1 aa 253; sample P-0051640-T01-IM6</title></rect>
+<rect x="338.2" y="134.0" width="216.5" height="22" fill="#2878b5"><title>DNA polymerase family B retained (550-978 aa); POLD1–NR1H2 fusion, breakpoint POLD1 aa 253; sample P-0051640-T01-IM6</title></rect>
+<text x="446.5" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">DNA polymerase family B</text>
+<rect x="571.9" y="134.0" width="35.9" height="22" fill="#2878b5"><title>PF14260 retained (1012-1083 aa); POLD1–NR1H2 fusion, breakpoint POLD1 aa 253; sample P-0051640-T01-IM6</title></rect>
+<text x="589.9" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF14260</text>
+<rect x="188.0" y="134.0" width="113.3" height="22" fill="#f2a93b"><title>DNA polymerase family B, exonuclease domain truncated (253-477 aa); POLD1–NR1H2 fusion, breakpoint POLD1 aa 253; sample P-0051640-T01-IM6</title></rect>
+<text x="244.6" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">DNA polymerase family B, e…</text>
+<line x1="202.1" y1="134.0" x2="202.1" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="223.9" y1="134.0" x2="223.9" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="252.2" y1="134.0" x2="252.2" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="269.9" y1="134.0" x2="269.9" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="293.7" y1="134.0" x2="293.7" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="312.4" y1="134.0" x2="312.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="344.8" y1="134.0" x2="344.8" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="359.5" y1="134.0" x2="359.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="379.2" y1="134.0" x2="379.2" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="398.4" y1="134.0" x2="398.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="423.7" y1="134.0" x2="423.7" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="439.9" y1="134.0" x2="439.9" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="463.2" y1="134.0" x2="463.2" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="492.5" y1="134.0" x2="492.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="518.3" y1="134.0" x2="518.3" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="536.0" y1="134.0" x2="536.0" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="558.3" y1="134.0" x2="558.3" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.5" y1="134.0" x2="577.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="586.6" y1="134.0" x2="586.6" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="602.8" y1="134.0" x2="602.8" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="188.0" y1="133.0" x2="188.0" y2="157.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; POLD1–NR1H2 fusion, breakpoint POLD1 aa 253; sample P-0051640-T01-IM6</title></line>
+<text x="64.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="148.5" font-family="sans-serif" font-size="9.5">NR1H2 – DNA polymerase family B retained – Esophagogastric Cancer</text>
+<rect x="60.0" y="160.0" width="209.9" height="22" fill="#8064a2"><title>Partner gene MYH14; POLD1–MYH14 fusion, breakpoint POLD1 aa 415; sample P-0019604-T01-IM6</title></rect>
+<rect x="269.9" y="160.0" width="350.1" height="22" fill="#e2e2e2"><title>POLD1 backbone (415-1107 aa, no domain); domain status retained; POLD1–MYH14 fusion, breakpoint POLD1 aa 415; sample P-0019604-T01-IM6</title></rect>
+<rect x="338.2" y="160.0" width="216.5" height="22" fill="#2878b5"><title>DNA polymerase family B retained (550-978 aa); POLD1–MYH14 fusion, breakpoint POLD1 aa 415; sample P-0019604-T01-IM6</title></rect>
+<text x="446.5" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">DNA polymerase family B</text>
+<rect x="571.9" y="160.0" width="35.9" height="22" fill="#2878b5"><title>PF14260 retained (1012-1083 aa); POLD1–MYH14 fusion, breakpoint POLD1 aa 415; sample P-0019604-T01-IM6</title></rect>
+<text x="589.9" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF14260</text>
+<rect x="269.9" y="160.0" width="31.4" height="22" fill="#f2a93b"><title>DNA polymerase family B, exonuclease domain truncated (415-477 aa); POLD1–MYH14 fusion, breakpoint POLD1 aa 415; sample P-0019604-T01-IM6</title></rect>
+<text x="285.6" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">DNA po…</text>
+<line x1="293.7" y1="160.0" x2="293.7" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="312.4" y1="160.0" x2="312.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="344.8" y1="160.0" x2="344.8" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="359.5" y1="160.0" x2="359.5" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="379.2" y1="160.0" x2="379.2" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="398.4" y1="160.0" x2="398.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="423.7" y1="160.0" x2="423.7" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="439.9" y1="160.0" x2="439.9" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="463.2" y1="160.0" x2="463.2" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="492.5" y1="160.0" x2="492.5" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="518.3" y1="160.0" x2="518.3" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="536.0" y1="160.0" x2="536.0" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="558.3" y1="160.0" x2="558.3" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.5" y1="160.0" x2="577.5" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="586.6" y1="160.0" x2="586.6" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="602.8" y1="160.0" x2="602.8" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="269.9" y1="159.0" x2="269.9" y2="183.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; POLD1–MYH14 fusion, breakpoint POLD1 aa 415; sample P-0019604-T01-IM6</title></line>
+<text x="64.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="174.5" font-family="sans-serif" font-size="9.5">MYH14 – DNA polymerase family B retained – Bone Cancer</text>
+<rect x="310.9" y="186.0" width="309.1" height="22" fill="#8064a2"><title>Partner gene TMEM87A; POLD1–TMEM87A fusion, breakpoint POLD1 aa 496; sample P-0064872-T01-IM7</title></rect>
+<rect x="60.0" y="186.0" width="250.9" height="22" fill="#e2e2e2"><title>POLD1 backbone (0-496 aa, no domain); domain status lost; POLD1–TMEM87A fusion, breakpoint POLD1 aa 496; sample P-0064872-T01-IM7</title></rect>
+<rect x="126.3" y="186.0" width="175.0" height="22" fill="#2878b5"><title>DNA polymerase family B, exonuclease domain retained (131-477 aa); POLD1–TMEM87A fusion, breakpoint POLD1 aa 496; sample P-0064872-T01-IM7</title></rect>
+<text x="213.8" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">DNA polymerase family B, exonuclease domain</text>
+<line x1="60.5" y1="186.0" x2="60.5" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="94.4" y1="186.0" x2="94.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="113.6" y1="186.0" x2="113.6" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="138.4" y1="186.0" x2="138.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="159.7" y1="186.0" x2="159.7" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="188.0" y1="186.0" x2="188.0" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="202.1" y1="186.0" x2="202.1" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="223.9" y1="186.0" x2="223.9" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="252.2" y1="186.0" x2="252.2" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="269.9" y1="186.0" x2="269.9" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="293.7" y1="186.0" x2="293.7" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="310.9" y1="185.0" x2="310.9" y2="209.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; POLD1–TMEM87A fusion, breakpoint POLD1 aa 496; sample P-0064872-T01-IM7</title></line>
+<text x="64.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="200.5" font-family="sans-serif" font-size="9.5">TMEM87A – DNA polymerase family B lost – Glioma</text>
+<rect x="379.2" y="212.0" width="240.8" height="22" fill="#8064a2"><title>Partner gene ZNF284; POLD1–ZNF284 fusion, breakpoint POLD1 aa 631; sample P-0017653-T01-IM5</title></rect>
+<rect x="60.0" y="212.0" width="319.2" height="22" fill="#e2e2e2"><title>POLD1 backbone (0-631 aa, no domain); domain status truncated; POLD1–ZNF284 fusion, breakpoint POLD1 aa 631; sample P-0017653-T01-IM5</title></rect>
+<rect x="338.2" y="212.0" width="41.0" height="22" fill="#f2a93b"><title>DNA polymerase family B truncated (550-631 aa); POLD1–ZNF284 fusion, breakpoint POLD1 aa 631; sample P-0017653-T01-IM5</title></rect>
+<text x="358.7" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">DNA polym…</text>
+<rect x="126.3" y="212.0" width="175.0" height="22" fill="#2878b5"><title>DNA polymerase family B, exonuclease domain retained (131-477 aa); POLD1–ZNF284 fusion, breakpoint POLD1 aa 631; sample P-0017653-T01-IM5</title></rect>
+<text x="213.8" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">DNA polymerase family B, exonuclease domain</text>
+<line x1="60.5" y1="212.0" x2="60.5" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="94.4" y1="212.0" x2="94.4" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="113.6" y1="212.0" x2="113.6" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="138.4" y1="212.0" x2="138.4" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="159.7" y1="212.0" x2="159.7" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="188.0" y1="212.0" x2="188.0" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="202.1" y1="212.0" x2="202.1" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="223.9" y1="212.0" x2="223.9" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="252.2" y1="212.0" x2="252.2" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="269.9" y1="212.0" x2="269.9" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="293.7" y1="212.0" x2="293.7" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="312.4" y1="212.0" x2="312.4" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="344.8" y1="212.0" x2="344.8" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="359.5" y1="212.0" x2="359.5" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="379.2" y1="211.0" x2="379.2" y2="235.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; POLD1–ZNF284 fusion, breakpoint POLD1 aa 631; sample P-0017653-T01-IM5</title></line>
+<text x="64.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="226.5" font-family="sans-serif" font-size="9.5">ZNF284 – DNA polymerase family B truncated – Pancreatic Cancer</text>
+<rect x="60.0" y="238.0" width="363.7" height="22" fill="#8064a2"><title>Partner gene PNPLA6; POLD1–PNPLA6 fusion, breakpoint POLD1 aa 719; sample P-0005493-T01-IM5</title></rect>
+<rect x="423.7" y="238.0" width="196.3" height="22" fill="#e2e2e2"><title>POLD1 backbone (719-1107 aa, no domain); domain status truncated; POLD1–PNPLA6 fusion, breakpoint POLD1 aa 719; sample P-0005493-T01-IM5</title></rect>
+<rect x="423.7" y="238.0" width="131.0" height="22" fill="#f2a93b"><title>DNA polymerase family B truncated (719-978 aa); POLD1–PNPLA6 fusion, breakpoint POLD1 aa 719; sample P-0005493-T01-IM5</title></rect>
+<text x="489.2" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">DNA polymerase family B</text>
+<rect x="571.9" y="238.0" width="35.9" height="22" fill="#2878b5"><title>PF14260 retained (1012-1083 aa); POLD1–PNPLA6 fusion, breakpoint POLD1 aa 719; sample P-0005493-T01-IM5</title></rect>
+<text x="589.9" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF14260</text>
+<line x1="439.9" y1="238.0" x2="439.9" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="463.2" y1="238.0" x2="463.2" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="492.5" y1="238.0" x2="492.5" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="518.3" y1="238.0" x2="518.3" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="536.0" y1="238.0" x2="536.0" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="558.3" y1="238.0" x2="558.3" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.5" y1="238.0" x2="577.5" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="586.6" y1="238.0" x2="586.6" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="602.8" y1="238.0" x2="602.8" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="423.7" y1="237.0" x2="423.7" y2="261.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; POLD1–PNPLA6 fusion, breakpoint POLD1 aa 719; sample P-0005493-T01-IM5</title></line>
+<text x="64.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="252.5" font-family="sans-serif" font-size="9.5">PNPLA6 – DNA polymerase family B truncated – Melanoma</text>
+<rect x="60.0" y="264.0" width="403.2" height="22" fill="#8064a2"><title>Partner gene PEPD; POLD1–PEPD fusion, breakpoint POLD1 aa 797; sample P-0052327-T01-IM6</title></rect>
+<rect x="463.2" y="264.0" width="156.8" height="22" fill="#e2e2e2"><title>POLD1 backbone (797-1107 aa, no domain); domain status truncated; POLD1–PEPD fusion, breakpoint POLD1 aa 797; sample P-0052327-T01-IM6</title></rect>
+<rect x="463.2" y="264.0" width="91.6" height="22" fill="#f2a93b"><title>DNA polymerase family B truncated (797-978 aa); POLD1–PEPD fusion, breakpoint POLD1 aa 797; sample P-0052327-T01-IM6</title></rect>
+<text x="509.0" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">DNA polymerase family…</text>
+<rect x="571.9" y="264.0" width="35.9" height="22" fill="#2878b5"><title>PF14260 retained (1012-1083 aa); POLD1–PEPD fusion, breakpoint POLD1 aa 797; sample P-0052327-T01-IM6</title></rect>
+<text x="589.9" y="278.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF14260</text>
+<line x1="492.5" y1="264.0" x2="492.5" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="518.3" y1="264.0" x2="518.3" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="536.0" y1="264.0" x2="536.0" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="558.3" y1="264.0" x2="558.3" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.5" y1="264.0" x2="577.5" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="586.6" y1="264.0" x2="586.6" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="602.8" y1="264.0" x2="602.8" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="463.2" y1="263.0" x2="463.2" y2="287.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; POLD1–PEPD fusion, breakpoint POLD1 aa 797; sample P-0052327-T01-IM6</title></line>
+<text x="64.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="278.5" font-family="sans-serif" font-size="9.5">PEPD – DNA polymerase family B truncated – Breast Cancer</text>
+<rect x="469.8" y="290.0" width="150.2" height="22" fill="#8064a2"><title>Partner gene SIGLECL1; POLD1–SIGLECL1 fusion, breakpoint POLD1 aa 810; sample P-0023588-T01-IM6</title></rect>
+<rect x="60.0" y="290.0" width="409.8" height="22" fill="#e2e2e2"><title>POLD1 backbone (0-810 aa, no domain); domain status truncated; POLD1–SIGLECL1 fusion, breakpoint POLD1 aa 810; sample P-0023588-T01-IM6</title></rect>
+<rect x="338.2" y="290.0" width="131.5" height="22" fill="#f2a93b"><title>DNA polymerase family B truncated (550-810 aa); POLD1–SIGLECL1 fusion, breakpoint POLD1 aa 810; sample P-0023588-T01-IM6</title></rect>
+<text x="404.0" y="304.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">DNA polymerase family B</text>
+<rect x="126.3" y="290.0" width="175.0" height="22" fill="#2878b5"><title>DNA polymerase family B, exonuclease domain retained (131-477 aa); POLD1–SIGLECL1 fusion, breakpoint POLD1 aa 810; sample P-0023588-T01-IM6</title></rect>
+<text x="213.8" y="304.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">DNA polymerase family B, exonuclease domain</text>
+<line x1="60.5" y1="290.0" x2="60.5" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="94.4" y1="290.0" x2="94.4" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="113.6" y1="290.0" x2="113.6" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="138.4" y1="290.0" x2="138.4" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="159.7" y1="290.0" x2="159.7" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="188.0" y1="290.0" x2="188.0" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="202.1" y1="290.0" x2="202.1" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="223.9" y1="290.0" x2="223.9" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="252.2" y1="290.0" x2="252.2" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="269.9" y1="290.0" x2="269.9" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="293.7" y1="290.0" x2="293.7" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="312.4" y1="290.0" x2="312.4" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="344.8" y1="290.0" x2="344.8" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="359.5" y1="290.0" x2="359.5" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="379.2" y1="290.0" x2="379.2" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="398.4" y1="290.0" x2="398.4" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="423.7" y1="290.0" x2="423.7" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="439.9" y1="290.0" x2="439.9" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="463.2" y1="290.0" x2="463.2" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="469.8" y1="289.0" x2="469.8" y2="313.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; POLD1–SIGLECL1 fusion, breakpoint POLD1 aa 810; sample P-0023588-T01-IM6</title></line>
+<text x="64.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="304.5" font-family="sans-serif" font-size="9.5">SIGLECL1 – DNA polymerase family B truncated – Colorectal Cancer</text>
+<rect x="60.0" y="316.0" width="476.0" height="22" fill="#8064a2"><title>Partner gene SRRM1; POLD1–SRRM1 fusion, breakpoint POLD1 aa 941; sample P-0014626-T01-IM6</title></rect>
+<rect x="536.0" y="316.0" width="84.0" height="22" fill="#e2e2e2"><title>POLD1 backbone (941-1107 aa, no domain); domain status truncated; POLD1–SRRM1 fusion, breakpoint POLD1 aa 941; sample P-0014626-T01-IM6</title></rect>
+<rect x="536.0" y="316.0" width="18.7" height="22" fill="#f2a93b"><title>DNA polymerase family B truncated (941-978 aa); POLD1–SRRM1 fusion, breakpoint POLD1 aa 941; sample P-0014626-T01-IM6</title></rect>
+<text x="545.4" y="330.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">DNA…</text>
+<rect x="571.9" y="316.0" width="35.9" height="22" fill="#2878b5"><title>PF14260 retained (1012-1083 aa); POLD1–SRRM1 fusion, breakpoint POLD1 aa 941; sample P-0014626-T01-IM6</title></rect>
+<text x="589.9" y="330.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF14260</text>
+<line x1="558.3" y1="316.0" x2="558.3" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.5" y1="316.0" x2="577.5" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="586.6" y1="316.0" x2="586.6" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="602.8" y1="316.0" x2="602.8" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="536.0" y1="315.0" x2="536.0" y2="339.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; POLD1–SRRM1 fusion, breakpoint POLD1 aa 941; sample P-0014626-T01-IM6</title></line>
+<text x="64.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="330.5" font-family="sans-serif" font-size="9.5">SRRM1 – DNA polymerase family B truncated – Breast Cancer</text>
+<rect x="60.0" y="342.0" width="493.2" height="22" fill="#8064a2"><title>Partner gene KLK10; POLD1–KLK10 fusion, breakpoint POLD1 aa 975; sample P-0032778-T01-IM6</title></rect>
+<rect x="553.2" y="342.0" width="66.8" height="22" fill="#e2e2e2"><title>POLD1 backbone (975-1107 aa, no domain); domain status truncated; POLD1–KLK10 fusion, breakpoint POLD1 aa 975; sample P-0032778-T01-IM6</title></rect>
+<rect x="553.2" y="342.0" width="1.5" height="22" fill="#f2a93b"><title>DNA polymerase family B truncated (975-978 aa); POLD1–KLK10 fusion, breakpoint POLD1 aa 975; sample P-0032778-T01-IM6</title></rect>
+<rect x="571.9" y="342.0" width="35.9" height="22" fill="#2878b5"><title>PF14260 retained (1012-1083 aa); POLD1–KLK10 fusion, breakpoint POLD1 aa 975; sample P-0032778-T01-IM6</title></rect>
+<text x="589.9" y="356.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">PF14260</text>
+<line x1="558.3" y1="342.0" x2="558.3" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="577.5" y1="342.0" x2="577.5" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="586.6" y1="342.0" x2="586.6" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="602.8" y1="342.0" x2="602.8" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="553.2" y1="341.0" x2="553.2" y2="365.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status truncated; POLD1–KLK10 fusion, breakpoint POLD1 aa 975; sample P-0032778-T01-IM6</title></line>
+<text x="64.0" y="356.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="356.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="356.5" font-family="sans-serif" font-size="9.5">KLK10 – DNA polymerase family B truncated – Endometrial Cancer</text>
+<rect x="558.3" y="368.0" width="61.7" height="22" fill="#8064a2"><title>Partner gene SPIB; POLD1–SPIB fusion, breakpoint POLD1 aa 985; sample P-0047491-T01-IM6</title></rect>
+<rect x="60.0" y="368.0" width="498.3" height="22" fill="#e2e2e2"><title>POLD1 backbone (0-985 aa, no domain); domain status retained; POLD1–SPIB fusion, breakpoint POLD1 aa 985; sample P-0047491-T01-IM6</title></rect>
+<rect x="338.2" y="368.0" width="216.5" height="22" fill="#2878b5"><title>DNA polymerase family B retained (550-978 aa); POLD1–SPIB fusion, breakpoint POLD1 aa 985; sample P-0047491-T01-IM6</title></rect>
+<text x="446.5" y="382.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">DNA polymerase family B</text>
+<rect x="126.3" y="368.0" width="175.0" height="22" fill="#2878b5"><title>DNA polymerase family B, exonuclease domain retained (131-477 aa); POLD1–SPIB fusion, breakpoint POLD1 aa 985; sample P-0047491-T01-IM6</title></rect>
+<text x="213.8" y="382.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">DNA polymerase family B, exonuclease domain</text>
+<line x1="60.5" y1="368.0" x2="60.5" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="94.4" y1="368.0" x2="94.4" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="113.6" y1="368.0" x2="113.6" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="138.4" y1="368.0" x2="138.4" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="159.7" y1="368.0" x2="159.7" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="188.0" y1="368.0" x2="188.0" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="202.1" y1="368.0" x2="202.1" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="223.9" y1="368.0" x2="223.9" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="252.2" y1="368.0" x2="252.2" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="269.9" y1="368.0" x2="269.9" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="293.7" y1="368.0" x2="293.7" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="312.4" y1="368.0" x2="312.4" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="344.8" y1="368.0" x2="344.8" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="359.5" y1="368.0" x2="359.5" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="379.2" y1="368.0" x2="379.2" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="398.4" y1="368.0" x2="398.4" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="423.7" y1="368.0" x2="423.7" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="439.9" y1="368.0" x2="439.9" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="463.2" y1="368.0" x2="463.2" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="492.5" y1="368.0" x2="492.5" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="518.3" y1="368.0" x2="518.3" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="536.0" y1="368.0" x2="536.0" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="558.3" y1="367.0" x2="558.3" y2="391.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; POLD1–SPIB fusion, breakpoint POLD1 aa 985; sample P-0047491-T01-IM6</title></line>
+<text x="64.0" y="382.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="382.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="382.5" font-family="sans-serif" font-size="9.5">SPIB – DNA polymerase family B retained – Cancer of Unknown Primary</text>
+<line x1="60.0" y1="398.0" x2="620.0" y2="398.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="393.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="620.0" y="393.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
+<text x="60.0" y="412.0" font-family="sans-serif" font-size="9">1</text>
+<text x="620.0" y="412.0" font-family="sans-serif" font-size="9" text-anchor="end">1107 aa</text>
+<line x1="60.5" y1="416.0" x2="60.5" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="60.5" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 60.5 421.0)">E2</text>
+<line x1="94.4" y1="416.0" x2="94.4" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="94.4" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 94.4 421.0)">E3</text>
+<line x1="113.6" y1="416.0" x2="113.6" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="113.6" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 113.6 421.0)">E4</text>
+<line x1="138.4" y1="416.0" x2="138.4" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="138.4" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 138.4 421.0)">E5</text>
+<line x1="159.7" y1="416.0" x2="159.7" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="159.7" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 159.7 421.0)">E6</text>
+<line x1="188.0" y1="416.0" x2="188.0" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="188.0" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 188.0 421.0)">E7</text>
+<line x1="202.1" y1="416.0" x2="202.1" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="202.1" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 202.1 421.0)">E8</text>
+<line x1="223.9" y1="416.0" x2="223.9" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="223.9" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 223.9 421.0)">E9</text>
+<line x1="252.2" y1="416.0" x2="252.2" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="252.2" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 252.2 421.0)">E10</text>
+<line x1="269.9" y1="416.0" x2="269.9" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="269.9" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 269.9 421.0)">E11</text>
+<line x1="293.7" y1="416.0" x2="293.7" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="293.7" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 293.7 421.0)">E12</text>
+<line x1="312.4" y1="416.0" x2="312.4" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="312.4" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 312.4 421.0)">E13</text>
+<line x1="344.8" y1="416.0" x2="344.8" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="344.8" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 344.8 421.0)">E14</text>
+<line x1="359.5" y1="416.0" x2="359.5" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="359.5" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 359.5 421.0)">E15</text>
+<line x1="379.2" y1="416.0" x2="379.2" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="379.2" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 379.2 421.0)">E16</text>
+<line x1="398.4" y1="416.0" x2="398.4" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="398.4" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 398.4 421.0)">E17</text>
+<line x1="423.7" y1="416.0" x2="423.7" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="423.7" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 423.7 421.0)">E18</text>
+<line x1="439.9" y1="416.0" x2="439.9" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="439.9" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 439.9 421.0)">E19</text>
+<line x1="463.2" y1="416.0" x2="463.2" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="463.2" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 463.2 421.0)">E20</text>
+<line x1="492.5" y1="416.0" x2="492.5" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="492.5" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 492.5 421.0)">E21</text>
+<line x1="518.3" y1="416.0" x2="518.3" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="518.3" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 518.3 421.0)">E22</text>
+<line x1="536.0" y1="416.0" x2="536.0" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="536.0" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 536.0 421.0)">E23</text>
+<line x1="558.3" y1="416.0" x2="558.3" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="558.3" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 558.3 421.0)">E24</text>
+<line x1="577.5" y1="416.0" x2="577.5" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="577.5" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 577.5 421.0)">E25</text>
+<line x1="586.6" y1="416.0" x2="586.6" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="586.6" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 586.6 421.0)">E26</text>
+<line x1="602.8" y1="416.0" x2="602.8" y2="420.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="602.8" y="421.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 602.8 421.0)">E27</text>
+<rect x="60.0" y="429.0" width="12" height="10" fill="#2878b5"/>
+<text x="76.0" y="438.0" font-family="sans-serif" font-size="9">domain retained</text>
+<rect x="227.0" y="429.0" width="12" height="10" fill="#f2a93b"/>
+<text x="243.0" y="438.0" font-family="sans-serif" font-size="9">domain truncated</text>
+<rect x="403.0" y="429.0" width="12" height="10" fill="#e2e2e2"/>
+<text x="419.0" y="438.0" font-family="sans-serif" font-size="9">target backbone (no domain)</text>
+<rect x="678.0" y="429.0" width="12" height="10" fill="#d62728"/>
+<text x="694.0" y="438.0" font-family="sans-serif" font-size="9">breakpoint</text>
+<text x="60" y="474.0" font-family="sans-serif" font-size="9" fill="#555555">Partner-block colors are decorative; row labels identify partners.</text>
+</svg>

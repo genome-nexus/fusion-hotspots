@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="200" viewBox="0 0 920 200">
+<rect width="920" height="200" fill="white"/>
+<text x="60" y="28" font-family="sans-serif" font-size="16">NRG1 domain-retention track</text>
+<rect x="357.7" y="34.0" width="489.9" height="16.0" fill="#62b36f" opacity="0.55"/>
+<text x="357.7" y="46.0" font-family="sans-serif" font-size="9.5">Neuregulin intracellular region (240-635)</text>
+<line x1="60.0" y1="63.0" x2="860.0" y2="63.0" stroke="#444444" stroke-width="4"/>
+<circle cx="268.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0058867-T01-IM7-2"><title>event EVT-P-0058867-T01-IM7-2; sample P-0058867-T01-IM7; partner CD74; breakpoint aa 168; domain retained</title></circle>
+<circle cx="268.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0058935-T02-IM7-3"><title>event EVT-P-0058935-T02-IM7-3; sample P-0058935-T02-IM7; partner CD74; breakpoint aa 168; domain retained</title></circle>
+<circle cx="268.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0060522-T01-IM7-4"><title>event EVT-P-0060522-T01-IM7-4; sample P-0060522-T01-IM7; partner CD74; breakpoint aa 168; domain retained</title></circle>
+<circle cx="61.2" cy="92.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0008795-T01-IM5-5"><title>event EVT-P-0008795-T01-IM5-5; sample P-0008795-T01-IM5; partner FOXA1; breakpoint aa 1; domain lost</title></circle>
+<circle cx="268.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0004752-T01-IM5-6"><title>event EVT-P-0004752-T01-IM5-6; sample P-0004752-T01-IM5; partner CD74; breakpoint aa 168; domain retained</title></circle>
+<circle cx="268.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0004752-T02-IM5-7"><title>event EVT-P-0004752-T02-IM5-7; sample P-0004752-T02-IM5; partner CD74; breakpoint aa 168; domain retained</title></circle>
+<circle cx="268.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0004752-T03-IM6-8"><title>event EVT-P-0004752-T03-IM6-8; sample P-0004752-T03-IM6; partner CD74; breakpoint aa 168; domain retained</title></circle>
+<circle cx="268.4" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0010260-T01-IM5-9"><title>event EVT-P-0010260-T01-IM5-9; sample P-0010260-T01-IM5; partner CD74; breakpoint aa 168; domain retained</title></circle>
+<circle cx="268.4" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0011180-T01-IM5-10"><title>event EVT-P-0011180-T01-IM5-10; sample P-0011180-T01-IM5; partner CD74; breakpoint aa 168; domain retained</title></circle>
+<circle cx="268.4" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0019346-T01-IM6-11"><title>event EVT-P-0019346-T01-IM6-11; sample P-0019346-T01-IM6; partner CD74; breakpoint aa 168; domain retained</title></circle>
+<circle cx="268.4" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0028576-T01-IM6-12"><title>event EVT-P-0028576-T01-IM6-12; sample P-0028576-T01-IM6; partner NSD3; breakpoint aa 168; domain retained</title></circle>
+<circle cx="268.4" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0028576-T02-IM6-13"><title>event EVT-P-0028576-T02-IM6-13; sample P-0028576-T02-IM6; partner NSD3; breakpoint aa 168; domain retained</title></circle>
+<circle cx="61.2" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0026615-T02-IM6-14"><title>event EVT-P-0026615-T02-IM6-14; sample P-0026615-T02-IM6; partner PAK1; breakpoint aa 1; domain retained</title></circle>
+<circle cx="61.2" cy="92.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0030212-T01-IM6-15"><title>event EVT-P-0030212-T01-IM6-15; sample P-0030212-T01-IM6; partner RAD51C; breakpoint aa 1; domain lost</title></circle>
+<circle cx="61.2" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0068238-T01-IM7-16"><title>event EVT-P-0068238-T01-IM7-16; sample P-0068238-T01-IM7; partner VTCN1; breakpoint aa 1; domain retained</title></circle>
+<line x1="60.0" y1="114.0" x2="860.0" y2="114.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="860.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
+<text x="60.0" y="128.0" font-family="sans-serif" font-size="9">1</text>
+<text x="860.0" y="128.0" font-family="sans-serif" font-size="9" text-anchor="end">645 aa</text>
+<line x1="61.2" y1="132.0" x2="61.2" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="61.2" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 61.2 137.0)">E1</text>
+<line x1="102.2" y1="132.0" x2="102.2" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="102.2" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 102.2 137.0)">E2</text>
+<line x1="175.3" y1="132.0" x2="175.3" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="175.3" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 175.3 137.0)">E3</text>
+<line x1="226.2" y1="132.0" x2="226.2" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="226.2" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 226.2 137.0)">E4</text>
+<line x1="247.3" y1="132.0" x2="247.3" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="247.3" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 247.3 137.0)">E5</text>
+<line x1="268.4" y1="132.0" x2="268.4" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="268.4" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 268.4 137.0)">E6</text>
+<line x1="321.7" y1="132.0" x2="321.7" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="321.7" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 321.7 137.0)">E7</text>
+<line x1="346.5" y1="132.0" x2="346.5" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="346.5" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 346.5 137.0)">E8</text>
+<line x1="356.4" y1="132.0" x2="356.4" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="356.4" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 356.4 137.0)">E9</text>
+<line x1="398.6" y1="132.0" x2="398.6" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="398.6" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 398.6 137.0)">E10</text>
+<line x1="451.9" y1="132.0" x2="451.9" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="451.9" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 451.9 137.0)">E11</text>
+<line x1="505.3" y1="132.0" x2="505.3" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="505.3" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 505.3 137.0)">E12</text>
+<line x1="590.9" y1="132.0" x2="590.9" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="590.9" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 590.9 137.0)">E13</text>
+<line x1="184.0" y1="114.0" x2="184.0" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="184.0" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">100</text>
+<line x1="308.1" y1="114.0" x2="308.1" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="308.1" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">200</text>
+<line x1="432.1" y1="114.0" x2="432.1" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="432.1" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">300</text>
+<line x1="556.1" y1="114.0" x2="556.1" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="556.1" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">400</text>
+<line x1="680.2" y1="114.0" x2="680.2" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="680.2" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">500</text>
+<line x1="804.2" y1="114.0" x2="804.2" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="804.2" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">600</text>
+<circle cx="60" cy="167.0" r="4" fill="#2878b5"/><text x="70" y="172.0" font-family="sans-serif" font-size="12">fully retained</text>
+<circle cx="180" cy="167.0" r="4" fill="#f2a93b"/><text x="190" y="172.0" font-family="sans-serif" font-size="12">truncated</text>
+<circle cx="275" cy="167.0" r="4" fill="#777777"/><text x="285" y="172.0" font-family="sans-serif" font-size="12">fully lost</text>
+<circle cx="365" cy="167.0" r="4" fill="white" stroke="#d62728" stroke-width="1.5"/><text x="375" y="172.0" font-family="sans-serif" font-size="12">reference discrepancy</text>
+<rect x="60" y="180.0" width="12" height="10" fill="#62b36f" opacity="0.55"/><text x="80" y="189.0" font-family="sans-serif" font-size="12">configured key-domain span (name/range labeled above; a second or later configured domain gets its own distinct shade)</text>
+</svg>

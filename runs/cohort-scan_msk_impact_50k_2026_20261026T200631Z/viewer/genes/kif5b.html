@@ -1,0 +1,907 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KIF5B fusion-hotspot report</title>
+<style>
+:root { color-scheme: light; }
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 24px 20px 60px; background: #f7f7f8; color: #1a1a1a;
+  font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+.wrap { max-width: 1080px; margin: 0 auto; }
+h1 { font-size: 22px; margin: 0 0 4px; }
+h1 .badge { position: relative; top: -2px; }
+h2 {
+  font-size: 16px; margin: 32px 0 10px;
+  border-bottom: 1px solid #ddd; padding-bottom: 6px;
+}
+.subtitle { color: #555; font-size: 13px; margin: 0 0 20px; }
+.back-link {
+  display: inline-block; margin-bottom: 14px; font-size: 13px;
+  color: #2878b5; text-decoration: none;
+}
+.back-link:hover { text-decoration: underline; }
+.card {
+  background: #fff; border: 1px solid #e2e2e2;
+  border-radius: 8px; padding: 16px 18px;
+}
+.stat-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px;
+}
+.stat {
+  background: #fff; border: 1px solid #e2e2e2;
+  border-radius: 8px; padding: 10px 12px;
+}
+.stat .label {
+  font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.02em;
+}
+.stat .value { font-size: 18px; font-weight: 600; margin-top: 2px; }
+.svg-frame {
+  width: 100%; overflow-x: auto; background: #fff;
+  border: 1px solid #e2e2e2; border-radius: 8px; padding: 8px;
+}
+.svg-frame svg { display: block; max-width: 100%; height: auto; }
+.controls {
+  display: flex; flex-wrap: wrap; gap: 20px; align-items: center;
+  margin: 12px 0 16px; padding: 12px 14px; background: #fff;
+  border: 1px solid #e2e2e2; border-radius: 8px;
+}
+.control-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.control-group label.title { font-size: 12px; font-weight: 600; color: #333; }
+.control-group select { font-size: 13px; padding: 4px 6px; }
+.status-toggle { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; }
+#events-summary { font-size: 12px; color: #555; margin-left: auto; }
+table.events { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+table.events th, table.events td {
+  text-align: left; padding: 5px 8px;
+  border-bottom: 1px solid #eee; white-space: nowrap;
+}
+table.events th { position: sticky; top: 0; background: #fafafa; }
+table.events tr.row-highlight { background: #fff3cd; transition: background 1.2s ease; }
+.lollipop-tooltip {
+  position: fixed; z-index: 1000; pointer-events: none;
+  background: #1a1a1a; color: #fff; font-size: 12px; line-height: 1.3;
+  padding: 4px 8px; border-radius: 4px; white-space: nowrap;
+}
+p.unverified-mechanism { color: #9a6700; }
+tr.counter-intuitive-row { cursor: pointer; }
+tr.counter-intuitive-row:hover { background: #f0f0f0; }
+.events-table-frame {
+  max-height: 420px; overflow: auto;
+  border: 1px solid #e2e2e2; border-radius: 8px; background: #fff;
+}
+.gene-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.gene-links a {
+  font-size: 12.5px; padding: 4px 9px; border-radius: 999px; text-decoration: none;
+  border: 1px solid #ccc; color: #1a1a1a; background: #fff;
+}
+.gene-links a:hover { background: #f0f0f0; }
+.gene-links a.significant { border-color: #d62728; color: #d62728; }
+.note { font-size: 12px; color: #777; margin-top: 8px; }
+.panel-note { font-size: 12px; color: #555; margin: 8px 0 0; padding-left: 18px; }
+.badge {
+  display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 9px;
+  border-radius: 999px; margin-left: 10px; vertical-align: middle;
+  text-transform: uppercase; letter-spacing: 0.03em;
+}
+.badge-curated { background: #e6f4ea; color: #1a7f37; border: 1px solid #b7e0c2; }
+.badge-auto { background: #fff4e5; color: #9a6700; border: 1px solid #f0dca6; }
+table.data-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+table.data-table th, table.data-table td {
+  text-align: left; padding: 5px 8px;
+  border-bottom: 1px solid #eee; white-space: nowrap;
+}
+table.data-table th { position: sticky; top: 0; background: #fafafa; }
+table.sortable th[data-sort-key] { cursor: pointer; user-select: none; }
+table.sortable th[data-sort-key]:hover { background: #f0f0f0; }
+table.sortable th[data-sort-key]::after { content: ""; margin-left: 4px; color: #999; }
+table.sortable th[data-sort-dir="asc"]::after { content: "\25B2"; margin-left: 4px; color: #555; }
+table.sortable th[data-sort-dir="desc"]::after { content: "\25BC"; margin-left: 4px; color: #555; }
+.data-table-frame {
+  max-height: 380px; overflow: auto;
+  border: 1px solid #e2e2e2; border-radius: 8px; background: #fff;
+}
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back-link" href="../index.html">&larr; Back to cohort-scan summary</a>
+  <h1>KIF5B<span class="badge badge-auto" title="Derived live from Genome Nexus, no curated YAML on file">Auto-configured</span></h1>
+  <p class="subtitle">msk_impact_50k_2026</p>
+  <div class="stat-grid"><div class="stat"><div class="label">Raw Structural Variant Count</div><div class="value">96</div></div><div class="stat"><div class="label">Total Fusions</div><div class="value">96</div></div><div class="stat"><div class="label">Sample Count</div><div class="value">95</div></div><div class="stat"><div class="label">Known Patient Count</div><div class="value">79</div></div><div class="stat"><div class="label">Missing Patient Id Event Count</div><div class="value">0</div></div><div class="stat"><div class="label">Inference Counting Unit</div><div class="value">patient</div></div><div class="stat"><div class="label">Patient Independence Established</div><div class="value">True</div></div><div class="stat"><div class="label">Observation Unit</div><div class="value">patient_gene</div></div><div class="stat"><div class="label">Input Mapped Event Count</div><div class="value">96</div></div><div class="stat"><div class="label">Analyzed Observation Count</div><div class="value">79</div></div><div class="stat"><div class="label">Collapsed Repeat Observation Count</div><div class="value">16</div></div><div class="stat"><div class="label">Patients With Repeated Observations</div><div class="value">15</div></div><div class="stat"><div class="label">Frame Conflict Groups</div><div class="value">0</div></div><div class="stat"><div class="label">Merged Distinct Fusion Count</div><div class="value">1</div></div><div class="stat"><div class="label">Patients With Multiple Distinct Fusions</div><div class="value">1</div></div><div class="stat"><div class="label">Mapped Fusions</div><div class="value">96</div></div><div class="stat"><div class="label">Skipped Fusions</div><div class="value">0</div></div><div class="stat"><div class="label">In Frame Count</div><div class="value">85</div></div><div class="stat"><div class="label">Out Of Frame Count</div><div class="value">2</div></div><div class="stat"><div class="label">Known Frame Count</div><div class="value">87</div></div><div class="stat"><div class="label">Unknown Frame Count</div><div class="value">9</div></div><div class="stat"><div class="label">In Frame Percent</div><div class="value">97.7</div></div><div class="stat"><div class="label">Kinase Retained Count</div><div class="value">93</div></div><div class="stat"><div class="label">Kinase Retained Percent</div><div class="value">96.88</div></div><div class="stat"><div class="label">In Frame Kinase Retained Count</div><div class="value">83</div></div><div class="stat"><div class="label">Fisher Odds Ratio</div><div class="value">4.25</div></div><div class="stat"><div class="label">Fisher P Value</div><div class="value">0.3078</div></div><div class="stat"><div class="label">Permutation P Value</div><div class="value">1e-05</div></div><div class="stat"><div class="label">Domain Accession</div><div class="value">PF00225</div></div><div class="stat"><div class="label">Domain Start Aa</div><div class="value">14</div></div><div class="stat"><div class="label">Domain End Aa</div><div class="value">325</div></div></div>
+  <h2>Domain retention / outlier lollipop track</h2><p class="panel-note">Click a point to jump to its event in the table below.</p><div class="svg-frame" id="domain-track-svg"><svg xmlns="http://www.w3.org/2000/svg" width="920" height="200" viewBox="0 0 920 200">
+<rect width="920" height="200" fill="white"/>
+<text x="60" y="28" font-family="sans-serif" font-size="16">KIF5B domain-retention track</text>
+<rect x="71.6" y="34.0" width="258.4" height="16.0" fill="#62b36f" opacity="0.55"/>
+<text x="71.6" y="46.0" font-family="sans-serif" font-size="9.5">Kinesin motor domain (14-325)</text>
+<line x1="60.0" y1="63.0" x2="860.0" y2="63.0" stroke="#444444" stroke-width="4"/>
+<circle cx="825.1" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0062804-T03-IM7-1"><title>event EVT-P-0062804-T03-IM7-1; sample P-0062804-T03-IM7; partner ALK; breakpoint aa 921; domain retained</title></circle>
+<circle cx="825.1" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0005711-T02-IM6-2"><title>event EVT-P-0005711-T02-IM6-2; sample P-0005711-T02-IM6; partner ALK; breakpoint aa 921; domain retained</title></circle>
+<circle cx="825.1" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0008764-T01-IM5-3"><title>event EVT-P-0008764-T01-IM5-3; sample P-0008764-T01-IM5; partner ALK; breakpoint aa 921; domain retained</title></circle>
+<circle cx="825.1" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0008764-T02-IM6-4"><title>event EVT-P-0008764-T02-IM6-4; sample P-0008764-T02-IM6; partner ALK; breakpoint aa 921; domain retained</title></circle>
+<circle cx="825.1" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0017924-T01-IM6-5"><title>event EVT-P-0017924-T01-IM6-5; sample P-0017924-T01-IM6; partner ALK; breakpoint aa 921; domain retained</title></circle>
+<circle cx="537.7" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0052330-T01-IM6-6"><title>event EVT-P-0052330-T01-IM6-6; sample P-0052330-T01-IM6; partner ARID5B; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0021038-T01-IM6-7"><title>event EVT-P-0021038-T01-IM6-7; sample P-0021038-T01-IM6; partner EGFR; breakpoint aa 575; domain retained</title></circle>
+<circle cx="825.1" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0033090-T01-IM6-8"><title>event EVT-P-0033090-T01-IM6-8; sample P-0033090-T01-IM6; partner MET; breakpoint aa 921; domain retained</title></circle>
+<circle cx="825.1" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0043854-T01-IM6-9"><title>event EVT-P-0043854-T01-IM6-9; sample P-0043854-T01-IM6; partner MET; breakpoint aa 921; domain retained</title></circle>
+<circle cx="537.7" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0000208-T02-IM5-10"><title>event EVT-P-0000208-T02-IM5-10; sample P-0000208-T02-IM5; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0008289-T01-IM5-11"><title>event EVT-P-0008289-T01-IM5-11; sample P-0008289-T01-IM5; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0002694-T02-IM5-12"><title>event EVT-P-0002694-T02-IM5-12; sample P-0002694-T02-IM5; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0002873-T01-IM3-13"><title>event EVT-P-0002873-T01-IM3-13; sample P-0002873-T01-IM3; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0009514-T01-IM5-14"><title>event EVT-P-0009514-T01-IM5-14; sample P-0009514-T01-IM5; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0011035-T01-IM5-15"><title>event EVT-P-0011035-T01-IM5-15; sample P-0011035-T01-IM5; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0012648-T01-IM5-16"><title>event EVT-P-0012648-T01-IM5-16; sample P-0012648-T01-IM5; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="553.5" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0013825-T01-IM5-17"><title>event EVT-P-0013825-T01-IM5-17; sample P-0013825-T01-IM5; partner RET; breakpoint aa 594; domain retained</title></circle>
+<circle cx="537.7" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0014808-T01-IM6-18"><title>event EVT-P-0014808-T01-IM6-18; sample P-0014808-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0014808-T02-IM6-19"><title>event EVT-P-0014808-T02-IM6-19; sample P-0014808-T02-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0014808-T03-IM6-20"><title>event EVT-P-0014808-T03-IM6-20; sample P-0014808-T03-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0016221-T01-IM6-21"><title>event EVT-P-0016221-T01-IM6-21; sample P-0016221-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0016221-T02-IM6-22"><title>event EVT-P-0016221-T02-IM6-22; sample P-0016221-T02-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="764.5" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0017214-T01-IM6-23"><title>event EVT-P-0017214-T01-IM6-23; sample P-0017214-T01-IM6; partner RET; breakpoint aa 848; domain retained</title></circle>
+<circle cx="764.5" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0017214-T02-IM6-24"><title>event EVT-P-0017214-T02-IM6-24; sample P-0017214-T02-IM6; partner RET; breakpoint aa 848; domain retained</title></circle>
+<circle cx="537.7" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0017523-T02-IM6-25"><title>event EVT-P-0017523-T02-IM6-25; sample P-0017523-T02-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="538.5" cy="71.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0003125-T01-IM5-26"><title>event EVT-P-0003125-T01-IM5-26; sample P-0003125-T01-IM5; partner RET; breakpoint aa 576; domain lost</title></circle>
+<circle cx="590.8" cy="78.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0018069-T01-IM6-27"><title>event EVT-P-0018069-T01-IM6-27; sample P-0018069-T01-IM6; partner RET; breakpoint aa 639; domain lost</title></circle>
+<circle cx="537.7" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0019535-T02-IM6-28"><title>event EVT-P-0019535-T02-IM6-28; sample P-0019535-T02-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="590.0" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0020273-T02-IM6-29"><title>event EVT-P-0020273-T02-IM6-29; sample P-0020273-T02-IM6; partner RET; breakpoint aa 638; domain retained</title></circle>
+<circle cx="537.7" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0003125-T01-IM5-30"><title>event EVT-P-0003125-T01-IM5-30; sample P-0003125-T01-IM5; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0021150-T01-IM6-31"><title>event EVT-P-0021150-T01-IM6-31; sample P-0021150-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0021578-T01-IM6-32"><title>event EVT-P-0021578-T01-IM6-32; sample P-0021578-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0021879-T01-IM6-33"><title>event EVT-P-0021879-T01-IM6-33; sample P-0021879-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0021937-T01-IM6-34"><title>event EVT-P-0021937-T01-IM6-34; sample P-0021937-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0021937-T03-IM6-35"><title>event EVT-P-0021937-T03-IM6-35; sample P-0021937-T03-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0022866-T01-IM6-36"><title>event EVT-P-0022866-T01-IM6-36; sample P-0022866-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="825.1" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0024225-T01-IM6-37"><title>event EVT-P-0024225-T01-IM6-37; sample P-0024225-T01-IM6; partner RET; breakpoint aa 921; domain retained</title></circle>
+<circle cx="537.7" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0024843-T01-IM6-38"><title>event EVT-P-0024843-T01-IM6-38; sample P-0024843-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0025100-T01-IM6-39"><title>event EVT-P-0025100-T01-IM6-39; sample P-0025100-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0025100-T02-IM6-40"><title>event EVT-P-0025100-T02-IM6-40; sample P-0025100-T02-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0025838-T01-IM6-41"><title>event EVT-P-0025838-T01-IM6-41; sample P-0025838-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0025928-T01-IM6-42"><title>event EVT-P-0025928-T01-IM6-42; sample P-0025928-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0025928-T02-IM6-43"><title>event EVT-P-0025928-T02-IM6-43; sample P-0025928-T02-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="764.5" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0026693-T01-IM6-44"><title>event EVT-P-0026693-T01-IM6-44; sample P-0026693-T01-IM6; partner RET; breakpoint aa 848; domain retained</title></circle>
+<circle cx="537.7" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0026777-T01-IM6-45"><title>event EVT-P-0026777-T01-IM6-45; sample P-0026777-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0026777-T02-IM6-46"><title>event EVT-P-0026777-T02-IM6-46; sample P-0026777-T02-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0027723-T01-IM6-47"><title>event EVT-P-0027723-T01-IM6-47; sample P-0027723-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="590.0" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0032407-T01-IM6-48"><title>event EVT-P-0032407-T01-IM6-48; sample P-0032407-T01-IM6; partner RET; breakpoint aa 638; domain retained</title></circle>
+<circle cx="537.7" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0030453-T01-IM6-49"><title>event EVT-P-0030453-T01-IM6-49; sample P-0030453-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0032227-T01-IM6-50"><title>event EVT-P-0032227-T01-IM6-50; sample P-0032227-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0000208-T01-IM3-51"><title>event EVT-P-0000208-T01-IM3-51; sample P-0000208-T01-IM3; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0032686-T01-IM6-52"><title>event EVT-P-0032686-T01-IM6-52; sample P-0032686-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0032753-T01-IM6-53"><title>event EVT-P-0032753-T01-IM6-53; sample P-0032753-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0000252-T01-IM3-54"><title>event EVT-P-0000252-T01-IM3-54; sample P-0000252-T01-IM3; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0033700-T02-IM6-55"><title>event EVT-P-0033700-T02-IM6-55; sample P-0033700-T02-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0034357-T01-IM6-56"><title>event EVT-P-0034357-T01-IM6-56; sample P-0034357-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0036092-T01-IM6-57"><title>event EVT-P-0036092-T01-IM6-57; sample P-0036092-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0036637-T01-IM6-58"><title>event EVT-P-0036637-T01-IM6-58; sample P-0036637-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0036737-T02-IM6-59"><title>event EVT-P-0036737-T02-IM6-59; sample P-0036737-T02-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0037367-T01-IM6-60"><title>event EVT-P-0037367-T01-IM6-60; sample P-0037367-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0037494-T01-IM6-61"><title>event EVT-P-0037494-T01-IM6-61; sample P-0037494-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0038961-T01-IM6-62"><title>event EVT-P-0038961-T01-IM6-62; sample P-0038961-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0039257-T01-IM6-63"><title>event EVT-P-0039257-T01-IM6-63; sample P-0039257-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0039257-T03-IM7-64"><title>event EVT-P-0039257-T03-IM7-64; sample P-0039257-T03-IM7; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="590.0" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0039474-T01-IM6-65"><title>event EVT-P-0039474-T01-IM6-65; sample P-0039474-T01-IM6; partner RET; breakpoint aa 638; domain retained</title></circle>
+<circle cx="590.0" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0039474-T02-IM6-66"><title>event EVT-P-0039474-T02-IM6-66; sample P-0039474-T02-IM6; partner RET; breakpoint aa 638; domain retained</title></circle>
+<circle cx="537.7" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0039941-T01-IM6-67"><title>event EVT-P-0039941-T01-IM6-67; sample P-0039941-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0042104-T01-IM6-68"><title>event EVT-P-0042104-T01-IM6-68; sample P-0042104-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0042580-T01-IM6-69"><title>event EVT-P-0042580-T01-IM6-69; sample P-0042580-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0042608-T01-IM6-70"><title>event EVT-P-0042608-T01-IM6-70; sample P-0042608-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="764.5" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0043007-T01-IM6-71"><title>event EVT-P-0043007-T01-IM6-71; sample P-0043007-T01-IM6; partner RET; breakpoint aa 848; domain retained</title></circle>
+<circle cx="764.5" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0043007-T02-IM6-72"><title>event EVT-P-0043007-T02-IM6-72; sample P-0043007-T02-IM6; partner RET; breakpoint aa 848; domain retained</title></circle>
+<circle cx="537.7" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0005573-T01-IM5-73"><title>event EVT-P-0005573-T01-IM5-73; sample P-0005573-T01-IM5; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0046726-T01-IM6-74"><title>event EVT-P-0046726-T01-IM6-74; sample P-0046726-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0046827-T02-IM6-75"><title>event EVT-P-0046827-T02-IM6-75; sample P-0046827-T02-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0048829-T01-IM6-76"><title>event EVT-P-0048829-T01-IM6-76; sample P-0048829-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="590.0" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0048968-T01-IM6-77"><title>event EVT-P-0048968-T01-IM6-77; sample P-0048968-T01-IM6; partner RET; breakpoint aa 638; domain retained</title></circle>
+<circle cx="537.7" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0001010-T02-IM5-78"><title>event EVT-P-0001010-T02-IM5-78; sample P-0001010-T02-IM5; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0052826-T01-IM6-79"><title>event EVT-P-0052826-T01-IM6-79; sample P-0052826-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="590.0" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0052861-T02-IM6-80"><title>event EVT-P-0052861-T02-IM6-80; sample P-0052861-T02-IM6; partner RET; breakpoint aa 638; domain retained</title></circle>
+<circle cx="537.7" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0053175-T01-IM6-81"><title>event EVT-P-0053175-T01-IM6-81; sample P-0053175-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0055183-T01-IM6-82"><title>event EVT-P-0055183-T01-IM6-82; sample P-0055183-T01-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0055183-T02-IM6-83"><title>event EVT-P-0055183-T02-IM6-83; sample P-0055183-T02-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0057072-T02-IM6-84"><title>event EVT-P-0057072-T02-IM6-84; sample P-0057072-T02-IM6; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0057072-T03-IM7-85"><title>event EVT-P-0057072-T03-IM7-85; sample P-0057072-T03-IM7; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0059913-T01-IM7-86"><title>event EVT-P-0059913-T01-IM7-86; sample P-0059913-T01-IM7; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0060748-T02-IM7-87"><title>event EVT-P-0060748-T02-IM7-87; sample P-0060748-T02-IM7; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="537.7" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0060748-T03-IM7-88"><title>event EVT-P-0060748-T03-IM7-88; sample P-0060748-T03-IM7; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="590.0" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0061331-T01-IM7-89"><title>event EVT-P-0061331-T01-IM7-89; sample P-0061331-T01-IM7; partner RET; breakpoint aa 638; domain retained</title></circle>
+<circle cx="639.9" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0008101-T01-IM5-90"><title>event EVT-P-0008101-T01-IM5-90; sample P-0008101-T01-IM5; partner RET; breakpoint aa 698; domain retained</title></circle>
+<circle cx="537.7" cy="71.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0062948-T03-IM7-91"><title>event EVT-P-0062948-T03-IM7-91; sample P-0062948-T03-IM7; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="670.6" cy="78.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0064951-T01-IM7-92"><title>event EVT-P-0064951-T01-IM7-92; sample P-0064951-T01-IM7; partner RET; breakpoint aa 735; domain retained</title></circle>
+<circle cx="537.7" cy="85.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0065876-T01-IM7-93"><title>event EVT-P-0065876-T01-IM7-93; sample P-0065876-T01-IM7; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="825.1" cy="92.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0027991-T01-IM6-94"><title>event EVT-P-0027991-T01-IM6-94; sample P-0027991-T01-IM6; partner RET; breakpoint aa 921; domain retained</title></circle>
+<circle cx="537.7" cy="99.0" r="3" fill="#2878b5" stroke="none" stroke-width="0" data-event-id="EVT-P-0004995-T01-IM5-95"><title>event EVT-P-0004995-T01-IM5-95; sample P-0004995-T01-IM5; partner RET; breakpoint aa 575; domain retained</title></circle>
+<circle cx="765.3" cy="71.0" r="3" fill="#777777" stroke="none" stroke-width="0" data-event-id="EVT-P-0043704-T01-IM6-96"><title>event EVT-P-0043704-T01-IM6-96; sample P-0043704-T01-IM6; partner RET; breakpoint aa 849; domain lost</title></circle>
+<line x1="60.0" y1="114.0" x2="860.0" y2="114.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="860.0" y="109.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
+<text x="60.0" y="128.0" font-family="sans-serif" font-size="9">1</text>
+<text x="860.0" y="128.0" font-family="sans-serif" font-size="9" text-anchor="end">963 aa</text>
+<line x1="60.8" y1="132.0" x2="60.8" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="60.8" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 60.8 137.0)">E1</text>
+<line x1="95.7" y1="132.0" x2="95.7" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="95.7" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 95.7 137.0)">E2</text>
+<line x1="119.8" y1="132.0" x2="119.8" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="119.8" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 119.8 137.0)">E3</text>
+<line x1="140.6" y1="132.0" x2="140.6" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="140.6" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 140.6 137.0)">E4</text>
+<line x1="169.7" y1="132.0" x2="169.7" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="169.7" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 169.7 137.0)">E5</text>
+<line x1="182.9" y1="132.0" x2="182.9" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="182.9" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 182.9 137.0)">E6</text>
+<line x1="198.7" y1="132.0" x2="198.7" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="198.7" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 198.7 137.0)">E7</text>
+<line x1="222.8" y1="132.0" x2="222.8" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="222.8" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 222.8 137.0)">E8</text>
+<line x1="257.7" y1="132.0" x2="257.7" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="257.7" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 257.7 137.0)">E9</text>
+<line x1="286.8" y1="132.0" x2="286.8" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="286.8" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 286.8 137.0)">E10</text>
+<line x1="326.7" y1="132.0" x2="326.7" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="326.7" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 326.7 137.0)">E11</text>
+<line x1="368.2" y1="132.0" x2="368.2" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="368.2" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 368.2 137.0)">E12</text>
+<line x1="422.2" y1="132.0" x2="422.2" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="422.2" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 422.2 137.0)">E13</text>
+<line x1="441.3" y1="132.0" x2="441.3" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="441.3" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 441.3 137.0)">E14</text>
+<line x1="498.6" y1="132.0" x2="498.6" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="498.6" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 498.6 137.0)">E15</text>
+<line x1="538.5" y1="132.0" x2="538.5" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="538.5" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 538.5 137.0)">E16</text>
+<line x1="590.8" y1="132.0" x2="590.8" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="590.8" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 590.8 137.0)">E17</text>
+<line x1="623.2" y1="132.0" x2="623.2" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="623.2" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 623.2 137.0)">E18</text>
+<line x1="640.7" y1="132.0" x2="640.7" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="640.7" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 640.7 137.0)">E19</text>
+<line x1="670.6" y1="132.0" x2="670.6" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="670.6" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 670.6 137.0)">E20</text>
+<line x1="698.8" y1="132.0" x2="698.8" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="698.8" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 698.8 137.0)">E21</text>
+<line x1="716.3" y1="132.0" x2="716.3" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="716.3" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 716.3 137.0)">E22</text>
+<line x1="736.2" y1="132.0" x2="736.2" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="736.2" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 736.2 137.0)">E23</text>
+<line x1="765.3" y1="132.0" x2="765.3" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="765.3" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 765.3 137.0)">E24</text>
+<line x1="825.1" y1="132.0" x2="825.1" y2="136.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="825.1" y="137.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 825.1 137.0)">E25</text>
+<line x1="143.1" y1="114.0" x2="143.1" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="143.1" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">100</text>
+<line x1="226.1" y1="114.0" x2="226.1" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="226.1" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">200</text>
+<line x1="309.2" y1="114.0" x2="309.2" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="309.2" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">300</text>
+<line x1="392.3" y1="114.0" x2="392.3" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="392.3" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">400</text>
+<line x1="475.4" y1="114.0" x2="475.4" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="475.4" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">500</text>
+<line x1="558.4" y1="114.0" x2="558.4" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="558.4" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">600</text>
+<line x1="641.5" y1="114.0" x2="641.5" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="641.5" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">700</text>
+<line x1="724.6" y1="114.0" x2="724.6" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="724.6" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">800</text>
+<line x1="807.7" y1="114.0" x2="807.7" y2="119.0" stroke="#444444" stroke-width="1"/>
+<text x="807.7" y="129.0" font-family="sans-serif" font-size="8" text-anchor="middle">900</text>
+<circle cx="60" cy="167.0" r="4" fill="#2878b5"/><text x="70" y="172.0" font-family="sans-serif" font-size="12">fully retained</text>
+<circle cx="180" cy="167.0" r="4" fill="#f2a93b"/><text x="190" y="172.0" font-family="sans-serif" font-size="12">truncated</text>
+<circle cx="275" cy="167.0" r="4" fill="#777777"/><text x="285" y="172.0" font-family="sans-serif" font-size="12">fully lost</text>
+<circle cx="365" cy="167.0" r="4" fill="white" stroke="#d62728" stroke-width="1.5"/><text x="375" y="172.0" font-family="sans-serif" font-size="12">reference discrepancy</text>
+<rect x="60" y="180.0" width="12" height="10" fill="#62b36f" opacity="0.55"/><text x="80" y="189.0" font-family="sans-serif" font-size="12">configured key-domain span (name/range labeled above; a second or later configured domain gets its own distinct shade)</text>
+</svg>
+</div><h2 id="mechanistic-interpretation">Mechanistic interpretation</h2><p><strong>Kinesin motor domain retention:</strong> nominal Fisher gate not met (p=0.3078, odds ratio=4.25; Fisher FDR q=1) &mdash; too weak to draw a conclusion.</p><h2>Composite evidence ranking (per partner gene)</h2><p class="panel-note">Click a column header to sort ascending/descending. 5 partner gene(s) ranked by <code>composite_score</code>.</p><div class="data-table-frame"><table class="data-table sortable" id="composite-score-table"><thead><tr><th data-sort-key="Rank">Rank</th><th data-sort-key="Partner_gene">Partner gene</th><th data-sort-key="Event_count">Events</th><th data-sort-key="Composite_score">Composite score</th><th data-sort-key="Recurrence_score">Recurrence</th><th data-sort-key="Domain_retention_score">Domain retention</th><th data-sort-key="Domain_disruption_score">Domain disruption</th><th data-sort-key="Cutpoint_proximity_score">Cutpoint proximity</th><th data-sort-key="Confidence_certainty_score">Confidence</th></tr></thead><tbody><tr><td data-sort="1">1</td><td data-sort="RET">RET</td><td data-sort="87">87</td><td data-sort="0.7389138630486317">0.7389</td><td data-sort="0.90625">0.9062</td><td data-sort="0.5000004342923104">0.5</td><td data-sort=""></td><td data-sort="0.8970121305869901">0.897</td><td data-sort="0.5970416227777926">0.597</td></tr><tr><td data-sort="2">2</td><td data-sort="ARID5B">ARID5B</td><td data-sort="1">1</td><td data-sort="0.42228658856357104">0.4223</td><td data-sort="0.010416666666666666">0.01042</td><td data-sort="0.5000004342923104">0.5</td><td data-sort=""></td><td data-sort="1.0">1</td><td data-sort="0.5970416227777926">0.597</td></tr><tr><td data-sort="3">3</td><td data-sort="EGFR">EGFR</td><td data-sort="1">1</td><td data-sort="0.42228658856357104">0.4223</td><td data-sort="0.010416666666666666">0.01042</td><td data-sort="0.5000004342923104">0.5</td><td data-sort=""></td><td data-sort="1.0">1</td><td data-sort="0.5970416227777926">0.597</td></tr><tr><td data-sort="4">4</td><td data-sort="ALK">ALK</td><td data-sort="5">5</td><td data-sort="0.2504115885635711">0.2504</td><td data-sort="0.052083333333333336">0.05208</td><td data-sort="0.5000004342923104">0.5</td><td data-sort=""></td><td data-sort="0.0">0</td><td data-sort="0.5970416227777926">0.597</td></tr><tr><td data-sort="5">5</td><td data-sort="MET">MET</td><td data-sort="2">2</td><td data-sort="0.23869283856357107">0.2387</td><td data-sort="0.020833333333333332">0.02083</td><td data-sort="0.5000004342923104">0.5</td><td data-sort=""></td><td data-sort="0.0">0</td><td data-sort="0.5970416227777926">0.597</td></tr></tbody></table></div><h2>Fusion-transcript schematic</h2>
+<div class="controls">
+  <div class="control-group">
+    <label class="title" for="tumor-type-filter">Tumor type</label>
+    <select id="tumor-type-filter"><option value="">All tumor types</option></select>
+  </div>
+  <div class="control-group">
+    <span class="title">Domain status</span>
+    <span id="status-filter"></span>
+  </div>
+  <span id="events-summary"></span>
+</div>
+<div class="svg-frame" id="fusion-schematic-svg"><svg xmlns="http://www.w3.org/2000/svg" width="1000" height="510" viewBox="0 0 1000 510">
+<rect width="1000" height="510" fill="white"/>
+<text x="60" y="24" font-family="sans-serif" font-size="15">KIF5B fusion-transcript schematic</text>
+<text x="60" y="40" font-family="sans-serif" font-size="10" fill="#555555">Fusion order varies by row; follow each row's 5' and 3' labels (KIF5B portion is domain-colored, exon ticks). Partner-gene blocks share one color; row labels identify each partner.</text>
+<rect x="394.4" y="56.0" width="225.6" height="22" fill="#8064a2"><title>Partner gene RET; KIF5B–RET fusion, breakpoint KIF5B aa 575; samples P-0000208-T02-IM5, P-0008289-T01-IM5, P-0002694-T02-IM5, P-0002873-T01-IM3, P-0009514-T01-IM5 (+62 more)</title></rect>
+<rect x="60.0" y="56.0" width="334.4" height="22" fill="#e2e2e2"><title>KIF5B backbone (0-575 aa, no domain); domain status retained; KIF5B–RET fusion, breakpoint KIF5B aa 575; samples P-0000208-T02-IM5, P-0008289-T01-IM5, P-0002694-T02-IM5, P-0002873-T01-IM3, P-0009514-T01-IM5 (+62 more)</title></rect>
+<rect x="68.1" y="56.0" width="180.9" height="22" fill="#2878b5"><title>Kinesin motor domain retained (14-325 aa); KIF5B–RET fusion, breakpoint KIF5B aa 575; samples P-0000208-T02-IM5, P-0008289-T01-IM5, P-0002694-T02-IM5, P-0002873-T01-IM3, P-0009514-T01-IM5 (+62 more)</title></rect>
+<text x="158.6" y="70.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Kinesin motor domain</text>
+<line x1="60.6" y1="56.0" x2="60.6" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="85.0" y1="56.0" x2="85.0" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="101.9" y1="56.0" x2="101.9" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="116.4" y1="56.0" x2="116.4" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="136.8" y1="56.0" x2="136.8" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.1" y1="56.0" x2="146.1" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="157.1" y1="56.0" x2="157.1" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="174.0" y1="56.0" x2="174.0" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="198.4" y1="56.0" x2="198.4" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="218.8" y1="56.0" x2="218.8" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="246.7" y1="56.0" x2="246.7" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="275.7" y1="56.0" x2="275.7" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="313.5" y1="56.0" x2="313.5" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="326.9" y1="56.0" x2="326.9" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="367.0" y1="56.0" x2="367.0" y2="78.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="394.4" y1="55.0" x2="394.4" y2="79.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KIF5B–RET fusion, breakpoint KIF5B aa 575; samples P-0000208-T02-IM5, P-0008289-T01-IM5, P-0002694-T02-IM5, P-0002873-T01-IM3, P-0009514-T01-IM5 (+62 more)</title></line>
+<text x="64.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="70.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="70.5" font-family="sans-serif" font-size="9.5">RET (x67) – Kinesin motor domain retained – Non-Small Cell Lung Cancer</text>
+<rect x="431.0" y="82.0" width="189.0" height="22" fill="#8064a2"><title>Partner gene RET; KIF5B–RET fusion, breakpoint KIF5B aa 638; samples P-0020273-T02-IM6, P-0032407-T01-IM6, P-0039474-T01-IM6, P-0039474-T02-IM6, P-0048968-T01-IM6 (+2 more)</title></rect>
+<rect x="60.0" y="82.0" width="371.0" height="22" fill="#e2e2e2"><title>KIF5B backbone (0-638 aa, no domain); domain status retained; KIF5B–RET fusion, breakpoint KIF5B aa 638; samples P-0020273-T02-IM6, P-0032407-T01-IM6, P-0039474-T01-IM6, P-0039474-T02-IM6, P-0048968-T01-IM6 (+2 more)</title></rect>
+<rect x="68.1" y="82.0" width="180.9" height="22" fill="#2878b5"><title>Kinesin motor domain retained (14-325 aa); KIF5B–RET fusion, breakpoint KIF5B aa 638; samples P-0020273-T02-IM6, P-0032407-T01-IM6, P-0039474-T01-IM6, P-0039474-T02-IM6, P-0048968-T01-IM6 (+2 more)</title></rect>
+<text x="158.6" y="96.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Kinesin motor domain</text>
+<line x1="60.6" y1="82.0" x2="60.6" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="85.0" y1="82.0" x2="85.0" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="101.9" y1="82.0" x2="101.9" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="116.4" y1="82.0" x2="116.4" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="136.8" y1="82.0" x2="136.8" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.1" y1="82.0" x2="146.1" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="157.1" y1="82.0" x2="157.1" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="174.0" y1="82.0" x2="174.0" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="198.4" y1="82.0" x2="198.4" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="218.8" y1="82.0" x2="218.8" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="246.7" y1="82.0" x2="246.7" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="275.7" y1="82.0" x2="275.7" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="313.5" y1="82.0" x2="313.5" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="326.9" y1="82.0" x2="326.9" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="367.0" y1="82.0" x2="367.0" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="395.0" y1="82.0" x2="395.0" y2="104.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.0" y1="81.0" x2="431.0" y2="105.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KIF5B–RET fusion, breakpoint KIF5B aa 638; samples P-0020273-T02-IM6, P-0032407-T01-IM6, P-0039474-T01-IM6, P-0039474-T02-IM6, P-0048968-T01-IM6 (+2 more)</title></line>
+<text x="64.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="96.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="96.5" font-family="sans-serif" font-size="9.5">RET (x7) – Kinesin motor domain retained – Non-Small Cell Lung Cancer, Small Cell Lung Cancer</text>
+<rect x="553.1" y="108.0" width="66.9" height="22" fill="#8064a2"><title>Partner gene RET; KIF5B–RET fusion, breakpoint KIF5B aa 848; samples P-0017214-T01-IM6, P-0017214-T02-IM6, P-0026693-T01-IM6, P-0043007-T01-IM6, P-0043007-T02-IM6</title></rect>
+<rect x="60.0" y="108.0" width="493.1" height="22" fill="#e2e2e2"><title>KIF5B backbone (0-848 aa, no domain); domain status retained; KIF5B–RET fusion, breakpoint KIF5B aa 848; samples P-0017214-T01-IM6, P-0017214-T02-IM6, P-0026693-T01-IM6, P-0043007-T01-IM6, P-0043007-T02-IM6</title></rect>
+<rect x="68.1" y="108.0" width="180.9" height="22" fill="#2878b5"><title>Kinesin motor domain retained (14-325 aa); KIF5B–RET fusion, breakpoint KIF5B aa 848; samples P-0017214-T01-IM6, P-0017214-T02-IM6, P-0026693-T01-IM6, P-0043007-T01-IM6, P-0043007-T02-IM6</title></rect>
+<text x="158.6" y="122.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Kinesin motor domain</text>
+<line x1="60.6" y1="108.0" x2="60.6" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="85.0" y1="108.0" x2="85.0" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="101.9" y1="108.0" x2="101.9" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="116.4" y1="108.0" x2="116.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="136.8" y1="108.0" x2="136.8" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.1" y1="108.0" x2="146.1" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="157.1" y1="108.0" x2="157.1" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="174.0" y1="108.0" x2="174.0" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="198.4" y1="108.0" x2="198.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="218.8" y1="108.0" x2="218.8" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="246.7" y1="108.0" x2="246.7" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="275.7" y1="108.0" x2="275.7" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="313.5" y1="108.0" x2="313.5" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="326.9" y1="108.0" x2="326.9" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="367.0" y1="108.0" x2="367.0" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="395.0" y1="108.0" x2="395.0" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.6" y1="108.0" x2="431.6" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="454.3" y1="108.0" x2="454.3" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="466.5" y1="108.0" x2="466.5" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="487.4" y1="108.0" x2="487.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="507.2" y1="108.0" x2="507.2" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="519.4" y1="108.0" x2="519.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="533.4" y1="108.0" x2="533.4" y2="130.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="553.1" y1="107.0" x2="553.1" y2="131.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KIF5B–RET fusion, breakpoint KIF5B aa 848; samples P-0017214-T01-IM6, P-0017214-T02-IM6, P-0026693-T01-IM6, P-0043007-T01-IM6, P-0043007-T02-IM6</title></line>
+<text x="64.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="122.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="122.5" font-family="sans-serif" font-size="9.5">RET (x5) – Kinesin motor domain retained – Non-Small Cell Lung Cancer</text>
+<rect x="595.6" y="134.0" width="24.4" height="22" fill="#8064a2"><title>Partner gene ALK; KIF5B–ALK fusion, breakpoint KIF5B aa 921; samples P-0062804-T03-IM7, P-0005711-T02-IM6, P-0008764-T01-IM5, P-0008764-T02-IM6, P-0017924-T01-IM6</title></rect>
+<rect x="60.0" y="134.0" width="535.6" height="22" fill="#e2e2e2"><title>KIF5B backbone (0-921 aa, no domain); domain status retained; KIF5B–ALK fusion, breakpoint KIF5B aa 921; samples P-0062804-T03-IM7, P-0005711-T02-IM6, P-0008764-T01-IM5, P-0008764-T02-IM6, P-0017924-T01-IM6</title></rect>
+<rect x="68.1" y="134.0" width="180.9" height="22" fill="#2878b5"><title>Kinesin motor domain retained (14-325 aa); KIF5B–ALK fusion, breakpoint KIF5B aa 921; samples P-0062804-T03-IM7, P-0005711-T02-IM6, P-0008764-T01-IM5, P-0008764-T02-IM6, P-0017924-T01-IM6</title></rect>
+<text x="158.6" y="148.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Kinesin motor domain</text>
+<line x1="60.6" y1="134.0" x2="60.6" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="85.0" y1="134.0" x2="85.0" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="101.9" y1="134.0" x2="101.9" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="116.4" y1="134.0" x2="116.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="136.8" y1="134.0" x2="136.8" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.1" y1="134.0" x2="146.1" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="157.1" y1="134.0" x2="157.1" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="174.0" y1="134.0" x2="174.0" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="198.4" y1="134.0" x2="198.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="218.8" y1="134.0" x2="218.8" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="246.7" y1="134.0" x2="246.7" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="275.7" y1="134.0" x2="275.7" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="313.5" y1="134.0" x2="313.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="326.9" y1="134.0" x2="326.9" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="367.0" y1="134.0" x2="367.0" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="395.0" y1="134.0" x2="395.0" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.6" y1="134.0" x2="431.6" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="454.3" y1="134.0" x2="454.3" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="466.5" y1="134.0" x2="466.5" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="487.4" y1="134.0" x2="487.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="507.2" y1="134.0" x2="507.2" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="519.4" y1="134.0" x2="519.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="533.4" y1="134.0" x2="533.4" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="553.7" y1="134.0" x2="553.7" y2="156.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="595.6" y1="133.0" x2="595.6" y2="157.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KIF5B–ALK fusion, breakpoint KIF5B aa 921; samples P-0062804-T03-IM7, P-0005711-T02-IM6, P-0008764-T01-IM5, P-0008764-T02-IM6, P-0017924-T01-IM6</title></line>
+<text x="64.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="148.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="148.5" font-family="sans-serif" font-size="9.5">ALK (x5) – Kinesin motor domain retained – Non-Small Cell Lung Cancer, Soft Tissue Sarcoma</text>
+<rect x="595.6" y="160.0" width="24.4" height="22" fill="#8064a2"><title>Partner gene MET; KIF5B–MET fusion, breakpoint KIF5B aa 921; samples P-0033090-T01-IM6, P-0043854-T01-IM6</title></rect>
+<rect x="60.0" y="160.0" width="535.6" height="22" fill="#e2e2e2"><title>KIF5B backbone (0-921 aa, no domain); domain status retained; KIF5B–MET fusion, breakpoint KIF5B aa 921; samples P-0033090-T01-IM6, P-0043854-T01-IM6</title></rect>
+<rect x="68.1" y="160.0" width="180.9" height="22" fill="#2878b5"><title>Kinesin motor domain retained (14-325 aa); KIF5B–MET fusion, breakpoint KIF5B aa 921; samples P-0033090-T01-IM6, P-0043854-T01-IM6</title></rect>
+<text x="158.6" y="174.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Kinesin motor domain</text>
+<line x1="60.6" y1="160.0" x2="60.6" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="85.0" y1="160.0" x2="85.0" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="101.9" y1="160.0" x2="101.9" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="116.4" y1="160.0" x2="116.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="136.8" y1="160.0" x2="136.8" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.1" y1="160.0" x2="146.1" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="157.1" y1="160.0" x2="157.1" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="174.0" y1="160.0" x2="174.0" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="198.4" y1="160.0" x2="198.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="218.8" y1="160.0" x2="218.8" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="246.7" y1="160.0" x2="246.7" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="275.7" y1="160.0" x2="275.7" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="313.5" y1="160.0" x2="313.5" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="326.9" y1="160.0" x2="326.9" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="367.0" y1="160.0" x2="367.0" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="395.0" y1="160.0" x2="395.0" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.6" y1="160.0" x2="431.6" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="454.3" y1="160.0" x2="454.3" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="466.5" y1="160.0" x2="466.5" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="487.4" y1="160.0" x2="487.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="507.2" y1="160.0" x2="507.2" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="519.4" y1="160.0" x2="519.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="533.4" y1="160.0" x2="533.4" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="553.7" y1="160.0" x2="553.7" y2="182.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="595.6" y1="159.0" x2="595.6" y2="183.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KIF5B–MET fusion, breakpoint KIF5B aa 921; samples P-0033090-T01-IM6, P-0043854-T01-IM6</title></line>
+<text x="64.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="174.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="174.5" font-family="sans-serif" font-size="9.5">MET (x2) – Kinesin motor domain retained – Non-Small Cell Lung Cancer</text>
+<rect x="595.6" y="186.0" width="24.4" height="22" fill="#8064a2"><title>Partner gene RET; KIF5B–RET fusion, breakpoint KIF5B aa 921; samples P-0024225-T01-IM6, P-0027991-T01-IM6</title></rect>
+<rect x="60.0" y="186.0" width="535.6" height="22" fill="#e2e2e2"><title>KIF5B backbone (0-921 aa, no domain); domain status retained; KIF5B–RET fusion, breakpoint KIF5B aa 921; samples P-0024225-T01-IM6, P-0027991-T01-IM6</title></rect>
+<rect x="68.1" y="186.0" width="180.9" height="22" fill="#2878b5"><title>Kinesin motor domain retained (14-325 aa); KIF5B–RET fusion, breakpoint KIF5B aa 921; samples P-0024225-T01-IM6, P-0027991-T01-IM6</title></rect>
+<text x="158.6" y="200.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Kinesin motor domain</text>
+<line x1="60.6" y1="186.0" x2="60.6" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="85.0" y1="186.0" x2="85.0" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="101.9" y1="186.0" x2="101.9" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="116.4" y1="186.0" x2="116.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="136.8" y1="186.0" x2="136.8" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.1" y1="186.0" x2="146.1" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="157.1" y1="186.0" x2="157.1" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="174.0" y1="186.0" x2="174.0" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="198.4" y1="186.0" x2="198.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="218.8" y1="186.0" x2="218.8" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="246.7" y1="186.0" x2="246.7" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="275.7" y1="186.0" x2="275.7" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="313.5" y1="186.0" x2="313.5" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="326.9" y1="186.0" x2="326.9" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="367.0" y1="186.0" x2="367.0" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="395.0" y1="186.0" x2="395.0" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.6" y1="186.0" x2="431.6" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="454.3" y1="186.0" x2="454.3" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="466.5" y1="186.0" x2="466.5" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="487.4" y1="186.0" x2="487.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="507.2" y1="186.0" x2="507.2" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="519.4" y1="186.0" x2="519.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="533.4" y1="186.0" x2="533.4" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="553.7" y1="186.0" x2="553.7" y2="208.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="595.6" y1="185.0" x2="595.6" y2="209.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KIF5B–RET fusion, breakpoint KIF5B aa 921; samples P-0024225-T01-IM6, P-0027991-T01-IM6</title></line>
+<text x="64.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="200.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="200.5" font-family="sans-serif" font-size="9.5">RET (x2) – Kinesin motor domain retained – Non-Small Cell Lung Cancer</text>
+<rect x="394.4" y="212.0" width="225.6" height="22" fill="#8064a2"><title>Partner gene ARID5B; KIF5B–ARID5B fusion, breakpoint KIF5B aa 575; sample P-0052330-T01-IM6</title></rect>
+<rect x="60.0" y="212.0" width="334.4" height="22" fill="#e2e2e2"><title>KIF5B backbone (0-575 aa, no domain); domain status retained; KIF5B–ARID5B fusion, breakpoint KIF5B aa 575; sample P-0052330-T01-IM6</title></rect>
+<rect x="68.1" y="212.0" width="180.9" height="22" fill="#2878b5"><title>Kinesin motor domain retained (14-325 aa); KIF5B–ARID5B fusion, breakpoint KIF5B aa 575; sample P-0052330-T01-IM6</title></rect>
+<text x="158.6" y="226.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Kinesin motor domain</text>
+<line x1="60.6" y1="212.0" x2="60.6" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="85.0" y1="212.0" x2="85.0" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="101.9" y1="212.0" x2="101.9" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="116.4" y1="212.0" x2="116.4" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="136.8" y1="212.0" x2="136.8" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.1" y1="212.0" x2="146.1" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="157.1" y1="212.0" x2="157.1" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="174.0" y1="212.0" x2="174.0" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="198.4" y1="212.0" x2="198.4" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="218.8" y1="212.0" x2="218.8" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="246.7" y1="212.0" x2="246.7" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="275.7" y1="212.0" x2="275.7" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="313.5" y1="212.0" x2="313.5" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="326.9" y1="212.0" x2="326.9" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="367.0" y1="212.0" x2="367.0" y2="234.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="394.4" y1="211.0" x2="394.4" y2="235.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KIF5B–ARID5B fusion, breakpoint KIF5B aa 575; sample P-0052330-T01-IM6</title></line>
+<text x="64.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="226.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="226.5" font-family="sans-serif" font-size="9.5">ARID5B – Kinesin motor domain retained – Ampullary Cancer</text>
+<rect x="394.4" y="238.0" width="225.6" height="22" fill="#8064a2"><title>Partner gene EGFR; KIF5B–EGFR fusion, breakpoint KIF5B aa 575; sample P-0021038-T01-IM6</title></rect>
+<rect x="60.0" y="238.0" width="334.4" height="22" fill="#e2e2e2"><title>KIF5B backbone (0-575 aa, no domain); domain status retained; KIF5B–EGFR fusion, breakpoint KIF5B aa 575; sample P-0021038-T01-IM6</title></rect>
+<rect x="68.1" y="238.0" width="180.9" height="22" fill="#2878b5"><title>Kinesin motor domain retained (14-325 aa); KIF5B–EGFR fusion, breakpoint KIF5B aa 575; sample P-0021038-T01-IM6</title></rect>
+<text x="158.6" y="252.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Kinesin motor domain</text>
+<line x1="60.6" y1="238.0" x2="60.6" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="85.0" y1="238.0" x2="85.0" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="101.9" y1="238.0" x2="101.9" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="116.4" y1="238.0" x2="116.4" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="136.8" y1="238.0" x2="136.8" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.1" y1="238.0" x2="146.1" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="157.1" y1="238.0" x2="157.1" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="174.0" y1="238.0" x2="174.0" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="198.4" y1="238.0" x2="198.4" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="218.8" y1="238.0" x2="218.8" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="246.7" y1="238.0" x2="246.7" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="275.7" y1="238.0" x2="275.7" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="313.5" y1="238.0" x2="313.5" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="326.9" y1="238.0" x2="326.9" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="367.0" y1="238.0" x2="367.0" y2="260.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="394.4" y1="237.0" x2="394.4" y2="261.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KIF5B–EGFR fusion, breakpoint KIF5B aa 575; sample P-0021038-T01-IM6</title></line>
+<text x="64.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="252.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="252.5" font-family="sans-serif" font-size="9.5">EGFR – Kinesin motor domain retained – Non-Small Cell Lung Cancer</text>
+<rect x="60.0" y="264.0" width="335.0" height="22" fill="#8064a2"><title>Partner gene RET; KIF5B–RET fusion, breakpoint KIF5B aa 576; sample P-0003125-T01-IM5</title></rect>
+<rect x="395.0" y="264.0" width="225.0" height="22" fill="#e2e2e2"><title>KIF5B backbone (576-963 aa, no domain); domain status lost; KIF5B–RET fusion, breakpoint KIF5B aa 576; sample P-0003125-T01-IM5</title></rect>
+<line x1="431.6" y1="264.0" x2="431.6" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="454.3" y1="264.0" x2="454.3" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="466.5" y1="264.0" x2="466.5" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="487.4" y1="264.0" x2="487.4" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="507.2" y1="264.0" x2="507.2" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="519.4" y1="264.0" x2="519.4" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="533.4" y1="264.0" x2="533.4" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="553.7" y1="264.0" x2="553.7" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="595.6" y1="264.0" x2="595.6" y2="286.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="395.0" y1="263.0" x2="395.0" y2="287.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; KIF5B–RET fusion, breakpoint KIF5B aa 576; sample P-0003125-T01-IM5</title></line>
+<text x="64.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="278.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="278.5" font-family="sans-serif" font-size="9.5">RET – Kinesin motor domain lost – Non-Small Cell Lung Cancer</text>
+<rect x="405.4" y="290.0" width="214.6" height="22" fill="#8064a2"><title>Partner gene RET; KIF5B–RET fusion, breakpoint KIF5B aa 594; sample P-0013825-T01-IM5</title></rect>
+<rect x="60.0" y="290.0" width="345.4" height="22" fill="#e2e2e2"><title>KIF5B backbone (0-594 aa, no domain); domain status retained; KIF5B–RET fusion, breakpoint KIF5B aa 594; sample P-0013825-T01-IM5</title></rect>
+<rect x="68.1" y="290.0" width="180.9" height="22" fill="#2878b5"><title>Kinesin motor domain retained (14-325 aa); KIF5B–RET fusion, breakpoint KIF5B aa 594; sample P-0013825-T01-IM5</title></rect>
+<text x="158.6" y="304.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Kinesin motor domain</text>
+<line x1="60.6" y1="290.0" x2="60.6" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="85.0" y1="290.0" x2="85.0" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="101.9" y1="290.0" x2="101.9" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="116.4" y1="290.0" x2="116.4" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="136.8" y1="290.0" x2="136.8" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.1" y1="290.0" x2="146.1" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="157.1" y1="290.0" x2="157.1" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="174.0" y1="290.0" x2="174.0" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="198.4" y1="290.0" x2="198.4" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="218.8" y1="290.0" x2="218.8" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="246.7" y1="290.0" x2="246.7" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="275.7" y1="290.0" x2="275.7" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="313.5" y1="290.0" x2="313.5" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="326.9" y1="290.0" x2="326.9" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="367.0" y1="290.0" x2="367.0" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="395.0" y1="290.0" x2="395.0" y2="312.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="405.4" y1="289.0" x2="405.4" y2="313.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KIF5B–RET fusion, breakpoint KIF5B aa 594; sample P-0013825-T01-IM5</title></line>
+<text x="64.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="304.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="304.5" font-family="sans-serif" font-size="9.5">RET – Kinesin motor domain retained – Non-Small Cell Lung Cancer</text>
+<rect x="60.0" y="316.0" width="371.6" height="22" fill="#8064a2"><title>Partner gene RET; KIF5B–RET fusion, breakpoint KIF5B aa 639; sample P-0018069-T01-IM6</title></rect>
+<rect x="431.6" y="316.0" width="188.4" height="22" fill="#e2e2e2"><title>KIF5B backbone (639-963 aa, no domain); domain status lost; KIF5B–RET fusion, breakpoint KIF5B aa 639; sample P-0018069-T01-IM6</title></rect>
+<line x1="454.3" y1="316.0" x2="454.3" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="466.5" y1="316.0" x2="466.5" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="487.4" y1="316.0" x2="487.4" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="507.2" y1="316.0" x2="507.2" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="519.4" y1="316.0" x2="519.4" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="533.4" y1="316.0" x2="533.4" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="553.7" y1="316.0" x2="553.7" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="595.6" y1="316.0" x2="595.6" y2="338.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.6" y1="315.0" x2="431.6" y2="339.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; KIF5B–RET fusion, breakpoint KIF5B aa 639; sample P-0018069-T01-IM6</title></line>
+<text x="64.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="330.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="330.5" font-family="sans-serif" font-size="9.5">RET – Kinesin motor domain lost – Non-Small Cell Lung Cancer</text>
+<rect x="465.9" y="342.0" width="154.1" height="22" fill="#8064a2"><title>Partner gene RET; KIF5B–RET fusion, breakpoint KIF5B aa 698; sample P-0008101-T01-IM5</title></rect>
+<rect x="60.0" y="342.0" width="405.9" height="22" fill="#e2e2e2"><title>KIF5B backbone (0-698 aa, no domain); domain status retained; KIF5B–RET fusion, breakpoint KIF5B aa 698; sample P-0008101-T01-IM5</title></rect>
+<rect x="68.1" y="342.0" width="180.9" height="22" fill="#2878b5"><title>Kinesin motor domain retained (14-325 aa); KIF5B–RET fusion, breakpoint KIF5B aa 698; sample P-0008101-T01-IM5</title></rect>
+<text x="158.6" y="356.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Kinesin motor domain</text>
+<line x1="60.6" y1="342.0" x2="60.6" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="85.0" y1="342.0" x2="85.0" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="101.9" y1="342.0" x2="101.9" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="116.4" y1="342.0" x2="116.4" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="136.8" y1="342.0" x2="136.8" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.1" y1="342.0" x2="146.1" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="157.1" y1="342.0" x2="157.1" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="174.0" y1="342.0" x2="174.0" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="198.4" y1="342.0" x2="198.4" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="218.8" y1="342.0" x2="218.8" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="246.7" y1="342.0" x2="246.7" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="275.7" y1="342.0" x2="275.7" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="313.5" y1="342.0" x2="313.5" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="326.9" y1="342.0" x2="326.9" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="367.0" y1="342.0" x2="367.0" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="395.0" y1="342.0" x2="395.0" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.6" y1="342.0" x2="431.6" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="454.3" y1="342.0" x2="454.3" y2="364.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="465.9" y1="341.0" x2="465.9" y2="365.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KIF5B–RET fusion, breakpoint KIF5B aa 698; sample P-0008101-T01-IM5</title></line>
+<text x="64.0" y="356.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="356.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="356.5" font-family="sans-serif" font-size="9.5">RET – Kinesin motor domain retained – Non-Small Cell Lung Cancer</text>
+<rect x="487.4" y="368.0" width="132.6" height="22" fill="#8064a2"><title>Partner gene RET; KIF5B–RET fusion, breakpoint KIF5B aa 735; sample P-0064951-T01-IM7</title></rect>
+<rect x="60.0" y="368.0" width="427.4" height="22" fill="#e2e2e2"><title>KIF5B backbone (0-735 aa, no domain); domain status retained; KIF5B–RET fusion, breakpoint KIF5B aa 735; sample P-0064951-T01-IM7</title></rect>
+<rect x="68.1" y="368.0" width="180.9" height="22" fill="#2878b5"><title>Kinesin motor domain retained (14-325 aa); KIF5B–RET fusion, breakpoint KIF5B aa 735; sample P-0064951-T01-IM7</title></rect>
+<text x="158.6" y="382.0" font-family="sans-serif" font-size="7" text-anchor="middle" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke">Kinesin motor domain</text>
+<line x1="60.6" y1="368.0" x2="60.6" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="85.0" y1="368.0" x2="85.0" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="101.9" y1="368.0" x2="101.9" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="116.4" y1="368.0" x2="116.4" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="136.8" y1="368.0" x2="136.8" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="146.1" y1="368.0" x2="146.1" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="157.1" y1="368.0" x2="157.1" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="174.0" y1="368.0" x2="174.0" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="198.4" y1="368.0" x2="198.4" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="218.8" y1="368.0" x2="218.8" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="246.7" y1="368.0" x2="246.7" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="275.7" y1="368.0" x2="275.7" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="313.5" y1="368.0" x2="313.5" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="326.9" y1="368.0" x2="326.9" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="367.0" y1="368.0" x2="367.0" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="395.0" y1="368.0" x2="395.0" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="431.6" y1="368.0" x2="431.6" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="454.3" y1="368.0" x2="454.3" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="466.5" y1="368.0" x2="466.5" y2="390.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="487.4" y1="367.0" x2="487.4" y2="391.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status retained; KIF5B–RET fusion, breakpoint KIF5B aa 735; sample P-0064951-T01-IM7</title></line>
+<text x="64.0" y="382.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="target">5'</text>
+<text x="616.0" y="382.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="partner">3'</text>
+<text x="660" y="382.5" font-family="sans-serif" font-size="9.5">RET – Kinesin motor domain retained – Cancer of Unknown Primary</text>
+<rect x="60.0" y="394.0" width="493.7" height="22" fill="#8064a2"><title>Partner gene RET; KIF5B–RET fusion, breakpoint KIF5B aa 849; sample P-0043704-T01-IM6</title></rect>
+<rect x="553.7" y="394.0" width="66.3" height="22" fill="#e2e2e2"><title>KIF5B backbone (849-963 aa, no domain); domain status lost; KIF5B–RET fusion, breakpoint KIF5B aa 849; sample P-0043704-T01-IM6</title></rect>
+<line x1="595.6" y1="394.0" x2="595.6" y2="416.0" stroke="#555555" stroke-width="0.6" opacity="0.6"/>
+<line x1="553.7" y1="393.0" x2="553.7" y2="417.0" stroke="#d62728" stroke-width="1.6"><title>Breakpoint; domain status lost; KIF5B–RET fusion, breakpoint KIF5B aa 849; sample P-0043704-T01-IM6</title></line>
+<text x="64.0" y="408.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="start" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="5-prime" data-block="partner">5'</text>
+<text x="616.0" y="408.0" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="end" fill="#111111" stroke="white" stroke-width="2" paint-order="stroke" data-fusion-end="3-prime" data-block="target">3'</text>
+<text x="660" y="408.5" font-family="sans-serif" font-size="9.5">RET – Kinesin motor domain lost – Non-Small Cell Lung Cancer</text>
+<line x1="60.0" y1="424.0" x2="620.0" y2="424.0" stroke="#444444" stroke-width="1"/>
+<text x="60.0" y="419.0" font-family="sans-serif" font-size="8" data-axis-end="5-prime" text-anchor="start">5' / N-terminus</text>
+<text x="620.0" y="419.0" font-family="sans-serif" font-size="8" data-axis-end="3-prime" text-anchor="end">3' / C-terminus</text>
+<text x="60.0" y="438.0" font-family="sans-serif" font-size="9">1</text>
+<text x="620.0" y="438.0" font-family="sans-serif" font-size="9" text-anchor="end">963 aa</text>
+<line x1="60.6" y1="442.0" x2="60.6" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="60.6" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 60.6 447.0)">E1</text>
+<line x1="85.0" y1="442.0" x2="85.0" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="85.0" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 85.0 447.0)">E2</text>
+<line x1="101.9" y1="442.0" x2="101.9" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="101.9" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 101.9 447.0)">E3</text>
+<line x1="116.4" y1="442.0" x2="116.4" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="116.4" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 116.4 447.0)">E4</text>
+<line x1="136.8" y1="442.0" x2="136.8" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="136.8" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 136.8 447.0)">E5</text>
+<line x1="146.1" y1="442.0" x2="146.1" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="146.1" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 146.1 447.0)">E6</text>
+<line x1="157.1" y1="442.0" x2="157.1" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="157.1" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 157.1 447.0)">E7</text>
+<line x1="174.0" y1="442.0" x2="174.0" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="174.0" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 174.0 447.0)">E8</text>
+<line x1="198.4" y1="442.0" x2="198.4" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="198.4" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 198.4 447.0)">E9</text>
+<line x1="218.8" y1="442.0" x2="218.8" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="218.8" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 218.8 447.0)">E10</text>
+<line x1="246.7" y1="442.0" x2="246.7" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="246.7" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 246.7 447.0)">E11</text>
+<line x1="275.7" y1="442.0" x2="275.7" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="275.7" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 275.7 447.0)">E12</text>
+<line x1="313.5" y1="442.0" x2="313.5" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="313.5" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 313.5 447.0)">E13</text>
+<line x1="326.9" y1="442.0" x2="326.9" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="326.9" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 326.9 447.0)">E14</text>
+<line x1="367.0" y1="442.0" x2="367.0" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="367.0" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 367.0 447.0)">E15</text>
+<line x1="395.0" y1="442.0" x2="395.0" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="395.0" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 395.0 447.0)">E16</text>
+<line x1="431.6" y1="442.0" x2="431.6" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="431.6" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 431.6 447.0)">E17</text>
+<line x1="454.3" y1="442.0" x2="454.3" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="454.3" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 454.3 447.0)">E18</text>
+<line x1="466.5" y1="442.0" x2="466.5" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="466.5" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 466.5 447.0)">E19</text>
+<line x1="487.4" y1="442.0" x2="487.4" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="487.4" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 487.4 447.0)">E20</text>
+<line x1="507.2" y1="442.0" x2="507.2" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="507.2" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 507.2 447.0)">E21</text>
+<line x1="519.4" y1="442.0" x2="519.4" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="519.4" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 519.4 447.0)">E22</text>
+<line x1="533.4" y1="442.0" x2="533.4" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="533.4" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 533.4 447.0)">E23</text>
+<line x1="553.7" y1="442.0" x2="553.7" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="553.7" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 553.7 447.0)">E24</text>
+<line x1="595.6" y1="442.0" x2="595.6" y2="446.0" stroke="#6b6b6b" stroke-width="0.7"/>
+<text x="595.6" y="447.0" font-family="sans-serif" font-size="5.5" fill="#666666" transform="rotate(55 595.6 447.0)">E25</text>
+<rect x="60.0" y="455.0" width="12" height="10" fill="#2878b5"/>
+<text x="76.0" y="464.0" font-family="sans-serif" font-size="9">domain retained</text>
+<rect x="227.0" y="455.0" width="12" height="10" fill="#f2a93b"/>
+<text x="243.0" y="464.0" font-family="sans-serif" font-size="9">domain truncated</text>
+<rect x="403.0" y="455.0" width="12" height="10" fill="#e2e2e2"/>
+<text x="419.0" y="464.0" font-family="sans-serif" font-size="9">target backbone (no domain)</text>
+<rect x="678.0" y="455.0" width="12" height="10" fill="#d62728"/>
+<text x="694.0" y="464.0" font-family="sans-serif" font-size="9">breakpoint</text>
+<text x="60" y="500.0" font-family="sans-serif" font-size="9" fill="#555555">Partner-block colors are decorative; row labels identify partners.</text>
+</svg>
+</div><h2>Genomic-coordinate clustering (build GRCh37)</h2><p class="note">The 56 events sharing protein position 575 aa use 55 distinct genomic positions spanning 4992 bp -- the protein-position recurrence is broader than any single genomic hotspot, consistent with independent intronic breakpoints mapped (or clamped) onto the same protein/exon boundary rather than one shared DNA lesion.</p><div class="two-col"><p><strong>Protein position &harr; genomic breakpoint spread</strong> (linked view: each row is a protein junction position also shown in the fusion schematic/events table above).</p><div class="data-table-frame"><table class="data-table"><thead><tr><th>Protein position (aa)</th><th>Events</th><th>Distinct genomic positions</th><th>Genomic span (bp)</th><th>Spans &gt;1 chromosome</th></tr></thead><tbody><tr><td>575</td><td>56</td><td>55</td><td>4992</td><td>No</td></tr><tr><td>921</td><td>8</td><td>8</td><td>985</td><td>No</td></tr><tr><td>638</td><td>6</td><td>6</td><td>440</td><td>No</td></tr><tr><td>848</td><td>3</td><td>3</td><td>510</td><td>No</td></tr></tbody></table></div><p><strong>Top genomic bins</strong> (fixed 1000 bp width):</p><div class="data-table-frame"><table class="data-table"><thead><tr><th>Chromosome</th><th>Bin start</th><th>Bin end</th><th>Events</th></tr></thead><tbody><tr><td>10</td><td>32315000</td><td>32316000</td><td>12</td></tr><tr><td>10</td><td>32312000</td><td>32313000</td><td>11</td></tr><tr><td>10</td><td>32314000</td><td>32315000</td><td>11</td></tr><tr><td>10</td><td>32316000</td><td>32317000</td><td>11</td></tr><tr><td>10</td><td>32313000</td><td>32314000</td><td>10</td></tr><tr><td>10</td><td>32311000</td><td>32312000</td><td>8</td></tr><tr><td>10</td><td>32304000</td><td>32305000</td><td>4</td></tr><tr><td>10</td><td>32305000</td><td>32306000</td><td>4</td></tr><tr><td>10</td><td>32306000</td><td>32307000</td><td>4</td></tr><tr><td>10</td><td>32317000</td><td>32318000</td><td>2</td></tr></tbody></table></div></div><h2>Events</h2><div class="events-table-frame"><table class="events" id="events-table"><thead><tr><th>Event</th><th>Sample</th><th>Tumor type</th><th>Oncotree</th><th>Partner gene</th><th>Role</th><th>Breakpoint (aa)</th><th>Domain status</th></tr></thead><tbody><tr data-tumor-type="Soft Tissue Sarcoma" data-domain-status="retained" data-event-id="EVT-P-0062804-T03-IM7-1"><td>EVT-P-0062804-T03-IM7-1</td><td>P-0062804-T03-IM7</td><td>Soft Tissue Sarcoma</td><td>IMT</td><td>ALK</td><td>five_prime</td><td>921</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0005711-T02-IM6-2"><td>EVT-P-0005711-T02-IM6-2</td><td>P-0005711-T02-IM6</td><td>Non-Small Cell Lung Cancer</td><td>NSCLCPD</td><td>ALK</td><td>five_prime</td><td>921</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0008764-T01-IM5-3"><td>EVT-P-0008764-T01-IM5-3</td><td>P-0008764-T01-IM5</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>ALK</td><td>five_prime</td><td>921</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0008764-T02-IM6-4"><td>EVT-P-0008764-T02-IM6-4</td><td>P-0008764-T02-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>ALK</td><td>five_prime</td><td>921</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0017924-T01-IM6-5"><td>EVT-P-0017924-T01-IM6-5</td><td>P-0017924-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>ALK</td><td>five_prime</td><td>921</td><td>Retained</td></tr><tr data-tumor-type="Ampullary Cancer" data-domain-status="retained" data-event-id="EVT-P-0052330-T01-IM6-6"><td>EVT-P-0052330-T01-IM6-6</td><td>P-0052330-T01-IM6</td><td>Ampullary Cancer</td><td>AMPCA</td><td>ARID5B</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0021038-T01-IM6-7"><td>EVT-P-0021038-T01-IM6-7</td><td>P-0021038-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>EGFR</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0033090-T01-IM6-8"><td>EVT-P-0033090-T01-IM6-8</td><td>P-0033090-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>MET</td><td>five_prime</td><td>921</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0043854-T01-IM6-9"><td>EVT-P-0043854-T01-IM6-9</td><td>P-0043854-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>MET</td><td>five_prime</td><td>921</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0000208-T02-IM5-10"><td>EVT-P-0000208-T02-IM5-10</td><td>P-0000208-T02-IM5</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0008289-T01-IM5-11"><td>EVT-P-0008289-T01-IM5-11</td><td>P-0008289-T01-IM5</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0002694-T02-IM5-12"><td>EVT-P-0002694-T02-IM5-12</td><td>P-0002694-T02-IM5</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0002873-T01-IM3-13"><td>EVT-P-0002873-T01-IM3-13</td><td>P-0002873-T01-IM3</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0009514-T01-IM5-14"><td>EVT-P-0009514-T01-IM5-14</td><td>P-0009514-T01-IM5</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0011035-T01-IM5-15"><td>EVT-P-0011035-T01-IM5-15</td><td>P-0011035-T01-IM5</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0012648-T01-IM5-16"><td>EVT-P-0012648-T01-IM5-16</td><td>P-0012648-T01-IM5</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0013825-T01-IM5-17"><td>EVT-P-0013825-T01-IM5-17</td><td>P-0013825-T01-IM5</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>594</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0014808-T01-IM6-18"><td>EVT-P-0014808-T01-IM6-18</td><td>P-0014808-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0014808-T02-IM6-19"><td>EVT-P-0014808-T02-IM6-19</td><td>P-0014808-T02-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0014808-T03-IM6-20"><td>EVT-P-0014808-T03-IM6-20</td><td>P-0014808-T03-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0016221-T01-IM6-21"><td>EVT-P-0016221-T01-IM6-21</td><td>P-0016221-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0016221-T02-IM6-22"><td>EVT-P-0016221-T02-IM6-22</td><td>P-0016221-T02-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0017214-T01-IM6-23"><td>EVT-P-0017214-T01-IM6-23</td><td>P-0017214-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>848</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0017214-T02-IM6-24"><td>EVT-P-0017214-T02-IM6-24</td><td>P-0017214-T02-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>848</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0017523-T02-IM6-25"><td>EVT-P-0017523-T02-IM6-25</td><td>P-0017523-T02-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUPC</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="lost" data-event-id="EVT-P-0003125-T01-IM5-26"><td>EVT-P-0003125-T01-IM5-26</td><td>P-0003125-T01-IM5</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>three_prime</td><td>576</td><td>Lost</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="lost" data-event-id="EVT-P-0018069-T01-IM6-27"><td>EVT-P-0018069-T01-IM6-27</td><td>P-0018069-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>three_prime</td><td>639</td><td>Lost</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0019535-T02-IM6-28"><td>EVT-P-0019535-T02-IM6-28</td><td>P-0019535-T02-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUNE</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0020273-T02-IM6-29"><td>EVT-P-0020273-T02-IM6-29</td><td>P-0020273-T02-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>638</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0003125-T01-IM5-30"><td>EVT-P-0003125-T01-IM5-30</td><td>P-0003125-T01-IM5</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0021150-T01-IM6-31"><td>EVT-P-0021150-T01-IM6-31</td><td>P-0021150-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0021578-T01-IM6-32"><td>EVT-P-0021578-T01-IM6-32</td><td>P-0021578-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0021879-T01-IM6-33"><td>EVT-P-0021879-T01-IM6-33</td><td>P-0021879-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0021937-T01-IM6-34"><td>EVT-P-0021937-T01-IM6-34</td><td>P-0021937-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0021937-T03-IM6-35"><td>EVT-P-0021937-T03-IM6-35</td><td>P-0021937-T03-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0022866-T01-IM6-36"><td>EVT-P-0022866-T01-IM6-36</td><td>P-0022866-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0024225-T01-IM6-37"><td>EVT-P-0024225-T01-IM6-37</td><td>P-0024225-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>921</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0024843-T01-IM6-38"><td>EVT-P-0024843-T01-IM6-38</td><td>P-0024843-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0025100-T01-IM6-39"><td>EVT-P-0025100-T01-IM6-39</td><td>P-0025100-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>NSCLCPD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0025100-T02-IM6-40"><td>EVT-P-0025100-T02-IM6-40</td><td>P-0025100-T02-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0025838-T01-IM6-41"><td>EVT-P-0025838-T01-IM6-41</td><td>P-0025838-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0025928-T01-IM6-42"><td>EVT-P-0025928-T01-IM6-42</td><td>P-0025928-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0025928-T02-IM6-43"><td>EVT-P-0025928-T02-IM6-43</td><td>P-0025928-T02-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0026693-T01-IM6-44"><td>EVT-P-0026693-T01-IM6-44</td><td>P-0026693-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>848</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0026777-T01-IM6-45"><td>EVT-P-0026777-T01-IM6-45</td><td>P-0026777-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0026777-T02-IM6-46"><td>EVT-P-0026777-T02-IM6-46</td><td>P-0026777-T02-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0027723-T01-IM6-47"><td>EVT-P-0027723-T01-IM6-47</td><td>P-0027723-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0032407-T01-IM6-48"><td>EVT-P-0032407-T01-IM6-48</td><td>P-0032407-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>638</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0030453-T01-IM6-49"><td>EVT-P-0030453-T01-IM6-49</td><td>P-0030453-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0032227-T01-IM6-50"><td>EVT-P-0032227-T01-IM6-50</td><td>P-0032227-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0000208-T01-IM3-51"><td>EVT-P-0000208-T01-IM3-51</td><td>P-0000208-T01-IM3</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0032686-T01-IM6-52"><td>EVT-P-0032686-T01-IM6-52</td><td>P-0032686-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0032753-T01-IM6-53"><td>EVT-P-0032753-T01-IM6-53</td><td>P-0032753-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0000252-T01-IM3-54"><td>EVT-P-0000252-T01-IM3-54</td><td>P-0000252-T01-IM3</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0033700-T02-IM6-55"><td>EVT-P-0033700-T02-IM6-55</td><td>P-0033700-T02-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0034357-T01-IM6-56"><td>EVT-P-0034357-T01-IM6-56</td><td>P-0034357-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0036092-T01-IM6-57"><td>EVT-P-0036092-T01-IM6-57</td><td>P-0036092-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LNET</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0036637-T01-IM6-58"><td>EVT-P-0036637-T01-IM6-58</td><td>P-0036637-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0036737-T02-IM6-59"><td>EVT-P-0036737-T02-IM6-59</td><td>P-0036737-T02-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0037367-T01-IM6-60"><td>EVT-P-0037367-T01-IM6-60</td><td>P-0037367-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0037494-T01-IM6-61"><td>EVT-P-0037494-T01-IM6-61</td><td>P-0037494-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0038961-T01-IM6-62"><td>EVT-P-0038961-T01-IM6-62</td><td>P-0038961-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0039257-T01-IM6-63"><td>EVT-P-0039257-T01-IM6-63</td><td>P-0039257-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0039257-T03-IM7-64"><td>EVT-P-0039257-T03-IM7-64</td><td>P-0039257-T03-IM7</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0039474-T01-IM6-65"><td>EVT-P-0039474-T01-IM6-65</td><td>P-0039474-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>638</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0039474-T02-IM6-66"><td>EVT-P-0039474-T02-IM6-66</td><td>P-0039474-T02-IM6</td><td>Non-Small Cell Lung Cancer</td><td>NSCLC</td><td>RET</td><td>five_prime</td><td>638</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0039941-T01-IM6-67"><td>EVT-P-0039941-T01-IM6-67</td><td>P-0039941-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0042104-T01-IM6-68"><td>EVT-P-0042104-T01-IM6-68</td><td>P-0042104-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0042580-T01-IM6-69"><td>EVT-P-0042580-T01-IM6-69</td><td>P-0042580-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0042608-T01-IM6-70"><td>EVT-P-0042608-T01-IM6-70</td><td>P-0042608-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0043007-T01-IM6-71"><td>EVT-P-0043007-T01-IM6-71</td><td>P-0043007-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>848</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0043007-T02-IM6-72"><td>EVT-P-0043007-T02-IM6-72</td><td>P-0043007-T02-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>848</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0005573-T01-IM5-73"><td>EVT-P-0005573-T01-IM5-73</td><td>P-0005573-T01-IM5</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0046726-T01-IM6-74"><td>EVT-P-0046726-T01-IM6-74</td><td>P-0046726-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0046827-T02-IM6-75"><td>EVT-P-0046827-T02-IM6-75</td><td>P-0046827-T02-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0048829-T01-IM6-76"><td>EVT-P-0048829-T01-IM6-76</td><td>P-0048829-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0048968-T01-IM6-77"><td>EVT-P-0048968-T01-IM6-77</td><td>P-0048968-T01-IM6</td><td>Small Cell Lung Cancer</td><td>CSCLC</td><td>RET</td><td>five_prime</td><td>638</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0001010-T02-IM5-78"><td>EVT-P-0001010-T02-IM5-78</td><td>P-0001010-T02-IM5</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0052826-T01-IM6-79"><td>EVT-P-0052826-T01-IM6-79</td><td>P-0052826-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0052861-T02-IM6-80"><td>EVT-P-0052861-T02-IM6-80</td><td>P-0052861-T02-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>638</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0053175-T01-IM6-81"><td>EVT-P-0053175-T01-IM6-81</td><td>P-0053175-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0055183-T01-IM6-82"><td>EVT-P-0055183-T01-IM6-82</td><td>P-0055183-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0055183-T02-IM6-83"><td>EVT-P-0055183-T02-IM6-83</td><td>P-0055183-T02-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0057072-T02-IM6-84"><td>EVT-P-0057072-T02-IM6-84</td><td>P-0057072-T02-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0057072-T03-IM7-85"><td>EVT-P-0057072-T03-IM7-85</td><td>P-0057072-T03-IM7</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0059913-T01-IM7-86"><td>EVT-P-0059913-T01-IM7-86</td><td>P-0059913-T01-IM7</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0060748-T02-IM7-87"><td>EVT-P-0060748-T02-IM7-87</td><td>P-0060748-T02-IM7</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0060748-T03-IM7-88"><td>EVT-P-0060748-T03-IM7-88</td><td>P-0060748-T03-IM7</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0061331-T01-IM7-89"><td>EVT-P-0061331-T01-IM7-89</td><td>P-0061331-T01-IM7</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>638</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0008101-T01-IM5-90"><td>EVT-P-0008101-T01-IM5-90</td><td>P-0008101-T01-IM5</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>698</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0062948-T03-IM7-91"><td>EVT-P-0062948-T03-IM7-91</td><td>P-0062948-T03-IM7</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Cancer of Unknown Primary" data-domain-status="retained" data-event-id="EVT-P-0064951-T01-IM7-92"><td>EVT-P-0064951-T01-IM7-92</td><td>P-0064951-T01-IM7</td><td>Cancer of Unknown Primary</td><td>CUP</td><td>RET</td><td>five_prime</td><td>735</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0065876-T01-IM7-93"><td>EVT-P-0065876-T01-IM7-93</td><td>P-0065876-T01-IM7</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0027991-T01-IM6-94"><td>EVT-P-0027991-T01-IM6-94</td><td>P-0027991-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>921</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="retained" data-event-id="EVT-P-0004995-T01-IM5-95"><td>EVT-P-0004995-T01-IM5-95</td><td>P-0004995-T01-IM5</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>five_prime</td><td>575</td><td>Retained</td></tr><tr data-tumor-type="Non-Small Cell Lung Cancer" data-domain-status="lost" data-event-id="EVT-P-0043704-T01-IM6-96"><td>EVT-P-0043704-T01-IM6-96</td><td>P-0043704-T01-IM6</td><td>Non-Small Cell Lung Cancer</td><td>LUAD</td><td>RET</td><td>three_prime</td><td>849</td><td>Lost</td></tr></tbody></table></div>
+</div>
+<div class="lollipop-tooltip" id="lollipop-tooltip" hidden></div>
+<script type="application/json" id="events-data">[{"event_id": "EVT-P-0062804-T03-IM7-1", "sample_id": "P-0062804-T03-IM7", "tumor_type": "Soft Tissue Sarcoma", "oncotree_code": "IMT", "partner_gene": "ALK", "target_role": "five_prime", "breakpoint_protein_position": 921, "domain_status": "retained"}, {"event_id": "EVT-P-0005711-T02-IM6-2", "sample_id": "P-0005711-T02-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "NSCLCPD", "partner_gene": "ALK", "target_role": "five_prime", "breakpoint_protein_position": 921, "domain_status": "retained"}, {"event_id": "EVT-P-0008764-T01-IM5-3", "sample_id": "P-0008764-T01-IM5", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "ALK", "target_role": "five_prime", "breakpoint_protein_position": 921, "domain_status": "retained"}, {"event_id": "EVT-P-0008764-T02-IM6-4", "sample_id": "P-0008764-T02-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "ALK", "target_role": "five_prime", "breakpoint_protein_position": 921, "domain_status": "retained"}, {"event_id": "EVT-P-0017924-T01-IM6-5", "sample_id": "P-0017924-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "ALK", "target_role": "five_prime", "breakpoint_protein_position": 921, "domain_status": "retained"}, {"event_id": "EVT-P-0052330-T01-IM6-6", "sample_id": "P-0052330-T01-IM6", "tumor_type": "Ampullary Cancer", "oncotree_code": "AMPCA", "partner_gene": "ARID5B", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0021038-T01-IM6-7", "sample_id": "P-0021038-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "EGFR", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0033090-T01-IM6-8", "sample_id": "P-0033090-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "MET", "target_role": "five_prime", "breakpoint_protein_position": 921, "domain_status": "retained"}, {"event_id": "EVT-P-0043854-T01-IM6-9", "sample_id": "P-0043854-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "MET", "target_role": "five_prime", "breakpoint_protein_position": 921, "domain_status": "retained"}, {"event_id": "EVT-P-0000208-T02-IM5-10", "sample_id": "P-0000208-T02-IM5", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0008289-T01-IM5-11", "sample_id": "P-0008289-T01-IM5", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0002694-T02-IM5-12", "sample_id": "P-0002694-T02-IM5", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0002873-T01-IM3-13", "sample_id": "P-0002873-T01-IM3", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0009514-T01-IM5-14", "sample_id": "P-0009514-T01-IM5", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0011035-T01-IM5-15", "sample_id": "P-0011035-T01-IM5", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0012648-T01-IM5-16", "sample_id": "P-0012648-T01-IM5", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0013825-T01-IM5-17", "sample_id": "P-0013825-T01-IM5", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 594, "domain_status": "retained"}, {"event_id": "EVT-P-0014808-T01-IM6-18", "sample_id": "P-0014808-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0014808-T02-IM6-19", "sample_id": "P-0014808-T02-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0014808-T03-IM6-20", "sample_id": "P-0014808-T03-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0016221-T01-IM6-21", "sample_id": "P-0016221-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0016221-T02-IM6-22", "sample_id": "P-0016221-T02-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0017214-T01-IM6-23", "sample_id": "P-0017214-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 848, "domain_status": "retained"}, {"event_id": "EVT-P-0017214-T02-IM6-24", "sample_id": "P-0017214-T02-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 848, "domain_status": "retained"}, {"event_id": "EVT-P-0017523-T02-IM6-25", "sample_id": "P-0017523-T02-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUPC", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0003125-T01-IM5-26", "sample_id": "P-0003125-T01-IM5", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "three_prime", "breakpoint_protein_position": 576, "domain_status": "lost"}, {"event_id": "EVT-P-0018069-T01-IM6-27", "sample_id": "P-0018069-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "three_prime", "breakpoint_protein_position": 639, "domain_status": "lost"}, {"event_id": "EVT-P-0019535-T02-IM6-28", "sample_id": "P-0019535-T02-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUNE", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0020273-T02-IM6-29", "sample_id": "P-0020273-T02-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 638, "domain_status": "retained"}, {"event_id": "EVT-P-0003125-T01-IM5-30", "sample_id": "P-0003125-T01-IM5", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0021150-T01-IM6-31", "sample_id": "P-0021150-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0021578-T01-IM6-32", "sample_id": "P-0021578-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0021879-T01-IM6-33", "sample_id": "P-0021879-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0021937-T01-IM6-34", "sample_id": "P-0021937-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0021937-T03-IM6-35", "sample_id": "P-0021937-T03-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0022866-T01-IM6-36", "sample_id": "P-0022866-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0024225-T01-IM6-37", "sample_id": "P-0024225-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 921, "domain_status": "retained"}, {"event_id": "EVT-P-0024843-T01-IM6-38", "sample_id": "P-0024843-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0025100-T01-IM6-39", "sample_id": "P-0025100-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "NSCLCPD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0025100-T02-IM6-40", "sample_id": "P-0025100-T02-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0025838-T01-IM6-41", "sample_id": "P-0025838-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0025928-T01-IM6-42", "sample_id": "P-0025928-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0025928-T02-IM6-43", "sample_id": "P-0025928-T02-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0026693-T01-IM6-44", "sample_id": "P-0026693-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 848, "domain_status": "retained"}, {"event_id": "EVT-P-0026777-T01-IM6-45", "sample_id": "P-0026777-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0026777-T02-IM6-46", "sample_id": "P-0026777-T02-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0027723-T01-IM6-47", "sample_id": "P-0027723-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0032407-T01-IM6-48", "sample_id": "P-0032407-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 638, "domain_status": "retained"}, {"event_id": "EVT-P-0030453-T01-IM6-49", "sample_id": "P-0030453-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0032227-T01-IM6-50", "sample_id": "P-0032227-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0000208-T01-IM3-51", "sample_id": "P-0000208-T01-IM3", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0032686-T01-IM6-52", "sample_id": "P-0032686-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0032753-T01-IM6-53", "sample_id": "P-0032753-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0000252-T01-IM3-54", "sample_id": "P-0000252-T01-IM3", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0033700-T02-IM6-55", "sample_id": "P-0033700-T02-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0034357-T01-IM6-56", "sample_id": "P-0034357-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0036092-T01-IM6-57", "sample_id": "P-0036092-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LNET", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0036637-T01-IM6-58", "sample_id": "P-0036637-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0036737-T02-IM6-59", "sample_id": "P-0036737-T02-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0037367-T01-IM6-60", "sample_id": "P-0037367-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0037494-T01-IM6-61", "sample_id": "P-0037494-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0038961-T01-IM6-62", "sample_id": "P-0038961-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0039257-T01-IM6-63", "sample_id": "P-0039257-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0039257-T03-IM7-64", "sample_id": "P-0039257-T03-IM7", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0039474-T01-IM6-65", "sample_id": "P-0039474-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 638, "domain_status": "retained"}, {"event_id": "EVT-P-0039474-T02-IM6-66", "sample_id": "P-0039474-T02-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "NSCLC", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 638, "domain_status": "retained"}, {"event_id": "EVT-P-0039941-T01-IM6-67", "sample_id": "P-0039941-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0042104-T01-IM6-68", "sample_id": "P-0042104-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0042580-T01-IM6-69", "sample_id": "P-0042580-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0042608-T01-IM6-70", "sample_id": "P-0042608-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0043007-T01-IM6-71", "sample_id": "P-0043007-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 848, "domain_status": "retained"}, {"event_id": "EVT-P-0043007-T02-IM6-72", "sample_id": "P-0043007-T02-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 848, "domain_status": "retained"}, {"event_id": "EVT-P-0005573-T01-IM5-73", "sample_id": "P-0005573-T01-IM5", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0046726-T01-IM6-74", "sample_id": "P-0046726-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0046827-T02-IM6-75", "sample_id": "P-0046827-T02-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0048829-T01-IM6-76", "sample_id": "P-0048829-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0048968-T01-IM6-77", "sample_id": "P-0048968-T01-IM6", "tumor_type": "Small Cell Lung Cancer", "oncotree_code": "CSCLC", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 638, "domain_status": "retained"}, {"event_id": "EVT-P-0001010-T02-IM5-78", "sample_id": "P-0001010-T02-IM5", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0052826-T01-IM6-79", "sample_id": "P-0052826-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0052861-T02-IM6-80", "sample_id": "P-0052861-T02-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 638, "domain_status": "retained"}, {"event_id": "EVT-P-0053175-T01-IM6-81", "sample_id": "P-0053175-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0055183-T01-IM6-82", "sample_id": "P-0055183-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0055183-T02-IM6-83", "sample_id": "P-0055183-T02-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0057072-T02-IM6-84", "sample_id": "P-0057072-T02-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0057072-T03-IM7-85", "sample_id": "P-0057072-T03-IM7", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0059913-T01-IM7-86", "sample_id": "P-0059913-T01-IM7", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0060748-T02-IM7-87", "sample_id": "P-0060748-T02-IM7", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0060748-T03-IM7-88", "sample_id": "P-0060748-T03-IM7", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0061331-T01-IM7-89", "sample_id": "P-0061331-T01-IM7", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 638, "domain_status": "retained"}, {"event_id": "EVT-P-0008101-T01-IM5-90", "sample_id": "P-0008101-T01-IM5", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 698, "domain_status": "retained"}, {"event_id": "EVT-P-0062948-T03-IM7-91", "sample_id": "P-0062948-T03-IM7", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0064951-T01-IM7-92", "sample_id": "P-0064951-T01-IM7", "tumor_type": "Cancer of Unknown Primary", "oncotree_code": "CUP", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 735, "domain_status": "retained"}, {"event_id": "EVT-P-0065876-T01-IM7-93", "sample_id": "P-0065876-T01-IM7", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0027991-T01-IM6-94", "sample_id": "P-0027991-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 921, "domain_status": "retained"}, {"event_id": "EVT-P-0004995-T01-IM5-95", "sample_id": "P-0004995-T01-IM5", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "five_prime", "breakpoint_protein_position": 575, "domain_status": "retained"}, {"event_id": "EVT-P-0043704-T01-IM6-96", "sample_id": "P-0043704-T01-IM6", "tumor_type": "Non-Small Cell Lung Cancer", "oncotree_code": "LUAD", "partner_gene": "RET", "target_role": "three_prime", "breakpoint_protein_position": 849, "domain_status": "lost"}]</script>
+<script type="application/json" id="status-labels">{"retained": "Retained", "disrupted": "Truncated", "lost": "Lost"}</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var events = JSON.parse(document.getElementById("events-data").textContent);
+  var statusLabels = JSON.parse(document.getElementById("status-labels").textContent);
+  var eventsById = {};
+  events.forEach(function (e) {
+    if (e.event_id) { eventsById[e.event_id] = e; }
+  });
+
+  function distinctValues(field) {
+    var values = events.map(function (e) { return e[field]; }).filter(Boolean);
+    return Array.from(new Set(values)).sort();
+  }
+  var tumorTypes = distinctValues("tumor_type");
+  var domainStatuses = distinctValues("domain_status");
+
+  var tumorSelect = document.getElementById("tumor-type-filter");
+  tumorSelect.innerHTML = '<option value="">All tumor types</option>' + tumorTypes.map(
+    function (t) {
+      return '<option value="' + t.replace(/"/g, "&quot;") + '">' + t + "</option>";
+    }
+  ).join("");
+
+  var statusContainer = document.getElementById("status-filter");
+  statusContainer.innerHTML = domainStatuses.map(function (s) {
+    var label = statusLabels[s] || (s.charAt(0).toUpperCase() + s.slice(1));
+    var checkbox = '<input type="checkbox" value="' + s + '" checked> ';
+    return '<label class="status-toggle">' + checkbox + label + "</label>";
+  }).join("");
+
+  // Group fusion-schematic rows by the (partner, breakpoint-aa) key baked
+  // into every row shape's <title> text by cfh.reporting.fusion_schematic
+  // (e.g. "...BRAF–KIAA1549 fusion, breakpoint BRAF aa 381; ...") --
+  // read back here, never recomputed or duplicated from the algorithm side.
+  var schematicGroups = new Map();
+  events.forEach(function (e) {
+    if (!e.partner_gene || e.breakpoint_protein_position == null) { return; }
+    var key = e.partner_gene + "|" + e.breakpoint_protein_position;
+    var group = schematicGroups.get(key);
+    if (!group) {
+      group = { tumorTypes: new Set(), domainStatuses: new Set() };
+      schematicGroups.set(key, group);
+    }
+    if (e.tumor_type) { group.tumorTypes.add(e.tumor_type); }
+    if (e.domain_status) { group.domainStatuses.add(e.domain_status); }
+  });
+  var TITLE_RE = /–([^;]+?) fusion, breakpoint \S+ aa (\d+);/;
+  var schematicSvg = document.getElementById("fusion-schematic-svg");
+
+  var summaryEl = document.getElementById("events-summary");
+  var rows = Array.from(document.querySelectorAll("#events-table tbody tr"));
+
+  function applyFilters() {
+    var tumor = tumorSelect.value;
+    var checked = statusContainer.querySelectorAll("input:checked");
+    var activeStatuses = new Set(Array.from(checked).map(function (i) { return i.value; }));
+
+    var shown = 0;
+    rows.forEach(function (tr) {
+      var matchesTumor = !tumor || tr.dataset.tumorType === tumor;
+      var matchesStatus = !tr.dataset.domainStatus || activeStatuses.has(tr.dataset.domainStatus);
+      var visible = matchesTumor && matchesStatus;
+      tr.hidden = !visible;
+      if (visible) { shown += 1; }
+    });
+    if (summaryEl) {
+      summaryEl.textContent = "Showing " + shown + " of " + rows.length + " events";
+    }
+
+    if (schematicSvg) {
+      schematicSvg.querySelectorAll("title").forEach(function (titleEl) {
+        var match = TITLE_RE.exec(titleEl.textContent || "");
+        var shape = titleEl.parentElement;
+        if (!match) { return; }
+        var group = schematicGroups.get(match[1] + "|" + match[2]);
+        if (!group) { shape.style.opacity = ""; return; }
+        var groupMatchesTumor = !tumor || group.tumorTypes.has(tumor);
+        var groupMatchesStatus = Array.from(group.domainStatuses).some(function (s) {
+          return activeStatuses.has(s);
+        });
+        shape.style.opacity = (groupMatchesTumor && groupMatchesStatus) ? "1" : "0.12";
+      });
+    }
+  }
+
+  tumorSelect.addEventListener("change", applyFilters);
+  statusContainer.addEventListener("change", applyFilters);
+  applyFilters();
+
+  // Shared by the lollipop-track points and the mechanistic-interpretation
+  // counter-intuitive-event tables: clear any active filters (so the row
+  // can't be hidden -- both jump sources are drawn independent of the
+  // table's tumor-type/domain-status filters), scroll the matching
+  // #events-table row into view, and briefly highlight it.
+  function jumpToEventRow(eventId) {
+    var row = document.querySelector(
+      '#events-table tbody tr[data-event-id="' + CSS.escape(eventId) + '"]'
+    );
+    if (!row) { return; }
+    tumorSelect.value = "";
+    statusContainer.querySelectorAll("input").forEach(function (i) { i.checked = true; });
+    applyFilters();
+    row.scrollIntoView({ behavior: "smooth", block: "center" });
+    row.classList.add("row-highlight");
+    window.setTimeout(function () { row.classList.remove("row-highlight"); }, 1500);
+  }
+
+  // Hovering or clicking a lollipop-track point (data-event-id, set by
+  // cfh.real_benchmark._domain_track_svg) shows a sample-id tooltip and/or
+  // jumps to that event's row in the table below.
+  var domainTrackFrame = document.getElementById("domain-track-svg");
+  var tooltip = document.getElementById("lollipop-tooltip");
+  if (domainTrackFrame) {
+    domainTrackFrame.querySelectorAll("circle[data-event-id]").forEach(function (circle) {
+      var eventId = circle.getAttribute("data-event-id");
+      if (!eventId) { return; }
+      var matchedEvent = eventsById[eventId];
+      if (tooltip && matchedEvent && matchedEvent.sample_id) {
+        circle.addEventListener("mouseenter", function () {
+          tooltip.textContent = "Sample " + matchedEvent.sample_id;
+          tooltip.hidden = false;
+        });
+        circle.addEventListener("mousemove", function (mouseEvent) {
+          tooltip.style.left = mouseEvent.clientX + 14 + "px";
+          tooltip.style.top = mouseEvent.clientY + 14 + "px";
+        });
+        circle.addEventListener("mouseleave", function () {
+          tooltip.hidden = true;
+        });
+      }
+      var matchedRow = document.querySelector(
+        '#events-table tbody tr[data-event-id="' + CSS.escape(eventId) + '"]'
+      );
+      if (!matchedRow) {
+        return;
+      }
+      circle.style.cursor = "pointer";
+      circle.addEventListener("click", function () { jumpToEventRow(eventId); });
+    });
+  }
+
+  // Clicking a row in a "Mechanistic interpretation" counter-intuitive-
+  // event table (see cfh.reporting.html_viewer._mechanistic_effect_html)
+  // jumps to that same event in the main events table below.
+  document.querySelectorAll("tr.counter-intuitive-row[data-event-id]").forEach(function (row) {
+    var eventId = row.getAttribute("data-event-id");
+    if (!eventId) { return; }
+    row.addEventListener("click", function () { jumpToEventRow(eventId); });
+  });
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll("table.sortable").forEach(function (table) {
+    var tbody = table.tBodies[0];
+    if (!tbody) { return; }
+    var headers = Array.from(table.querySelectorAll("thead th[data-sort-key]"));
+    var currentKey = null;
+    var currentDir = 1;
+    headers.forEach(function (th, index) {
+      th.addEventListener("click", function () {
+        var key = th.getAttribute("data-sort-key");
+        currentDir = (currentKey === key) ? -currentDir : 1;
+        currentKey = key;
+        headers.forEach(function (h) { h.removeAttribute("data-sort-dir"); });
+        th.setAttribute("data-sort-dir", currentDir === 1 ? "asc" : "desc");
+
+        var rows = Array.from(tbody.querySelectorAll("tr"));
+        rows.sort(function (a, b) {
+          var aCell = a.children[index];
+          var bCell = b.children[index];
+          var aRaw = aCell ? aCell.getAttribute("data-sort") : null;
+          var bRaw = bCell ? bCell.getAttribute("data-sort") : null;
+          var aNum = aRaw === null || aRaw === "" ? NaN : Number(aRaw);
+          var bNum = bRaw === null || bRaw === "" ? NaN : Number(bRaw);
+          var cmp;
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            cmp = aNum - bNum;
+          } else {
+            cmp = String(aRaw).localeCompare(String(bRaw));
+          }
+          return cmp * currentDir;
+        });
+        rows.forEach(function (row) { tbody.appendChild(row); });
+      });
+    });
+  });
+});
+</script>
+</body>
+</html>
