@@ -119,12 +119,15 @@ _SUMMARY_FIELDNAMES = [
     "fdr_significant",
     "retention_fisher_q_value",
     "retention_fisher_fdr_significant",
+    "retention_fisher_fragility_index",
     "disruption_fisher_q_value",
     "disruption_fisher_fdr_significant",
+    "disruption_fisher_fragility_index",
     "retention_cmh_p_value",
     "retention_cmh_q_value",
     "retention_mh_common_odds_ratio",
     "retention_informative_tumor_types",
+    "retention_cmh_fragility_index",
     "junction_concentration_p_value",
     "junction_concentration_q_value",
     "top_composite_score",
@@ -155,6 +158,12 @@ def _algorithm_summary(run, algorithm: str) -> dict:
         (result.Summary for result in run.results if result.Algorithm == algorithm),
         {},
     )
+
+
+def _fragility_index(fragility: dict | None) -> int | None:
+    """Patients whose removal makes a significant result non-significant;
+    ``None`` when the result was not significant to begin with."""
+    return (fragility or {}).get("fragility_index")
 
 
 def build_summary_rows(result: CohortScanResult) -> list[dict]:
@@ -228,10 +237,14 @@ def build_summary_rows(result: CohortScanResult) -> list[dict]:
                 "retention_fisher_fdr_significant": (
                     None if retention_q is None else retention_q < result.significance_level
                 ),
+                "retention_fisher_fragility_index": _fragility_index(
+                    retention.get("fisher_fragility")
+                ),
                 "retention_cmh_p_value": stratified.get("cmh_p_value"),
                 "retention_cmh_q_value": cmh_q.get(outcome.gene_symbol),
                 "retention_mh_common_odds_ratio": stratified.get("mh_common_odds_ratio"),
                 "retention_informative_tumor_types": stratified.get("informative_strata"),
+                "retention_cmh_fragility_index": _fragility_index(stratified.get("fragility")),
                 "junction_concentration_p_value": (
                     concentration.get(outcome.gene_symbol) or {}
                 ).get("raw_p"),
@@ -241,6 +254,9 @@ def build_summary_rows(result: CohortScanResult) -> list[dict]:
                 "disruption_fisher_q_value": disruption_q,
                 "disruption_fisher_fdr_significant": (
                     None if disruption_q is None else disruption_q < result.significance_level
+                ),
+                "disruption_fisher_fragility_index": _fragility_index(
+                    disruption.get("fisher_fragility")
                 ),
                 "top_composite_score": top_score,
                 "top_composite_partner_gene": top_partner,
