@@ -11,6 +11,8 @@ The CMH statistic is a two-sided chi-square(1) test of conditional
 independence; the pooled Fisher test is one-sided. ``direction`` reports which
 way the pooled-over-strata association points. Strata whose table has a zero
 margin contribute no information and are counted, not dropped silently.
+``fragility`` counts the patients whose removal would make a significant CMH
+result non-significant (see :mod:`cfh.stats.fragility`).
 These results are reported alongside the pooled test; they are not part of the
 cross-gene FDR family.
 """
@@ -25,6 +27,7 @@ from cfh.model.fusion_event import FusionEvent
 from cfh.model.fusion_feature import FusionFeature
 from cfh.stats.breakpoint_tests import RETAINED_STATUSES, build_frame_domain_contingency_table
 from cfh.stats.cochran_mantel_haenszel import cochran_mantel_haenszel
+from cfh.stats.fragility import cmh_fragility
 
 UNKNOWN_STRATUM = "UNKNOWN"
 STRATIFICATION_FIELD = "oncotree_code"
@@ -52,6 +55,7 @@ def stratified_cmh_summary(tables_by_stratum: dict[str, list[list[int]]]) -> dic
             "informative_strata": 0,
             "total_strata": 0,
             "unknown_stratum_observations": 0,
+            "fragility": None,
         }
     result = cochran_mantel_haenszel(list(nonempty.values()))
     odds_ratio = result.common_odds_ratio
@@ -74,6 +78,8 @@ def stratified_cmh_summary(tables_by_stratum: dict[str, list[list[int]]]) -> dic
         "informative_strata": result.informative_strata,
         "total_strata": result.total_strata,
         "unknown_stratum_observations": sum(sum(row) for row in unknown) if unknown else 0,
+        # Patients that would have to be removed for p to reach 0.05.
+        "fragility": cmh_fragility(nonempty, direction),
     }
 
 
