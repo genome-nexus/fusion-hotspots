@@ -291,8 +291,9 @@ Suggested reading order:
    genes as a separate family, not used for `fdr_significant`). A pooled association that
    disappears after stratification is likely tumor-type composition. CMH is two-sided,
    while the pooled Fisher test is one-sided.
-9. **Check fragility.** The in-frame vs other comparison rests on the few out-of-frame
-   patients, so a small p-value can hang on a handful of them. `fisher_fragility` and
+9. **Check fragility.** The in-frame vs other comparison rests on the table's small
+   cells, usually the few patients whose fusion loses the domain, so a small p-value can
+   hang on a handful of them. `fisher_fragility` and
    `tumor_type_stratified.fragility` give the fewest patients whose removal from the
    cells supporting the association raises p to 0.05 or above (greedy search, so an
    upper bound on the true minimum), with the strata and cells removed. The cohort
