@@ -57,6 +57,7 @@ from pathlib import Path
 from typing import Any
 
 from cfh.genes.registry import load_gene_config
+from cfh.reporting.exon_intron_track import render_exon_intron_track_svg
 
 # Mirrors cfh.reporting.fusion_schematic._status_word's display language so
 # the viewer's toggle uses the same words as the schematic it controls.
@@ -342,6 +343,16 @@ tr.counter-intuitive-row:hover { background: #f0f0f0; }
 .gene-links a.significant { border-color: #d62728; color: #d62728; }
 .note { font-size: 12px; color: #777; margin-top: 8px; }
 .panel-note { font-size: 12px; color: #555; margin: 8px 0 0; padding-left: 18px; }
+.view-toggle {
+  display: inline-flex; margin: 4px 0 2px; overflow: hidden;
+  border: 1px solid #2878b5; border-radius: 6px;
+}
+.view-toggle button {
+  border: 0; background: #fff; color: #2878b5; cursor: pointer;
+  font: inherit; font-size: 13px; padding: 5px 12px;
+}
+.view-toggle button + button { border-left: 1px solid #2878b5; }
+.view-toggle button[aria-selected="true"] { background: #2878b5; color: #fff; }
 .badge {
   display: inline-block; font-size: 10.5px; font-weight: 600; padding: 2px 9px;
   border-radius: 999px; margin-left: 10px; vertical-align: middle;
@@ -677,6 +688,19 @@ document.addEventListener("DOMContentLoaded", function () {
       circle.addEventListener("click", function () { jumpToEventRow(eventId); });
     });
   }
+
+  // Protein-position / exon-and-intron switch on the domain-retention track.
+  document.querySelectorAll("[data-track-view]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      var view = button.getAttribute("data-track-view");
+      document.querySelectorAll("[data-track-view]").forEach(function (other) {
+        other.setAttribute("aria-selected", other === button ? "true" : "false");
+      });
+      document.querySelectorAll("[data-track-panel]").forEach(function (panel) {
+        panel.hidden = panel.getAttribute("data-track-panel") !== view;
+      });
+    });
+  });
 
   // Clicking a row in a "Mechanistic interpretation" counter-intuitive-
   // event table (see cfh.reporting.html_viewer._mechanistic_effect_html)
@@ -1160,6 +1184,38 @@ def _page_head(title: str) -> str:
 """
 
 
+def _domain_track_section(protein_svg: str | None, exon_svg: str | None) -> str:
+    """The domain-retention track, switchable between protein coordinates
+    and the exon/intron view when both are available."""
+    if not protein_svg and not exon_svg:
+        return ""
+    protein_note = "Click a point to jump to its event in the table below."
+    exon_note = (
+        "Breakpoints counted per exon or intron; hover a stem for its count, domain "
+        "status and top partners. Bars above show how often each exon is kept."
+    )
+    if not (protein_svg and exon_svg):
+        only_exon = exon_svg is not None
+        return (
+            "<h2>Domain retention / outlier lollipop track</h2>"
+            f'<p class="panel-note">{exon_note if only_exon else protein_note}</p>'
+            f'<div class="svg-frame" id="{"exon-intron-svg" if only_exon else "domain-track-svg"}">'
+            f"{exon_svg if only_exon else protein_svg}</div>"
+        )
+    return (
+        "<h2>Domain retention / outlier lollipop track</h2>"
+        '<div class="view-toggle" role="tablist" aria-label="Track coordinates">'
+        '<button type="button" role="tab" aria-selected="true" data-track-view="protein">'
+        "Protein position (aa)</button>"
+        '<button type="button" role="tab" aria-selected="false" data-track-view="exon">'
+        "Exons and introns</button></div>"
+        f'<div data-track-panel="protein"><p class="panel-note">{protein_note}</p>'
+        f'<div class="svg-frame" id="domain-track-svg">{protein_svg}</div></div>'
+        f'<div data-track-panel="exon" hidden><p class="panel-note">{exon_note}</p>'
+        f'<div class="svg-frame" id="exon-intron-svg">{exon_svg}</div></div>'
+    )
+
+
 def _render_gene_page(
     payload: dict,
     *,
@@ -1187,12 +1243,7 @@ def _render_gene_page(
         else ""
     )
 
-    if domain_svg:
-        sections.append(
-            "<h2>Domain retention / outlier lollipop track</h2>"
-            '<p class="panel-note">Click a point to jump to its event in the table below.</p>'
-            f'<div class="svg-frame" id="domain-track-svg">{domain_svg}</div>'
-        )
+    sections.append(_domain_track_section(domain_svg, render_exon_intron_track_svg(payload)))
 
     mechanistic_section_html = _mechanistic_interpretation_section(payload)
     sections.append(mechanistic_section_html)
