@@ -1,0 +1,20 @@
+{
+  "gene": "ETV6",
+  "study_id": "thca_tcga_pan_can_atlas_2018",
+  "endpoints_used": [
+    "https://www.cbioportal.org/api/structural-variant/fetch",
+    "https://grch38.genomenexus.org/ensembl/canonical-transcript/hgnc/ETV6",
+    "https://www.cbioportal.org/api/studies/thca_tcga_pan_can_atlas_2018/clinical-data/fetch"
+  ],
+  "git_sha": "3ec83a0b28e181b2ea53040905948df2f392b650",
+  "cli_args": [
+    "analyze",
+    "ETV6",
+    "thca_tcga_pan_can_atlas_2018",
+    "--output-dir",
+    "runs",
+    "--n-permutations",
+    "1000"
+  ],
+  "timestamp": "2026-10-29T15:37:40.051311+00:00"
+}

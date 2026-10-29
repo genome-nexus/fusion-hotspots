@@ -1,0 +1,20 @@
+{
+  "gene": "RET",
+  "study_id": "msk_impact_50k_2026",
+  "endpoints_used": [
+    "https://www.cbioportal.org/api/structural-variant/fetch",
+    "https://www.genomenexus.org/ensembl/canonical-transcript/hgnc/RET",
+    "https://www.cbioportal.org/api/studies/msk_impact_50k_2026/clinical-data/fetch"
+  ],
+  "git_sha": "3ec83a0b28e181b2ea53040905948df2f392b650",
+  "cli_args": [
+    "analyze",
+    "RET",
+    "msk_impact_50k_2026",
+    "--output-dir",
+    "runs",
+    "--n-permutations",
+    "1000"
+  ],
+  "timestamp": "2026-10-29T15:38:05.125568+00:00"
+}

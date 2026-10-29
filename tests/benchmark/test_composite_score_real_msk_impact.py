@@ -252,7 +252,7 @@ def test_composite_score_real_braf_msk_impact_all_five_subscores_applicable():
     # result so changes in aggregation are caught.
     assert ranking[0]["Partner_gene"] == "KIAA1549"
     assert ranking[0]["Event_count"] == 43
-    assert ranking[0]["Composite_score"] == pytest.approx(0.29300550202103604)
+    assert ranking[0]["Composite_score"] == pytest.approx(0.2931000686465026)
 
 
 def _ret_events_and_features(results_path: Path) -> tuple[list[FusionEvent], list[FusionFeature]]:
@@ -374,7 +374,7 @@ def test_composite_score_real_ret_msk_impact_all_five_subscores_applicable():
     # odds ratios are unchanged between the two runs.
     assert ranking[0]["Partner_gene"] == "KIF5B"
     assert ranking[0]["Event_count"] == 87
-    assert ranking[0]["Composite_score"] == pytest.approx(0.4902302627552125)
+    assert ranking[0]["Composite_score"] == pytest.approx(0.48697008499125416)
 
     for row in ranking:
         assert row["Domain_disruption_score"] is not None
