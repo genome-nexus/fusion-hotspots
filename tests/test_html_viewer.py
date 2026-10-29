@@ -895,3 +895,23 @@ def test_real_eml4_alk_run_uses_the_gene_pair_template(tmp_path):
     gene5, gene3 = payload["summary"]["gene_pair"]
     assert gene5 in html and gene3 in html
     assert "fetch(" not in html
+
+
+def test_events_table_can_be_searched_sorted_and_narrowed_from_the_schematic(tmp_path):
+    payload = _minimal_gene_payload()
+    run_dir = _write_gene_run(tmp_path, payload)
+    html = build_run_viewer(run_dir).read_text()
+
+    # Search box, single-choice domain-status filter and reset control.
+    assert 'id="events-search"' in html
+    assert '<select id="status-filter"><option value="">All statuses</option></select>' in html
+    assert 'id="events-reset"' in html
+    assert 'id="group-filter" class="group-filter" hidden' in html
+    # Every column heading is a sort button; breakpoints sort numerically.
+    header = html.split('id="events-table"', 1)[1].split("</thead>", 1)[0]
+    assert header.count('class="sort-button"') == 9
+    assert '<td data-sort="327">327</td>' in html
+    # Rows carry the (partner, breakpoint) key a schematic row is matched on.
+    assert 'data-partner="AGK" data-breakpoint="327"' in html
+    assert "groupFilter = { partner: match[1], breakpoint: match[2] }" in html
+    assert "tr.dataset.domainStatus === status" in html
