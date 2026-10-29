@@ -53,8 +53,16 @@ _STATUS_COLORS = {
 }
 
 _AXIS_LEFT = 60.0
-_AXIS_WIDTH = 800.0
-_INTRON_WIDTH = 10.0
+_AXIS_WIDTH = 960.0
+_INTRON_WIDTH = 16.0
+"""Intron width when its genomic length is unknown (runs written before
+``gene_track`` carried ``exons_genomic``, and the slots beyond the first
+and last coding exon)."""
+_MIN_INTRON_WIDTH = 10.0
+_INTRON_SHARE = 0.4
+"""Share of the axis given to introns when their lengths are known."""
+INTRON_FILL = "#eef1f4"
+INTRON_HIT_FILL = "#fde7d6"
 _MIN_EXON_WIDTH = 5.0
 _INCLUSION_HEIGHT = 60.0
 _STEM_MAX = 70.0
@@ -143,6 +151,25 @@ def _intron_label(rank: int, ranks: list[int]) -> str:
     return f"intron {rank}"
 
 
+def _intron_lengths(gene_track: dict, ranks: list[int]) -> dict[int, int]:
+    """Genomic length of the intron after each coding exon, keyed like the
+    intron slots (by the upstream exon's rank); empty without coordinates."""
+    exons = {e["exon_rank"]: e for e in gene_track.get("exons_genomic") or []}
+    lengths = {}
+    for upstream, downstream in zip(ranks, ranks[1:]):
+        a, b = exons.get(upstream), exons.get(downstream)
+        if not a or not b:
+            continue
+        gap = max(b["start"] - a["end"], a["start"] - b["end"]) - 1
+        if gap > 0:
+            lengths[upstream] = gap
+    return lengths
+
+
+def _format_length(bases: int) -> str:
+    return f"{bases / 1000:.1f} kb" if bases >= 1000 else f"{bases} bp"
+
+
 def render_exon_intron_track_svg(payload: dict) -> str | None:
     """Render the exon/intron view, or ``None`` without exon boundaries or
     mappable breakpoints."""
@@ -173,14 +200,26 @@ def render_exon_intron_track_svg(payload: dict) -> str | None:
         order.append(("exon", rank))
     if ("intron", ranks[-1]) in used:
         order.append(("intron", ranks[-1]))
-    n_introns = sum(1 for kind, _ in order if kind == "intron")
-    exon_space = max(_AXIS_WIDTH - n_introns * _INTRON_WIDTH, len(ranks) * _MIN_EXON_WIDTH)
+    intron_lengths = _intron_lengths(payload.get("gene_track") or {}, ranks)
+    intron_keys = [rank for kind, rank in order if kind == "intron"]
+    sized = [rank for rank in intron_keys if rank in intron_lengths]
+    fixed = len(intron_keys) - len(sized)
+    intron_widths: dict[int, float] = {rank: _INTRON_WIDTH for rank in intron_keys}
+    if sized:
+        # Introns span 100 bp to 100+ kb, so width follows log length: long
+        # introns read as long without flattening the exons to slivers.
+        budget = _AXIS_WIDTH * _INTRON_SHARE - fixed * _INTRON_WIDTH
+        weights = {rank: math.log10(max(intron_lengths[rank], 10)) for rank in sized}
+        total_weight = sum(weights.values())
+        for rank in sized:
+            intron_widths[rank] = max(_MIN_INTRON_WIDTH, budget * weights[rank] / total_weight)
+    exon_space = max(_AXIS_WIDTH - sum(intron_widths.values()), len(ranks) * _MIN_EXON_WIDTH)
     lengths = {r: max(1, by_rank[r]["end_aa"] - by_rank[r]["start_aa"] + 1) for r in ranks}
     total_length = sum(lengths.values())
     x = _AXIS_LEFT
     for kind, rank in order:
         width = (
-            _INTRON_WIDTH
+            intron_widths[rank]
             if kind == "intron"
             else max(_MIN_EXON_WIDTH, exon_space * lengths[rank] / total_length)
         )
@@ -249,6 +288,24 @@ def render_exon_intron_track_svg(payload: dict) -> str | None:
         f'<line x1="{_AXIS_LEFT:.1f}" y1="{structure_y:.1f}" x2="{right_edge:.1f}" '
         f'y2="{structure_y:.1f}" stroke="{AXIS_COLOR}" stroke-width="1"/>'
     )
+    intron_height = exon_height * 0.55
+    for kind, rank in order:
+        if kind != "intron":
+            continue
+        slot = slots[(kind, rank)]
+        length = intron_lengths.get(rank)
+        title = escape_xml_text(
+            _intron_label(rank, ranks)
+            + (f", {_format_length(length)}" if length else "")
+            + (f": {slot.total} breakpoint(s)" if slot.total else ": no breakpoints")
+        )
+        elements.append(
+            f"<g><title>{title}</title>"
+            f'<rect x="{slot.x0 + 1:.1f}" y="{structure_y - intron_height / 2:.1f}" '
+            f'width="{max(1.0, slot.x1 - slot.x0 - 2):.1f}" height="{intron_height:.1f}" '
+            f'fill="{INTRON_HIT_FILL if slot.total else INTRON_FILL}" stroke="{AXIS_COLOR}" '
+            f'stroke-width="0.5" stroke-dasharray="2 1.5"/></g>'
+        )
     for rank in ranks:
         slot = slots[("exon", rank)]
         elements.append(
@@ -279,7 +336,7 @@ def render_exon_intron_track_svg(payload: dict) -> str | None:
                 f"(aa {domain['start_aa']}-{domain['end_aa']})</title></rect>"
             )
         elements.append(
-            f'<text x="{spans[0][0]:.1f}" y="{structure_y - exon_height / 2 - 4:.1f}" '
+            f'<text x="{spans[0][0]:.1f}" y="{structure_y - exon_height / 2 - 15:.1f}" '
             f'font-family="sans-serif" font-size="9.5" fill="{TEXT_COLOR}">{name}</text>'
         )
     label_every = max(1, round(len(ranks) / 15))
@@ -296,6 +353,18 @@ def render_exon_intron_track_svg(payload: dict) -> str | None:
         f'<text x="{_AXIS_LEFT - 8:.1f}" y="{structure_y + 3:.1f}" font-family="sans-serif" '
         f'font-size="9" text-anchor="end" fill="{MUTED_TEXT_COLOR}">exon</text>'
     )
+    # Name the introns that hold breakpoints, above the structure line.
+    busiest = max((slot.total for slot in slots.values() if slot.kind == "intron"), default=0)
+    for kind, rank in order:
+        slot = slots[(kind, rank)]
+        if kind != "intron" or not slot.total or slot.total < max(2, busiest * 0.05):
+            continue
+        label = "up" if rank == 0 else "down" if rank == ranks[-1] else f"i{rank}"
+        elements.append(
+            f'<text x="{slot.center:.1f}" y="{structure_y - exon_height / 2 - 4:.1f}" '
+            f'font-family="sans-serif" font-size="9" font-weight="600" text-anchor="middle" '
+            f'fill="{TEXT_COLOR}">{label}</text>'
+        )
 
     # 3. Breakpoints per exon or intron.
     stems_top = structure_y + exon_height / 2 + 22.0
@@ -376,9 +445,29 @@ def render_exon_intron_track_svg(payload: dict) -> str | None:
         f'stroke="{AXIS_COLOR}"/><text x="{lx + 74:.1f}" y="{legend_y:.1f}" '
         f'font-family="sans-serif" font-size="10" fill="{TEXT_COLOR}">mid-exon</text>'
     )
+    # Second legend row: what the gene-structure shapes mean.
+    row2 = legend_y + 18
+    sizing = (
+        "intron width follows log genomic length"
+        if intron_lengths
+        else "intron lengths not recorded in this run; drawn at a fixed width"
+    )
+    legend.append(
+        f'<rect x="{_AXIS_LEFT:.1f}" y="{row2 - 9:.1f}" width="16" height="11" '
+        f'fill="{BACKBONE_COLOR}" stroke="{AXIS_COLOR}" stroke-width="0.6"/>'
+        f'<text x="{_AXIS_LEFT + 21:.1f}" y="{row2:.1f}" font-family="sans-serif" '
+        f'font-size="10" fill="{TEXT_COLOR}">exon (width: coding length)</text>'
+        f'<rect x="{_AXIS_LEFT + 190:.1f}" y="{row2 - 7:.1f}" width="16" height="7" '
+        f'fill="{INTRON_FILL}" stroke="{AXIS_COLOR}" stroke-width="0.5" stroke-dasharray="2 1.5"/>'
+        f'<rect x="{_AXIS_LEFT + 210:.1f}" y="{row2 - 7:.1f}" width="16" height="7" '
+        f'fill="{INTRON_HIT_FILL}" stroke="{AXIS_COLOR}" stroke-width="0.5" '
+        f'stroke-dasharray="2 1.5"/>'
+        f'<text x="{_AXIS_LEFT + 231:.1f}" y="{row2:.1f}" font-family="sans-serif" '
+        f'font-size="10" fill="{TEXT_COLOR}">intron, without / with breakpoints ({sizing})</text>'
+    )
     elements.extend(legend)
 
-    height = legend_y + 12
+    height = legend_y + 30
     width = max(right_edge + 20, _AXIS_LEFT + _AXIS_WIDTH + 20)
     return (
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{width:.0f}" height="{height:.0f}" '

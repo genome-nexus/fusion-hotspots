@@ -1239,8 +1239,10 @@ def _domain_track_section(protein_svg: str | None, exon_svg: str | None) -> str:
         return ""
     protein_note = "Click a point to jump to its event in the table below."
     exon_note = (
-        "Breakpoints counted per exon or intron; hover a stem for its count, domain "
-        "status and top partners. Bars above show how often each exon is kept."
+        "Exons are solid boxes and introns the dashed bands between them, shaded where "
+        "breakpoints fall. Stems count breakpoints per exon or intron; hover one for its "
+        "count, domain status and top partners, or hover an intron for its length. Bars "
+        "above show how often each exon is kept."
     )
     if not (protein_svg and exon_svg):
         only_exon = exon_svg is not None
