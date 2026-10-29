@@ -55,8 +55,10 @@ import json
 from html import escape as _esc
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlencode
 
 from cfh.genes.registry import load_gene_config
+from cfh.ingestion.cbioportal_api import DEFAULT_BASE_URL
 from cfh.reporting.exon_intron_track import render_exon_intron_track_svg
 
 # Mirrors cfh.reporting.fusion_schematic._status_word's display language so
@@ -70,6 +72,7 @@ _DOMAIN_STATUS_LABELS = {
 _EVENT_FIELDS = (
     "event_id",
     "sample_id",
+    "patient_id",
     "tumor_type",
     "oncotree_code",
     "partner_gene",
@@ -708,7 +711,11 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll("tr.counter-intuitive-row[data-event-id]").forEach(function (row) {
     var eventId = row.getAttribute("data-event-id");
     if (!eventId) { return; }
-    row.addEventListener("click", function () { jumpToEventRow(eventId); });
+    row.addEventListener("click", function (clickEvent) {
+      // A sample link opens cBioPortal; don't also jump within the page.
+      if (clickEvent.target.closest("a")) { return; }
+      jumpToEventRow(eventId);
+    });
   });
 });
 """
@@ -775,11 +782,32 @@ def _events_controls_html() -> str:
 """
 
 
-def _render_events_table(events: list[dict[str, Any]]) -> str:
+CBIOPORTAL_URL = DEFAULT_BASE_URL.removesuffix("/api")
+"""Every run is ingested from the public portal (see
+:data:`cfh.ingestion.cbioportal_api.DEFAULT_BASE_URL`), so its patient and
+sample pages live there too."""
+
+
+def _cbioportal_case_link(study_id: str | None, case_id: str, *, kind: str) -> str:
+    """A link to a patient (``kind="patient"``) or sample's cBioPortal
+    patient view, or the escaped id alone when there is no study to link in."""
+    if not (study_id and case_id):
+        return _esc(case_id)
+    parameter = "caseId" if kind == "patient" else "sampleId"
+    url = f"{CBIOPORTAL_URL}/patient/summary?" + urlencode(
+        {"studyId": study_id, parameter: case_id}
+    )
+    return (
+        f'<a href="{_esc(url)}" target="_blank" rel="noopener noreferrer" '
+        f'title="Open {kind} {_esc(case_id)} in cBioPortal">{_esc(case_id)}</a>'
+    )
+
+
+def _render_events_table(events: list[dict[str, Any]], study_id: str | None = None) -> str:
     if not events:
         return '<p class="note">No per-event data available for this run.</p>'
     header = (
-        "<tr><th>Event</th><th>Sample</th><th>Tumor type</th><th>Oncotree</th>"
+        "<tr><th>Event</th><th>Sample</th><th>Patient</th><th>Tumor type</th><th>Oncotree</th>"
         "<th>Partner gene</th><th>Role</th><th>Breakpoint (aa)</th><th>Domain status</th></tr>"
     )
     body_rows = []
@@ -790,13 +818,19 @@ def _render_events_table(events: list[dict[str, Any]]) -> str:
         body_rows.append(
             '<tr data-tumor-type="{tumor_attr}" data-domain-status="{status_attr}" '
             'data-event-id="{event_id_attr}">'
-            "<td>{event_id}</td><td>{sample_id}</td><td>{tumor_type}</td><td>{oncotree}</td>"
-            "<td>{partner}</td><td>{role}</td><td>{breakpoint}</td><td>{status}</td></tr>".format(
+            "<td>{event_id}</td><td>{sample}</td><td>{patient}</td><td>{tumor_type}</td>"
+            "<td>{oncotree}</td><td>{partner}</td><td>{role}</td><td>{breakpoint}</td>"
+            "<td>{status}</td></tr>".format(
                 tumor_attr=_esc(tumor_type),
                 status_attr=_esc(domain_status),
                 event_id_attr=_esc(event_id_value),
                 event_id=_esc(event_id_value),
-                sample_id=_esc(str(event.get("sample_id") or "")),
+                sample=_cbioportal_case_link(
+                    study_id, str(event.get("sample_id") or ""), kind="sample"
+                ),
+                patient=_cbioportal_case_link(
+                    study_id, str(event.get("patient_id") or ""), kind="patient"
+                ),
                 tumor_type=_esc(tumor_type),
                 oncotree=_esc(str(event.get("oncotree_code") or "")),
                 partner=_esc(str(event.get("partner_gene") or "")),
@@ -806,6 +840,8 @@ def _render_events_table(events: list[dict[str, Any]]) -> str:
             )
         )
     return (
+        '<p class="panel-note">Sample and patient IDs open that case in cBioPortal in a new '
+        "tab.</p>"
         '<div class="events-table-frame"><table class="events" id="events-table">'
         f"<thead>{header}</thead><tbody>{''.join(body_rows)}</tbody></table></div>"
     )
@@ -859,7 +895,9 @@ def _format_domain_names_html(names: list[str]) -> str:
     return f"{', '.join(_esc(name) for name in unique[:-1])}, and {_esc(unique[-1])}"
 
 
-def _mechanistic_effect_html(summary: dict, tables: dict, *, effect: str, label: str) -> str:
+def _mechanistic_effect_html(
+    summary: dict, tables: dict, *, effect: str, label: str, study_id: str | None = None
+) -> str:
     """One effect's (``retention``/``disruption``) HTML for the mechanistic
     interpretation section; ``""`` when the gene doesn't configure it."""
     if not summary.get(f"{effect}_domains_configured"):
@@ -939,7 +977,9 @@ def _mechanistic_effect_html(summary: dict, tables: dict, *, effect: str, label:
             "<td>{breakpoint}</td><td>{status}</td></tr>".format(
                 event_id_attr=_esc(str(row.get("event_id") or "")),
                 event_id=_esc(str(row.get("event_id") or "")),
-                sample_id=_esc(str(row.get("sample_id") or "")),
+                sample_id=_cbioportal_case_link(
+                    study_id, str(row.get("sample_id") or ""), kind="sample"
+                ),
                 partner=_esc(str(row.get("partner_gene") or "")),
                 breakpoint=_esc(str(row.get("breakpoint_protein_position") or "")),
                 status=_esc(str(row.get("domain_status") or "")),
@@ -989,7 +1029,15 @@ def _mechanistic_interpretation_section(payload: dict) -> str:
         algo_summary = result.get("Summary") or {}
         tables = result.get("Tables") or {}
         for effect, label in (("retention", "retention"), ("disruption", "disruption")):
-            body.append(_mechanistic_effect_html(algo_summary, tables, effect=effect, label=label))
+            body.append(
+                _mechanistic_effect_html(
+                    algo_summary,
+                    tables,
+                    effect=effect,
+                    label=label,
+                    study_id=payload.get("study_id"),
+                )
+            )
 
     if not any(body):
         return ""
@@ -1264,7 +1312,7 @@ def _render_gene_page(
     sections.append("<h2>Events" + ("" if fusion_svg else " (filters below)") + "</h2>")
     if not fusion_svg:
         sections.append(_events_controls_html())
-    sections.append(_render_events_table(events))
+    sections.append(_render_events_table(events, payload.get("study_id")))
     events_json = _safe_json_script(events)
     status_labels_json = _safe_json_script(_DOMAIN_STATUS_LABELS)
 
@@ -1328,7 +1376,7 @@ def _render_gene_pair_page(
         _cross_cohort_panel(cross_cohort),
         "<h2>Events (filters below)</h2>",
         _events_controls_html(),
-        _render_events_table(events),
+        _render_events_table(events, payload.get("study_id")),
     ]
     events_json = _safe_json_script(events)
     status_labels_json = _safe_json_script(_DOMAIN_STATUS_LABELS)
