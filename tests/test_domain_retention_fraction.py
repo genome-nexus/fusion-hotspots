@@ -10,6 +10,7 @@ from cfh.mapping.domain_source import ProteinDomain
 from cfh.mapping.feature_mapper import calculate_domain_retention, map_event
 from cfh.model.fusion_event import FusionEvent
 from cfh.model.fusion_feature import FusionFeature
+from cfh.stats.observation_units import collapse_repeated_observations
 from conftest import RUNS_DIR, latest_run_dir
 
 
@@ -171,6 +172,9 @@ def test_verified_live_benchmark_conclusions_are_unchanged(gene):
             Event_id=row["event_id"],
             Cohort=payload["study_id"],
             Sample_id=row["sample_id"],
+            Patient_id=row["patient_id"] or None,
+            Site1_gene=gene.upper(),
+            Site2_gene=row["partner_gene"],
             Fusion_name=row["fusion_name"],
             Frame_status=row["frame_status"],
             Is_protein_fusion=True,
@@ -211,7 +215,6 @@ def test_verified_live_benchmark_conclusions_are_unchanged(gene):
         for result in payload["algorithm_results"]
         if result["Algorithm"] == "domain_retention"
     )
-    result = DomainRetentionAlgorithm().run(events, features, config, expected["Parameters"])
     summary = payload["summary"]
     assert len(features) == summary["mapped_fusions"]
     assert sum(event.Frame_status == "in-frame" for event in events) == summary["in_frame_count"]
@@ -221,6 +224,12 @@ def test_verified_live_benchmark_conclusions_are_unchanged(gene):
     # percentages are denominated by the mapped population, not total_fusions
     # (see #30).
     assert 100.0 * retained / summary["mapped_fusions"] == summary["kinase_retained_percent"]
+    # The tests count each observation unit once (patient per gene since
+    # #128), so replay the same collapse the pipeline applied.
+    events, features, _ = collapse_repeated_observations(
+        events, features, gene.upper(), observation_unit=summary["observation_unit"]
+    )
+    result = DomainRetentionAlgorithm().run(events, features, config, expected["Parameters"])
     assert (
         result.Tables["frame_domain_contingency_table"]
         == (summary["frame_domain_contingency_table"])
@@ -252,8 +261,8 @@ def test_corrected_ret_live_artifact_summary():
     assert summary["in_frame_count"] == 146
     assert summary["kinase_retained_count"] == 179
     assert summary["kinase_retained_percent"] == pytest.approx(92.26804123711341)
-    assert summary["frame_domain_contingency_table"] == [[141, 38], [5, 10]]
-    assert summary["fisher_p_value"] == pytest.approx(0.00041966557652448966)
+    assert summary["frame_domain_contingency_table"] == [[112, 33], [4, 8]]
+    assert summary["fisher_p_value"] == pytest.approx(0.002566127156365579)
 
 
 def test_retention_descriptives_separate_truncated_from_fully_lost():

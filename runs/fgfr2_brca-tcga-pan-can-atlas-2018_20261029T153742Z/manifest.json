@@ -1,0 +1,20 @@
+{
+  "gene": "FGFR2",
+  "study_id": "brca_tcga_pan_can_atlas_2018",
+  "endpoints_used": [
+    "https://www.cbioportal.org/api/structural-variant/fetch",
+    "https://grch38.genomenexus.org/ensembl/canonical-transcript/hgnc/FGFR2",
+    "https://www.cbioportal.org/api/studies/brca_tcga_pan_can_atlas_2018/clinical-data/fetch"
+  ],
+  "git_sha": "3ec83a0b28e181b2ea53040905948df2f392b650",
+  "cli_args": [
+    "analyze",
+    "FGFR2",
+    "brca_tcga_pan_can_atlas_2018",
+    "--output-dir",
+    "runs",
+    "--n-permutations",
+    "1000"
+  ],
+  "timestamp": "2026-10-29T15:37:42.719082+00:00"
+}

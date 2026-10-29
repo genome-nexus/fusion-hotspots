@@ -1,0 +1,1047 @@
+{
+  "gene_symbol": "ALK",
+  "study_id": "luad_tcga_pan_can_atlas_2018",
+  "molecular_profile_id": "luad_tcga_pan_can_atlas_2018_structural_variants",
+  "retrieved_at": "2026-10-29T15:36:48.031181+00:00",
+  "summary": {
+    "raw_structural_variant_count": 5,
+    "total_fusions": 5,
+    "sample_count": 5,
+    "known_patient_count": 5,
+    "missing_patient_id_event_count": 0,
+    "inference_counting_unit": "patient",
+    "patient_independence_established": true,
+    "observation_unit": "patient_gene",
+    "input_mapped_event_count": 5,
+    "analyzed_observation_count": 5,
+    "collapsed_repeat_observation_count": 0,
+    "patients_with_repeated_observations": 0,
+    "observation_identity_fallbacks": {},
+    "frame_conflict_groups": 0,
+    "merged_distinct_fusion_count": 0,
+    "patients_with_multiple_distinct_fusions": 0,
+    "mapped_fusions": 5,
+    "skipped_fusions": 0,
+    "in_frame_count": 5,
+    "out_of_frame_count": 0,
+    "known_frame_count": 5,
+    "unknown_frame_count": 0,
+    "in_frame_percent": 100.0,
+    "kinase_retained_count": 5,
+    "kinase_retained_percent": 100.0,
+    "in_frame_kinase_retained_count": 5,
+    "fisher_odds_ratio": "nan",
+    "fisher_p_value": 1.0,
+    "permutation_p_value": 0.8201798201798202,
+    "frame_domain_contingency_table": [
+      [
+        5,
+        0
+      ],
+      [
+        0,
+        0
+      ]
+    ],
+    "partner_counts": [
+      {
+        "Partner_gene": "EML4",
+        "Event_count": 5,
+        "Raw_event_count": 5,
+        "Sample_count": 5,
+        "Patient_count": 5
+      }
+    ],
+    "domain_accession": "PF07714",
+    "domain_start_aa": 1116,
+    "domain_end_aa": 1382,
+    "key_domains": [
+      {
+        "name": "Protein kinase domain",
+        "accession": "PF07714",
+        "start_aa": 1116,
+        "end_aa": 1382
+      }
+    ],
+    "fusion_annotation_crosscheck": {
+      "agree": 5,
+      "disagree": 0,
+      "unavailable": 0
+    },
+    "configured_key_domains": [
+      {
+        "name": "Protein kinase domain",
+        "source": "genome_nexus",
+        "key": "kinase",
+        "accession": "PF07714",
+        "start_aa": null,
+        "end_aa": null
+      }
+    ],
+    "configured_disruption_required_domains": [],
+    "domain_reconstitution_counts": {},
+    "mechanism_note": "Partner-driven constitutive oligomerization, not domain loss per se: loss of ALK's extracellular ligand-binding region is permissive (it removes the requirement for ALKAL1/ALKAL2 and untethers the kinase from the membrane) but not by itself activating -- an isolated ALK intracellular domain held in the monomeric state is not transforming. The partner's N-terminal self-association domain (e.g. EML4's trimerization domain, historically described as a coiled-coil, in EML4-ALK) is the necessary activating event: it forces ligand-independent self-association and trans-autophosphorylation of the ALK kinase domain, independent of any ligand. Ectopic promoter-driven expression in a tissue where ALK is normally silent contributes but is not itself the activating step.",
+    "mechanism_note_verified": true
+  },
+  "warnings": [
+    "Expression comparison: 510 measured samples excluded from the fusion-positive/negative denominator because SV gene coverage was not established."
+  ],
+  "events": [
+    {
+      "event_id": "EVT-TCGA-50-8460-01-1",
+      "sample_id": "TCGA-50-8460-01",
+      "patient_id": "TCGA-50-8460",
+      "tumor_type": "Non-Small Cell Lung Cancer",
+      "oncotree_code": "LUAD",
+      "fusion_name": "EML4-ALK",
+      "partner_gene": "EML4",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 29223528,
+      "breakpoint_exon": 20,
+      "breakpoint_protein_position": 1058,
+      "is_intronic_breakpoint": false,
+      "fusion_annotation_crosscheck_protein_position": 1058,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "domain_reconstitution": null,
+      "reconstitution_pfam_accession": null,
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": null,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": null,
+      "reconstitution_detail": null,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "NA | EML4-ALK fusion",
+      "source_site2_effect_on_frame": "in-frame"
+    },
+    {
+      "event_id": "EVT-TCGA-67-6215-01-2",
+      "sample_id": "TCGA-67-6215-01",
+      "patient_id": "TCGA-67-6215",
+      "tumor_type": "Non-Small Cell Lung Cancer",
+      "oncotree_code": "LUAD",
+      "fusion_name": "EML4-ALK",
+      "partner_gene": "EML4",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 29223528,
+      "breakpoint_exon": 20,
+      "breakpoint_protein_position": 1058,
+      "is_intronic_breakpoint": false,
+      "fusion_annotation_crosscheck_protein_position": 1058,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "domain_reconstitution": null,
+      "reconstitution_pfam_accession": null,
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": null,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": null,
+      "reconstitution_detail": null,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "NA | EML4-ALK fusion",
+      "source_site2_effect_on_frame": "in-frame"
+    },
+    {
+      "event_id": "EVT-TCGA-67-6216-01-3",
+      "sample_id": "TCGA-67-6216-01",
+      "patient_id": "TCGA-67-6216",
+      "tumor_type": "Non-Small Cell Lung Cancer",
+      "oncotree_code": "LUAD",
+      "fusion_name": "EML4-ALK",
+      "partner_gene": "EML4",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 29223528,
+      "breakpoint_exon": 20,
+      "breakpoint_protein_position": 1058,
+      "is_intronic_breakpoint": false,
+      "fusion_annotation_crosscheck_protein_position": 1058,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "domain_reconstitution": null,
+      "reconstitution_pfam_accession": null,
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": null,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": null,
+      "reconstitution_detail": null,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "NA | EML4-ALK fusion",
+      "source_site2_effect_on_frame": "in-frame"
+    },
+    {
+      "event_id": "EVT-TCGA-78-7163-01-4",
+      "sample_id": "TCGA-78-7163-01",
+      "patient_id": "TCGA-78-7163",
+      "tumor_type": "Non-Small Cell Lung Cancer",
+      "oncotree_code": "LUAD",
+      "fusion_name": "EML4-ALK",
+      "partner_gene": "EML4",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 29223528,
+      "breakpoint_exon": 20,
+      "breakpoint_protein_position": 1058,
+      "is_intronic_breakpoint": false,
+      "fusion_annotation_crosscheck_protein_position": 1058,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "domain_reconstitution": null,
+      "reconstitution_pfam_accession": null,
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": null,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": null,
+      "reconstitution_detail": null,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "NA | EML4-ALK fusion",
+      "source_site2_effect_on_frame": "in-frame"
+    },
+    {
+      "event_id": "EVT-TCGA-86-A4P8-01-5",
+      "sample_id": "TCGA-86-A4P8-01",
+      "patient_id": "TCGA-86-A4P8",
+      "tumor_type": "Non-Small Cell Lung Cancer",
+      "oncotree_code": "LUAD",
+      "fusion_name": "EML4-ALK",
+      "partner_gene": "EML4",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 29223528,
+      "breakpoint_exon": 20,
+      "breakpoint_protein_position": 1058,
+      "is_intronic_breakpoint": false,
+      "fusion_annotation_crosscheck_protein_position": 1058,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "domain_reconstitution": null,
+      "reconstitution_pfam_accession": null,
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": null,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": null,
+      "reconstitution_detail": null,
+      "retained_domains": "Protein kinase domain",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "NA | EML4-ALK fusion",
+      "source_site2_effect_on_frame": "in-frame"
+    }
+  ],
+  "algorithm_results": [
+    {
+      "Algorithm": "composite_score",
+      "Algorithm_version": "0.2.0",
+      "Parameters": {
+        "weights": {
+          "recurrence": 0.3,
+          "domain_retention": 0.25,
+          "domain_disruption": 0.2,
+          "cutpoint_proximity": 0.15,
+          "confidence_certainty": 0.1
+        },
+        "neg_log10_p_cap": 10.0,
+        "cutpoint_corrected_p_alpha": 0.05
+      },
+      "Summary": {
+        "score_interpretation": "prioritization_heuristic_not_probability_or_significance",
+        "gene_symbol": "ALK",
+        "n_partners_ranked": 1,
+        "total_events": 5,
+        "components_applicable": {
+          "recurrence": true,
+          "domain_retention": true,
+          "domain_disruption": false,
+          "cutpoint_proximity": false,
+          "confidence_certainty": true
+        },
+        "domain_retention_p_value_used": 0.8201798201798202,
+        "domain_disruption_p_value_used": null,
+        "inferred_cutpoint_aa": null,
+        "Runtime_seconds": 3.883300087181851e-05
+      },
+      "Tables": {
+        "composite_evidence_ranking": [
+          {
+            "Partner_gene": "EML4",
+            "Event_count": 5,
+            "Recurrence_score": 1.0,
+            "Domain_retention_score": 0.008609092035987788,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.5655175352168251,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.5518523485087377,
+            "Rank": 1
+          }
+        ]
+      },
+      "Warnings": [
+        "domain_disruption sub-score excluded: the supplied result had no applicable p-value (e.g. disruption_required_domains not configured for this gene).",
+        "cutpoint_proximity sub-score excluded: corrected cutpoint p-value was missing or >= 0.05, cutpoint was not determinable, or mapped breakpoints were unavailable."
+      ],
+      "Created_at": "2026-10-29T15:36:48.030808Z",
+      "Input_fingerprint": "83348d15ebd92f27bbd1143a84206c30f33475ab2096c51ee90cef69645b3150"
+    },
+    {
+      "Algorithm": "confidence_stats",
+      "Algorithm_version": "1.0.0",
+      "Parameters": {
+        "group_field": "Domain_retention_flags",
+        "group_key": "kinase",
+        "group_value_map": {
+          "retained": "retained",
+          "lost": "not_retained",
+          "disrupted": "not_retained",
+          "unknown": null
+        },
+        "group_values": [
+          "retained",
+          "not_retained"
+        ],
+        "outcome_field": "Frame_status",
+        "outcome_success_value": "in-frame",
+        "outcome_valid_values": [
+          "in-frame",
+          "out-of-frame"
+        ],
+        "numeric_field": "Tumor_variant_count"
+      },
+      "Summary": {
+        "group_field": "Domain_retention_flags",
+        "group_a_label": "retained",
+        "group_b_label": "not_retained",
+        "n_group_a": 5,
+        "n_group_b": 0,
+        "mle": {
+          "outcome_field": "Frame_status",
+          "groups": {
+            "retained": {
+              "n": 5,
+              "successes": 5,
+              "point_estimate": 1.0,
+              "ci_low": 0.5655175352168251,
+              "ci_high": 1.0,
+              "method": "wilson"
+            },
+            "not_retained": {
+              "n": 0,
+              "successes": 0,
+              "point_estimate": null,
+              "ci_low": null,
+              "ci_high": null,
+              "method": "wilson"
+            }
+          }
+        },
+        "ttest": {
+          "numeric_field": "Tumor_variant_count",
+          "group_a_label": "retained",
+          "group_b_label": "not_retained",
+          "n_a": 0,
+          "n_b": 0,
+          "t_statistic": null,
+          "p_value": null,
+          "df": null,
+          "mean_a": null,
+          "mean_b": null
+        },
+        "Runtime_seconds": 0.00019225000141886994
+      },
+      "Tables": null,
+      "Warnings": [
+        "MLE binomial CI for 'Frame_status' was not applicable for group 'not_retained'; it had no valid non-null observations.",
+        "Welch's t-test for 'Tumor_variant_count' was not applicable; each group requires at least two non-null observations."
+      ],
+      "Created_at": "2026-10-29T15:36:48.027378Z",
+      "Input_fingerprint": "83348d15ebd92f27bbd1143a84206c30f33475ab2096c51ee90cef69645b3150"
+    },
+    {
+      "Algorithm": "cutpoint_detection",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 1000,
+        "adaptive": false
+      },
+      "Summary": {
+        "determinable": false,
+        "reason": "fewer than 2 distinct breakpoint positions to scan",
+        "n_events_analyzed": 5,
+        "inferred_cutpoint_aa": null,
+        "observed_statistic_neg_log10_p": null,
+        "observed_p_value": null,
+        "observed_odds_ratio": null,
+        "corrected_p_value": null,
+        "known_domain_boundary_comparison": null,
+        "Runtime_seconds": 2.2833002731204033e-05
+      },
+      "Tables": {
+        "cutpoint_scan": []
+      },
+      "Warnings": [
+        "fewer than 2 distinct breakpoint positions to scan"
+      ],
+      "Created_at": "2026-10-29T15:36:48.027585Z",
+      "Input_fingerprint": "83348d15ebd92f27bbd1143a84206c30f33475ab2096c51ee90cef69645b3150"
+    },
+    {
+      "Algorithm": "domain_disruption",
+      "Algorithm_version": "0.5.0",
+      "Parameters": {},
+      "Summary": {
+        "fisher_odds_ratio": null,
+        "fisher_p_value": null,
+        "permutation_empirical_p_value": null,
+        "observed_in_frame_disruption_rate": null,
+        "Runtime_seconds": 5.750000127591193e-06
+      },
+      "Tables": {},
+      "Warnings": [
+        "ALK has no disruption_required_domains configured; domain-disruption analysis was skipped."
+      ],
+      "Created_at": "2026-10-29T15:36:48.027602Z",
+      "Input_fingerprint": "83348d15ebd92f27bbd1143a84206c30f33475ab2096c51ee90cef69645b3150"
+    },
+    {
+      "Algorithm": "domain_retention",
+      "Algorithm_version": "0.5.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 1000,
+        "adaptive": false
+      },
+      "Summary": {
+        "fisher_odds_ratio": null,
+        "fisher_p_value": 1.0,
+        "fisher_fragility": {
+          "alpha": 0.05,
+          "direction": "positive",
+          "n_observations": 5,
+          "p_value": 1.0,
+          "significant": false,
+          "fragility_index": null
+        },
+        "permutation_empirical_p_value": 0.8201798201798202,
+        "observed_in_frame_retention_rate": 1.0,
+        "permutation_null_classifier": "domain_coordinates",
+        "tumor_type_stratified": {
+          "stratified_by": "oncotree_code",
+          "cmh_statistic": null,
+          "cmh_p_value": null,
+          "mh_common_odds_ratio": null,
+          "direction": null,
+          "informative_strata": 0,
+          "total_strata": 1,
+          "unknown_stratum_observations": 0,
+          "fragility": null
+        },
+        "Runtime_seconds": 0.04515291599818738
+      },
+      "Tables": {
+        "frame_domain_contingency_table": [
+          [
+            5,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "frame_domain_contingency_tables_by_tumor_type": [
+          {
+            "stratum": "LUAD",
+            "table": [
+              [
+                5,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          }
+        ],
+        "domain_retention_descriptives": [
+          {
+            "Domain_key": "kinase",
+            "Domain_name": "Protein kinase domain",
+            "Quantitative_call_count": 5,
+            "Fully_retained_count": 5,
+            "Truncated_count": 0,
+            "Fully_lost_count": 0,
+            "Mean_retained_fraction_among_non_retained_calls": null
+          }
+        ],
+        "permutation_null_retention_rates": {
+          "omitted_from_artifact": true,
+          "count": 1000
+        }
+      },
+      "Warnings": [],
+      "Created_at": "2026-10-29T15:36:48.026467Z",
+      "Input_fingerprint": "83348d15ebd92f27bbd1143a84206c30f33475ab2096c51ee90cef69645b3150"
+    },
+    {
+      "Algorithm": "exon_retention",
+      "Algorithm_version": "1.0.0",
+      "Parameters": {
+        "target_exon": 20
+      },
+      "Summary": {
+        "target_exon": 20,
+        "retained_event_count": 5,
+        "total_event_count": 5,
+        "retained_fraction": 1.0,
+        "Runtime_seconds": 5.674999920302071e-05
+      },
+      "Tables": {
+        "Exon_retention": [
+          {
+            "Exon": 20,
+            "Retained_event_count": 5,
+            "Total_event_count": 5,
+            "Retained_fraction": 1.0
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-10-29T15:36:48.027913Z",
+      "Input_fingerprint": "83348d15ebd92f27bbd1143a84206c30f33475ab2096c51ee90cef69645b3150"
+    },
+    {
+      "Algorithm": "expression_association",
+      "Algorithm_version": "0.2.0",
+      "Parameters": {
+        "expression_field": "mRNA expression z-score"
+      },
+      "Summary": {
+        "Runtime_seconds": 5.583299935096875e-05
+      },
+      "Tables": null,
+      "Warnings": [
+        "ALK: fusion-positive-vs-negative expression comparison skipped; no sample had both established SV assay coverage and measured expression, so no fusion-negative group could be defined.",
+        "ALK: domain-retention expression-split comparison skipped; each group needs >=2 fusion-positive samples with expression data (retained=5, not_retained=0)."
+      ],
+      "Created_at": "2026-10-29T15:36:48.027991Z",
+      "Input_fingerprint": "83348d15ebd92f27bbd1143a84206c30f33475ab2096c51ee90cef69645b3150"
+    },
+    {
+      "Algorithm": "frequency",
+      "Algorithm_version": "1.1.0",
+      "Parameters": {
+        "dedup_by_patient": false
+      },
+      "Summary": {
+        "input_event_count": 5,
+        "input_sample_count": 5,
+        "input_patient_count": 5,
+        "input_missing_patient_id_event_count": 0,
+        "analyzed_event_count": 5,
+        "counted_unit_count": 5,
+        "analyzed_sample_count": 5,
+        "analyzed_patient_count": 5,
+        "count_unit": "event",
+        "unique_partner_gene_count": 1,
+        "Runtime_seconds": 3.2208001357503235e-05
+      },
+      "Tables": {
+        "Partner_gene_counts": [
+          {
+            "Partner_gene": "EML4",
+            "Event_count": 5,
+            "Raw_event_count": 5,
+            "Sample_count": 5,
+            "Patient_count": 5
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-10-29T15:36:48.026877Z",
+      "Input_fingerprint": "83348d15ebd92f27bbd1143a84206c30f33475ab2096c51ee90cef69645b3150"
+    },
+    {
+      "Algorithm": "genomic_position_recurrence",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "bin_size_bp": 1000
+      },
+      "Summary": {
+        "determinable": true,
+        "reason": null,
+        "n_events_analyzed": 5,
+        "n_events_excluded_missing_position": 0,
+        "n_events_excluded_other_build": 0,
+        "n_events_excluded_other_reported_build": 0,
+        "n_events_unknown_build": 0,
+        "n_events_excluded_unknown_build": 0,
+        "reference_build": "GRCh37",
+        "reference_build_counts": {
+          "GRCh37": 5
+        },
+        "bin_size_bp": 1000,
+        "n_distinct_genomic_positions": 1,
+        "top_genomic_bin": {
+          "chromosome": "2",
+          "bin_start": 29223000,
+          "bin_end": 29224000,
+          "n_events": 5,
+          "event_ids": [
+            "EVT-TCGA-50-8460-01-1",
+            "EVT-TCGA-67-6215-01-2",
+            "EVT-TCGA-67-6216-01-3",
+            "EVT-TCGA-78-7163-01-4",
+            "EVT-TCGA-86-A4P8-01-5"
+          ]
+        },
+        "n_positions_shared_by_multiple_events": 1,
+        "genomic_vs_protein_clustering_note": "All 5 events sharing protein position 1058 aa share the exact same genomic breakpoint -- consistent with a real DNA-level recurrent breakpoint, not just a protein-coordinate coincidence.",
+        "Runtime_seconds": 5.283399877953343e-05
+      },
+      "Tables": {
+        "genomic_bin_recurrence": [
+          {
+            "chromosome": "2",
+            "bin_start": 29223000,
+            "bin_end": 29224000,
+            "n_events": 5,
+            "event_ids": [
+              "EVT-TCGA-50-8460-01-1",
+              "EVT-TCGA-67-6215-01-2",
+              "EVT-TCGA-67-6216-01-3",
+              "EVT-TCGA-78-7163-01-4",
+              "EVT-TCGA-86-A4P8-01-5"
+            ]
+          }
+        ],
+        "exact_position_recurrence": [
+          {
+            "chromosome": "2",
+            "position": 29223528,
+            "n_events": 5,
+            "event_ids": [
+              "EVT-TCGA-50-8460-01-1",
+              "EVT-TCGA-67-6215-01-2",
+              "EVT-TCGA-67-6216-01-3",
+              "EVT-TCGA-78-7163-01-4",
+              "EVT-TCGA-86-A4P8-01-5"
+            ]
+          }
+        ],
+        "protein_position_genomic_spread": [
+          {
+            "protein_position_aa": 1058,
+            "n_events": 5,
+            "n_distinct_genomic_positions": 1,
+            "genomic_span_bp": 0,
+            "spans_multiple_chromosomes": false
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-10-29T15:36:48.031074Z",
+      "Input_fingerprint": "83348d15ebd92f27bbd1143a84206c30f33475ab2096c51ee90cef69645b3150"
+    },
+    {
+      "Algorithm": "joint_partner",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {},
+      "Summary": {
+        "Runtime_seconds": 4.499997885432094e-06
+      },
+      "Tables": {},
+      "Warnings": [
+        "ALK has no gene_pair configured; joint-partner analysis was skipped."
+      ],
+      "Created_at": "2026-10-29T15:36:48.027928Z",
+      "Input_fingerprint": "83348d15ebd92f27bbd1143a84206c30f33475ab2096c51ee90cef69645b3150"
+    },
+    {
+      "Algorithm": "junction_concentration",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 1000,
+        "min_events": 5,
+        "adaptive": false
+      },
+      "Summary": {
+        "determinable": true,
+        "reason": null,
+        "n_events_analyzed": 5,
+        "n_outside_transcript": 0,
+        "top_junction": {
+          "role": "three_prime",
+          "junction_exon": 20,
+          "count": 5,
+          "role_event_count": 5,
+          "observed_share": 1.0,
+          "random_breakage_share": 0.0029075471361552593,
+          "excess_neg_log10_p": 12.68236617954754
+        },
+        "permutation_empirical_p_value": 0.000999000999000999,
+        "null_model": "breakpoints uniform across the gene's genomic span, role kept",
+        "panel_capture_caveat": "The random-breakage null assumes a breakpoint anywhere in the gene would be detected. Capture panels such as MSK-IMPACT tile only selected introns, so concentration on panel data is partly by assay design and this p-value overstates the evidence for biological concentration. Confirm in a cohort sequenced without intron selection (whole genome or RNA).",
+        "Runtime_seconds": 0.002322791999176843
+      },
+      "Tables": {
+        "junction_counts": [
+          {
+            "role": "three_prime",
+            "junction_exon": 20,
+            "count": 5,
+            "role_event_count": 5,
+            "observed_share": 1.0,
+            "random_breakage_share": 0.0029075471361552593,
+            "excess_neg_log10_p": 12.68236617954754
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-10-29T15:36:48.030551Z",
+      "Input_fingerprint": "83348d15ebd92f27bbd1143a84206c30f33475ab2096c51ee90cef69645b3150"
+    },
+    {
+      "Algorithm": "mechanistic_interpretation",
+      "Algorithm_version": "1.1.0",
+      "Parameters": {
+        "alpha": 0.05,
+        "recurrent_partner_threshold": 2
+      },
+      "Summary": {
+        "retention_domains_configured": true,
+        "retention_domain_names": [
+          "Protein kinase domain"
+        ],
+        "retention_tested_domain_accession": "PF07714",
+        "retention_configured_domain_count": 1,
+        "retention_statistically_supported": false,
+        "retention_nominal_fisher_supported": false,
+        "retention_fdr_q_value": null,
+        "retention_fdr_significant": null,
+        "retention_fisher_evidence_status": "nominal_not_supported",
+        "retention_recurrence_evidence_type": "descriptive_heuristic",
+        "retention_fisher_p_value": 1.0,
+        "retention_fisher_odds_ratio": null,
+        "retention_counter_intuitive_confidence": "not_applicable",
+        "retention_counter_intuitive_count": 0,
+        "retention_counter_intuitive_total": 0,
+        "retention_counter_intuitive_percent": null,
+        "disruption_domains_configured": false,
+        "disruption_domain_names": [],
+        "disruption_tested_domain_accession": null,
+        "disruption_configured_domain_count": 0,
+        "disruption_statistically_supported": false,
+        "disruption_nominal_fisher_supported": false,
+        "disruption_fdr_q_value": null,
+        "disruption_fdr_significant": null,
+        "disruption_fisher_evidence_status": "not_tested",
+        "disruption_recurrence_evidence_type": "descriptive_heuristic",
+        "disruption_fisher_p_value": null,
+        "disruption_fisher_odds_ratio": null,
+        "disruption_counter_intuitive_confidence": "not_applicable",
+        "disruption_counter_intuitive_count": 0,
+        "disruption_counter_intuitive_total": 0,
+        "disruption_counter_intuitive_percent": null,
+        "Runtime_seconds": 2.029200186370872e-05
+      },
+      "Tables": {},
+      "Warnings": [],
+      "Created_at": "2026-10-29T15:36:48.031011Z",
+      "Input_fingerprint": "83348d15ebd92f27bbd1143a84206c30f33475ab2096c51ee90cef69645b3150"
+    },
+    {
+      "Algorithm": "mutation_cooccurrence",
+      "Algorithm_version": "0.2.0",
+      "Parameters": {},
+      "Summary": {
+        "targets": [],
+        "Runtime_seconds": 9.374998626299202e-06
+      },
+      "Tables": {},
+      "Warnings": [
+        "ALK has no mutual_exclusivity_targets configured; co-occurrence/mutual-exclusivity analysis was skipped."
+      ],
+      "Created_at": "2026-10-29T15:36:48.030174Z",
+      "Input_fingerprint": "83348d15ebd92f27bbd1143a84206c30f33475ab2096c51ee90cef69645b3150"
+    },
+    {
+      "Algorithm": "window_detection",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 1000,
+        "widths": [
+          25,
+          50,
+          100,
+          200
+        ],
+        "min_events_per_window": 4,
+        "adaptive": false
+      },
+      "Summary": {
+        "determinable": false,
+        "reason": "fewer than 2 distinct breakpoint positions to scan",
+        "n_events_analyzed": 5,
+        "widths_tested_aa": [
+          25,
+          50,
+          100,
+          200
+        ],
+        "min_events_per_window": 4,
+        "n_candidate_windows": 0,
+        "n_distinct_candidate_windows_by_event_mask": 0,
+        "best_window": null,
+        "observed_statistic_neg_log10_p": null,
+        "observed_p_value": null,
+        "observed_odds_ratio": null,
+        "corrected_p_value": null,
+        "known_domain_boundary_comparison": null,
+        "mapping_sensitivity": {
+          "available": true,
+          "n_events": 5,
+          "n_exact": 5,
+          "n_clamped_or_approximate": 0,
+          "n_unknown": 0,
+          "fraction_clamped_or_approximate": 0.0
+        },
+        "best_window_mapping_sensitivity": null,
+        "Runtime_seconds": 2.083300205413252e-05
+      },
+      "Tables": {
+        "window_scan": [],
+        "top_windows": []
+      },
+      "Warnings": [
+        "fewer than 2 distinct breakpoint positions to scan"
+      ],
+      "Created_at": "2026-10-29T15:36:48.030213Z",
+      "Input_fingerprint": "83348d15ebd92f27bbd1143a84206c30f33475ab2096c51ee90cef69645b3150"
+    }
+  ],
+  "reference": null,
+  "gene_track": {
+    "protein_length": 1620,
+    "domains": [
+      {
+        "name": "PF12810",
+        "accession": "PF12810",
+        "start_aa": 733,
+        "end_aa": 961
+      },
+      {
+        "name": "Protein kinase domain",
+        "accession": "PF07714",
+        "start_aa": 1116,
+        "end_aa": 1382
+      },
+      {
+        "name": "PF00629",
+        "accession": "PF00629",
+        "start_aa": 480,
+        "end_aa": 634
+      }
+    ],
+    "exon_boundaries_aa": [
+      {
+        "exon_rank": 1,
+        "start_aa": 1,
+        "end_aa": 223
+      },
+      {
+        "exon_rank": 2,
+        "start_aa": 223,
+        "end_aa": 263
+      },
+      {
+        "exon_rank": 3,
+        "start_aa": 263,
+        "end_aa": 318
+      },
+      {
+        "exon_rank": 4,
+        "start_aa": 318,
+        "end_aa": 385
+      },
+      {
+        "exon_rank": 5,
+        "start_aa": 385,
+        "end_aa": 428
+      },
+      {
+        "exon_rank": 6,
+        "start_aa": 428,
+        "end_aa": 472
+      },
+      {
+        "exon_rank": 7,
+        "start_aa": 472,
+        "end_aa": 516
+      },
+      {
+        "exon_rank": 8,
+        "start_aa": 516,
+        "end_aa": 549
+      },
+      {
+        "exon_rank": 9,
+        "start_aa": 550,
+        "end_aa": 606
+      },
+      {
+        "exon_rank": 10,
+        "start_aa": 606,
+        "end_aa": 638
+      },
+      {
+        "exon_rank": 11,
+        "start_aa": 638,
+        "end_aa": 681
+      },
+      {
+        "exon_rank": 12,
+        "start_aa": 681,
+        "end_aa": 735
+      },
+      {
+        "exon_rank": 13,
+        "start_aa": 735,
+        "end_aa": 785
+      },
+      {
+        "exon_rank": 14,
+        "start_aa": 786,
+        "end_aa": 829
+      },
+      {
+        "exon_rank": 15,
+        "start_aa": 830,
+        "end_aa": 878
+      },
+      {
+        "exon_rank": 16,
+        "start_aa": 878,
+        "end_aa": 939
+      },
+      {
+        "exon_rank": 17,
+        "start_aa": 939,
+        "end_aa": 972
+      },
+      {
+        "exon_rank": 18,
+        "start_aa": 972,
+        "end_aa": 1023
+      },
+      {
+        "exon_rank": 19,
+        "start_aa": 1023,
+        "end_aa": 1058
+      },
+      {
+        "exon_rank": 20,
+        "start_aa": 1058,
+        "end_aa": 1120
+      },
+      {
+        "exon_rank": 21,
+        "start_aa": 1120,
+        "end_aa": 1150
+      },
+      {
+        "exon_rank": 22,
+        "start_aa": 1151,
+        "end_aa": 1172
+      },
+      {
+        "exon_rank": 23,
+        "start_aa": 1172,
+        "end_aa": 1215
+      },
+      {
+        "exon_rank": 24,
+        "start_aa": 1216,
+        "end_aa": 1248
+      },
+      {
+        "exon_rank": 25,
+        "start_aa": 1248,
+        "end_aa": 1279
+      },
+      {
+        "exon_rank": 26,
+        "start_aa": 1279,
+        "end_aa": 1313
+      },
+      {
+        "exon_rank": 27,
+        "start_aa": 1313,
+        "end_aa": 1358
+      },
+      {
+        "exon_rank": 28,
+        "start_aa": 1358,
+        "end_aa": 1388
+      },
+      {
+        "exon_rank": 29,
+        "start_aa": 1389,
+        "end_aa": 1621
+      }
+    ]
+  },
+  "intragenic_deletions": []
+}

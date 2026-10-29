@@ -22,15 +22,15 @@ BRAF_RUNS = [
 def test_real_braf_artifacts():
     report = compare_cohort_runs(BRAF_RUNS)
     assert [s["frame_domain_contingency_table"] for s in report["strata"]] == [
-        [[142, 21], [9, 6]],
+        [[129, 19], [9, 5]],
         [[31, 2], [2, 5]],
-        [[9, 0], [6, 0]],
+        [[8, 0], [2, 0]],
     ]
-    assert report["cmh"]["statistic"] == pytest.approx(21.36486008160812)
-    assert report["cmh"]["p_value"] == pytest.approx(3.796664804980965e-06, rel=1e-10)
+    assert report["cmh"]["statistic"] == pytest.approx(18.11101749077901)
+    assert report["cmh"]["p_value"] == pytest.approx(2.0839215151716845e-05, rel=1e-10)
     assert report["cmh"]["informative_strata"] == 2
     assert report["cmh"]["total_strata"] == 3
-    assert report["cmh"]["common_odds_ratio"] == pytest.approx(7.45527079303675)
+    assert report["cmh"]["common_odds_ratio"] == pytest.approx(6.798878205128204)
     assert report["nominal_pooled_significant"] is True
     assert report["all_cohorts_positive_and_informative"] is False
     assert report["sample_overlaps"] == [
