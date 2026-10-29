@@ -238,6 +238,13 @@ def mock_session() -> MagicMock:
             if url.endswith(f"/ensembl/canonical-transcript/hgnc/{symbol}"):
                 response.json.return_value = _canonical_payload(symbol, protein_id, domains or [])
                 return response
+        if url.endswith(
+            ("/canonical-transcript/hgnc/PARTNERA", "/canonical-transcript/hgnc/PARTNERB")
+        ):
+            # Synthetic partners of truncating fusions; Genome Nexus has no
+            # such gene, so domain reconstitution records them as unmapped.
+            response.status_code = 404
+            return response
         if "/interpro/wwwapi/entry/pfam/" in url:
             accession = url.rsplit("/", 1)[-1]
             response.json.return_value = {

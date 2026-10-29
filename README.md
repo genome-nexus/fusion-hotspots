@@ -300,6 +300,19 @@ Suggested reading order:
    and `disruption_fisher_fragility_index`. An index of 1-3 means the result stands or
    falls with those patients; the breakpoint-redraw permutation test uses every patient
    and is the sturdier evidence.
+10. **Check truncated domains against the partner.** When a breakpoint cuts the key
+    domain, the partner's breakpoint is mapped too (chosen by locus, like the target's)
+    and its Pfam domains checked for the same family. Each event row carries
+    `domain_reconstitution` and `reconstitution_*` columns: the domain-relative span each
+    side keeps (0 = domain start, 1 = end), the gap between them in residues (negative is
+    an overlap) and whether the partner breaks mid-exon. `complementary` means the
+    partner keeps the rest of the domain within 10% of its length (FLI1::ERG: FLI1 keeps
+    0-0.82 of its ETS domain, ERG 0.72-1, an 8-residue overlap); `overlapping`, `gap`,
+    `partner_domain_intact`, `partner_domain_lost` and `partner_lacks_domain` cover the
+    rest. The gene report lists every case where the partner shares the family. This is
+    descriptive, not a test: a hybrid domain needs an in-frame junction, a mid-exon DNA
+    breakpoint cannot be spliced as called, and a junction inside sequence two paralogs
+    share complements by construction wherever it is placed.
 
 ### Co-occurrence discovery
 
