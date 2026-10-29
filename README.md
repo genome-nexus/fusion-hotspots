@@ -104,7 +104,8 @@ cfh compare-genes RUN_DIR [RUN_DIR ...] --output adjusted-p-values.tsv
 
 The output records the gene, study, algorithm, test, raw p-value, BH-adjusted
 q-value, and whether the result is significant at `q < 0.05`. All p-values
-collected by one invocation form a single correction family.
+collected by one invocation form a single correction family. See
+[why Benjamini-Hochberg](#why-benjamini-hochberg) for the choice of correction.
 
 The correction family includes retention/disruption Fisher and permutation
 tests, pair enrichment, both expression comparisons, and each mutation/CNA
@@ -291,8 +292,9 @@ Suggested reading order:
    genes as a separate family, not used for `fdr_significant`). A pooled association that
    disappears after stratification is likely tumor-type composition. CMH is two-sided,
    while the pooled Fisher test is one-sided.
-9. **Check fragility.** The in-frame vs other comparison rests on the few out-of-frame
-   patients, so a small p-value can hang on a handful of them. `fisher_fragility` and
+9. **Check fragility.** The in-frame vs other comparison rests on the table's small
+   cells, usually the few patients whose fusion loses the domain, so a small p-value can
+   hang on a handful of them. `fisher_fragility` and
    `tumor_type_stratified.fragility` give the fewest patients whose removal from the
    cells supporting the association raises p to 0.05 or above (greedy search, so an
    upper bound on the true minimum), with the strata and cells removed. The cohort
@@ -446,6 +448,40 @@ could redraw breakpoints only within captured regions. Until then, read
 `junction_concentration` on panel data as "consistent with" a hotspot and confirm
 it in a cohort sequenced without intron selection (whole genome or RNA, such as
 the TCGA replication runs). `panel_capture_caveat` in each result repeats this.
+
+### Why Benjamini-Hochberg
+
+A cohort scan is a screen: it proposes candidate genes for follow-up, so the error
+rate that matters is the share of reported genes that are wrong (FDR), not the
+chance of any single false positive (family-wise error). On the 2026-10-26
+MSK-IMPACT run (874 tests), the alternatives compare as follows:
+
+| Method | Controls | FDR-significant genes |
+|---|---|---|
+| Benjamini-Hochberg (used) | FDR, under independence or positive dependence | 17 |
+| Storey q-value | FDR, estimating the null share π0 | 17 (π0 estimate is 1.0) |
+| Benjamini-Yekutieli | FDR, under any dependence | 15 |
+| Holm / Bonferroni | family-wise error | 15 |
+
+- **Storey gains nothing here.** It gains power by estimating that some tests are
+  non-null, but 77% of p-values exceed 0.5 and 46% equal 1, so π0 is estimated
+  at 1 and the q-values equal BH's. That is typical of a genome-wide screen in
+  which most genes are not drivers.
+- **BH's dependence assumption is the one to defend.** Tests are not independent:
+  Fisher and permutation tests on a gene share its patients, and a fusion such as
+  EML4-ALK is counted under both genes. Both kinds of dependence push p-values in
+  the same direction, the positive regression dependence under which BH is proven
+  to control FDR. Benjamini-Yekutieli drops that assumption at the cost of
+  dividing α by about 7.35 (the harmonic sum over 874 tests).
+- **The choice only matters at the margin.** Most significant tests sit at the
+  permutation floor and survive every method. ALK and NAB2 do not: ALK's
+  retention q is 0.017 under BH but it fails under Benjamini-Yekutieli and Holm,
+  so ALK's genome-wide significance rests on BH's dependence assumption.
+- **BH is conservative for discrete tests.** Fisher tests on tables with few
+  patients can reach only a handful of p-values, many of them 1, and BH counts
+  them as full tests. Discrete-aware procedures (Tarone's screen, Gilbert 2005,
+  Heyse 2011) drop tests that could never reach significance and would give
+  borderline genes more room; they are not implemented.
 
 ### Observation units and assay eligibility
 
