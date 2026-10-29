@@ -359,21 +359,25 @@ src/cfh/mapping/       Transcript/exon/domain mapping -> FusionFeature
 
 ## Published viewer (GitHub Pages)
 
-Every run under `runs/` can be rendered as a backend-less, static-site HTML
-viewer (see `src/cfh/reporting/html_viewer.py`; also produced locally by
-`cfh analyze`/`cfh cohort-scan --html`). Once GitHub Pages is enabled for
-this repository (see below), `.github/workflows/pages-deploy.yml` publishes
-a live, shareable copy of that viewer automatically: on every push to `main`
-it regenerates the viewer bundle for each committed run directory — offline,
-from the already-committed `results.json`/`summary.json`/`*.svg` artifacts,
-with no network access — and deploys the result plus a landing page linking
-to every run to GitHub Pages. It can also be run manually from the Actions
-tab (`workflow_dispatch`).
+The results are published at
+[genome-nexus.github.io/fusion-hotspots](https://genome-nexus.github.io/fusion-hotspots/).
+Every run under `runs/` is rendered as a backend-less, static-site HTML viewer
+(`src/cfh/reporting/html_viewer.py`; also produced locally by
+`cfh analyze`/`cfh cohort-scan --html`). On every push to `main`,
+`.github/workflows/pages-deploy.yml` regenerates the viewer for each committed
+run offline, from the committed `results.json`/`summary.json`/`*.svg`
+artifacts with no network access, and deploys it. It can also be run from the
+Actions tab (`workflow_dispatch`).
 
-**One-time manual step required (this PR cannot do this itself):** a repo
-admin must enable Pages once, under **Settings > Pages > Source > GitHub
-Actions**. Until that setting is flipped, the workflow's deploy step will
-fail even though the workflow file itself is already merged.
+The landing page (`src/cfh/reporting/site_index.py`) indexes every gene any
+run covers. Searching a gene (or opening `?gene=ALK`) lists it with its
+events, best q-value and significance, and links to the most informative page:
+its full report in the newest cohort scan, then a single-gene run on the same
+study, then the cohort summary, then replication-cohort and gene-pair runs. The
+other runs that include the gene are linked beside it.
+
+Pages builds from GitHub Actions (Settings > Pages > Source). Keep only
+`pages-deploy.yml` deploying: a second Pages workflow would race it.
 
 ## Contributing
 
