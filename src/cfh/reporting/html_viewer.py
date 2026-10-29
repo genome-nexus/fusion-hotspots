@@ -79,6 +79,7 @@ _EVENT_FIELDS = (
     "target_role",
     "breakpoint_protein_position",
     "domain_status",
+    "cbioportal_fusion_id",
 )
 
 _COMPOSITE_SCORE_COLUMNS = (
@@ -913,6 +914,24 @@ def _cbioportal_case_link(study_id: str | None, case_id: str, *, kind: str) -> s
     )
 
 
+def _cbioportal_fusion_link(study_id: str | None, sample_id: str, fusion_id: str | None) -> str:
+    """A link to the sample's fusion viewer in cBioPortal's patient view,
+    opened on this fusion when the run recorded its ``fusionId`` (older
+    runs open on the sample's fusion list), or ``""`` without a study or
+    sample."""
+    if not (study_id and sample_id):
+        return ""
+    parameters = {"studyId": study_id, "sampleId": sample_id}
+    if fusion_id:
+        parameters["fusionId"] = fusion_id
+    url = f"{CBIOPORTAL_URL}/patient/fusionViewer?" + urlencode(parameters)
+    title = "Open this fusion" if fusion_id else f"Open {sample_id}'s fusions"
+    return (
+        f'<a href="{_esc(url)}" target="_blank" rel="noopener noreferrer" '
+        f'title="{_esc(title)} in the cBioPortal fusion viewer">Fusion viewer</a>'
+    )
+
+
 def _render_events_table(events: list[dict[str, Any]], study_id: str | None = None) -> str:
     if not events:
         return '<p class="note">No per-event data available for this run.</p>'
@@ -931,6 +950,7 @@ def _render_events_table(events: list[dict[str, Any]], study_id: str | None = No
                 "Role",
                 "Breakpoint (aa)",
                 "Domain status",
+                "cBioPortal",
             )
         )
         + "</tr>"
@@ -946,7 +966,7 @@ def _render_events_table(events: list[dict[str, Any]], study_id: str | None = No
             'data-breakpoint="{breakpoint_attr}">'
             "<td>{event_id}</td><td>{sample}</td><td>{patient}</td><td>{tumor_type}</td>"
             '<td>{oncotree}</td><td>{partner}</td><td>{role}</td><td data-sort="{breakpoint}">'
-            "{breakpoint}</td><td>{status}</td></tr>".format(
+            "{breakpoint}</td><td>{status}</td><td>{fusion_link}</td></tr>".format(
                 tumor_attr=_esc(tumor_type),
                 status_attr=_esc(domain_status),
                 event_id_attr=_esc(event_id_value),
@@ -965,11 +985,17 @@ def _render_events_table(events: list[dict[str, Any]], study_id: str | None = No
                 role=_esc(str(event.get("target_role") or "")),
                 breakpoint=_esc(str(event.get("breakpoint_protein_position") or "")),
                 status=_esc(_DOMAIN_STATUS_LABELS.get(domain_status, domain_status)),
+                fusion_link=_cbioportal_fusion_link(
+                    study_id,
+                    str(event.get("sample_id") or ""),
+                    event.get("cbioportal_fusion_id"),
+                ),
             )
         )
     return (
         '<p class="panel-note">Sample and patient IDs open that case in cBioPortal in a new '
-        "tab.</p>"
+        "tab; <em>Fusion viewer</em> opens the fusion in cBioPortal's patient-view fusion "
+        "viewer.</p>"
         '<div class="events-table-frame"><table class="events" id="events-table">'
         f"<thead>{header}</thead><tbody>{''.join(body_rows)}</tbody></table></div>"
     )

@@ -1061,6 +1061,7 @@ def analyze_structural_variant_calls_with_config(
                     if value
                 ),
                 "source_site2_effect_on_frame": row.get("Site2_Effect_On_Frame"),
+                "cbioportal_fusion_id": cbioportal_api.fusion_viewer_id(row),
             }
         )
 
