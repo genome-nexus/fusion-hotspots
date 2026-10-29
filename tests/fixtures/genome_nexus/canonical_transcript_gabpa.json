@@ -1,0 +1,132 @@
+{
+ "ccdsId": "CCDS13575",
+ "exons": [
+  {
+   "exonEnd": 27107381,
+   "exonId": "ENSE00001407486",
+   "exonStart": 27106881,
+   "rank": 1,
+   "strand": 1,
+   "version": 1
+  },
+  {
+   "exonEnd": 27113986,
+   "exonId": "ENSE00001017318",
+   "exonStart": 27113884,
+   "rank": 2,
+   "strand": 1,
+   "version": 1
+  },
+  {
+   "exonEnd": 27117665,
+   "exonId": "ENSE00003678494",
+   "exonStart": 27117521,
+   "rank": 3,
+   "strand": 1,
+   "version": 1
+  },
+  {
+   "exonEnd": 27121431,
+   "exonId": "ENSE00003647582",
+   "exonStart": 27121347,
+   "rank": 4,
+   "strand": 1,
+   "version": 1
+  },
+  {
+   "exonEnd": 27124545,
+   "exonId": "ENSE00001017324",
+   "exonStart": 27124300,
+   "rank": 5,
+   "strand": 1,
+   "version": 1
+  },
+  {
+   "exonEnd": 27130515,
+   "exonId": "ENSE00001017322",
+   "exonStart": 27130321,
+   "rank": 6,
+   "strand": 1,
+   "version": 1
+  },
+  {
+   "exonEnd": 27134676,
+   "exonId": "ENSE00001017326",
+   "exonStart": 27134623,
+   "rank": 7,
+   "strand": 1,
+   "version": 1
+  },
+  {
+   "exonEnd": 27136661,
+   "exonId": "ENSE00001017320",
+   "exonStart": 27136521,
+   "rank": 8,
+   "strand": 1,
+   "version": 1
+  },
+  {
+   "exonEnd": 27137098,
+   "exonId": "ENSE00001017321",
+   "exonStart": 27136906,
+   "rank": 9,
+   "strand": 1,
+   "version": 1
+  },
+  {
+   "exonEnd": 27144771,
+   "exonId": "ENSE00001411573",
+   "exonStart": 27141315,
+   "rank": 10,
+   "strand": 1,
+   "version": 3
+  }
+ ],
+ "geneId": "ENSG00000154727",
+ "hugoSymbols": [
+  "GABPA"
+ ],
+ "pfamDomains": [
+  {
+   "pfamDomainEnd": 250,
+   "pfamDomainId": "PF02198",
+   "pfamDomainStart": 171
+  },
+  {
+   "pfamDomainEnd": 401,
+   "pfamDomainId": "PF00178",
+   "pfamDomainStart": 319
+  },
+  {
+   "pfamDomainEnd": 122,
+   "pfamDomainId": "PF11620",
+   "pfamDomainStart": 35
+  }
+ ],
+ "proteinId": "ENSP00000346886",
+ "proteinLength": 454,
+ "refseqMrnaId": "NM_001197297",
+ "transcriptId": "ENST00000354828",
+ "transcriptIdVersion": "3",
+ "uniprotId": "Q06546",
+ "utrs": [
+  {
+   "end": 27107381,
+   "start": 27106881,
+   "strand": 1,
+   "type": "five_prime_UTR"
+  },
+  {
+   "end": 27113909,
+   "start": 27113884,
+   "strand": 1,
+   "type": "five_prime_UTR"
+  },
+  {
+   "end": 27144771,
+   "start": 27141544,
+   "strand": 1,
+   "type": "three_prime_UTR"
+  }
+ ]
+}

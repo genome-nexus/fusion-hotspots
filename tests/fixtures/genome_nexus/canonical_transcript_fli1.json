@@ -1,0 +1,113 @@
+{
+ "ccdsId": "CCDS44768",
+ "exons": [
+  {
+   "exonEnd": 128564171,
+   "exonId": "ENSE00002188617",
+   "exonStart": 128563665,
+   "rank": 1,
+   "strand": 1,
+   "version": 2
+  },
+  {
+   "exonEnd": 128628221,
+   "exonId": "ENSE00003584383",
+   "exonStart": 128628010,
+   "rank": 2,
+   "strand": 1,
+   "version": 1
+  },
+  {
+   "exonEnd": 128638167,
+   "exonId": "ENSE00003711461",
+   "exonStart": 128638013,
+   "rank": 3,
+   "strand": 1,
+   "version": 1
+  },
+  {
+   "exonEnd": 128642880,
+   "exonId": "ENSE00003705449",
+   "exonStart": 128642677,
+   "rank": 4,
+   "strand": 1,
+   "version": 1
+  },
+  {
+   "exonEnd": 128651918,
+   "exonId": "ENSE00003704293",
+   "exonStart": 128651853,
+   "rank": 5,
+   "strand": 1,
+   "version": 1
+  },
+  {
+   "exonEnd": 128675326,
+   "exonId": "ENSE00003711049",
+   "exonStart": 128675261,
+   "rank": 6,
+   "strand": 1,
+   "version": 1
+  },
+  {
+   "exonEnd": 128677134,
+   "exonId": "ENSE00003702967",
+   "exonStart": 128677075,
+   "rank": 7,
+   "strand": 1,
+   "version": 1
+  },
+  {
+   "exonEnd": 128679099,
+   "exonId": "ENSE00003705396",
+   "exonStart": 128679052,
+   "rank": 8,
+   "strand": 1,
+   "version": 1
+  },
+  {
+   "exonEnd": 128683162,
+   "exonId": "ENSE00002175028",
+   "exonStart": 128680354,
+   "rank": 9,
+   "strand": 1,
+   "version": 2
+  }
+ ],
+ "geneId": "ENSG00000151702",
+ "hugoSymbols": [
+  "FLI1"
+ ],
+ "pfamDomains": [
+  {
+   "pfamDomainEnd": 197,
+   "pfamDomainId": "PF02198",
+   "pfamDomainStart": 115
+  },
+  {
+   "pfamDomainEnd": 362,
+   "pfamDomainId": "PF00178",
+   "pfamDomainStart": 280
+  }
+ ],
+ "proteinId": "ENSP00000433488",
+ "proteinLength": 452,
+ "refseqMrnaId": "NM_002017",
+ "transcriptId": "ENST00000527786",
+ "transcriptIdVersion": "2",
+ "uniprotId": "Q01543",
+ "utrs": [
+  {
+   "end": 128564153,
+   "start": 128563665,
+   "strand": 1,
+   "type": "five_prime_UTR"
+  },
+  {
+   "end": 128683162,
+   "start": 128680884,
+   "strand": 1,
+   "type": "three_prime_UTR"
+  }
+ ]
+}

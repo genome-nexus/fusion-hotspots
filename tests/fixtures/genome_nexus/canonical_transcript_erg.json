@@ -1,0 +1,121 @@
+{
+ "ccdsId": "CCDS13658",
+ "exons": [
+  {
+   "exonEnd": 39755845,
+   "exonId": "ENSE00001535545",
+   "exonStart": 39751949,
+   "rank": 10,
+   "strand": -1,
+   "version": 1
+  },
+  {
+   "exonEnd": 39762964,
+   "exonId": "ENSE00001033342",
+   "exonStart": 39762917,
+   "rank": 9,
+   "strand": -1,
+   "version": 1
+  },
+  {
+   "exonEnd": 39763637,
+   "exonId": "ENSE00003585332",
+   "exonStart": 39763581,
+   "rank": 8,
+   "strand": -1,
+   "version": 1
+  },
+  {
+   "exonEnd": 39764366,
+   "exonId": "ENSE00003491473",
+   "exonStart": 39764298,
+   "rank": 7,
+   "strand": -1,
+   "version": 1
+  },
+  {
+   "exonEnd": 39772567,
+   "exonId": "ENSE00003486142",
+   "exonStart": 39772496,
+   "rank": 6,
+   "strand": -1,
+   "version": 1
+  },
+  {
+   "exonEnd": 39774559,
+   "exonId": "ENSE00003462848",
+   "exonStart": 39774479,
+   "rank": 5,
+   "strand": -1,
+   "version": 1
+  },
+  {
+   "exonEnd": 39775631,
+   "exonId": "ENSE00003536380",
+   "exonStart": 39775428,
+   "rank": 4,
+   "strand": -1,
+   "version": 1
+  },
+  {
+   "exonEnd": 39795483,
+   "exonId": "ENSE00003508916",
+   "exonStart": 39795332,
+   "rank": 3,
+   "strand": -1,
+   "version": 1
+  },
+  {
+   "exonEnd": 39817544,
+   "exonId": "ENSE00003518057",
+   "exonStart": 39817327,
+   "rank": 2,
+   "strand": -1,
+   "version": 1
+  },
+  {
+   "exonEnd": 39870407,
+   "exonId": "ENSE00001931764",
+   "exonStart": 39870287,
+   "rank": 1,
+   "strand": -1,
+   "version": 1
+  }
+ ],
+ "geneId": "ENSG00000157554",
+ "hugoSymbols": [
+  "ERG"
+ ],
+ "pfamDomains": [
+  {
+   "pfamDomainEnd": 392,
+   "pfamDomainId": "PF00178",
+   "pfamDomainStart": 310
+  },
+  {
+   "pfamDomainEnd": 197,
+   "pfamDomainId": "PF02198",
+   "pfamDomainStart": 116
+  }
+ ],
+ "proteinId": "ENSP00000288319",
+ "proteinLength": 479,
+ "refseqMrnaId": "NM_182918",
+ "transcriptId": "ENST00000288319",
+ "transcriptIdVersion": "7",
+ "uniprotId": "P11308",
+ "utrs": [
+  {
+   "end": 39755324,
+   "start": 39751949,
+   "strand": -1,
+   "type": "three_prime_UTR"
+  },
+  {
+   "end": 39870407,
+   "start": 39870305,
+   "strand": -1,
+   "type": "five_prime_UTR"
+  }
+ ]
+}

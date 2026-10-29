@@ -7,6 +7,7 @@ import json
 import math
 import re
 import subprocess
+from collections import Counter
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
@@ -21,6 +22,14 @@ from cfh.algorithms.mutation_cooccurrence import comparator_target_key
 from cfh.algorithms.registry import list_algorithms
 from cfh.genes.registry import GeneConfig, derive_gene_config_defaults, load_gene_config
 from cfh.ingestion import cbioportal_api
+from cfh.mapping.domain_reconstitution import (
+    PARTNER_UNMAPPED,
+    TARGET_DOMAIN_NOT_IN_PFAM,
+    DomainReconstitution,
+    assess_reconstitution,
+    pfam_hit_for_interval,
+    reconstitution_columns,
+)
 from cfh.mapping.domain_source import ProteinDomain
 from cfh.mapping.feature_mapper import map_event
 from cfh.mapping.fusion_annotation_crosscheck import (
@@ -34,6 +43,7 @@ from cfh.mapping.genome_nexus_source import (
     cds_bounds_from_utrs,
     exon_protein_boundaries,
     gene_track_from_canonical_transcript,
+    map_genomic_breakpoint_to_protein_position,
     parse_canonical_transcript,
     resolve_domains,
 )
@@ -250,6 +260,71 @@ def _target_breakpoint(row: dict, target_gene: str, target_locus: tuple[int, int
     raise ValueError(
         f"{target_gene} fusion has no site breakpoint within target locus "
         f"{locus_start}-{locus_end}: {site_positions}{invalid_note}"
+    )
+
+
+def _domain_reconstitution(
+    row: dict,
+    partner_gene: str,
+    target_role: str,
+    target_breakpoint_aa: int,
+    target_domain_start_aa: int | None,
+    target_domain_end_aa: int | None,
+    target_canonical: CanonicalTranscript,
+    client: GenomeNexusClient,
+) -> DomainReconstitution:
+    """Map the partner's side of a fusion that truncates the target's key
+    domain, and check whether it keeps the rest of the same Pfam family.
+
+    The partner breakpoint is chosen by locus, as the target's is (site
+    labels can pair one gene with the other's coordinate), and mapped with
+    the same transcript arithmetic. Network failures propagate so a flaky
+    lookup fails the gene and is retried rather than silently changing the
+    result.
+    """
+    target_domain = pfam_hit_for_interval(
+        target_canonical.pfam_domains, target_domain_start_aa, target_domain_end_aa
+    )
+    if target_domain is None:
+        return DomainReconstitution(status=TARGET_DOMAIN_NOT_IN_PFAM)
+    try:
+        partner = parse_canonical_transcript(client.fetch_canonical_transcript(partner_gene))
+    except GenomeNexusGeneNotFound:
+        return DomainReconstitution(
+            status=PARTNER_UNMAPPED,
+            pfam_accession=target_domain.pfam_id,
+            detail=f"Genome Nexus has no canonical transcript for {partner_gene}",
+        )
+    partner_locus = _target_locus(partner)
+    if partner_locus is None:
+        return DomainReconstitution(
+            status=PARTNER_UNMAPPED,
+            pfam_accession=target_domain.pfam_id,
+            detail=f"no exon coordinates for {partner_gene}",
+        )
+    try:
+        partner_breakpoint = _target_breakpoint(row, partner_gene, partner_locus)
+    except ValueError as exc:
+        return DomainReconstitution(
+            status=PARTNER_UNMAPPED, pfam_accession=target_domain.pfam_id, detail=str(exc)
+        )
+    partner_role = "three_prime" if target_role == "five_prime" else "five_prime"
+    cds_min, cds_max = cds_bounds_from_utrs(partner.utrs)
+    position = map_genomic_breakpoint_to_protein_position(
+        partner.exons,
+        partner_breakpoint,
+        partner.exons[0].strand,
+        cds_min_genomic=cds_min,
+        cds_max_genomic=cds_max,
+        role=partner_role,
+    )
+    return assess_reconstitution(
+        target_domain=target_domain,
+        target_breakpoint_aa=target_breakpoint_aa,
+        target_role=target_role,
+        partner_pfam_domains=partner.pfam_domains,
+        partner_breakpoint_aa=position.protein_position,
+        partner_breakpoint_mid_exon=not position.is_intronic,
     )
 
 
@@ -922,6 +997,27 @@ def analyze_structural_variant_calls_with_config(
         domain_detail = (
             (feature.Domain_retention_details or {}).get(target_key) if target_key else None
         )
+        partner_gene = _partner(event, config.gene_symbol)
+        reconstitution: DomainReconstitution | None = None
+        if domain_detail is not None and domain_detail.Is_truncated and partner_gene != "unknown":
+            try:
+                reconstitution = _domain_reconstitution(
+                    row,
+                    partner_gene,
+                    role,
+                    mapping.breakpoint_protein_position,
+                    domain_detail.Domain_start_aa,
+                    domain_detail.Domain_end_aa,
+                    target_canonical,
+                    client,
+                )
+            except requests.RequestException as exc:
+                raise RealBenchmarkNetworkError(
+                    f"Genome Nexus partner lookup failed for {partner_gene} "
+                    f"({config.gene_symbol} fusion {event.Event_id}): {exc}. "
+                    "Check network access and https://www.genomenexus.org availability, "
+                    "then retry."
+                ) from exc
         rows.append(
             {
                 "event_id": event.Event_id,
@@ -930,7 +1026,7 @@ def analyze_structural_variant_calls_with_config(
                 "tumor_type": event.Tumor_type,
                 "oncotree_code": event.Oncotree_code,
                 "fusion_name": event.Fusion_name,
-                "partner_gene": _partner(event, config.gene_symbol),
+                "partner_gene": partner_gene,
                 "frame_status": event.Frame_status,
                 "target_role": role,
                 "breakpoint_genomic": breakpoint,
@@ -951,6 +1047,8 @@ def analyze_structural_variant_calls_with_config(
                     domain_detail.Retained_fraction if domain_detail else None
                 ),
                 "domain_is_truncated": domain_detail.Is_truncated if domain_detail else None,
+                "domain_reconstitution": reconstitution.status if reconstitution else None,
+                **reconstitution_columns(reconstitution),
                 "retained_domains": "; ".join(feature.Retained_domains or []),
                 "lost_domains": "; ".join(feature.Lost_domains or []),
                 "disrupted_domains": "; ".join(feature.Disrupted_domains or []),
@@ -1224,6 +1322,13 @@ def analyze_structural_variant_calls_with_config(
         },
         "configured_key_domains": configured_key_domains,
         "configured_disruption_required_domains": configured_disruption_domains,
+        "domain_reconstitution_counts": dict(
+            sorted(
+                Counter(
+                    row["domain_reconstitution"] for row in rows if row["domain_reconstitution"]
+                ).items()
+            )
+        ),
     }
     if config.mechanism_note:
         summary["mechanism_note"] = config.mechanism_note
@@ -1796,6 +1901,71 @@ def _mechanistic_interpretation_lines(
     return ["### Mechanistic interpretation", "", *body, ""]
 
 
+_RECONSTITUTION_READING = {
+    "complementary": "partner keeps the rest of the domain",
+    "overlapping": "pieces overlap",
+    "gap": "pieces leave a gap",
+    "partner_domain_intact": "partner keeps a whole copy",
+    "partner_domain_lost": "partner's copy is cut away",
+    "partner_lacks_domain": "partner has no copy",
+    "partner_unmapped": "partner breakpoint not mapped",
+    "target_domain_not_in_pfam": "no Pfam family for this domain",
+}
+
+
+def _domain_reconstitution_lines(run: RealBenchmarkRun) -> list[str]:
+    """Report section for fusions that cut the key domain and whose partner
+    carries the same Pfam family; omitted when there are none."""
+    shared = [
+        row
+        for row in run.rows
+        if row.get("domain_reconstitution")
+        not in {None, "partner_lacks_domain", "partner_unmapped", "target_domain_not_in_pfam"}
+    ]
+    counts = run.summary.get("domain_reconstitution_counts") or {}
+    if not shared:
+        return []
+    lines = [
+        "### Truncated domain: does the partner supply the rest?",
+        "",
+        f"{sum(counts.values())} fusion(s) cut {run.gene_symbol}'s key domain; in "
+        f"{len(shared)} the partner carries the same Pfam family. Spans are in domain "
+        "coordinates (0 = start, 1 = end); a negative gap is an overlap.",
+        "",
+        "| Fusion | Sample | Frame | 5' keeps | 3' keeps | Gap (aa) | Mid-exon breaks | Reading |",
+        "|---|---|---|---|---|---|---|---|",
+    ]
+    for row in shared:
+        mid_exon = [
+            name
+            for name, flag in (
+                (run.gene_symbol, row.get("is_intronic_breakpoint") is False),
+                (row["partner_gene"], row.get("reconstitution_partner_breakpoint_mid_exon")),
+            )
+            if flag
+        ]
+        gap = row.get("reconstitution_junction_gap_residues")
+        lines.append(
+            f"| {row['fusion_name']} | {row['sample_id']} | {row['frame_status'] or 'unknown'} "
+            f"| {row.get('reconstitution_five_prime_span') or '-'} "
+            f"| {row.get('reconstitution_three_prime_span') or '-'} "
+            f"| {'-' if gap is None else gap} "
+            f"| {', '.join(mid_exon) or 'none'} "
+            f"| {_RECONSTITUTION_READING[row['domain_reconstitution']]} |"
+        )
+    lines.extend(
+        [
+            "",
+            "*A complementary pair forms a hybrid domain only if the junction is in "
+            "frame. Breakpoints come from DNA: a mid-exon break cannot be spliced as "
+            "called, and a junction inside sequence two paralogs share complements by "
+            "construction, so confirm with RNA before reading this as selection.*",
+            "",
+        ]
+    )
+    return lines
+
+
 def markdown_summary(
     run: RealBenchmarkRun,
     *,
@@ -1904,6 +2074,7 @@ def markdown_summary(
             "",
         ]
     )
+    lines.extend(_domain_reconstitution_lines(run))
     if fusion_schematic_svg_path:
         lines.extend(
             [
