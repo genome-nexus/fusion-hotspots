@@ -151,3 +151,79 @@ def test_committed_run_puts_textbook_junctions_in_the_right_intron(gene, slot_ti
         key=lambda title: int(re.search(r": (\d+) breakpoint", title).group(1)),
     )
     assert peak.startswith(slot_title)
+
+
+def _with_genomic(payload, strand=1):
+    # Exons 50 bp apart except a 10 kb intron after exon 3 (ranks 2-5).
+    starts = {2: 1000, 3: 1200, 4: 11400, 5: 11600}
+    exons = [{"exon_rank": r, "start": s, "end": s + 149} for r, s in starts.items()]
+    if strand == -1:
+        exons = [
+            {"exon_rank": e["exon_rank"], "start": -e["end"], "end": -e["start"]} for e in exons
+        ]
+    payload["gene_track"]["strand"] = strand
+    payload["gene_track"]["exons_genomic"] = exons
+    return payload
+
+
+@pytest.mark.parametrize("strand", [1, -1])
+def test_intron_lengths_come_from_exon_coordinates(strand):
+    from cfh.reporting.exon_intron_track import _intron_lengths
+
+    track = _with_genomic(_payload([]), strand)["gene_track"]
+    assert _intron_lengths(track, RANKS) == {2: 50, 3: 10050, 4: 50}
+    assert _intron_lengths({}, RANKS) == {}
+
+
+def _intron_rects(svg):
+    """Width of each dashed intron band in the gene-structure row."""
+    pattern = (
+        r'<g><title>(intron [^<:,]+)[^<]*</title><rect x="[\d.]+" y="[\d.]+" '
+        r'width="([\d.]+)"[^>]*stroke-dasharray'
+    )
+    return {m.group(1): float(m.group(2)) for m in re.finditer(pattern, svg)}
+
+
+def test_introns_are_drawn_and_sized_by_log_length_when_known():
+    events = [_event("three_prime", 4, True), _event("three_prime", 4, True)]
+    svg = render_exon_intron_track_svg(_with_genomic(_payload(events)))
+    widths = _intron_rects(svg)
+
+    assert set(widths) == {"intron 2", "intron 3", "intron 4"}
+    assert widths["intron 3"] > widths["intron 2"] == widths["intron 4"]
+    assert "intron 3, 10.1 kb: 2 breakpoint(s)" in svg
+    assert "intron 2, 50 bp: no breakpoints" in svg
+    assert ">i3</text>" in svg  # the intron holding breakpoints is named
+    assert "intron width follows log genomic length" in svg
+
+
+def test_introns_without_coordinates_get_a_visible_fixed_width():
+    svg = render_exon_intron_track_svg(_payload([_event("three_prime", 4, True)]))
+    widths = _intron_rects(svg)
+    assert set(widths) == {"intron 2", "intron 3", "intron 4"}
+    assert len(set(widths.values())) == 1 and next(iter(widths.values())) >= 10
+    assert "intron lengths not recorded in this run" in svg
+
+
+def test_gene_track_records_genomic_exons_and_strand(
+    genome_nexus_canonical_transcript_fixture_path,
+):
+    from cfh.mapping.genome_nexus_source import (
+        gene_track_from_canonical_transcript,
+        parse_canonical_transcript,
+    )
+
+    canonical = parse_canonical_transcript(
+        json.loads(genome_nexus_canonical_transcript_fixture_path.read_text())
+    )
+    track = gene_track_from_canonical_transcript(canonical)
+    assert track["strand"] == canonical.exons[0].strand
+    assert [e["exon_rank"] for e in track["exons_genomic"]] == sorted(
+        e.rank for e in canonical.exons
+    )
+    first = min(canonical.exons, key=lambda e: e.rank)
+    assert track["exons_genomic"][0] == {
+        "exon_rank": first.rank,
+        "start": first.start,
+        "end": first.end,
+    }

@@ -316,7 +316,26 @@ h2 {
 .control-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .control-group label.title { font-size: 12px; font-weight: 600; color: #333; }
 .control-group select { font-size: 13px; padding: 4px 6px; }
-.status-toggle { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; }
+.control-group input[type="search"] {
+  font-size: 13px; padding: 4px 8px; width: 15rem; max-width: 100%;
+  border: 1px solid #bbb; border-radius: 4px;
+}
+.group-filter {
+  display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px;
+  background: #fff3cd; border: 1px solid #e0c56e; border-radius: 4px; padding: 2px 4px 2px 8px;
+}
+.group-filter[hidden] { display: none; }
+.group-filter button, .reset-filters {
+  font: inherit; font-size: 12px; cursor: pointer; padding: 2px 8px;
+  border: 1px solid #bbb; border-radius: 4px; background: #fff;
+}
+table.events th .sort-button {
+  font: inherit; font-weight: inherit; color: inherit; background: none; border: 0;
+  padding: 0; cursor: pointer; text-align: left;
+}
+table.events th .sort-button::after { content: " ↕"; color: #aaa; font-weight: 400; }
+table.events th[aria-sort="ascending"] .sort-button::after { content: " ↑"; color: #333; }
+table.events th[aria-sort="descending"] .sort-button::after { content: " ↓"; color: #333; }
 #events-summary { font-size: 12px; color: #555; margin-left: auto; }
 table.events { width: 100%; border-collapse: collapse; font-size: 12.5px; }
 table.events th, table.events td {
@@ -574,12 +593,18 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   ).join("");
 
-  var statusContainer = document.getElementById("status-filter");
-  statusContainer.innerHTML = domainStatuses.map(function (s) {
-    var label = statusLabels[s] || (s.charAt(0).toUpperCase() + s.slice(1));
-    var checkbox = '<input type="checkbox" value="' + s + '" checked> ';
-    return '<label class="status-toggle">' + checkbox + label + "</label>";
-  }).join("");
+  var statusSelect = document.getElementById("status-filter");
+  statusSelect.innerHTML = '<option value="">All statuses</option>' + domainStatuses.map(
+    function (s) {
+      var label = statusLabels[s] || (s.charAt(0).toUpperCase() + s.slice(1));
+      return '<option value="' + s.replace(/"/g, "&quot;") + '">' + label + "</option>";
+    }
+  ).join("");
+  var searchInput = document.getElementById("events-search");
+  var groupFilterEl = document.getElementById("group-filter");
+  var groupFilterLabel = document.getElementById("group-filter-label");
+  // A schematic row clicked to narrow the table: {partner, breakpoint} or null.
+  var groupFilter = null;
 
   // Group fusion-schematic rows by the (partner, breakpoint-aa) key baked
   // into every row shape's <title> text by cfh.reporting.fusion_schematic
@@ -605,19 +630,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function applyFilters() {
     var tumor = tumorSelect.value;
-    var checked = statusContainer.querySelectorAll("input:checked");
-    var activeStatuses = new Set(Array.from(checked).map(function (i) { return i.value; }));
+    var status = statusSelect.value;
+    var activeStatuses = new Set(status ? [status] : domainStatuses);
+    var query = searchInput.value.trim().toLowerCase();
 
     var shown = 0;
     rows.forEach(function (tr) {
       var matchesTumor = !tumor || tr.dataset.tumorType === tumor;
-      var matchesStatus = !tr.dataset.domainStatus || activeStatuses.has(tr.dataset.domainStatus);
-      var visible = matchesTumor && matchesStatus;
+      var matchesStatus = !status || tr.dataset.domainStatus === status;
+      var matchesSearch = !query || tr.textContent.toLowerCase().indexOf(query) >= 0;
+      var matchesGroup = !groupFilter || (
+        tr.dataset.partner === groupFilter.partner &&
+        tr.dataset.breakpoint === groupFilter.breakpoint
+      );
+      var visible = matchesTumor && matchesStatus && matchesSearch && matchesGroup;
       tr.hidden = !visible;
       if (visible) { shown += 1; }
     });
     if (summaryEl) {
       summaryEl.textContent = "Showing " + shown + " of " + rows.length + " events";
+    }
+    groupFilterEl.hidden = !groupFilter;
+    if (groupFilter) {
+      groupFilterLabel.textContent = "Schematic row: " + groupFilter.partner +
+        ", breakpoint aa " + groupFilter.breakpoint;
     }
 
     if (schematicSvg) {
@@ -636,9 +672,74 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  function resetFilters() {
+    tumorSelect.value = "";
+    statusSelect.value = "";
+    searchInput.value = "";
+    groupFilter = null;
+  }
+
   tumorSelect.addEventListener("change", applyFilters);
-  statusContainer.addEventListener("change", applyFilters);
+  statusSelect.addEventListener("change", applyFilters);
+  searchInput.addEventListener("input", applyFilters);
+  document.getElementById("group-filter-clear").addEventListener("click", function () {
+    groupFilter = null;
+    applyFilters();
+  });
+  document.getElementById("events-reset").addEventListener("click", function () {
+    resetFilters();
+    applyFilters();
+  });
   applyFilters();
+
+  // Clicking a fusion-schematic row shows just the events it summarizes:
+  // the same (partner, breakpoint aa) key read from the shape's <title>.
+  if (schematicSvg) {
+    schematicSvg.querySelectorAll("title").forEach(function (titleEl) {
+      var match = TITLE_RE.exec(titleEl.textContent || "");
+      var shape = titleEl.parentElement;
+      if (!match || !schematicGroups.has(match[1] + "|" + match[2])) { return; }
+      shape.style.cursor = "pointer";
+      shape.addEventListener("click", function () {
+        resetFilters();
+        groupFilter = { partner: match[1], breakpoint: match[2] };
+        applyFilters();
+        var table = document.getElementById("events-table");
+        if (table) { table.scrollIntoView({ behavior: "smooth", block: "start" }); }
+      });
+    });
+  }
+
+  // Click a column heading to sort the events table by it; click again to
+  // reverse. Numeric cells sort by their data-sort value.
+  var eventsTable = document.getElementById("events-table");
+  if (eventsTable) {
+    var tbody = eventsTable.tBodies[0];
+    var headers = Array.from(eventsTable.querySelectorAll("thead th"));
+    headers.forEach(function (th, index) {
+      var button = th.querySelector("button");
+      if (!button) { return; }
+      button.addEventListener("click", function () {
+        var direction = th.getAttribute("aria-sort") === "ascending" ? -1 : 1;
+        headers.forEach(function (h) { h.setAttribute("aria-sort", "none"); });
+        th.setAttribute("aria-sort", direction === 1 ? "ascending" : "descending");
+        function key(row) {
+          var cell = row.children[index];
+          if (!cell) { return ""; }
+          var raw = cell.getAttribute("data-sort");
+          return raw !== null && raw !== "" && !isNaN(Number(raw))
+            ? Number(raw) : cell.textContent.trim().toLowerCase();
+        }
+        rows.slice().sort(function (a, b) {
+          var ka = key(a), kb = key(b);
+          if (typeof ka === "number" && typeof kb === "number") { return (ka - kb) * direction; }
+          if (typeof ka === "number") { return -1; }
+          if (typeof kb === "number") { return 1; }
+          return String(ka).localeCompare(String(kb)) * direction;
+        }).forEach(function (row) { tbody.appendChild(row); });
+      });
+    });
+  }
 
   // Shared by the lollipop-track points and the mechanistic-interpretation
   // counter-intuitive-event tables: clear any active filters (so the row
@@ -650,8 +751,7 @@ document.addEventListener("DOMContentLoaded", function () {
       '#events-table tbody tr[data-event-id="' + CSS.escape(eventId) + '"]'
     );
     if (!row) { return; }
-    tumorSelect.value = "";
-    statusContainer.querySelectorAll("input").forEach(function (i) { i.checked = true; });
+    resetFilters();
     applyFilters();
     row.scrollIntoView({ behavior: "smooth", block: "center" });
     row.classList.add("row-highlight");
@@ -770,13 +870,23 @@ def _events_controls_html() -> str:
     return """
 <div class="controls">
   <div class="control-group">
+    <label class="title" for="events-search">Search</label>
+    <input id="events-search" type="search" autocomplete="off"
+      placeholder="Sample, patient, partner, tumor type...">
+  </div>
+  <div class="control-group">
     <label class="title" for="tumor-type-filter">Tumor type</label>
     <select id="tumor-type-filter"><option value="">All tumor types</option></select>
   </div>
   <div class="control-group">
-    <span class="title">Domain status</span>
-    <span id="status-filter"></span>
+    <label class="title" for="status-filter">Domain status</label>
+    <select id="status-filter"><option value="">All statuses</option></select>
   </div>
+  <span id="group-filter" class="group-filter" hidden>
+    <span id="group-filter-label"></span>
+    <button type="button" id="group-filter-clear">Clear</button>
+  </span>
+  <button type="button" id="events-reset" class="reset-filters">Reset filters</button>
   <span id="events-summary"></span>
 </div>
 """
@@ -807,8 +917,23 @@ def _render_events_table(events: list[dict[str, Any]], study_id: str | None = No
     if not events:
         return '<p class="note">No per-event data available for this run.</p>'
     header = (
-        "<tr><th>Event</th><th>Sample</th><th>Patient</th><th>Tumor type</th><th>Oncotree</th>"
-        "<th>Partner gene</th><th>Role</th><th>Breakpoint (aa)</th><th>Domain status</th></tr>"
+        "<tr>"
+        + "".join(
+            f'<th scope="col" aria-sort="none"><button type="button" class="sort-button">'
+            f"{label}</button></th>"
+            for label in (
+                "Event",
+                "Sample",
+                "Patient",
+                "Tumor type",
+                "Oncotree",
+                "Partner gene",
+                "Role",
+                "Breakpoint (aa)",
+                "Domain status",
+            )
+        )
+        + "</tr>"
     )
     body_rows = []
     for event in events:
@@ -817,13 +942,16 @@ def _render_events_table(events: list[dict[str, Any]], study_id: str | None = No
         event_id_value = str(event.get("event_id") or "")
         body_rows.append(
             '<tr data-tumor-type="{tumor_attr}" data-domain-status="{status_attr}" '
-            'data-event-id="{event_id_attr}">'
+            'data-event-id="{event_id_attr}" data-partner="{partner_attr}" '
+            'data-breakpoint="{breakpoint_attr}">'
             "<td>{event_id}</td><td>{sample}</td><td>{patient}</td><td>{tumor_type}</td>"
-            "<td>{oncotree}</td><td>{partner}</td><td>{role}</td><td>{breakpoint}</td>"
-            "<td>{status}</td></tr>".format(
+            '<td>{oncotree}</td><td>{partner}</td><td>{role}</td><td data-sort="{breakpoint}">'
+            "{breakpoint}</td><td>{status}</td></tr>".format(
                 tumor_attr=_esc(tumor_type),
                 status_attr=_esc(domain_status),
                 event_id_attr=_esc(event_id_value),
+                partner_attr=_esc(str(event.get("partner_gene") or "")),
+                breakpoint_attr=_esc(str(event.get("breakpoint_protein_position") or "")),
                 event_id=_esc(event_id_value),
                 sample=_cbioportal_case_link(
                     study_id, str(event.get("sample_id") or ""), kind="sample"
@@ -1239,8 +1367,10 @@ def _domain_track_section(protein_svg: str | None, exon_svg: str | None) -> str:
         return ""
     protein_note = "Click a point to jump to its event in the table below."
     exon_note = (
-        "Breakpoints counted per exon or intron; hover a stem for its count, domain "
-        "status and top partners. Bars above show how often each exon is kept."
+        "Exons are solid boxes and introns the dashed bands between them, shaded where "
+        "breakpoints fall. Stems count breakpoints per exon or intron; hover one for its "
+        "count, domain status and top partners, or hover an intron for its length. Bars "
+        "above show how often each exon is kept."
     )
     if not (protein_svg and exon_svg):
         only_exon = exon_svg is not None

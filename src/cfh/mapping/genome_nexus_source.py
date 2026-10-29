@@ -383,6 +383,13 @@ def gene_track_from_canonical_transcript(canonical: CanonicalTranscript) -> dict
             {"exon_rank": b.exon_rank, "start_aa": b.start_aa, "end_aa": b.end_aa}
             for b in boundaries
         ],
+        # Genomic exon coordinates (inclusive), so a viewer can size introns
+        # by their real length; strand +1 or -1.
+        "strand": canonical.exons[0].strand if canonical.exons else None,
+        "exons_genomic": [
+            {"exon_rank": exon.rank, "start": exon.start, "end": exon.end}
+            for exon in sorted(canonical.exons, key=lambda exon: exon.rank)
+        ],
     }
 
 

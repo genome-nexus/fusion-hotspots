@@ -39,7 +39,7 @@ def test_events_table_links_sample_and_patient_columns():
         [{"event_id": "E1", "sample_id": "S1", "patient_id": "P1", "domain_status": "lost"}],
         "study_x",
     )
-    assert "<th>Sample</th><th>Patient</th>" in html
+    assert ">Sample</button></th>" in html and ">Patient</button></th>" in html
     assert "studyId=study_x&amp;sampleId=S1" in html
     assert "studyId=study_x&amp;caseId=P1" in html
 
