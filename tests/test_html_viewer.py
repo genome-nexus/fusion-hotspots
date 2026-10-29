@@ -909,7 +909,7 @@ def test_events_table_can_be_searched_sorted_and_narrowed_from_the_schematic(tmp
     assert 'id="group-filter" class="group-filter" hidden' in html
     # Every column heading is a sort button; breakpoints sort numerically.
     header = html.split('id="events-table"', 1)[1].split("</thead>", 1)[0]
-    assert header.count('class="sort-button"') == 9
+    assert header.count('class="sort-button"') == 10
     assert '<td data-sort="327">327</td>' in html
     # Rows carry the (partner, breakpoint) key a schematic row is matched on.
     assert 'data-partner="AGK" data-breakpoint="327"' in html
