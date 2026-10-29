@@ -1,20 +1,13 @@
 import json
 import re
-from pathlib import Path
 
 import pytest
 
 from cfh.reporting.exon_intron_track import _kept, _slot_key, render_exon_intron_track_svg
 from cfh.reporting.html_viewer import build_run_viewer
+from conftest import latest_run_dir
 
 RANKS = [2, 3, 4, 5]
-COMMITTED_SCAN = (
-    Path(__file__).resolve().parents[1]
-    / "runs"
-    / "cohort-scan_msk_impact_50k_2026_20261026T200631Z"
-    / "cohort_scan"
-    / "gene_reports"
-)
 
 
 def _event(role, exon, intronic, status="retained", **extra):
@@ -147,9 +140,10 @@ def test_viewer_shows_the_exon_view_alone_without_a_protein_track(tmp_path):
 )
 def test_committed_run_puts_textbook_junctions_in_the_right_intron(gene, slot_title):
     """ALK's kinase-retaining break is in intron 19 and FGFR2's in intron 17."""
-    path = COMMITTED_SCAN / gene / "results.json"
+    reports = latest_run_dir("cohort-scan_msk_impact_50k_2026") / "cohort_scan" / "gene_reports"
+    path = reports / gene / "results.json"
     if not path.exists():
-        pytest.skip("committed 26 October run not present")
+        pytest.skip("committed cohort scan has no report for this gene")
     svg = render_exon_intron_track_svg(json.loads(path.read_text()))
     assert svg is not None
     peak = max(

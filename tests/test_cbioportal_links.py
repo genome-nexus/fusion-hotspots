@@ -1,6 +1,5 @@
 import json
 import re
-from pathlib import Path
 
 from cfh.reporting.html_viewer import (
     CBIOPORTAL_URL,
@@ -8,15 +7,7 @@ from cfh.reporting.html_viewer import (
     _render_events_table,
     build_run_viewer,
 )
-
-COMMITTED_ALK = (
-    Path(__file__).resolve().parents[1]
-    / "runs"
-    / "cohort-scan_msk_impact_50k_2026_20261026T200631Z"
-    / "cohort_scan"
-    / "gene_reports"
-    / "alk"
-)
+from conftest import latest_run_dir
 
 
 def test_links_use_cbioportal_patient_view_urls():
@@ -54,11 +45,12 @@ def test_events_table_links_sample_and_patient_columns():
 
 
 def test_committed_alk_page_links_every_event_to_cbioportal(tmp_path):
-    if not (COMMITTED_ALK / "results.json").exists():
+    alk = latest_run_dir("cohort-scan_msk_impact_50k_2026") / "cohort_scan" / "gene_reports" / "alk"
+    if not (alk / "results.json").exists():
         import pytest
 
-        pytest.skip("committed 26 October run not present")
-    payload = json.loads((COMMITTED_ALK / "results.json").read_text())
+        pytest.skip("committed cohort scan has no report for this gene")
+    payload = json.loads((alk / "results.json").read_text())
     run_dir = tmp_path / "alk"
     run_dir.mkdir()
     (run_dir / "results.json").write_text(json.dumps(payload))

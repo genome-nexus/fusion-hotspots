@@ -1,0 +1,975 @@
+{
+  "gene_symbol": "MTAP",
+  "study_id": "msk_impact_50k_2026",
+  "molecular_profile_id": "msk_impact_50k_2026_structural_variants",
+  "retrieved_at": "2026-10-29T15:51:10.013631+00:00",
+  "summary": {
+    "raw_structural_variant_count": 8,
+    "total_fusions": 4,
+    "sample_count": 4,
+    "known_patient_count": 4,
+    "missing_patient_id_event_count": 0,
+    "inference_counting_unit": "patient",
+    "patient_independence_established": true,
+    "observation_unit": "patient_gene",
+    "input_mapped_event_count": 4,
+    "analyzed_observation_count": 4,
+    "collapsed_repeat_observation_count": 0,
+    "patients_with_repeated_observations": 0,
+    "observation_identity_fallbacks": {},
+    "frame_conflict_groups": 0,
+    "merged_distinct_fusion_count": 0,
+    "patients_with_multiple_distinct_fusions": 0,
+    "mapped_fusions": 4,
+    "skipped_fusions": 0,
+    "in_frame_count": 1,
+    "out_of_frame_count": 2,
+    "known_frame_count": 3,
+    "unknown_frame_count": 1,
+    "in_frame_percent": 33.333333333333336,
+    "kinase_retained_count": 1,
+    "kinase_retained_percent": 25.0,
+    "in_frame_kinase_retained_count": 1,
+    "fisher_odds_ratio": "inf",
+    "fisher_p_value": 0.25,
+    "permutation_p_value": 0.10891089108910891,
+    "frame_domain_contingency_table": [
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        3
+      ]
+    ],
+    "partner_counts": [
+      {
+        "Partner_gene": "CDKN2A",
+        "Event_count": 3,
+        "Raw_event_count": 3,
+        "Sample_count": 3,
+        "Patient_count": 3
+      },
+      {
+        "Partner_gene": "CDKN2B",
+        "Event_count": 1,
+        "Raw_event_count": 1,
+        "Sample_count": 1,
+        "Patient_count": 1
+      }
+    ],
+    "domain_accession": "PF01048",
+    "domain_start_aa": 11,
+    "domain_end_aa": 255,
+    "key_domains": [
+      {
+        "name": "Phosphorylase superfamily",
+        "accession": "PF01048",
+        "start_aa": 11,
+        "end_aa": 255
+      }
+    ],
+    "fusion_annotation_crosscheck": {
+      "agree": 4,
+      "disagree": 0,
+      "unavailable": 0
+    },
+    "configured_key_domains": [
+      {
+        "name": "Phosphorylase superfamily",
+        "source": "genome_nexus",
+        "key": "auto_key_domain",
+        "accession": "PF01048",
+        "start_aa": null,
+        "end_aa": null
+      }
+    ],
+    "configured_disruption_required_domains": [],
+    "domain_reconstitution_counts": {
+      "partner_lacks_domain": 3
+    }
+  },
+  "warnings": [],
+  "events": [
+    {
+      "event_id": "EVT-P-0067843-T01-IM7-2",
+      "sample_id": "P-0067843-T01-IM7",
+      "patient_id": "P-0067843",
+      "tumor_type": "Melanoma",
+      "oncotree_code": "SKCM",
+      "fusion_name": "CDKN2A-MTAP",
+      "partner_gene": "CDKN2A",
+      "frame_status": "out-of-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 21830762,
+      "breakpoint_exon": 5,
+      "breakpoint_protein_position": 116,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 116,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "disrupted",
+      "domain_retained_fraction": 0.5714285714285714,
+      "domain_is_truncated": true,
+      "domain_reconstitution": "partner_lacks_domain",
+      "reconstitution_pfam_accession": "PF01048",
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": 65,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": false,
+      "reconstitution_detail": null,
+      "retained_domains": "",
+      "lost_domains": "",
+      "disrupted_domains": "Phosphorylase superfamily",
+      "source_annotation_text": "CDKN2A (NM_058195) - MTAP (NM_002451) rearrangement: c.194-2398:CDKN2A_c.348-7145:MTAPinv | Protein Fusion: out of frame  {CDKN2A:MTAP}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0019341-T02-IM6-5",
+      "sample_id": "P-0019341-T02-IM6",
+      "patient_id": "P-0019341",
+      "tumor_type": "Glioma",
+      "oncotree_code": "GB",
+      "fusion_name": "MTAP-CDKN2A",
+      "partner_gene": "CDKN2A",
+      "frame_status": "out-of-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 21842696,
+      "breakpoint_exon": 6,
+      "breakpoint_protein_position": 151,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 151,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "disrupted",
+      "domain_retained_fraction": 0.42857142857142855,
+      "domain_is_truncated": true,
+      "domain_reconstitution": "partner_lacks_domain",
+      "reconstitution_pfam_accession": "PF01048",
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": 65,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": false,
+      "reconstitution_detail": null,
+      "retained_domains": "",
+      "lost_domains": "",
+      "disrupted_domains": "Phosphorylase superfamily",
+      "source_annotation_text": "CDKN2A (NM_000077) - MTAP (NM_002451) rearrangement:c.150+245:CDKN2A_c.450+4687:MTAPinv | Protein Fusion: out of frame  {CDKN2A:MTAP}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0024526-T01-IM6-6",
+      "sample_id": "P-0024526-T01-IM6",
+      "patient_id": "P-0024526",
+      "tumor_type": "Hepatobiliary Cancer",
+      "oncotree_code": "IHCH",
+      "fusion_name": "MTAP-CDKN2A",
+      "partner_gene": "CDKN2A",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 21814419,
+      "breakpoint_exon": 2,
+      "breakpoint_protein_position": 12,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 12,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "disrupted",
+      "domain_retained_fraction": 0.9959183673469387,
+      "domain_is_truncated": true,
+      "domain_reconstitution": "partner_lacks_domain",
+      "reconstitution_pfam_accession": "PF01048",
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": 133,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": false,
+      "reconstitution_detail": null,
+      "retained_domains": "",
+      "lost_domains": "",
+      "disrupted_domains": "Phosphorylase superfamily",
+      "source_annotation_text": "CDKN2A (NM_000077) rearrangement: c.457+112:CDKN2A_chr9:g.21814419del | Antisense Fusion",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0002886-T01-IM3-8",
+      "sample_id": "P-0002886-T01-IM3",
+      "patient_id": "P-0002886",
+      "tumor_type": "Non-Small Cell Lung Cancer",
+      "oncotree_code": "LUAD",
+      "fusion_name": "MTAP-CDKN2B",
+      "partner_gene": "CDKN2B",
+      "frame_status": "in-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 21860421,
+      "breakpoint_exon": 7,
+      "breakpoint_protein_position": 271,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 271,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "domain_reconstitution": null,
+      "reconstitution_pfam_accession": null,
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": null,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": null,
+      "reconstitution_detail": null,
+      "retained_domains": "Phosphorylase superfamily",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "NA | Protein fusion: in frame (MTAP-CDKN2B)",
+      "source_site2_effect_on_frame": "NA"
+    }
+  ],
+  "algorithm_results": [
+    {
+      "Algorithm": "composite_score",
+      "Algorithm_version": "0.2.0",
+      "Parameters": {
+        "weights": {
+          "recurrence": 0.3,
+          "domain_retention": 0.25,
+          "domain_disruption": 0.2,
+          "cutpoint_proximity": 0.15,
+          "confidence_certainty": 0.1
+        },
+        "neg_log10_p_cap": 10.0,
+        "cutpoint_corrected_p_alpha": 0.05
+      },
+      "Summary": {
+        "score_interpretation": "prioritization_heuristic_not_probability_or_significance",
+        "gene_symbol": "MTAP",
+        "n_partners_ranked": 2,
+        "total_events": 4,
+        "components_applicable": {
+          "recurrence": true,
+          "domain_retention": true,
+          "domain_disruption": false,
+          "cutpoint_proximity": false,
+          "confidence_certainty": true
+        },
+        "domain_retention_p_value_used": 0.10891089108910891,
+        "domain_disruption_p_value_used": null,
+        "inferred_cutpoint_aa": null,
+        "Runtime_seconds": 7.31250001990702e-05
+      },
+      "Tables": {
+        "composite_evidence_ranking": [
+          {
+            "Partner_gene": "CDKN2A",
+            "Event_count": 3,
+            "Recurrence_score": 0.75,
+            "Domain_retention_score": 0.09629286886244175,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.2744647709419452,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.42541491432277684,
+            "Rank": 1
+          },
+          {
+            "Partner_gene": "CDKN2B",
+            "Event_count": 1,
+            "Recurrence_score": 0.25,
+            "Domain_retention_score": 0.09629286886244175,
+            "Domain_disruption_score": null,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.2744647709419452,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.1946456835535461,
+            "Rank": 2
+          }
+        ]
+      },
+      "Warnings": [
+        "domain_disruption sub-score excluded: the supplied result had no applicable p-value (e.g. disruption_required_domains not configured for this gene).",
+        "cutpoint_proximity sub-score excluded: corrected cutpoint p-value was missing or >= 0.05, cutpoint was not determinable, or mapped breakpoints were unavailable."
+      ],
+      "Created_at": "2026-10-29T15:51:10.012810Z",
+      "Input_fingerprint": "525b9093e3d2ad0efe0d7538a76bf68a78de0d821a11a24de2002edb907a0ce1"
+    },
+    {
+      "Algorithm": "confidence_stats",
+      "Algorithm_version": "1.0.0",
+      "Parameters": {
+        "group_field": "Domain_retention_flags",
+        "group_key": "auto_key_domain",
+        "group_value_map": {
+          "retained": "retained",
+          "lost": "not_retained",
+          "disrupted": "not_retained",
+          "unknown": null
+        },
+        "group_values": [
+          "retained",
+          "not_retained"
+        ],
+        "outcome_field": "Frame_status",
+        "outcome_success_value": "in-frame",
+        "outcome_valid_values": [
+          "in-frame",
+          "out-of-frame"
+        ],
+        "numeric_field": "Tumor_variant_count"
+      },
+      "Summary": {
+        "group_field": "Domain_retention_flags",
+        "group_a_label": "retained",
+        "group_b_label": "not_retained",
+        "n_group_a": 1,
+        "n_group_b": 3,
+        "mle": {
+          "outcome_field": "Frame_status",
+          "groups": {
+            "retained": {
+              "n": 1,
+              "successes": 1,
+              "point_estimate": 1.0,
+              "ci_low": 0.20654931437723745,
+              "ci_high": 1.0,
+              "method": "wilson"
+            },
+            "not_retained": {
+              "n": 2,
+              "successes": 0,
+              "point_estimate": 0.0,
+              "ci_low": 0.0,
+              "ci_high": 0.6576197724933469,
+              "method": "wilson"
+            }
+          }
+        },
+        "ttest": {
+          "numeric_field": "Tumor_variant_count",
+          "group_a_label": "retained",
+          "group_b_label": "not_retained",
+          "n_a": 1,
+          "n_b": 3,
+          "t_statistic": null,
+          "p_value": null,
+          "df": null,
+          "mean_a": 16.0,
+          "mean_b": 26.666666666666668
+        },
+        "Runtime_seconds": 0.0007557499993708916
+      },
+      "Tables": null,
+      "Warnings": [
+        "Welch's t-test for 'Tumor_variant_count' was not applicable; each group requires at least two non-null observations."
+      ],
+      "Created_at": "2026-10-29T15:51:09.999210Z",
+      "Input_fingerprint": "525b9093e3d2ad0efe0d7538a76bf68a78de0d821a11a24de2002edb907a0ce1"
+    },
+    {
+      "Algorithm": "cutpoint_detection",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 1000,
+        "adaptive": false
+      },
+      "Summary": {
+        "determinable": true,
+        "reason": null,
+        "n_events_analyzed": 4,
+        "inferred_cutpoint_aa": 151,
+        "observed_statistic_neg_log10_p": 0.6020599913279624,
+        "observed_p_value": 0.25,
+        "observed_odds_ratio": 0.0,
+        "corrected_p_value": 0.4875124875124875,
+        "known_domain_boundary_comparison": {
+          "nearest_known_domain_boundary_aa": 255,
+          "distance_aa": -104
+        },
+        "Runtime_seconds": 0.012370417000056477
+      },
+      "Tables": {
+        "cutpoint_scan": [
+          {
+            "cutpoint": 12,
+            "n_positive_at_or_below": 0,
+            "n_positive_above": 1,
+            "n_negative_at_or_below": 1,
+            "n_negative_above": 2,
+            "odds_ratio": 0.0,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0
+          },
+          {
+            "cutpoint": 116,
+            "n_positive_at_or_below": 0,
+            "n_positive_above": 1,
+            "n_negative_at_or_below": 2,
+            "n_negative_above": 1,
+            "odds_ratio": 0.0,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0
+          },
+          {
+            "cutpoint": 151,
+            "n_positive_at_or_below": 0,
+            "n_positive_above": 1,
+            "n_negative_at_or_below": 3,
+            "n_negative_above": 0,
+            "odds_ratio": 0.0,
+            "p_value": 0.25,
+            "neg_log10_p_value": 0.6020599913279624
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-10-29T15:51:10.012145Z",
+      "Input_fingerprint": "525b9093e3d2ad0efe0d7538a76bf68a78de0d821a11a24de2002edb907a0ce1"
+    },
+    {
+      "Algorithm": "domain_disruption",
+      "Algorithm_version": "0.5.0",
+      "Parameters": {},
+      "Summary": {
+        "fisher_odds_ratio": null,
+        "fisher_p_value": null,
+        "permutation_empirical_p_value": null,
+        "observed_in_frame_disruption_rate": null,
+        "Runtime_seconds": 4.091600203537382e-05
+      },
+      "Tables": {},
+      "Warnings": [
+        "MTAP has no disruption_required_domains configured; domain-disruption analysis was skipped."
+      ],
+      "Created_at": "2026-10-29T15:51:10.001792Z",
+      "Input_fingerprint": "525b9093e3d2ad0efe0d7538a76bf68a78de0d821a11a24de2002edb907a0ce1"
+    },
+    {
+      "Algorithm": "domain_retention",
+      "Algorithm_version": "0.5.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 100,
+        "adaptive": true
+      },
+      "Summary": {
+        "fisher_odds_ratio": null,
+        "fisher_p_value": 0.25,
+        "fisher_fragility": {
+          "alpha": 0.05,
+          "direction": "positive",
+          "n_observations": 4,
+          "p_value": 0.25,
+          "significant": false,
+          "fragility_index": null
+        },
+        "permutation_empirical_p_value": 0.10891089108910891,
+        "observed_in_frame_retention_rate": 1.0,
+        "permutation_null_classifier": "domain_coordinates",
+        "tumor_type_stratified": {
+          "stratified_by": "oncotree_code",
+          "cmh_statistic": null,
+          "cmh_p_value": null,
+          "mh_common_odds_ratio": null,
+          "direction": null,
+          "informative_strata": 0,
+          "total_strata": 4,
+          "unknown_stratum_observations": 0,
+          "fragility": null
+        },
+        "adaptive_permutations": {
+          "enabled": true,
+          "n_permutations_small": 100,
+          "n_permutations_full": 1000,
+          "n_permutations_used": 100,
+          "n_permutations_max": 100000,
+          "escalated_to_full": false
+        },
+        "Runtime_seconds": 0.006756499999028165
+      },
+      "Tables": {
+        "frame_domain_contingency_table": [
+          [
+            1,
+            0
+          ],
+          [
+            0,
+            3
+          ]
+        ],
+        "frame_domain_contingency_tables_by_tumor_type": [
+          {
+            "stratum": "GB",
+            "table": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          {
+            "stratum": "IHCH",
+            "table": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          {
+            "stratum": "LUAD",
+            "table": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          {
+            "stratum": "SKCM",
+            "table": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          }
+        ],
+        "domain_retention_descriptives": [
+          {
+            "Domain_key": "auto_key_domain",
+            "Domain_name": "Phosphorylase superfamily",
+            "Quantitative_call_count": 4,
+            "Fully_retained_count": 1,
+            "Truncated_count": 3,
+            "Fully_lost_count": 0,
+            "Mean_retained_fraction_among_non_retained_calls": 0.6653061224489796
+          }
+        ],
+        "permutation_null_retention_rates": {
+          "omitted_from_artifact": true,
+          "count": 100
+        }
+      },
+      "Warnings": [],
+      "Created_at": "2026-10-29T15:51:09.995895Z",
+      "Input_fingerprint": "525b9093e3d2ad0efe0d7538a76bf68a78de0d821a11a24de2002edb907a0ce1"
+    },
+    {
+      "Algorithm": "exon_retention",
+      "Algorithm_version": "1.0.0",
+      "Parameters": {
+        "target_exon": 1
+      },
+      "Summary": {
+        "target_exon": 1,
+        "retained_event_count": 1,
+        "total_event_count": 4,
+        "retained_fraction": 0.25,
+        "Runtime_seconds": 6.729099914082326e-05
+      },
+      "Tables": {
+        "Exon_retention": [
+          {
+            "Exon": 1,
+            "Retained_event_count": 1,
+            "Total_event_count": 4,
+            "Retained_fraction": 0.25
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-10-29T15:51:10.002850Z",
+      "Input_fingerprint": "525b9093e3d2ad0efe0d7538a76bf68a78de0d821a11a24de2002edb907a0ce1"
+    },
+    {
+      "Algorithm": "expression_association",
+      "Algorithm_version": "0.2.0",
+      "Parameters": {},
+      "Summary": {
+        "Runtime_seconds": 3.929100057575852e-05
+      },
+      "Tables": null,
+      "Warnings": [
+        "No mRNA expression data was available for MTAP in this cohort; expression-association analysis was skipped."
+      ],
+      "Created_at": "2026-10-29T15:51:10.002725Z",
+      "Input_fingerprint": "525b9093e3d2ad0efe0d7538a76bf68a78de0d821a11a24de2002edb907a0ce1"
+    },
+    {
+      "Algorithm": "frequency",
+      "Algorithm_version": "1.1.0",
+      "Parameters": {
+        "dedup_by_patient": false
+      },
+      "Summary": {
+        "input_event_count": 4,
+        "input_sample_count": 4,
+        "input_patient_count": 4,
+        "input_missing_patient_id_event_count": 0,
+        "analyzed_event_count": 4,
+        "counted_unit_count": 4,
+        "analyzed_sample_count": 4,
+        "analyzed_patient_count": 4,
+        "count_unit": "event",
+        "unique_partner_gene_count": 2,
+        "Runtime_seconds": 0.00011729199832188897
+      },
+      "Tables": {
+        "Partner_gene_counts": [
+          {
+            "Partner_gene": "CDKN2A",
+            "Event_count": 3,
+            "Raw_event_count": 3,
+            "Sample_count": 3,
+            "Patient_count": 3
+          },
+          {
+            "Partner_gene": "CDKN2B",
+            "Event_count": 1,
+            "Raw_event_count": 1,
+            "Sample_count": 1,
+            "Patient_count": 1
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-10-29T15:51:09.997300Z",
+      "Input_fingerprint": "525b9093e3d2ad0efe0d7538a76bf68a78de0d821a11a24de2002edb907a0ce1"
+    },
+    {
+      "Algorithm": "genomic_position_recurrence",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "bin_size_bp": 1000
+      },
+      "Summary": {
+        "determinable": true,
+        "reason": null,
+        "n_events_analyzed": 4,
+        "n_events_excluded_missing_position": 0,
+        "n_events_excluded_other_build": 0,
+        "n_events_excluded_other_reported_build": 0,
+        "n_events_unknown_build": 0,
+        "n_events_excluded_unknown_build": 0,
+        "reference_build": "GRCh37",
+        "reference_build_counts": {
+          "GRCh37": 4
+        },
+        "bin_size_bp": 1000,
+        "n_distinct_genomic_positions": 4,
+        "top_genomic_bin": {
+          "chromosome": "9",
+          "bin_start": 21814000,
+          "bin_end": 21815000,
+          "n_events": 1,
+          "event_ids": [
+            "EVT-P-0024526-T01-IM6-6"
+          ]
+        },
+        "n_positions_shared_by_multiple_events": 0,
+        "genomic_vs_protein_clustering_note": "No protein-junction position was shared by two or more events with a known genomic breakpoint, so genomic-vs-protein clustering could not be compared.",
+        "Runtime_seconds": 9.549999958835542e-05
+      },
+      "Tables": {
+        "genomic_bin_recurrence": [
+          {
+            "chromosome": "9",
+            "bin_start": 21814000,
+            "bin_end": 21815000,
+            "n_events": 1,
+            "event_ids": [
+              "EVT-P-0024526-T01-IM6-6"
+            ]
+          },
+          {
+            "chromosome": "9",
+            "bin_start": 21830000,
+            "bin_end": 21831000,
+            "n_events": 1,
+            "event_ids": [
+              "EVT-P-0067843-T01-IM7-2"
+            ]
+          },
+          {
+            "chromosome": "9",
+            "bin_start": 21842000,
+            "bin_end": 21843000,
+            "n_events": 1,
+            "event_ids": [
+              "EVT-P-0019341-T02-IM6-5"
+            ]
+          },
+          {
+            "chromosome": "9",
+            "bin_start": 21860000,
+            "bin_end": 21861000,
+            "n_events": 1,
+            "event_ids": [
+              "EVT-P-0002886-T01-IM3-8"
+            ]
+          }
+        ],
+        "exact_position_recurrence": [],
+        "protein_position_genomic_spread": []
+      },
+      "Warnings": [],
+      "Created_at": "2026-10-29T15:51:10.013306Z",
+      "Input_fingerprint": "525b9093e3d2ad0efe0d7538a76bf68a78de0d821a11a24de2002edb907a0ce1"
+    },
+    {
+      "Algorithm": "joint_partner",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {},
+      "Summary": {
+        "Runtime_seconds": 1.5499997971346602e-05
+      },
+      "Tables": {},
+      "Warnings": [
+        "MTAP has no gene_pair configured; joint-partner analysis was skipped."
+      ],
+      "Created_at": "2026-10-29T15:51:10.004055Z",
+      "Input_fingerprint": "525b9093e3d2ad0efe0d7538a76bf68a78de0d821a11a24de2002edb907a0ce1"
+    },
+    {
+      "Algorithm": "junction_concentration",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 100,
+        "min_events": 5,
+        "adaptive": true
+      },
+      "Summary": {
+        "determinable": false,
+        "reason": "4 event(s) with a known junction exon inside the transcript; at least 5 are needed",
+        "n_events_analyzed": 4,
+        "n_outside_transcript": 0,
+        "permutation_empirical_p_value": null,
+        "Runtime_seconds": 9.14999982342124e-05
+      },
+      "Tables": {
+        "junction_counts": []
+      },
+      "Warnings": [
+        "4 event(s) with a known junction exon inside the transcript; at least 5 are needed"
+      ],
+      "Created_at": "2026-10-29T15:51:10.004181Z",
+      "Input_fingerprint": "525b9093e3d2ad0efe0d7538a76bf68a78de0d821a11a24de2002edb907a0ce1"
+    },
+    {
+      "Algorithm": "mechanistic_interpretation",
+      "Algorithm_version": "1.1.0",
+      "Parameters": {
+        "alpha": 0.05,
+        "recurrent_partner_threshold": 2
+      },
+      "Summary": {
+        "retention_domains_configured": true,
+        "retention_domain_names": [
+          "Phosphorylase superfamily"
+        ],
+        "retention_tested_domain_accession": "PF01048",
+        "retention_configured_domain_count": 1,
+        "retention_statistically_supported": false,
+        "retention_nominal_fisher_supported": false,
+        "retention_fdr_q_value": 1.0,
+        "retention_fdr_significant": false,
+        "retention_fisher_evidence_status": "not_fdr_supported",
+        "retention_recurrence_evidence_type": "descriptive_heuristic",
+        "retention_fisher_p_value": 0.25,
+        "retention_fisher_odds_ratio": null,
+        "retention_counter_intuitive_confidence": "not_applicable",
+        "retention_counter_intuitive_count": 0,
+        "retention_counter_intuitive_total": 0,
+        "retention_counter_intuitive_percent": null,
+        "disruption_domains_configured": false,
+        "disruption_domain_names": [],
+        "disruption_tested_domain_accession": null,
+        "disruption_configured_domain_count": 0,
+        "disruption_statistically_supported": false,
+        "disruption_nominal_fisher_supported": false,
+        "disruption_fdr_q_value": null,
+        "disruption_fdr_significant": null,
+        "disruption_fisher_evidence_status": "not_tested",
+        "disruption_recurrence_evidence_type": "descriptive_heuristic",
+        "disruption_fisher_p_value": null,
+        "disruption_fisher_odds_ratio": null,
+        "disruption_counter_intuitive_confidence": "not_applicable",
+        "disruption_counter_intuitive_count": 0,
+        "disruption_counter_intuitive_total": 0,
+        "disruption_counter_intuitive_percent": null,
+        "Runtime_seconds": 3.7000001611886546e-05
+      },
+      "Tables": {},
+      "Warnings": [],
+      "Created_at": "2026-10-29T15:51:10.013360Z",
+      "Input_fingerprint": "525b9093e3d2ad0efe0d7538a76bf68a78de0d821a11a24de2002edb907a0ce1"
+    },
+    {
+      "Algorithm": "mutation_cooccurrence",
+      "Algorithm_version": "0.2.0",
+      "Parameters": {},
+      "Summary": {
+        "targets": [],
+        "Runtime_seconds": 2.591600059531629e-05
+      },
+      "Tables": {},
+      "Warnings": [
+        "MTAP has no mutual_exclusivity_targets configured; co-occurrence/mutual-exclusivity analysis was skipped."
+      ],
+      "Created_at": "2026-10-29T15:51:10.003995Z",
+      "Input_fingerprint": "525b9093e3d2ad0efe0d7538a76bf68a78de0d821a11a24de2002edb907a0ce1"
+    },
+    {
+      "Algorithm": "window_detection",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 1000,
+        "widths": [
+          25,
+          50,
+          100,
+          200
+        ],
+        "min_events_per_window": 4,
+        "adaptive": false
+      },
+      "Summary": {
+        "determinable": false,
+        "reason": "no candidate window of the configured widths (25, 50, 100, 200) met the minimum-event-count guard (min_events_per_window=4) on both sides of the split",
+        "n_events_analyzed": 4,
+        "widths_tested_aa": [
+          25,
+          50,
+          100,
+          200
+        ],
+        "min_events_per_window": 4,
+        "n_candidate_windows": 0,
+        "n_distinct_candidate_windows_by_event_mask": 0,
+        "best_window": null,
+        "observed_statistic_neg_log10_p": null,
+        "observed_p_value": null,
+        "observed_odds_ratio": null,
+        "corrected_p_value": null,
+        "known_domain_boundary_comparison": null,
+        "mapping_sensitivity": {
+          "available": true,
+          "n_events": 4,
+          "n_exact": 0,
+          "n_clamped_or_approximate": 4,
+          "n_unknown": 0,
+          "fraction_clamped_or_approximate": 1.0
+        },
+        "best_window_mapping_sensitivity": null,
+        "Runtime_seconds": 0.00018791599723044783
+      },
+      "Tables": {
+        "window_scan": [],
+        "top_windows": []
+      },
+      "Warnings": [
+        "no candidate window of the configured widths (25, 50, 100, 200) met the minimum-event-count guard (min_events_per_window=4) on both sides of the split"
+      ],
+      "Created_at": "2026-10-29T15:51:10.004956Z",
+      "Input_fingerprint": "525b9093e3d2ad0efe0d7538a76bf68a78de0d821a11a24de2002edb907a0ce1"
+    }
+  ],
+  "reference": null,
+  "gene_track": {
+    "protein_length": 283,
+    "domains": [
+      {
+        "name": "Phosphorylase superfamily",
+        "accession": "PF01048",
+        "start_aa": 11,
+        "end_aa": 255
+      }
+    ],
+    "exon_boundaries_aa": [
+      {
+        "exon_rank": 1,
+        "start_aa": 1,
+        "end_aa": 11
+      },
+      {
+        "exon_rank": 2,
+        "start_aa": 12,
+        "end_aa": 40
+      },
+      {
+        "exon_rank": 3,
+        "start_aa": 41,
+        "end_aa": 60
+      },
+      {
+        "exon_rank": 4,
+        "start_aa": 60,
+        "end_aa": 116
+      },
+      {
+        "exon_rank": 5,
+        "start_aa": 116,
+        "end_aa": 150
+      },
+      {
+        "exon_rank": 6,
+        "start_aa": 151,
+        "end_aa": 230
+      },
+      {
+        "exon_rank": 7,
+        "start_aa": 231,
+        "end_aa": 271
+      },
+      {
+        "exon_rank": 8,
+        "start_aa": 272,
+        "end_aa": 284
+      }
+    ]
+  },
+  "intragenic_deletions": []
+}

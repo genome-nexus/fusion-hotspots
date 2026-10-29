@@ -1,0 +1,4523 @@
+{
+  "gene_symbol": "RTEL1",
+  "study_id": "msk_impact_50k_2026",
+  "molecular_profile_id": "msk_impact_50k_2026_structural_variants",
+  "retrieved_at": "2026-10-29T15:47:23.289347+00:00",
+  "summary": {
+    "raw_structural_variant_count": 57,
+    "total_fusions": 24,
+    "sample_count": 24,
+    "known_patient_count": 22,
+    "missing_patient_id_event_count": 0,
+    "inference_counting_unit": "patient",
+    "patient_independence_established": true,
+    "observation_unit": "patient_gene",
+    "input_mapped_event_count": 24,
+    "analyzed_observation_count": 22,
+    "collapsed_repeat_observation_count": 1,
+    "patients_with_repeated_observations": 1,
+    "observation_identity_fallbacks": {},
+    "frame_conflict_groups": 0,
+    "merged_distinct_fusion_count": 1,
+    "patients_with_multiple_distinct_fusions": 1,
+    "mapped_fusions": 24,
+    "skipped_fusions": 0,
+    "in_frame_count": 5,
+    "out_of_frame_count": 5,
+    "known_frame_count": 10,
+    "unknown_frame_count": 14,
+    "in_frame_percent": 50.0,
+    "kinase_retained_count": 9,
+    "kinase_retained_percent": 37.5,
+    "in_frame_kinase_retained_count": 3,
+    "fisher_odds_ratio": 7.8,
+    "fisher_p_value": 0.11674641148325358,
+    "permutation_p_value": 0.060939060939060936,
+    "frame_domain_contingency_table": [
+      [
+        3,
+        5
+      ],
+      [
+        1,
+        13
+      ]
+    ],
+    "partner_counts": [
+      {
+        "Partner_gene": "ARFGAP1",
+        "Event_count": 1,
+        "Raw_event_count": 1,
+        "Sample_count": 1,
+        "Patient_count": 1
+      },
+      {
+        "Partner_gene": "ARFRP1",
+        "Event_count": 1,
+        "Raw_event_count": 1,
+        "Sample_count": 1,
+        "Patient_count": 1
+      },
+      {
+        "Partner_gene": "BIRC7",
+        "Event_count": 1,
+        "Raw_event_count": 1,
+        "Sample_count": 1,
+        "Patient_count": 1
+      },
+      {
+        "Partner_gene": "CDH4",
+        "Event_count": 2,
+        "Raw_event_count": 2,
+        "Sample_count": 2,
+        "Patient_count": 1
+      },
+      {
+        "Partner_gene": "CPQ",
+        "Event_count": 1,
+        "Raw_event_count": 1,
+        "Sample_count": 1,
+        "Patient_count": 1
+      },
+      {
+        "Partner_gene": "DNAJC5",
+        "Event_count": 1,
+        "Raw_event_count": 1,
+        "Sample_count": 1,
+        "Patient_count": 1
+      },
+      {
+        "Partner_gene": "PKP2",
+        "Event_count": 1,
+        "Raw_event_count": 1,
+        "Sample_count": 1,
+        "Patient_count": 1
+      },
+      {
+        "Partner_gene": "PRPF6",
+        "Event_count": 1,
+        "Raw_event_count": 1,
+        "Sample_count": 1,
+        "Patient_count": 1
+      },
+      {
+        "Partner_gene": "PSMA7",
+        "Event_count": 1,
+        "Raw_event_count": 1,
+        "Sample_count": 1,
+        "Patient_count": 1
+      },
+      {
+        "Partner_gene": "RIN2",
+        "Event_count": 1,
+        "Raw_event_count": 1,
+        "Sample_count": 1,
+        "Patient_count": 1
+      },
+      {
+        "Partner_gene": "SEC23B",
+        "Event_count": 1,
+        "Raw_event_count": 1,
+        "Sample_count": 1,
+        "Patient_count": 1
+      },
+      {
+        "Partner_gene": "SPTLC3",
+        "Event_count": 1,
+        "Raw_event_count": 1,
+        "Sample_count": 1,
+        "Patient_count": 1
+      },
+      {
+        "Partner_gene": "STAU1",
+        "Event_count": 1,
+        "Raw_event_count": 1,
+        "Sample_count": 1,
+        "Patient_count": 1
+      },
+      {
+        "Partner_gene": "STMN3",
+        "Event_count": 1,
+        "Raw_event_count": 1,
+        "Sample_count": 1,
+        "Patient_count": 1
+      },
+      {
+        "Partner_gene": "TAF4",
+        "Event_count": 1,
+        "Raw_event_count": 1,
+        "Sample_count": 1,
+        "Patient_count": 1
+      },
+      {
+        "Partner_gene": "TSHZ2",
+        "Event_count": 2,
+        "Raw_event_count": 2,
+        "Sample_count": 2,
+        "Patient_count": 1
+      },
+      {
+        "Partner_gene": "VRK3",
+        "Event_count": 1,
+        "Raw_event_count": 1,
+        "Sample_count": 1,
+        "Patient_count": 1
+      },
+      {
+        "Partner_gene": "YBX2",
+        "Event_count": 1,
+        "Raw_event_count": 1,
+        "Sample_count": 1,
+        "Patient_count": 1
+      },
+      {
+        "Partner_gene": "ZGPAT",
+        "Event_count": 4,
+        "Raw_event_count": 4,
+        "Sample_count": 4,
+        "Patient_count": 4
+      }
+    ],
+    "domain_accession": "PF13307",
+    "domain_start_aa": 546,
+    "domain_end_aa": 731,
+    "key_domains": [
+      {
+        "name": "Helicase C-terminal domain",
+        "accession": "PF13307",
+        "start_aa": 546,
+        "end_aa": 731
+      }
+    ],
+    "fusion_annotation_crosscheck": {
+      "agree": 24,
+      "disagree": 0,
+      "unavailable": 0
+    },
+    "configured_key_domains": [
+      {
+        "name": "Helicase C-terminal domain",
+        "source": "genome_nexus",
+        "key": "auto_key_domain",
+        "accession": "PF13307",
+        "start_aa": null,
+        "end_aa": null
+      }
+    ],
+    "configured_disruption_required_domains": [
+      {
+        "name": "DEAD_2",
+        "source": "genome_nexus",
+        "key": "auto_disruption_pf06733",
+        "accession": "PF06733",
+        "start_aa": null,
+        "end_aa": null
+      }
+    ],
+    "domain_reconstitution_counts": {
+      "partner_lacks_domain": 2
+    }
+  },
+  "warnings": [
+    "Collapsed 1 repeated observation(s) of the same fusion in 1 patient(s) before inferential tests (observation_unit='patient_gene').",
+    "Kept one of several distinct RTEL1 fusions in 1 patient(s), dropping 1 so each patient counts once in inferential tests."
+  ],
+  "events": [
+    {
+      "event_id": "EVT-P-0065831-T01-IM7-1",
+      "sample_id": "P-0065831-T01-IM7",
+      "patient_id": "P-0065831",
+      "tumor_type": "Non-Small Cell Lung Cancer",
+      "oncotree_code": "LUAD",
+      "fusion_name": "ARFGAP1-RTEL1",
+      "partner_gene": "ARFGAP1",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 62326464,
+      "breakpoint_exon": 33,
+      "breakpoint_protein_position": 1130,
+      "is_intronic_breakpoint": false,
+      "fusion_annotation_crosscheck_protein_position": 1130,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "domain_reconstitution": null,
+      "reconstitution_pfam_accession": null,
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": null,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": null,
+      "reconstitution_detail": null,
+      "retained_domains": "",
+      "lost_domains": "Helicase C-terminal domain; DEAD_2",
+      "disrupted_domains": "",
+      "source_annotation_text": "ARFGAP1 (NM_175609) - RTEL1 (NM_032957) rearrangement: c.717+287:ARFGAP1_c.3461:RTEL1del | Protein Fusion: mid-exon  {ARFGAP1:RTEL1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0053173-T01-IM6-2",
+      "sample_id": "P-0053173-T01-IM6",
+      "patient_id": "P-0053173",
+      "tumor_type": "Esophagogastric Cancer",
+      "oncotree_code": "GEJ",
+      "fusion_name": "PRPF6-RTEL1",
+      "partner_gene": "PRPF6",
+      "frame_status": "out-of-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 62321573,
+      "breakpoint_exon": 26,
+      "breakpoint_protein_position": 756,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 756,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "domain_reconstitution": null,
+      "reconstitution_pfam_accession": null,
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": null,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": null,
+      "reconstitution_detail": null,
+      "retained_domains": "",
+      "lost_domains": "Helicase C-terminal domain; DEAD_2",
+      "disrupted_domains": "",
+      "source_annotation_text": "PRPF6 (NM_012469) - RTEL1 (NM_032957) rearrangement: c.360-1518:PRPF6_c.2337+10:RTEL1dup | Protein Fusion: out of frame  {PRPF6:RTEL1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0004381-T02-IM6-3",
+      "sample_id": "P-0004381-T02-IM6",
+      "patient_id": "P-0004381",
+      "tumor_type": "Breast Cancer",
+      "oncotree_code": "BRCA",
+      "fusion_name": "PSMA7-RTEL1",
+      "partner_gene": "PSMA7",
+      "frame_status": "in-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 62316995,
+      "breakpoint_exon": 16,
+      "breakpoint_protein_position": 423,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 423,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "domain_reconstitution": null,
+      "reconstitution_pfam_accession": null,
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": null,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": null,
+      "reconstitution_detail": null,
+      "retained_domains": "Helicase C-terminal domain",
+      "lost_domains": "DEAD_2",
+      "disrupted_domains": "",
+      "source_annotation_text": "PSMA7 (NM_002792) - RTEL1 (NM_032957) rearrangement: c.472-149:PSMA7_c.1338+45:RTEL1inv | Protein Fusion: in frame  {PSMA7:RTEL1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0024365-T01-IM6-4",
+      "sample_id": "P-0024365-T01-IM6",
+      "patient_id": "P-0024365",
+      "tumor_type": "Ovarian Cancer",
+      "oncotree_code": "HGSOC",
+      "fusion_name": "RIN2-RTEL1",
+      "partner_gene": "RIN2",
+      "frame_status": "out-of-frame",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 62321641,
+      "breakpoint_exon": 26,
+      "breakpoint_protein_position": 756,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 756,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "domain_reconstitution": null,
+      "reconstitution_pfam_accession": null,
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": null,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": null,
+      "reconstitution_detail": null,
+      "retained_domains": "",
+      "lost_domains": "Helicase C-terminal domain; DEAD_2",
+      "disrupted_domains": "",
+      "source_annotation_text": "RIN2 (NM_001242581) -RTEL1 (NM_032957) Rearrangement : c.2348-1384:RIN2_c.2338-6:RTEL1 | Protein Fusion: out of frame  {RIN2:RTEL1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0018660-T01-IM6-5",
+      "sample_id": "P-0018660-T01-IM6",
+      "patient_id": "P-0018660",
+      "tumor_type": "Non-Small Cell Lung Cancer",
+      "oncotree_code": "LUAD",
+      "fusion_name": "RTEL1-ARFRP1",
+      "partner_gene": "ARFRP1",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 62325750,
+      "breakpoint_exon": 31,
+      "breakpoint_protein_position": 1006,
+      "is_intronic_breakpoint": false,
+      "fusion_annotation_crosscheck_protein_position": 1006,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "domain_reconstitution": null,
+      "reconstitution_pfam_accession": null,
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": null,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": null,
+      "reconstitution_detail": null,
+      "retained_domains": "",
+      "lost_domains": "Helicase C-terminal domain; DEAD_2",
+      "disrupted_domains": "",
+      "source_annotation_text": "RTEL1 (NM_032957) Rearrangement : c.3090:RTEL1_c.392:ARFRP1del | Antisense Fusion",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0052166-T01-IM6-6",
+      "sample_id": "P-0052166-T01-IM6",
+      "patient_id": "P-0052166",
+      "tumor_type": "Ovarian Cancer",
+      "oncotree_code": "CCOV",
+      "fusion_name": "RTEL1-BIRC7",
+      "partner_gene": "BIRC7",
+      "frame_status": "unknown",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 62294231,
+      "breakpoint_exon": 6,
+      "breakpoint_protein_position": 176,
+      "is_intronic_breakpoint": false,
+      "fusion_annotation_crosscheck_protein_position": 175,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "hybrid junction codon: fusion-annotation reports the last complete 5-prime residue, exactly one less than this project's hybrid-junction-inclusive residue; expected convention difference, not a disagreement",
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "domain_reconstitution": null,
+      "reconstitution_pfam_accession": null,
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": null,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": null,
+      "reconstitution_detail": null,
+      "retained_domains": "",
+      "lost_domains": "Helicase C-terminal domain",
+      "disrupted_domains": "DEAD_2",
+      "source_annotation_text": "RTEL1 (NM_032957) - BIRC7 (NM_139317) rearrangement: c.599:RTEL1_c.649+16:BIRC7dup | Protein Fusion: mid-exon  {RTEL1:BIRC7}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0044707-T04-IM6-7",
+      "sample_id": "P-0044707-T04-IM6",
+      "patient_id": "P-0044707",
+      "tumor_type": "Non-Small Cell Lung Cancer",
+      "oncotree_code": "LUAD",
+      "fusion_name": "RTEL1-CDH4",
+      "partner_gene": "CDH4",
+      "frame_status": "in-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 62305671,
+      "breakpoint_exon": 10,
+      "breakpoint_protein_position": 307,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 306,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "hybrid junction codon: fusion-annotation reports the last complete 5-prime residue, exactly one less than this project's hybrid-junction-inclusive residue; expected convention difference, not a disagreement",
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "domain_reconstitution": null,
+      "reconstitution_pfam_accession": null,
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": null,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": null,
+      "reconstitution_detail": null,
+      "retained_domains": "DEAD_2",
+      "lost_domains": "Helicase C-terminal domain",
+      "disrupted_domains": "",
+      "source_annotation_text": "RTEL1 (NM_032957) - CDH4 (NM_001794) rearrangement: c.991+225:RTEL1_c.170-168444:CDH4dup | Protein Fusion: in frame  {RTEL1:CDH4}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0044707-T03-IM6-8",
+      "sample_id": "P-0044707-T03-IM6",
+      "patient_id": "P-0044707",
+      "tumor_type": "Non-Small Cell Lung Cancer",
+      "oncotree_code": "LUAD",
+      "fusion_name": "RTEL1-CDH4",
+      "partner_gene": "CDH4",
+      "frame_status": "in-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 62305671,
+      "breakpoint_exon": 10,
+      "breakpoint_protein_position": 307,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 306,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "hybrid junction codon: fusion-annotation reports the last complete 5-prime residue, exactly one less than this project's hybrid-junction-inclusive residue; expected convention difference, not a disagreement",
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "domain_reconstitution": null,
+      "reconstitution_pfam_accession": null,
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": null,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": null,
+      "reconstitution_detail": null,
+      "retained_domains": "DEAD_2",
+      "lost_domains": "Helicase C-terminal domain",
+      "disrupted_domains": "",
+      "source_annotation_text": "RTEL1 (NM_032957) - CDH4 (NM_001794) rearrangement: c.991+225:RTEL1_c.170-168444:CDH4dup | Protein Fusion: in frame  {RTEL1:CDH4}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0041523-T01-IM6-9",
+      "sample_id": "P-0041523-T01-IM6",
+      "patient_id": "P-0041523",
+      "tumor_type": "Breast Cancer",
+      "oncotree_code": "IDC",
+      "fusion_name": "RTEL1-CPQ",
+      "partner_gene": "CPQ",
+      "frame_status": "unknown",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 62292750,
+      "breakpoint_exon": 3,
+      "breakpoint_protein_position": 68,
+      "is_intronic_breakpoint": false,
+      "fusion_annotation_crosscheck_protein_position": 67,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "hybrid junction codon: fusion-annotation reports the last complete 5-prime residue, exactly one less than this project's hybrid-junction-inclusive residue; expected convention difference, not a disagreement",
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "domain_reconstitution": null,
+      "reconstitution_pfam_accession": null,
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": null,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": null,
+      "reconstitution_detail": null,
+      "retained_domains": "",
+      "lost_domains": "Helicase C-terminal domain; DEAD_2",
+      "disrupted_domains": "",
+      "source_annotation_text": "RTEL1 (NM_032957) - CPQ (NM_016134.3) rearrangement: t(8;20)(q22.1;q13.33)(chr8:g.98069745::chr20:g.62292750) | Protein Fusion: mid-exon  {RTEL1:CPQ}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0022005-T01-IM6-10",
+      "sample_id": "P-0022005-T01-IM6",
+      "patient_id": "P-0022005",
+      "tumor_type": "Cancer of Unknown Primary",
+      "oncotree_code": "ADNOS",
+      "fusion_name": "RTEL1-DNAJC5",
+      "partner_gene": "DNAJC5",
+      "frame_status": "unknown",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 62323205,
+      "breakpoint_exon": 28,
+      "breakpoint_protein_position": 884,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 884,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "domain_reconstitution": null,
+      "reconstitution_pfam_accession": null,
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": null,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": null,
+      "reconstitution_detail": null,
+      "retained_domains": "Helicase C-terminal domain; DEAD_2",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "RTEL1 (NM_032957) rearrangement: c.2724+15:RTEL1_chr20:g.62528262del | Transcript Fusion {RTEL1:DNAJC5}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0057597-T01-IM6-16",
+      "sample_id": "P-0057597-T01-IM6",
+      "patient_id": "P-0057597",
+      "tumor_type": "Breast Cancer",
+      "oncotree_code": "ILC",
+      "fusion_name": "RTEL1-PKP2",
+      "partner_gene": "PKP2",
+      "frame_status": "out-of-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 62309782,
+      "breakpoint_exon": 12,
+      "breakpoint_protein_position": 346,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 345,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "hybrid junction codon: fusion-annotation reports the last complete 5-prime residue, exactly one less than this project's hybrid-junction-inclusive residue; expected convention difference, not a disagreement",
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "domain_reconstitution": null,
+      "reconstitution_pfam_accession": null,
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": null,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": null,
+      "reconstitution_detail": null,
+      "retained_domains": "DEAD_2",
+      "lost_domains": "Helicase C-terminal domain",
+      "disrupted_domains": "",
+      "source_annotation_text": "RTEL1 (NM_032957) - PKP2 (NM_001005242) rearrangement: t(12;20)(p11.21;q13.33)(chr12:g.33044173::chr20:g.62309782) | Protein Fusion: out of frame  {RTEL1:PKP2}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0045154-T01-IM6-43",
+      "sample_id": "P-0045154-T01-IM6",
+      "patient_id": "P-0045154",
+      "tumor_type": "Breast Cancer",
+      "oncotree_code": "IDC",
+      "fusion_name": "RTEL1-SPTLC3",
+      "partner_gene": "SPTLC3",
+      "frame_status": "unknown",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 62311233,
+      "breakpoint_exon": 13,
+      "breakpoint_protein_position": 357,
+      "is_intronic_breakpoint": false,
+      "fusion_annotation_crosscheck_protein_position": 356,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "hybrid junction codon: fusion-annotation reports the last complete 5-prime residue, exactly one less than this project's hybrid-junction-inclusive residue; expected convention difference, not a disagreement",
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "domain_reconstitution": null,
+      "reconstitution_pfam_accession": null,
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": null,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": null,
+      "reconstitution_detail": null,
+      "retained_domains": "DEAD_2",
+      "lost_domains": "Helicase C-terminal domain",
+      "disrupted_domains": "",
+      "source_annotation_text": "RTEL1 (NM_032957) - SPTLC3 (NM_018327) rearrangement: c.1141:RTEL1_c.118-6532:SPTLC3dup | Protein Fusion: mid-exon  {RTEL1:SPTLC3}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0051006-T01-IM6-44",
+      "sample_id": "P-0051006-T01-IM6",
+      "patient_id": "P-0051006",
+      "tumor_type": "Bladder Cancer",
+      "oncotree_code": "BLCA",
+      "fusion_name": "RTEL1-TSHZ2",
+      "partner_gene": "TSHZ2",
+      "frame_status": "in-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 62325665,
+      "breakpoint_exon": 30,
+      "breakpoint_protein_position": 998,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 997,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "hybrid junction codon: fusion-annotation reports the last complete 5-prime residue, exactly one less than this project's hybrid-junction-inclusive residue; expected convention difference, not a disagreement",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "domain_reconstitution": null,
+      "reconstitution_pfam_accession": null,
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": null,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": null,
+      "reconstitution_detail": null,
+      "retained_domains": "Helicase C-terminal domain; DEAD_2",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "RTEL1 (NM_032957) - TSHZ2 (NM_173485) rearrangement: c.3065-60:RTEL1_c.40+37368:TSHZ2dup | Protein Fusion: in frame  {RTEL1:TSHZ2}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0051006-T03-IM6-45",
+      "sample_id": "P-0051006-T03-IM6",
+      "patient_id": "P-0051006",
+      "tumor_type": "Bladder Cancer",
+      "oncotree_code": "UTUC",
+      "fusion_name": "RTEL1-TSHZ2",
+      "partner_gene": "TSHZ2",
+      "frame_status": "unknown",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 62325767,
+      "breakpoint_exon": 31,
+      "breakpoint_protein_position": 1012,
+      "is_intronic_breakpoint": false,
+      "fusion_annotation_crosscheck_protein_position": 1011,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "hybrid junction codon: fusion-annotation reports the last complete 5-prime residue, exactly one less than this project's hybrid-junction-inclusive residue; expected convention difference, not a disagreement",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "domain_reconstitution": null,
+      "reconstitution_pfam_accession": null,
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": null,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": null,
+      "reconstitution_detail": null,
+      "retained_domains": "Helicase C-terminal domain; DEAD_2",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "RTEL1 (NM_032957) - TSHZ2 (NM_173485) rearrangement: c.3107:RTEL1_c.41-48769:TSHZ2dup | Protein Fusion: mid-exon  {RTEL1:TSHZ2}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0047648-T01-IM6-46",
+      "sample_id": "P-0047648-T01-IM6",
+      "patient_id": "P-0047648",
+      "tumor_type": "Esophagogastric Cancer",
+      "oncotree_code": "ESCA",
+      "fusion_name": "RTEL1-VRK3",
+      "partner_gene": "VRK3",
+      "frame_status": "in-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 62325880,
+      "breakpoint_exon": 31,
+      "breakpoint_protein_position": 1037,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 1036,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "hybrid junction codon: fusion-annotation reports the last complete 5-prime residue, exactly one less than this project's hybrid-junction-inclusive residue; expected convention difference, not a disagreement",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "domain_reconstitution": null,
+      "reconstitution_pfam_accession": null,
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": null,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": null,
+      "reconstitution_detail": null,
+      "retained_domains": "Helicase C-terminal domain; DEAD_2",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "RTEL1 (NM_032957) - VRK3 (NM_016440) rearrangement: t(19;20)(q13.33;q13.33)(chr19:g.50499591::chr20:g.62325880) | Protein Fusion: in frame  {RTEL1:VRK3}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0035723-T01-IM6-47",
+      "sample_id": "P-0035723-T01-IM6",
+      "patient_id": "P-0035723",
+      "tumor_type": "Colorectal Cancer",
+      "oncotree_code": "COAD",
+      "fusion_name": "RTEL1-YBX2",
+      "partner_gene": "YBX2",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 62292480,
+      "breakpoint_exon": 3,
+      "breakpoint_protein_position": 35,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 35,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "domain_reconstitution": null,
+      "reconstitution_pfam_accession": null,
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": null,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": null,
+      "reconstitution_detail": null,
+      "retained_domains": "Helicase C-terminal domain; DEAD_2",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "YBX2 (NM_015982) - RTEL1 (NM_032957) rearrangement: t(17;20)(p13.1;q13.33)(chr17:g.7193375::chr20:g.62292480) | Protein Fusion: mid-exon  {YBX2:RTEL1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0026247-T02-IM6-48",
+      "sample_id": "P-0026247-T02-IM6",
+      "patient_id": "P-0026247",
+      "tumor_type": "Ovarian Cancer",
+      "oncotree_code": "HGSOC",
+      "fusion_name": "RTEL1-ZGPAT",
+      "partner_gene": "ZGPAT",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 62317214,
+      "breakpoint_exon": 16,
+      "breakpoint_protein_position": 446,
+      "is_intronic_breakpoint": false,
+      "fusion_annotation_crosscheck_protein_position": 446,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "domain_reconstitution": null,
+      "reconstitution_pfam_accession": null,
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": null,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": null,
+      "reconstitution_detail": null,
+      "retained_domains": "Helicase C-terminal domain",
+      "lost_domains": "DEAD_2",
+      "disrupted_domains": "",
+      "source_annotation_text": "ZGPAT (NM_032527) - RTEL1 (NM_032957) rearrangement: c.584+3556:ZGPAT_c.1409:RTEL1dup | Protein Fusion: mid-exon  {ZGPAT:RTEL1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0035764-T01-IM6-49",
+      "sample_id": "P-0035764-T01-IM6",
+      "patient_id": "P-0035764",
+      "tumor_type": "Soft Tissue Sarcoma",
+      "oncotree_code": "MFH",
+      "fusion_name": "RTEL1-ZGPAT",
+      "partner_gene": "ZGPAT",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 62321528,
+      "breakpoint_exon": 25,
+      "breakpoint_protein_position": 744,
+      "is_intronic_breakpoint": false,
+      "fusion_annotation_crosscheck_protein_position": 744,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "domain_reconstitution": null,
+      "reconstitution_pfam_accession": null,
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": null,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": null,
+      "reconstitution_detail": null,
+      "retained_domains": "",
+      "lost_domains": "Helicase C-terminal domain; DEAD_2",
+      "disrupted_domains": "",
+      "source_annotation_text": "ZGPAT (NM_032527) - RTEL1 (NM_032957) rearrangement: c.585-8272:ZGPAT_c.2302:RTEL1dup | Protein Fusion: mid-exon  {ZGPAT:RTEL1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0014391-T01-IM6-50",
+      "sample_id": "P-0014391-T01-IM6",
+      "patient_id": "P-0014391",
+      "tumor_type": "Ovarian Cancer",
+      "oncotree_code": "HGSOC",
+      "fusion_name": "RTEL1-ZGPAT",
+      "partner_gene": "ZGPAT",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 62326238,
+      "breakpoint_exon": 32,
+      "breakpoint_protein_position": 1085,
+      "is_intronic_breakpoint": false,
+      "fusion_annotation_crosscheck_protein_position": 1085,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "domain_reconstitution": null,
+      "reconstitution_pfam_accession": null,
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": null,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": null,
+      "reconstitution_detail": null,
+      "retained_domains": "",
+      "lost_domains": "Helicase C-terminal domain; DEAD_2",
+      "disrupted_domains": "",
+      "source_annotation_text": "ZGPAT (NM_032527) - RTEL1 (NM_032957) rearrangement: c.585-11505:ZGPAT_c.3326:RTEL1dup | Protein fusion: mid-exon (ZGPAT-RTEL1)",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0019862-T01-IM6-51",
+      "sample_id": "P-0019862-T01-IM6",
+      "patient_id": "P-0019862",
+      "tumor_type": "Cancer of Unknown Primary",
+      "oncotree_code": "PDC",
+      "fusion_name": "RTEL1-ZGPAT",
+      "partner_gene": "ZGPAT",
+      "frame_status": "out-of-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 62294014,
+      "breakpoint_exon": 5,
+      "breakpoint_protein_position": 159,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 159,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "lost",
+      "domain_retained_fraction": 0.0,
+      "domain_is_truncated": false,
+      "domain_reconstitution": null,
+      "reconstitution_pfam_accession": null,
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": null,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": null,
+      "reconstitution_detail": null,
+      "retained_domains": "",
+      "lost_domains": "Helicase C-terminal domain",
+      "disrupted_domains": "DEAD_2",
+      "source_annotation_text": "RTEL1 (NM_032957) - ZGPAT (NM_032527) rearrangement: c.549+34_c.585-7286del | Protein Fusion: out of frame  {RTEL1:ZGPAT}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0028716-T01-IM6-52",
+      "sample_id": "P-0028716-T01-IM6",
+      "patient_id": "P-0028716",
+      "tumor_type": "Non-Small Cell Lung Cancer",
+      "oncotree_code": "LUCA",
+      "fusion_name": "SEC23B-RTEL1",
+      "partner_gene": "SEC23B",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 62319012,
+      "breakpoint_exon": 17,
+      "breakpoint_protein_position": 457,
+      "is_intronic_breakpoint": false,
+      "fusion_annotation_crosscheck_protein_position": 457,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "domain_reconstitution": null,
+      "reconstitution_pfam_accession": null,
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": null,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": null,
+      "reconstitution_detail": null,
+      "retained_domains": "Helicase C-terminal domain",
+      "lost_domains": "DEAD_2",
+      "disrupted_domains": "",
+      "source_annotation_text": "SEC23B (NM_032986) - RTEL1 (NM_032957) rearrangement: c.-14-1432:SEC23B_c.1370:RTEL1del | Protein Fusion: mid-exon  {SEC23B:RTEL1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0017448-T01-IM6-54",
+      "sample_id": "P-0017448-T01-IM6",
+      "patient_id": "P-0017448",
+      "tumor_type": "Non-Small Cell Lung Cancer",
+      "oncotree_code": "LUAD",
+      "fusion_name": "STAU1-RTEL1",
+      "partner_gene": "STAU1",
+      "frame_status": "out-of-frame",
+      "target_role": "five_prime",
+      "breakpoint_genomic": 62325877,
+      "breakpoint_exon": 31,
+      "breakpoint_protein_position": 1037,
+      "is_intronic_breakpoint": true,
+      "fusion_annotation_crosscheck_protein_position": 1036,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "hybrid junction codon: fusion-annotation reports the last complete 5-prime residue, exactly one less than this project's hybrid-junction-inclusive residue; expected convention difference, not a disagreement",
+      "domain_status": "retained",
+      "domain_retained_fraction": 1.0,
+      "domain_is_truncated": false,
+      "domain_reconstitution": null,
+      "reconstitution_pfam_accession": null,
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": null,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": null,
+      "reconstitution_detail": null,
+      "retained_domains": "Helicase C-terminal domain; DEAD_2",
+      "lost_domains": "",
+      "disrupted_domains": "",
+      "source_annotation_text": "RTEL1 (NM_032957) - STAU1 (NM_017453) rearrangement: c.3181+36:RTEL1_c.511-4612:STAU1inv | Protein Fusion: out of frame  {RTEL1:STAU1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0038164-T01-IM6-55",
+      "sample_id": "P-0038164-T01-IM6",
+      "patient_id": "P-0038164",
+      "tumor_type": "Cancer of Unknown Primary",
+      "oncotree_code": "CUP",
+      "fusion_name": "STMN3-RTEL1",
+      "partner_gene": "STMN3",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 62320417,
+      "breakpoint_exon": 22,
+      "breakpoint_protein_position": 604,
+      "is_intronic_breakpoint": false,
+      "fusion_annotation_crosscheck_protein_position": 604,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "disrupted",
+      "domain_retained_fraction": 0.6881720430107527,
+      "domain_is_truncated": true,
+      "domain_reconstitution": "partner_lacks_domain",
+      "reconstitution_pfam_accession": "PF13307",
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": 7,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": false,
+      "reconstitution_detail": null,
+      "retained_domains": "",
+      "lost_domains": "DEAD_2",
+      "disrupted_domains": "Helicase C-terminal domain",
+      "source_annotation_text": "STMN3 (NM_015894) - RTEL1 (NM_032957) Rearrangement : c.20-3280:STMN3_c.1810:RTEL1inv | Protein Fusion: mid-exon  {STMN3:RTEL1}",
+      "source_site2_effect_on_frame": "NA"
+    },
+    {
+      "event_id": "EVT-P-0049269-T01-IM6-57",
+      "sample_id": "P-0049269-T01-IM6",
+      "patient_id": "P-0049269",
+      "tumor_type": "Pancreatic Cancer",
+      "oncotree_code": "PAAD",
+      "fusion_name": "TAF4-RTEL1",
+      "partner_gene": "TAF4",
+      "frame_status": "unknown",
+      "target_role": "three_prime",
+      "breakpoint_genomic": 62320884,
+      "breakpoint_exon": 23,
+      "breakpoint_protein_position": 636,
+      "is_intronic_breakpoint": false,
+      "fusion_annotation_crosscheck_protein_position": 636,
+      "fusion_annotation_crosscheck_agrees": true,
+      "fusion_annotation_crosscheck_detail": "exact match",
+      "domain_status": "disrupted",
+      "domain_retained_fraction": 0.5161290322580645,
+      "domain_is_truncated": true,
+      "domain_reconstitution": "partner_lacks_domain",
+      "reconstitution_pfam_accession": "PF13307",
+      "reconstitution_five_prime_span": null,
+      "reconstitution_three_prime_span": null,
+      "reconstitution_junction_gap_fraction": null,
+      "reconstitution_junction_gap_residues": null,
+      "reconstitution_partner_breakpoint_protein_position": 454,
+      "reconstitution_partner_domain_start_aa": null,
+      "reconstitution_partner_domain_end_aa": null,
+      "reconstitution_partner_breakpoint_mid_exon": false,
+      "reconstitution_detail": null,
+      "retained_domains": "",
+      "lost_domains": "DEAD_2",
+      "disrupted_domains": "Helicase C-terminal domain",
+      "source_annotation_text": "TAF4 (NM_003185) - RTEL1 (NM_032957) rearrangement: c.1360+15853:TAF4_c.1980:RTEL1inv | Protein Fusion: mid-exon  {TAF4:RTEL1}",
+      "source_site2_effect_on_frame": "NA"
+    }
+  ],
+  "algorithm_results": [
+    {
+      "Algorithm": "composite_score",
+      "Algorithm_version": "0.2.0",
+      "Parameters": {
+        "weights": {
+          "recurrence": 0.3,
+          "domain_retention": 0.25,
+          "domain_disruption": 0.2,
+          "cutpoint_proximity": 0.15,
+          "confidence_certainty": 0.1
+        },
+        "neg_log10_p_cap": 10.0,
+        "cutpoint_corrected_p_alpha": 0.05
+      },
+      "Summary": {
+        "score_interpretation": "prioritization_heuristic_not_probability_or_significance",
+        "gene_symbol": "RTEL1",
+        "n_partners_ranked": 19,
+        "total_events": 24,
+        "components_applicable": {
+          "recurrence": true,
+          "domain_retention": true,
+          "domain_disruption": true,
+          "cutpoint_proximity": false,
+          "confidence_certainty": true
+        },
+        "domain_retention_p_value_used": 0.060939060939060936,
+        "domain_disruption_p_value_used": 0.9702970297029703,
+        "inferred_cutpoint_aa": null,
+        "Runtime_seconds": 4.979199729859829e-05
+      },
+      "Tables": {
+        "composite_evidence_ranking": [
+          {
+            "Partner_gene": "ZGPAT",
+            "Event_count": 4,
+            "Recurrence_score": 0.16666666666666666,
+            "Domain_retention_score": 0.12151042424685517,
+            "Domain_disruption_score": 0.001309529809014773,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.3789939208935289,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.13945753425043486,
+            "Rank": 1
+          },
+          {
+            "Partner_gene": "CDH4",
+            "Event_count": 2,
+            "Recurrence_score": 0.08333333333333333,
+            "Domain_retention_score": 0.12151042424685517,
+            "Domain_disruption_score": 0.001309529809014773,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.3789939208935289,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.11004576954455252,
+            "Rank": 2
+          },
+          {
+            "Partner_gene": "TSHZ2",
+            "Event_count": 2,
+            "Recurrence_score": 0.08333333333333333,
+            "Domain_retention_score": 0.12151042424685517,
+            "Domain_disruption_score": 0.001309529809014773,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.3789939208935289,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.11004576954455252,
+            "Rank": 3
+          },
+          {
+            "Partner_gene": "ARFGAP1",
+            "Event_count": 1,
+            "Recurrence_score": 0.041666666666666664,
+            "Domain_retention_score": 0.12151042424685517,
+            "Domain_disruption_score": 0.001309529809014773,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.3789939208935289,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.09533988719161132,
+            "Rank": 4
+          },
+          {
+            "Partner_gene": "ARFRP1",
+            "Event_count": 1,
+            "Recurrence_score": 0.041666666666666664,
+            "Domain_retention_score": 0.12151042424685517,
+            "Domain_disruption_score": 0.001309529809014773,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.3789939208935289,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.09533988719161132,
+            "Rank": 5
+          },
+          {
+            "Partner_gene": "BIRC7",
+            "Event_count": 1,
+            "Recurrence_score": 0.041666666666666664,
+            "Domain_retention_score": 0.12151042424685517,
+            "Domain_disruption_score": 0.001309529809014773,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.3789939208935289,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.09533988719161132,
+            "Rank": 6
+          },
+          {
+            "Partner_gene": "CPQ",
+            "Event_count": 1,
+            "Recurrence_score": 0.041666666666666664,
+            "Domain_retention_score": 0.12151042424685517,
+            "Domain_disruption_score": 0.001309529809014773,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.3789939208935289,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.09533988719161132,
+            "Rank": 7
+          },
+          {
+            "Partner_gene": "DNAJC5",
+            "Event_count": 1,
+            "Recurrence_score": 0.041666666666666664,
+            "Domain_retention_score": 0.12151042424685517,
+            "Domain_disruption_score": 0.001309529809014773,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.3789939208935289,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.09533988719161132,
+            "Rank": 8
+          },
+          {
+            "Partner_gene": "PKP2",
+            "Event_count": 1,
+            "Recurrence_score": 0.041666666666666664,
+            "Domain_retention_score": 0.12151042424685517,
+            "Domain_disruption_score": 0.001309529809014773,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.3789939208935289,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.09533988719161132,
+            "Rank": 9
+          },
+          {
+            "Partner_gene": "PRPF6",
+            "Event_count": 1,
+            "Recurrence_score": 0.041666666666666664,
+            "Domain_retention_score": 0.12151042424685517,
+            "Domain_disruption_score": 0.001309529809014773,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.3789939208935289,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.09533988719161132,
+            "Rank": 10
+          },
+          {
+            "Partner_gene": "PSMA7",
+            "Event_count": 1,
+            "Recurrence_score": 0.041666666666666664,
+            "Domain_retention_score": 0.12151042424685517,
+            "Domain_disruption_score": 0.001309529809014773,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.3789939208935289,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.09533988719161132,
+            "Rank": 11
+          },
+          {
+            "Partner_gene": "RIN2",
+            "Event_count": 1,
+            "Recurrence_score": 0.041666666666666664,
+            "Domain_retention_score": 0.12151042424685517,
+            "Domain_disruption_score": 0.001309529809014773,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.3789939208935289,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.09533988719161132,
+            "Rank": 12
+          },
+          {
+            "Partner_gene": "SEC23B",
+            "Event_count": 1,
+            "Recurrence_score": 0.041666666666666664,
+            "Domain_retention_score": 0.12151042424685517,
+            "Domain_disruption_score": 0.001309529809014773,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.3789939208935289,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.09533988719161132,
+            "Rank": 13
+          },
+          {
+            "Partner_gene": "SPTLC3",
+            "Event_count": 1,
+            "Recurrence_score": 0.041666666666666664,
+            "Domain_retention_score": 0.12151042424685517,
+            "Domain_disruption_score": 0.001309529809014773,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.3789939208935289,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.09533988719161132,
+            "Rank": 14
+          },
+          {
+            "Partner_gene": "STAU1",
+            "Event_count": 1,
+            "Recurrence_score": 0.041666666666666664,
+            "Domain_retention_score": 0.12151042424685517,
+            "Domain_disruption_score": 0.001309529809014773,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.3789939208935289,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.09533988719161132,
+            "Rank": 15
+          },
+          {
+            "Partner_gene": "STMN3",
+            "Event_count": 1,
+            "Recurrence_score": 0.041666666666666664,
+            "Domain_retention_score": 0.12151042424685517,
+            "Domain_disruption_score": 0.001309529809014773,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.3789939208935289,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.09533988719161132,
+            "Rank": 16
+          },
+          {
+            "Partner_gene": "TAF4",
+            "Event_count": 1,
+            "Recurrence_score": 0.041666666666666664,
+            "Domain_retention_score": 0.12151042424685517,
+            "Domain_disruption_score": 0.001309529809014773,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.3789939208935289,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.09533988719161132,
+            "Rank": 17
+          },
+          {
+            "Partner_gene": "VRK3",
+            "Event_count": 1,
+            "Recurrence_score": 0.041666666666666664,
+            "Domain_retention_score": 0.12151042424685517,
+            "Domain_disruption_score": 0.001309529809014773,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.3789939208935289,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.09533988719161132,
+            "Rank": 18
+          },
+          {
+            "Partner_gene": "YBX2",
+            "Event_count": 1,
+            "Recurrence_score": 0.041666666666666664,
+            "Domain_retention_score": 0.12151042424685517,
+            "Domain_disruption_score": 0.001309529809014773,
+            "Cutpoint_proximity_score": null,
+            "Confidence_certainty_score": 0.3789939208935289,
+            "Components_applicable": [
+              "confidence_certainty",
+              "domain_disruption",
+              "domain_retention",
+              "recurrence"
+            ],
+            "Composite_score": 0.09533988719161132,
+            "Rank": 19
+          }
+        ]
+      },
+      "Warnings": [
+        "cutpoint_proximity sub-score excluded: corrected cutpoint p-value was missing or >= 0.05, cutpoint was not determinable, or mapped breakpoints were unavailable."
+      ],
+      "Created_at": "2026-10-29T15:47:23.288508Z",
+      "Input_fingerprint": "bc7a44265db428937b74abbe54f42cee593b01d1b0d69fd0596db70813a27fba"
+    },
+    {
+      "Algorithm": "confidence_stats",
+      "Algorithm_version": "1.0.0",
+      "Parameters": {
+        "group_field": "Domain_retention_flags",
+        "group_key": "auto_key_domain",
+        "group_value_map": {
+          "retained": "retained",
+          "lost": "not_retained",
+          "disrupted": "not_retained",
+          "unknown": null
+        },
+        "group_values": [
+          "retained",
+          "not_retained"
+        ],
+        "outcome_field": "Frame_status",
+        "outcome_success_value": "in-frame",
+        "outcome_valid_values": [
+          "in-frame",
+          "out-of-frame"
+        ],
+        "numeric_field": "Tumor_variant_count"
+      },
+      "Summary": {
+        "group_field": "Domain_retention_flags",
+        "group_a_label": "retained",
+        "group_b_label": "not_retained",
+        "n_group_a": 8,
+        "n_group_b": 14,
+        "mle": {
+          "outcome_field": "Frame_status",
+          "groups": {
+            "retained": {
+              "n": 4,
+              "successes": 3,
+              "point_estimate": 0.75,
+              "ci_low": 0.30064184258240184,
+              "ci_high": 0.9544127391902995,
+              "method": "wilson"
+            },
+            "not_retained": {
+              "n": 5,
+              "successes": 1,
+              "point_estimate": 0.2,
+              "ci_low": 0.036224108632430085,
+              "ci_high": 0.6244653702374747,
+              "method": "wilson"
+            }
+          }
+        },
+        "ttest": {
+          "numeric_field": "Tumor_variant_count",
+          "group_a_label": "retained",
+          "group_b_label": "not_retained",
+          "n_a": 8,
+          "n_b": 14,
+          "t_statistic": -0.3968058387956892,
+          "p_value": 0.6967091635651274,
+          "df": 16.136995334230917,
+          "mean_a": 32.25,
+          "mean_b": 40.285714285714285
+        },
+        "Runtime_seconds": 0.0006807919999118894
+      },
+      "Tables": null,
+      "Warnings": [],
+      "Created_at": "2026-10-29T15:47:23.215221Z",
+      "Input_fingerprint": "bc7a44265db428937b74abbe54f42cee593b01d1b0d69fd0596db70813a27fba"
+    },
+    {
+      "Algorithm": "cutpoint_detection",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 1000,
+        "adaptive": false
+      },
+      "Summary": {
+        "determinable": true,
+        "reason": null,
+        "n_events_analyzed": 22,
+        "inferred_cutpoint_aa": 357,
+        "observed_statistic_neg_log10_p": 0.713954665916554,
+        "observed_p_value": 0.19321699971854772,
+        "observed_odds_ratio": 0.19047619047619047,
+        "corrected_p_value": 0.6533466533466533,
+        "known_domain_boundary_comparison": {
+          "nearest_known_domain_boundary_aa": 272,
+          "distance_aa": 85
+        },
+        "Runtime_seconds": 0.051812166999297915
+      },
+      "Tables": {
+        "cutpoint_scan": [
+          {
+            "cutpoint": 35,
+            "n_positive_at_or_below": 1,
+            "n_positive_above": 7,
+            "n_negative_at_or_below": 0,
+            "n_negative_above": 14,
+            "odds_ratio": null,
+            "p_value": 0.36363636363636365,
+            "neg_log10_p_value": 0.43933269383026263
+          },
+          {
+            "cutpoint": 68,
+            "n_positive_at_or_below": 1,
+            "n_positive_above": 7,
+            "n_negative_at_or_below": 1,
+            "n_negative_above": 13,
+            "odds_ratio": 1.8571428571428572,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0
+          },
+          {
+            "cutpoint": 159,
+            "n_positive_at_or_below": 1,
+            "n_positive_above": 7,
+            "n_negative_at_or_below": 2,
+            "n_negative_above": 12,
+            "odds_ratio": 0.8571428571428571,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0
+          },
+          {
+            "cutpoint": 176,
+            "n_positive_at_or_below": 1,
+            "n_positive_above": 7,
+            "n_negative_at_or_below": 3,
+            "n_negative_above": 11,
+            "odds_ratio": 0.5238095238095238,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0
+          },
+          {
+            "cutpoint": 307,
+            "n_positive_at_or_below": 1,
+            "n_positive_above": 7,
+            "n_negative_at_or_below": 4,
+            "n_negative_above": 10,
+            "odds_ratio": 0.35714285714285715,
+            "p_value": 0.6129718234981393,
+            "neg_log10_p_value": 0.21255948825567986
+          },
+          {
+            "cutpoint": 346,
+            "n_positive_at_or_below": 1,
+            "n_positive_above": 7,
+            "n_negative_at_or_below": 5,
+            "n_negative_above": 9,
+            "odds_ratio": 0.2571428571428571,
+            "p_value": 0.3511586452762923,
+            "neg_log10_p_value": 0.4544966350945685
+          },
+          {
+            "cutpoint": 357,
+            "n_positive_at_or_below": 1,
+            "n_positive_above": 7,
+            "n_negative_at_or_below": 6,
+            "n_negative_above": 8,
+            "odds_ratio": 0.19047619047619047,
+            "p_value": 0.19321699971854772,
+            "neg_log10_p_value": 0.713954665916554
+          },
+          {
+            "cutpoint": 423,
+            "n_positive_at_or_below": 2,
+            "n_positive_above": 6,
+            "n_negative_at_or_below": 6,
+            "n_negative_above": 8,
+            "odds_ratio": 0.4444444444444444,
+            "p_value": 0.6493980048159614,
+            "neg_log10_p_value": 0.18748905001668414
+          },
+          {
+            "cutpoint": 446,
+            "n_positive_at_or_below": 3,
+            "n_positive_above": 5,
+            "n_negative_at_or_below": 6,
+            "n_negative_above": 8,
+            "odds_ratio": 0.8,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0
+          },
+          {
+            "cutpoint": 457,
+            "n_positive_at_or_below": 4,
+            "n_positive_above": 4,
+            "n_negative_at_or_below": 6,
+            "n_negative_above": 8,
+            "odds_ratio": 1.3333333333333333,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0
+          },
+          {
+            "cutpoint": 604,
+            "n_positive_at_or_below": 4,
+            "n_positive_above": 4,
+            "n_negative_at_or_below": 7,
+            "n_negative_above": 7,
+            "odds_ratio": 1.0,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0
+          },
+          {
+            "cutpoint": 636,
+            "n_positive_at_or_below": 4,
+            "n_positive_above": 4,
+            "n_negative_at_or_below": 8,
+            "n_negative_above": 6,
+            "odds_ratio": 0.75,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0
+          },
+          {
+            "cutpoint": 744,
+            "n_positive_at_or_below": 4,
+            "n_positive_above": 4,
+            "n_negative_at_or_below": 9,
+            "n_negative_above": 5,
+            "odds_ratio": 0.5555555555555556,
+            "p_value": 0.6619195046439628,
+            "neg_log10_p_value": 0.17919482145834373
+          },
+          {
+            "cutpoint": 756,
+            "n_positive_at_or_below": 4,
+            "n_positive_above": 4,
+            "n_negative_at_or_below": 11,
+            "n_negative_above": 3,
+            "odds_ratio": 0.2727272727272727,
+            "p_value": 0.3426212590299278,
+            "neg_log10_p_value": 0.465185693346729
+          },
+          {
+            "cutpoint": 884,
+            "n_positive_at_or_below": 5,
+            "n_positive_above": 3,
+            "n_negative_at_or_below": 11,
+            "n_negative_above": 3,
+            "odds_ratio": 0.45454545454545453,
+            "p_value": 0.6243550051599589,
+            "neg_log10_p_value": 0.20456840239829632
+          },
+          {
+            "cutpoint": 998,
+            "n_positive_at_or_below": 6,
+            "n_positive_above": 2,
+            "n_negative_at_or_below": 11,
+            "n_negative_above": 3,
+            "odds_ratio": 0.8181818181818182,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0
+          },
+          {
+            "cutpoint": 1006,
+            "n_positive_at_or_below": 6,
+            "n_positive_above": 2,
+            "n_negative_at_or_below": 12,
+            "n_negative_above": 2,
+            "odds_ratio": 0.5,
+            "p_value": 0.6019138755980862,
+            "neg_log10_p_value": 0.22046564500180385
+          },
+          {
+            "cutpoint": 1037,
+            "n_positive_at_or_below": 8,
+            "n_positive_above": 0,
+            "n_negative_at_or_below": 12,
+            "n_negative_above": 2,
+            "odds_ratio": null,
+            "p_value": 0.5151515151515151,
+            "neg_log10_p_value": 0.2880650184996136
+          },
+          {
+            "cutpoint": 1085,
+            "n_positive_at_or_below": 8,
+            "n_positive_above": 0,
+            "n_negative_at_or_below": 13,
+            "n_negative_above": 1,
+            "odds_ratio": null,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-10-29T15:47:23.272163Z",
+      "Input_fingerprint": "bc7a44265db428937b74abbe54f42cee593b01d1b0d69fd0596db70813a27fba"
+    },
+    {
+      "Algorithm": "domain_disruption",
+      "Algorithm_version": "0.5.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 100,
+        "adaptive": true
+      },
+      "Summary": {
+        "fisher_odds_ratio": 0.1282051282051282,
+        "fisher_p_value": 0.9904306220095693,
+        "fisher_fragility": {
+          "alpha": 0.05,
+          "direction": "positive",
+          "n_observations": 22,
+          "p_value": 0.9904306220095693,
+          "significant": false,
+          "fragility_index": null
+        },
+        "permutation_empirical_p_value": 0.9702970297029703,
+        "observed_in_frame_disruption_rate": 0.25,
+        "permutation_null_classifier": "domain_coordinates",
+        "tumor_type_stratified": {
+          "stratified_by": "oncotree_code",
+          "cmh_statistic": 1.0,
+          "cmh_p_value": 0.31731050786291115,
+          "mh_common_odds_ratio": 0.0,
+          "direction": "negative",
+          "informative_strata": 1,
+          "total_strata": 16,
+          "unknown_stratum_observations": 0,
+          "fragility": {
+            "alpha": 0.05,
+            "direction": "negative",
+            "n_observations": 22,
+            "p_value": 0.31731050786291115,
+            "significant": false,
+            "fragility_index": null
+          }
+        },
+        "adaptive_permutations": {
+          "enabled": true,
+          "n_permutations_small": 100,
+          "n_permutations_full": 1000,
+          "n_permutations_used": 100,
+          "n_permutations_max": 100000,
+          "escalated_to_full": false
+        },
+        "Runtime_seconds": 0.004478416998608736
+      },
+      "Tables": {
+        "frame_domain_contingency_table": [
+          [
+            1,
+            13
+          ],
+          [
+            3,
+            5
+          ]
+        ],
+        "frame_domain_contingency_tables_by_tumor_type": [
+          {
+            "stratum": "ADNOS",
+            "table": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          {
+            "stratum": "BLCA",
+            "table": [
+              [
+                0,
+                0
+              ],
+              [
+                1,
+                0
+              ]
+            ]
+          },
+          {
+            "stratum": "BRCA",
+            "table": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          {
+            "stratum": "CCOV",
+            "table": [
+              [
+                0,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          {
+            "stratum": "COAD",
+            "table": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          {
+            "stratum": "CUP",
+            "table": [
+              [
+                0,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          {
+            "stratum": "ESCA",
+            "table": [
+              [
+                0,
+                0
+              ],
+              [
+                1,
+                0
+              ]
+            ]
+          },
+          {
+            "stratum": "GEJ",
+            "table": [
+              [
+                0,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          {
+            "stratum": "HGSOC",
+            "table": [
+              [
+                0,
+                3
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          {
+            "stratum": "IDC",
+            "table": [
+              [
+                0,
+                1
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          {
+            "stratum": "ILC",
+            "table": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          {
+            "stratum": "LUAD",
+            "table": [
+              [
+                0,
+                2
+              ],
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "stratum": "LUCA",
+            "table": [
+              [
+                0,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          {
+            "stratum": "MFH",
+            "table": [
+              [
+                0,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          {
+            "stratum": "PAAD",
+            "table": [
+              [
+                0,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          {
+            "stratum": "PDC",
+            "table": [
+              [
+                0,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          }
+        ],
+        "domain_disruption_descriptives": [
+          {
+            "Domain_key": "auto_disruption_pf06733",
+            "Domain_name": "DEAD_2",
+            "Quantitative_call_count": 22,
+            "Fully_retained_count": 8,
+            "Truncated_count": 2,
+            "Fully_lost_count": 12,
+            "Mean_retained_fraction_among_non_retained_calls": 0.05070546737213404
+          }
+        ],
+        "permutation_null_disruption_rates": [
+          0.0,
+          0.5,
+          0.5,
+          0.25,
+          0.5,
+          0.75,
+          0.5,
+          0.5,
+          0.25,
+          0.5,
+          0.5,
+          0.0,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.75,
+          0.25,
+          0.5,
+          0.5,
+          0.5,
+          0.75,
+          0.25,
+          0.75,
+          0.5,
+          0.75,
+          0.25,
+          0.5,
+          0.25,
+          0.75,
+          0.25,
+          0.5,
+          0.25,
+          0.25,
+          0.75,
+          1.0,
+          0.75,
+          0.75,
+          0.5,
+          0.25,
+          0.75,
+          0.75,
+          1.0,
+          0.25,
+          0.5,
+          0.5,
+          0.75,
+          0.5,
+          0.75,
+          0.75,
+          0.25,
+          0.5,
+          0.5,
+          0.5,
+          0.25,
+          0.5,
+          0.5,
+          0.5,
+          0.0,
+          0.5,
+          0.5,
+          0.5,
+          0.75,
+          0.75,
+          0.75,
+          0.75,
+          0.5,
+          0.75,
+          0.25,
+          0.75,
+          0.25,
+          0.5,
+          0.5,
+          0.5,
+          0.75,
+          0.5,
+          0.75,
+          0.5,
+          0.75,
+          0.25,
+          0.5,
+          1.0,
+          0.5,
+          0.25,
+          0.75,
+          0.5,
+          0.5,
+          0.75,
+          0.25,
+          0.5,
+          0.5,
+          0.5,
+          0.25,
+          0.75,
+          0.75,
+          0.25,
+          0.5,
+          0.75,
+          0.25,
+          0.75
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-10-29T15:47:23.220350Z",
+      "Input_fingerprint": "bc7a44265db428937b74abbe54f42cee593b01d1b0d69fd0596db70813a27fba"
+    },
+    {
+      "Algorithm": "domain_retention",
+      "Algorithm_version": "0.5.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 1000,
+        "adaptive": true
+      },
+      "Summary": {
+        "fisher_odds_ratio": 7.8,
+        "fisher_p_value": 0.11674641148325358,
+        "fisher_fragility": {
+          "alpha": 0.05,
+          "direction": "positive",
+          "n_observations": 22,
+          "p_value": 0.11674641148325358,
+          "significant": false,
+          "fragility_index": null
+        },
+        "permutation_empirical_p_value": 0.060939060939060936,
+        "observed_in_frame_retention_rate": 0.75,
+        "permutation_null_classifier": "domain_coordinates",
+        "tumor_type_stratified": {
+          "stratified_by": "oncotree_code",
+          "cmh_statistic": 0.3333333333333333,
+          "cmh_p_value": 0.5637028616507731,
+          "mh_common_odds_ratio": 0.0,
+          "direction": "negative",
+          "informative_strata": 1,
+          "total_strata": 16,
+          "unknown_stratum_observations": 0,
+          "fragility": {
+            "alpha": 0.05,
+            "direction": "negative",
+            "n_observations": 22,
+            "p_value": 0.5637028616507731,
+            "significant": false,
+            "fragility_index": null
+          }
+        },
+        "adaptive_permutations": {
+          "enabled": true,
+          "n_permutations_small": 100,
+          "n_permutations_full": 1000,
+          "n_permutations_used": 1000,
+          "n_permutations_max": 100000,
+          "escalated_to_full": true
+        },
+        "Runtime_seconds": 0.06869379199997638
+      },
+      "Tables": {
+        "frame_domain_contingency_table": [
+          [
+            3,
+            5
+          ],
+          [
+            1,
+            13
+          ]
+        ],
+        "frame_domain_contingency_tables_by_tumor_type": [
+          {
+            "stratum": "ADNOS",
+            "table": [
+              [
+                0,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          {
+            "stratum": "BLCA",
+            "table": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          {
+            "stratum": "BRCA",
+            "table": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          {
+            "stratum": "CCOV",
+            "table": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          {
+            "stratum": "COAD",
+            "table": [
+              [
+                0,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          {
+            "stratum": "CUP",
+            "table": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          {
+            "stratum": "ESCA",
+            "table": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          {
+            "stratum": "GEJ",
+            "table": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          {
+            "stratum": "HGSOC",
+            "table": [
+              [
+                0,
+                1
+              ],
+              [
+                0,
+                2
+              ]
+            ]
+          },
+          {
+            "stratum": "IDC",
+            "table": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                2
+              ]
+            ]
+          },
+          {
+            "stratum": "ILC",
+            "table": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          {
+            "stratum": "LUAD",
+            "table": [
+              [
+                0,
+                1
+              ],
+              [
+                1,
+                2
+              ]
+            ]
+          },
+          {
+            "stratum": "LUCA",
+            "table": [
+              [
+                0,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          {
+            "stratum": "MFH",
+            "table": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          {
+            "stratum": "PAAD",
+            "table": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          {
+            "stratum": "PDC",
+            "table": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          }
+        ],
+        "domain_retention_descriptives": [
+          {
+            "Domain_key": "auto_key_domain",
+            "Domain_name": "Helicase C-terminal domain",
+            "Quantitative_call_count": 22,
+            "Fully_retained_count": 8,
+            "Truncated_count": 2,
+            "Fully_lost_count": 12,
+            "Mean_retained_fraction_among_non_retained_calls": 0.08602150537634409
+          }
+        ],
+        "permutation_null_retention_rates": {
+          "omitted_from_artifact": true,
+          "count": 1000
+        }
+      },
+      "Warnings": [],
+      "Created_at": "2026-10-29T15:47:23.212841Z",
+      "Input_fingerprint": "bc7a44265db428937b74abbe54f42cee593b01d1b0d69fd0596db70813a27fba"
+    },
+    {
+      "Algorithm": "exon_retention",
+      "Algorithm_version": "1.0.0",
+      "Parameters": {
+        "target_exon": 19
+      },
+      "Summary": {
+        "target_exon": 19,
+        "retained_event_count": 8,
+        "total_event_count": 22,
+        "retained_fraction": 0.36363636363636365,
+        "Runtime_seconds": 3.345799996168353e-05
+      },
+      "Tables": {
+        "Exon_retention": [
+          {
+            "Exon": 19,
+            "Retained_event_count": 8,
+            "Total_event_count": 22,
+            "Retained_fraction": 0.36363636363636365
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-10-29T15:47:23.224131Z",
+      "Input_fingerprint": "bc7a44265db428937b74abbe54f42cee593b01d1b0d69fd0596db70813a27fba"
+    },
+    {
+      "Algorithm": "expression_association",
+      "Algorithm_version": "0.2.0",
+      "Parameters": {},
+      "Summary": {
+        "Runtime_seconds": 9.709001460578293e-06
+      },
+      "Tables": null,
+      "Warnings": [
+        "No mRNA expression data was available for RTEL1 in this cohort; expression-association analysis was skipped."
+      ],
+      "Created_at": "2026-10-29T15:47:23.224087Z",
+      "Input_fingerprint": "bc7a44265db428937b74abbe54f42cee593b01d1b0d69fd0596db70813a27fba"
+    },
+    {
+      "Algorithm": "frequency",
+      "Algorithm_version": "1.1.0",
+      "Parameters": {
+        "dedup_by_patient": false
+      },
+      "Summary": {
+        "input_event_count": 24,
+        "input_sample_count": 24,
+        "input_patient_count": 22,
+        "input_missing_patient_id_event_count": 0,
+        "analyzed_event_count": 24,
+        "counted_unit_count": 24,
+        "analyzed_sample_count": 24,
+        "analyzed_patient_count": 22,
+        "count_unit": "event",
+        "unique_partner_gene_count": 19,
+        "Runtime_seconds": 6.80840021232143e-05
+      },
+      "Tables": {
+        "Partner_gene_counts": [
+          {
+            "Partner_gene": "ARFGAP1",
+            "Event_count": 1,
+            "Raw_event_count": 1,
+            "Sample_count": 1,
+            "Patient_count": 1
+          },
+          {
+            "Partner_gene": "ARFRP1",
+            "Event_count": 1,
+            "Raw_event_count": 1,
+            "Sample_count": 1,
+            "Patient_count": 1
+          },
+          {
+            "Partner_gene": "BIRC7",
+            "Event_count": 1,
+            "Raw_event_count": 1,
+            "Sample_count": 1,
+            "Patient_count": 1
+          },
+          {
+            "Partner_gene": "CDH4",
+            "Event_count": 2,
+            "Raw_event_count": 2,
+            "Sample_count": 2,
+            "Patient_count": 1
+          },
+          {
+            "Partner_gene": "CPQ",
+            "Event_count": 1,
+            "Raw_event_count": 1,
+            "Sample_count": 1,
+            "Patient_count": 1
+          },
+          {
+            "Partner_gene": "DNAJC5",
+            "Event_count": 1,
+            "Raw_event_count": 1,
+            "Sample_count": 1,
+            "Patient_count": 1
+          },
+          {
+            "Partner_gene": "PKP2",
+            "Event_count": 1,
+            "Raw_event_count": 1,
+            "Sample_count": 1,
+            "Patient_count": 1
+          },
+          {
+            "Partner_gene": "PRPF6",
+            "Event_count": 1,
+            "Raw_event_count": 1,
+            "Sample_count": 1,
+            "Patient_count": 1
+          },
+          {
+            "Partner_gene": "PSMA7",
+            "Event_count": 1,
+            "Raw_event_count": 1,
+            "Sample_count": 1,
+            "Patient_count": 1
+          },
+          {
+            "Partner_gene": "RIN2",
+            "Event_count": 1,
+            "Raw_event_count": 1,
+            "Sample_count": 1,
+            "Patient_count": 1
+          },
+          {
+            "Partner_gene": "SEC23B",
+            "Event_count": 1,
+            "Raw_event_count": 1,
+            "Sample_count": 1,
+            "Patient_count": 1
+          },
+          {
+            "Partner_gene": "SPTLC3",
+            "Event_count": 1,
+            "Raw_event_count": 1,
+            "Sample_count": 1,
+            "Patient_count": 1
+          },
+          {
+            "Partner_gene": "STAU1",
+            "Event_count": 1,
+            "Raw_event_count": 1,
+            "Sample_count": 1,
+            "Patient_count": 1
+          },
+          {
+            "Partner_gene": "STMN3",
+            "Event_count": 1,
+            "Raw_event_count": 1,
+            "Sample_count": 1,
+            "Patient_count": 1
+          },
+          {
+            "Partner_gene": "TAF4",
+            "Event_count": 1,
+            "Raw_event_count": 1,
+            "Sample_count": 1,
+            "Patient_count": 1
+          },
+          {
+            "Partner_gene": "TSHZ2",
+            "Event_count": 2,
+            "Raw_event_count": 2,
+            "Sample_count": 2,
+            "Patient_count": 1
+          },
+          {
+            "Partner_gene": "VRK3",
+            "Event_count": 1,
+            "Raw_event_count": 1,
+            "Sample_count": 1,
+            "Patient_count": 1
+          },
+          {
+            "Partner_gene": "YBX2",
+            "Event_count": 1,
+            "Raw_event_count": 1,
+            "Sample_count": 1,
+            "Patient_count": 1
+          },
+          {
+            "Partner_gene": "ZGPAT",
+            "Event_count": 4,
+            "Raw_event_count": 4,
+            "Sample_count": 4,
+            "Patient_count": 4
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-10-29T15:47:23.213783Z",
+      "Input_fingerprint": "c7466236eec5a87512ace1b2f88948ba0eb04273edb310c894bb4f527cd836d1"
+    },
+    {
+      "Algorithm": "genomic_position_recurrence",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "bin_size_bp": 1000
+      },
+      "Summary": {
+        "determinable": true,
+        "reason": null,
+        "n_events_analyzed": 22,
+        "n_events_excluded_missing_position": 0,
+        "n_events_excluded_other_build": 0,
+        "n_events_excluded_other_reported_build": 0,
+        "n_events_unknown_build": 0,
+        "n_events_excluded_unknown_build": 0,
+        "reference_build": "GRCh37",
+        "reference_build_counts": {
+          "GRCh37": 22
+        },
+        "bin_size_bp": 1000,
+        "n_distinct_genomic_positions": 22,
+        "top_genomic_bin": {
+          "chromosome": "20",
+          "bin_start": 62325000,
+          "bin_end": 62326000,
+          "n_events": 4,
+          "event_ids": [
+            "EVT-P-0017448-T01-IM6-54",
+            "EVT-P-0018660-T01-IM6-5",
+            "EVT-P-0047648-T01-IM6-46",
+            "EVT-P-0051006-T01-IM6-44"
+          ]
+        },
+        "n_positions_shared_by_multiple_events": 0,
+        "genomic_vs_protein_clustering_note": "The 2 events sharing protein position 756 aa use 2 distinct genomic positions spanning 68 bp -- the protein-position recurrence is broader than any single genomic hotspot, consistent with independent intronic breakpoints mapped (or clamped) onto the same protein/exon boundary rather than one shared DNA lesion.",
+        "Runtime_seconds": 7.291700239875354e-05
+      },
+      "Tables": {
+        "genomic_bin_recurrence": [
+          {
+            "chromosome": "20",
+            "bin_start": 62325000,
+            "bin_end": 62326000,
+            "n_events": 4,
+            "event_ids": [
+              "EVT-P-0017448-T01-IM6-54",
+              "EVT-P-0018660-T01-IM6-5",
+              "EVT-P-0047648-T01-IM6-46",
+              "EVT-P-0051006-T01-IM6-44"
+            ]
+          },
+          {
+            "chromosome": "20",
+            "bin_start": 62321000,
+            "bin_end": 62322000,
+            "n_events": 3,
+            "event_ids": [
+              "EVT-P-0024365-T01-IM6-4",
+              "EVT-P-0035764-T01-IM6-49",
+              "EVT-P-0053173-T01-IM6-2"
+            ]
+          },
+          {
+            "chromosome": "20",
+            "bin_start": 62292000,
+            "bin_end": 62293000,
+            "n_events": 2,
+            "event_ids": [
+              "EVT-P-0035723-T01-IM6-47",
+              "EVT-P-0041523-T01-IM6-9"
+            ]
+          },
+          {
+            "chromosome": "20",
+            "bin_start": 62294000,
+            "bin_end": 62295000,
+            "n_events": 2,
+            "event_ids": [
+              "EVT-P-0019862-T01-IM6-51",
+              "EVT-P-0052166-T01-IM6-6"
+            ]
+          },
+          {
+            "chromosome": "20",
+            "bin_start": 62320000,
+            "bin_end": 62321000,
+            "n_events": 2,
+            "event_ids": [
+              "EVT-P-0038164-T01-IM6-55",
+              "EVT-P-0049269-T01-IM6-57"
+            ]
+          },
+          {
+            "chromosome": "20",
+            "bin_start": 62326000,
+            "bin_end": 62327000,
+            "n_events": 2,
+            "event_ids": [
+              "EVT-P-0014391-T01-IM6-50",
+              "EVT-P-0065831-T01-IM7-1"
+            ]
+          },
+          {
+            "chromosome": "20",
+            "bin_start": 62305000,
+            "bin_end": 62306000,
+            "n_events": 1,
+            "event_ids": [
+              "EVT-P-0044707-T03-IM6-8"
+            ]
+          },
+          {
+            "chromosome": "20",
+            "bin_start": 62309000,
+            "bin_end": 62310000,
+            "n_events": 1,
+            "event_ids": [
+              "EVT-P-0057597-T01-IM6-16"
+            ]
+          },
+          {
+            "chromosome": "20",
+            "bin_start": 62311000,
+            "bin_end": 62312000,
+            "n_events": 1,
+            "event_ids": [
+              "EVT-P-0045154-T01-IM6-43"
+            ]
+          },
+          {
+            "chromosome": "20",
+            "bin_start": 62316000,
+            "bin_end": 62317000,
+            "n_events": 1,
+            "event_ids": [
+              "EVT-P-0004381-T02-IM6-3"
+            ]
+          },
+          {
+            "chromosome": "20",
+            "bin_start": 62317000,
+            "bin_end": 62318000,
+            "n_events": 1,
+            "event_ids": [
+              "EVT-P-0026247-T02-IM6-48"
+            ]
+          },
+          {
+            "chromosome": "20",
+            "bin_start": 62319000,
+            "bin_end": 62320000,
+            "n_events": 1,
+            "event_ids": [
+              "EVT-P-0028716-T01-IM6-52"
+            ]
+          },
+          {
+            "chromosome": "20",
+            "bin_start": 62323000,
+            "bin_end": 62324000,
+            "n_events": 1,
+            "event_ids": [
+              "EVT-P-0022005-T01-IM6-10"
+            ]
+          }
+        ],
+        "exact_position_recurrence": [],
+        "protein_position_genomic_spread": [
+          {
+            "protein_position_aa": 756,
+            "n_events": 2,
+            "n_distinct_genomic_positions": 2,
+            "genomic_span_bp": 68,
+            "spans_multiple_chromosomes": false
+          },
+          {
+            "protein_position_aa": 1037,
+            "n_events": 2,
+            "n_distinct_genomic_positions": 2,
+            "genomic_span_bp": 3,
+            "spans_multiple_chromosomes": false
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-10-29T15:47:23.289224Z",
+      "Input_fingerprint": "bc7a44265db428937b74abbe54f42cee593b01d1b0d69fd0596db70813a27fba"
+    },
+    {
+      "Algorithm": "joint_partner",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {},
+      "Summary": {
+        "Runtime_seconds": 4.708999767899513e-06
+      },
+      "Tables": {},
+      "Warnings": [
+        "RTEL1 has no gene_pair configured; joint-partner analysis was skipped."
+      ],
+      "Created_at": "2026-10-29T15:47:23.225094Z",
+      "Input_fingerprint": "bc7a44265db428937b74abbe54f42cee593b01d1b0d69fd0596db70813a27fba"
+    },
+    {
+      "Algorithm": "junction_concentration",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 1000,
+        "min_events": 5,
+        "adaptive": true
+      },
+      "Summary": {
+        "determinable": true,
+        "reason": null,
+        "n_events_analyzed": 22,
+        "n_outside_transcript": 0,
+        "top_junction": {
+          "role": "three_prime",
+          "junction_exon": 26,
+          "count": 2,
+          "role_event_count": 12,
+          "observed_share": 0.16666666666666666,
+          "random_breakage_share": 0.006088239945179485,
+          "excess_neg_log10_p": 2.6290950137092026
+        },
+        "permutation_empirical_p_value": 0.059940059940059943,
+        "null_model": "breakpoints uniform across the gene's genomic span, role kept",
+        "panel_capture_caveat": "The random-breakage null assumes a breakpoint anywhere in the gene would be detected. Capture panels such as MSK-IMPACT tile only selected introns, so concentration on panel data is partly by assay design and this p-value overstates the evidence for biological concentration. Confirm in a cohort sequenced without intron selection (whole genome or RNA).",
+        "adaptive_permutations": {
+          "enabled": true,
+          "n_permutations_small": 100,
+          "n_permutations_full": 1000,
+          "n_permutations_used": 1000,
+          "n_permutations_max": 100000,
+          "escalated_to_full": true
+        },
+        "Runtime_seconds": 0.016789790999609977
+      },
+      "Tables": {
+        "junction_counts": [
+          {
+            "role": "five_prime",
+            "junction_exon": 31,
+            "count": 2,
+            "role_event_count": 10,
+            "observed_share": 0.2,
+            "random_breakage_share": 0.009725370302039956,
+            "excess_neg_log10_p": 2.39350990061384
+          },
+          {
+            "role": "three_prime",
+            "junction_exon": 16,
+            "count": 2,
+            "role_event_count": 12,
+            "observed_share": 0.16666666666666666,
+            "random_breakage_share": 0.007247904696642243,
+            "excess_neg_log10_p": 2.481009073795158
+          },
+          {
+            "role": "three_prime",
+            "junction_exon": 26,
+            "count": 2,
+            "role_event_count": 12,
+            "observed_share": 0.16666666666666666,
+            "random_breakage_share": 0.006088239945179485,
+            "excess_neg_log10_p": 2.6290950137092026
+          },
+          {
+            "role": "five_prime",
+            "junction_exon": 3,
+            "count": 1,
+            "role_event_count": 10,
+            "observed_share": 0.1,
+            "random_breakage_share": 0.014548521427441886,
+            "excess_neg_log10_p": 0.8654378354105319
+          },
+          {
+            "role": "five_prime",
+            "junction_exon": 5,
+            "count": 1,
+            "role_event_count": 10,
+            "observed_share": 0.1,
+            "random_breakage_share": 0.007458752833271836,
+            "excess_neg_log10_p": 1.1418648385837353
+          },
+          {
+            "role": "five_prime",
+            "junction_exon": 6,
+            "count": 1,
+            "role_event_count": 10,
+            "observed_share": 0.1,
+            "random_breakage_share": 0.08368035422486954,
+            "excess_neg_log10_p": 0.23457044717191922
+          },
+          {
+            "role": "five_prime",
+            "junction_exon": 10,
+            "count": 1,
+            "role_event_count": 10,
+            "observed_share": 0.1,
+            "random_breakage_share": 0.11082705181592958,
+            "excess_neg_log10_p": 0.1604790013307032
+          },
+          {
+            "role": "five_prime",
+            "junction_exon": 12,
+            "count": 1,
+            "role_event_count": 10,
+            "observed_share": 0.1,
+            "random_breakage_share": 0.04166886300142322,
+            "excess_neg_log10_p": 0.46012782143532777
+          },
+          {
+            "role": "five_prime",
+            "junction_exon": 13,
+            "count": 1,
+            "role_event_count": 10,
+            "observed_share": 0.1,
+            "random_breakage_share": 0.02148015391913974,
+            "excess_neg_log10_p": 0.7095548854157963
+          },
+          {
+            "role": "five_prime",
+            "junction_exon": 28,
+            "count": 1,
+            "role_event_count": 10,
+            "observed_share": 0.1,
+            "random_breakage_share": 0.028016446154657107,
+            "excess_neg_log10_p": 0.6066762196880026
+          },
+          {
+            "role": "five_prime",
+            "junction_exon": 30,
+            "count": 1,
+            "role_event_count": 10,
+            "observed_share": 0.1,
+            "random_breakage_share": 0.032391544989721154,
+            "excess_neg_log10_p": 0.5519792873610784
+          },
+          {
+            "role": "three_prime",
+            "junction_exon": 3,
+            "count": 1,
+            "role_event_count": 12,
+            "observed_share": 0.08333333333333333,
+            "random_breakage_share": 0.052501186020768545,
+            "excess_neg_log10_p": 0.32196721523687205
+          },
+          {
+            "role": "three_prime",
+            "junction_exon": 17,
+            "count": 1,
+            "role_event_count": 12,
+            "observed_share": 0.08333333333333333,
+            "random_breakage_share": 0.05002372041537083,
+            "excess_neg_log10_p": 0.3374293365085039
+          },
+          {
+            "role": "three_prime",
+            "junction_exon": 22,
+            "count": 1,
+            "role_event_count": 12,
+            "observed_share": 0.08333333333333333,
+            "random_breakage_share": 0.013889621000474408,
+            "excess_neg_log10_p": 0.8110318228757339
+          },
+          {
+            "role": "three_prime",
+            "junction_exon": 23,
+            "count": 1,
+            "role_event_count": 12,
+            "observed_share": 0.08333333333333333,
+            "random_breakage_share": 0.013599704812608719,
+            "excess_neg_log10_p": 0.8195116315491785
+          },
+          {
+            "role": "three_prime",
+            "junction_exon": 25,
+            "count": 1,
+            "role_event_count": 12,
+            "observed_share": 0.08333333333333333,
+            "random_breakage_share": 0.009092825892151178,
+            "excess_neg_log10_p": 0.9837226415002485
+          },
+          {
+            "role": "three_prime",
+            "junction_exon": 31,
+            "count": 1,
+            "role_event_count": 12,
+            "observed_share": 0.08333333333333333,
+            "random_breakage_share": 0.03175900057983238,
+            "excess_neg_log10_p": 0.4933508442237222
+          },
+          {
+            "role": "three_prime",
+            "junction_exon": 32,
+            "count": 1,
+            "role_event_count": 12,
+            "observed_share": 0.08333333333333333,
+            "random_breakage_share": 0.012809024300247747,
+            "excess_neg_log10_p": 0.8436662542294603
+          },
+          {
+            "role": "three_prime",
+            "junction_exon": 33,
+            "count": 1,
+            "role_event_count": 12,
+            "observed_share": 0.08333333333333333,
+            "random_breakage_share": 0.00650993621843867,
+            "excess_neg_log10_p": 1.122732240568756
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-10-29T15:47:23.241895Z",
+      "Input_fingerprint": "bc7a44265db428937b74abbe54f42cee593b01d1b0d69fd0596db70813a27fba"
+    },
+    {
+      "Algorithm": "mechanistic_interpretation",
+      "Algorithm_version": "1.1.0",
+      "Parameters": {
+        "alpha": 0.05,
+        "recurrent_partner_threshold": 2
+      },
+      "Summary": {
+        "retention_domains_configured": true,
+        "retention_domain_names": [
+          "Helicase C-terminal domain"
+        ],
+        "retention_tested_domain_accession": "PF13307",
+        "retention_configured_domain_count": 1,
+        "retention_statistically_supported": false,
+        "retention_nominal_fisher_supported": false,
+        "retention_fdr_q_value": 1.0,
+        "retention_fdr_significant": false,
+        "retention_fisher_evidence_status": "not_fdr_supported",
+        "retention_recurrence_evidence_type": "descriptive_heuristic",
+        "retention_fisher_p_value": 0.11674641148325358,
+        "retention_fisher_odds_ratio": 7.8,
+        "retention_counter_intuitive_confidence": "not_applicable",
+        "retention_counter_intuitive_count": 0,
+        "retention_counter_intuitive_total": 0,
+        "retention_counter_intuitive_percent": null,
+        "disruption_domains_configured": true,
+        "disruption_domain_names": [
+          "DEAD_2"
+        ],
+        "disruption_tested_domain_accession": "PF06733",
+        "disruption_configured_domain_count": 1,
+        "disruption_statistically_supported": false,
+        "disruption_nominal_fisher_supported": false,
+        "disruption_fdr_q_value": 1.0,
+        "disruption_fdr_significant": false,
+        "disruption_fisher_evidence_status": "not_fdr_supported",
+        "disruption_recurrence_evidence_type": "descriptive_heuristic",
+        "disruption_fisher_p_value": 0.9904306220095693,
+        "disruption_fisher_odds_ratio": 0.1282051282051282,
+        "disruption_counter_intuitive_confidence": "not_applicable",
+        "disruption_counter_intuitive_count": 0,
+        "disruption_counter_intuitive_total": 0,
+        "disruption_counter_intuitive_percent": null,
+        "Runtime_seconds": 1.8415998056298122e-05
+      },
+      "Tables": {},
+      "Warnings": [],
+      "Created_at": "2026-10-29T15:47:23.289142Z",
+      "Input_fingerprint": "bc7a44265db428937b74abbe54f42cee593b01d1b0d69fd0596db70813a27fba"
+    },
+    {
+      "Algorithm": "mutation_cooccurrence",
+      "Algorithm_version": "0.2.0",
+      "Parameters": {},
+      "Summary": {
+        "targets": [],
+        "Runtime_seconds": 8.291997801279649e-06
+      },
+      "Tables": {},
+      "Warnings": [
+        "RTEL1 has no mutual_exclusivity_targets configured; co-occurrence/mutual-exclusivity analysis was skipped."
+      ],
+      "Created_at": "2026-10-29T15:47:23.225078Z",
+      "Input_fingerprint": "bc7a44265db428937b74abbe54f42cee593b01d1b0d69fd0596db70813a27fba"
+    },
+    {
+      "Algorithm": "window_detection",
+      "Algorithm_version": "0.1.0",
+      "Parameters": {
+        "seed": 42,
+        "n_permutations": 1000,
+        "widths": [
+          25,
+          50,
+          100,
+          200
+        ],
+        "min_events_per_window": 4,
+        "adaptive": false
+      },
+      "Summary": {
+        "determinable": true,
+        "reason": null,
+        "n_events_analyzed": 22,
+        "widths_tested_aa": [
+          25,
+          50,
+          100,
+          200
+        ],
+        "min_events_per_window": 4,
+        "n_candidate_windows": 38,
+        "n_distinct_candidate_windows_by_event_mask": 22,
+        "best_window": {
+          "start_aa": 837,
+          "end_aa": 1037,
+          "width_aa": 200
+        },
+        "observed_statistic_neg_log10_p": 1.4051570758194027,
+        "observed_p_value": 0.03934077618288144,
+        "observed_odds_ratio": 13.0,
+        "corrected_p_value": 0.21578421578421578,
+        "known_domain_boundary_comparison": {
+          "start_aa": {
+            "nearest_known_domain_boundary_aa": 731,
+            "distance_aa": 106
+          },
+          "end_aa": {
+            "nearest_known_domain_boundary_aa": 731,
+            "distance_aa": 306
+          }
+        },
+        "mapping_sensitivity": {
+          "available": true,
+          "n_events": 22,
+          "n_exact": 11,
+          "n_clamped_or_approximate": 11,
+          "n_unknown": 0,
+          "fraction_clamped_or_approximate": 0.5
+        },
+        "best_window_mapping_sensitivity": {
+          "available": true,
+          "n_events": 5,
+          "n_exact": 1,
+          "n_clamped_or_approximate": 4,
+          "n_unknown": 0,
+          "fraction_clamped_or_approximate": 0.8
+        },
+        "Runtime_seconds": 0.058216000001266366
+      },
+      "Tables": {
+        "window_scan": [
+          {
+            "start_aa": -24,
+            "end_aa": 176,
+            "width_aa": 200,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 1,
+            "n_positive_outside": 7,
+            "odds_ratio": 0.5238095238095238,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0,
+            "event_ids_inside": [
+              "EVT-P-0019862-T01-IM6-51",
+              "EVT-P-0035723-T01-IM6-47",
+              "EVT-P-0041523-T01-IM6-9",
+              "EVT-P-0052166-T01-IM6-6"
+            ]
+          },
+          {
+            "start_aa": 35,
+            "end_aa": 235,
+            "width_aa": 200,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 1,
+            "n_positive_outside": 7,
+            "odds_ratio": 0.5238095238095238,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0,
+            "event_ids_inside": [
+              "EVT-P-0019862-T01-IM6-51",
+              "EVT-P-0035723-T01-IM6-47",
+              "EVT-P-0041523-T01-IM6-9",
+              "EVT-P-0052166-T01-IM6-6"
+            ]
+          },
+          {
+            "start_aa": 146,
+            "end_aa": 346,
+            "width_aa": 200,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 0,
+            "n_positive_outside": 8,
+            "odds_ratio": 0.0,
+            "p_value": 0.2535885167464115,
+            "neg_log10_p_value": 0.595870416510265,
+            "event_ids_inside": [
+              "EVT-P-0019862-T01-IM6-51",
+              "EVT-P-0044707-T03-IM6-8",
+              "EVT-P-0052166-T01-IM6-6",
+              "EVT-P-0057597-T01-IM6-16"
+            ]
+          },
+          {
+            "start_aa": 157,
+            "end_aa": 357,
+            "width_aa": 200,
+            "n_events_inside": 5,
+            "n_events_outside": 17,
+            "n_positive_inside": 0,
+            "n_positive_outside": 8,
+            "odds_ratio": 0.0,
+            "p_value": 0.11536416799574695,
+            "neg_log10_p_value": 0.9379290617018493,
+            "event_ids_inside": [
+              "EVT-P-0019862-T01-IM6-51",
+              "EVT-P-0044707-T03-IM6-8",
+              "EVT-P-0045154-T01-IM6-43",
+              "EVT-P-0052166-T01-IM6-6",
+              "EVT-P-0057597-T01-IM6-16"
+            ]
+          },
+          {
+            "start_aa": 159,
+            "end_aa": 359,
+            "width_aa": 200,
+            "n_events_inside": 5,
+            "n_events_outside": 17,
+            "n_positive_inside": 0,
+            "n_positive_outside": 8,
+            "odds_ratio": 0.0,
+            "p_value": 0.11536416799574695,
+            "neg_log10_p_value": 0.9379290617018493,
+            "event_ids_inside": [
+              "EVT-P-0019862-T01-IM6-51",
+              "EVT-P-0044707-T03-IM6-8",
+              "EVT-P-0045154-T01-IM6-43",
+              "EVT-P-0052166-T01-IM6-6",
+              "EVT-P-0057597-T01-IM6-16"
+            ]
+          },
+          {
+            "start_aa": 176,
+            "end_aa": 376,
+            "width_aa": 200,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 0,
+            "n_positive_outside": 8,
+            "odds_ratio": 0.0,
+            "p_value": 0.2535885167464115,
+            "neg_log10_p_value": 0.595870416510265,
+            "event_ids_inside": [
+              "EVT-P-0044707-T03-IM6-8",
+              "EVT-P-0045154-T01-IM6-43",
+              "EVT-P-0052166-T01-IM6-6",
+              "EVT-P-0057597-T01-IM6-16"
+            ]
+          },
+          {
+            "start_aa": 223,
+            "end_aa": 423,
+            "width_aa": 200,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 1,
+            "n_positive_outside": 7,
+            "odds_ratio": 0.5238095238095238,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0,
+            "event_ids_inside": [
+              "EVT-P-0004381-T02-IM6-3",
+              "EVT-P-0044707-T03-IM6-8",
+              "EVT-P-0045154-T01-IM6-43",
+              "EVT-P-0057597-T01-IM6-16"
+            ]
+          },
+          {
+            "start_aa": 246,
+            "end_aa": 446,
+            "width_aa": 200,
+            "n_events_inside": 5,
+            "n_events_outside": 17,
+            "n_positive_inside": 2,
+            "n_positive_outside": 6,
+            "odds_ratio": 1.2222222222222223,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0,
+            "event_ids_inside": [
+              "EVT-P-0004381-T02-IM6-3",
+              "EVT-P-0026247-T02-IM6-48",
+              "EVT-P-0044707-T03-IM6-8",
+              "EVT-P-0045154-T01-IM6-43",
+              "EVT-P-0057597-T01-IM6-16"
+            ]
+          },
+          {
+            "start_aa": 257,
+            "end_aa": 457,
+            "width_aa": 200,
+            "n_events_inside": 6,
+            "n_events_outside": 16,
+            "n_positive_inside": 3,
+            "n_positive_outside": 5,
+            "odds_ratio": 2.2,
+            "p_value": 0.6243550051599587,
+            "neg_log10_p_value": 0.20456840239829646,
+            "event_ids_inside": [
+              "EVT-P-0004381-T02-IM6-3",
+              "EVT-P-0026247-T02-IM6-48",
+              "EVT-P-0028716-T01-IM6-52",
+              "EVT-P-0044707-T03-IM6-8",
+              "EVT-P-0045154-T01-IM6-43",
+              "EVT-P-0057597-T01-IM6-16"
+            ]
+          },
+          {
+            "start_aa": 307,
+            "end_aa": 507,
+            "width_aa": 200,
+            "n_events_inside": 6,
+            "n_events_outside": 16,
+            "n_positive_inside": 3,
+            "n_positive_outside": 5,
+            "odds_ratio": 2.2,
+            "p_value": 0.6243550051599587,
+            "neg_log10_p_value": 0.20456840239829646,
+            "event_ids_inside": [
+              "EVT-P-0004381-T02-IM6-3",
+              "EVT-P-0026247-T02-IM6-48",
+              "EVT-P-0028716-T01-IM6-52",
+              "EVT-P-0044707-T03-IM6-8",
+              "EVT-P-0045154-T01-IM6-43",
+              "EVT-P-0057597-T01-IM6-16"
+            ]
+          },
+          {
+            "start_aa": 346,
+            "end_aa": 446,
+            "width_aa": 100,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 2,
+            "n_positive_outside": 6,
+            "odds_ratio": 2.0,
+            "p_value": 0.6019138755980862,
+            "neg_log10_p_value": 0.22046564500180385,
+            "event_ids_inside": [
+              "EVT-P-0004381-T02-IM6-3",
+              "EVT-P-0026247-T02-IM6-48",
+              "EVT-P-0045154-T01-IM6-43",
+              "EVT-P-0057597-T01-IM6-16"
+            ]
+          },
+          {
+            "start_aa": 346,
+            "end_aa": 546,
+            "width_aa": 200,
+            "n_events_inside": 5,
+            "n_events_outside": 17,
+            "n_positive_inside": 3,
+            "n_positive_outside": 5,
+            "odds_ratio": 3.6,
+            "p_value": 0.3088782562466773,
+            "neg_log10_p_value": 0.5102126631600481,
+            "event_ids_inside": [
+              "EVT-P-0004381-T02-IM6-3",
+              "EVT-P-0026247-T02-IM6-48",
+              "EVT-P-0028716-T01-IM6-52",
+              "EVT-P-0045154-T01-IM6-43",
+              "EVT-P-0057597-T01-IM6-16"
+            ]
+          },
+          {
+            "start_aa": 357,
+            "end_aa": 457,
+            "width_aa": 100,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 3,
+            "n_positive_outside": 5,
+            "odds_ratio": 7.8,
+            "p_value": 0.11674641148325358,
+            "neg_log10_p_value": 0.9327564597723246,
+            "event_ids_inside": [
+              "EVT-P-0004381-T02-IM6-3",
+              "EVT-P-0026247-T02-IM6-48",
+              "EVT-P-0028716-T01-IM6-52",
+              "EVT-P-0045154-T01-IM6-43"
+            ]
+          },
+          {
+            "start_aa": 357,
+            "end_aa": 557,
+            "width_aa": 200,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 3,
+            "n_positive_outside": 5,
+            "odds_ratio": 7.8,
+            "p_value": 0.11674641148325358,
+            "neg_log10_p_value": 0.9327564597723246,
+            "event_ids_inside": [
+              "EVT-P-0004381-T02-IM6-3",
+              "EVT-P-0026247-T02-IM6-48",
+              "EVT-P-0028716-T01-IM6-52",
+              "EVT-P-0045154-T01-IM6-43"
+            ]
+          },
+          {
+            "start_aa": 404,
+            "end_aa": 604,
+            "width_aa": 200,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 3,
+            "n_positive_outside": 5,
+            "odds_ratio": 7.8,
+            "p_value": 0.11674641148325358,
+            "neg_log10_p_value": 0.9327564597723246,
+            "event_ids_inside": [
+              "EVT-P-0004381-T02-IM6-3",
+              "EVT-P-0026247-T02-IM6-48",
+              "EVT-P-0028716-T01-IM6-52",
+              "EVT-P-0038164-T01-IM6-55"
+            ]
+          },
+          {
+            "start_aa": 423,
+            "end_aa": 623,
+            "width_aa": 200,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 3,
+            "n_positive_outside": 5,
+            "odds_ratio": 7.8,
+            "p_value": 0.11674641148325358,
+            "neg_log10_p_value": 0.9327564597723246,
+            "event_ids_inside": [
+              "EVT-P-0004381-T02-IM6-3",
+              "EVT-P-0026247-T02-IM6-48",
+              "EVT-P-0028716-T01-IM6-52",
+              "EVT-P-0038164-T01-IM6-55"
+            ]
+          },
+          {
+            "start_aa": 436,
+            "end_aa": 636,
+            "width_aa": 200,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 2,
+            "n_positive_outside": 6,
+            "odds_ratio": 2.0,
+            "p_value": 0.6019138755980862,
+            "neg_log10_p_value": 0.22046564500180385,
+            "event_ids_inside": [
+              "EVT-P-0026247-T02-IM6-48",
+              "EVT-P-0028716-T01-IM6-52",
+              "EVT-P-0038164-T01-IM6-55",
+              "EVT-P-0049269-T01-IM6-57"
+            ]
+          },
+          {
+            "start_aa": 446,
+            "end_aa": 646,
+            "width_aa": 200,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 2,
+            "n_positive_outside": 6,
+            "odds_ratio": 2.0,
+            "p_value": 0.6019138755980862,
+            "neg_log10_p_value": 0.22046564500180385,
+            "event_ids_inside": [
+              "EVT-P-0026247-T02-IM6-48",
+              "EVT-P-0028716-T01-IM6-52",
+              "EVT-P-0038164-T01-IM6-55",
+              "EVT-P-0049269-T01-IM6-57"
+            ]
+          },
+          {
+            "start_aa": 556,
+            "end_aa": 756,
+            "width_aa": 200,
+            "n_events_inside": 5,
+            "n_events_outside": 17,
+            "n_positive_inside": 0,
+            "n_positive_outside": 8,
+            "odds_ratio": 0.0,
+            "p_value": 0.11536416799574695,
+            "neg_log10_p_value": 0.9379290617018493,
+            "event_ids_inside": [
+              "EVT-P-0024365-T01-IM6-4",
+              "EVT-P-0035764-T01-IM6-49",
+              "EVT-P-0038164-T01-IM6-55",
+              "EVT-P-0049269-T01-IM6-57",
+              "EVT-P-0053173-T01-IM6-2"
+            ]
+          },
+          {
+            "start_aa": 604,
+            "end_aa": 804,
+            "width_aa": 200,
+            "n_events_inside": 5,
+            "n_events_outside": 17,
+            "n_positive_inside": 0,
+            "n_positive_outside": 8,
+            "odds_ratio": 0.0,
+            "p_value": 0.11536416799574695,
+            "neg_log10_p_value": 0.9379290617018493,
+            "event_ids_inside": [
+              "EVT-P-0024365-T01-IM6-4",
+              "EVT-P-0035764-T01-IM6-49",
+              "EVT-P-0038164-T01-IM6-55",
+              "EVT-P-0049269-T01-IM6-57",
+              "EVT-P-0053173-T01-IM6-2"
+            ]
+          },
+          {
+            "start_aa": 636,
+            "end_aa": 836,
+            "width_aa": 200,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 0,
+            "n_positive_outside": 8,
+            "odds_ratio": 0.0,
+            "p_value": 0.2535885167464115,
+            "neg_log10_p_value": 0.595870416510265,
+            "event_ids_inside": [
+              "EVT-P-0024365-T01-IM6-4",
+              "EVT-P-0035764-T01-IM6-49",
+              "EVT-P-0049269-T01-IM6-57",
+              "EVT-P-0053173-T01-IM6-2"
+            ]
+          },
+          {
+            "start_aa": 684,
+            "end_aa": 884,
+            "width_aa": 200,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 1,
+            "n_positive_outside": 7,
+            "odds_ratio": 0.5238095238095238,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0,
+            "event_ids_inside": [
+              "EVT-P-0022005-T01-IM6-10",
+              "EVT-P-0024365-T01-IM6-4",
+              "EVT-P-0035764-T01-IM6-49",
+              "EVT-P-0053173-T01-IM6-2"
+            ]
+          },
+          {
+            "start_aa": 744,
+            "end_aa": 944,
+            "width_aa": 200,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 1,
+            "n_positive_outside": 7,
+            "odds_ratio": 0.5238095238095238,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0,
+            "event_ids_inside": [
+              "EVT-P-0022005-T01-IM6-10",
+              "EVT-P-0024365-T01-IM6-4",
+              "EVT-P-0035764-T01-IM6-49",
+              "EVT-P-0053173-T01-IM6-2"
+            ]
+          },
+          {
+            "start_aa": 837,
+            "end_aa": 1037,
+            "width_aa": 200,
+            "n_events_inside": 5,
+            "n_events_outside": 17,
+            "n_positive_inside": 4,
+            "n_positive_outside": 4,
+            "odds_ratio": 13.0,
+            "p_value": 0.03934077618288144,
+            "neg_log10_p_value": 1.4051570758194027,
+            "event_ids_inside": [
+              "EVT-P-0017448-T01-IM6-54",
+              "EVT-P-0018660-T01-IM6-5",
+              "EVT-P-0022005-T01-IM6-10",
+              "EVT-P-0047648-T01-IM6-46",
+              "EVT-P-0051006-T01-IM6-44"
+            ]
+          },
+          {
+            "start_aa": 884,
+            "end_aa": 1084,
+            "width_aa": 200,
+            "n_events_inside": 5,
+            "n_events_outside": 17,
+            "n_positive_inside": 4,
+            "n_positive_outside": 4,
+            "odds_ratio": 13.0,
+            "p_value": 0.03934077618288144,
+            "neg_log10_p_value": 1.4051570758194027,
+            "event_ids_inside": [
+              "EVT-P-0017448-T01-IM6-54",
+              "EVT-P-0018660-T01-IM6-5",
+              "EVT-P-0022005-T01-IM6-10",
+              "EVT-P-0047648-T01-IM6-46",
+              "EVT-P-0051006-T01-IM6-44"
+            ]
+          },
+          {
+            "start_aa": 885,
+            "end_aa": 1085,
+            "width_aa": 200,
+            "n_events_inside": 5,
+            "n_events_outside": 17,
+            "n_positive_inside": 3,
+            "n_positive_outside": 5,
+            "odds_ratio": 3.6,
+            "p_value": 0.3088782562466773,
+            "neg_log10_p_value": 0.5102126631600481,
+            "event_ids_inside": [
+              "EVT-P-0014391-T01-IM6-50",
+              "EVT-P-0017448-T01-IM6-54",
+              "EVT-P-0018660-T01-IM6-5",
+              "EVT-P-0047648-T01-IM6-46",
+              "EVT-P-0051006-T01-IM6-44"
+            ]
+          },
+          {
+            "start_aa": 930,
+            "end_aa": 1130,
+            "width_aa": 200,
+            "n_events_inside": 6,
+            "n_events_outside": 16,
+            "n_positive_inside": 3,
+            "n_positive_outside": 5,
+            "odds_ratio": 2.2,
+            "p_value": 0.6243550051599587,
+            "neg_log10_p_value": 0.20456840239829646,
+            "event_ids_inside": [
+              "EVT-P-0014391-T01-IM6-50",
+              "EVT-P-0017448-T01-IM6-54",
+              "EVT-P-0018660-T01-IM6-5",
+              "EVT-P-0047648-T01-IM6-46",
+              "EVT-P-0051006-T01-IM6-44",
+              "EVT-P-0065831-T01-IM7-1"
+            ]
+          },
+          {
+            "start_aa": 937,
+            "end_aa": 1037,
+            "width_aa": 100,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 3,
+            "n_positive_outside": 5,
+            "odds_ratio": 7.8,
+            "p_value": 0.11674641148325358,
+            "neg_log10_p_value": 0.9327564597723246,
+            "event_ids_inside": [
+              "EVT-P-0017448-T01-IM6-54",
+              "EVT-P-0018660-T01-IM6-5",
+              "EVT-P-0047648-T01-IM6-46",
+              "EVT-P-0051006-T01-IM6-44"
+            ]
+          },
+          {
+            "start_aa": 985,
+            "end_aa": 1085,
+            "width_aa": 100,
+            "n_events_inside": 5,
+            "n_events_outside": 17,
+            "n_positive_inside": 3,
+            "n_positive_outside": 5,
+            "odds_ratio": 3.6,
+            "p_value": 0.3088782562466773,
+            "neg_log10_p_value": 0.5102126631600481,
+            "event_ids_inside": [
+              "EVT-P-0014391-T01-IM6-50",
+              "EVT-P-0017448-T01-IM6-54",
+              "EVT-P-0018660-T01-IM6-5",
+              "EVT-P-0047648-T01-IM6-46",
+              "EVT-P-0051006-T01-IM6-44"
+            ]
+          },
+          {
+            "start_aa": 987,
+            "end_aa": 1037,
+            "width_aa": 50,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 3,
+            "n_positive_outside": 5,
+            "odds_ratio": 7.8,
+            "p_value": 0.11674641148325358,
+            "neg_log10_p_value": 0.9327564597723246,
+            "event_ids_inside": [
+              "EVT-P-0017448-T01-IM6-54",
+              "EVT-P-0018660-T01-IM6-5",
+              "EVT-P-0047648-T01-IM6-46",
+              "EVT-P-0051006-T01-IM6-44"
+            ]
+          },
+          {
+            "start_aa": 998,
+            "end_aa": 1048,
+            "width_aa": 50,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 3,
+            "n_positive_outside": 5,
+            "odds_ratio": 7.8,
+            "p_value": 0.11674641148325358,
+            "neg_log10_p_value": 0.9327564597723246,
+            "event_ids_inside": [
+              "EVT-P-0017448-T01-IM6-54",
+              "EVT-P-0018660-T01-IM6-5",
+              "EVT-P-0047648-T01-IM6-46",
+              "EVT-P-0051006-T01-IM6-44"
+            ]
+          },
+          {
+            "start_aa": 998,
+            "end_aa": 1098,
+            "width_aa": 100,
+            "n_events_inside": 5,
+            "n_events_outside": 17,
+            "n_positive_inside": 3,
+            "n_positive_outside": 5,
+            "odds_ratio": 3.6,
+            "p_value": 0.3088782562466773,
+            "neg_log10_p_value": 0.5102126631600481,
+            "event_ids_inside": [
+              "EVT-P-0014391-T01-IM6-50",
+              "EVT-P-0017448-T01-IM6-54",
+              "EVT-P-0018660-T01-IM6-5",
+              "EVT-P-0047648-T01-IM6-46",
+              "EVT-P-0051006-T01-IM6-44"
+            ]
+          },
+          {
+            "start_aa": 998,
+            "end_aa": 1198,
+            "width_aa": 200,
+            "n_events_inside": 6,
+            "n_events_outside": 16,
+            "n_positive_inside": 3,
+            "n_positive_outside": 5,
+            "odds_ratio": 2.2,
+            "p_value": 0.6243550051599587,
+            "neg_log10_p_value": 0.20456840239829646,
+            "event_ids_inside": [
+              "EVT-P-0014391-T01-IM6-50",
+              "EVT-P-0017448-T01-IM6-54",
+              "EVT-P-0018660-T01-IM6-5",
+              "EVT-P-0047648-T01-IM6-46",
+              "EVT-P-0051006-T01-IM6-44",
+              "EVT-P-0065831-T01-IM7-1"
+            ]
+          },
+          {
+            "start_aa": 1006,
+            "end_aa": 1106,
+            "width_aa": 100,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 2,
+            "n_positive_outside": 6,
+            "odds_ratio": 2.0,
+            "p_value": 0.6019138755980862,
+            "neg_log10_p_value": 0.22046564500180385,
+            "event_ids_inside": [
+              "EVT-P-0014391-T01-IM6-50",
+              "EVT-P-0017448-T01-IM6-54",
+              "EVT-P-0018660-T01-IM6-5",
+              "EVT-P-0047648-T01-IM6-46"
+            ]
+          },
+          {
+            "start_aa": 1006,
+            "end_aa": 1206,
+            "width_aa": 200,
+            "n_events_inside": 5,
+            "n_events_outside": 17,
+            "n_positive_inside": 2,
+            "n_positive_outside": 6,
+            "odds_ratio": 1.2222222222222223,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0,
+            "event_ids_inside": [
+              "EVT-P-0014391-T01-IM6-50",
+              "EVT-P-0017448-T01-IM6-54",
+              "EVT-P-0018660-T01-IM6-5",
+              "EVT-P-0047648-T01-IM6-46",
+              "EVT-P-0065831-T01-IM7-1"
+            ]
+          },
+          {
+            "start_aa": 1030,
+            "end_aa": 1130,
+            "width_aa": 100,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 2,
+            "n_positive_outside": 6,
+            "odds_ratio": 2.0,
+            "p_value": 0.6019138755980862,
+            "neg_log10_p_value": 0.22046564500180385,
+            "event_ids_inside": [
+              "EVT-P-0014391-T01-IM6-50",
+              "EVT-P-0017448-T01-IM6-54",
+              "EVT-P-0047648-T01-IM6-46",
+              "EVT-P-0065831-T01-IM7-1"
+            ]
+          },
+          {
+            "start_aa": 1037,
+            "end_aa": 1137,
+            "width_aa": 100,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 2,
+            "n_positive_outside": 6,
+            "odds_ratio": 2.0,
+            "p_value": 0.6019138755980862,
+            "neg_log10_p_value": 0.22046564500180385,
+            "event_ids_inside": [
+              "EVT-P-0014391-T01-IM6-50",
+              "EVT-P-0017448-T01-IM6-54",
+              "EVT-P-0047648-T01-IM6-46",
+              "EVT-P-0065831-T01-IM7-1"
+            ]
+          },
+          {
+            "start_aa": 1037,
+            "end_aa": 1237,
+            "width_aa": 200,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 2,
+            "n_positive_outside": 6,
+            "odds_ratio": 2.0,
+            "p_value": 0.6019138755980862,
+            "neg_log10_p_value": 0.22046564500180385,
+            "event_ids_inside": [
+              "EVT-P-0014391-T01-IM6-50",
+              "EVT-P-0017448-T01-IM6-54",
+              "EVT-P-0047648-T01-IM6-46",
+              "EVT-P-0065831-T01-IM7-1"
+            ]
+          }
+        ],
+        "top_windows": [
+          {
+            "start_aa": 837,
+            "end_aa": 1037,
+            "width_aa": 200,
+            "n_events_inside": 5,
+            "n_events_outside": 17,
+            "n_positive_inside": 4,
+            "n_positive_outside": 4,
+            "odds_ratio": 13.0,
+            "p_value": 0.03934077618288144,
+            "neg_log10_p_value": 1.4051570758194027,
+            "event_ids_inside": [
+              "EVT-P-0017448-T01-IM6-54",
+              "EVT-P-0018660-T01-IM6-5",
+              "EVT-P-0022005-T01-IM6-10",
+              "EVT-P-0047648-T01-IM6-46",
+              "EVT-P-0051006-T01-IM6-44"
+            ]
+          },
+          {
+            "start_aa": 157,
+            "end_aa": 357,
+            "width_aa": 200,
+            "n_events_inside": 5,
+            "n_events_outside": 17,
+            "n_positive_inside": 0,
+            "n_positive_outside": 8,
+            "odds_ratio": 0.0,
+            "p_value": 0.11536416799574695,
+            "neg_log10_p_value": 0.9379290617018493,
+            "event_ids_inside": [
+              "EVT-P-0019862-T01-IM6-51",
+              "EVT-P-0044707-T03-IM6-8",
+              "EVT-P-0045154-T01-IM6-43",
+              "EVT-P-0052166-T01-IM6-6",
+              "EVT-P-0057597-T01-IM6-16"
+            ]
+          },
+          {
+            "start_aa": 556,
+            "end_aa": 756,
+            "width_aa": 200,
+            "n_events_inside": 5,
+            "n_events_outside": 17,
+            "n_positive_inside": 0,
+            "n_positive_outside": 8,
+            "odds_ratio": 0.0,
+            "p_value": 0.11536416799574695,
+            "neg_log10_p_value": 0.9379290617018493,
+            "event_ids_inside": [
+              "EVT-P-0024365-T01-IM6-4",
+              "EVT-P-0035764-T01-IM6-49",
+              "EVT-P-0038164-T01-IM6-55",
+              "EVT-P-0049269-T01-IM6-57",
+              "EVT-P-0053173-T01-IM6-2"
+            ]
+          },
+          {
+            "start_aa": 987,
+            "end_aa": 1037,
+            "width_aa": 50,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 3,
+            "n_positive_outside": 5,
+            "odds_ratio": 7.8,
+            "p_value": 0.11674641148325358,
+            "neg_log10_p_value": 0.9327564597723246,
+            "event_ids_inside": [
+              "EVT-P-0017448-T01-IM6-54",
+              "EVT-P-0018660-T01-IM6-5",
+              "EVT-P-0047648-T01-IM6-46",
+              "EVT-P-0051006-T01-IM6-44"
+            ]
+          },
+          {
+            "start_aa": 357,
+            "end_aa": 457,
+            "width_aa": 100,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 3,
+            "n_positive_outside": 5,
+            "odds_ratio": 7.8,
+            "p_value": 0.11674641148325358,
+            "neg_log10_p_value": 0.9327564597723246,
+            "event_ids_inside": [
+              "EVT-P-0004381-T02-IM6-3",
+              "EVT-P-0026247-T02-IM6-48",
+              "EVT-P-0028716-T01-IM6-52",
+              "EVT-P-0045154-T01-IM6-43"
+            ]
+          },
+          {
+            "start_aa": 404,
+            "end_aa": 604,
+            "width_aa": 200,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 3,
+            "n_positive_outside": 5,
+            "odds_ratio": 7.8,
+            "p_value": 0.11674641148325358,
+            "neg_log10_p_value": 0.9327564597723246,
+            "event_ids_inside": [
+              "EVT-P-0004381-T02-IM6-3",
+              "EVT-P-0026247-T02-IM6-48",
+              "EVT-P-0028716-T01-IM6-52",
+              "EVT-P-0038164-T01-IM6-55"
+            ]
+          },
+          {
+            "start_aa": 146,
+            "end_aa": 346,
+            "width_aa": 200,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 0,
+            "n_positive_outside": 8,
+            "odds_ratio": 0.0,
+            "p_value": 0.2535885167464115,
+            "neg_log10_p_value": 0.595870416510265,
+            "event_ids_inside": [
+              "EVT-P-0019862-T01-IM6-51",
+              "EVT-P-0044707-T03-IM6-8",
+              "EVT-P-0052166-T01-IM6-6",
+              "EVT-P-0057597-T01-IM6-16"
+            ]
+          },
+          {
+            "start_aa": 176,
+            "end_aa": 376,
+            "width_aa": 200,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 0,
+            "n_positive_outside": 8,
+            "odds_ratio": 0.0,
+            "p_value": 0.2535885167464115,
+            "neg_log10_p_value": 0.595870416510265,
+            "event_ids_inside": [
+              "EVT-P-0044707-T03-IM6-8",
+              "EVT-P-0045154-T01-IM6-43",
+              "EVT-P-0052166-T01-IM6-6",
+              "EVT-P-0057597-T01-IM6-16"
+            ]
+          },
+          {
+            "start_aa": 636,
+            "end_aa": 836,
+            "width_aa": 200,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 0,
+            "n_positive_outside": 8,
+            "odds_ratio": 0.0,
+            "p_value": 0.2535885167464115,
+            "neg_log10_p_value": 0.595870416510265,
+            "event_ids_inside": [
+              "EVT-P-0024365-T01-IM6-4",
+              "EVT-P-0035764-T01-IM6-49",
+              "EVT-P-0049269-T01-IM6-57",
+              "EVT-P-0053173-T01-IM6-2"
+            ]
+          },
+          {
+            "start_aa": 985,
+            "end_aa": 1085,
+            "width_aa": 100,
+            "n_events_inside": 5,
+            "n_events_outside": 17,
+            "n_positive_inside": 3,
+            "n_positive_outside": 5,
+            "odds_ratio": 3.6,
+            "p_value": 0.3088782562466773,
+            "neg_log10_p_value": 0.5102126631600481,
+            "event_ids_inside": [
+              "EVT-P-0014391-T01-IM6-50",
+              "EVT-P-0017448-T01-IM6-54",
+              "EVT-P-0018660-T01-IM6-5",
+              "EVT-P-0047648-T01-IM6-46",
+              "EVT-P-0051006-T01-IM6-44"
+            ]
+          },
+          {
+            "start_aa": 346,
+            "end_aa": 546,
+            "width_aa": 200,
+            "n_events_inside": 5,
+            "n_events_outside": 17,
+            "n_positive_inside": 3,
+            "n_positive_outside": 5,
+            "odds_ratio": 3.6,
+            "p_value": 0.3088782562466773,
+            "neg_log10_p_value": 0.5102126631600481,
+            "event_ids_inside": [
+              "EVT-P-0004381-T02-IM6-3",
+              "EVT-P-0026247-T02-IM6-48",
+              "EVT-P-0028716-T01-IM6-52",
+              "EVT-P-0045154-T01-IM6-43",
+              "EVT-P-0057597-T01-IM6-16"
+            ]
+          },
+          {
+            "start_aa": 346,
+            "end_aa": 446,
+            "width_aa": 100,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 2,
+            "n_positive_outside": 6,
+            "odds_ratio": 2.0,
+            "p_value": 0.6019138755980862,
+            "neg_log10_p_value": 0.22046564500180385,
+            "event_ids_inside": [
+              "EVT-P-0004381-T02-IM6-3",
+              "EVT-P-0026247-T02-IM6-48",
+              "EVT-P-0045154-T01-IM6-43",
+              "EVT-P-0057597-T01-IM6-16"
+            ]
+          },
+          {
+            "start_aa": 1006,
+            "end_aa": 1106,
+            "width_aa": 100,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 2,
+            "n_positive_outside": 6,
+            "odds_ratio": 2.0,
+            "p_value": 0.6019138755980862,
+            "neg_log10_p_value": 0.22046564500180385,
+            "event_ids_inside": [
+              "EVT-P-0014391-T01-IM6-50",
+              "EVT-P-0017448-T01-IM6-54",
+              "EVT-P-0018660-T01-IM6-5",
+              "EVT-P-0047648-T01-IM6-46"
+            ]
+          },
+          {
+            "start_aa": 1030,
+            "end_aa": 1130,
+            "width_aa": 100,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 2,
+            "n_positive_outside": 6,
+            "odds_ratio": 2.0,
+            "p_value": 0.6019138755980862,
+            "neg_log10_p_value": 0.22046564500180385,
+            "event_ids_inside": [
+              "EVT-P-0014391-T01-IM6-50",
+              "EVT-P-0017448-T01-IM6-54",
+              "EVT-P-0047648-T01-IM6-46",
+              "EVT-P-0065831-T01-IM7-1"
+            ]
+          },
+          {
+            "start_aa": 436,
+            "end_aa": 636,
+            "width_aa": 200,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 2,
+            "n_positive_outside": 6,
+            "odds_ratio": 2.0,
+            "p_value": 0.6019138755980862,
+            "neg_log10_p_value": 0.22046564500180385,
+            "event_ids_inside": [
+              "EVT-P-0026247-T02-IM6-48",
+              "EVT-P-0028716-T01-IM6-52",
+              "EVT-P-0038164-T01-IM6-55",
+              "EVT-P-0049269-T01-IM6-57"
+            ]
+          },
+          {
+            "start_aa": 257,
+            "end_aa": 457,
+            "width_aa": 200,
+            "n_events_inside": 6,
+            "n_events_outside": 16,
+            "n_positive_inside": 3,
+            "n_positive_outside": 5,
+            "odds_ratio": 2.2,
+            "p_value": 0.6243550051599587,
+            "neg_log10_p_value": 0.20456840239829646,
+            "event_ids_inside": [
+              "EVT-P-0004381-T02-IM6-3",
+              "EVT-P-0026247-T02-IM6-48",
+              "EVT-P-0028716-T01-IM6-52",
+              "EVT-P-0044707-T03-IM6-8",
+              "EVT-P-0045154-T01-IM6-43",
+              "EVT-P-0057597-T01-IM6-16"
+            ]
+          },
+          {
+            "start_aa": 930,
+            "end_aa": 1130,
+            "width_aa": 200,
+            "n_events_inside": 6,
+            "n_events_outside": 16,
+            "n_positive_inside": 3,
+            "n_positive_outside": 5,
+            "odds_ratio": 2.2,
+            "p_value": 0.6243550051599587,
+            "neg_log10_p_value": 0.20456840239829646,
+            "event_ids_inside": [
+              "EVT-P-0014391-T01-IM6-50",
+              "EVT-P-0017448-T01-IM6-54",
+              "EVT-P-0018660-T01-IM6-5",
+              "EVT-P-0047648-T01-IM6-46",
+              "EVT-P-0051006-T01-IM6-44",
+              "EVT-P-0065831-T01-IM7-1"
+            ]
+          },
+          {
+            "start_aa": -24,
+            "end_aa": 176,
+            "width_aa": 200,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 1,
+            "n_positive_outside": 7,
+            "odds_ratio": 0.5238095238095238,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0,
+            "event_ids_inside": [
+              "EVT-P-0019862-T01-IM6-51",
+              "EVT-P-0035723-T01-IM6-47",
+              "EVT-P-0041523-T01-IM6-9",
+              "EVT-P-0052166-T01-IM6-6"
+            ]
+          },
+          {
+            "start_aa": 223,
+            "end_aa": 423,
+            "width_aa": 200,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 1,
+            "n_positive_outside": 7,
+            "odds_ratio": 0.5238095238095238,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0,
+            "event_ids_inside": [
+              "EVT-P-0004381-T02-IM6-3",
+              "EVT-P-0044707-T03-IM6-8",
+              "EVT-P-0045154-T01-IM6-43",
+              "EVT-P-0057597-T01-IM6-16"
+            ]
+          },
+          {
+            "start_aa": 246,
+            "end_aa": 446,
+            "width_aa": 200,
+            "n_events_inside": 5,
+            "n_events_outside": 17,
+            "n_positive_inside": 2,
+            "n_positive_outside": 6,
+            "odds_ratio": 1.2222222222222223,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0,
+            "event_ids_inside": [
+              "EVT-P-0004381-T02-IM6-3",
+              "EVT-P-0026247-T02-IM6-48",
+              "EVT-P-0044707-T03-IM6-8",
+              "EVT-P-0045154-T01-IM6-43",
+              "EVT-P-0057597-T01-IM6-16"
+            ]
+          },
+          {
+            "start_aa": 684,
+            "end_aa": 884,
+            "width_aa": 200,
+            "n_events_inside": 4,
+            "n_events_outside": 18,
+            "n_positive_inside": 1,
+            "n_positive_outside": 7,
+            "odds_ratio": 0.5238095238095238,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0,
+            "event_ids_inside": [
+              "EVT-P-0022005-T01-IM6-10",
+              "EVT-P-0024365-T01-IM6-4",
+              "EVT-P-0035764-T01-IM6-49",
+              "EVT-P-0053173-T01-IM6-2"
+            ]
+          },
+          {
+            "start_aa": 1006,
+            "end_aa": 1206,
+            "width_aa": 200,
+            "n_events_inside": 5,
+            "n_events_outside": 17,
+            "n_positive_inside": 2,
+            "n_positive_outside": 6,
+            "odds_ratio": 1.2222222222222223,
+            "p_value": 1.0,
+            "neg_log10_p_value": -0.0,
+            "event_ids_inside": [
+              "EVT-P-0014391-T01-IM6-50",
+              "EVT-P-0017448-T01-IM6-54",
+              "EVT-P-0018660-T01-IM6-5",
+              "EVT-P-0047648-T01-IM6-46",
+              "EVT-P-0065831-T01-IM7-1"
+            ]
+          }
+        ]
+      },
+      "Warnings": [],
+      "Created_at": "2026-10-29T15:47:23.288014Z",
+      "Input_fingerprint": "bc7a44265db428937b74abbe54f42cee593b01d1b0d69fd0596db70813a27fba"
+    }
+  ],
+  "reference": null,
+  "gene_track": {
+    "protein_length": 1300,
+    "domains": [
+      {
+        "name": "Helicase C-terminal domain",
+        "accession": "PF13307",
+        "start_aa": 546,
+        "end_aa": 731
+      },
+      {
+        "name": "DEAD_2",
+        "accession": "PF06733",
+        "start_aa": 111,
+        "end_aa": 272
+      }
+    ],
+    "exon_boundaries_aa": [
+      {
+        "exon_rank": 2,
+        "start_aa": 1,
+        "end_aa": 34
+      },
+      {
+        "exon_rank": 3,
+        "start_aa": 35,
+        "end_aa": 101
+      },
+      {
+        "exon_rank": 4,
+        "start_aa": 101,
+        "end_aa": 132
+      },
+      {
+        "exon_rank": 5,
+        "start_aa": 132,
+        "end_aa": 159
+      },
+      {
+        "exon_rank": 6,
+        "start_aa": 160,
+        "end_aa": 180
+      },
+      {
+        "exon_rank": 7,
+        "start_aa": 180,
+        "end_aa": 205
+      },
+      {
+        "exon_rank": 8,
+        "start_aa": 205,
+        "end_aa": 233
+      },
+      {
+        "exon_rank": 9,
+        "start_aa": 234,
+        "end_aa": 255
+      },
+      {
+        "exon_rank": 10,
+        "start_aa": 256,
+        "end_aa": 307
+      },
+      {
+        "exon_rank": 11,
+        "start_aa": 307,
+        "end_aa": 320
+      },
+      {
+        "exon_rank": 12,
+        "start_aa": 320,
+        "end_aa": 346
+      },
+      {
+        "exon_rank": 13,
+        "start_aa": 346,
+        "end_aa": 379
+      },
+      {
+        "exon_rank": 14,
+        "start_aa": 379,
+        "end_aa": 397
+      },
+      {
+        "exon_rank": 15,
+        "start_aa": 398,
+        "end_aa": 422
+      },
+      {
+        "exon_rank": 16,
+        "start_aa": 423,
+        "end_aa": 450
+      },
+      {
+        "exon_rank": 17,
+        "start_aa": 450,
+        "end_aa": 494
+      },
+      {
+        "exon_rank": 18,
+        "start_aa": 494,
+        "end_aa": 532
+      },
+      {
+        "exon_rank": 19,
+        "start_aa": 532,
+        "end_aa": 546
+      },
+      {
+        "exon_rank": 20,
+        "start_aa": 546,
+        "end_aa": 574
+      },
+      {
+        "exon_rank": 21,
+        "start_aa": 575,
+        "end_aa": 600
+      },
+      {
+        "exon_rank": 22,
+        "start_aa": 601,
+        "end_aa": 626
+      },
+      {
+        "exon_rank": 23,
+        "start_aa": 627,
+        "end_aa": 675
+      },
+      {
+        "exon_rank": 24,
+        "start_aa": 676,
+        "end_aa": 714
+      },
+      {
+        "exon_rank": 25,
+        "start_aa": 714,
+        "end_aa": 755
+      },
+      {
+        "exon_rank": 26,
+        "start_aa": 756,
+        "end_aa": 805
+      },
+      {
+        "exon_rank": 27,
+        "start_aa": 805,
+        "end_aa": 852
+      },
+      {
+        "exon_rank": 28,
+        "start_aa": 853,
+        "end_aa": 884
+      },
+      {
+        "exon_rank": 29,
+        "start_aa": 885,
+        "end_aa": 951
+      },
+      {
+        "exon_rank": 30,
+        "start_aa": 951,
+        "end_aa": 998
+      },
+      {
+        "exon_rank": 31,
+        "start_aa": 998,
+        "end_aa": 1037
+      },
+      {
+        "exon_rank": 32,
+        "start_aa": 1037,
+        "end_aa": 1115
+      },
+      {
+        "exon_rank": 33,
+        "start_aa": 1115,
+        "end_aa": 1167
+      },
+      {
+        "exon_rank": 34,
+        "start_aa": 1167,
+        "end_aa": 1274
+      },
+      {
+        "exon_rank": 35,
+        "start_aa": 1275,
+        "end_aa": 1301
+      }
+    ]
+  },
+  "intragenic_deletions": [
+    {
+      "sample_id": "P-0051755-T01-IM6",
+      "annotation": "RTEL1 (NM_032957) rearrangement: c.103-86_c.396-22del",
+      "event_info": "Deletion of 2 exons : out of frame",
+      "n_exons_deleted": 2,
+      "frame_status": "out-of-frame",
+      "retained_up_to_aa": 34,
+      "resumed_from_aa": 132
+    }
+  ]
+}

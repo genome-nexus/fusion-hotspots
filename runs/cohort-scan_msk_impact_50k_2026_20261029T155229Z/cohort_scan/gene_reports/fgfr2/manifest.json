@@ -1,0 +1,15 @@
+{
+  "gene": "FGFR2",
+  "study_id": "msk_impact_50k_2026",
+  "endpoints_used": [
+    "https://www.cbioportal.org/api/structural-variant/fetch",
+    "https://www.genomenexus.org/ensembl/canonical-transcript/hgnc/FGFR2",
+    "https://www.cbioportal.org/api/studies/msk_impact_50k_2026/clinical-data/fetch"
+  ],
+  "git_sha": "e3e92479dc898e907bc15d41b7da867af7586d01",
+  "cli_args": [
+    "cohort-scan",
+    "msk_impact_50k_2026"
+  ],
+  "timestamp": "2026-10-29T15:45:20.773546+00:00"
+}
