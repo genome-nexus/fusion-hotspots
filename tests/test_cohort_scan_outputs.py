@@ -526,7 +526,11 @@ def test_junction_concentration_is_written_as_its_own_family(tmp_path, monkeypat
     hot = next(gene for gene in payload["genes"] if gene["gene_symbol"] == "HOTGENE")
     assert hot["junction_concentration_q_value"] == 2e-5
     assert hot["fdr_significant"] is None
+    reconstitution = paths["domain_reconstitution_tsv"].read_text().splitlines()
+    assert reconstitution[0].startswith("sample_id\tpatient_id\tfusion_name")
+    assert payload["domain_reconstitution"]["truncating_fusions"] == len(reconstitution) - 1
     markdown = paths["summary_markdown"].read_text()
+    assert "## Truncated domains completed by the partner" in markdown
     section = markdown[markdown.index("## Junction-hotspot candidates") :]
     assert "never make a gene FDR-significant" in section
     assert "| HOTGENE | exon 16 (5') |" in section

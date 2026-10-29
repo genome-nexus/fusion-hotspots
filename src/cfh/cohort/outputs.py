@@ -22,6 +22,7 @@ from __future__ import annotations
 import csv
 import json
 import math
+from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -29,6 +30,14 @@ from cfh.cohort.scan import (
     CohortScanResult,
     genes_needing_full_report,
     per_gene_min_q_value,
+)
+from cfh.mapping.domain_reconstitution import (
+    COMPLEMENTARY,
+    DEFAULT_TOLERANCE_FRACTION,
+    GAP,
+    OVERLAPPING,
+    PARTNER_DOMAIN_INTACT,
+    PARTNER_DOMAIN_LOST,
 )
 from cfh.real_benchmark import write_outputs
 from cfh.reporting.manhattan import render_manhattan_svg
@@ -130,6 +139,8 @@ _SUMMARY_FIELDNAMES = [
     "retention_cmh_fragility_index",
     "junction_concentration_p_value",
     "junction_concentration_q_value",
+    "truncating_fusions",
+    "domain_completing_fusions",
     "top_composite_score",
     "top_composite_partner_gene",
     "error",
@@ -257,6 +268,16 @@ def build_summary_rows(result: CohortScanResult) -> list[dict]:
                 ),
                 "disruption_fisher_fragility_index": _fragility_index(
                     disruption.get("fisher_fragility")
+                ),
+                "truncating_fusions": sum(
+                    count for count in (summary.get("domain_reconstitution_counts") or {}).values()
+                )
+                if outcome.run is not None
+                else None,
+                "domain_completing_fusions": (
+                    (summary.get("domain_reconstitution_counts") or {}).get(COMPLEMENTARY, 0)
+                    if outcome.run is not None
+                    else None
                 ),
                 "top_composite_score": top_score,
                 "top_composite_partner_gene": top_partner,
@@ -472,6 +493,169 @@ def _write_summary_markdown(
         lines.append(f"| {cells} |")
     lines.append("")
     path.write_text("\n".join(lines))
+
+
+_RECONSTITUTION_FIELDNAMES = [
+    "sample_id",
+    "patient_id",
+    "fusion_name",
+    "five_prime_gene",
+    "three_prime_gene",
+    "pfam_accession",
+    "domain_reconstitution",
+    "frame_status",
+    "five_prime_span",
+    "three_prime_span",
+    "junction_gap_residues",
+    "five_prime_mid_exon",
+    "three_prime_mid_exon",
+    "reported_by",
+]
+_BOTH_CUT = (COMPLEMENTARY, OVERLAPPING, GAP)
+_SHARED_FAMILY = (*_BOTH_CUT, PARTNER_DOMAIN_INTACT, PARTNER_DOMAIN_LOST)
+
+
+def random_cut_completion_rate(tolerance: float = DEFAULT_TOLERANCE_FRACTION) -> float:
+    """Chance two independent uniform cuts in a domain land within
+    ``tolerance`` of each other: ``1 - (1 - t)^2``, 0.19 at the default.
+    A reference for how often "complementary" arises when both copies are
+    cut at random, ignoring exon structure."""
+    return 1 - (1 - tolerance) ** 2
+
+
+def build_domain_reconstitution_rows(result: CohortScanResult) -> list[dict]:
+    """One row per distinct fusion that cuts a scanned gene's key domain.
+
+    A fusion whose two genes were both scanned appears in both genes'
+    results; it is counted once per sample, fusion and Pfam family, with
+    ``reported_by`` naming the genes that saw it.
+    """
+    by_key: dict[tuple, dict] = {}
+    for outcome in result.gene_outcomes:
+        if outcome.run is None:
+            continue
+        for row in outcome.run.rows:
+            status = row.get("domain_reconstitution")
+            if not status:
+                continue
+            gene = outcome.gene_symbol
+            partner = row["partner_gene"]
+            target_is_five = row["target_role"] == "five_prime"
+            five, three = (gene, partner) if target_is_five else (partner, gene)
+            target_mid_exon = row.get("is_intronic_breakpoint") is False
+            partner_mid_exon = row.get("reconstitution_partner_breakpoint_mid_exon")
+            key = (row["sample_id"], five, three, row.get("reconstitution_pfam_accession"))
+            if key in by_key:
+                by_key[key]["reported_by"].append(gene)
+                continue
+            by_key[key] = {
+                "sample_id": row["sample_id"],
+                "patient_id": row.get("patient_id"),
+                "fusion_name": row["fusion_name"],
+                "five_prime_gene": five,
+                "three_prime_gene": three,
+                "pfam_accession": row.get("reconstitution_pfam_accession"),
+                "domain_reconstitution": status,
+                "frame_status": row.get("frame_status"),
+                "five_prime_span": row.get("reconstitution_five_prime_span"),
+                "three_prime_span": row.get("reconstitution_three_prime_span"),
+                "junction_gap_residues": row.get("reconstitution_junction_gap_residues"),
+                "five_prime_mid_exon": target_mid_exon if target_is_five else partner_mid_exon,
+                "three_prime_mid_exon": partner_mid_exon if target_is_five else target_mid_exon,
+                "reported_by": [gene],
+            }
+    rows = list(by_key.values())
+    for row in rows:
+        row["reported_by"] = ", ".join(sorted(row["reported_by"]))
+    return sorted(
+        rows,
+        key=lambda row: (
+            row["domain_reconstitution"] not in _SHARED_FAMILY,
+            row["domain_reconstitution"],
+            row["fusion_name"] or "",
+            row["sample_id"] or "",
+        ),
+    )
+
+
+def domain_reconstitution_overview(rows: list[dict]) -> dict:
+    """How often a key-domain truncation is completed by the partner."""
+    counts = Counter(row["domain_reconstitution"] for row in rows)
+    both_cut = sum(counts[status] for status in _BOTH_CUT)
+    by_family: dict[str, Counter] = {}
+    for row in rows:
+        if row["domain_reconstitution"] in _SHARED_FAMILY:
+            family = by_family.setdefault(row["pfam_accession"], Counter())
+            family["partner_shares_family"] += 1
+            family[row["domain_reconstitution"]] += 1
+    return {
+        "truncating_fusions": len(rows),
+        "truncating_patients": len({row["patient_id"] for row in rows if row["patient_id"]}),
+        "partner_shares_family": sum(counts[status] for status in _SHARED_FAMILY),
+        "both_copies_cut": both_cut,
+        "complementary": counts[COMPLEMENTARY],
+        "completion_rate_among_truncations": (counts[COMPLEMENTARY] / len(rows) if rows else None),
+        "completion_rate_when_both_cut": counts[COMPLEMENTARY] / both_cut if both_cut else None,
+        "random_cut_completion_rate": random_cut_completion_rate(),
+        "status_counts": dict(sorted(counts.items())),
+        "by_pfam_family": {family: dict(count) for family, count in sorted(by_family.items())},
+    }
+
+
+def _percent(value: float | None) -> str:
+    return "-" if value is None else f"{value:.0%}"
+
+
+def _domain_reconstitution_markdown(overview: dict, rows: list[dict]) -> list[str]:
+    lines = [
+        "## Truncated domains completed by the partner",
+        "",
+        "A fusion that cuts a gene's key domain is checked for whether the partner carries "
+        "the same Pfam family and keeps the rest of it (within 10% of the domain's length). "
+        "Each fusion counts once even when both of its genes were scanned. This is "
+        "descriptive: breakpoints are DNA calls, a hybrid domain needs an in-frame junction, "
+        "and a junction inside sequence two paralogs share complements by construction.",
+        "",
+    ]
+    if not rows:
+        return [*lines, "No fusion cut a scanned gene's key domain.", ""]
+    lines.extend(
+        [
+            f"- Fusions cutting a key domain: {overview['truncating_fusions']} "
+            f"({overview['truncating_patients']} patients)",
+            f"- Partner carries the same Pfam family: {overview['partner_shares_family']}",
+            f"- Both copies cut: {overview['both_copies_cut']}",
+            f"- Partner completes the domain: {overview['complementary']} "
+            f"({_percent(overview['completion_rate_among_truncations'])} of truncating "
+            "fusions; "
+            + (
+                f"{_percent(overview['completion_rate_when_both_cut'])} of those cutting "
+                "both copies"
+                if overview["completion_rate_when_both_cut"] is not None
+                else "no fusion cut both copies"
+            )
+            + f", against {_percent(overview['random_cut_completion_rate'])} if both "
+            "cuts fell at random)",
+            "",
+        ]
+    )
+    shared = [row for row in rows if row["domain_reconstitution"] in _SHARED_FAMILY]
+    if shared:
+        lines.append(
+            "| fusion | sample | Pfam | frame | 5' keeps | 3' keeps | gap (aa) | reading |"
+        )
+        lines.append("|---|---|---|---|---|---|---|---|")
+        for row in shared:
+            gap = row["junction_gap_residues"]
+            lines.append(
+                f"| {row['fusion_name']} | {row['sample_id']} | {row['pfam_accession']} | "
+                f"{row['frame_status'] or 'unknown'} | {row['five_prime_span'] or '-'} | "
+                f"{row['three_prime_span'] or '-'} | "
+                f"{'-' if gap is None else gap} | "
+                f"{row['domain_reconstitution']} |"
+            )
+        lines.append("")
+    return lines
 
 
 def _junction_hotspot_markdown(result: CohortScanResult) -> list[str]:
@@ -1052,6 +1236,8 @@ def write_cohort_scan_outputs(
 
     rows = build_summary_rows(result)
     honorable_mentions = build_honorable_mentions(rows, limit=honorable_mention_count)
+    reconstitution_rows = build_domain_reconstitution_rows(result)
+    reconstitution_overview = domain_reconstitution_overview(reconstitution_rows)
     # Derived from this run's own results -- never a live import of
     # ``cfh.algorithms.registry`` -- so it stays correct for a programmatic
     # run made with a restricted ``algorithm_names`` list, and so
@@ -1115,6 +1301,7 @@ def write_cohort_scan_outputs(
             "warnings": result.warnings,
             "genes": rows,
             "honorable_mentions": honorable_mentions,
+            "domain_reconstitution": reconstitution_overview,
         }
     )
     json_path.write_text(json.dumps(payload, indent=2, allow_nan=False) + "\n")
@@ -1145,8 +1332,25 @@ def write_cohort_scan_outputs(
             sorted(result.concentration_rows, key=lambda row: (row["bh_adjusted_q"], row["gene"]))
         )
 
+    reconstitution_path = destination / "domain_reconstitution.tsv"
+    with reconstitution_path.open("w", newline="") as handle:
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=_RECONSTITUTION_FIELDNAMES,
+            delimiter="\t",
+            lineterminator="\n",
+        )
+        writer.writeheader()
+        writer.writerows(reconstitution_rows)
+
     markdown_path = destination / "summary.md"
     _write_summary_markdown(result, rows, honorable_mentions, markdown_path)
+    with markdown_path.open("a") as handle:
+        handle.write(
+            "\n".join(
+                ["", *_domain_reconstitution_markdown(reconstitution_overview, reconstitution_rows)]
+            )
+        )
     discovery_paths: dict[str, Path] = {}
     if result.cooccurrence_discovery is not None:
         discovery_paths = _write_discovery_outputs(result.cooccurrence_discovery, destination)
@@ -1159,6 +1363,7 @@ def write_cohort_scan_outputs(
         "summary_json": json_path,
         "fdr_family_tsv": fdr_family_path,
         "junction_concentration_family_tsv": concentration_path,
+        "domain_reconstitution_tsv": reconstitution_path,
         "summary_markdown": markdown_path,
         "manhattan_svg": manhattan_svg_path,
         **discovery_paths,

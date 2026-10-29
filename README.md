@@ -309,7 +309,13 @@ Suggested reading order:
     partner keeps the rest of the domain within 10% of its length (FLI1::ERG: FLI1 keeps
     0-0.82 of its ETS domain, ERG 0.72-1, an 8-residue overlap); `overlapping`, `gap`,
     `partner_domain_intact`, `partner_domain_lost` and `partner_lacks_domain` cover the
-    rest. The gene report lists every case where the partner shares the family. This is
+    rest. The gene report lists every case where the partner shares the family. Across the
+    cohort, `domain_reconstitution.tsv` lists each truncating fusion once (a fusion seen
+    from both of its genes is not double-counted), and `summary.json` /
+    `summary.md` give how often the partner completes the domain: among all truncating
+    fusions, among those cutting both copies, and against the 19% expected if both cuts
+    fell at random (`1 - 0.9^2` for the 10% tolerance). Per-gene counts are in the
+    `truncating_fusions` and `domain_completing_fusions` summary columns. This is
     descriptive, not a test: a hybrid domain needs an in-frame junction, a mid-exon DNA
     breakpoint cannot be spliced as called, and a junction inside sequence two paralogs
     share complements by construction wherever it is placed.
