@@ -342,6 +342,44 @@ def molecular_data_to_expression_by_sample(records: Iterable[dict]) -> dict[str,
     return expression_by_sample
 
 
+def fusion_viewer_id(row: Any) -> str | None:
+    """The id cBioPortal's patient-view fusion viewer gives a structural
+    variant, and takes as its ``fusionId`` URL parameter:
+    ``<sample>_<site1 gene>_<site2 gene>_<site1 position>_<site2 position>``.
+
+    ``row`` is one normalized structural-variant row (``Sample_Id``,
+    ``Site1_Hugo_Symbol``, ...). As in the viewer, a missing gene is blank
+    and a missing (or ``-1``) position is 0. ``None`` without a sample id.
+    """
+
+    def text(column: str) -> str:
+        value = row.get(column)
+        if value is None or (isinstance(value, float) and math.isnan(value)):
+            return ""
+        return str(value)
+
+    def position(column: str) -> int:
+        value = row.get(column)
+        try:
+            number = float(value)
+        except (TypeError, ValueError):
+            return 0
+        return 0 if math.isnan(number) or number == -1 else int(number)
+
+    sample_id = text("Sample_Id")
+    if not sample_id:
+        return None
+    return "_".join(
+        [
+            sample_id,
+            text("Site1_Hugo_Symbol"),
+            text("Site2_Hugo_Symbol"),
+            str(position("Site1_Position")),
+            str(position("Site2_Position")),
+        ]
+    )
+
+
 def structural_variants_to_dataframe(calls: Iterable[dict]) -> pd.DataFrame:
     """Adapt cBioPortal camelCase API objects to the production SV schema."""
     records = []
