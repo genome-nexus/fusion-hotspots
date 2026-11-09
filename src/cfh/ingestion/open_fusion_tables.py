@@ -6,10 +6,12 @@ import csv
 import gzip
 import hashlib
 import json
+import math
 import os
 import re
 import tempfile
 from collections.abc import Iterator
+from decimal import Decimal
 from pathlib import Path
 from urllib.request import urlopen
 
@@ -107,11 +109,47 @@ def _target_metadata(path: Path) -> dict[str, dict[str, str]]:
 
 
 def _target_tissue(sample_type: str) -> str:
-    if "Normal" in sample_type:
+    # Exact published sample types: an unfamiliar type must not silently become tumor.
+    if sample_type in {"Bone Marrow Normal", "Solid Tissue Normal", "Blood Derived Normal"}:
         return "normal"
-    if any(word in sample_type for word in ("Tumor", "Cancer", "Metastatic")):
+    if sample_type in {
+        "Primary Tumor",
+        "Recurrent Tumor",
+        "Metastatic",
+        "Primary Blood Derived Cancer - Bone Marrow",
+        "Primary Blood Derived Cancer - Peripheral Blood",
+        "Recurrent Blood Derived Cancer - Bone Marrow",
+        "Recurrent Blood Derived Cancer - Peripheral Blood",
+        "Blood Derived Cancer - Bone Marrow, Post-treatment",
+        "Blood Derived Cancer - Peripheral Blood, Post-treatment",
+    }:
         return "tumor"
     raise ValueError(f"Unknown TARGET sample type: {sample_type!r}")
+
+
+def _number(value: str, field: str) -> str:
+    # Only explicit unavailable tokens are missing; NaN/Inf are invalid measurements.
+    if value in {"", "NA", "."}:
+        return ""
+    if not re.fullmatch(r"[+-]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][+-]?[0-9]+)?", value):
+        raise ValueError(f"Invalid {field}: {value!r}")
+    if field == "ffpm":
+        if not math.isfinite(float(value)):
+            raise ValueError(f"Non-finite {field}: {value!r}")
+    elif Decimal(value) < 0:
+        raise ValueError(f"Negative {field}: {value!r}")
+    return value
+
+
+def _fusion_genes(row: dict[str, str], table: str) -> tuple[str, str]:
+    name = row["FusionName" if table == "depmap_22q2" else "fusion_name"]
+    delimiter = "--" if table in {"target_starfusion", "depmap_22q2"} else "::"
+    if not _available(name):
+        return "", ""
+    genes = name.split(delimiter)
+    if len(genes) != 2 or not all(genes):
+        raise ValueError(f"Invalid oriented fusion name for {table}: {name!r}")
+    return genes[0], genes[1]
 
 
 def _normalize(
@@ -131,18 +169,38 @@ def _normalize(
         cohort = row["data_class"]
         if cohort not in {"TCGA", "GTEx"}:
             raise ValueError(f"Unknown data_class: {cohort}")
-        tissue = "normal" if cohort == "GTEx" or sample.endswith("-NT") else "tumor"
-        if row["tumor_or_normal"] != tissue:
+        if row["tumor_or_normal"] not in {"normal", "tumor"}:
+            raise ValueError(f"Unknown tumor_or_normal: {row['tumor_or_normal']!r}")
+        if cohort == "GTEx":
+            donor = re.fullmatch(r"GTEX-([^-]+)(-.*)?", sample)
+            if donor:
+                tissue, patient = "normal", f"GTEX-{donor[1]}"
+                if row["tissue_subtype"] in {
+                    "Cells - EBV-transformed lymphocytes",
+                    "Cells - Transformed fibroblasts",
+                }:
+                    tissue = "cell_line"
+                    out["filter_provenance"] += "; tissue_class_override=GTEx_transformed_cells"
+            elif re.fullmatch(r"K-562(?:-SM-[A-Za-z0-9]+)?", sample):
+                # ATCC CCL-243: verified malignant line, never a normal donor.
+                tissue, patient = "cell_line", ""
+                out["filter_provenance"] += "; tissue_class_override=K-562_ATCC_CCL-243"
+            else:
+                raise ValueError(f"Unknown GTEx sample identifier: {sample}")
+        else:
+            match = re.fullmatch(r"([^-]+)-([^-]+-[^-]+)-(TP|NT|TM|TR|TB|TBM|TAP|TAM)", sample)
+            if match is None:
+                raise ValueError(f"Unknown Broad TCGA sample identifier: {sample}")
+            if match[1] != row["tissue_type"]:
+                raise ValueError(f"Conflicting TCGA disease metadata: {sample}")
+            tissue = "normal" if match[3] == "NT" else "tumor"
+            patient = f"TCGA-{match[2]}"
+        if tissue != "cell_line" and row["tumor_or_normal"] != tissue:
             raise ValueError(f"Conflicting tissue metadata: {sample}")
-        # Broad uses disease-prefix TCGA IDs, e.g. LUSC-51-4079-NT.
-        pattern = r"[^-]+-([^-]+-[^-]+)-(?:TP|NT|TM|TR|TB|TBM|TAP|TAM)$"
-        match = re.fullmatch(pattern, sample) if cohort == "TCGA" else None
-        if cohort == "TCGA" and match is None:
-            raise ValueError(f"Unknown Broad TCGA sample identifier: {sample}")
         out.update(
             cohort=cohort,
             tissue_class=tissue,
-            patient_id=f"TCGA-{match[1]}" if match else "-".join(sample.split("-")[:2]),
+            patient_id=patient,
             tumor_type=_available(row["tissue_type"]) if tissue == "tumor" else "",
         )
     elif table.startswith("target_"):
@@ -154,17 +212,18 @@ def _normalize(
             cohort="TARGET",
             patient_id=_available(info["participant"]),
             tissue_class=tissue,
-            tumor_type=_available(info["Cancer.Type"]),
+            tumor_type=_available(info["Cancer.Type"]) if tissue == "tumor" else "",
         )
     else:
         out.update(cohort="DepMap", tissue_class="cell_line")
 
     if table == "target_consolidated":
         # partnerA/B are ALPHABETICALLY sorted upstream, not oriented partners.
-        genes = row["fusion_name"].split("::")
-        if len(genes) != 2 or not all(genes):
-            raise ValueError(f"Invalid oriented fusion_name: {row['fusion_name']}")
-        out["gene_5p"], out["gene_3p"] = genes
+        out["gene_5p"], out["gene_3p"] = _fusion_genes(row, table)
+        if sorted((out["gene_5p"], out["gene_3p"])) != sorted(
+            (_available(row["partnerA"]), _available(row["partnerB"]))
+        ):
+            raise ValueError("Consolidated TARGET partner names disagree with fusion_name")
         validated = row["FI_validated"]
         if validated not in {"TRUE", "FALSE"}:
             raise ValueError(f"Invalid FI_validated: {validated}")
@@ -176,6 +235,9 @@ def _normalize(
         for side, key in (("5p", "LeftGene"), ("3p", "RightGene")):
             # ENSG identifiers are gene IDs, never transcript IDs.
             out[f"gene_{side}"] = _available(row[key]).split("^")[0].split(" (")[0]
+        genes = _fusion_genes(row, table)
+        if genes != (out["gene_5p"], out["gene_3p"]):
+            raise ValueError(f"Fusion name disagrees with oriented genes: {row!r}")
         suffix = ""
         out["caller"] = {
             "tcga_gtex": "STAR-Fusion v1.7",
@@ -198,7 +260,7 @@ def _normalize(
     ):
         if table == "tcga_gtex":
             key = {"JunctionReadCount": "Jcount", "SpanningFragCount": "Scount"}.get(key, key)
-        out[field] = _available(row[key + suffix])
+        out[field] = _number(row[key + suffix], field)
     out["splice_type"] = _available(row.get("SpliceType", ""))
     # Preserve original annotations and all ancillary flags/metrics verbatim, including
     # both callers' counts in the consolidated table. JSON avoids delimiter ambiguity.
@@ -239,7 +301,7 @@ def normalize_table(
             mode="w", encoding="utf-8", newline="", dir=destination.parent, delete=False
         ) as handle:
             temporary = Path(handle.name)
-            writer = csv.DictWriter(handle, fieldnames=SCHEMA, delimiter="\t")
+            writer = csv.DictWriter(handle, fieldnames=SCHEMA, delimiter="\t", lineterminator="\n")
             writer.writeheader()
             for row in read_table(table, source, target_sample_info=target_sample_info):
                 writer.writerow(row)

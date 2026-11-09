@@ -12,7 +12,8 @@ names the Sept032019 CTAT library for TCGA+GTEx and Apr032020 for TARGET; the
 [saved DepMap 22Q2 configuration](https://github.com/broadinstitute/depmap_omics/blob/80f54c2b34a6cc7a88b8898961cba2eee27d9dd8/data/22Q2/RNAconfig/inputs_hg38_STAR_fusion.json)
 uses hg38 CTAT resources. DepMap's release README reports STAR-Fusion 1.6.0,
 whereas its saved configuration reports 1.9.1; we retain `STAR-Fusion` without
-asserting a per-row version.
+asserting a per-row version. DepMap filtering provenance is explicitly config-derived.
+TARGET filter evidence cites the v1.10.0 implementation as well as the paper.
 
 ```python
 from pathlib import Path
@@ -36,7 +37,10 @@ No rows are filtered or deduplicated, including normals, low counts, same-family
 pairs, non-primary isoforms and flagged rows. `annotation_flags` is JSON containing
 the original row, preserving annotation strings, ancillary flags and both sets of
 TARGET counts verbatim. Missing source values (`NA`, `NaN`, `.`) become empty
-normalized fields. No transcript identifiers or junction/read sequences occur in
+normalized fields. For numeric measurements only empty, `NA` and `.` are missing;
+NaN/Inf, malformed numbers, negative read counts and nonfinite FFPM fail loudly.
+Scientific notation such as `1e+05` is accepted without changing source text.
+TSVs use LF line endings. No transcript identifiers or junction/read sequences occur in
 these four tables; all carry junction and spanning **counts**, not read sequences.
 ENSG gene identifiers are not substituted for missing transcript identifiers.
 Coordinates retain the source's genomic breakpoint positions and strands. Missing
@@ -44,14 +48,25 @@ coordinates or strands remain empty (including strandless TARGET breakpoints).
 
 TCGA+GTEx follows the
 [upstream decoration rule](https://github.com/broadinstitute/FusionInspectorPaper/blob/e8f4613f5caa8c2571c5ddf99483d7b1dde6647b/0.Decorate_input_files/Decorate_input_files.Rmd):
-GTEx and TCGA IDs ending `-NT` are `normal`; other TCGA rows are `tumor`.
-The reader checks agreement with `tumor_or_normal`. TCGA `tumor_type` uses
-`tissue_type` (e.g. LUSC); `tumor_subtype` contains sample codes such as TP.
+GTEx donor IDs must match `GTEX-[^-]+(-.*)?`. GTEx tissue subtypes explicitly
+labeled `Cells - EBV-transformed lymphocytes` or `Cells - Transformed fibroblasts`
+are `cell_line`, with the real GTEx donor ID retained. Other GTEx donors and TCGA
+IDs ending `-NT` are `normal`; recognized other TCGA sample codes are `tumor`.
+The sole verified non-donor-ID exception is `K-562` or `K-562-SM-<alphanumeric>`:
+[ATCC CCL-243](https://www.atcc.org/products/ccl-243) identifies this as a malignant
+leukemia line. It is `cell_line`, with no invented patient ID. These explicit
+cell-line overrides retain the upstream tissue label in `annotation_flags` and
+record the override in `filter_provenance`. Other non-GTEX IDs fail loudly.
+The reader checks agreement with `tumor_or_normal`, except for the recorded
+cell-line overrides. TCGA `tumor_type` uses `tissue_type` (e.g. LUSC), checked
+against the sample disease prefix; `tumor_subtype` contains codes such as TP.
 Broad's disease-prefix IDs (e.g. LUSC-51-4079-TP/NT) become patient TCGA-51-4079,
 matching standard TCGA participant barcodes. GTEx participant IDs retain the first
 two barcode components. TARGET uses the published participant, cancer type and
 sample type; `Normal` sample types are normal and explicit tumor/cancer/metastatic
-types are tumor, matching the upstream annotation. Unknown types fail. DepMap
+types are tumor using an explicit allowlist. Unknown types fail. Across
+all cohorts, normal rows have empty `tumor_type`; their original cancer-type
+metadata remains in `annotation_flags`. DepMap
 rows are `cell_line`; patient and tumor type are unavailable and remain empty.
 
 The overlapping TARGET tables remain distinct. Consolidated TARGET `fusion_name`
@@ -59,4 +74,18 @@ is oriented 5′ to 3′; alphabetically sorted `partnerA/B` are not used for or
 Validated rows use FI counts/FFPM, others STAR-Fusion counts/FFPM, recorded in
 `filter_provenance`; `caller` identifies both methods and `fi_validated` preserves
 the original boolean. Both count sets remain in `annotation_flags`. Patient IDs
-support later deduplication across tables; this reader performs none.
+support later deduplication across tables; this reader performs none. The real
+TARGET metadata has no USI under multiple participant IDs, so patient IDs remain
+published participant IDs.
+
+Fusion names use `::` for TCGA+GTEx and consolidated TARGET, and `--` for raw
+TARGET and DepMap. Readers validate this format and agreement with oriented
+LeftGene/RightGene or consolidated partner fields. Four TCGA+GTEx placeholder
+rows have unavailable names, genes and breakpoints and remain present. Different
+gene annotations at identical sample/breakpoints remain distinct records.
+Breakpoint containment in a public GENCODE gene span is not an ingestion rule:
+[STAR-Fusion v1.10](https://github.com/STAR-Fusion/STAR-Fusion/blob/v1.10.0/util/STAR-Fusion.map_chimeric_reads_to_genes)
+permits breakpoints outside annotated exons;
+[CTAT](https://github.com/TrinityCTAT/ctat-genome-lib-builder/blob/master/util/revise_gencode_annotations.pl)
+also modifies reference annotations (including IG superloci). Ingestion preserves upstream locus assignments; independent gene-model
+and breakpoint validation belongs downstream. It does not certify containment.

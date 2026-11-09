@@ -72,6 +72,8 @@ def fixture_row(table):
             Scount="1",
             Annots='["RED_HERRING","PARALOG"]',
         )
+    if table == "target_starfusion":
+        row["fusion_name"] = "ETV5--ETV1"
     if table == "target_consolidated":
         row.update(
             {
@@ -188,6 +190,7 @@ def test_target_normal(tmp_path, table):
     )[0]
     assert result["tissue_class"] == "normal"
     assert result["patient_id"] == "TARGET-10-ABCDEF"
+    assert result["tumor_type"] == ""
 
 
 @pytest.mark.parametrize("table", FIXTURE_HEADERS)
@@ -304,3 +307,206 @@ def test_breakpoint_without_strand_keeps_known_coordinates(tmp_path):
     assert result["chrom_5p"] == "chr14"
     assert result["pos_5p"] == "105856169"
     assert result["strand_5p"] == ""
+
+
+@pytest.mark.parametrize("sample", ["UNKNOWN-DONOR-1", "GTEX-", "GTEX", "K-562-UNKNOWN"])
+def test_non_gtex_id_fails(tmp_path, sample):
+    row = fixture_row("tcga_gtex")
+    row.update(data_class="GTEx", sample=sample, tumor_or_normal="normal")
+    source = tmp_path / "source.tsv"
+    write_fixture(source, "tcga_gtex", [row])
+    with pytest.raises(ValueError, match="GTEx sample identifier"):
+        normalize_table("tcga_gtex", source, tmp_path / "out.tsv")
+    assert not (tmp_path / "out.tsv").exists()
+
+
+@pytest.mark.parametrize("sample", ["K-562", "K-562-SM-26GMQ"])
+def test_verified_k562_is_cell_line(tmp_path, sample):
+    row = fixture_row("tcga_gtex")
+    row.update(data_class="GTEx", sample=sample, tumor_or_normal="normal")
+    source = tmp_path / "source.tsv"
+    write_fixture(source, "tcga_gtex", [row])
+    result = list(read_table("tcga_gtex", source))[0]
+    assert result["tissue_class"] == "cell_line"
+    assert result["patient_id"] == result["tumor_type"] == ""
+    assert "tissue_class_override=K-562_ATCC_CCL-243" in result["filter_provenance"]
+    assert json.loads(result["annotation_flags"])["tumor_or_normal"] == "normal"
+
+
+@pytest.mark.parametrize("field", ["Jcount", "Scount", "FFPM"])
+@pytest.mark.parametrize("value", ["not-a-number", "NaN", "nan", "inf", "-inf", "1_000"])
+def test_malformed_measurement_fails(tmp_path, field, value):
+    row = fixture_row("tcga_gtex")
+    row[field] = value
+    source = tmp_path / "source.tsv"
+    write_fixture(source, "tcga_gtex", [row])
+    with pytest.raises(ValueError, match="junction_reads|spanning_reads|ffpm"):
+        normalize_table("tcga_gtex", source, tmp_path / "out.tsv")
+    assert not (tmp_path / "out.tsv").exists()
+
+
+@pytest.mark.parametrize("field", ["Jcount", "Scount"])
+def test_negative_counts_fail(tmp_path, field):
+    row = fixture_row("tcga_gtex")
+    row[field] = "-1e-5"
+    source = tmp_path / "source.tsv"
+    write_fixture(source, "tcga_gtex", [row])
+    with pytest.raises(ValueError, match="Negative"):
+        list(read_table("tcga_gtex", source))
+
+
+@pytest.mark.parametrize("value", ["1e+05", "0", "1.25", ".5", "NA", ".", ""])
+def test_numeric_formats_preserve_source(tmp_path, value):
+    row = fixture_row("tcga_gtex")
+    row.update(Jcount=value, Scount=value, FFPM=value)
+    source = tmp_path / "source.tsv"
+    write_fixture(source, "tcga_gtex", [row])
+    result = list(read_table("tcga_gtex", source))[0]
+    expected = "" if value in {"NA", ".", ""} else value
+    for key in ["junction_reads", "spanning_reads", "ffpm"]:
+        assert result[key] == expected
+    assert json.loads(result["annotation_flags"])["Jcount"] == value
+
+
+def test_ffpm_float_overflow_fails(tmp_path):
+    row = fixture_row("tcga_gtex")
+    row["FFPM"] = "1e999"
+    source = tmp_path / "source.tsv"
+    write_fixture(source, "tcga_gtex", [row])
+    with pytest.raises(ValueError, match="Non-finite ffpm"):
+        list(read_table("tcga_gtex", source))
+
+
+def test_lf_output(tmp_path):
+    source = tmp_path / "source.tsv"
+    write_fixture(source, "tcga_gtex", [fixture_row("tcga_gtex")])
+    dest = tmp_path / "out.tsv"
+    normalize_table("tcga_gtex", source, dest)
+    payload = dest.read_bytes()
+    assert b"\r" not in payload
+    assert payload.count(b"\n") == 2
+    assert payload.endswith(b"\n")
+
+
+def test_unknown_tcga_sample_code_raises(tmp_path):
+    row = fixture_row("tcga_gtex")
+    row["sample"] = "LUSC-51-4079-UNKNOWN"
+    source = tmp_path / "source.tsv"
+    write_fixture(source, "tcga_gtex", [row])
+    with pytest.raises(ValueError, match="TCGA sample identifier"):
+        list(read_table("tcga_gtex", source))
+
+
+@pytest.mark.parametrize("table", ["target_starfusion", "target_consolidated"])
+def test_unknown_target_sample_type_raises(tmp_path, table):
+    row = fixture_row(table)
+    if table == "target_consolidated":
+        row["sample_type"] = "Unknown Cancer Material"
+    source = tmp_path / "source.tsv"
+    write_fixture(source, table, [row])
+    with pytest.raises(ValueError, match="Unknown TARGET sample type"):
+        list(
+            read_table(
+                table,
+                source,
+                target_sample_info=metadata(tmp_path, sample_type="Unknown Cancer Material"),
+            )
+        )
+
+
+@pytest.mark.parametrize("table", ["tcga_gtex", "target_consolidated"])
+@pytest.mark.parametrize("value", ["normal", "unknown"])
+def test_tumor_or_normal_conflict_raises(tmp_path, table, value):
+    row = fixture_row(table)
+    row["tumor_or_normal"] = value
+    source = tmp_path / "source.tsv"
+    write_fixture(source, table, [row])
+    with pytest.raises(ValueError, match="tissue metadata|tumor_or_normal"):
+        list(read_table(table, source))
+
+
+def test_tcga_disease_conflict_raises(tmp_path):
+    row = fixture_row("tcga_gtex")
+    row["tissue_type"] = "BRCA"
+    source = tmp_path / "source.tsv"
+    write_fixture(source, "tcga_gtex", [row])
+    with pytest.raises(ValueError, match="TCGA disease"):
+        list(read_table("tcga_gtex", source))
+
+
+@pytest.mark.parametrize("table", ["tcga_gtex", "target_starfusion", "depmap_22q2"])
+def test_oriented_gene_name_conflict_raises(tmp_path, table):
+    row = fixture_row(table)
+    row["LeftGene"], row["RightGene"] = row["RightGene"], row["LeftGene"]
+    source = tmp_path / "source.tsv"
+    write_fixture(source, table, [row])
+    with pytest.raises(ValueError, match="oriented genes"):
+        list(read_table(table, source, target_sample_info=metadata(tmp_path)))
+
+
+def test_fully_unavailable_fusion_row_survives(tmp_path):
+    row = fixture_row("tcga_gtex")
+    for key in ["fusion_name", "LeftGene", "RightGene", "LeftBreakpoint", "RightBreakpoint"]:
+        row[key] = "NA"
+    source = tmp_path / "source.tsv"
+    write_fixture(source, "tcga_gtex", [row])
+    result = list(read_table("tcga_gtex", source))[0]
+    assert result["gene_5p"] == result["gene_3p"] == ""
+    assert result["pos_5p"] == result["pos_3p"] == ""
+
+
+def test_depmap_provenance_is_config_derived():
+    assert "provenance_basis=22Q2_saved_config" in MANIFEST["depmap_22q2"].filter_provenance
+
+
+def test_target_filter_citation_matches_caller_version():
+    for table in ["target_starfusion", "target_consolidated"]:
+        assert "v1.10.0/util/STAR-Fusion.filter" in MANIFEST[table].filter_evidence
+
+
+@pytest.mark.parametrize(
+    "subtype", ["Cells - EBV-transformed lymphocytes", "Cells - Transformed fibroblasts"]
+)
+def test_gtex_transformed_cells_are_cell_lines(tmp_path, subtype):
+    row = fixture_row("tcga_gtex")
+    row.update(
+        data_class="GTEx",
+        sample="GTEX-14BMU-1526-SM-5TDE6",
+        tumor_or_normal="normal",
+        tissue_subtype=subtype,
+    )
+    source = tmp_path / "source.tsv"
+    write_fixture(source, "tcga_gtex", [row])
+    result = list(read_table("tcga_gtex", source))[0]
+    assert result["tissue_class"] == "cell_line"
+    assert result["patient_id"] == "GTEX-14BMU"
+    assert result["tumor_type"] == ""
+
+
+@pytest.mark.parametrize("table", FIXTURE_HEADERS)
+def test_wrong_fusion_delimiter_raises(tmp_path, table):
+    row = fixture_row(table)
+    key = "FusionName" if table == "depmap_22q2" else "fusion_name"
+    row[key] = row[key].replace("::", "|").replace("--", "|")
+    source = tmp_path / "source.tsv"
+    write_fixture(source, table, [row])
+    with pytest.raises(ValueError, match="fusion name"):
+        list(read_table(table, source, target_sample_info=metadata(tmp_path)))
+
+
+def test_consolidated_partner_conflict_raises(tmp_path):
+    row = fixture_row("target_consolidated")
+    row["partnerA"] = "UNKNOWN"
+    source = tmp_path / "source.tsv"
+    write_fixture(source, "target_consolidated", [row])
+    with pytest.raises(ValueError, match="partner names"):
+        list(read_table("target_consolidated", source))
+
+
+def test_consolidated_distinct_names_at_same_coordinates_survive(tmp_path):
+    first = fixture_row("target_consolidated")
+    second = {**first, "fusion_name": "ETV5::ETV4", "partnerA": "ETV4", "partnerB": "ETV5"}
+    source = tmp_path / "source.tsv"
+    write_fixture(source, "target_consolidated", [first, second])
+    result = list(read_table("target_consolidated", source))
+    assert [row["gene_3p"] for row in result] == ["ETV1", "ETV4"]

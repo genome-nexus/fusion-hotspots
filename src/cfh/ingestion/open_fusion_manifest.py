@@ -35,6 +35,8 @@ _BROAD_EVIDENCE = (
     "Commands disable annotation filtering, not sequence similarity filtering. "
     "https://github.com/STAR-Fusion/STAR-Fusion/blob/v1.7.0/util/STAR-Fusion.filter "
     "runs FusionFilter/blast_and_promiscuity_filter.pl separately from annotation filtering."
+    " TARGET v1.10 implementation: "
+    "https://github.com/STAR-Fusion/STAR-Fusion/blob/v1.10.0/util/STAR-Fusion.filter"
 )
 
 MANIFEST = {
@@ -86,10 +88,13 @@ MANIFEST = {
         "README https://ndownloader.figshare.com/files/34990054 (Fusions: GENCODE v29). "
         "README reports v1.6.0, saved 22Q2 config reports v1.9.1/v33: build agrees, "
         "per-row caller version cannot be established.",
-        _BROAD_FILTER + "; depmap_postfilters_off; red_herring_flags_retained",
+        _BROAD_FILTER + "; depmap_postfilters_off; red_herring_flags_retained"
+        "; provenance_basis=22Q2_saved_config",
         "https://ndownloader.figshare.com/files/34990054 Fusions and "
         f"CCLE_fusions_unfiltered.csv sections; {DEPMAP_CODE}hg38_STAR_fusion.wdl "
-        "passes --no_annotation_filter --min_FFPM 0 without disabling similarity filtering.",
+        "passes --no_annotation_filter --min_FFPM 0 without disabling similarity filtering. "
+        "Filtering provenance is config-derived; the conflicting caller versions mean "
+        "the exact historical per-row invocation is not established.",
     ),
 }
 
