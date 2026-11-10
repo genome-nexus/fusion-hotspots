@@ -356,6 +356,8 @@ def domain_screen(
             genome_nexus_client=GenomeNexusClient(
                 base_url=genome_nexus_url or genome_nexus_url_for_build(genome_build),
                 session=session,
+                max_retries=5,
+                backoff_seconds=1.0,
             ),
             cache_dir=cache,
             session=session,

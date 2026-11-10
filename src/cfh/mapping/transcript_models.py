@@ -29,6 +29,7 @@ import requests
 from cfh.cohort.auto_config import DEFAULT_BATCH_SIZE, batch_fetch_canonical_transcripts
 from cfh.mapping.genome_nexus_source import (
     DEFAULT_ISOFORM_OVERRIDE_SOURCE,
+    TRANSIENT_REQUEST_ERRORS,
     CanonicalTranscript,
     GenomeNexusClient,
     GenomeNexusGeneNotFound,
@@ -197,14 +198,22 @@ class EnsemblCdsClient:
             return None
         attempt = 0
         while True:
-            response = self.session.get(
-                f"{host}/sequence/id/{transcript_id}",
-                params={"type": "cds"},
-                headers={"Content-Type": "application/json"},
-                timeout=30,
-            )
-            if response.status_code not in _RETRYABLE_STATUS_CODES or attempt >= self.max_retries:
-                break
+            try:
+                response = self.session.get(
+                    f"{host}/sequence/id/{transcript_id}",
+                    params={"type": "cds"},
+                    headers={"Content-Type": "application/json"},
+                    timeout=30,
+                )
+            except TRANSIENT_REQUEST_ERRORS:
+                if attempt >= self.max_retries:
+                    raise
+            else:
+                if (
+                    response.status_code not in _RETRYABLE_STATUS_CODES
+                    or attempt >= self.max_retries
+                ):
+                    break
             time.sleep(self.backoff_seconds * (2**attempt))
             attempt += 1
         if response.status_code in (400, 404):

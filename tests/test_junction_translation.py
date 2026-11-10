@@ -5,6 +5,7 @@ from unittest.mock import MagicMock
 
 import pandas as pd
 import pytest
+import requests
 
 from cfh.cohort.domain_screen import (
     SCREEN_COLUMNS,
@@ -875,6 +876,22 @@ def test_ensembl_cds_client_builds_per_build_and_caches(tmp_path):
     session.get.return_value.status_code = 400
     assert EnsemblCdsClient("GRCh37", session=session).fetch_cds("ENST2") is None
     assert EnsemblCdsClient("T2T", session=session).fetch_cds("ENST3") is None
+
+
+def test_ensembl_cds_client_retries_dropped_connections(tmp_path):
+    ok = MagicMock(status_code=200)
+    ok.json.return_value = {"seq": "ATGTAA"}
+    session = MagicMock()
+    session.get.side_effect = [requests.ConnectionError("Remote end closed"), ok]
+    client = EnsemblCdsClient("GRCh38", session=session, backoff_seconds=0)
+    assert client.fetch_cds("ENST1") == "ATGTAA"
+    assert session.get.call_count == 2
+
+    session.get.side_effect = requests.ConnectionError("down")
+    with pytest.raises(requests.ConnectionError):
+        EnsemblCdsClient("GRCh38", session=session, backoff_seconds=0, max_retries=1).fetch_cds(
+            "ENST2"
+        )
 
 
 def _shifted_payloads(gene, shift):
