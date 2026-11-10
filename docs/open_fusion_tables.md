@@ -38,8 +38,10 @@ pairs, non-primary isoforms and flagged rows. `annotation_flags` is JSON contain
 the original row, preserving annotation strings, ancillary flags and both sets of
 TARGET counts verbatim. Missing source values (`NA`, `NaN`, `.`) become empty
 normalized fields. For numeric measurements only empty, `NA` and `.` are missing;
-NaN/Inf, malformed numbers, negative read counts and nonfinite FFPM fail loudly.
-Scientific notation such as `1e+05` is accepted without changing source text.
+NaN/Inf, malformed numbers, negative or fractional read counts, and negative or
+nonfinite FFPM fail loudly. The real tables have only integral read counts.
+Integral scientific notation such as `1e+05` is accepted for reads without
+changing source text; fractional nonnegative FFPM remains valid.
 TSVs use LF line endings. No transcript identifiers or junction/read sequences occur in
 these four tables; all carry junction and spanning **counts**, not read sequences.
 ENSG gene identifiers are not substituted for missing transcript identifiers.
@@ -48,10 +50,20 @@ coordinates or strands remain empty (including strandless TARGET breakpoints).
 
 TCGA+GTEx follows the
 [upstream decoration rule](https://github.com/broadinstitute/FusionInspectorPaper/blob/e8f4613f5caa8c2571c5ddf99483d7b1dde6647b/0.Decorate_input_files/Decorate_input_files.Rmd):
-GTEx donor IDs must match `GTEX-[^-]+(-.*)?`. GTEx tissue subtypes explicitly
-labeled `Cells - EBV-transformed lymphocytes` or `Cells - Transformed fibroblasts`
-are `cell_line`, with the real GTEx donor ID retained. Other GTEx donors and TCGA
-IDs ending `-NT` are `normal`; recognized other TCGA sample codes are `tumor`.
+GTEx donor IDs must match `GTEX-[^-]+(-.*)?`. The 53 observed GTEx tissue-type/subtype pairs are explicitly pinned in the reader.
+New noncell pairs require a mapping update. The allowlisted labels `Cells -
+EBV-transformed lymphocytes`, `Cells - Transformed fibroblasts`, and `Cells -
+Cultured fibroblasts` in either column are `cell_line`, retaining the real donor ID.
+Case, hyphens, underscores and whitespace are normalized before exact lookup;
+there is no fuzzy match. Any label beginning with `Cells` in either column that
+is outside that allowlist raises, even if the other column has a known cell label.
+Cultured fibroblasts are classified as `cell_line` because culture can introduce
+acquired rearrangements. This policy keeps cultured material out of the normal
+tissue panel. The local pinned copy has only
+the EBV-transformed and transformed-fibroblast labels (4,066 and 3,158 rows).
+The complete observed pair/count table is recorded in PR #151.
+Known noncell GTEx pairs and TCGA IDs ending `-NT` are `normal`; recognized other
+TCGA sample codes are `tumor`.
 The sole verified non-donor-ID exception is `K-562` or `K-562-SM-<alphanumeric>`:
 [ATCC CCL-243](https://www.atcc.org/products/ccl-243) identifies this as a malignant
 leukemia line. It is `cell_line`, with no invented patient ID. These explicit
@@ -64,13 +76,18 @@ Broad's disease-prefix IDs (e.g. LUSC-51-4079-TP/NT) become patient TCGA-51-4079
 matching standard TCGA participant barcodes. GTEx participant IDs retain the first
 two barcode components. TARGET uses the published participant, cancer type and
 sample type; `Normal` sample types are normal and explicit tumor/cancer/metastatic
-types are tumor using an explicit allowlist. Unknown types fail. Across
+types are tumor using an explicit allowlist. Cell-line and xenograft labels
+(case-insensitive, with separator normalization) are always `cell_line`, including
+when the source classifies a xenograft as tumor; that override is recorded. None
+occur in the real TARGET metadata's 11 sample types, all of which are covered.
+Other unknown types fail. Across
 all cohorts, normal rows have empty `tumor_type`; their original cancer-type
 metadata remains in `annotation_flags`. DepMap
 rows are `cell_line`; patient and tumor type are unavailable and remain empty.
 
 The overlapping TARGET tables remain distinct. Consolidated TARGET `fusion_name`
-is oriented 5′ to 3′; alphabetically sorted `partnerA/B` are not used for orientation.
+supplies the 5′/3′ gene order; alphabetically sorted `partnerA/B` support only a
+partner-identity check. They do not validate orientation or genomic locus alignment.
 Validated rows use FI counts/FFPM, others STAR-Fusion counts/FFPM, recorded in
 `filter_provenance`; `caller` identifies both methods and `fi_validated` preserves
 the original boolean. Both count sets remain in `annotation_flags`. Patient IDs
@@ -80,7 +97,7 @@ published participant IDs.
 
 Fusion names use `::` for TCGA+GTEx and consolidated TARGET, and `--` for raw
 TARGET and DepMap. Readers validate this format and agreement with oriented
-LeftGene/RightGene or consolidated partner fields. Four TCGA+GTEx placeholder
+LeftGene/RightGene; consolidated partner fields are checked only for partner identity. Four TCGA+GTEx placeholder
 rows have unavailable names, genes and breakpoints and remain present. Different
 gene annotations at identical sample/breakpoints remain distinct records.
 Breakpoint containment in a public GENCODE gene span is not an ingestion rule:

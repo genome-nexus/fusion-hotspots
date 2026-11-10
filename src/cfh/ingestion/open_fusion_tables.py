@@ -58,6 +58,100 @@ _METADATA_HEADER = (
 )
 
 
+# Observed pairs from the pinned TCGA+GTEx table, not an open-ended normal default.
+_GTEX_TISSUE_CLASSES = {
+    ("Adipose Tissue", "Adipose - Subcutaneous"): "normal",
+    ("Adipose Tissue", "Adipose - Visceral (Omentum)"): "normal",
+    ("Adrenal Gland", "Adrenal Gland"): "normal",
+    ("Bladder", "Bladder"): "normal",
+    ("Blood", "Cells - EBV-transformed lymphocytes"): "cell_line",
+    ("Blood", "Whole Blood"): "normal",
+    ("Blood Vessel", "Artery - Aorta"): "normal",
+    ("Blood Vessel", "Artery - Coronary"): "normal",
+    ("Blood Vessel", "Artery - Tibial"): "normal",
+    ("Brain", "Brain - Amygdala"): "normal",
+    ("Brain", "Brain - Anterior cingulate cortex (BA24)"): "normal",
+    ("Brain", "Brain - Caudate (basal ganglia)"): "normal",
+    ("Brain", "Brain - Cerebellar Hemisphere"): "normal",
+    ("Brain", "Brain - Cerebellum"): "normal",
+    ("Brain", "Brain - Cortex"): "normal",
+    ("Brain", "Brain - Frontal Cortex (BA9)"): "normal",
+    ("Brain", "Brain - Hippocampus"): "normal",
+    ("Brain", "Brain - Hypothalamus"): "normal",
+    ("Brain", "Brain - Nucleus accumbens (basal ganglia)"): "normal",
+    ("Brain", "Brain - Putamen (basal ganglia)"): "normal",
+    ("Brain", "Brain - Spinal cord (cervical c-1)"): "normal",
+    ("Brain", "Brain - Substantia nigra"): "normal",
+    ("Breast", "Breast - Mammary Tissue"): "normal",
+    ("Cervix Uteri", "Cervix - Ectocervix"): "normal",
+    ("Cervix Uteri", "Cervix - Endocervix"): "normal",
+    ("Colon", "Colon - Sigmoid"): "normal",
+    ("Colon", "Colon - Transverse"): "normal",
+    ("Esophagus", "Esophagus - Gastroesophageal Junction"): "normal",
+    ("Esophagus", "Esophagus - Mucosa"): "normal",
+    ("Esophagus", "Esophagus - Muscularis"): "normal",
+    ("Fallopian Tube", "Fallopian Tube"): "normal",
+    ("Heart", "Heart - Atrial Appendage"): "normal",
+    ("Heart", "Heart - Left Ventricle"): "normal",
+    ("Kidney", "Kidney - Cortex"): "normal",
+    ("Liver", "Liver"): "normal",
+    ("Lung", "Lung"): "normal",
+    ("Muscle", "Muscle - Skeletal"): "normal",
+    ("Nerve", "Nerve - Tibial"): "normal",
+    ("Ovary", "Ovary"): "normal",
+    ("Pancreas", "Pancreas"): "normal",
+    ("Pituitary", "Pituitary"): "normal",
+    ("Prostate", "Prostate"): "normal",
+    ("Salivary Gland", "Minor Salivary Gland"): "normal",
+    ("Skin", "Cells - Transformed fibroblasts"): "cell_line",
+    ("Skin", "Skin - Not Sun Exposed (Suprapubic)"): "normal",
+    ("Skin", "Skin - Sun Exposed (Lower leg)"): "normal",
+    ("Small Intestine", "Small Intestine - Terminal Ileum"): "normal",
+    ("Spleen", "Spleen"): "normal",
+    ("Stomach", "Stomach"): "normal",
+    ("Testis", "Testis"): "normal",
+    ("Thyroid", "Thyroid"): "normal",
+    ("Uterus", "Uterus"): "normal",
+    ("Vagina", "Vagina"): "normal",
+}
+# Explicit aliases: case and separators are normalized before exact matching.
+_GTEX_CELL_LABELS = {
+    "cells ebv transformed lymphocytes",
+    "cells transformed fibroblasts",
+    "cells cultured fibroblasts",
+}
+
+
+def _tissue_label(value: str) -> str:
+    return " ".join(value.replace("_", " ").replace("-", " ").casefold().split())
+
+
+_GTEX_CANONICAL_CLASSES = {
+    (_tissue_label(kind), _tissue_label(subtype)): tissue
+    for (kind, subtype), tissue in _GTEX_TISSUE_CLASSES.items()
+}
+
+
+def _gtex_labels(tissue_type: str, tissue_subtype: str) -> tuple[str, str]:
+    labels = (_tissue_label(tissue_type), _tissue_label(tissue_subtype))
+    cell_labels = [label for label in labels if label.startswith("cells")]
+    # Check both columns before accepting either: a known label cannot hide an unknown one.
+    for label in cell_labels:
+        if label not in _GTEX_CELL_LABELS:
+            raise ValueError(f"Unknown GTEx Cells label: {label!r}")
+    return labels
+
+
+def _gtex_tissue(tissue_type: str, tissue_subtype: str) -> str:
+    labels = _gtex_labels(tissue_type, tissue_subtype)
+    if any(label in _GTEX_CELL_LABELS for label in labels):
+        return "cell_line"
+    try:
+        return _GTEX_CANONICAL_CLASSES[labels]
+    except KeyError:
+        raise ValueError(f"Unknown GTEx tissue pair: {labels!r}") from None
+
+
 def fetch_table(table: str, directory: Path) -> Path:
     """Download into a newly created directory; never reuse or overwrite a download.
 
@@ -109,6 +203,10 @@ def _target_metadata(path: Path) -> dict[str, dict[str, str]]:
 
 
 def _target_tissue(sample_type: str) -> str:
+    # Culture and xenograft samples must never enter the tumor/normal tissue panels.
+    label = _tissue_label(sample_type)
+    if re.search(r"\bcell lines?\b", label) or "xenograft" in label:
+        return "cell_line"
     # Exact published sample types: an unfamiliar type must not silently become tumor.
     if sample_type in {"Bone Marrow Normal", "Solid Tissue Normal", "Blood Derived Normal"}:
         return "normal"
@@ -133,11 +231,14 @@ def _number(value: str, field: str) -> str:
         return ""
     if not re.fullmatch(r"[+-]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][+-]?[0-9]+)?", value):
         raise ValueError(f"Invalid {field}: {value!r}")
+    number = Decimal(value)
+    if number < 0:
+        raise ValueError(f"Negative {field}: {value!r}")
     if field == "ffpm":
         if not math.isfinite(float(value)):
             raise ValueError(f"Non-finite {field}: {value!r}")
-    elif Decimal(value) < 0:
-        raise ValueError(f"Negative {field}: {value!r}")
+    elif number != number.to_integral_value():
+        raise ValueError(f"Non-integer {field}: {value!r}")
     return value
 
 
@@ -145,7 +246,9 @@ def _fusion_genes(row: dict[str, str], table: str) -> tuple[str, str]:
     name = row["FusionName" if table == "depmap_22q2" else "fusion_name"]
     delimiter = "--" if table in {"target_starfusion", "depmap_22q2"} else "::"
     if not _available(name):
-        return "", ""
+        if table == "tcga_gtex":
+            return "", ""
+        raise ValueError(f"Unavailable fusion name for {table}: {name!r}")
     genes = name.split(delimiter)
     if len(genes) != 2 or not all(genes):
         raise ValueError(f"Invalid oriented fusion name for {table}: {name!r}")
@@ -174,14 +277,12 @@ def _normalize(
         if cohort == "GTEx":
             donor = re.fullmatch(r"GTEX-([^-]+)(-.*)?", sample)
             if donor:
-                tissue, patient = "normal", f"GTEX-{donor[1]}"
-                if row["tissue_subtype"] in {
-                    "Cells - EBV-transformed lymphocytes",
-                    "Cells - Transformed fibroblasts",
-                }:
-                    tissue = "cell_line"
-                    out["filter_provenance"] += "; tissue_class_override=GTEx_transformed_cells"
+                tissue = _gtex_tissue(row["tissue_type"], row["tissue_subtype"])
+                patient = f"GTEX-{donor[1]}"
+                if tissue == "cell_line":
+                    out["filter_provenance"] += "; tissue_class_override=GTEx_cultured_cells"
             elif re.fullmatch(r"K-562(?:-SM-[A-Za-z0-9]+)?", sample):
+                _gtex_labels(row["tissue_type"], row["tissue_subtype"])
                 # ATCC CCL-243: verified malignant line, never a normal donor.
                 tissue, patient = "cell_line", ""
                 out["filter_provenance"] += "; tissue_class_override=K-562_ATCC_CCL-243"
@@ -206,8 +307,13 @@ def _normalize(
     elif table.startswith("target_"):
         info = metadata[sample] if table == "target_starfusion" else row
         tissue = _target_tissue(info["sample_type"])
-        if table == "target_consolidated" and row["tumor_or_normal"] != tissue:
-            raise ValueError(f"Conflicting TARGET tissue metadata: {sample}")
+        if table == "target_consolidated":
+            if row["tumor_or_normal"] not in {"normal", "tumor"} or (
+                tissue != "cell_line" and row["tumor_or_normal"] != tissue
+            ):
+                raise ValueError(f"Conflicting TARGET tissue metadata: {sample}")
+        if tissue == "cell_line":
+            out["filter_provenance"] += "; tissue_class_override=TARGET_cell_line_or_xenograft"
         out.update(
             cohort="TARGET",
             patient_id=_available(info["participant"]),
@@ -223,7 +329,10 @@ def _normalize(
         if sorted((out["gene_5p"], out["gene_3p"])) != sorted(
             (_available(row["partnerA"]), _available(row["partnerB"]))
         ):
-            raise ValueError("Consolidated TARGET partner names disagree with fusion_name")
+            raise ValueError(
+                f"Consolidated TARGET partner-identity mismatch: "
+                f"sample={sample!r}, fusion={row['fusion_name']!r}"
+            )
         validated = row["FI_validated"]
         if validated not in {"TRUE", "FALSE"}:
             raise ValueError(f"Invalid FI_validated: {validated}")
@@ -237,7 +346,10 @@ def _normalize(
             out[f"gene_{side}"] = _available(row[key]).split("^")[0].split(" (")[0]
         genes = _fusion_genes(row, table)
         if genes != (out["gene_5p"], out["gene_3p"]):
-            raise ValueError(f"Fusion name disagrees with oriented genes: {row!r}")
+            raise ValueError(
+                f"Fusion name disagrees with oriented genes: "
+                f"sample={sample!r}, fusion={row.get('fusion_name', row.get('FusionName'))!r}"
+            )
         suffix = ""
         out["caller"] = {
             "tcga_gtex": "STAR-Fusion v1.7",

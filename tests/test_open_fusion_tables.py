@@ -165,6 +165,8 @@ def test_exact_schema_and_no_filtering(tmp_path, table):
 def test_tcga_gtex_tissue_and_patient(tmp_path, cohort, sample, tissue):
     row = fixture_row("tcga_gtex")
     row.update(data_class=cohort, sample=sample, tumor_or_normal=tissue)
+    if cohort == "GTEx":
+        row.update(tissue_type="Colon", tissue_subtype="Colon - Transverse")
     source = tmp_path / "source.tsv"
     write_fixture(source, "tcga_gtex", [row])
     result = list(read_table("tcga_gtex", source))[0]
@@ -355,7 +357,7 @@ def test_negative_counts_fail(tmp_path, field):
         list(read_table("tcga_gtex", source))
 
 
-@pytest.mark.parametrize("value", ["1e+05", "0", "1.25", ".5", "NA", ".", ""])
+@pytest.mark.parametrize("value", ["1e+05", "0", "1.0", "20e-1", "NA", ".", ""])
 def test_numeric_formats_preserve_source(tmp_path, value):
     row = fixture_row("tcga_gtex")
     row.update(Jcount=value, Scount=value, FFPM=value)
@@ -499,7 +501,7 @@ def test_consolidated_partner_conflict_raises(tmp_path):
     row["partnerA"] = "UNKNOWN"
     source = tmp_path / "source.tsv"
     write_fixture(source, "target_consolidated", [row])
-    with pytest.raises(ValueError, match="partner names"):
+    with pytest.raises(ValueError, match="partner-identity"):
         list(read_table("target_consolidated", source))
 
 
@@ -510,3 +512,151 @@ def test_consolidated_distinct_names_at_same_coordinates_survive(tmp_path):
     write_fixture(source, "target_consolidated", [first, second])
     result = list(read_table("target_consolidated", source))
     assert [row["gene_3p"] for row in result] == ["ETV1", "ETV4"]
+
+
+@pytest.mark.parametrize("column", ["tissue_type", "tissue_subtype"])
+@pytest.mark.parametrize(
+    "label",
+    [
+        "Cells - EBV-transformed lymphocytes",
+        "Cells - Transformed fibroblasts",
+        "Cells - Cultured fibroblasts",
+        "cElLs - cUlTuReD fIbRoBlAsTs",
+        "CELLS_-_EBV-transformed_lymphocytes",
+        "cells_transformed_fibroblasts",
+        "cells_cultured_fibroblasts",
+    ],
+)
+def test_explicit_gtex_cell_label_variants(tmp_path, column, label):
+    row = fixture_row("tcga_gtex")
+    row.update(
+        data_class="GTEx",
+        sample="GTEX-14BMU-1526-SM-5TDE6",
+        tumor_or_normal="normal",
+        tissue_type="Skin",
+        tissue_subtype="Skin",
+    )
+    row[column] = label
+    source = tmp_path / "source.tsv"
+    write_fixture(source, "tcga_gtex", [row])
+    result = list(read_table("tcga_gtex", source))[0]
+    assert result["tissue_class"] == "cell_line"
+    assert result["tumor_type"] == ""
+    assert result["patient_id"] == "GTEX-14BMU"
+    assert json.loads(result["annotation_flags"])[column] == label
+
+
+@pytest.mark.parametrize("column", ["tissue_type", "tissue_subtype"])
+@pytest.mark.parametrize("sample", ["GTEX-14BMU-1526-SM-5TDE6", "K-562-SM-26GMQ"])
+@pytest.mark.parametrize("label", ["Cells - Unknown lineage", "cELls_unknown", "CellsUnknown"])
+def test_unknown_cells_labels_never_default_to_normal(tmp_path, column, sample, label):
+    row = fixture_row("tcga_gtex")
+    row.update(
+        data_class="GTEx",
+        sample=sample,
+        tumor_or_normal="normal",
+        tissue_type="Skin",
+        tissue_subtype="Cells - Cultured fibroblasts",
+    )
+    row[column] = label  # unknown in either column must win over a known cell label
+    source = tmp_path / "source.tsv"
+    write_fixture(source, "tcga_gtex", [row])
+    with pytest.raises(ValueError, match="Unknown GTEx Cells label"):
+        normalize_table("tcga_gtex", source, tmp_path / "out.tsv")
+    assert not (tmp_path / "out.tsv").exists()
+
+
+def test_unknown_noncell_gtex_pair_requires_mapping_update(tmp_path):
+    row = fixture_row("tcga_gtex")
+    row.update(
+        data_class="GTEx",
+        sample="GTEX-14BMU-1526-SM-5TDE6",
+        tumor_or_normal="normal",
+        tissue_type="Unknown",
+        tissue_subtype="Unknown",
+    )
+    source = tmp_path / "source.tsv"
+    write_fixture(source, "tcga_gtex", [row])
+    with pytest.raises(ValueError, match="Unknown GTEx tissue pair"):
+        list(read_table("tcga_gtex", source))
+
+
+@pytest.mark.parametrize(
+    "sample_type",
+    [
+        "Cell Line",
+        "Cell Lines",
+        "Primary Xenograft Tissue",
+        "Cell Line Derived Xenograft Tissue",
+        "cell_line",
+        "CELL_LINES",
+        "Primary Tumor Xenograft",
+        "XENOGRAFT_TISSUE",
+    ],
+)
+@pytest.mark.parametrize("table", ["target_starfusion", "target_consolidated"])
+def test_target_cell_lines_and_xenografts_never_become_tumor(tmp_path, table, sample_type):
+    row = fixture_row(table)
+    if table == "target_consolidated":
+        row["sample_type"] = sample_type
+    source = tmp_path / "source.tsv"
+    write_fixture(source, table, [row])
+    result = list(
+        read_table(table, source, target_sample_info=metadata(tmp_path, sample_type=sample_type))
+    )[0]
+    assert result["tissue_class"] == "cell_line"
+    assert result["tumor_type"] == ""
+    assert "tissue_class_override=TARGET_cell_line_or_xenograft" in result["filter_provenance"]
+
+
+@pytest.mark.parametrize("value", ["-1", "-0.5", "-1e-999"])
+def test_negative_ffpm_rejected_before_float_underflow(tmp_path, value):
+    row = fixture_row("tcga_gtex")
+    row["FFPM"] = value
+    source = tmp_path / "source.tsv"
+    write_fixture(source, "tcga_gtex", [row])
+    with pytest.raises(ValueError, match="Negative ffpm"):
+        list(read_table("tcga_gtex", source))
+
+
+@pytest.mark.parametrize("field", ["Jcount", "Scount"])
+@pytest.mark.parametrize("value", ["1.25", ".5", "1e-5"])
+def test_fractional_reads_rejected(tmp_path, field, value):
+    row = fixture_row("tcga_gtex")
+    row[field] = value
+    source = tmp_path / "source.tsv"
+    write_fixture(source, "tcga_gtex", [row])
+    with pytest.raises(ValueError, match="Non-integer"):
+        list(read_table("tcga_gtex", source))
+
+
+@pytest.mark.parametrize("value", ["1.25", ".5", "1e-5"])
+def test_fractional_ffpm_is_valid(tmp_path, value):
+    row = fixture_row("tcga_gtex")
+    row["FFPM"] = value
+    source = tmp_path / "source.tsv"
+    write_fixture(source, "tcga_gtex", [row])
+    assert list(read_table("tcga_gtex", source))[0]["ffpm"] == value
+
+
+def test_gene_conflict_reports_identity_without_dumping_row(tmp_path):
+    row = fixture_row("tcga_gtex")
+    row.update(LeftGene="WRONG^ENSG123", Annots="SENTINEL_NOT_FOR_EXCEPTION")
+    source = tmp_path / "source.tsv"
+    write_fixture(source, "tcga_gtex", [row])
+    with pytest.raises(ValueError) as error:
+        list(read_table("tcga_gtex", source))
+    message = str(error.value)
+    assert row["sample"] in message
+    assert row["fusion_name"] in message
+    assert "SENTINEL_NOT_FOR_EXCEPTION" not in message
+
+
+@pytest.mark.parametrize("table", ["target_starfusion", "target_consolidated", "depmap_22q2"])
+def test_na_name_placeholder_not_accepted_outside_tcga_gtex(tmp_path, table):
+    row = fixture_row(table)
+    row["FusionName" if table == "depmap_22q2" else "fusion_name"] = "NA"
+    source = tmp_path / "source.tsv"
+    write_fixture(source, table, [row])
+    with pytest.raises(ValueError, match="Unavailable fusion name"):
+        list(read_table(table, source, target_sample_info=metadata(tmp_path)))
