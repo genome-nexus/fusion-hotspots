@@ -6,16 +6,20 @@ parent's residues up to the junction, any hybrid residue, then the 3' parent's
 residues from the junction.
 
 A junction duplication or deletion is read from the junction coordinates, not
-from where an aligner places a gap. The two parent domains are aligned with
-each other, the 5' end and the 3' restart are placed on that shared column
-axis, and the chimera is compared with the in-register parent: the 5' domain
-through the junction column, then the 3' domain after it. A restart at or
-before the junction column repeats residues; a restart past it skips them. The
-result does not depend on how equivalent gaps are placed inside a repeat, and
-a chimera whose length differs from the in-register parent is never clean.
-Paralog indels away from the junction do not count. The chimera is also
-aligned (BLOSUM62, affine gaps) against each parent domain; the best-scoring
-parent and its identity are reported.
+from where an aligner places a gap in the chimera. The two parent domains are
+aligned with each other; for each co-optimal alignment, ``k`` counts the 3'
+residues at or before the 5' end's column, and the in-register parent is the
+5' domain through the junction followed by the 3' domain from residue ``k``.
+The chimera's length minus the in-register parent's is the indel: a restart
+before ``k`` repeats residues, a restart after it skips them. Every co-optimal
+alignment is considered (forward and backward dynamic programming), so a
+paralog gap that can sit equally well on either side of the junction, as in a
+repeat, cannot flip the call through a tie-break: if the alignments disagree
+the call is ``ambiguous_junction_register``. ``clean_reconstitution`` needs no
+indel under any of them and a chimera the length of the parent it is reported
+against. Paralog indels away from the junction do not count. The chimera is
+also aligned (BLOSUM62, affine gaps) against each parent domain; the parent
+reported is the same-length one if any, else the best-scoring one.
 
 There is no Pfam HMM here: the parents stand in for the family, so the call
 says how the junction compares with these two parents only.
@@ -34,13 +38,20 @@ Classes, in the order they are decided:
     The junction shifts the reading frame.
 ``premature_stop_at_junction``
     In frame, but the junction-spanning codon is a stop.
+``ambiguous_junction_register``
+    In frame and cut in both partners, but equally good alignments of the two
+    parent domains (a paralog gap that can sit on either side of the junction,
+    e.g. inside a repeat) disagree on whether residues are repeated or
+    skipped, or the chimera is in register but matches neither parent's
+    length. Never clean; ``reason`` lists the competing indel sizes.
 ``tandem_duplication_or_insertion``
     The chimeric domain has extra residues at the junction.
 ``gap_or_deletion``
     The chimeric domain is missing residues at the junction.
 ``clean_reconstitution``
-    In frame, both halves present, and the same length as the in-register
-    parent: no residue repeated or skipped at the junction.
+    In frame, both halves present, no residue repeated or skipped at the
+    junction under every co-optimal parent alignment, and the same length as
+    the parent it is reported against.
 """
 
 from __future__ import annotations
@@ -65,6 +76,7 @@ NO_TRANSCRIPT_MODEL = "no_transcript_model"
 NOT_SPLIT_ON_BOTH = "not_split_on_both"
 PREMATURE_STOP_AT_JUNCTION = "premature_stop_at_junction"
 SPLICE_SITE_UNRESOLVED = "splice_site_unresolved"
+AMBIGUOUS_JUNCTION_REGISTER = "ambiguous_junction_register"
 
 RECONSTITUTION_CLASSES = (
     CLEAN_RECONSTITUTION,
@@ -75,6 +87,7 @@ RECONSTITUTION_CLASSES = (
     NOT_SPLIT_ON_BOTH,
     PREMATURE_STOP_AT_JUNCTION,
     SPLICE_SITE_UNRESOLVED,
+    AMBIGUOUS_JUNCTION_REGISTER,
 )
 
 GAP_OPEN = -10
@@ -109,10 +122,18 @@ _BLOSUM62 = {
 }
 
 
-def align_global(first: str, second: str) -> tuple[str, str, int]:
-    """Affine-gap global alignment; returns aligned strings and the score."""
+_LOW = -(10**9)
+_Matrix = list[list[int]]
+
+
+def _forward(first: str, second: str) -> tuple[_Matrix, _Matrix, _Matrix]:
+    """Affine-gap forward matrices ``(match, gap_second, gap_first)``.
+
+    ``gap_second[i][j]`` ends with ``first[i-1]`` against a gap,
+    ``gap_first[i][j]`` with ``second[j-1]`` against a gap.
+    """
     n, m = len(first), len(second)
-    low = -(10**9)
+    low = _LOW
     match = [[low] * (m + 1) for _ in range(n + 1)]
     gap_second = [[low] * (m + 1) for _ in range(n + 1)]  # first[i-1] against a gap
     gap_first = [[low] * (m + 1) for _ in range(n + 1)]  # second[j-1] against a gap
@@ -137,6 +158,63 @@ def align_global(first: str, second: str) -> tuple[str, str, int]:
                 gap_first[i][j - 1] + GAP_EXTEND,
                 gap_second[i][j - 1] + GAP_OPEN,
             )
+    return match, gap_second, gap_first
+
+
+def _backward(first: str, second: str) -> tuple[_Matrix, _Matrix, _Matrix]:
+    """Best score still to come from each cell and state, to the end at ``(n, m)``."""
+    n, m = len(first), len(second)
+    match = [[_LOW] * (m + 1) for _ in range(n + 1)]
+    gap_second = [[_LOW] * (m + 1) for _ in range(n + 1)]
+    gap_first = [[_LOW] * (m + 1) for _ in range(n + 1)]
+    for i in range(n, -1, -1):
+        for j in range(m, -1, -1):
+            if i == n and j == m:
+                match[i][j] = gap_second[i][j] = gap_first[i][j] = 0
+                continue
+            diagonal = (
+                _BLOSUM62.get((first[i], second[j]), -4) + match[i + 1][j + 1]
+                if i < n and j < m
+                else _LOW
+            )
+            down = gap_second[i + 1][j] if i < n else _LOW
+            right = gap_first[i][j + 1] if j < m else _LOW
+            match[i][j] = max(diagonal, down + GAP_OPEN, right + GAP_OPEN)
+            gap_second[i][j] = max(diagonal, down + GAP_EXTEND, right + GAP_OPEN)
+            gap_first[i][j] = max(diagonal, down + GAP_OPEN, right + GAP_EXTEND)
+    return match, gap_second, gap_first
+
+
+def co_optimal_registers(first: str, second: str, consumed: int) -> list[int]:
+    """Every ``j`` such that some co-optimal global alignment of ``first`` and
+    ``second`` places ``first[consumed - 1]`` in a column with exactly ``j``
+    residues of ``second`` at or before it.
+
+    Equivalent gap placements (for instance anywhere along a poly-alanine
+    run) are all optimal, so a quantity read from one traceback can depend on
+    an arbitrary tie-break; this returns the whole set instead.
+    """
+    forward = _forward(first, second)
+    backward = _backward(first, second)
+    n, m = len(first), len(second)
+    best = max(forward[0][n][m], forward[1][n][m], forward[2][n][m])
+    found = []
+    for j in range(m + 1):
+        # The step that consumes first[consumed - 1] ends in the match or the
+        # gap_second state at row ``consumed``.
+        if any(
+            forward[state][consumed][j] > _LOW // 2
+            and forward[state][consumed][j] + backward[state][consumed][j] == best
+            for state in (0, 1)
+        ):
+            found.append(j)
+    return found
+
+
+def align_global(first: str, second: str) -> tuple[str, str, int]:
+    """Affine-gap global alignment; returns aligned strings and the score."""
+    n, m = len(first), len(second)
+    match, gap_second, gap_first = _forward(first, second)
 
     i, j = n, m
     aligned_first: list[str] = []
@@ -202,11 +280,6 @@ class ReconstitutionCall:
     junction_indel: JunctionIndel | None = None
 
 
-def _columns(aligned: str) -> list[int]:
-    """Alignment column of each residue of an aligned sequence, in order."""
-    return [column for column, char in enumerate(aligned) if char != "-"]
-
-
 def _is_tandem(chimera: str, residues: str, junction_index: int) -> bool:
     """True when ``residues`` occurs twice in a row near the junction."""
     size = len(residues)
@@ -218,61 +291,55 @@ def _is_tandem(chimera: str, residues: str, junction_index: int) -> bool:
     return False
 
 
-def _junction_indel(
+@dataclass(frozen=True)
+class _Register:
+    """The junction read against one co-optimal register of the two parents."""
+
+    indel: JunctionIndel | None
+    reference: str
+    """The in-register parent: the 5' domain through the junction, then the 3'
+    domain after it."""
+
+
+def _junction_registers(
     five_domain: str,
     three_domain: str,
     five_end: int,
     three_start: int,
     chimera: str,
     junction_index: int,
-) -> tuple[JunctionIndel | None, str]:
-    """The junction indel from the junction coordinates, and the in-register parent.
+) -> list[_Register]:
+    """The junction indel under every co-optimal register of the two parents.
 
     ``five_end`` is the last 5' domain residue the chimera holds (zero-based,
     counting a hybrid residue as the 5' partner's), ``three_start`` the first
-    3' domain residue it holds. The two parent domains are aligned with each
-    other, and both coordinates are placed on that shared column axis. The
-    in-register parent is the 5' domain through the junction column followed
-    by the 3' domain after it. 3' residues the chimera holds at or before the
-    junction column are extra; 3' residues after the junction column that it
-    skips are missing.
+    3' domain residue it holds. For each co-optimal alignment of the two parent
+    domains, ``k`` is the number of 3' residues at or before the column of the
+    5' end. The in-register parent is then ``five_domain[:five_end + 1] +
+    three_domain[k:]``: a restart before ``k`` repeats ``three_domain
+    [three_start:k]``, a restart after it skips ``three_domain[k:three_start]``.
 
-    This depends only on where the two partners join, not on where an aligner
-    puts a gap, so it does not move inside a repeat such as a poly-alanine
-    run. A paralog-specific residue (one parent only) between the two
-    coordinates counts only if it is a 3' residue.
+    The chimera's own length minus the in-register parent's length is the
+    indel, so where an aligner puts a gap inside the chimera never matters.
+    Every distinct ``k`` is returned, so a caller can tell when equivalent
+    placements of a paralog gap disagree.
     """
-    aligned_five, aligned_three, _ = align_global(five_domain, three_domain)
-    five_columns, three_columns = _columns(aligned_five), _columns(aligned_three)
-    junction_column = five_columns[five_end]
-    restart_column = three_columns[three_start]
-    reference = (
-        five_domain[: five_end + 1]
-        + three_domain[sum(column <= junction_column for column in three_columns) :]
-    )
-    if restart_column <= junction_column:
-        extra = [
-            three_domain[index]
-            for index, column in enumerate(three_columns)
-            if restart_column <= column <= junction_column
-        ]
-        residues = "".join(extra)
-        length = len(residues)
-        tandem = _is_tandem(chimera, residues, junction_index)
-    else:
-        residues = "".join(
-            three_domain[index]
-            for index, column in enumerate(three_columns)
-            if junction_column < column < restart_column
-        )
-        length = -len(residues)
-        tandem = False
-    if len(chimera) - len(reference) != length:  # pragma: no cover - by construction
-        raise AssertionError(
-            f"junction indel {length} disagrees with the length change "
-            f"{len(chimera) - len(reference)} against the in-register parent"
-        )
-    return (JunctionIndel(length, residues, tandem) if length else None), reference
+    registers = []
+    for k in co_optimal_registers(five_domain, three_domain, five_end + 1):
+        reference = five_domain[: five_end + 1] + three_domain[k:]
+        length = len(chimera) - len(reference)
+        if length > 0:
+            residues = three_domain[three_start:k]
+            indel: JunctionIndel | None = JunctionIndel(
+                length, residues, _is_tandem(chimera, residues, junction_index)
+            )
+        elif length < 0:
+            indel = JunctionIndel(length, three_domain[k:three_start], False)
+        else:
+            indel = None
+        assert length == k - three_start  # by construction
+        registers.append(_Register(indel, reference))
+    return registers
 
 
 def _identity(first: str, second: str) -> float:
@@ -364,7 +431,7 @@ def classify_family(
 
     five_domain = five_protein[five_span.start_aa - 1 : five_span.end_aa]
     three_domain = three_protein[three_span.start_aa - 1 : three_span.end_aa]
-    indel, reference = _junction_indel(
+    registers = _junction_registers(
         five_domain,
         three_domain,
         five_end=len(five_piece) - 1,
@@ -373,16 +440,24 @@ def classify_family(
         junction_index=junction_index,
     )
 
-    best: tuple[int, str, str, str] | None = None
+    scored: list[tuple[int, str, str, str, str]] = []
     for parent_gene, parent_domain in (
         (prediction.five_prime_gene, five_domain),
         (prediction.three_prime_gene, three_domain),
     ):
         aligned_chimera, aligned_parent, score = align_global(chimera, parent_domain)
-        if best is None or score > best[0]:
-            best = (score, parent_gene, aligned_chimera, aligned_parent)
-    assert best is not None
-    _, parent_gene, aligned_chimera, aligned_parent = best
+        scored.append((score, parent_gene, parent_domain, aligned_chimera, aligned_parent))
+    # Same length as the chimera first, then the better alignment score.
+    same_length = [entry for entry in scored if len(entry[2]) == len(chimera)]
+    _, parent_gene, _, aligned_chimera, aligned_parent = max(
+        same_length or scored, key=lambda entry: entry[0]
+    )
+    lengths = sorted({register.indel.length if register.indel else 0 for register in registers})
+    # The largest indel any co-optimal register implies, for the columns.
+    indel = max(
+        (register.indel for register in registers),
+        key=lambda found: abs(found.length) if found else 0,
+    )
     aligned = replace(
         split,
         chimeric_domain=chimera,
@@ -390,13 +465,34 @@ def classify_family(
         alignment_identity=_identity(aligned_chimera, aligned_parent),
         junction_indel=indel,
     )
+    if len(lengths) > 1:
+        return replace(
+            aligned,
+            classification=AMBIGUOUS_JUNCTION_REGISTER,
+            reason=(
+                "co-optimal alignments of the parent domains disagree on the junction "
+                f"register: {', '.join(f'{length:+d}' for length in lengths)} residues "
+                f"(chimera {len(chimera)}; parents {len(five_domain)} and {len(three_domain)})"
+            ),
+        )
+    reference = registers[0].reference
     if indel is None:
+        if not same_length:
+            return replace(
+                aligned,
+                classification=AMBIGUOUS_JUNCTION_REGISTER,
+                reason=(
+                    f"in register at the junction, but the {len(chimera)}-residue chimera "
+                    f"matches neither parent length ({len(five_domain)}, {len(three_domain)})"
+                ),
+            )
         return replace(
             aligned,
             classification=CLEAN_RECONSTITUTION,
             reason=(
-                f"chimeric {family} domain is in register with its parents at the junction "
-                f"({len(chimera)} residues, as the in-register parent); best match {parent_gene}"
+                f"chimeric {family} domain is in register at the junction under every "
+                f"co-optimal parent alignment and has the length of {parent_gene}'s "
+                f"({len(chimera)} residues)"
             ),
         )
     if indel.length > 0:

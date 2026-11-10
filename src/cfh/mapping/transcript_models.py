@@ -72,14 +72,27 @@ def genome_nexus_url_for_build(genome_build: str) -> str:
     return GENOME_NEXUS_URL_BY_BUILD[build]
 
 
-def _check_provenance(directory: Path, genome_build: str, source_url: str | None) -> None:
-    """Stamp ``directory`` with its build, or raise if it holds another build."""
+def check_cache_provenance(directory: Path, genome_build: str, source_url: str | None) -> None:
+    """Make sure ``directory`` only holds ``genome_build`` data.
+
+    A directory with a provenance marker for another build raises. A
+    directory with payload files but no marker (written before caches were
+    keyed by build) raises too, because nothing says which build those files
+    are: it is never stamped and reused. Only an empty or missing directory
+    is stamped with ``genome_build``.
+    """
     marker = directory / PROVENANCE_FILE
     if marker.exists():
         recorded = json.loads(marker.read_text()).get("genome_build")
         if normalize_genome_build(recorded) != genome_build:
             raise ValueError(f"cache {directory} holds {recorded} data, not {genome_build}")
         return
+    if directory.exists() and any(directory.iterdir()):
+        raise ValueError(
+            f"cache {directory} has files but no {PROVENANCE_FILE}, so its genome build is "
+            f"unknown; delete it or point the cache at a fresh directory before a "
+            f"{genome_build} run"
+        )
     directory.mkdir(parents=True, exist_ok=True)
     marker.write_text(json.dumps({"genome_build": genome_build, "source_url": source_url}))
 
@@ -167,7 +180,7 @@ class EnsemblCdsClient:
             return None
         if not self._provenance_checked:
             build = normalize_genome_build(self.genome_build) or self.genome_build
-            _check_provenance(self.cache_dir, build, _ENSEMBL_HOST_BY_BUILD.get(build))
+            check_cache_provenance(self.cache_dir, build, _ENSEMBL_HOST_BY_BUILD.get(build))
             self._provenance_checked = True
         return self.cache_dir / f"{transcript_id}.json"
 
@@ -244,7 +257,7 @@ class TranscriptModelSource:
         if self.cache_dir is None:
             return None
         directory = self.cache_dir / kind / self.genome_build
-        _check_provenance(directory, self.genome_build, self.client.base_url)
+        check_cache_provenance(directory, self.genome_build, self.client.base_url)
         return directory
 
     @property

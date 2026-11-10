@@ -44,7 +44,11 @@ from cfh.genes.registry import GeneConfig, load_gene_config
 from cfh.ingestion import cbioportal_api
 from cfh.ingestion.http import retrying_session
 from cfh.mapping.genome_nexus_source import GenomeNexusClient
-from cfh.mapping.transcript_models import TranscriptModelSource, genome_build_of_genome_nexus
+from cfh.mapping.transcript_models import (
+    TranscriptModelSource,
+    check_cache_provenance,
+    genome_build_of_genome_nexus,
+)
 from cfh.real_benchmark import (
     RealBenchmarkNetworkError,
     RealBenchmarkRun,
@@ -353,6 +357,25 @@ def _report_progress(
     )
 
 
+def canonical_transcript_cache_dir(
+    cache_dir: Path | None, genome_nexus_base_url: str
+) -> Path | None:
+    """The cohort scan's canonical-transcript cache, one directory per genome build.
+
+    The build is the one ``genome_nexus_base_url`` serves. The directory is
+    checked with :func:`check_cache_provenance`: a marker for another build,
+    or payload files with no marker, raise instead of being reused. Files in
+    the pre-build flat layout (directly under
+    ``genome_nexus_canonical_transcripts/``) are left alone and refetched.
+    """
+    if cache_dir is None:
+        return None
+    build = genome_build_of_genome_nexus(genome_nexus_base_url)
+    directory = cache_dir / "genome_nexus_canonical_transcripts" / build
+    check_cache_provenance(directory, build, genome_nexus_base_url)
+    return directory
+
+
 def run_cohort_scan(
     study_id: str,
     *,
@@ -425,7 +448,8 @@ def run_cohort_scan(
     if max_genes is not None:
         candidate_genes = candidate_genes[:max_genes]
 
-    genome_nexus_cache_dir = cache_dir / "genome_nexus_canonical_transcripts" if cache_dir else None
+    genome_nexus_build = genome_build_of_genome_nexus(genome_nexus_base_url)
+    genome_nexus_cache_dir = canonical_transcript_cache_dir(cache_dir, genome_nexus_base_url)
     pfam_description_cache_dir = cache_dir / "pfam_descriptions" if cache_dir else None
     resolution = _resolve_configs(
         candidate_genes,
@@ -442,7 +466,7 @@ def run_cohort_scan(
     genome_nexus_client = GenomeNexusClient(base_url=genome_nexus_base_url, session=session)
     junction_source = (
         TranscriptModelSource(
-            genome_build_of_genome_nexus(genome_nexus_base_url),
+            genome_nexus_build,
             genome_nexus_client=genome_nexus_client,
             cache_dir=cache_dir,
             session=session,

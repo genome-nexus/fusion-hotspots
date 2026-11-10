@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 from types import SimpleNamespace
+from unittest.mock import MagicMock
 
 import pandas as pd
 import pytest
@@ -13,6 +14,7 @@ from cfh.cohort.domain_screen import (
 )
 from cfh.ingestion.sv_parser import parse_sv_file
 from cfh.mapping.junction_domain_classifier import (
+    AMBIGUOUS_JUNCTION_REGISTER,
     CLEAN_RECONSTITUTION,
     GAP_OR_DELETION,
     NO_TRANSCRIPT_MODEL,
@@ -22,8 +24,10 @@ from cfh.mapping.junction_domain_classifier import (
     RECONSTITUTION_CLASSES,
     SPLICE_SITE_UNRESOLVED,
     TANDEM_DUPLICATION_OR_INSERTION,
+    _junction_registers,
     align_global,
     classify_family,
+    co_optimal_registers,
 )
 from cfh.mapping.junction_event import (
     MODE_KEY_DOMAIN,
@@ -416,6 +420,76 @@ def test_clean_is_never_called_when_the_chimera_length_differs():
         assert call.classification != CLEAN_RECONSTITUTION
 
 
+def _paralog_case(five_domain, three_domain, five_last_domain_residue, three_first_residue):
+    """Parents carrying their own domain at residues 11 onward; join in domain coordinates."""
+    five_protein = "M" + "S" * 9 + five_domain + "T" * 20
+    three_protein = "M" + "S" * 9 + three_domain + "T" * 20
+    five = _model("AAA", five_protein, 11, 10 + len(five_domain))
+    three = _model("BBB", three_protein, 11, 10 + len(three_domain))
+    five_break = _genomic_at_cds(five, (10 + five_last_domain_residue) * 3)
+    three_break = _genomic_at_cds(three, (10 + three_first_residue - 1) * 3 + 1)
+    return classify_family(_predict(five, five_break, three, three_break), five, three, FAMILY)
+
+
+SHORT_RUN = "M" + "A" * 30 + "W"
+LONG_RUN = "M" + "A" * 32 + "W"
+
+
+def test_co_optimal_paralog_alignments_put_the_gap_on_either_side_of_the_junction():
+    # Two extra alanines in the 3' paralog fit equally well anywhere in the
+    # run, so one traceback says +2 (gap before the junction) and another 0.
+    assert co_optimal_registers(SHORT_RUN, LONG_RUN, 21) == [21, 23]
+    registers = _junction_registers(
+        SHORT_RUN,
+        LONG_RUN,
+        five_end=20,
+        three_start=21,
+        chimera=SHORT_RUN[:21] + LONG_RUN[21:],
+        junction_index=20,
+    )
+    assert sorted(r.indel.length if r.indel else 0 for r in registers) == [0, 2]
+    assert sorted(len(r.reference) for r in registers) == [32, 34]
+
+
+@pytest.mark.parametrize(
+    ("five_domain", "three_domain", "lengths"),
+    [(SHORT_RUN, LONG_RUN, "+0, +2"), (LONG_RUN, SHORT_RUN, "-2, -1, +0")],
+)
+def test_disagreeing_co_optimal_registers_are_never_clean(five_domain, three_domain, lengths):
+    call = _paralog_case(five_domain, three_domain, 21, 22)
+    assert call.classification == AMBIGUOUS_JUNCTION_REGISTER
+    assert lengths in call.reason
+
+
+def test_a_marker_before_the_junction_forces_the_gap_there_and_an_insertion():
+    five_domain = "M" + "A" * 14 + "C" + "A" * 15 + "W"  # 32
+    three_domain = "M" + "A" * 16 + "C" + "A" * 15 + "W"  # 34
+    call = _paralog_case(five_domain, three_domain, 21, 22)
+    assert len(call.chimeric_domain) == len(three_domain)  # length alone would say clean
+    assert call.classification == TANDEM_DUPLICATION_OR_INSERTION
+    assert call.junction_indel.length == 2
+
+
+def test_a_non_identical_paralog_join_that_is_genuinely_clean():
+    five_domain = "M" + "A" * 24 + "C" + "A" * 5 + "W"  # 32
+    three_domain = "M" + "A" * 24 + "C" + "A" * 7 + "W"  # 34, differs after the junction
+    call = _paralog_case(five_domain, three_domain, 21, 22)
+    assert call.chimeric_domain == three_domain
+    assert call.classification == CLEAN_RECONSTITUTION
+    assert call.alignment_parent == "BBB"
+    assert call.junction_indel is None
+
+
+def test_in_register_chimera_matching_neither_parent_length_is_not_clean():
+    # Paralog indels on both sides of the junction: in register, but the
+    # chimera is longer than either parent.
+    five_domain = "ACDEFGHIKL" + "MNPQRSTVWY" + "GG" + "ACDEFGHIKL"  # 32
+    three_domain = "ACDEFGHIKL" + "WW" + "MNPQRSTVWY" + "ACDEFGHIKL"  # 32
+    call = _paralog_case(five_domain, three_domain, 20, 23)
+    assert len(call.chimeric_domain) == 30
+    assert call.classification == AMBIGUOUS_JUNCTION_REGISTER
+
+
 def test_paralog_indel_away_from_the_junction_does_not_count():
     # The 3' paralog has two extra residues near its C-terminus; the junction
     # itself is in register, so the call is clean.
@@ -715,6 +789,7 @@ def test_classes_are_documented_constants():
     assert CLEAN_RECONSTITUTION in RECONSTITUTION_CLASSES
     assert NO_TRANSCRIPT_MODEL in RECONSTITUTION_CLASSES
     assert SPLICE_SITE_UNRESOLVED in RECONSTITUTION_CLASSES
+    assert AMBIGUOUS_JUNCTION_REGISTER in RECONSTITUTION_CLASSES
 
 
 # --- Transcript source --------------------------------------------------------
@@ -899,6 +974,62 @@ def test_ensembl_cds_cache_rejects_another_build(tmp_path):
     EnsemblCdsClient("GRCh37", session=session, cache_dir=tmp_path).fetch_cds("ENST1")
     with pytest.raises(ValueError, match="GRCh37"):
         EnsemblCdsClient("GRCh38", session=session, cache_dir=tmp_path).fetch_cds("ENST1")
+
+
+def _write_legacy_caches(cache):
+    """The pre-#153 layout: GRCh37 payloads, no build directory, no provenance."""
+    legacy_transcripts = cache / "genome_nexus_transcripts"
+    legacy_transcripts.mkdir(parents=True)
+    (legacy_transcripts / "ERG.json").write_text(json.dumps(TRANSCRIPTS["transcripts"]["ERG"]))
+    legacy_canonical = cache / "genome_nexus_canonical_transcripts_mskcc"
+    legacy_canonical.mkdir(parents=True)
+    (legacy_canonical / "ERG.json").write_text(
+        json.dumps(FakeGenomeNexus().fetch_canonical_transcript("ERG"))
+    )
+    legacy_cds = cache / "ensembl_cds" / "GRCh37"  # already build-named, but unmarked
+    legacy_cds.mkdir(parents=True)
+    (legacy_cds / "ENST00000288319.json").write_text(json.dumps({"seq": "ATGTAA"}))
+
+
+def test_legacy_caches_are_never_reused_for_grch38(tmp_path):
+    _write_legacy_caches(tmp_path)
+    client = FakeGrch38GenomeNexus()
+    cds = FakeCds()
+    session = MagicMock()  # Ensembl GRCh38, served offline from the fixture CDS
+    session.get.return_value.status_code = 200
+    session.get.return_value.json.return_value = {"seq": cds.fetch_cds("ENST00000288319")}
+    source = TranscriptModelSource(
+        "GRCh38", genome_nexus_client=client, cache_dir=tmp_path, session=session
+    )
+    model, problem = source.model(source.resolve("ERG", ["NM_182918"]))
+    assert problem is None
+    assert client.isoform_calls == ["ERG"]  # refetched, not read from the legacy file
+    assert session.get.call_count == 1  # CDS fetched, not read from the GRCh37 cache
+    assert session.get.call_args.args[0].startswith("https://rest.ensembl.org/")
+    grch38_cds = tmp_path / "ensembl_cds" / "GRCh38"
+    assert json.loads((grch38_cds / "_provenance.json").read_text())["genome_build"] == "GRCh38"
+    assert (tmp_path / "ensembl_cds" / "GRCh37" / "ENST00000288319.json").exists()  # untouched
+    legacy = TRANSCRIPTS["transcripts"]["ERG"][0]["exons"]
+    assert min(e.start for e in model.exons) > min(e["exonStart"] for e in legacy)
+
+
+def test_unmarked_cache_directory_with_payloads_raises_instead_of_being_stamped(tmp_path):
+    _write_legacy_caches(tmp_path)
+    cds_dir = tmp_path / "ensembl_cds" / "GRCh37"
+    client = EnsemblCdsClient("GRCh37", cache_dir=cds_dir)
+    with pytest.raises(ValueError, match="no _provenance.json.*delete it"):
+        client.fetch_cds("ENST00000288319")
+    assert not (cds_dir / "_provenance.json").exists()
+
+    unmarked = tmp_path / "genome_nexus_transcripts" / "GRCh37"
+    unmarked.mkdir()
+    (unmarked / "ERG.json").write_text(json.dumps(TRANSCRIPTS["transcripts"]["ERG"]))
+    source = TranscriptModelSource(
+        "GRCh37", genome_nexus_client=FakeGenomeNexus(), cds_client=FakeCds(), cache_dir=tmp_path
+    )
+    with pytest.raises(ValueError, match="genome build is unknown"):
+        source.resolve("ERG", ["NM_182918"])
+    assert not (unmarked / "_provenance.json").exists()
 
 
 def test_genome_build_of_instance():

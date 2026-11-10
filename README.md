@@ -340,15 +340,24 @@ junction coordinates, not from where an aligner puts a gap: the two parent domai
 aligned with each other, the 5' end and the 3' restart are placed on that shared axis,
 and the chimeric domain is compared with the in-register parent (the 5' domain through
 the junction, then the 3' domain after it). A 3' restart at or before the junction
-repeats residues, a restart past it skips them, and a chimera whose length differs
-from the in-register parent is never clean. So a ten-alanine duplication inside a
-poly-alanine run is found wherever the aligner would have placed the gap. The chimeric
-domain is also aligned (BLOSUM62, affine gaps) against each parent domain, and
-`alignment_parent` and `alignment_identity` report the best match:
+repeats residues, and a restart past it skips them. So a ten-alanine duplication inside
+a poly-alanine run is found wherever the aligner would have placed the gap.
+
+When the two parents differ in length, an equivalent paralog gap can often sit on either
+side of the junction (two extra alanines anywhere in a run, say), and the in-register
+parent then depends on a tie-break. So the register is read from **every** co-optimal
+parent-parent alignment (forward and backward dynamic programming), not from one
+traceback. If they disagree on the indel, the call is `ambiguous_junction_register`, and
+`class_reason` lists the competing sizes. `clean_reconstitution` needs no indel under any
+co-optimal alignment and a chimera the same length as the parent it is reported
+against. The chimeric domain is also aligned (BLOSUM62, affine gaps) against each parent
+domain, and `alignment_parent` and `alignment_identity` report the same-length parent if
+there is one, else the better-scoring one:
 
 | Class | Meaning |
 |---|---|
-| `clean_reconstitution` | In frame, the domain is cut in both partners, and the chimeric domain is the same length as the in-register parent: nothing repeated or skipped at the junction. |
+| `clean_reconstitution` | In frame, the domain is cut in both partners, nothing is repeated or skipped at the junction under every co-optimal parent alignment, and the chimeric domain is the same length as the parent it is reported against. |
+| `ambiguous_junction_register` | In frame and cut in both partners, but equally good alignments of the two parent domains disagree on whether residues are repeated or skipped at the junction (typically a paralog length difference inside a repeat), or the chimera is in register but matches neither parent's length. Never clean; `class_reason` lists the competing indel sizes, and `junction_indel_residues` holds the largest. |
 | `tandem_duplication_or_insertion` | Extra residues at the junction (`junction_indel_residues` > 0). |
 | `gap_or_deletion` | Missing residues at the junction (`junction_indel_residues` < 0). |
 | `out_of_frame` | The junction shifts the reading frame. |
@@ -385,7 +394,13 @@ still in the `domain_reconstitution` column, so the two can be compared directly
   (`www.genomenexus.org` for GRCh37, `grch38.genomenexus.org` for GRCh38), and a client
   serving another build is rejected. Genome Nexus and Ensembl caches are kept per build
   (`<cache>/<kind>/<build>/`) with a `_provenance.json`; loading a directory written for
-  another build raises, so a GRCh37 run never feeds a GRCh38 one.
+  another build raises, so a GRCh37 run never feeds a GRCh38 one. This includes the
+  `cohort-scan` canonical-transcript cache
+  (`<cache>/genome_nexus_canonical_transcripts/<build>/`). A build directory that holds
+  payload files but no `_provenance.json` has an unknown build, so it raises too: it is
+  never stamped and reused. Delete it or point `--cache-dir` at a fresh directory. Files
+  in the older flat layout (directly under `<cache>/<kind>/`) are not read; they are
+  refetched into the build directory.
 - **Transcript used.** Each partner uses the transcript named in the source annotation
   when one is available, otherwise the Genome Nexus canonical (MSK override) transcript.
   `*_transcript_source` and `*_transcript_differs_from_canonical` record the choice.
@@ -404,7 +419,7 @@ that the protein folds, or that it is active: published CYP11B1/CYP11B2 hybrids 
 aldosterone synthesis depending on where the junction falls, so position matters even
 for a clean in-frame join between paralogs. Parents stand in for the Pfam family
 because no family HMM is used. Junction indels come from the junction coordinates on
-the parent-parent alignment, a paralog-specific indel elsewhere does not count, and
+every co-optimal parent-parent alignment, a paralog-specific indel elsewhere does not count, and
 `alignment_identity` is reported so a poor alignment can be discounted. A paralog
 residue present only in the 5' parent and skipped at the junction is not counted. Confirm with
 RNA before treating any class as more than a screening result.
