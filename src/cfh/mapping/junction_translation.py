@@ -12,19 +12,30 @@ Coordinate convention
     both reported bases stay in the product
     (:data:`CONVENTION_BOTH_BASES_RETAINED`, the default).
     :data:`CONVENTION_THREE_PRIME_BASE_DROPPED` removes the 3' reported base
-    instead. SV callers do not agree on this, and microhomology at the junction
-    makes the true position ambiguous, so the convention is always recorded on
-    the result: moving one base changes the frame.
+    instead: the 3' side starts one base further along the 3' transcript
+    (strand-aware), and that position is located and joined exactly like a
+    reported one, so the convention applies to every join, exon edges
+    included. SV callers do not agree on this, and microhomology at the
+    junction makes the true position ambiguous, so the convention is always
+    recorded on the result: moving one base changes the frame.
 
 How a breakpoint becomes a product
-    - Both breaks inside coding exons: the DNA joins directly and the two exon
-      pieces form one chimeric exon (``mid_exon_dna``).
-    - Both breaks on exon boundaries or in introns: the 5' donor splices to the
-      3' acceptor (``splice_mediated``).
+    - Both breaks inside coding exons, exon edges included: the DNA joins
+      directly and the two exon pieces form one chimeric exon
+      (``mid_exon_dna``). An exact last-base/first-base join is still a DNA
+      join of those two bases, not a splice.
+    - Both breaks in introns: the 5' donor splices to the 3' acceptor
+      (``splice_mediated``).
     - One break intronic and the other inside a coding exon: the broken exon
       has lost its splice site, so splicing can only use the nearest intact
       exon past it. The exon is dropped and recorded in ``notes``; when no such
       exon exists there is no credible product.
+    - An intronic break inside a splice site it relies on, i.e. within
+      :data:`DONOR_SITE_NT` nt after the 5' partner's donor exon or within
+      :data:`ACCEPTOR_SITE_NT` nt before the 3' partner's acceptor exon:
+      the joined sequence there comes from the other partner, which this
+      module does not have, so whether the site survives is unknown. The
+      event gets no product and ``splice_site_unresolved``, with the reason.
 
     Intronic breakpoints are never silently moved to an exon edge. The exon
     used and the intronic distance are in the breakpoint's
@@ -48,6 +59,16 @@ FRAME_UNKNOWN = "unknown"
 MECHANISM_SPLICE = "splice_mediated"
 MECHANISM_MID_EXON = "mid_exon_dna"
 MECHANISM_NONE = "no_credible_product"
+MECHANISM_SPLICE_SITE_UNRESOLVED = "splice_site_unresolved"
+"""An intronic break falls inside the splice site the product would need, so
+no product is predicted until the joined genomic sequence is checked."""
+
+DONOR_SITE_NT = 6
+"""Intronic bases after a donor exon (+1..+6, including the GT) that a 5'
+break must keep for the donor to be assumed intact."""
+ACCEPTOR_SITE_NT = 20
+"""Intronic bases before an acceptor exon that a 3' break must keep: the AG
+(-1, -2), -3, and the polypyrimidine tract and branch-point side."""
 
 REGION_CODING_EXON = "coding_exon"
 REGION_FIVE_PRIME_UTR = "five_prime_utr"
@@ -459,6 +480,44 @@ def _splice_three_prime_past_broken_exon(
     )
 
 
+def _splice_site_problems(
+    five_gene: str,
+    five_location: BreakpointLocation,
+    three_gene: str,
+    three_location: BreakpointLocation,
+) -> list[str]:
+    """Why an intronic break may have destroyed the splice site it relies on.
+
+    A 5' intronic break keeps intron bases +1..+d after its donor exon; the
+    rest of the donor comes from the 3' partner's sequence. A 3' intronic
+    break keeps bases -d..-1 before its acceptor exon. When ``d`` is short of
+    :data:`DONOR_SITE_NT` or :data:`ACCEPTOR_SITE_NT` the site may or may not
+    be rebuilt by the joined sequence, which is not available here.
+    """
+    problems: list[str] = []
+    if five_location.region == REGION_INTRON:
+        kept = five_location.distance_from_upstream_exon_nt
+        assert kept is not None  # set for every intronic location
+        if kept < DONOR_SITE_NT:
+            problems.append(
+                f"{five_gene} 5' break keeps only {kept} nt of the exon "
+                f"{five_location.upstream_exon_rank} splice donor (+1..+{DONOR_SITE_NT}); "
+                "whether the joined sequence restores it is unresolved"
+            )
+    if three_location.region == REGION_INTRON:
+        kept = three_location.distance_to_downstream_exon_nt
+        assert kept is not None  # set for every intronic location
+        if kept < ACCEPTOR_SITE_NT:
+            region = "the essential AG" if kept < 3 else "the polypyrimidine tract / branch region"
+            problems.append(
+                f"{three_gene} 3' break keeps only {kept} nt before the exon "
+                f"{three_location.downstream_exon_rank} splice acceptor "
+                f"(-{ACCEPTOR_SITE_NT}..-1), inside {region}; whether the joined "
+                "sequence restores it is unresolved"
+            )
+    return problems
+
+
 def _no_product(
     base: JunctionPrediction, reason: str, notes: list[str] | tuple[str, ...] = ()
 ) -> JunctionPrediction:
@@ -512,8 +571,16 @@ def predict_junction(
             return _no_product(base, problem)
     assert five_prime_transcript is not None and three_prime_transcript is not None
 
+    convention_notes: list[str] = []
+    three_position = three_prime_breakpoint
+    if coordinate_convention == CONVENTION_THREE_PRIME_BASE_DROPPED:
+        three_position += three_prime_transcript.strand
+        convention_notes.append(
+            f"{three_prime_gene} reported 3' base {three_prime_breakpoint} is dropped; "
+            f"the 3' side starts at {three_position}"
+        )
     five_location = locate_breakpoint(five_prime_transcript, five_prime_breakpoint)
-    three_location = locate_breakpoint(three_prime_transcript, three_prime_breakpoint)
+    three_location = locate_breakpoint(three_prime_transcript, three_position)
     base = replace(base, five_prime_location=five_location, three_prime_location=three_location)
 
     five_kept, five_direct, five_note, five_problem = _five_prime_candidates(
@@ -522,17 +589,26 @@ def predict_junction(
     three_first, three_direct, three_note, three_problem = _three_prime_candidates(
         three_prime_transcript, three_location
     )
-    notes = [note for note in (five_note, three_note) if note]
+    notes = [*convention_notes, *(note for note in (five_note, three_note) if note)]
     if five_problem or three_problem:
         return _no_product(base, "; ".join(p for p in (five_problem, three_problem) if p), notes)
     assert five_kept is not None and three_first is not None
 
+    disrupted = _splice_site_problems(
+        five_prime_gene, five_location, three_prime_gene, three_location
+    )
+    if disrupted:
+        return replace(
+            _no_product(base, "; ".join(disrupted), notes),
+            mechanism=MECHANISM_SPLICE_SITE_UNRESOLVED,
+        )
+
     five_exonic = five_location.region == REGION_CODING_EXON
     three_exonic = three_location.region == REGION_CODING_EXON
     if five_exonic and three_exonic:
-        # Both breaks are in coding exons: the DNA joins directly. Only a join
-        # of two whole exon ends is an exon-boundary join.
-        mechanism = MECHANISM_SPLICE if not five_direct and not three_direct else MECHANISM_MID_EXON
+        # Both breaks are in coding exons: the DNA joins directly, exon edges
+        # included, so the coordinate convention moves the 3' start here too.
+        mechanism = MECHANISM_MID_EXON
     elif five_direct:
         # 3' break is intronic, so the 5' exon piece has no donor of its own.
         rescued, note = _splice_five_prime_past_broken_exon(five_prime_transcript, five_location)
@@ -549,16 +625,6 @@ def predict_junction(
         three_first, mechanism = rescued, MECHANISM_SPLICE
     else:
         mechanism = MECHANISM_SPLICE
-
-    if (
-        mechanism == MECHANISM_MID_EXON
-        and coordinate_convention == CONVENTION_THREE_PRIME_BASE_DROPPED
-    ):
-        three_first += 1
-        if three_first > len(three_prime_transcript.cds_sequence):
-            return _no_product(
-                base, f"3' break in {three_prime_gene} leaves no coding sequence", notes
-            )
 
     frame = FRAME_IN if five_kept % 3 == (three_first - 1) % 3 else FRAME_OUT
     five_cds = five_prime_transcript.cds_sequence[:five_kept]

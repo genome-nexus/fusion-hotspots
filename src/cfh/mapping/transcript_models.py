@@ -5,6 +5,12 @@ client and on-disk cache the cohort scan uses. Coding sequence comes from
 Ensembl REST, because Genome Nexus does not serve it. Both are cached per
 transcript, so a repeated screen does not re-fetch.
 
+Every cache is keyed by genome build: Genome Nexus payloads live under
+``<cache>/<kind>/<build>/`` next to a ``_provenance.json`` naming the build and
+instance that wrote them, and loading a directory written for another build
+raises. The Genome Nexus instance is chosen by build unless a client is passed,
+and a client serving another build is rejected.
+
 Each partner uses the transcript the source call annotated when one exists,
 and is reported with which transcript was used and whether it is the
 canonical one.
@@ -50,6 +56,32 @@ _ENSEMBL_HOST_BY_BUILD = {
     "GRCh38": "https://rest.ensembl.org",
 }
 _RETRYABLE_STATUS_CODES = {429, 500, 502, 503, 504}
+
+GENOME_NEXUS_URL_BY_BUILD = {
+    "GRCh37": "https://www.genomenexus.org",
+    "GRCh38": "https://grch38.genomenexus.org",
+}
+PROVENANCE_FILE = "_provenance.json"
+
+
+def genome_nexus_url_for_build(genome_build: str) -> str:
+    """The public Genome Nexus instance serving ``genome_build``."""
+    build = normalize_genome_build(genome_build)
+    if build not in GENOME_NEXUS_URL_BY_BUILD:
+        raise ValueError(f"no public Genome Nexus instance serves genome build {genome_build!r}")
+    return GENOME_NEXUS_URL_BY_BUILD[build]
+
+
+def _check_provenance(directory: Path, genome_build: str, source_url: str | None) -> None:
+    """Stamp ``directory`` with its build, or raise if it holds another build."""
+    marker = directory / PROVENANCE_FILE
+    if marker.exists():
+        recorded = json.loads(marker.read_text()).get("genome_build")
+        if normalize_genome_build(recorded) != genome_build:
+            raise ValueError(f"cache {directory} holds {recorded} data, not {genome_build}")
+        return
+    directory.mkdir(parents=True, exist_ok=True)
+    marker.write_text(json.dumps({"genome_build": genome_build, "source_url": source_url}))
 
 
 def genome_build_of_genome_nexus(base_url: str) -> str:
@@ -128,10 +160,15 @@ class EnsemblCdsClient:
         self.cache_dir = Path(cache_dir) if cache_dir else None
         self.max_retries = max_retries
         self.backoff_seconds = backoff_seconds
+        self._provenance_checked = False
 
     def _cache_file(self, transcript_id: str) -> Path | None:
         if self.cache_dir is None:
             return None
+        if not self._provenance_checked:
+            build = normalize_genome_build(self.genome_build) or self.genome_build
+            _check_provenance(self.cache_dir, build, _ENSEMBL_HOST_BY_BUILD.get(build))
+            self._provenance_checked = True
         return self.cache_dir / f"{transcript_id}.json"
 
     def fetch_cds(self, transcript_id: str) -> str | None:
@@ -183,7 +220,15 @@ class TranscriptModelSource:
         if build is None:
             raise ValueError("TranscriptModelSource requires an explicit genome build")
         self.genome_build = build
-        self.client = genome_nexus_client or GenomeNexusClient(session=session)
+        self.client = genome_nexus_client or GenomeNexusClient(
+            base_url=genome_nexus_url_for_build(build), session=session
+        )
+        served = genome_build_of_genome_nexus(self.client.base_url)
+        if served != build:
+            raise ValueError(
+                f"Genome Nexus client {self.client.base_url} serves {served}, "
+                f"but transcript models were requested for {build}"
+            )
         self.cache_dir = Path(cache_dir) if cache_dir else None
         self.cds_client = cds_client or EnsemblCdsClient(
             build,
@@ -194,11 +239,17 @@ class TranscriptModelSource:
         self._isoforms: dict[str, list[dict]] = {}
         self._models: dict[str, tuple[TranscriptModel | None, str | None]] = {}
 
+    def _build_cache_dir(self, kind: str) -> Path | None:
+        """``<cache>/<kind>/<build>``, stamped with and checked against the build."""
+        if self.cache_dir is None:
+            return None
+        directory = self.cache_dir / kind / self.genome_build
+        _check_provenance(directory, self.genome_build, self.client.base_url)
+        return directory
+
     @property
     def _canonical_cache_dir(self) -> Path | None:
-        return (
-            self.cache_dir / "genome_nexus_canonical_transcripts_mskcc" if self.cache_dir else None
-        )
+        return self._build_cache_dir("genome_nexus_canonical_transcripts_mskcc")
 
     def prefetch_canonical(self, genes: list[str]) -> None:
         """Resolve many genes through the cohort scan's batch and cache path."""
@@ -242,22 +293,33 @@ class TranscriptModelSource:
     def _gene_isoforms(self, gene: str) -> list[dict]:
         if gene in self._isoforms:
             return self._isoforms[gene]
-        cache_file = (
-            self.cache_dir / "genome_nexus_transcripts" / f"{gene.upper()}.json"
-            if self.cache_dir
-            else None
-        )
+        cache_dir = self._build_cache_dir("genome_nexus_transcripts")
+        cache_file = cache_dir / f"{gene.upper()}.json" if cache_dir else None
         payloads: list[dict] | None = None
         if cache_file is not None and cache_file.exists():
             try:
-                payloads = json.loads(cache_file.read_text())
+                stored = json.loads(cache_file.read_text())
             except (OSError, json.JSONDecodeError):
-                payloads = None
+                stored = None
+            if isinstance(stored, dict):
+                if normalize_genome_build(stored.get("genome_build")) != self.genome_build:
+                    raise ValueError(
+                        f"{cache_file} holds {stored.get('genome_build')} isoforms, "
+                        f"not {self.genome_build}"
+                    )
+                payloads = stored.get("transcripts")
         if payloads is None:
             payloads = self.client.fetch_transcripts_for_gene(gene)
             if cache_file is not None:
-                cache_file.parent.mkdir(parents=True, exist_ok=True)
-                cache_file.write_text(json.dumps(payloads))
+                cache_file.write_text(
+                    json.dumps(
+                        {
+                            "genome_build": self.genome_build,
+                            "genome_nexus_url": self.client.base_url,
+                            "transcripts": payloads,
+                        }
+                    )
+                )
         self._isoforms[gene] = payloads
         return payloads
 

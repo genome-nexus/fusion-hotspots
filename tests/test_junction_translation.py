@@ -20,6 +20,7 @@ from cfh.mapping.junction_domain_classifier import (
     OUT_OF_FRAME,
     PREMATURE_STOP_AT_JUNCTION,
     RECONSTITUTION_CLASSES,
+    SPLICE_SITE_UNRESOLVED,
     TANDEM_DUPLICATION_OR_INSERTION,
     align_global,
     classify_family,
@@ -32,16 +33,19 @@ from cfh.mapping.junction_event import (
     read_support_columns,
 )
 from cfh.mapping.junction_translation import (
+    ACCEPTOR_SITE_NT,
     CONVENTION_THREE_PRIME_BASE_DROPPED,
     DOMAIN_INTACT,
     DOMAIN_LOST,
     DOMAIN_TRUNCATED,
+    DONOR_SITE_NT,
     FRAME_IN,
     FRAME_OUT,
     FRAME_UNKNOWN,
     MECHANISM_MID_EXON,
     MECHANISM_NONE,
     MECHANISM_SPLICE,
+    MECHANISM_SPLICE_SITE_UNRESOLVED,
     REGION_CODING_EXON,
     REGION_INTRON,
     TranscriptDomain,
@@ -367,6 +371,66 @@ def test_gap_when_residues_are_skipped():
     assert call.junction_indel.length == -5
 
 
+REPEAT_DOMAIN = "M" + "A" * 30 + "W"  # 32 residues: a low-complexity run
+
+
+def _repeat_case(five_last_domain_residue, three_first_domain_residue):
+    """Identical parents carrying REPEAT_DOMAIN at residues 11-42."""
+    protein = "M" + "S" * 9 + REPEAT_DOMAIN + "T" * 20
+    five = _model("AAA", protein, 11, 42)
+    three = _model("BBB", protein, 11, 42)
+    five_break = _genomic_at_cds(five, (10 + five_last_domain_residue) * 3)
+    three_break = _genomic_at_cds(three, (10 + three_first_domain_residue - 1) * 3 + 1)
+    return classify_family(_predict(five, five_break, three, three_break), five, three, FAMILY)
+
+
+def test_duplication_inside_a_repeat_is_not_hidden_by_gap_placement():
+    # Join after domain residue 21, restart at residue 12: ten extra alanines.
+    # The aligner may put that gap anywhere along the run, far from the junction.
+    call = _repeat_case(21, 12)
+    assert len(call.chimeric_domain) == len(REPEAT_DOMAIN) + 10
+    assert call.classification == TANDEM_DUPLICATION_OR_INSERTION
+    assert call.junction_indel.length == 10
+    assert call.junction_indel.residues == "A" * 10
+    assert call.junction_indel.is_tandem
+
+
+def test_deletion_inside_a_repeat_is_not_hidden_by_gap_placement():
+    call = _repeat_case(21, 30)  # skips domain residues 22-29
+    assert call.classification == GAP_OR_DELETION
+    assert call.junction_indel.length == -8
+
+
+def test_repeat_calls_do_not_depend_on_where_in_the_run_the_join_falls():
+    for five_last in range(5, 25):
+        assert _repeat_case(five_last, five_last + 1).classification == CLEAN_RECONSTITUTION
+        dup = _repeat_case(five_last, five_last - 3)
+        assert dup.classification == TANDEM_DUPLICATION_OR_INSERTION
+        assert dup.junction_indel.length == 4
+
+
+def test_clean_is_never_called_when_the_chimera_length_differs():
+    for five_last, three_first in ((21, 12), (21, 30), (15, 14), (15, 18)):
+        call = _repeat_case(five_last, three_first)
+        assert len(call.chimeric_domain) != len(REPEAT_DOMAIN)
+        assert call.classification != CLEAN_RECONSTITUTION
+
+
+def test_paralog_indel_away_from_the_junction_does_not_count():
+    # The 3' paralog has two extra residues near its C-terminus; the junction
+    # itself is in register, so the call is clean.
+    five_protein = "M" + "S" * 9 + DOMAIN + "T" * 20
+    three_domain = DOMAIN[:27] + "GG" + DOMAIN[27:]
+    three_protein = "M" + "S" * 9 + three_domain + "T" * 20
+    five = _model("AAA", five_protein, 11, 40)
+    three = _model("BBB", three_protein, 11, 42)
+    five_break = _genomic_at_cds(five, 25 * 3)
+    three_break = _genomic_at_cds(three, 25 * 3 + 1)
+    call = classify_family(_predict(five, five_break, three, three_break), five, three, FAMILY)
+    assert call.classification == CLEAN_RECONSTITUTION
+    assert call.junction_indel is None
+
+
 def test_out_of_frame_junction():
     five, five_break, three, three_break = _split_case(25, 26, three_offset_bases=1)
     prediction = _predict(five, five_break, three, three_break)
@@ -434,15 +498,120 @@ def test_two_intronic_breaks_are_splice_mediated_and_recorded():
     assert call.classification == CLEAN_RECONSTITUTION
 
 
-def test_exon_boundary_breaks_are_splice_mediated_without_snapping_notes():
+def test_exon_boundary_breaks_are_an_exonic_dna_join_without_snapping_notes():
     five = _two_exon("AAA", _PROTEIN, 75)
     three = _two_exon("BBB", _PROTEIN, 75)
     five_last_exon_one = 1000 + 75 - 1
     three_first_exon_two = three.exons[1].start
     prediction = _predict(five, five_last_exon_one, three, three_first_exon_two)
-    assert prediction.mechanism == MECHANISM_SPLICE
+    assert prediction.mechanism == MECHANISM_MID_EXON
     assert prediction.five_prime_cds_retained == 75 and prediction.three_prime_cds_start == 76
     assert prediction.notes == ()
+
+
+def _exact_exon_edge_join(strand):
+    """5' exon 1 is 9 nt; the 3' break is on the first base of 3' exon 2 (c.10)."""
+    five = _two_exon("AAA", _PROTEIN, 9, strand=strand)
+    three = _two_exon("BBB", _PROTEIN, 9, strand=strand)
+    five_last = five.exons[0].end if strand == 1 else five.exons[0].start
+    three_first = three.exons[1].start if strand == 1 else three.exons[1].end
+    assert locate_breakpoint(five, five_last).at_exon_edge == "last_base"
+    assert locate_breakpoint(three, three_first).cds_position == 10
+    return five, five_last, three, three_first
+
+
+@pytest.mark.parametrize("strand", [1, -1])
+def test_exact_exon_edge_join_applies_both_coordinate_conventions(strand):
+    five, five_last, three, three_first = _exact_exon_edge_join(strand)
+    kept = _predict(five, five_last, three, three_first)
+    assert kept.mechanism == MECHANISM_MID_EXON
+    assert kept.frame_status == FRAME_IN
+    assert kept.five_prime_cds_retained == 9 and kept.three_prime_cds_start == 10
+
+    dropped = _predict(
+        five,
+        five_last,
+        three,
+        three_first,
+        coordinate_convention=CONVENTION_THREE_PRIME_BASE_DROPPED,
+    )
+    assert dropped.mechanism == MECHANISM_MID_EXON
+    assert dropped.three_prime_cds_start == 11
+    assert dropped.frame_status == FRAME_OUT
+    assert dropped.three_prime_location.genomic_position == three_first + strand
+
+
+@pytest.mark.parametrize("strand", [1, -1])
+def test_dropping_the_base_before_an_acceptor_lands_on_the_exon_first_base(strand):
+    five, five_last, three, three_first = _exact_exon_edge_join(strand)
+    before_exon = three_first - strand  # intron base -1
+    dropped = _predict(
+        five,
+        five_last,
+        three,
+        before_exon,
+        coordinate_convention=CONVENTION_THREE_PRIME_BASE_DROPPED,
+    )
+    assert dropped.mechanism == MECHANISM_MID_EXON
+    assert dropped.three_prime_cds_start == 10
+    assert dropped.frame_status == FRAME_IN
+
+
+def _intronic_position(model, exon_index, nt, side, strand):
+    """``nt`` intronic bases after (``"donor"``) or before (``"acceptor"``) an exon."""
+    exon = model.exons[exon_index]
+    if side == "donor":
+        return exon.end + nt if strand == 1 else exon.start - nt
+    return exon.start - nt if strand == 1 else exon.end + nt
+
+
+@pytest.mark.parametrize("strand", [1, -1])
+def test_five_prime_break_inside_the_donor_site_is_unresolved(strand):
+    five = _two_exon("AAA", _PROTEIN, 75, strand=strand)
+    three = _two_exon("BBB", _PROTEIN, 75, strand=strand)
+    three_break = _intronic_position(three, 1, 300, "acceptor", strand)
+    for nt in range(1, DONOR_SITE_NT):
+        prediction = _predict(
+            five, _intronic_position(five, 0, nt, "donor", strand), three, three_break
+        )
+        assert prediction.mechanism == MECHANISM_SPLICE_SITE_UNRESOLVED
+        assert not prediction.has_product
+        assert prediction.frame_status == FRAME_UNKNOWN
+        assert f"keeps only {nt} nt of the exon 1 splice donor" in prediction.no_product_reason
+        call = classify_family(prediction, five, three, FAMILY)
+        assert call.classification == SPLICE_SITE_UNRESOLVED
+    intact = _predict(
+        five, _intronic_position(five, 0, DONOR_SITE_NT, "donor", strand), three, three_break
+    )
+    assert intact.mechanism == MECHANISM_SPLICE and intact.frame_status == FRAME_IN
+
+
+@pytest.mark.parametrize("strand", [1, -1])
+def test_three_prime_break_inside_the_acceptor_site_is_unresolved(strand):
+    five = _two_exon("AAA", _PROTEIN, 75, strand=strand)
+    three = _two_exon("BBB", _PROTEIN, 75, strand=strand)
+    five_break = _intronic_position(five, 0, 300, "donor", strand)
+    for nt in range(1, ACCEPTOR_SITE_NT):
+        prediction = _predict(
+            five, five_break, three, _intronic_position(three, 1, nt, "acceptor", strand)
+        )
+        assert prediction.mechanism == MECHANISM_SPLICE_SITE_UNRESOLVED
+        assert "exon 2 splice acceptor" in prediction.no_product_reason
+        region = "essential AG" if nt < 3 else "polypyrimidine tract"
+        assert region in prediction.no_product_reason
+        call = classify_family(prediction, five, three, FAMILY)
+        assert call.classification == SPLICE_SITE_UNRESOLVED
+    intact = _predict(
+        five, five_break, three, _intronic_position(three, 1, ACCEPTOR_SITE_NT, "acceptor", strand)
+    )
+    assert intact.mechanism == MECHANISM_SPLICE and intact.frame_status == FRAME_IN
+
+
+def test_splice_site_check_covers_an_intronic_break_paired_with_a_mid_exon_one():
+    five = _two_exon("AAA", _PROTEIN, 75)
+    three = _two_exon("BBB", _PROTEIN, 60)
+    prediction = _predict(five, _intronic_position(five, 0, 2, "donor", 1), three, 1000 + 30)
+    assert prediction.mechanism == MECHANISM_SPLICE_SITE_UNRESOLVED
 
 
 def test_intron_on_five_prime_with_mid_exon_three_prime_uses_next_acceptor():
@@ -545,6 +714,7 @@ def test_translate_and_alignment():
 def test_classes_are_documented_constants():
     assert CLEAN_RECONSTITUTION in RECONSTITUTION_CLASSES
     assert NO_TRANSCRIPT_MODEL in RECONSTITUTION_CLASSES
+    assert SPLICE_SITE_UNRESOLVED in RECONSTITUTION_CLASSES
 
 
 # --- Transcript source --------------------------------------------------------
@@ -598,8 +768,8 @@ def test_on_disk_caches_are_reused(tmp_path):
         BUILD, genome_nexus_client=client, cds_client=FakeCds(), cache_dir=tmp_path
     )
     source.resolve("ERG", ["NM_182918"])
-    assert (tmp_path / "genome_nexus_canonical_transcripts_mskcc" / "ERG.json").exists()
-    assert (tmp_path / "genome_nexus_transcripts" / "ERG.json").exists()
+    assert (tmp_path / "genome_nexus_canonical_transcripts_mskcc" / BUILD / "ERG.json").exists()
+    assert (tmp_path / "genome_nexus_transcripts" / BUILD / "ERG.json").exists()
 
     class Offline(FakeGenomeNexus):
         def fetch_canonical_transcript(self, gene):
@@ -629,6 +799,106 @@ def test_ensembl_cds_client_builds_per_build_and_caches(tmp_path):
     session.get.return_value.status_code = 400
     assert EnsemblCdsClient("GRCh37", session=session).fetch_cds("ENST2") is None
     assert EnsemblCdsClient("T2T", session=session).fetch_cds("ENST3") is None
+
+
+def _shifted_payloads(gene, shift):
+    """The fixture's payloads for ``gene`` with every coordinate moved by ``shift``."""
+    payloads = json.loads(json.dumps(TRANSCRIPTS["transcripts"][gene]))
+    for payload in payloads:
+        for exon in payload.get("exons") or []:
+            exon["exonStart"] += shift
+            exon["exonEnd"] += shift
+        for utr in payload.get("utrs") or []:
+            utr["start"] += shift
+            utr["end"] += shift
+    return payloads
+
+
+class FakeGrch38GenomeNexus(FakeGenomeNexus):
+    """A GRCh38 instance: same transcripts, coordinates moved by a fixed offset."""
+
+    base_url = "https://grch38.genomenexus.org"
+    SHIFT = 1_000_000
+
+    def _payloads(self, gene):
+        return _shifted_payloads(gene, self.SHIFT)
+
+
+def test_grch37_then_grch38_in_one_cache_dir_do_not_cross_contaminate(tmp_path):
+    grch37 = TranscriptModelSource(
+        "GRCh37", genome_nexus_client=FakeGenomeNexus(), cds_client=FakeCds(), cache_dir=tmp_path
+    )
+    model37, _ = grch37.model(grch37.resolve("ERG", ["NM_182918"]))
+    canonical37 = grch37.canonical("FLI1")
+
+    grch38_client = FakeGrch38GenomeNexus()
+    grch38 = TranscriptModelSource(
+        "GRCh38", genome_nexus_client=grch38_client, cds_client=FakeCds(), cache_dir=tmp_path
+    )
+    model38, _ = grch38.model(grch38.resolve("ERG", ["NM_182918"]))
+    canonical38 = grch38.canonical("FLI1")
+
+    shift = FakeGrch38GenomeNexus.SHIFT
+    assert grch38_client.isoform_calls == ["ERG"]  # fetched, not read from the GRCh37 cache
+    assert model38.genome_build == "GRCh38" and model37.genome_build == "GRCh37"
+    assert [e.start for e in model38.exons] == [e.start + shift for e in model37.exons]
+    assert canonical38.exons[0].start == canonical37.exons[0].start + shift
+    for kind in ("genome_nexus_canonical_transcripts_mskcc", "genome_nexus_transcripts"):
+        for build in ("GRCh37", "GRCh38"):
+            marker = json.loads((tmp_path / kind / build / "_provenance.json").read_text())
+            assert marker["genome_build"] == build
+
+    # A second GRCh38 run reuses its own cache, still with GRCh38 coordinates.
+    class Offline(FakeGrch38GenomeNexus):
+        def fetch_canonical_transcript(self, gene):
+            raise AssertionError("should come from disk")
+
+        def fetch_transcripts_for_gene(self, gene):
+            raise AssertionError("should come from disk")
+
+    reused = TranscriptModelSource(
+        "GRCh38", genome_nexus_client=Offline(), cds_client=FakeCds(), cache_dir=tmp_path
+    )
+    again, _ = reused.model(reused.resolve("ERG", ["NM_182918"]))
+    assert [e.start for e in again.exons] == [e.start for e in model38.exons]
+
+
+def test_cache_written_for_another_build_is_rejected_on_load(tmp_path):
+    TranscriptModelSource(
+        "GRCh37", genome_nexus_client=FakeGenomeNexus(), cds_client=FakeCds(), cache_dir=tmp_path
+    ).resolve("ERG", ["NM_182918"])
+    # Simulate a cache mislabelled as GRCh38 that really holds GRCh37 data.
+    (tmp_path / "genome_nexus_transcripts" / "GRCh37").rename(
+        tmp_path / "genome_nexus_transcripts" / "GRCh38"
+    )
+    source = TranscriptModelSource(
+        "GRCh38",
+        genome_nexus_client=FakeGrch38GenomeNexus(),
+        cds_client=FakeCds(),
+        cache_dir=tmp_path,
+    )
+    with pytest.raises(ValueError, match="GRCh37"):
+        source.resolve("ERG", ["NM_182918"])
+
+
+def test_genome_nexus_instance_follows_the_requested_build():
+    assert TranscriptModelSource("GRCh38").client.base_url == "https://grch38.genomenexus.org"
+    assert TranscriptModelSource("hg19").client.base_url == "https://www.genomenexus.org"
+    with pytest.raises(ValueError, match="serves GRCh37"):
+        TranscriptModelSource("GRCh38", genome_nexus_client=FakeGenomeNexus())
+    with pytest.raises(ValueError, match="no public Genome Nexus"):
+        TranscriptModelSource("T2T")
+
+
+def test_ensembl_cds_cache_rejects_another_build(tmp_path):
+    from unittest.mock import MagicMock
+
+    session = MagicMock()
+    session.get.return_value.status_code = 200
+    session.get.return_value.json.return_value = {"seq": "ATGTAA"}
+    EnsemblCdsClient("GRCh37", session=session, cache_dir=tmp_path).fetch_cds("ENST1")
+    with pytest.raises(ValueError, match="GRCh37"):
+        EnsemblCdsClient("GRCh38", session=session, cache_dir=tmp_path).fetch_cds("ENST1")
 
 
 def test_genome_build_of_instance():

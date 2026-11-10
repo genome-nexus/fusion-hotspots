@@ -1,17 +1,31 @@
 """Classify a predicted fusion junction against the domain it rebuilds.
 
 The call comes from sequence, not from the fractional spans in
-:mod:`cfh.mapping.domain_reconstitution`. The chimeric domain (the 5' parent's
-residues up to the junction, any hybrid residue, then the 3' parent's residues
-from the junction) is aligned globally against each parent domain, and the
-best-scoring parent decides. Only indels touching the junction count, because
-paralogs often differ by indels elsewhere in a domain.
+:mod:`cfh.mapping.domain_reconstitution`. The chimeric domain is the 5'
+parent's residues up to the junction, any hybrid residue, then the 3' parent's
+residues from the junction.
+
+A junction duplication or deletion is read from the junction coordinates, not
+from where an aligner places a gap. The two parent domains are aligned with
+each other, the 5' end and the 3' restart are placed on that shared column
+axis, and the chimera is compared with the in-register parent: the 5' domain
+through the junction column, then the 3' domain after it. A restart at or
+before the junction column repeats residues; a restart past it skips them. The
+result does not depend on how equivalent gaps are placed inside a repeat, and
+a chimera whose length differs from the in-register parent is never clean.
+Paralog indels away from the junction do not count. The chimera is also
+aligned (BLOSUM62, affine gaps) against each parent domain; the best-scoring
+parent and its identity are reported.
 
 There is no Pfam HMM here: the parents stand in for the family, so the call
 says how the junction compares with these two parents only.
 
 Classes, in the order they are decided:
 
+``splice_site_unresolved``
+    An intronic break falls inside the splice donor or acceptor the product
+    would use, so whether any product is made is unresolved; ``reason`` says
+    which site and how many intronic bases the break keeps.
 ``no_transcript_model``
     No credible chimeric transcript product can be predicted; ``reason`` says why.
 ``not_split_on_both``
@@ -25,7 +39,8 @@ Classes, in the order they are decided:
 ``gap_or_deletion``
     The chimeric domain is missing residues at the junction.
 ``clean_reconstitution``
-    In frame, both halves present, no junction indel against the parent.
+    In frame, both halves present, and the same length as the in-register
+    parent: no residue repeated or skipped at the junction.
 """
 
 from __future__ import annotations
@@ -35,6 +50,7 @@ from dataclasses import dataclass, replace
 from cfh.mapping.junction_translation import (
     DOMAIN_TRUNCATED,
     FRAME_OUT,
+    MECHANISM_SPLICE_SITE_UNRESOLVED,
     DomainSpan,
     JunctionPrediction,
     TranscriptModel,
@@ -48,6 +64,7 @@ OUT_OF_FRAME = "out_of_frame"
 NO_TRANSCRIPT_MODEL = "no_transcript_model"
 NOT_SPLIT_ON_BOTH = "not_split_on_both"
 PREMATURE_STOP_AT_JUNCTION = "premature_stop_at_junction"
+SPLICE_SITE_UNRESOLVED = "splice_site_unresolved"
 
 RECONSTITUTION_CLASSES = (
     CLEAN_RECONSTITUTION,
@@ -57,15 +74,11 @@ RECONSTITUTION_CLASSES = (
     NO_TRANSCRIPT_MODEL,
     NOT_SPLIT_ON_BOTH,
     PREMATURE_STOP_AT_JUNCTION,
+    SPLICE_SITE_UNRESOLVED,
 )
 
 GAP_OPEN = -10
 GAP_EXTEND = -1
-JUNCTION_WINDOW = 5
-"""Alignment columns either side of the junction in which an indel counts.
-A tandem copy can be placed on either side of the junction, so the window
-must reach past the junction itself."""
-
 _AMINO_ACIDS = "ARNDCQEGHILKMFPSTWYV"
 _BLOSUM62_ROWS = """
  4 -1 -2 -2  0 -1 -1  0 -2 -1 -1 -1 -1 -2 -1  1  0 -3 -2  0
@@ -189,28 +202,9 @@ class ReconstitutionCall:
     junction_indel: JunctionIndel | None = None
 
 
-def _column_of_residue(aligned: str, residue_index: int) -> int:
-    seen = -1
-    for column, char in enumerate(aligned):
-        if char != "-":
-            seen += 1
-            if seen == residue_index:
-                return column
-    raise ValueError(f"residue {residue_index} is not in the alignment")
-
-
-def _gap_runs(aligned: str) -> list[tuple[int, int]]:
-    runs: list[tuple[int, int]] = []
-    start: int | None = None
-    for column, char in enumerate(aligned):
-        if char == "-" and start is None:
-            start = column
-        elif char != "-" and start is not None:
-            runs.append((start, column))
-            start = None
-    if start is not None:
-        runs.append((start, len(aligned)))
-    return runs
+def _columns(aligned: str) -> list[int]:
+    """Alignment column of each residue of an aligned sequence, in order."""
+    return [column for column, char in enumerate(aligned) if char != "-"]
 
 
 def _is_tandem(chimera: str, residues: str, junction_index: int) -> bool:
@@ -225,27 +219,60 @@ def _is_tandem(chimera: str, residues: str, junction_index: int) -> bool:
 
 
 def _junction_indel(
-    aligned_chimera: str, aligned_parent: str, junction_index: int
-) -> JunctionIndel | None:
-    """The largest non-terminal indel touching the junction, if any."""
-    junction_column = _column_of_residue(aligned_chimera, junction_index)
-    low, high = junction_column - JUNCTION_WINDOW, junction_column + JUNCTION_WINDOW + 1
-    columns = len(aligned_chimera)
-    best: JunctionIndel | None = None
-    chimera = aligned_chimera.replace("-", "")
-    for sequence, other, sign in (
-        (aligned_parent, aligned_chimera, 1),
-        (aligned_chimera, aligned_parent, -1),
-    ):
-        for start, end in _gap_runs(sequence):
-            if start == 0 or end == columns or end <= low or start >= high:
-                continue
-            residues = other[start:end].replace("-", "")
-            size = len(residues)
-            if best is None or size > abs(best.length):
-                tandem = sign == 1 and _is_tandem(chimera, residues, junction_index)
-                best = JunctionIndel(sign * size, residues, tandem)
-    return best
+    five_domain: str,
+    three_domain: str,
+    five_end: int,
+    three_start: int,
+    chimera: str,
+    junction_index: int,
+) -> tuple[JunctionIndel | None, str]:
+    """The junction indel from the junction coordinates, and the in-register parent.
+
+    ``five_end`` is the last 5' domain residue the chimera holds (zero-based,
+    counting a hybrid residue as the 5' partner's), ``three_start`` the first
+    3' domain residue it holds. The two parent domains are aligned with each
+    other, and both coordinates are placed on that shared column axis. The
+    in-register parent is the 5' domain through the junction column followed
+    by the 3' domain after it. 3' residues the chimera holds at or before the
+    junction column are extra; 3' residues after the junction column that it
+    skips are missing.
+
+    This depends only on where the two partners join, not on where an aligner
+    puts a gap, so it does not move inside a repeat such as a poly-alanine
+    run. A paralog-specific residue (one parent only) between the two
+    coordinates counts only if it is a 3' residue.
+    """
+    aligned_five, aligned_three, _ = align_global(five_domain, three_domain)
+    five_columns, three_columns = _columns(aligned_five), _columns(aligned_three)
+    junction_column = five_columns[five_end]
+    restart_column = three_columns[three_start]
+    reference = (
+        five_domain[: five_end + 1]
+        + three_domain[sum(column <= junction_column for column in three_columns) :]
+    )
+    if restart_column <= junction_column:
+        extra = [
+            three_domain[index]
+            for index, column in enumerate(three_columns)
+            if restart_column <= column <= junction_column
+        ]
+        residues = "".join(extra)
+        length = len(residues)
+        tandem = _is_tandem(chimera, residues, junction_index)
+    else:
+        residues = "".join(
+            three_domain[index]
+            for index, column in enumerate(three_columns)
+            if junction_column < column < restart_column
+        )
+        length = -len(residues)
+        tandem = False
+    if len(chimera) - len(reference) != length:  # pragma: no cover - by construction
+        raise AssertionError(
+            f"junction indel {length} disagrees with the length change "
+            f"{len(chimera) - len(reference)} against the in-register parent"
+        )
+    return (JunctionIndel(length, residues, tandem) if length else None), reference
 
 
 def _identity(first: str, second: str) -> float:
@@ -283,6 +310,12 @@ def classify_family(
     family: str,
 ) -> ReconstitutionCall:
     """Classify one Pfam family shared by the two partners."""
+    if prediction.mechanism == MECHANISM_SPLICE_SITE_UNRESOLVED:
+        return ReconstitutionCall(
+            SPLICE_SITE_UNRESOLVED,
+            family,
+            prediction.no_product_reason or "an intronic break is inside a splice site",
+        )
     if not prediction.has_product:
         return ReconstitutionCall(
             NO_TRANSCRIPT_MODEL, family, prediction.no_product_reason or "no product predicted"
@@ -329,17 +362,27 @@ def classify_family(
     chimera = five_piece + three_piece
     junction_index = len(five_piece) - 1
 
+    five_domain = five_protein[five_span.start_aa - 1 : five_span.end_aa]
+    three_domain = three_protein[three_span.start_aa - 1 : three_span.end_aa]
+    indel, reference = _junction_indel(
+        five_domain,
+        three_domain,
+        five_end=len(five_piece) - 1,
+        three_start=prediction.three_prime_first_residue - three_span.start_aa,
+        chimera=chimera,
+        junction_index=junction_index,
+    )
+
     best: tuple[int, str, str, str] | None = None
     for parent_gene, parent_domain in (
-        (prediction.five_prime_gene, five_protein[five_span.start_aa - 1 : five_span.end_aa]),
-        (prediction.three_prime_gene, three_protein[three_span.start_aa - 1 : three_span.end_aa]),
+        (prediction.five_prime_gene, five_domain),
+        (prediction.three_prime_gene, three_domain),
     ):
         aligned_chimera, aligned_parent, score = align_global(chimera, parent_domain)
         if best is None or score > best[0]:
             best = (score, parent_gene, aligned_chimera, aligned_parent)
     assert best is not None
     _, parent_gene, aligned_chimera, aligned_parent = best
-    indel = _junction_indel(aligned_chimera, aligned_parent, junction_index)
     aligned = replace(
         split,
         chimeric_domain=chimera,
@@ -351,7 +394,10 @@ def classify_family(
         return replace(
             aligned,
             classification=CLEAN_RECONSTITUTION,
-            reason=f"chimeric {family} domain aligns to {parent_gene} with no junction indel",
+            reason=(
+                f"chimeric {family} domain is in register with its parents at the junction "
+                f"({len(chimera)} residues, as the in-register parent); best match {parent_gene}"
+            ),
         )
     if indel.length > 0:
         kind = "tandem duplication" if indel.is_tandem else "insertion"
@@ -359,15 +405,15 @@ def classify_family(
             aligned,
             classification=TANDEM_DUPLICATION_OR_INSERTION,
             reason=(
-                f"{indel.length}-residue {kind} at the junction ({indel.residues}) against "
-                f"{parent_gene}"
+                f"{indel.length}-residue {kind} at the junction ({indel.residues}); "
+                f"chimera {len(chimera)} vs in-register parent {len(reference)} residues"
             ),
         )
     return replace(
         aligned,
         classification=GAP_OR_DELETION,
         reason=(
-            f"{-indel.length}-residue deletion at the junction ({indel.residues}) against "
-            f"{parent_gene}"
+            f"{-indel.length}-residue deletion at the junction ({indel.residues}); "
+            f"chimera {len(chimera)} vs in-register parent {len(reference)} residues"
         ),
     )

@@ -318,23 +318,22 @@ def domain_screen(
     from cfh.cohort.domain_screen import key_domain_family, screen_cohort, write_screen_outputs
     from cfh.ingestion.archive_reader import load_sv_dataframe
     from cfh.mapping.genome_nexus_source import GenomeNexusClient
-    from cfh.mapping.junction_translation import normalize_genome_build
-    from cfh.mapping.transcript_models import TranscriptModelSource
+    from cfh.mapping.transcript_models import TranscriptModelSource, genome_nexus_url_for_build
 
-    build = normalize_genome_build(genome_build)
-    default_url = (
-        "https://grch38.genomenexus.org" if build == "GRCh38" else "https://www.genomenexus.org"
-    )
     cache = cache_dir or (output_dir / ".cohort_scan_cache")
     session = requests.Session()
-    source = TranscriptModelSource(
-        genome_build,
-        genome_nexus_client=GenomeNexusClient(
-            base_url=genome_nexus_url or default_url, session=session
-        ),
-        cache_dir=cache,
-        session=session,
-    )
+    try:
+        source = TranscriptModelSource(
+            genome_build,
+            genome_nexus_client=GenomeNexusClient(
+                base_url=genome_nexus_url or genome_nexus_url_for_build(genome_build),
+                session=session,
+            ),
+            cache_dir=cache,
+            session=session,
+        )
+    except ValueError as exc:
+        raise click.ClickException(str(exc)) from None
     descriptions = PfamDescriptionSource(session=session, cache_dir=cache / "pfam_descriptions")
     try:
         rows, summary = screen_cohort(
