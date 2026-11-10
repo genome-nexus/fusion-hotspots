@@ -272,3 +272,26 @@ def test_batch_fetch_canonical_transcripts_uses_disk_cache(tmp_path):
     second = batch_fetch_canonical_transcripts(["BRAF"], session=second_session, cache_dir=tmp_path)
     assert "BRAF" in second.by_gene_symbol
     second_session.post.assert_not_called()
+
+
+def test_batch_fetch_canonical_transcripts_retries_transient_request_errors():
+    mock_session = MagicMock()
+    response = MagicMock(status_code=200)
+    response.json.return_value = []
+    mock_session.post.side_effect = [requests.ReadTimeout("slow"), response]
+
+    result = batch_fetch_canonical_transcripts(["GENE1"], session=mock_session, backoff_seconds=0)
+
+    assert mock_session.post.call_count == 2
+    assert result.unresolved_gene_symbols == ["GENE1"]
+
+
+def test_batch_fetch_canonical_transcripts_reraises_after_max_retries():
+    mock_session = MagicMock()
+    mock_session.post.side_effect = requests.ConnectionError("down")
+
+    with pytest.raises(requests.ConnectionError):
+        batch_fetch_canonical_transcripts(
+            ["GENE1"], session=mock_session, max_retries=1, backoff_seconds=0
+        )
+    assert mock_session.post.call_count == 2

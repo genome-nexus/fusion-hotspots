@@ -1362,3 +1362,23 @@ def test_screen_passes_requested_columns_through_to_rows_and_tsv(tmp_path):
     with paths["domain_screen_tsv"].open() as handle:
         header = handle.readline().rstrip("\n").split("\t")
     assert header == [*SCREEN_COLUMNS, "Open_tissue_class"]
+
+
+def test_prefetch_uses_the_configured_batch_size(monkeypatch):
+    import cfh.mapping.transcript_models as transcript_models
+
+    seen = {}
+
+    def fake_batch(genes, **kwargs):
+        seen.update(kwargs)
+        return SimpleNamespace(by_gene_symbol={})
+
+    monkeypatch.setattr(transcript_models, "batch_fetch_canonical_transcripts", fake_batch)
+    source = TranscriptModelSource(
+        BUILD,
+        genome_nexus_client=SyntheticGenomeNexus(),
+        cds_client=SyntheticCds(""),
+        prefetch_batch_size=50,
+    )
+    source.prefetch_canonical(["AAA"])
+    assert seen["batch_size"] == 50

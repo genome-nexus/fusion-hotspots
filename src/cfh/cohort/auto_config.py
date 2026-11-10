@@ -23,6 +23,7 @@ import requests
 
 from cfh.genes.registry import GeneConfig, KeyDomain, derive_gene_config_defaults
 from cfh.mapping.genome_nexus_source import (
+    TRANSIENT_REQUEST_ERRORS,
     CanonicalTranscript,
     PfamDomain,
     parse_canonical_transcript,
@@ -252,18 +253,23 @@ def batch_fetch_canonical_transcripts(
             continue
         attempt = 0
         while True:
-            response = session.post(
-                url,
-                json=chunk,
-                params=(
-                    {"isoformOverrideSource": isoform_override_source}
-                    if isoform_override_source
-                    else None
-                ),
-                timeout=timeout,
-            )
-            if response.status_code not in _RETRYABLE_STATUS_CODES or attempt >= max_retries:
-                break
+            try:
+                response = session.post(
+                    url,
+                    json=chunk,
+                    params=(
+                        {"isoformOverrideSource": isoform_override_source}
+                        if isoform_override_source
+                        else None
+                    ),
+                    timeout=timeout,
+                )
+            except TRANSIENT_REQUEST_ERRORS:
+                if attempt >= max_retries:
+                    raise
+            else:
+                if response.status_code not in _RETRYABLE_STATUS_CODES or attempt >= max_retries:
+                    break
             time.sleep(backoff_seconds * (2**attempt))
             attempt += 1
         response.raise_for_status()

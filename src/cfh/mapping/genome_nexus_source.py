@@ -29,6 +29,8 @@ DEFAULT_BASE_URL = "https://www.genomenexus.org"
 DEFAULT_ISOFORM_OVERRIDE_SOURCE = "mskcc"
 
 _RETRYABLE_STATUS_CODES = {429, 500, 502, 503, 504}
+TRANSIENT_REQUEST_ERRORS = (requests.Timeout, requests.ConnectionError)
+"""Request failures retried like a retryable status; re-raised once retries run out."""
 
 
 class GenomeNexusGeneNotFound(RuntimeError):
@@ -113,9 +115,17 @@ class GenomeNexusClient:
         url = f"{self.base_url}{path}"
         attempt = 0
         while True:
-            response = self.session.get(url, params=params, timeout=30)
-            if response.status_code not in _RETRYABLE_STATUS_CODES or attempt >= self.max_retries:
-                return response
+            try:
+                response = self.session.get(url, params=params, timeout=30)
+            except TRANSIENT_REQUEST_ERRORS:
+                if attempt >= self.max_retries:
+                    raise
+            else:
+                if (
+                    response.status_code not in _RETRYABLE_STATUS_CODES
+                    or attempt >= self.max_retries
+                ):
+                    return response
             time.sleep(self.backoff_seconds * (2**attempt))
             attempt += 1
 
@@ -159,9 +169,17 @@ class GenomeNexusClient:
         url = f"{self.base_url}/ensembl/transcript"
         attempt = 0
         while True:
-            response = self.session.post(url, json={"hugoSymbols": [hugo_symbol]}, timeout=30)
-            if response.status_code not in _RETRYABLE_STATUS_CODES or attempt >= self.max_retries:
-                break
+            try:
+                response = self.session.post(url, json={"hugoSymbols": [hugo_symbol]}, timeout=30)
+            except TRANSIENT_REQUEST_ERRORS:
+                if attempt >= self.max_retries:
+                    raise
+            else:
+                if (
+                    response.status_code not in _RETRYABLE_STATUS_CODES
+                    or attempt >= self.max_retries
+                ):
+                    break
             time.sleep(self.backoff_seconds * (2**attempt))
             attempt += 1
         response.raise_for_status()

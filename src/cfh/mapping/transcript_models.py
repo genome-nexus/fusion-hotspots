@@ -26,7 +26,7 @@ from pathlib import Path
 
 import requests
 
-from cfh.cohort.auto_config import batch_fetch_canonical_transcripts
+from cfh.cohort.auto_config import DEFAULT_BATCH_SIZE, batch_fetch_canonical_transcripts
 from cfh.mapping.genome_nexus_source import (
     DEFAULT_ISOFORM_OVERRIDE_SOURCE,
     CanonicalTranscript,
@@ -228,8 +228,10 @@ class TranscriptModelSource:
         cds_client: EnsemblCdsClient | None = None,
         cache_dir: str | Path | None = None,
         session: requests.Session | None = None,
+        prefetch_batch_size: int = DEFAULT_BATCH_SIZE,
     ):
         build = normalize_genome_build(genome_build)
+        self.prefetch_batch_size = prefetch_batch_size
         if build is None:
             raise ValueError("TranscriptModelSource requires an explicit genome build")
         self.genome_build = build
@@ -274,6 +276,7 @@ class TranscriptModelSource:
             base_url=self.client.base_url,
             session=self.client.session,
             cache_dir=self._canonical_cache_dir,
+            batch_size=self.prefetch_batch_size,
             isoform_override_source=DEFAULT_ISOFORM_OVERRIDE_SOURCE,
         )
         for gene, transcript in result.by_gene_symbol.items():

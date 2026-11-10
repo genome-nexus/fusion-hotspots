@@ -310,6 +310,14 @@ def analyze(
     "a TSV written by cfh.ingestion.open_fusion_tables.normalize_table.",
 )
 @click.option(
+    "--genome-nexus-batch-size",
+    type=click.IntRange(min=1),
+    default=800,
+    show_default=True,
+    help="Gene symbols per canonical-transcript batch request. Lower it for tables with many "
+    "symbols Genome Nexus does not resolve, whose batches are slow.",
+)
+@click.option(
     "--omit-unshared-rows",
     is_flag=True,
     default=False,
@@ -324,6 +332,7 @@ def domain_screen(
     cache_dir: Path | None,
     genome_nexus_url: str | None,
     input_format: str,
+    genome_nexus_batch_size: int,
     omit_unshared_rows: bool,
 ) -> None:
     """Screen every fusion in ARCHIVE for domains rebuilt at the junction.
@@ -350,6 +359,7 @@ def domain_screen(
             ),
             cache_dir=cache,
             session=session,
+            prefetch_batch_size=genome_nexus_batch_size,
         )
     except ValueError as exc:
         raise click.ClickException(str(exc)) from None
