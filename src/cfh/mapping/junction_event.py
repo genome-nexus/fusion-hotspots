@@ -76,6 +76,17 @@ JUNCTION_CALL_COLUMNS = (
     "transcript_notes",
 )
 
+JUNCTION_CONTEXT_NT = 50
+"""Fused-CDS bases kept on each side of the junction in ``junction_context_nt``."""
+
+SEQUENCE_CONTEXT_COLUMNS = (
+    "five_prime_ensembl_transcript",
+    "three_prime_ensembl_transcript",
+    "junction_context_nt",
+)
+"""Screen-only columns for downstream artefact checks; not part of the
+``reconstitution_*`` event columns, so cohort-scan outputs are unchanged."""
+
 
 def junction_call_columns(
     call: Mapping[str, Any] | None, row: Mapping[str, Any] | None = None
@@ -169,7 +180,21 @@ def _flat_row(
         "junction_indel_residues": indel.length if indel else None,
         "junction_indel_sequence": indel.residues if indel else None,
         "transcript_notes": "; ".join(n for n in (five.note, three.note) if n) or None,
+        "five_prime_ensembl_transcript": five.transcript_id,
+        "three_prime_ensembl_transcript": three.transcript_id,
+        "junction_context_nt": _junction_context(prediction),
     }
+
+
+def _junction_context(prediction: JunctionPrediction | None) -> str | None:
+    """Fused CDS, ``JUNCTION_CONTEXT_NT`` bases either side of the junction."""
+    if prediction is None or prediction.chimeric_cds is None:
+        return None
+    kept = prediction.five_prime_cds_retained
+    if kept is None:
+        return None
+    cds = prediction.chimeric_cds
+    return cds[max(0, kept - JUNCTION_CONTEXT_NT) : kept + JUNCTION_CONTEXT_NT]
 
 
 def assess_event(

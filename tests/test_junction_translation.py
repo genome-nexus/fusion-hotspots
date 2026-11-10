@@ -8,6 +8,7 @@ import pytest
 
 from cfh.cohort.domain_screen import (
     SCREEN_COLUMNS,
+    _site_chromosome,
     is_screenable_fusion,
     screen_cohort,
     write_screen_outputs,
@@ -1285,3 +1286,79 @@ def test_per_gene_pipeline_call_uses_the_key_family_and_partner_locus():
     columns = junction_call_columns(call, {"Tumor_Paired_End_Read_Count": 6})
     assert columns["reconstitution_class"] == TANDEM_DUPLICATION_OR_INSERTION
     assert columns["reconstitution_tumor_paired_end_reads"] == 6
+
+
+def test_screen_records_partner_chromosomes_and_fused_cds_context():
+    rows, _ = screen_cohort(_screen_frame(), _synthetic_source(), cohort="demo")
+    row = next(item for item in rows if item["pfam_family"] == OTHER_FAMILY)
+    assert (row["five_prime_chromosome"], row["three_prime_chromosome"]) == ("1", "2")
+    assert row["five_prime_ensembl_transcript"] == "ENST_AAA"
+    assert row["three_prime_ensembl_transcript"] == "ENST_BBB"
+    cds = SyntheticGenomeNexus().cds
+    kept = row["five_prime_cds_retained"]
+    start = row["three_prime_cds_start"]
+    fused = cds[:kept] + cds[start - 1 :]
+    assert row["junction_context_nt"] == fused[kept - 50 : kept + 50]
+    assert len(row["junction_context_nt"]) == 100
+
+
+def test_site_chromosome_prefers_the_named_gene_and_refuses_a_tie():
+    row = {
+        "Site1_Hugo_Symbol": "AAA",
+        "Site1_Chromosome": "1",
+        "Site1_Position": 500,
+        "Site2_Hugo_Symbol": "BBB",
+        "Site2_Chromosome": "2",
+        "Site2_Position": 500.0,
+    }
+    assert _site_chromosome(row, "AAA", 500) == "1"
+    assert _site_chromosome(row, "BBB", 500) == "2"
+    assert _site_chromosome(row, "CCC", 500) is None
+    assert _site_chromosome(row, "AAA", 501) is None
+    assert _site_chromosome(row, "AAA", None) is None
+
+
+def _no_family_payload(gene):
+    payload = SyntheticGenomeNexus().fetch_canonical_transcript("BBB")
+    return {**payload, "transcriptId": f"ENST_{gene}", "pfamDomains": []}
+
+
+def test_screen_can_omit_unshared_rows_but_still_counts_them():
+    frame = pd.concat([_screen_frame(), _screen_frame()], ignore_index=True)
+    frame.loc[1, "Event_Info"] = "Protein Fusion: mid-exon {AAA:ZZZ}"
+    frame.loc[1, "Site2_Hugo_Symbol"] = "ZZZ"
+    frame.loc[1, "Annotation"] = None
+
+    def source():
+        built = _synthetic_source()
+        real = built.client.fetch_canonical_transcript
+        built.client.fetch_canonical_transcript = lambda gene: (
+            _no_family_payload(gene) if gene == "ZZZ" else real(gene)
+        )
+        built.client.fetch_transcripts_for_gene = lambda gene: [
+            built.client.fetch_canonical_transcript(gene)
+        ]
+        return built
+
+    kept, kept_summary = screen_cohort(frame, source(), cohort="demo")
+    omitted, omitted_summary = screen_cohort(
+        frame, source(), cohort="demo", keep_unshared_rows=False
+    )
+    assert NO_SHARED_FAMILY in {row["reconstitution_class"] for row in kept}
+    assert NO_SHARED_FAMILY not in {row["reconstitution_class"] for row in omitted}
+    assert len(omitted) == len(kept) - 1
+    assert omitted_summary["class_counts"] == kept_summary["class_counts"]
+    assert omitted_summary["class_counts"][NO_SHARED_FAMILY] == 1
+
+
+def test_screen_passes_requested_columns_through_to_rows_and_tsv(tmp_path):
+    frame = _screen_frame()
+    frame["Open_tissue_class"] = "normal"
+    rows, summary = screen_cohort(
+        frame, _synthetic_source(), cohort="demo", passthrough_columns=("Open_tissue_class",)
+    )
+    assert {row["Open_tissue_class"] for row in rows} == {"normal"}
+    paths = write_screen_outputs(rows, summary, tmp_path, extra_columns=("Open_tissue_class",))
+    with paths["domain_screen_tsv"].open() as handle:
+        header = handle.readline().rstrip("\n").split("\t")
+    assert header == [*SCREEN_COLUMNS, "Open_tissue_class"]

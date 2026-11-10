@@ -301,6 +301,20 @@ def analyze(
     default=None,
     help="Genome Nexus base URL. Defaults to the public instance serving --genome-build.",
 )
+@click.option(
+    "--input-format",
+    type=click.Choice(["cbioportal-sv", "open-fusion-table"]),
+    default="cbioportal-sv",
+    show_default=True,
+    help="cbioportal-sv: ARCHIVE is a study directory or tar. open-fusion-table: ARCHIVE is "
+    "a TSV written by cfh.ingestion.open_fusion_tables.normalize_table.",
+)
+@click.option(
+    "--omit-unshared-rows",
+    is_flag=True,
+    default=False,
+    help="Count no_shared_family rows in the summary but leave them out of the TSV.",
+)
 def domain_screen(
     archive: Path,
     cohort: str,
@@ -309,14 +323,19 @@ def domain_screen(
     output_dir: Path,
     cache_dir: Path | None,
     genome_nexus_url: str | None,
+    input_format: str,
+    omit_unshared_rows: bool,
 ) -> None:
-    """Screen every fusion in ARCHIVE (a study directory or tar) for domains
-    rebuilt at the junction."""
+    """Screen every fusion in ARCHIVE for domains rebuilt at the junction.
+
+    ARCHIVE is a cBioPortal study directory or tar, or with
+    --input-format open-fusion-table a normalized open fusion table TSV."""
     import requests
 
     from cfh.cohort.auto_config import PfamDescriptionSource
     from cfh.cohort.domain_screen import key_domain_family, screen_cohort, write_screen_outputs
     from cfh.ingestion.archive_reader import load_sv_dataframe
+    from cfh.ingestion.open_fusion_sv_adapter import OPEN_PASSTHROUGH_COLUMNS, open_table_sv_rows
     from cfh.mapping.genome_nexus_source import GenomeNexusClient
     from cfh.mapping.transcript_models import TranscriptModelSource, genome_nexus_url_for_build
 
@@ -335,16 +354,21 @@ def domain_screen(
     except ValueError as exc:
         raise click.ClickException(str(exc)) from None
     descriptions = PfamDescriptionSource(session=session, cache_dir=cache / "pfam_descriptions")
+    open_table = input_format == "open-fusion-table"
+    passthrough = OPEN_PASSTHROUGH_COLUMNS if open_table else ()
     try:
+        raw_rows = open_table_sv_rows(archive) if open_table else load_sv_dataframe(archive)
         rows, summary = screen_cohort(
-            load_sv_dataframe(archive),
+            raw_rows,
             source,
             cohort=cohort,
             mode=mode.replace("-", "_"),
             key_family=lambda gene: key_domain_family(gene, source.canonical(gene), descriptions),
             progress=lambda line: click.echo(line, err=True),
+            passthrough_columns=passthrough,
+            keep_unshared_rows=not omit_unshared_rows,
         )
-        paths = write_screen_outputs(rows, summary, output_dir)
+        paths = write_screen_outputs(rows, summary, output_dir, extra_columns=passthrough)
     except Exception as exc:
         raise click.ClickException(f"Domain screen failed: {type(exc).__name__}: {exc}") from None
     click.echo(json.dumps(summary, indent=2, sort_keys=True))
