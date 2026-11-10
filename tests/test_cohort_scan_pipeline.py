@@ -924,3 +924,64 @@ def test_retrying_session_retries_connection_errors_and_read_timeouts():
     retry = session.get_adapter("https://www.cbioportal.org").max_retries
     assert (retry.connect, retry.read, retry.status) == (4, 4, 0)
     assert retry.allowed_methods is None  # POST /fetch calls are reads too
+
+
+def test_canonical_transcript_cache_is_keyed_by_build_and_checked(tmp_path):
+    from cfh.cohort.scan import canonical_transcript_cache_dir
+
+    assert canonical_transcript_cache_dir(None, "https://www.genomenexus.org") is None
+    grch37 = canonical_transcript_cache_dir(tmp_path, "https://www.genomenexus.org")
+    grch38 = canonical_transcript_cache_dir(tmp_path, "https://grch38.genomenexus.org")
+    assert grch37 == tmp_path / "genome_nexus_canonical_transcripts" / "GRCh37"
+    assert grch38 == tmp_path / "genome_nexus_canonical_transcripts" / "GRCh38"
+    for directory, build in ((grch37, "GRCh37"), (grch38, "GRCh38")):
+        assert json.loads((directory / "_provenance.json").read_text())["genome_build"] == build
+
+    # A GRCh37-marked directory moved under GRCh38 is refused.
+    moved = tmp_path / "moved"
+    (moved / "genome_nexus_canonical_transcripts").mkdir(parents=True)
+    grch37.rename(moved / "genome_nexus_canonical_transcripts" / "GRCh38")
+    with pytest.raises(ValueError, match="holds GRCh37 data, not GRCh38"):
+        canonical_transcript_cache_dir(moved, "https://grch38.genomenexus.org")
+
+    # Payloads with no marker: unknown build, so raise rather than stamp.
+    unmarked = tmp_path / "unmarked" / "genome_nexus_canonical_transcripts" / "GRCh38"
+    unmarked.mkdir(parents=True)
+    (unmarked / "BRAF.json").write_text("{}")
+    with pytest.raises(ValueError, match="genome build is unknown"):
+        canonical_transcript_cache_dir(tmp_path / "unmarked", "https://grch38.genomenexus.org")
+    assert not (unmarked / "_provenance.json").exists()
+
+
+def test_cohort_scan_ignores_a_legacy_unkeyed_canonical_cache(mock_session, tmp_path):
+    # The pre-build flat layout: a poisoned payload straight under the cache
+    # directory, with no build and no provenance marker. FAKE1 is
+    # auto-configured, so its canonical transcript is batch-fetched.
+    legacy = tmp_path / "cache" / "genome_nexus_canonical_transcripts"
+    legacy.mkdir(parents=True)
+    poisoned = {"transcriptId": "ENST_LEGACY", "exons": [], "pfamDomains": []}
+    (legacy / "FAKE1.json").write_text(json.dumps(poisoned))
+
+    result = run_cohort_scan(
+        _STUDY_ID,
+        min_distinct_patients=5,
+        n_permutations=50,
+        adaptive=False,
+        cache_dir=tmp_path / "cache",
+        session=mock_session,
+    )
+
+    keyed = legacy / "GRCh37"
+    assert json.loads((keyed / "_provenance.json").read_text())["genome_build"] == "GRCh37"
+    refetched = json.loads((keyed / "FAKE1.json").read_text())
+    assert refetched["transcriptId"] != "ENST_LEGACY"
+    assert json.loads((legacy / "FAKE1.json").read_text()) == poisoned  # left alone, not reused
+    batch_bodies = [
+        call.kwargs.get("json") or []
+        for call in mock_session.post.call_args_list
+        if call.args[0].endswith("/ensembl/canonical-transcript/hgnc")
+    ]
+    assert any("FAKE1" in body for body in batch_bodies)
+    fake1 = next(o for o in result.gene_outcomes if o.gene_symbol == "FAKE1")
+    assert fake1.status == "ok", fake1.error
+    assert fake1.config_source == "auto"

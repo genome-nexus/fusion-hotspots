@@ -335,17 +335,35 @@ the default) or `key-domain` mode (only each gene's key domain family). It write
 For each fusion, `junction_translation.predict_junction` builds the chimeric CDS and
 protein from the two breakpoints and transcript models, with the genome build as an
 explicit input. It reports the frame, the per-partner domain spans and the junction
-peptide (`5' side|3' side`). The chimeric domain is then aligned (BLOSUM62, affine
-gaps) against each parent domain, and the best-scoring parent decides the class:
+peptide (`5' side|3' side`). A junction duplication or deletion is read from the
+junction coordinates, not from where an aligner puts a gap: the two parent domains are
+aligned with each other, the 5' end and the 3' restart are placed on that shared axis,
+and the chimeric domain is compared with the in-register parent (the 5' domain through
+the junction, then the 3' domain after it). A 3' restart at or before the junction
+repeats residues, and a restart past it skips them. So a ten-alanine duplication inside
+a poly-alanine run is found wherever the aligner would have placed the gap.
+
+When the two parents differ in length, an equivalent paralog gap can often sit on either
+side of the junction (two extra alanines anywhere in a run, say), and the in-register
+parent then depends on a tie-break. So the register is read from **every** co-optimal
+parent-parent alignment (forward and backward dynamic programming), not from one
+traceback. If they disagree on the indel, the call is `ambiguous_junction_register`, and
+`class_reason` lists the competing sizes. `clean_reconstitution` needs no indel under any
+co-optimal alignment and a chimera the same length as the parent it is reported
+against. The chimeric domain is also aligned (BLOSUM62, affine gaps) against each parent
+domain, and `alignment_parent` and `alignment_identity` report the same-length parent if
+there is one, else the better-scoring one:
 
 | Class | Meaning |
 |---|---|
-| `clean_reconstitution` | In frame, the domain is cut in both partners, and the chimeric domain has no indel at the junction against the parent. |
+| `clean_reconstitution` | In frame, the domain is cut in both partners, nothing is repeated or skipped at the junction under every co-optimal parent alignment, and the chimeric domain is the same length as the parent it is reported against. |
+| `ambiguous_junction_register` | In frame and cut in both partners, but equally good alignments of the two parent domains disagree on whether residues are repeated or skipped at the junction (typically a paralog length difference inside a repeat), or the chimera is in register but matches neither parent's length. Never clean; `class_reason` lists the competing indel sizes, and `junction_indel_residues` holds the largest. |
 | `tandem_duplication_or_insertion` | Extra residues at the junction (`junction_indel_residues` > 0). |
 | `gap_or_deletion` | Missing residues at the junction (`junction_indel_residues` < 0). |
 | `out_of_frame` | The junction shifts the reading frame. |
 | `premature_stop_at_junction` | In frame, but the junction-spanning codon is a stop. |
 | `not_split_on_both` | A product exists, but this family's domain is not cut in both partners. |
+| `splice_site_unresolved` | An intronic break falls inside the splice site the product would use (within 6 nt after the 5' partner's donor exon, or within 20 nt before the 3' partner's acceptor exon: AG, polypyrimidine tract, branch side). The joined genomic sequence is not checked, so no product is predicted; `class_reason` names the site and how many intronic bases the break keeps. `junction_mechanism` is `splice_site_unresolved`. |
 | `no_transcript_model` | No credible chimeric product could be predicted; `class_reason` says why. |
 
 `no_shared_family` appears in screen output when the transcripts used share no Pfam
@@ -355,13 +373,16 @@ still in the `domain_reconstitution` column, so the two can be compared directly
 - **Coordinate convention.** Both reported breakpoint bases are kept
   (`both_breakpoint_bases_retained`). SV callers differ and microhomology blurs the
   position, so `alternative_convention_frame_status` gives the frame if the 3' base is
-  dropped instead. Under the default FLI1::ERG (P-0053737-T01-IM6) is in frame with a
+  dropped instead. Dropping it moves the 3' side one base along the 3' transcript
+  (strand-aware), and that position is located and joined like a reported one, so the
+  convention applies to every join, an exact exon-edge join included. Under the default FLI1::ERG (P-0053737-T01-IM6) is in frame with a
   7-residue tandem insertion, `...LSRALRYYYDKNI|YYYDKNIMTKV...`; dropping one ERG base
   frameshifts it. When the two conventions disagree, treat the frame as unresolved.
-- **Mechanism.** `junction_mechanism` is `mid_exon_dna` when a break inside a coding
-  exon must be kept directly, `splice_mediated` for exon-boundary or intronic joins,
-  and `no_credible_product` otherwise. A join of two exact exon boundaries counts as
-  `splice_mediated` even though both breaks are in exons.
+- **Mechanism.** `junction_mechanism` is `mid_exon_dna` when both breaks are in coding
+  exons and the DNA joins directly (an exact 5' exon-last-base to 3' exon-first-base
+  join included), `splice_mediated` when an intronic break is joined through an intact
+  donor or acceptor, `splice_site_unresolved` when an intronic break is inside that
+  site, and `no_credible_product` otherwise.
 - **Intronic breakpoints are not snapped silently.** The product uses the nearest
   intact donor (5' partner) or acceptor (3' partner), and `five_prime_break_location`,
   `three_prime_break_location` and `junction_notes` give the exon used and the distance.
@@ -369,6 +390,17 @@ still in the `domain_reconstitution` column, so the two can be compared directly
   past the broken exon; if there is none, the event is `no_transcript_model`. GABPA::ERG
   (P-0023818-T01-IM6) is this case: GABPA breaks 2,791 nt into intron 9, and ERG breaks
   at c.958 in its last exon, which has no downstream acceptor.
+- **Genome build and caches.** The Genome Nexus instance follows `--genome-build`
+  (`www.genomenexus.org` for GRCh37, `grch38.genomenexus.org` for GRCh38), and a client
+  serving another build is rejected. Genome Nexus and Ensembl caches are kept per build
+  (`<cache>/<kind>/<build>/`) with a `_provenance.json`; loading a directory written for
+  another build raises, so a GRCh37 run never feeds a GRCh38 one. This includes the
+  `cohort-scan` canonical-transcript cache
+  (`<cache>/genome_nexus_canonical_transcripts/<build>/`). A build directory that holds
+  payload files but no `_provenance.json` has an unknown build, so it raises too: it is
+  never stamped and reused. Delete it or point `--cache-dir` at a fresh directory. Files
+  in the older flat layout (directly under `<cache>/<kind>/`) are not read; they are
+  refetched into the build directory.
 - **Transcript used.** Each partner uses the transcript named in the source annotation
   when one is available, otherwise the Genome Nexus canonical (MSK override) transcript.
   `*_transcript_source` and `*_transcript_differs_from_canonical` record the choice.
@@ -386,9 +418,10 @@ breakpoints on annotated transcripts. It does not show that the transcript is ex
 that the protein folds, or that it is active: published CYP11B1/CYP11B2 hybrids lose
 aldosterone synthesis depending on where the junction falls, so position matters even
 for a clean in-frame join between paralogs. Parents stand in for the Pfam family
-because no family HMM is used. Junction indels are only those within 5 alignment
-columns of the junction, a paralog-specific indel elsewhere does not count, and
-`alignment_identity` is reported so a poor alignment can be discounted. Confirm with
+because no family HMM is used. Junction indels come from the junction coordinates on
+every co-optimal parent-parent alignment, a paralog-specific indel elsewhere does not count, and
+`alignment_identity` is reported so a poor alignment can be discounted. A paralog
+residue present only in the 5' parent and skipped at the junction is not counted. Confirm with
 RNA before treating any class as more than a screening result.
 
 ### Co-occurrence discovery
