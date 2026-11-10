@@ -44,6 +44,7 @@ from cfh.genes.registry import GeneConfig, load_gene_config
 from cfh.ingestion import cbioportal_api
 from cfh.ingestion.http import retrying_session
 from cfh.mapping.genome_nexus_source import GenomeNexusClient
+from cfh.mapping.transcript_models import TranscriptModelSource, genome_build_of_genome_nexus
 from cfh.real_benchmark import (
     RealBenchmarkNetworkError,
     RealBenchmarkRun,
@@ -371,8 +372,13 @@ def run_cohort_scan(
     hypermutated_min_mutations: int | None = None,
     transient_retry_passes: int = DEFAULT_TRANSIENT_RETRY_PASSES,
     transient_retry_delay_seconds: float = DEFAULT_TRANSIENT_RETRY_DELAY_SECONDS,
+    classify_junctions: bool = False,
 ) -> CohortScanResult:
     """Run the full genome-wide cohort scan for ``study_id``.
+
+    ``classify_junctions`` adds the sequence-based ``reconstitution_class``
+    for fusions that cut a key domain; it also fetches coding sequence from
+    Ensembl for those fusions.
 
     Ingests cohort-wide SV data once (the recurrence call), gates to
     recurrently-altered genes, resolves each gated gene's ``GeneConfig``
@@ -434,6 +440,16 @@ def run_cohort_scan(
     unresolved = resolution.unresolved
 
     genome_nexus_client = GenomeNexusClient(base_url=genome_nexus_base_url, session=session)
+    junction_source = (
+        TranscriptModelSource(
+            genome_build_of_genome_nexus(genome_nexus_base_url),
+            genome_nexus_client=genome_nexus_client,
+            cache_dir=cache_dir,
+            session=session,
+        )
+        if classify_junctions
+        else None
+    )
     algorithm_params = _adaptive_algorithm_params(
         adaptive, n_permutations_small, n_permutations_max
     )
@@ -495,6 +511,7 @@ def run_cohort_scan(
                     session=session,
                 ),
                 genome_nexus_client=genome_nexus_client,
+                junction_source=junction_source,
                 n_permutations=n_permutations,
                 algorithm_names=algorithm_names,
                 algorithm_params=gene_algorithm_params,

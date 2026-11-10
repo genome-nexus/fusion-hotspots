@@ -112,3 +112,43 @@ def test_empty_cohort_and_random_cut_reference():
     )
     assert random_cut_completion_rate(0.0) == 0.0
     assert random_cut_completion_rate(1.0) == 1.0
+
+
+def test_sequence_class_and_read_support_carry_into_cohort_rows():
+    sequence = dict(
+        reconstitution_class="tandem_duplication_or_insertion",
+        reconstitution_class_reason="7-residue tandem duplication at the junction (YYYDKNI)",
+        reconstitution_junction_mechanism="mid_exon_dna",
+        reconstitution_translated_frame_status="in_frame",
+        reconstitution_alternative_convention_frame_status="out_of_frame",
+        reconstitution_three_prime_transcript="NM_182918",
+        reconstitution_three_prime_transcript_source="source_annotated",
+        reconstitution_junction_peptide="YDKLSRALRYYYDKNI|YYYDKNIMTKVHGKR",
+        reconstitution_tumor_paired_end_reads=6,
+        reconstitution_normal_variant_count=0,
+        reconstitution_breakpoint_precision="IMPRECISE",
+    )
+    result = SimpleNamespace(
+        gene_outcomes=[
+            _outcome(
+                "ERG",
+                [_row("S1", "P1", "FLI1-ERG", "FLI1", "three_prime", COMPLEMENTARY, **sequence)],
+            )
+        ]
+    )
+    rows = build_domain_reconstitution_rows(result)
+    row = rows[0]
+    assert row["domain_reconstitution"] == COMPLEMENTARY  # span status kept for comparison
+    assert row["reconstitution_class"] == "tandem_duplication_or_insertion"
+    assert row["junction_mechanism"] == "mid_exon_dna"
+    assert row["alternative_convention_frame_status"] == "out_of_frame"
+    assert row["three_prime_transcript_source"] == "source_annotated"
+    assert row["tumor_paired_end_reads"] == 6
+    assert row["normal_variant_count"] == 0
+    assert row["breakpoint_precision"] == "IMPRECISE"
+
+    overview = domain_reconstitution_overview(rows)
+    assert overview["sequence_class_counts"] == {"tandem_duplication_or_insertion": 1}
+    text = "\n".join(_domain_reconstitution_markdown(overview, rows))
+    assert "- tandem_duplication_or_insertion: 1" in text
+    assert "| complementary | tandem_duplication_or_insertion |" in text

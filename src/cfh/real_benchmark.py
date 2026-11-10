@@ -47,6 +47,8 @@ from cfh.mapping.genome_nexus_source import (
     parse_canonical_transcript,
     resolve_domains,
 )
+from cfh.mapping.junction_event import assess_event, junction_call_columns
+from cfh.mapping.transcript_models import TranscriptModelSource, source_annotated_transcripts
 from cfh.mapping.transcript_source import resolve_breakpoint_protein_position
 from cfh.model.algorithm_result import AlgorithmResult
 from cfh.model.fusion_event import FusionEvent
@@ -326,6 +328,39 @@ def _domain_reconstitution(
         partner_breakpoint_aa=position.protein_position,
         partner_breakpoint_mid_exon=not position.is_intronic,
     )
+
+
+def _junction_call(
+    row: dict,
+    event: FusionEvent,
+    target_gene: str,
+    target_role: str,
+    target_breakpoint: int,
+    partner_gene: str,
+    family: str,
+    source: TranscriptModelSource,
+) -> dict | None:
+    """The sequence-based call for the key domain's family on this event."""
+    annotation = row.get("Annotation")
+    partner = source.resolve(partner_gene, source_annotated_transcripts(annotation, partner_gene))
+    partner_breakpoint: int | None = None
+    if partner.span is not None:
+        try:
+            partner_breakpoint = _target_breakpoint(row, partner_gene, partner.span)
+        except ValueError:
+            partner_breakpoint = None
+    target_is_five = target_role == "five_prime"
+    calls = assess_event(
+        five_prime_gene=target_gene if target_is_five else partner_gene,
+        five_prime_breakpoint=target_breakpoint if target_is_five else partner_breakpoint,
+        three_prime_gene=partner_gene if target_is_five else target_gene,
+        three_prime_breakpoint=partner_breakpoint if target_is_five else target_breakpoint,
+        annotation=annotation,
+        genome_build=event.Reference_build,
+        source=source,
+        family_filter=lambda shared: shared & {family},
+    )
+    return calls[0] if calls else None
 
 
 def _target_role(event: FusionEvent, target_gene: str) -> str:
@@ -774,9 +809,14 @@ def analyze_structural_variant_calls_with_config(
     algorithm_params: dict[str, dict] | None = None,
     extra_warnings: list[str] | None = None,
     observation_unit: str = DEFAULT_OBSERVATION_UNIT,
+    junction_source: TranscriptModelSource | None = None,
 ) -> RealBenchmarkRun:
     """Normalize and analyze already-fetched cBioPortal SV API objects
     against an already-resolved ``GeneConfig``.
+
+    ``junction_source`` adds the sequence-based ``reconstitution_class``
+    columns for fusions that cut the key domain. Left ``None``, those columns
+    are blank and no extra lookups are made.
 
     ``observation_unit="patient_gene"`` (the default) counts each patient
     once per gene before every inferential algorithm: repeat observations of
@@ -999,6 +1039,7 @@ def analyze_structural_variant_calls_with_config(
         )
         partner_gene = _partner(event, config.gene_symbol)
         reconstitution: DomainReconstitution | None = None
+        junction_call: dict | None = None
         if domain_detail is not None and domain_detail.Is_truncated and partner_gene != "unknown":
             try:
                 reconstitution = _domain_reconstitution(
@@ -1011,6 +1052,17 @@ def analyze_structural_variant_calls_with_config(
                     target_canonical,
                     client,
                 )
+                if junction_source is not None and reconstitution.pfam_accession:
+                    junction_call = _junction_call(
+                        row,
+                        event,
+                        config.gene_symbol,
+                        role,
+                        breakpoint,
+                        partner_gene,
+                        reconstitution.pfam_accession,
+                        junction_source,
+                    )
             except requests.RequestException as exc:
                 raise RealBenchmarkNetworkError(
                     f"Genome Nexus partner lookup failed for {partner_gene} "
@@ -1049,6 +1101,7 @@ def analyze_structural_variant_calls_with_config(
                 "domain_is_truncated": domain_detail.Is_truncated if domain_detail else None,
                 "domain_reconstitution": reconstitution.status if reconstitution else None,
                 **reconstitution_columns(reconstitution),
+                **junction_call_columns(junction_call, row if reconstitution else None),
                 "retained_domains": "; ".join(feature.Retained_domains or []),
                 "lost_domains": "; ".join(feature.Lost_domains or []),
                 "disrupted_domains": "; ".join(feature.Disrupted_domains or []),
@@ -1933,8 +1986,9 @@ def _domain_reconstitution_lines(run: RealBenchmarkRun) -> list[str]:
         f"{len(shared)} the partner carries the same Pfam family. Spans are in domain "
         "coordinates (0 = start, 1 = end); a negative gap is an overlap.",
         "",
-        "| Fusion | Sample | Frame | 5' keeps | 3' keeps | Gap (aa) | Mid-exon breaks | Reading |",
-        "|---|---|---|---|---|---|---|---|",
+        "| Fusion | Sample | Frame | 5' keeps | 3' keeps | Gap (aa) | Mid-exon breaks "
+        "| Reading | Sequence class |",
+        "|---|---|---|---|---|---|---|---|---|",
     ]
     for row in shared:
         mid_exon = [
@@ -1952,15 +2006,18 @@ def _domain_reconstitution_lines(run: RealBenchmarkRun) -> list[str]:
             f"| {row.get('reconstitution_three_prime_span') or '-'} "
             f"| {'-' if gap is None else gap} "
             f"| {', '.join(mid_exon) or 'none'} "
-            f"| {_RECONSTITUTION_READING[row['domain_reconstitution']]} |"
+            f"| {_RECONSTITUTION_READING[row['domain_reconstitution']]} "
+            f"| {row.get('reconstitution_class') or '-'} |"
         )
     lines.extend(
         [
             "",
-            "*A complementary pair forms a hybrid domain only if the junction is in "
-            "frame. Breakpoints come from DNA: a mid-exon break cannot be spliced as "
-            "called, and a junction inside sequence two paralogs share complements by "
-            "construction, so confirm with RNA before reading this as selection.*",
+            "*Spans above are domain-relative arithmetic and are kept for comparison; "
+            "the sequence class, when present, is the primary call. A complementary "
+            "pair forms a hybrid domain only if the junction is in frame. Breakpoints "
+            "come from DNA: a mid-exon break cannot be spliced as called, and a "
+            "junction inside sequence two paralogs share complements by construction, "
+            "so confirm with RNA before reading this as selection.*",
             "",
         ]
     )
