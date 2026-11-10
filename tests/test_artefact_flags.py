@@ -145,6 +145,16 @@ def test_repeat_tracks_use_zero_based_half_open_intervals(tmp_path):
     assert hits[("2", 15)][0].name == "AluY" and hits[("2", 15)][0].detail == "SINE/Alu"
 
 
+def test_repeat_tracks_report_each_record_once_for_a_repeated_position(tmp_path):
+    tracks = RepeatTracks(
+        "GRCh38",
+        _gz(tmp_path / "s.gz", [_segdup("chr1", 100, 200)]),
+        _gz(tmp_path / "r.gz", [_rmsk("chr1", 150, 160)]),
+    )
+    hits = tracks.overlaps([("chr1", 155), ("1", 155), ("chr1", 155)])
+    assert [h.track for h in hits[("1", 155)]] == ["segdup", "rmsk"]
+
+
 # --- fakes -------------------------------------------------------------------------
 
 

@@ -457,8 +457,8 @@ class RepeatTracks:
             name = chromosome_name(chromosome)
             if name is not None:
                 wanted[name].append(position)
-        for points in wanted.values():
-            points.sort()
+        for name in wanted:
+            wanted[name] = sorted(set(wanted[name]))
         hits: dict[tuple[str, int], list[TrackHit]] = defaultdict(list)
         for track, path in self.paths.items():
             for chromosome, start, end, hit in _track_records(track, path):
@@ -643,7 +643,9 @@ def genomic_flags(
         found = []
         for label, key in (("5'", (five_chrom, five_pos)), ("3'", (three_chrom, three_pos))):
             for hit in repeat_hits.get(key, []):
-                found.append(f"{label} in {hit.track} {hit.name} ({hit.detail})")
+                text = f"{label} in {hit.track} {hit.name} ({hit.detail})"
+                if text not in found:
+                    found.append(text)
         out["breakpoint_repeat_flag"] = FLAGGED if found else PASS
         out["breakpoint_repeat_reason"] = "; ".join(found) or "neither breakpoint base is in a "
         if not found:

@@ -17,3 +17,6 @@ dist/
 # cohort-scan's on-disk batch Genome Nexus/Pfam-description cache -- a
 # reusable cross-run HTTP-response cache, not a reviewable run artifact
 runs/.cohort_scan_cache/
+
+# domain-screen pilot downloads, normalized tables, caches and logs (not committed)
+runs/.domain_screen_pilot_work/
