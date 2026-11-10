@@ -320,7 +320,76 @@ Suggested reading order:
     `truncating_fusions` and `domain_completing_fusions` summary columns. This is
     descriptive, not a test: a hybrid domain needs an in-frame junction, a mid-exon DNA
     breakpoint cannot be spliced as called, and a junction inside sequence two paralogs
-    share complements by construction wherever it is placed.
+    share complements by construction wherever it is placed. These span statuses are
+    kept unchanged for comparison; the primary call is the sequence class below.
+
+### Sequence-based domain reconstitution
+
+`cfh cohort-scan` now adds a sequence-based `reconstitution_class` for key-domain
+truncations (`--no-classify-junctions` turns this off). `cfh domain-screen ARCHIVE
+--cohort NAME --genome-build GRCh37` does the same for every fusion in a study
+directory or tar, in `any-domain` mode (every Pfam family the two partners share,
+the default) or `key-domain` mode (only each gene's key domain family). It writes
+`domain_screen.tsv` (one row per event and family) and `domain_screen_summary.json`.
+
+For each fusion, `junction_translation.predict_junction` builds the chimeric CDS and
+protein from the two breakpoints and transcript models, with the genome build as an
+explicit input. It reports the frame, the per-partner domain spans and the junction
+peptide (`5' side|3' side`). The chimeric domain is then aligned (BLOSUM62, affine
+gaps) against each parent domain, and the best-scoring parent decides the class:
+
+| Class | Meaning |
+|---|---|
+| `clean_reconstitution` | In frame, the domain is cut in both partners, and the chimeric domain has no indel at the junction against the parent. |
+| `tandem_duplication_or_insertion` | Extra residues at the junction (`junction_indel_residues` > 0). |
+| `gap_or_deletion` | Missing residues at the junction (`junction_indel_residues` < 0). |
+| `out_of_frame` | The junction shifts the reading frame. |
+| `premature_stop_at_junction` | In frame, but the junction-spanning codon is a stop. |
+| `not_split_on_both` | A product exists, but this family's domain is not cut in both partners. |
+| `no_transcript_model` | No credible chimeric product could be predicted; `class_reason` says why. |
+
+`no_shared_family` appears in screen output when the transcripts used share no Pfam
+family; it is an outcome of the screen, not a junction class. The old span status is
+still in the `domain_reconstitution` column, so the two can be compared directly.
+
+- **Coordinate convention.** Both reported breakpoint bases are kept
+  (`both_breakpoint_bases_retained`). SV callers differ and microhomology blurs the
+  position, so `alternative_convention_frame_status` gives the frame if the 3' base is
+  dropped instead. Under the default FLI1::ERG (P-0053737-T01-IM6) is in frame with a
+  7-residue tandem insertion, `...LSRALRYYYDKNI|YYYDKNIMTKV...`; dropping one ERG base
+  frameshifts it. When the two conventions disagree, treat the frame as unresolved.
+- **Mechanism.** `junction_mechanism` is `mid_exon_dna` when a break inside a coding
+  exon must be kept directly, `splice_mediated` for exon-boundary or intronic joins,
+  and `no_credible_product` otherwise. A join of two exact exon boundaries counts as
+  `splice_mediated` even though both breaks are in exons.
+- **Intronic breakpoints are not snapped silently.** The product uses the nearest
+  intact donor (5' partner) or acceptor (3' partner), and `five_prime_break_location`,
+  `three_prime_break_location` and `junction_notes` give the exon used and the distance.
+  An intronic break paired with a mid-exon partner uses the nearest intact splice site
+  past the broken exon; if there is none, the event is `no_transcript_model`. GABPA::ERG
+  (P-0023818-T01-IM6) is this case: GABPA breaks 2,791 nt into intron 9, and ERG breaks
+  at c.958 in its last exon, which has no downstream acceptor.
+- **Transcript used.** Each partner uses the transcript named in the source annotation
+  when one is available, otherwise the Genome Nexus canonical (MSK override) transcript.
+  `*_transcript_source` and `*_transcript_differs_from_canonical` record the choice.
+  The choice matters: CDKN2B::CDKN2A breaks at aa 101 on the annotated NM_058195 (p14ARF)
+  and at aa 87 on p16 (NM_000077), and only p16 carries the ankyrin family shared with
+  CDKN2B.
+- **Read support.** `tumor_split_reads`, `tumor_paired_end_reads`, `tumor_variant_count`,
+  `normal_variant_count` and `breakpoint_precision` are in both outputs. The cBioPortal
+  API reports split and paired counts as -1 for MSK-IMPACT 50k, so those are blank in
+  `cohort-scan`; the archive-based `domain-screen` has them.
+
+**What these classes do not establish.** A clean junction is a candidate, not evidence
+of function. The class is a statement about predicted protein sequence from DNA
+breakpoints on annotated transcripts. It does not show that the transcript is expressed,
+that the protein folds, or that it is active: published CYP11B1/CYP11B2 hybrids lose
+aldosterone synthesis depending on where the junction falls, so position matters even
+for a clean in-frame join between paralogs. Parents stand in for the Pfam family
+because no family HMM is used. Junction indels are only those within 5 alignment
+columns of the junction, a paralog-specific indel elsewhere does not count, and
+`alignment_identity` is reported so a poor alignment can be discounted. Confirm with
+RNA before treating any class as more than a screening result.
 
 ### Co-occurrence discovery
 

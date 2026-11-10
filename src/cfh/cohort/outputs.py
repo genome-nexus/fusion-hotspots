@@ -510,6 +510,23 @@ _RECONSTITUTION_FIELDNAMES = [
     "five_prime_mid_exon",
     "three_prime_mid_exon",
     "reported_by",
+    "reconstitution_class",
+    "reconstitution_class_reason",
+    "junction_mechanism",
+    "translated_frame_status",
+    "alternative_convention_frame_status",
+    "five_prime_transcript",
+    "three_prime_transcript",
+    "five_prime_transcript_source",
+    "three_prime_transcript_source",
+    "five_prime_transcript_differs_from_canonical",
+    "three_prime_transcript_differs_from_canonical",
+    "junction_peptide",
+    "tumor_split_reads",
+    "tumor_paired_end_reads",
+    "tumor_variant_count",
+    "normal_variant_count",
+    "breakpoint_precision",
 ]
 _BOTH_CUT = (COMPLEMENTARY, OVERLAPPING, GAP)
 _SHARED_FAMILY = (*_BOTH_CUT, PARTNER_DOMAIN_INTACT, PARTNER_DOMAIN_LOST)
@@ -563,6 +580,33 @@ def build_domain_reconstitution_rows(result: CohortScanResult) -> list[dict]:
                 "five_prime_mid_exon": target_mid_exon if target_is_five else partner_mid_exon,
                 "three_prime_mid_exon": partner_mid_exon if target_is_five else target_mid_exon,
                 "reported_by": [gene],
+                "reconstitution_class": row.get("reconstitution_class"),
+                "reconstitution_class_reason": row.get("reconstitution_class_reason"),
+                "junction_mechanism": row.get("reconstitution_junction_mechanism"),
+                "translated_frame_status": row.get("reconstitution_translated_frame_status"),
+                "alternative_convention_frame_status": row.get(
+                    "reconstitution_alternative_convention_frame_status"
+                ),
+                "five_prime_transcript": row.get("reconstitution_five_prime_transcript"),
+                "three_prime_transcript": row.get("reconstitution_three_prime_transcript"),
+                "five_prime_transcript_source": row.get(
+                    "reconstitution_five_prime_transcript_source"
+                ),
+                "three_prime_transcript_source": row.get(
+                    "reconstitution_three_prime_transcript_source"
+                ),
+                "five_prime_transcript_differs_from_canonical": row.get(
+                    "reconstitution_five_prime_transcript_differs_from_canonical"
+                ),
+                "three_prime_transcript_differs_from_canonical": row.get(
+                    "reconstitution_three_prime_transcript_differs_from_canonical"
+                ),
+                "junction_peptide": row.get("reconstitution_junction_peptide"),
+                "tumor_split_reads": row.get("reconstitution_tumor_split_reads"),
+                "tumor_paired_end_reads": row.get("reconstitution_tumor_paired_end_reads"),
+                "tumor_variant_count": row.get("reconstitution_tumor_variant_count"),
+                "normal_variant_count": row.get("reconstitution_normal_variant_count"),
+                "breakpoint_precision": row.get("reconstitution_breakpoint_precision"),
             }
     rows = list(by_key.values())
     for row in rows:
@@ -598,6 +642,13 @@ def domain_reconstitution_overview(rows: list[dict]) -> dict:
         "completion_rate_when_both_cut": counts[COMPLEMENTARY] / both_cut if both_cut else None,
         "random_cut_completion_rate": random_cut_completion_rate(),
         "status_counts": dict(sorted(counts.items())),
+        "sequence_class_counts": dict(
+            sorted(
+                Counter(
+                    row["reconstitution_class"] for row in rows if row.get("reconstitution_class")
+                ).items()
+            )
+        ),
         "by_pfam_family": {family: dict(count) for family, count in sorted(by_family.items())},
     }
 
@@ -639,12 +690,26 @@ def _domain_reconstitution_markdown(overview: dict, rows: list[dict]) -> list[st
             "",
         ]
     )
+    if overview["sequence_class_counts"]:
+        lines.extend(
+            [
+                "Sequence-based classes (primary call; the span counts above are kept for "
+                "comparison). A clean junction is a candidate, not evidence of function:",
+                "",
+                *(
+                    f"- {name}: {count}"
+                    for name, count in overview["sequence_class_counts"].items()
+                ),
+                "",
+            ]
+        )
     shared = [row for row in rows if row["domain_reconstitution"] in _SHARED_FAMILY]
     if shared:
         lines.append(
-            "| fusion | sample | Pfam | frame | 5' keeps | 3' keeps | gap (aa) | reading |"
+            "| fusion | sample | Pfam | frame | 5' keeps | 3' keeps | gap (aa) | span reading "
+            "| sequence class |"
         )
-        lines.append("|---|---|---|---|---|---|---|---|")
+        lines.append("|---|---|---|---|---|---|---|---|---|")
         for row in shared:
             gap = row["junction_gap_residues"]
             lines.append(
@@ -652,7 +717,8 @@ def _domain_reconstitution_markdown(overview: dict, rows: list[dict]) -> list[st
                 f"{row['frame_status'] or 'unknown'} | {row['five_prime_span'] or '-'} | "
                 f"{row['three_prime_span'] or '-'} | "
                 f"{'-' if gap is None else gap} | "
-                f"{row['domain_reconstitution']} |"
+                f"{row['domain_reconstitution']} | "
+                f"{row.get('reconstitution_class') or '-'} |"
             )
         lines.append("")
     return lines

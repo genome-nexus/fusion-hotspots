@@ -267,6 +267,92 @@ def analyze(
         click.echo(f"{kind}: {path}")
 
 
+@main.command("domain-screen")
+@click.argument("archive", type=click.Path(exists=True, path_type=Path))
+@click.option("--cohort", required=True, help="Cohort name recorded on the events.")
+@click.option(
+    "--genome-build",
+    required=True,
+    help="Assembly of the Genome Nexus and Ensembl annotation to use (e.g. GRCh37). Events "
+    "are matched against it by their own NCBI_Build; there is no default.",
+)
+@click.option(
+    "--mode",
+    type=click.Choice(["any-domain", "key-domain"]),
+    default="any-domain",
+    show_default=True,
+    help="any-domain evaluates every Pfam family the partners share; key-domain only each "
+    "gene's key domain family.",
+)
+@click.option(
+    "--output-dir",
+    type=click.Path(path_type=Path, file_okay=False),
+    default=Path("runs/domain_screen"),
+    show_default=True,
+)
+@click.option(
+    "--cache-dir",
+    type=click.Path(path_type=Path, file_okay=False),
+    default=None,
+    help="Genome Nexus/Ensembl cache. Defaults to <output-dir>/.cohort_scan_cache.",
+)
+@click.option(
+    "--genome-nexus-url",
+    default=None,
+    help="Genome Nexus base URL. Defaults to the public instance serving --genome-build.",
+)
+def domain_screen(
+    archive: Path,
+    cohort: str,
+    genome_build: str,
+    mode: str,
+    output_dir: Path,
+    cache_dir: Path | None,
+    genome_nexus_url: str | None,
+) -> None:
+    """Screen every fusion in ARCHIVE (a study directory or tar) for domains
+    rebuilt at the junction."""
+    import requests
+
+    from cfh.cohort.auto_config import PfamDescriptionSource
+    from cfh.cohort.domain_screen import key_domain_family, screen_cohort, write_screen_outputs
+    from cfh.ingestion.archive_reader import load_sv_dataframe
+    from cfh.mapping.genome_nexus_source import GenomeNexusClient
+    from cfh.mapping.junction_translation import normalize_genome_build
+    from cfh.mapping.transcript_models import TranscriptModelSource
+
+    build = normalize_genome_build(genome_build)
+    default_url = (
+        "https://grch38.genomenexus.org" if build == "GRCh38" else "https://www.genomenexus.org"
+    )
+    cache = cache_dir or (output_dir / ".cohort_scan_cache")
+    session = requests.Session()
+    source = TranscriptModelSource(
+        genome_build,
+        genome_nexus_client=GenomeNexusClient(
+            base_url=genome_nexus_url or default_url, session=session
+        ),
+        cache_dir=cache,
+        session=session,
+    )
+    descriptions = PfamDescriptionSource(session=session, cache_dir=cache / "pfam_descriptions")
+    try:
+        rows, summary = screen_cohort(
+            load_sv_dataframe(archive),
+            source,
+            cohort=cohort,
+            mode=mode.replace("-", "_"),
+            key_family=lambda gene: key_domain_family(gene, source.canonical(gene), descriptions),
+            progress=lambda line: click.echo(line, err=True),
+        )
+        paths = write_screen_outputs(rows, summary, output_dir)
+    except Exception as exc:
+        raise click.ClickException(f"Domain screen failed: {type(exc).__name__}: {exc}") from None
+    click.echo(json.dumps(summary, indent=2, sort_keys=True))
+    for kind, path in paths.items():
+        click.echo(f"{kind}: {path}")
+
+
 @main.command("cohort-scan")
 @click.argument("study_id")
 @click.option(
@@ -346,6 +432,13 @@ def analyze(
     help="With --discover-cooccurrence, exclude samples with at least this many panel mutations.",
 )
 @click.option(
+    "--classify-junctions/--no-classify-junctions",
+    default=True,
+    show_default=True,
+    help="Add the sequence-based domain-reconstitution class for fusions that cut a key "
+    "domain (fetches coding sequence from Ensembl for those fusions).",
+)
+@click.option(
     "--progress/--quiet",
     default=True,
     show_default=True,
@@ -366,6 +459,7 @@ def cohort_scan(
     honorable_mention_count: int,
     discover_cooccurrence: bool,
     hypermutated_min_mutations: int | None,
+    classify_junctions: bool,
     progress: bool,
     html: bool,
 ) -> None:
@@ -385,6 +479,7 @@ def cohort_scan(
             progress=(lambda line: click.echo(line, err=True)) if progress else None,
             discover_cooccurrence=discover_cooccurrence,
             hypermutated_min_mutations=hypermutated_min_mutations,
+            classify_junctions=classify_junctions,
         )
         paths = write_cohort_scan_outputs(
             result, output_dir, pdf=pdf, honorable_mention_count=honorable_mention_count

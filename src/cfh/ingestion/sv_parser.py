@@ -32,14 +32,31 @@ EXPECTED_COLUMNS = [
     "Event_Info",
 ]
 
+OPTIONAL_COLUMNS = ["Tumor_Variant_Count", "Normal_Variant_Count"]
+"""Read-support columns only some cohorts carry; absent ones are not flagged."""
+
+COLUMN_ALIASES = {
+    "Split_Read_Support": "Tumor_Split_Read_Count",
+    "Paired_End_Read_Support": "Tumor_Paired_End_Read_Count",
+}
+"""Header spellings in the real MSK-IMPACT archive, mapped to the names the
+rest of the pipeline reads."""
+
 _NUMERIC_COLUMNS = {
     "Site1_Position",
     "Site2_Position",
     "Tumor_Split_Read_Count",
     "Tumor_Paired_End_Read_Count",
+    "Tumor_Variant_Count",
+    "Normal_Variant_Count",
 }
 
-OUTPUT_COLUMNS = EXPECTED_COLUMNS + ["Extra_fields", "Source_row_number", "Parse_warnings"]
+_MISSING_VALUE_MARKERS = {"NA", "N/A"}
+"""Written in numeric columns of the MSK archive where a count is unavailable."""
+
+OUTPUT_COLUMNS = (
+    EXPECTED_COLUMNS + OPTIONAL_COLUMNS + ["Extra_fields", "Source_row_number", "Parse_warnings"]
+)
 
 
 def _clean(value: str | None) -> str | None:
@@ -59,9 +76,15 @@ def _coerce_int(value: str) -> int | None:
 def _parse_row(raw_row: dict[str, Any], line_number: int) -> dict[str, Any]:
     warnings: list[str] = []
     record: dict[str, Any] = {}
+    raw_row = {COLUMN_ALIASES.get(key, key): value for key, value in raw_row.items()}
 
-    for column in EXPECTED_COLUMNS:
+    for column in EXPECTED_COLUMNS + OPTIONAL_COLUMNS:
         value = _clean(raw_row.get(column))
+        if column in _NUMERIC_COLUMNS and value in _MISSING_VALUE_MARKERS:
+            value = None
+        if value is None and column in OPTIONAL_COLUMNS:
+            record[column] = None
+            continue
         if value is None:
             # Covers both a header the file never declared and a declared
             # column left blank on this row -- either way the field is
@@ -82,7 +105,7 @@ def _parse_row(raw_row: dict[str, Any], line_number: int) -> dict[str, Any]:
     extra = {
         key: value
         for key, value in raw_row.items()
-        if key is not None and key not in EXPECTED_COLUMNS
+        if key is not None and key not in EXPECTED_COLUMNS and key not in OPTIONAL_COLUMNS
     }
 
     # csv.DictReader stashes any tab-delimited values beyond the header's
@@ -117,7 +140,7 @@ def parse_sv_file(path: str | Path) -> pd.DataFrame:
             except Exception as exc:  # pragma: no cover - defensive, never drop a row
                 records.append(
                     {
-                        **{col: None for col in EXPECTED_COLUMNS},
+                        **{col: None for col in EXPECTED_COLUMNS + OPTIONAL_COLUMNS},
                         "Extra_fields": None,
                         "Source_row_number": line_number,
                         "Parse_warnings": f"failed to parse row: {exc}",

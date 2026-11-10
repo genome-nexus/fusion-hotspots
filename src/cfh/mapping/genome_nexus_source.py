@@ -107,6 +107,7 @@ class GenomeNexusClient:
         self.backoff_seconds = backoff_seconds
         self._canonical_transcript_cache: dict[str, dict] = {}
         self._transcript_cache: dict[str, dict] = {}
+        self._gene_transcripts_cache: dict[str, list[dict]] = {}
 
     def _get(self, path: str, *, params: dict | None = None) -> requests.Response:
         url = f"{self.base_url}{path}"
@@ -148,6 +149,24 @@ class GenomeNexusClient:
         response.raise_for_status()
         payload = response.json()
         self._transcript_cache[transcript_id] = payload
+        return payload
+
+    def fetch_transcripts_for_gene(self, hugo_symbol: str) -> list[dict]:
+        """POST ``/ensembl/transcript`` for every isoform of a gene, cached by symbol."""
+        if hugo_symbol in self._gene_transcripts_cache:
+            return self._gene_transcripts_cache[hugo_symbol]
+
+        url = f"{self.base_url}/ensembl/transcript"
+        attempt = 0
+        while True:
+            response = self.session.post(url, json={"hugoSymbols": [hugo_symbol]}, timeout=30)
+            if response.status_code not in _RETRYABLE_STATUS_CODES or attempt >= self.max_retries:
+                break
+            time.sleep(self.backoff_seconds * (2**attempt))
+            attempt += 1
+        response.raise_for_status()
+        payload = response.json()
+        self._gene_transcripts_cache[hugo_symbol] = payload
         return payload
 
 

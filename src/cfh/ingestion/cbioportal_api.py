@@ -59,6 +59,7 @@ _API_TO_NORMALIZED_COLUMNS = {
     "tumorSplitReadCount": "Tumor_Split_Read_Count",
     "tumorPairedEndReadCount": "Tumor_Paired_End_Read_Count",
     "tumorVariantCount": "Tumor_Variant_Count",
+    "normalVariantCount": "Normal_Variant_Count",
     "svStatus": "SV_Status",
     "ncbiBuild": "NCBI_Build",
     "connectionType": "Connection_Type",

@@ -211,6 +211,7 @@ def batch_fetch_canonical_transcripts(
     max_retries: int = 3,
     backoff_seconds: float = 0.5,
     timeout: float = 60,
+    isoform_override_source: str | None = None,
 ) -> BatchCanonicalTranscriptResult:
     """Resolve canonical transcripts for many gene symbols in as few Genome
     Nexus batch calls as possible.
@@ -221,6 +222,10 @@ def batch_fetch_canonical_transcripts(
     already cached are included in the batch POST body(ies); the body list
     is chunked at ``batch_size`` only when more candidates are requested at
     once than that.
+
+    ``isoform_override_source`` asks Genome Nexus for another isoform set
+    (e.g. ``"mskcc"``). Left ``None``, the request is unchanged; callers
+    that set it must use a separate ``cache_dir``.
     """
     session = session or requests.Session()
     cache_paths: dict[str, Path] = {}
@@ -247,7 +252,16 @@ def batch_fetch_canonical_transcripts(
             continue
         attempt = 0
         while True:
-            response = session.post(url, json=chunk, timeout=timeout)
+            response = session.post(
+                url,
+                json=chunk,
+                params=(
+                    {"isoformOverrideSource": isoform_override_source}
+                    if isoform_override_source
+                    else None
+                ),
+                timeout=timeout,
+            )
             if response.status_code not in _RETRYABLE_STATUS_CODES or attempt >= max_retries:
                 break
             time.sleep(backoff_seconds * (2**attempt))

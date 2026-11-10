@@ -12,6 +12,9 @@ Both pieces are placed in domain-relative coordinates (0 = domain start,
 assumes the two copies align end to end, which holds for paralogs whose
 Pfam hits span the full model; it is an approximation otherwise.
 
+These spans are arithmetic and are kept for comparison. The primary call is
+sequence-based; see :mod:`cfh.mapping.junction_domain_classifier`.
+
 What this does not establish:
 
 - Frame. A complementary pair only yields a hybrid domain if the junction
