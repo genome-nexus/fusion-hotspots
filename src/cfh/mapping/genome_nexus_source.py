@@ -20,6 +20,7 @@ from __future__ import annotations
 import math
 import time
 from dataclasses import dataclass
+from urllib.parse import quote
 
 import requests
 
@@ -137,16 +138,26 @@ class GenomeNexusClient:
         if cache_key in self._canonical_transcript_cache:
             return self._canonical_transcript_cache[cache_key]
 
+        # The symbol is one path segment: encode it, or a symbol such as
+        # "THRA1/BTR" (DepMap) reaches the web app, which answers 200 with HTML.
         response = self._get(
-            f"/ensembl/canonical-transcript/hgnc/{hugo_symbol}",
+            f"/ensembl/canonical-transcript/hgnc/{quote(hugo_symbol, safe='')}",
             params={"isoformOverrideSource": isoform_override_source},
         )
-        if response.status_code == 404:
+        if response.status_code in (400, 404):
+            # 400: Genome Nexus rejects the symbol itself (e.g. an encoded "/").
             raise GenomeNexusGeneNotFound(
                 f"Genome Nexus has no canonical-transcript mapping for gene symbol {hugo_symbol!r}"
+                f" (HTTP {response.status_code})"
             )
         response.raise_for_status()
-        payload = response.json()
+        try:
+            payload = response.json()
+        except ValueError as exc:
+            raise ValueError(
+                f"Genome Nexus answered {response.status_code} with a non-JSON body for "
+                f"{hugo_symbol!r} ({response.headers.get('content-type')})"
+            ) from exc
         self._canonical_transcript_cache[cache_key] = payload
         return payload
 

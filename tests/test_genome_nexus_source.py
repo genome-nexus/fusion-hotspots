@@ -509,3 +509,32 @@ def test_fetch_canonical_transcript_real_network_call():
     client = gns.GenomeNexusClient()
     payload = client.fetch_canonical_transcript("BRAF")
     assert payload["refseqMrnaId"] == "NM_004333"
+
+
+def test_canonical_symbol_is_one_encoded_path_segment_and_400_means_not_found():
+    from unittest.mock import MagicMock
+
+    from cfh.mapping.genome_nexus_source import GenomeNexusClient, GenomeNexusGeneNotFound
+
+    session = MagicMock()
+    session.get.return_value.status_code = 400
+    client = GenomeNexusClient(base_url="https://gn.example", session=session)
+    with pytest.raises(GenomeNexusGeneNotFound, match="THRA1/BTR"):
+        client.fetch_canonical_transcript("THRA1/BTR")
+    assert session.get.call_args.args[0] == (
+        "https://gn.example/ensembl/canonical-transcript/hgnc/THRA1%2FBTR"
+    )
+
+
+def test_canonical_non_json_body_is_reported_with_the_symbol():
+    from unittest.mock import MagicMock
+
+    from cfh.mapping.genome_nexus_source import GenomeNexusClient
+
+    session = MagicMock()
+    session.get.return_value.status_code = 200
+    session.get.return_value.headers = {"content-type": "text/html"}
+    session.get.return_value.json.side_effect = ValueError("Expecting value")
+    client = GenomeNexusClient(base_url="https://gn.example", session=session)
+    with pytest.raises(ValueError, match="non-JSON body for 'ODD'.*text/html"):
+        client.fetch_canonical_transcript("ODD")
