@@ -474,6 +474,7 @@ def test_record_roundtrip_and_row_aggregation():
     add_row(record, {"cohort": "c2", "tumor_split_reads": "", "read_evidence_flag": "flagged"})
     assert record.n_rows == 2 and record.cohorts == ["c1", "c2"]
     assert record.artefact_clean_rows == 1
+    assert record.artefact_core_clean_rows == 1
     assert record.max_split_reads == 4
     assert record.artefact_flag_counts["paralog_sequence_flag"] == {"pass": 1, "not_assessed": 1}
     data = record_to_dict(record)
@@ -489,31 +490,60 @@ def test_assess_record_end_to_end_without_external_data(ets_hmm):
     assert metrics["structure_5p"] == NOT_ASSESSED
 
 
-def test_shortlist_ranks_by_tier_then_e_and_keeps_named_cases():
-    def row(rid, fusion, tier, e, clean=1, reads=1):
-        return {
-            "record_id": rid,
-            "fusion": fusion,
-            "pfam_family": "PF1",
-            "tier": tier,
-            "schema_E_5p": e,
-            "schema_E_3p": NOT_ASSESSED,
-            "chimera_ga_margin": 10.0,
-            "max_split_reads": reads,
-            "n_samples": 1,
-            "artefact_clean_rows": clean,
-        }
+def _shortlist_row(rid, fusion, tier, e, clean=1, core=None, reads=1, family="PF1"):
+    return {
+        "record_id": rid,
+        "fusion": fusion,
+        "pfam_family": family,
+        "tier": tier,
+        "schema_E_5p": e,
+        "schema_E_3p": NOT_ASSESSED,
+        "chimera_ga_margin": 10.0,
+        "max_split_reads": reads,
+        "n_samples": 1,
+        "artefact_clean_rows": clean,
+        "artefact_core_clean_rows": clean if core is None else core,
+        "genomic_similarity_flag_counts": "pass:1" if clean else "flagged:1",
+        "sample_burden_flag_counts": "pass:1",
+    }
 
+
+def test_shortlist_ranks_by_tier_then_e_and_keeps_named_cases():
+    row = _shortlist_row
     rows = [
         row("a", "A::B", UNCERTAIN, 0),
         row("b", "C::D", LIKELY_INTACT, 5),
         row("c", "E::F", LIKELY_INTACT, 1),
-        row("d", "FLI1::ERG", LIKELY_BROKEN, 9, clean=0),
-        row("e", "G::H", LIKELY_INTACT, 0, clean=0),
+        row("d", "FLI1::ERG", LIKELY_BROKEN, 9, clean=0, core=0),
+        row("e", "G::H", LIKELY_INTACT, 0, clean=0, core=0),
     ]
     chosen = shortlist(rows, size=3)
     assert [r["record_id"] for r in chosen] == ["c", "b", "a", "d"]
-    assert chosen[-1]["shortlist_reason"] == "named_case;no_artefact_clean_row"
+    assert [r["shortlist_rank"] for r in chosen] == [1, 2, 3, 4]
+    assert chosen[0]["shortlist_reason"] == "ranked"
+    assert chosen[-1]["shortlist_reason"] == "named_case;flagged:genomic_similarity"
+
+
+def test_shortlist_fills_with_core_clean_records_and_names_their_flags():
+    row = _shortlist_row
+    rows = [
+        row("a", "A::B", UNCERTAIN, 0),
+        row("f", "I::J", LIKELY_INTACT, 0, clean=0, core=2),
+        row("g", "K::L", LIKELY_INTACT, 0, clean=0, core=0),
+    ]
+    chosen = shortlist(rows, size=5)
+    assert [r["record_id"] for r in chosen] == ["a", "f"]
+    assert chosen[1]["shortlist_reason"] == "fill;flagged:genomic_similarity"
+
+
+def test_shortlist_uses_the_clean_record_of_a_group():
+    row = _shortlist_row
+    rows = [
+        row("best_but_flagged", "A::B", LIKELY_INTACT, 0, clean=0, core=0),
+        row("clean", "A::B", UNCERTAIN, 3),
+    ]
+    chosen = shortlist(rows, size=5)
+    assert [r["record_id"] for r in chosen] == ["clean"]
 
 
 def test_tier_counts_by_cohort_and_class():

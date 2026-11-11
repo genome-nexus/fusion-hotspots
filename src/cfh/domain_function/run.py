@@ -133,6 +133,7 @@ def summary_columns(record: ChimeraRecord) -> dict[str, Any]:
         "total_split_reads": record.total_split_reads,
         "max_paired_end_reads": record.max_paired_end_reads,
         "artefact_clean_rows": record.artefact_clean_rows,
+        "artefact_core_clean_rows": record.artefact_core_clean_rows,
         **flags,
         "five_prime_transcript": record.five.transcript,
         "three_prime_transcript": record.three.transcript,
@@ -156,11 +157,37 @@ def schema_e_max(row: Mapping[str, Any]) -> float:
     return float(max(numbers)) if numbers else math.inf
 
 
-def shortlist(rows: list[dict[str, Any]], size: int = SHORTLIST_SIZE) -> list[dict[str, Any]]:
-    """Best record per fusion and family, ranked by tier, lowest E, GA margin, read support.
+def _flagged_columns(row: Mapping[str, Any]) -> list[str]:
+    """Artefact flags with at least one ``flagged`` row for this record."""
+    flagged = []
+    for column in ARTEFACT_FLAG_COLUMNS:
+        counts = str(row.get(f"{column}_counts") or "")
+        if any(item.startswith("flagged:") for item in counts.split(",")):
+            flagged.append(column.removesuffix("_flag"))
+    return flagged
 
-    Only records with at least one artefact-clean supporting row are ranked;
-    named cases are appended (marked) when they do not make the cut.
+
+def _as_int(value: Any) -> int:
+    try:
+        return int(value or 0)
+    except (TypeError, ValueError):
+        return 0
+
+
+def shortlist(rows: list[dict[str, Any]], size: int = SHORTLIST_SIZE) -> list[dict[str, Any]]:
+    """Structure-prediction shortlist: one record per fusion and Pfam family.
+
+    Order within each stage: tier, then lowest SCHEMA E (max over the parent
+    structures; missing last), then highest GA margin, then max split reads and
+    sample count. Stages, up to ``size`` rows in total:
+
+    1. ``ranked``: records with at least one row passing every artefact flag;
+    2. ``fill``: records with a row passing every flag except the near-universal
+       context flags (:data:`~cfh.domain_function.record.CONTEXT_FLAG_COLUMNS`);
+       the flags that fired are named in ``shortlist_reason``.
+
+    The named cases are then appended (best record per family) when absent,
+    marked ``named_case`` with their flagged columns.
     """
 
     def key(row: Mapping[str, Any]) -> tuple[Any, ...]:
@@ -169,29 +196,40 @@ def shortlist(rows: list[dict[str, Any]], size: int = SHORTLIST_SIZE) -> list[di
             TIER_ORDER.index(row["tier"]),
             schema_e_max(row),
             -(margin if isinstance(margin, (int, float)) else -math.inf),
-            -(row.get("max_split_reads") or 0),
-            -(row.get("n_samples") or 0),
+            -_as_int(row.get("max_split_reads")),
+            -_as_int(row.get("n_samples")),
             row["record_id"],
         )
 
-    best: dict[tuple[str, str], dict[str, Any]] = {}
-    for row in sorted(rows, key=key):
-        best.setdefault((row["fusion"], row["pfam_family"]), row)
-    ranked = sorted(best.values(), key=key)
-    chosen = [dict(row, shortlist_reason="ranked") for row in ranked if row["artefact_clean_rows"]][
-        :size
-    ]
-    chosen_ids = {row["record_id"] for row in chosen}
+    def best_per_group(candidates: Iterable[dict[str, Any]]) -> list[dict[str, Any]]:
+        best: dict[tuple[str, str], dict[str, Any]] = {}
+        for row in sorted(candidates, key=key):
+            best.setdefault((row["fusion"], row["pfam_family"]), row)
+        return sorted(best.values(), key=key)
+
+    def note(stage: str, row: Mapping[str, Any]) -> str:
+        flagged = _flagged_columns(row)
+        return f"{stage};flagged:{','.join(flagged)}" if flagged else stage
+
+    chosen: list[dict[str, Any]] = []
+    groups: set[tuple[str, str]] = set()
+    stages = (
+        ("ranked", lambda row: _as_int(row.get("artefact_clean_rows")) > 0),
+        ("fill", lambda row: _as_int(row.get("artefact_core_clean_rows")) > 0),
+    )
+    for stage, eligible in stages:
+        for row in best_per_group(r for r in rows if eligible(r)):
+            group = (row["fusion"], row["pfam_family"])
+            if len(chosen) >= size or group in groups:
+                continue
+            chosen.append(dict(row, shortlist_reason=note(stage, row)))
+            groups.add(group)
     for name in NAMED_CASES:
-        for row in ranked:
-            if row["fusion"] == name and row["record_id"] not in chosen_ids:
-                note = (
-                    "named_case"
-                    if row["artefact_clean_rows"]
-                    else "named_case;no_artefact_clean_row"
-                )
-                chosen.append(dict(row, shortlist_reason=note))
-                chosen_ids.add(row["record_id"])
+        for row in best_per_group(r for r in rows if r["fusion"] == name):
+            group = (row["fusion"], row["pfam_family"])
+            if group not in groups:
+                chosen.append(dict(row, shortlist_reason=note("named_case", row)))
+                groups.add(group)
     for rank, row in enumerate(chosen, start=1):
         row["shortlist_rank"] = rank
         row["schema_E_max"] = None if math.isinf(schema_e_max(row)) else schema_e_max(row)

@@ -32,7 +32,8 @@ full translated fusion protein, the chimeric domain span (+ flanked sequence),
 the screen's junction class/reason and indel (size, residues), read support
 (max/total split reads, max paired-end reads, sample count) and the per-row
 counts of every pilot artefact flag (`artefact_clean_rows` = rows where all six
-flags pass). `cfh.domain_function.record.read_records_json` loads it and checks
+flags pass; `artefact_core_clean_rows` = rows where all but the two context flags
+pass, see the shortlist section). `cfh.domain_function.record.read_records_json` loads it and checks
 the schema version.
 
 ## Metrics (`domain_function_metrics.tsv.gz`, one row per record)
@@ -158,10 +159,22 @@ broken core contacts) instead of hiding them.
 
 ## Shortlist for structure prediction
 
-`shortlist_for_structure.tsv`: best record per fusion and family, records with
-≥ 1 artefact-clean row only, ranked by tier (intact, uncertain, not_assessed,
-broken), then lowest `schema_E_max` (max over the two parent structures;
-missing last), then highest GA margin, then max split reads and sample count;
-top 25, followed by the named cases (FLI1::ERG, STAT5B::STAT5A, GPC4::GPC3,
-GPC6::GPC5, GPC3::GPC4, LPO::MPO, PIM3::ULK1) when they did not make the cut,
-marked in `shortlist_reason`.
+`shortlist_for_structure.tsv`: one record per fusion and Pfam family. Within each
+stage records are ordered by tier (intact, uncertain, not_assessed, broken),
+then lowest `schema_E_max` (max over the two parent structures; missing last),
+then highest GA margin, then max split reads and sample count. Up to 25 rows:
+
+1. `ranked` — records with at least one screen row on which all six pilot
+   artefact flags pass;
+2. `fill` — records with a row passing every flag except the two *context*
+   flags, `genomic_similarity` and `sample_burden`. These fire on > 99 % of
+   shared-domain records (2930 and 2923 of 2948 in the pilot run): the partners
+   are paralogues, usually in segmental duplications, and the samples carry many
+   shared-family calls, so within this set the two flags do not separate
+   candidates. The flags that fired are named in `shortlist_reason`
+   (`fill;flagged:...`).
+
+The named cases (FLI1::ERG, STAT5B::STAT5A, GPC4::GPC3, GPC6::GPC5,
+GPC3::GPC4, LPO::MPO, PIM3::ULK1) are then appended when absent, as
+`named_case;flagged:...`. Records carry both `artefact_clean_rows` and
+`artefact_core_clean_rows`.

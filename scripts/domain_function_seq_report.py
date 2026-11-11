@@ -183,9 +183,10 @@ def main() -> int:
 
     out.append("\n## Shortlist for PR 2 structure prediction\n")
     out.append(
-        "Ranked by tier, then lowest SCHEMA E (max of the two parent structures), then GA "
-        "margin, then read support; best record per fusion+family; only records with at least "
-        "one artefact-clean row, then the named cases (marked).\n"
+        "One record per fusion+family, ordered by tier, then lowest SCHEMA E (max of the two "
+        "parent structures), then GA margin, then read support. `ranked`: a row passes all six "
+        "artefact flags; `fill`: a row passes all but the near-universal genomic_similarity and "
+        "sample_burden flags (fired flags named); `named_case`: appended named fusions.\n"
     )
     out.append(table(CANDIDATE_HEADER, candidate_rows(short)))
 

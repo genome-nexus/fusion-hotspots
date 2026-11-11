@@ -51,6 +51,11 @@ ARTEFACT_FLAG_COLUMNS = (
 )
 """Pilot artefact flags (``pass`` / ``flagged`` / ``not_assessed``) carried per row."""
 
+CONTEXT_FLAG_COLUMNS = ("genomic_similarity_flag", "sample_burden_flag")
+"""Flags raised on almost every shared-domain fusion (paralogous partners in segmental
+duplications; samples with many shared-family calls), so they do not discriminate
+within this set. ``artefact_core_clean_rows`` ignores them; it is reported, not hidden."""
+
 
 @dataclass
 class ParentDomain:
@@ -108,6 +113,8 @@ class ChimeraRecord:
     artefact_flag_counts: dict[str, dict[str, int]] = field(default_factory=dict)
     artefact_clean_rows: int = 0
     """Rows on which every pilot artefact flag is ``pass``."""
+    artefact_core_clean_rows: int = 0
+    """Rows on which every flag except :data:`CONTEXT_FLAG_COLUMNS` is ``pass``."""
     screen_notes: list[str] = field(default_factory=list)
 
     @property
@@ -264,13 +271,16 @@ def add_row(record: ChimeraRecord, row: Mapping[str, Any]) -> None:
         record.max_split_reads = max(record.max_split_reads or 0, split)
     if paired is not None:
         record.max_paired_end_reads = max(record.max_paired_end_reads or 0, paired)
-    clean = True
+    clean = core_clean = True
     for column in ARTEFACT_FLAG_COLUMNS:
         value = str(row.get(column) or "not_assessed")
         counts = record.artefact_flag_counts.setdefault(column, {})
         counts[value] = counts.get(value, 0) + 1
         clean = clean and value == "pass"
+        if column not in CONTEXT_FLAG_COLUMNS:
+            core_clean = core_clean and value == "pass"
     record.artefact_clean_rows += int(clean)
+    record.artefact_core_clean_rows += int(core_clean)
 
 
 def build_records(
