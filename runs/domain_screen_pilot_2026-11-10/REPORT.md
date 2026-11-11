@@ -22,6 +22,7 @@
 | `flag_summary.json` | Screen summaries and flag counts per cohort. |
 | `clean_call_audit.{json,md}` | The clean-call breakdown below (`scripts/domain_screen_pilot_clean_audit.py`). |
 | `tier2_candidates.json.gz` | 609 distinct junctions that pass every check except sample burden (`--tier2`). |
+| `tier2_exclusions.json` | Rows left out of tier 2 because a breakpoint-window measurement is missing or malformed, by reason (empty in this run). |
 | `report_tables.md` | Generated: every non-trivial call grouped by distinct junction (with every sample and its reads), the FLI1::ERG rows and full MSK flag reasons (`scripts/domain_screen_pilot_report.py`). |
 | `run_manifest.json` | Commit SHAs, builds, service URLs, cache dirs, SHA-256 of every input, exact command lines, attempt timings. |
 
@@ -74,7 +75,7 @@ MSK non-trivial calls with flags (full reasons in `report_tables.md`):
 | KMT2B::KMT2E | P-0037777-T01-IM6 | PF00628, PF00856 | splice_site_unresolved (2 rows) | - | 0/8 IMPRECISE | unknown | n/a (no CDS) | **FLAG**: 3' in FLAM_C (Alu); 0 split reads | pass |
 | ADAMTSL1::PTPRD | P-0063201-T01-IM7 | PF07679 | splice_site_unresolved | - | 10/11 PRECISE | unknown | n/a (no CDS) | pass | pass |
 
-The MSK FLI1::ERG sample (P-0053737) carries 3 shared-family calls: FLI1::ERG (two family rows) and HCK::LYN. All are paired-end-only and imprecise, and each pair's breakpoint regions are ≥80% identical over ≥183 bp. This is the sample-level artefact signature the brief described.
+The MSK FLI1::ERG sample (P-0053737) carries 3 distinct shared-family calls: EP300::CREBBP (0 split / 40 pairs; `not_split_on_both` for all seven of its families), FLI1::ERG (0/6) and HCK::LYN (0/6). All three are paired-end-only and imprecise. Two of them have similar breakpoint regions: FLI1::ERG at 83.3% over 275 bp (±150 bp) and HCK::LYN at 80.9% over 183 bp. EP300::CREBBP's do not pass the threshold: 86.9% over only 61 bp (±150 bp) and 76.0% over 612 bp (±500 bp). This is the sample-level artefact signature the brief described.
 
 ## The TARGET FLI1::ERG row
 
@@ -161,7 +162,7 @@ Each flag is one of:
 
 None passes silently, and every flag has a reason column in the TSVs.
 
-- **`paralog_sequence_flag`.** Takes 50 nt of the fused CDS either side of the predicted junction and aligns it locally to each single candidate source: the 5' and 3' parent CDS, and the CDS of every Ensembl 116 Compara paralogue of either partner. **Flagged** when one sequence covers ≥90% of the window at ≥90% identity, i.e. one unfused transcript would explain the "junction". `not_assessed` when there is no fused CDS (`splice_site_unresolved`).
+- **`paralog_sequence_flag`.** Takes 50 nt of the fused CDS either side of the predicted junction and aligns it locally to each single candidate source: the 5' and 3' parent CDS, and the CDS of every Ensembl 116 Compara paralogue of either partner. **Flagged** when one sequence covers ≥90% of the window at ≥90% identity, i.e. one unfused transcript would explain the "junction". `not_assessed` when there is no fused CDS (`splice_site_unresolved`), or when the comparison set is incomplete (a missing parent CDS, a failed or unresolved paralogue lookup, or a Compara member without a CDS), unless an available sequence already explains the junction (then `flagged`). A verified "no paralogues" is complete and noted in the reason. Before full traceback, targets are screened by local-alignment score with a cutoff derived from the window length (`explaining_min_score`), so windows clipped at the CDS ends (< 100 nt) are tested as strictly as full ones.
 - **`genomic_similarity_flag`.** Flagged when any of these sub-checks fires (each has its own column):
   - **Breakpoint similarity.** Reference ±150 bp and ±500 bp around the two breakpoints, aligned locally in both orientations. Flagged at **≥80% identity over ≥100 aligned bp**. Percent identity and aligned length are reported for both windows.
   - **`breakpoint_repeat_flag`.** The breakpoint base lies in a UCSC `genomicSuperDups` or `rmsk` element of the row's own build (hg19 for MSK, hg38 for the open tables). Both tracks were downloaded and used, so this check is assessed for every translated row.
@@ -192,8 +193,8 @@ In the RNA tables the sample-burden sub-check fires on almost every row: one RNA
 | Fusion | Cohort | Sample (tumour type) | Family | Class | Junction peptide | Reads split/pairs, FFPM | Frame (translated / alt) | Note |
 |---|---|---|---|---|---|---|---|---|
 | GPC6::GPC5 | TCGA | LIHC-CC-A3M9-TP | PF01153 | gap_or_deletion | `AKGFSLADIPYQEIAG\|MPDDMNFSDVKQIHQ` | 8/34, 0.60 | in / out | same-strand neighbours 361 kb apart on chr13; 32 aa of GPC6 + 47 aa of GPC5, ~470 aa deleted |
-| GPC4::GPC3 | TCGA | TGCT-2G-AAKD-TP | PF01153 | gap_or_deletion | `SKGFNKNDAPLHEINE\|LAYDLDVDDAPGNSQ` | 8/25, 0.97 | in / out | same-strand neighbours 121 kb apart on Xq26; 41 aa of GPC4 + 52 aa of GPC3, ~470 aa deleted |
-| GPC3::GPC4 | TCGA | LIHC-2Y-A9GU-TP | PF01153 | tandem | `GDGMIKVKNQLRFLAG\|DHLKICPQGSTCCSQ` | 5/23, 0.52 | in / out | same pair in the other order, 257 kb apart |
+| GPC4::GPC3 | TCGA | TGCT-2G-AAKD-TP | PF01153 | gap_or_deletion | `SKGFNKNDAPLHEINE\|LAYDLDVDDAPGNSQ` | 8/25, 0.97 | in / out | **neighbouring genes** (same strand, 121 kb apart on Xq26, inside the 200 kb cut-off, so read-through by this report's definition; the 5'→3' order runs against GPC3/GPC4 transcription); 41 aa of GPC4 + 52 aa of GPC3, ~470 aa deleted |
+| GPC3::GPC4 | TCGA | LIHC-2Y-A9GU-TP | PF01153 | tandem | `GDGMIKVKNQLRFLAG\|DHLKICPQGSTCCSQ` | 5/23, 0.52 | in / out | same pair in the other order, same strand, 257 kb apart (outside the 200 kb cut-off) |
 | LPO::MPO | TCGA | 3 LAML (AB-2862, AB-2982, AB-3012) | PF03098 | clean | `CEFINTTARVPCFLAG\|DTRSSEMPELTSMHT` | 1–2/4–6, 0.07–0.11 | in / out | neighbours 23 kb apart on chr17, opposite strands; MPO is very highly expressed in AML |
 | PIM3::ULK1 | TARGET (both tables) | TARGET-10-PARWRJ-09B | PF00069 | tandem (76 aa insertion) | `GSGALLKDTVYTDFDA\|MRTLSEDTIRLFLQQ` | 2/0, 0.019, FI TRUE | in / out | kinase domains of unrelated kinases |
 | COL1A1::COL18A1 | TARGET (both tables) | TARGET-40-PAMRHD-01A | PF01391 | tandem | `GPPGPRGRTGDAGPV\|GPPGPPGREGPPGRT` | 2/1, 0.034, FI FALSE | in / out | collagen repeats |
@@ -210,7 +211,7 @@ In the RNA tables the sample-burden sub-check fires on almost every row: one RNA
 | COL3A1::COL1A1 | TCGA | BLCA-XF-A9SZ-TP | PF01391 | gap_or_deletion | `GQQGAIGSPGPAGPR\|GPQGPRGDKGETGEQ` | 1/5, 0.13 | in / out | |
 | SPNS2::SPNS3 | TCGA | BLCA-DK-A1A3-TP | PF07690 | tandem | `TLLFSNWAITADILM\|VMPCLEAVALILLIL` | 1/4, 0.097 | in / out | |
 
-All of these are in frame under the STAR-Fusion convention, and all three flags pass for every one. Every candidate has thin support, and nearly all are adjacent or co-expressed paralogues. The best-supported are the glypican pairs (8 junction reads; FFPM 0.5–1.0, in liver cancer and a germ-cell tumour). Those are same-strand tandem paralogues 121–361 kb apart, just past the 200 kb read-through cut-off, and the two gap calls keep only ~40–50 aa from each side. A read-through or local rearrangement is more likely than a domain-completing fusion. Validation would need the reads.
+All of these are in frame under the STAR-Fusion convention, and all three flags pass for every one. Every candidate has thin support, and nearly all are adjacent or co-expressed paralogues. The best-supported are the glypican pairs (8 junction reads; FFPM 0.5–1.0, in liver cancer and a germ-cell tumour). They are same-strand tandem paralogues: GPC4::GPC3 is 121 kb apart, inside the 200 kb cut-off, so it counts as neighbouring-gene read-through by this report's definition. GPC3::GPC4 (257 kb) and GPC6::GPC5 (361 kb) fall just outside it. The two gap calls keep only ~40–50 aa from each side. A read-through or local rearrangement is more likely than a domain-completing fusion. Validation would need the reads.
 
 ### Tier 2: every check except sample burden
 
@@ -219,7 +220,7 @@ All of these are in frame under the STAR-Fusion convention, and all three flags 
 - clean, ambiguous, tandem or gap;
 - in frame (translated convention);
 - paralog-sequence pass and normal-recurrence pass;
-- no breakpoint-window similarity, no segdup/repeat, split reads present;
+- breakpoint-window similarity measured on both windows (numeric identity and aligned length) and not high; no segdup/repeat; split reads present (rows without both window measurements are excluded and counted in `tier2_exclusions.json`: 0 in this run);
 - not read-through;
 - both sides contribute ≥10 aa and ≥10% of the domain.
 
@@ -245,6 +246,42 @@ Of these, 554 are Compara paralogues. The top 15 by number of samples:
 
 Tier 2 is the same artefact class with the paralogues diverged below 90% nucleotide identity. It is dominated by fibroblast collagens, epithelial keratins, filamins and prostate KLKs: highly expressed, co-expressed paralogues that recur across samples.
 
+## Review re-run (832a267)
+
+The #154 review found four ways a check could pass on missing data. Each now has a regression test that fails on 854bb1d and passes at 832a267:
+
+1. A missing parent CDS, or a failed paralogue lookup, let `paralog_sequence_flag` pass.
+2. A missing split-read count did not propagate to `genomic_similarity_flag`.
+3. The traceback cutoff was fixed for 100 nt windows.
+4. Tier 2 read blank window measurements as zero.
+
+Only the flag pass, tables, audit and packaging were re-run. The screen outputs are unchanged.
+
+| Measure (shared-family rows) | MSK 50k | TARGET SF | TARGET cons. | DepMap | TCGA+GTEx |
+|---|---|---|---|---|---|
+| any flag value changed | 0 | 0 | 0 | 0 | 0 |
+| rows whose paralogue comparison is incomplete (now `not_assessed`) | 0 | 0 | 0 | 0 | 0 |
+| `read_evidence_flag` not_assessed | 0 | 0 | 0 | 0 | 0 |
+| best paralogue target changed (reason or target only) | 2 | 341 | 376 | 275 | 761 |
+| best-target identity changed (clipped windows < 100 nt) | 0 | 1 | 1 | 37 | 56 |
+| all three flags pass, before → after | 15 → 15 | 54 → 54 | 50 → 50 | 0 → 0 | 86 → 86 |
+| clean rows passing all three flags, before → after | 0 → 0 | 0 → 0 | 0 → 0 | 0 → 0 | 11 → 11 |
+
+Other measures:
+
+- **Tier 1:** 25 → 25 rows; 18 → 18 junctions.
+- **Tier 2:** 609 → 609 junctions; 0 rows excluded for missing window measurements.
+- **Top-10 list:** unchanged.
+
+The review's bugs were real but latent in these data:
+
+- Every translated row's parent CDS and every Compara member's CDS is in the Ensembl 116 release files.
+- All MSK GRCh37 homology lookups, re-fetched under a new cache key that records completeness, succeeded.
+- Every row has a split-read count and both window measurements.
+
+The cutoff fix changed the best single-sequence target on short windows. One example is PTMA::PTMS: before, the PTMA parent at 91.0% over 82% of the window; after, the PTMS parent at 82.3% over 100%. None of these changes reaches the 90%/90% "explains" threshold.
+
+
 ## How the pilot was run
 
 - **Inputs.**
@@ -263,7 +300,7 @@ Tier 2 is the same artefact class with the paralogues diverged below 90% nucleot
 - **Determinism.** Re-running MSK and both TARGET tables at the final screen commit gave byte-identical TSVs and summaries.
 - **Commits.**
   - Screens: a8a33b1 (MSK, TARGET ×2, TCGA+GTEx) and 13002e3 (DepMap). The only change between them percent-encodes gene symbols in single Genome Nexus lookups, which affects the DepMap symbol `THRA1/BTR`.
-  - Flags: 13002e3.
+  - Flags: 832a267 (review fixes, after #154 review; the 13002e3 flag outputs are superseded, see [Review re-run](#review-re-run-832a267)).
 - **Flag data.**
   - Reference windows come from UCSC `hg38.2bit` / `hg19.2bit`, matched base-for-base against 112 Ensembl REST windows. The Ensembl sequence endpoint was taking 15–55 s per 1 kb region during the pilot.
   - Paralogue and parent CDS come from Ensembl 116 release files (`cds.all`, `pep.all`, Compara `protein_default` homologies; BSD checksums match Ensembl's `CHECKSUMS`). MSK GRCh37 rows use grch37.rest.ensembl.org.

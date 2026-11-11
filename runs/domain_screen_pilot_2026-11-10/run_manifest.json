@@ -1,6 +1,6 @@
 {
   "pilot": "domain_screen_pilot_2026-11-10",
-  "code_commit_sha": "13002e33d24c8b53fd023c4979e186111f21d4bf",
+  "code_commit_sha": "832a267923cb38e0cdc219852b817d5696ebd7d0",
   "screen_commit_shas": {
     "msk_impact_50k_2026": "a8a33b1fa376052452e24b5a02138987ab615812",
     "target_starfusion": "a8a33b1fa376052452e24b5a02138987ab615812",
@@ -9,7 +9,8 @@
     "depmap_22q2": "13002e33d24c8b53fd023c4979e186111f21d4bf"
   },
   "screen_sha_note": "a8a33b1..13002e3 only percent-encodes gene symbols in Genome Nexus single lookups (affects the DepMap symbol THRA1/BTR); MSK, TARGET x2 outputs at a8a33b1 are byte-identical to earlier-SHA runs",
-  "flag_commit_sha": "13002e33d24c8b53fd023c4979e186111f21d4bf",
+  "flag_commit_sha": "832a267923cb38e0cdc219852b817d5696ebd7d0",
+  "flag_rerun_note": "flag pass re-run at 832a267 after the #154 review on the unchanged screen outputs; 13002e3 flag outputs superseded (no flag value changed)",
   "branch": "polly/domain-screen-pilot",
   "base": "origin/main dd2bda1",
   "mode": "any-domain",
@@ -256,6 +257,10 @@
     "2026-11-11T06:26:13Z PIPELINE DONE",
     "2026-11-11T06:26:31Z flags start at 13002e3",
     "2026-11-11T06:44:04Z flags done",
+    "FINALIZE DONE",
+    "2026-11-11T16:05:19Z review fixes committed at 832a267; flag-only re-run on existing screens (854bb1d outputs saved in before_854/)",
+    "2026-11-11T16:05:20Z flags start at 832a267",
+    "2026-11-11T18:03:53Z flags done",
     "FINALIZE DONE"
   ],
   "untrusted_input_handling": "each download in its own new directory under runs/.domain_screen_pilot_work/; every Python process that read them ran with -I"

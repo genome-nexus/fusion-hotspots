@@ -77,7 +77,7 @@ Rows of class clean_reconstitution, ambiguous_junction_register, tandem_duplicat
   - genomic: pass: breakpoint regions <80% over >=100 bp; no segdup/repeat; single call in sample; split reads present (identity/aligned bp: +/-150 0.6866/67, +/-500 0.598/490)
   - normal: pass: exact junction absent from all TCGA/GTEx normal samples; gene pair in TCGA+GTEx: 0 normal, 0 cell-line, 0 tumor rows
 - **KLK3::PRSS8** tcga_gtex PRAD-G9-6354-TP PF00089 (ambiguous_junction_register); chr19:50858595 / chr16:31132335 GRCh38; transcripts NM_001648 / NM_002773; junction `MLCAGRWTGGKSTCS|GDSGGPLSCPVEGLW`; reads 1/1 FFPM 0.0354; frame in_frame / alt out_of_frame
-  - paralog: pass: best single sequence (15 tested): PRSS8:parent:ENST00000317508 86.7% identity over 96/100 nt (no Compara paralogues for PRSS8)
+  - paralog: pass: best single sequence (15 tested): PRSS8:parent:ENST00000317508 86.7% identity over 96/100 nt (PRSS8 has no Compara paralogues)
   - genomic: pass: breakpoint regions <80% over >=100 bp; no segdup/repeat; single call in sample; split reads present (identity/aligned bp: +/-150 0.7358/53, +/-500 0.6557/122)
   - normal: pass: exact junction absent from all TCGA/GTEx normal samples; gene pair in TCGA+GTEx: 0 normal, 0 cell-line, 10 tumor rows
 - **AFM::ALB** tcga_gtex LIHC-UB-A7MB-TP PF00273 (clean_reconstitution); chr4:73488759 / chr4:73413420 GRCh38; transcripts NM_001133 / NM_000477; junction `DGCCEGDVVQCIRDT|ADLAKYICENQDSIS`; reads 2/0 FFPM 0.0312; frame in_frame / alt out_of_frame
