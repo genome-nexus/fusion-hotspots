@@ -6,6 +6,7 @@ Usage::
         --screen COHORT=BUILD=DIR ...           # each DIR holds domain_screen.tsv
         --tcga-gtex NORMALIZED_TCGA_GTEX.tsv \\
         --repeats BUILD=SUPERDUPS.txt.gz,RMSK.txt.gz ...
+        --reference BUILD=GENOME.2bit ...        # local reference windows (else Ensembl)
         --cache-dir FRESH_FLAG_CACHE --output-dir runs/<pilot>
 
 Inputs are read as data only. For every cohort it writes
@@ -28,6 +29,7 @@ from cfh.cohort.artefact_flags import (
     FLAG_COLUMNS,
     EnsemblSequenceSource,
     RepeatTracks,
+    TwoBitReference,
     annotate_rows,
 )
 from cfh.cohort.domain_screen import SCREEN_COLUMNS
@@ -57,6 +59,8 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--screen", action="append", required=True)
     parser.add_argument("--tcga-gtex", type=Path, required=True)
     parser.add_argument("--repeats", action="append", default=[])
+    parser.add_argument("--reference", action="append", default=[])
+    parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--cache-dir", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     args = parser.parse_args(argv)
@@ -76,8 +80,15 @@ def main(argv: list[str] | None = None) -> None:
         superdups, rmsk = (Path(part) for part in files.split(","))
         repeat_tracks[build] = RepeatTracks(build, superdups, rmsk)
 
+    references = {
+        build: TwoBitReference(path)
+        for build, path in (spec.split("=", 1) for spec in args.reference)
+    }
     sequences = {
-        build: EnsemblSequenceSource(build, args.cache_dir / f"flags_{build}") for build in builds
+        build: EnsemblSequenceSource(
+            build, args.cache_dir / f"flags_{build}", reference=references.get(build)
+        )
+        for build in builds
     }
     liftover = sequences["GRCh37"].liftover_to_grch38 if "GRCh37" in sequences else None
 
@@ -95,6 +106,7 @@ def main(argv: list[str] | None = None) -> None:
         tcga_gtex_table=args.tcga_gtex,
         liftover=liftover,
         progress=lambda line: print(line, file=sys.stderr, flush=True),
+        prefetch_workers=args.workers,
     )
 
     args.output_dir.mkdir(parents=True, exist_ok=True)

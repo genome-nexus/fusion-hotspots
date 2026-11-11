@@ -13,15 +13,18 @@ from cfh.cohort.artefact_flags import (
     PASS,
     EnsemblSequenceSource,
     RepeatTracks,
+    TwoBitReference,
     annotate_rows,
     best_single_sequence_match,
     breakpoint_similarity,
+    breakpoint_windows,
     chromosome_name,
     genomic_flags,
     junction_key,
     local_align,
     normal_flag,
     paralog_flag,
+    prefetch_sequences,
     reverse_complement,
     sample_call_counts,
     tcga_gtex_index,
@@ -400,6 +403,68 @@ def test_annotate_rows_fills_every_column_and_marks_unshared_rows(tmp_path):
     assert annotated[1]["normal_recurrence_flag"] == NOT_APPLICABLE
 
 
+def test_breakpoint_windows_slice_the_widest_window_around_the_breakpoint():
+    genome = "".join("ACGT"[(i * 7) % 4] for i in range(5000))
+    sequences = FakeSequences(regions={"1": genome})
+    windows = breakpoint_windows(sequences, "1", 2000)
+    assert sequences.region_calls == [("1", 1500, 2500)]
+    assert windows[500] == genome[1499:2500]
+    assert windows[150] == genome[1849:2150]
+    assert len(windows[150]) == 301 and windows[150][150] == genome[1999]
+
+    clipped = breakpoint_windows(sequences, "1", 100)
+    assert clipped[150] == genome[0:250] and clipped[500] == genome[0:600]
+    assert breakpoint_windows(FakeSequences(), "1", 100) == {150: None, 500: None}
+
+
+def test_untranslated_rows_are_not_applicable_but_count_toward_sample_burden(tmp_path):
+    table = _tcga_table(tmp_path / "tcga.tsv", [])
+    sequences = FakeSequences(regions=_genome(False))
+    rows = [
+        _row(),
+        _row(reconstitution_class="no_transcript_model", three_prime_gene="CCC"),
+    ]
+    annotated = annotate_rows(
+        rows,
+        sequences={"GRCh38": sequences},
+        repeat_tracks={"GRCh38": None},
+        repeat_unavailable={"GRCh38": "tracks not downloaded"},
+        tcga_gtex_table=table,
+        prefetch_workers=1,
+    )
+    untranslated = annotated[1]
+    for flag in ("paralog_sequence", "genomic_similarity", "normal_recurrence"):
+        assert untranslated[f"{flag}_flag"] == NOT_APPLICABLE
+        assert "no_transcript_model" in untranslated[f"{flag}_reason"]
+    assert annotated[0]["sample_shared_family_calls"] == 2
+    # one widest-window request per breakpoint, made by the prefetch and then cached
+    assert sorted(set(sequences.region_calls)) == [("1", 500, 1500), ("2", 1500, 2500)]
+
+
+def test_prefetch_requests_each_fetch_once_per_build():
+    calls = []
+
+    class Recording(FakeSequences):
+        def paralog_cds(self, gene):
+            calls.append(("paralogs", gene))
+            return {}
+
+        def transcript_cds(self, transcript_id):
+            calls.append(("cds", transcript_id))
+            return None
+
+    rows = [_row(junction_context_nt="ACGT" * 25), _row(junction_context_nt="ACGT" * 25)]
+    sequences = Recording(regions=_genome(False))
+    prefetch_sequences(rows, {"GRCh38": sequences}, workers=3)
+    assert sorted(calls) == [
+        ("cds", "ENST_A"),
+        ("cds", "ENST_B"),
+        ("paralogs", "AAA"),
+        ("paralogs", "BBB"),
+    ]
+    assert len(sequences.region_calls) == 2
+
+
 # --- Ensembl client ------------------------------------------------------------------
 
 
@@ -469,3 +534,104 @@ def test_ensembl_source_caches_per_build_and_parses_homology(tmp_path):
     old = EnsemblSequenceSource("GRCh37", tmp_path, session=session)
     assert old.liftover_to_grch38("21", 5) == ("21", 9)
     assert old.host == "https://grch37.rest.ensembl.org"
+
+
+def test_alignments_are_memoised_across_rows_sharing_a_junction():
+    from cfh.cohort import artefact_flags
+
+    query = "ACGTTGCAAGCTTGACCTGAAGGTCAGTCCATGCAAGTCGATCGGATTACAGT"
+    targets = {"b": "TT" + query + "GG", "a": "CCCC"}
+    hits = artefact_flags._best_single_sequence_match.cache_info().hits
+    first = artefact_flags.best_single_sequence_match(query, targets)
+    again = artefact_flags.best_single_sequence_match(query, dict(reversed(targets.items())))
+    assert first is again and first is not None and first.target == "b"
+    assert artefact_flags._best_single_sequence_match.cache_info().hits == hits + 1
+
+    window = query * 3
+    assert artefact_flags.breakpoint_similarity(window, window, 150) is (
+        artefact_flags.breakpoint_similarity(window, window, 150)
+    )
+
+
+def test_ensembl_source_retries_timeouts_then_succeeds(tmp_path):
+    import requests
+
+    class Flaky(FakeSession):
+        def get(self, url, params=None, headers=None, timeout=None):
+            self.calls.append((url, params))
+            if len(self.calls) == 1:
+                raise requests.ReadTimeout("slow")
+            return FakeResponse({"seq": "ACGT"})
+
+    session = Flaky({})
+    source = EnsemblSequenceSource("GRCh38", tmp_path, session=session, backoff_seconds=0)
+    assert source.region("chr1", 10, 13) == "ACGT"
+    assert len(session.calls) == 2
+
+    class Down(FakeSession):
+        def get(self, url, params=None, headers=None, timeout=None):
+            raise requests.ConnectionError("down")
+
+    failing = EnsemblSequenceSource(
+        "GRCh38", tmp_path / "x", session=Down({}), backoff_seconds=0, max_retries=2
+    )
+    with pytest.raises(requests.ConnectionError):
+        failing.region("chr1", 10, 13)
+
+
+def _write_two_bit(path, sequences, n_blocks=None, mask_blocks=None):
+    import struct
+
+    code = {"T": 0, "C": 1, "A": 2, "G": 3, "N": 0}
+    names = list(sequences)
+    header = struct.pack("<IIII", TwoBitReference.SIGNATURE, 0, len(names), 0)
+    index_size = sum(1 + len(name) + 4 for name in names)
+    offset = len(header) + index_size
+    index, records = b"", b""
+    for name in names:
+        sequence = sequences[name]
+        blocks = (n_blocks or {}).get(name, [])
+        masks = (mask_blocks or {}).get(name, [])
+        record = struct.pack("<II", len(sequence), len(blocks))
+        record += b"".join(struct.pack("<I", start) for start, _ in blocks)
+        record += b"".join(struct.pack("<I", size) for _, size in blocks)
+        record += struct.pack("<I", len(masks))
+        record += b"".join(struct.pack("<I", start) for start, _ in masks)
+        record += b"".join(struct.pack("<I", size) for _, size in masks)
+        record += struct.pack("<I", 0)
+        padded = sequence.upper() + "T" * (-len(sequence) % 4)
+        record += bytes(
+            sum(code[base] << shift for base, shift in zip(padded[i : i + 4], (6, 4, 2, 0)))
+            for i in range(0, len(padded), 4)
+        )
+        index += struct.pack("B", len(name)) + name.encode() + struct.pack("<I", offset)
+        offset += len(record)
+        records += record
+    path.write_bytes(header + index + records)
+    return path
+
+
+def test_two_bit_reference_reads_regions_with_n_blocks_and_ignores_masking(tmp_path):
+    one = _random_dna(1003, 21)
+    two = _random_dna(50, 22)
+    path = _write_two_bit(
+        tmp_path / "g.2bit",
+        {"chr1": one, "chrM": two},
+        n_blocks={"chr1": [(100, 10)]},
+        mask_blocks={"chr1": [(0, 500)]},
+    )
+    reference = TwoBitReference(path)
+    expected = one[:100] + "N" * 10 + one[110:]
+    assert reference.region("1", 1, 1003) == expected
+    for start, end in ((1, 1), (2, 9), (95, 115), (998, 1003), (1000, 2000)):
+        assert reference.region("chr1", start, end) == expected[start - 1 : end]
+    assert reference.region("MT", 3, 7) == two[2:7]
+    assert reference.region("chr9", 1, 5) is None
+    assert reference.region("1", 2000, 2100) is None
+
+    sequences = EnsemblSequenceSource("GRCh38", tmp_path / "cache", reference=reference)
+    assert sequences.region("chr1", -5, 4) == expected[:4]
+
+    (tmp_path / "bad.2bit").write_bytes(b"\0" * 16)
+    with pytest.raises(ValueError, match="not a 2bit"):
+        TwoBitReference(tmp_path / "bad.2bit")

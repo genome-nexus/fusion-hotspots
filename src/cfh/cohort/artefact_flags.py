@@ -39,17 +39,22 @@ from __future__ import annotations
 import csv
 import gzip
 import json
+import struct
+import threading
 import time
 from bisect import bisect_left
 from collections import Counter, defaultdict
 from collections.abc import Iterable, Iterator, Mapping, Sequence
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Protocol
 
 import numpy as np
 import requests
 
+from cfh.mapping.genome_nexus_source import TRANSIENT_REQUEST_ERRORS
 from cfh.mapping.junction_translation import normalize_genome_build
 from cfh.mapping.transcript_models import check_cache_provenance
 
@@ -249,7 +254,16 @@ def best_single_sequence_match(query: str, targets: Mapping[str, str]) -> Sequen
     All targets are scored at once; the best-scoring local alignment of each
     target scoring at least :data:`EXPLAINING_MIN_SCORE`, and of the overall
     best target, is traced back. ``None`` when no target aligns at all.
+    Memoised on the query and the whole target set: many rows share a junction.
     """
+    return _best_single_sequence_match(query, tuple(sorted(targets.items())))
+
+
+@lru_cache(maxsize=8192)
+def _best_single_sequence_match(
+    query: str, target_items: tuple[tuple[str, str], ...]
+) -> SequenceMatch | None:
+    targets = dict(target_items)
     scores = target_scores(query, targets)
     if not scores or max(scores.values()) <= 0:
         return None
@@ -281,6 +295,27 @@ class GenomicSimilarity:
         )
 
 
+def breakpoint_windows(
+    sequences: SequenceSource, chromosome: str, position: int
+) -> dict[int, str | None]:
+    """Reference ``+/-w`` bp around ``position`` for every ``w`` in :data:`GENOMIC_WINDOWS`.
+
+    One request for the widest window; narrower windows are sliced from it
+    around the breakpoint base (windows are clipped at the chromosome start).
+    """
+    widest = max(GENOMIC_WINDOWS)
+    start = max(1, position - widest)
+    sequence = sequences.region(chromosome, start, position + widest)
+    if not sequence:
+        return dict.fromkeys(GENOMIC_WINDOWS)
+    centre = position - start
+    return {
+        window: sequence[max(0, centre - window) : centre + window + 1]
+        for window in GENOMIC_WINDOWS
+    }
+
+
+@lru_cache(maxsize=8192)
 def breakpoint_similarity(five_window: str, three_window: str, window: int) -> GenomicSimilarity:
     """Best local alignment of two breakpoint windows in either orientation."""
     same = local_align(five_window, three_window)
@@ -317,6 +352,91 @@ class SequenceSource(Protocol):
     def transcript_cds(self, transcript_id: str) -> str | None: ...
 
 
+class TwoBitReference:
+    """Read-only UCSC ``.2bit`` genome: forward-strand bases of a region.
+
+    Implements the published format (header, sequence index, then per
+    sequence its size, N blocks, soft-mask blocks and 2-bit packed bases).
+    Soft-masking is ignored, so bases are upper case like Ensembl's; N blocks
+    read as ``N``. Chromosomes are matched as ``chrN`` or ``N`` (``MT`` ->
+    ``chrM``).
+    """
+
+    SIGNATURE = 0x1A412743
+
+    def __init__(self, path: str | Path):
+        self.path = Path(path)
+        self._handle = self.path.open("rb")
+        self._lock = threading.Lock()
+        header = self._handle.read(16)
+        for order in ("<", ">"):
+            signature, version, count, _ = struct.unpack(order + "IIII", header)
+            if signature == self.SIGNATURE:
+                break
+        else:
+            raise ValueError(f"{self.path} is not a 2bit file")
+        if version not in (0, 1):
+            raise ValueError(f"{self.path}: unsupported 2bit version {version}")
+        self._order = order
+        offset_format = order + ("Q" if version == 1 else "I")
+        offset_size = struct.calcsize(offset_format)
+        self._offsets: dict[str, int] = {}
+        for _ in range(count):
+            (size,) = struct.unpack("B", self._handle.read(1))
+            name = self._handle.read(size).decode("ascii")
+            (self._offsets[name],) = struct.unpack(offset_format, self._handle.read(offset_size))
+        self._layout: dict[str, tuple[int, list[tuple[int, int]], int]] = {}
+
+    def _name(self, chromosome: str) -> str | None:
+        bare = chromosome_name(chromosome)
+        if bare is None:
+            return None
+        for name in (f"chr{'M' if bare == 'MT' else bare}", bare):
+            if name in self._offsets:
+                return name
+        return None
+
+    def _read_ints(self, count: int) -> list[int]:
+        return list(struct.unpack(f"{self._order}{count}I", self._handle.read(4 * count)))
+
+    def _sequence_layout(self, name: str) -> tuple[int, list[tuple[int, int]], int]:
+        """``(size, N blocks as (start, end), offset of the packed bases)``."""
+        if name not in self._layout:
+            self._handle.seek(self._offsets[name])
+            size, n_count = self._read_ints(2)
+            n_starts, n_sizes = self._read_ints(n_count), self._read_ints(n_count)
+            (mask_count,) = self._read_ints(1)
+            self._handle.seek(8 * mask_count + 4, 1)  # mask starts + sizes, reserved
+            blocks = [(start, start + length) for start, length in zip(n_starts, n_sizes)]
+            self._layout[name] = (size, blocks, self._handle.tell())
+        return self._layout[name]
+
+    def region(self, chromosome: str, start: int, end: int) -> str | None:
+        """Bases ``start..end`` (1-based, inclusive), clipped to the sequence."""
+        name = self._name(chromosome)
+        if name is None:
+            return None
+        with self._lock:
+            size, n_blocks, packed = self._sequence_layout(name)
+            begin, stop = max(0, start - 1), min(size, end)
+            if begin >= stop:
+                return None
+            self._handle.seek(packed + begin // 4)
+            data = self._handle.read((stop - 1) // 4 - begin // 4 + 1)
+        bases = "".join(_TWO_BIT_BYTE[byte] for byte in data)
+        first = begin - (begin // 4) * 4
+        sequence = list(bases[first : first + stop - begin])
+        for block_start, block_end in n_blocks:
+            for index in range(max(block_start, begin), min(block_end, stop)):
+                sequence[index - begin] = "N"
+        return "".join(sequence)
+
+
+_TWO_BIT_BYTE = [
+    "".join("TCAG"[(byte >> shift) & 3] for shift in (6, 4, 2, 0)) for byte in range(256)
+]
+
+
 class EnsemblSequenceSource:
     """Reference regions, paralogue CDS and liftover from Ensembl REST, cached per build."""
 
@@ -326,8 +446,12 @@ class EnsemblSequenceSource:
         cache_dir: str | Path,
         *,
         session: requests.Session | None = None,
-        max_retries: int = 4,
+        max_retries: int = 5,
+        backoff_seconds: float = 1.0,
+        timeout: float = 120,
+        reference: TwoBitReference | None = None,
     ):
+        """``reference``, when given, serves :meth:`region` locally instead of Ensembl."""
         build = normalize_genome_build(genome_build)
         if build not in ENSEMBL_REST:
             raise ValueError(f"no Ensembl REST host for genome build {genome_build!r}")
@@ -337,6 +461,9 @@ class EnsemblSequenceSource:
         check_cache_provenance(self.cache_dir, build, self.host)
         self.session = session or requests.Session()
         self.max_retries = max_retries
+        self.backoff_seconds = backoff_seconds
+        self.timeout = timeout
+        self.reference = reference
         self._memory: dict[str, Any] = {}
 
     def _cached(self, key: str, fetch: Any) -> Any:
@@ -354,16 +481,22 @@ class EnsemblSequenceSource:
 
     def _get(self, path: str, params: Mapping[str, str] | None = None) -> Any | None:
         for attempt in range(self.max_retries + 1):
-            response = self.session.get(
-                f"{self.host}{path}",
-                params=params,
-                headers={"Content-Type": "application/json"},
-                timeout=60,
-            )
+            try:
+                response = self.session.get(
+                    f"{self.host}{path}",
+                    params=params,
+                    headers={"Content-Type": "application/json"},
+                    timeout=self.timeout,
+                )
+            except TRANSIENT_REQUEST_ERRORS:
+                if attempt == self.max_retries:
+                    raise
+                time.sleep(self.backoff_seconds * 2**attempt)
+                continue
             if response.status_code not in _RETRY or attempt == self.max_retries:
                 break
             wait = float(response.headers.get("Retry-After", 0) or 0)
-            time.sleep(max(wait, 0.5 * 2**attempt))
+            time.sleep(max(wait, self.backoff_seconds * 2**attempt))
         if response.status_code in (400, 404):
             return None
         response.raise_for_status()
@@ -371,6 +504,8 @@ class EnsemblSequenceSource:
 
     def region(self, chromosome: str, start: int, end: int) -> str | None:
         """Forward-strand reference bases ``start..end`` (1-based, inclusive)."""
+        if self.reference is not None:
+            return self.reference.region(chromosome, max(1, start), end)
         chromosome = chromosome_name(chromosome) or ""
         start = max(1, start)
 
@@ -612,9 +747,10 @@ def genomic_flags(
     else:
         assert five_chrom and three_chrom and five_pos and three_pos
         high = []
+        five_windows = breakpoint_windows(sequences, five_chrom, five_pos)
+        three_windows = breakpoint_windows(sequences, three_chrom, three_pos)
         for window in GENOMIC_WINDOWS:
-            five_seq = sequences.region(five_chrom, five_pos - window, five_pos + window)
-            three_seq = sequences.region(three_chrom, three_pos - window, three_pos + window)
+            five_seq, three_seq = five_windows[window], three_windows[window]
             if not five_seq or not three_seq:
                 states.append(NOT_ASSESSED)
                 parts.append(f"+/-{window} bp reference unavailable")
@@ -798,6 +934,55 @@ def junction_key(
     return (lifted_five[0], lifted_five[1], lifted_three[0], lifted_three[1]), note
 
 
+UNFLAGGED_CLASSES = frozenset({"no_transcript_model"})
+"""Shared-family classes that never reach junction translation and are not flagged."""
+
+
+def prefetch_sequences(
+    rows: Sequence[Mapping[str, Any]],
+    sequences: Mapping[str, SequenceSource],
+    *,
+    workers: int,
+    progress: Any = None,
+) -> None:
+    """Warm each source's cache with every fetch the rows' flags will make."""
+    tasks: set[tuple[str, str, tuple[Any, ...]]] = set()
+    for row in rows:
+        build = normalize_genome_build(row.get("genome_build")) or ""
+        if build not in sequences:
+            continue
+        for side in ("five_prime", "three_prime"):
+            if row.get("junction_context_nt"):
+                tasks.add((build, "paralog_cds", (row[f"{side}_gene"],)))
+                transcript = row.get(f"{side}_ensembl_transcript")
+                if transcript:
+                    tasks.add((build, "transcript_cds", (transcript,)))
+            chromosome = chromosome_name(row.get(f"{side}_chromosome"))
+            position = _int(row.get(f"{side}_breakpoint"))
+            if chromosome and position:
+                tasks.add((build, "windows", (chromosome, position)))
+
+    def run(task: tuple[str, str, tuple[Any, ...]]) -> None:
+        build, kind, args = task
+        source = sequences[build]
+        if kind == "windows":
+            breakpoint_windows(source, *args)
+        else:
+            getattr(source, kind)(*args)
+
+    ordered = sorted(tasks, key=repr)
+    if progress is not None:
+        progress(f"prefetching {len(ordered)} sequence requests with {workers} workers")
+    if workers <= 1:
+        for task in ordered:
+            run(task)
+        return
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        for done, _ in enumerate(pool.map(run, ordered), start=1):
+            if progress is not None and done % 500 == 0:
+                progress(f"prefetched {done}/{len(ordered)}")
+
+
 def annotate_rows(
     rows: Sequence[dict[str, Any]],
     *,
@@ -807,8 +992,15 @@ def annotate_rows(
     tcga_gtex_table: str | Path,
     liftover: Liftover | None = None,
     progress: Any = None,
+    prefetch_workers: int = 4,
 ) -> list[dict[str, Any]]:
     """Return ``rows`` with every :data:`FLAG_COLUMNS` column filled.
+
+    Rows of :data:`UNFLAGGED_CLASSES` (no transcript model, so no junction
+    translation) and ``no_shared_family`` rows get ``not_applicable`` with the
+    reason; they still count toward a sample's shared-family burden.
+    ``prefetch_workers`` threads fetch reference windows and CDS before the
+    rows are flagged (each fetch is cached).
 
     ``sequences`` and ``repeat_tracks`` are keyed by each row's
     ``genome_build``. A build without repeat tracks gets ``not_assessed`` with
@@ -816,19 +1008,23 @@ def annotate_rows(
     ``not_applicable``.
     """
     candidates = [row for row in rows if row.get("reconstitution_class") != "no_shared_family"]
-    keys = {id(row): junction_key(row, liftover) for row in candidates}
+    flagged_rows = [
+        row for row in candidates if row.get("reconstitution_class") not in UNFLAGGED_CLASSES
+    ]
+    keys = {id(row): junction_key(row, liftover) for row in flagged_rows}
     exact, pairs = tcga_gtex_index(
         tcga_gtex_table,
         {key for key, _ in keys.values() if key is not None},
-        {(row["five_prime_gene"], row["three_prime_gene"]) for row in candidates},
+        {(row["five_prime_gene"], row["three_prime_gene"]) for row in flagged_rows},
     )
+    prefetch_sequences(flagged_rows, sequences, workers=prefetch_workers, progress=progress)
     hits: dict[str, Mapping[tuple[str, int], list[TrackHit]]] = {}
     for build, tracks in repeat_tracks.items():
         if tracks is None:
             continue
         positions = [
             (str(row.get(f"{side}_chromosome")), int(row[f"{side}_breakpoint"]))
-            for row in candidates
+            for row in flagged_rows
             if normalize_genome_build(row.get("genome_build")) == build
             for side in ("five_prime", "three_prime")
             if row.get(f"{side}_chromosome") and _int(row.get(f"{side}_breakpoint"))
@@ -841,13 +1037,16 @@ def annotate_rows(
         out = dict(row)
         for column in FLAG_COLUMNS:
             out.setdefault(column, None)
-        if row.get("reconstitution_class") == "no_shared_family":
+        row_class = row.get("reconstitution_class")
+        if row_class == "no_shared_family" or row_class in UNFLAGGED_CLASSES:
+            reason = f"row did not reach junction translation ({row_class})"
             for flag in (
                 "paralog_sequence_flag",
                 "genomic_similarity_flag",
                 "normal_recurrence_flag",
             ):
                 out[flag] = NOT_APPLICABLE
+                out[flag.replace("_flag", "_reason")] = reason
             annotated.append(out)
             continue
         build = normalize_genome_build(row.get("genome_build")) or ""
