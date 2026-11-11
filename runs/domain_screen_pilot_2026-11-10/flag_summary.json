@@ -1,0 +1,275 @@
+{
+  "flag_counts": {
+    "depmap_22q2": {
+      "breakpoint_repeat_flag": {
+        "flagged": 6208,
+        "not_applicable": 6715,
+        "pass": 28387
+      },
+      "genomic_similarity_flag": {
+        "flagged": 34567,
+        "not_applicable": 6715,
+        "pass": 28
+      },
+      "normal_recurrence_flag": {
+        "flagged": 19913,
+        "not_applicable": 6715,
+        "pass": 14682
+      },
+      "paralog_sequence_flag": {
+        "flagged": 20061,
+        "not_applicable": 6715,
+        "not_assessed": 1177,
+        "pass": 13357
+      },
+      "read_evidence_flag": {
+        "not_applicable": 6715,
+        "pass": 34595
+      },
+      "sample_burden_flag": {
+        "flagged": 34558,
+        "not_applicable": 6715,
+        "pass": 37
+      }
+    },
+    "msk_impact_50k_2026": {
+      "breakpoint_repeat_flag": {
+        "flagged": 36,
+        "not_applicable": 17,
+        "pass": 37
+      },
+      "genomic_similarity_flag": {
+        "flagged": 57,
+        "not_applicable": 17,
+        "pass": 16
+      },
+      "normal_recurrence_flag": {
+        "not_applicable": 17,
+        "pass": 73
+      },
+      "paralog_sequence_flag": {
+        "not_applicable": 17,
+        "not_assessed": 3,
+        "pass": 70
+      },
+      "read_evidence_flag": {
+        "flagged": 29,
+        "not_applicable": 17,
+        "pass": 44
+      },
+      "sample_burden_flag": {
+        "flagged": 13,
+        "not_applicable": 17,
+        "pass": 60
+      }
+    },
+    "target_consolidated": {
+      "breakpoint_repeat_flag": {
+        "flagged": 623,
+        "not_applicable": 6543,
+        "pass": 7183
+      },
+      "genomic_similarity_flag": {
+        "flagged": 7717,
+        "not_applicable": 6543,
+        "pass": 89
+      },
+      "normal_recurrence_flag": {
+        "flagged": 2332,
+        "not_applicable": 6543,
+        "pass": 5474
+      },
+      "paralog_sequence_flag": {
+        "flagged": 1139,
+        "not_applicable": 6543,
+        "not_assessed": 26,
+        "pass": 6641
+      },
+      "read_evidence_flag": {
+        "not_applicable": 6543,
+        "pass": 7806
+      },
+      "sample_burden_flag": {
+        "flagged": 7689,
+        "not_applicable": 6543,
+        "pass": 117
+      }
+    },
+    "target_starfusion": {
+      "breakpoint_repeat_flag": {
+        "flagged": 418,
+        "not_applicable": 6004,
+        "pass": 2432
+      },
+      "genomic_similarity_flag": {
+        "flagged": 2750,
+        "not_applicable": 6004,
+        "pass": 100
+      },
+      "normal_recurrence_flag": {
+        "flagged": 1414,
+        "not_applicable": 6004,
+        "pass": 1436
+      },
+      "paralog_sequence_flag": {
+        "flagged": 826,
+        "not_applicable": 6004,
+        "pass": 2024
+      },
+      "read_evidence_flag": {
+        "not_applicable": 6004,
+        "pass": 2850
+      },
+      "sample_burden_flag": {
+        "flagged": 2722,
+        "not_applicable": 6004,
+        "pass": 128
+      }
+    },
+    "tcga_gtex": {
+      "breakpoint_repeat_flag": {
+        "flagged": 21449,
+        "not_applicable": 47751,
+        "pass": 65768
+      },
+      "genomic_similarity_flag": {
+        "flagged": 85281,
+        "not_applicable": 47751,
+        "pass": 1936
+      },
+      "normal_recurrence_flag": {
+        "flagged": 78792,
+        "not_applicable": 47751,
+        "pass": 8425
+      },
+      "paralog_sequence_flag": {
+        "flagged": 38412,
+        "not_applicable": 47751,
+        "not_assessed": 20,
+        "pass": 48785
+      },
+      "read_evidence_flag": {
+        "not_applicable": 47751,
+        "pass": 87217
+      },
+      "sample_burden_flag": {
+        "flagged": 84501,
+        "not_applicable": 47751,
+        "pass": 2716
+      }
+    }
+  },
+  "screen_summaries": {
+    "depmap_22q2": {
+      "class_counts": {
+        "ambiguous_junction_register": 1802,
+        "clean_reconstitution": 9567,
+        "gap_or_deletion": 243,
+        "no_shared_family": 331518,
+        "no_transcript_model": 6715,
+        "not_split_on_both": 20904,
+        "out_of_frame": 585,
+        "splice_site_unresolved": 1177,
+        "tandem_duplication_or_insertion": 317
+      },
+      "events_with_a_shared_family": 16897,
+      "family_rows": 41310,
+      "mechanism_counts": {
+        "mid_exon_dna": 33294,
+        "no_credible_product": 6715,
+        "splice_mediated": 124,
+        "splice_site_unresolved": 1177
+      },
+      "mode": "any_domain",
+      "screened_fusion_events": 356103
+    },
+    "msk_impact_50k_2026": {
+      "class_counts": {
+        "no_shared_family": 5148,
+        "no_transcript_model": 17,
+        "not_split_on_both": 66,
+        "out_of_frame": 2,
+        "splice_site_unresolved": 3,
+        "tandem_duplication_or_insertion": 2
+      },
+      "events_with_a_shared_family": 53,
+      "family_rows": 90,
+      "mechanism_counts": {
+        "mid_exon_dna": 17,
+        "no_credible_product": 17,
+        "splice_mediated": 53,
+        "splice_site_unresolved": 3
+      },
+      "mode": "any_domain",
+      "screened_fusion_events": 5201
+    },
+    "target_consolidated": {
+      "class_counts": {
+        "ambiguous_junction_register": 95,
+        "clean_reconstitution": 819,
+        "gap_or_deletion": 116,
+        "no_shared_family": 247194,
+        "no_transcript_model": 6543,
+        "not_split_on_both": 6436,
+        "out_of_frame": 103,
+        "splice_site_unresolved": 26,
+        "tandem_duplication_or_insertion": 211
+      },
+      "events_with_a_shared_family": 4396,
+      "family_rows": 14349,
+      "mechanism_counts": {
+        "mid_exon_dna": 7710,
+        "no_credible_product": 6543,
+        "splice_mediated": 70,
+        "splice_site_unresolved": 26
+      },
+      "mode": "any_domain",
+      "screened_fusion_events": 254143
+    },
+    "target_starfusion": {
+      "class_counts": {
+        "ambiguous_junction_register": 65,
+        "clean_reconstitution": 602,
+        "gap_or_deletion": 21,
+        "no_shared_family": 226514,
+        "no_transcript_model": 6004,
+        "not_split_on_both": 2008,
+        "out_of_frame": 60,
+        "tandem_duplication_or_insertion": 94
+      },
+      "events_with_a_shared_family": 4396,
+      "family_rows": 8854,
+      "mechanism_counts": {
+        "mid_exon_dna": 2821,
+        "no_credible_product": 6004,
+        "splice_mediated": 29
+      },
+      "mode": "any_domain",
+      "screened_fusion_events": 231188
+    },
+    "tcga_gtex": {
+      "class_counts": {
+        "ambiguous_junction_register": 9449,
+        "clean_reconstitution": 24728,
+        "gap_or_deletion": 809,
+        "no_shared_family": 642375,
+        "no_transcript_model": 47751,
+        "not_split_on_both": 46911,
+        "out_of_frame": 4010,
+        "premature_stop_at_junction": 4,
+        "splice_site_unresolved": 20,
+        "tandem_duplication_or_insertion": 1286
+      },
+      "events_with_a_shared_family": 64118,
+      "family_rows": 134968,
+      "mechanism_counts": {
+        "mid_exon_dna": 86540,
+        "no_credible_product": 47751,
+        "splice_mediated": 657,
+        "splice_site_unresolved": 20
+      },
+      "mode": "any_domain",
+      "screened_fusion_events": 716420
+    }
+  }
+}
