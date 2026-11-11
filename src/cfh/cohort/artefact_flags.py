@@ -39,6 +39,7 @@ from __future__ import annotations
 import csv
 import gzip
 import json
+import re
 import struct
 import threading
 import time
@@ -587,7 +588,26 @@ _TWO_BIT_BYTE = [
 ]
 
 
-PARALOG_CACHE_PREFIX = "paralog_lookup_v2_"
+PARALOG_CACHE_PREFIX = "paralog_lookup_v3_"
+"""Bumped whenever the completeness rule tightens, so older verdicts are re-fetched."""
+
+_CDNA = re.compile(r"[ACGTN]+", re.IGNORECASE)
+
+
+def _identifier(value: Any) -> str | None:
+    """A non-blank string identifier (whitespace stripped), else ``None``."""
+    if not isinstance(value, str):
+        return None
+    value = value.strip()
+    return value or None
+
+
+def _cdna(value: Any) -> str | None:
+    """A non-blank nucleotide sequence (A, C, G, T, N; any case), else ``None``."""
+    if not isinstance(value, str):
+        return None
+    value = value.strip()
+    return value if _CDNA.fullmatch(value) else None
 
 
 def parse_homology_response(gene: str, data: Any) -> dict[str, Any]:
@@ -596,9 +616,11 @@ def parse_homology_response(gene: str, data: Any) -> dict[str, Any]:
     Complete only when the payload has a non-empty ``data`` list whose every
     entry names the resolved gene (``id``) and carries an explicit
     ``homologies`` list, and every homology has a source and target with an id
-    and a sequence. An empty ``homologies`` list on a resolved gene is the one
-    verified "no paralogues". Anything else (no payload, ``{}``, ``data: []``,
-    an entry without ``homologies``, a member without a sequence) is incomplete.
+    and a sequence. Ids must be non-blank strings and sequences non-blank cDNA
+    (``sequence=cdna``: A, C, G, T, N in any case). An empty ``homologies``
+    list on a resolved gene is the one verified "no paralogues". Anything else
+    (no payload, ``{}``, ``data: []``, a blank or non-string id, an entry
+    without ``homologies``, a member without a valid sequence) is incomplete.
     """
     missing: list[str] = []
     result: dict[str, str] = {}
@@ -609,12 +631,13 @@ def parse_homology_response(gene: str, data: Any) -> dict[str, Any]:
         missing.append(f"Ensembl homology response for {gene} resolved no gene")
     else:
         for entry in entries:
-            if not isinstance(entry, dict) or not entry.get("id"):
+            gene_id = _identifier(entry.get("id")) if isinstance(entry, dict) else None
+            if gene_id is None:
                 missing.append(f"Ensembl homology entry for {gene} names no gene")
                 continue
             homologies = entry.get("homologies")
             if not isinstance(homologies, list):
-                missing.append(f"Ensembl homology entry {entry['id']} for {gene} has no list")
+                missing.append(f"Ensembl homology entry {gene_id} for {gene} has no list")
                 continue
             for homology in homologies:
                 if not isinstance(homology, dict):
@@ -622,11 +645,12 @@ def parse_homology_response(gene: str, data: Any) -> dict[str, Any]:
                     continue
                 for role, label in (("source", "compara_canonical"), ("target", "paralog")):
                     member = homology.get(role)
-                    if isinstance(member, dict) and member.get("id") and member.get("seq"):
-                        result[f"{gene}:{label}:{member['id']}"] = member["seq"]
+                    member_id = _identifier(member.get("id")) if isinstance(member, dict) else None
+                    sequence = _cdna(member.get("seq")) if isinstance(member, dict) else None
+                    if member_id is not None and sequence is not None:
+                        result[f"{gene}:{label}:{member_id}"] = sequence
                     else:
-                        member_id = member.get("id") if isinstance(member, dict) else None
-                        missing.append(f"no sequence for {gene} {label} {member_id}")
+                        missing.append(f"no valid id or cDNA for {gene} {label} {member_id}")
     return {"sequences": result, "complete": not missing, "missing": missing}
 
 

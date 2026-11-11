@@ -295,6 +295,24 @@ Neither rule changes these outputs, so the flag pass was not re-run:
 - **Window measurements.** Across all five committed TSVs, all 530,164 non-blank window measurements are valid (finite, identity in [0, 1], integral non-negative length). 0 are non-finite, out of range, fractional or non-numeric. Blanks occur only outside the tier-2 classes.
 - **Tier 2.** Re-run under the new rule, it reproduces `tier2_candidates.json` and `tier2_exclusions.json` byte for byte: 609 junctions, 0 exclusions.
 
+### Review round 3 (id and sequence validity; outputs unchanged)
+
+**Endpoints.** The paralogue lookup is **Ensembl REST** (`/homology/symbol/human/<gene>?type=paralogues&sequence=cdna`, grch37.rest.ensembl.org for MSK), not Genome Nexus. Genome Nexus serves only the screen's transcript models. The GRCh38 cohorts take paralogues from the Ensembl 116 release files, not REST.
+
+**New rule.** A REST lookup now counts as complete only when:
+
+- the gene id and every member id are non-blank strings (whitespace stripped; `True`, `1` and `"   "` are rejected);
+- every member sequence is non-blank cDNA (A, C, G, T or N, any case).
+
+Any failure makes the lookup incomplete, and the paralog flag `not_assessed`. The cache key is now `paralog_lookup_v3_<gene>`.
+
+**Re-check of the 58 MSK lookups:**
+
+- **Offline**, on the 1,516 cached member sequences: all ids and sequences valid.
+- **Re-fetched under v3**, which also checks the gene entry's id: 58 of 58 complete and identical to what the committed flags used, 0 incomplete.
+
+Outputs are unchanged.
+
 ## How the pilot was run
 
 - **Inputs.**

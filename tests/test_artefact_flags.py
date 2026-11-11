@@ -1101,7 +1101,7 @@ def test_malformed_rest_homology_makes_the_paralog_flag_not_assessed(tmp_path, p
     assert reread.paralog_lookup("AAA").complete is False
 
 
-@pytest.mark.parametrize("old_key", ["paralogs_AAA", "paralog_lookup_AAA"])
+@pytest.mark.parametrize("old_key", ["paralogs_AAA", "paralog_lookup_AAA", "paralog_lookup_v2_AAA"])
 def test_paralog_entries_cached_under_older_rules_are_refetched(tmp_path, old_key):
     cache = tmp_path / "ensembl_sequence" / "GRCh37"
     EnsemblSequenceSource("GRCh37", tmp_path, session=FakeSession({}))  # stamps provenance
@@ -1116,3 +1116,161 @@ def test_paralog_entries_cached_under_older_rules_are_refetched(tmp_path, old_ke
     assert any("/homology/symbol/human/AAA" in url for url, _ in session.calls)
     assert lookup.complete is False
     assert (cache / f"{PARALOG_CACHE_PREFIX}AAA.json").exists()
+
+
+# --- review round 3 (PR #154) -------------------------------------------------------
+
+
+def _member(id_="ENSG_P", seq="ATGCCC"):
+    return {"id": id_, "seq": seq}
+
+
+@pytest.mark.parametrize(
+    "payload",
+    [
+        {"data": [{"id": True, "homologies": []}]},  # non-string gene id
+        {"data": [{"id": 1, "homologies": []}]},
+        {"data": [{"id": "   ", "homologies": []}]},  # blank gene id
+        {"data": [{"id": "", "homologies": []}]},
+        {
+            "data": [
+                {
+                    "id": "ENSG_A",
+                    "homologies": [{"source": _member("ENSG_A"), "target": _member(seq="   ")}],
+                }
+            ]
+        },
+        {
+            "data": [
+                {
+                    "id": "ENSG_A",
+                    "homologies": [{"source": _member("ENSG_A"), "target": _member(seq="")}],
+                }
+            ]
+        },
+        {
+            "data": [
+                {
+                    "id": "ENSG_A",
+                    "homologies": [{"source": _member("ENSG_A"), "target": _member(seq="MKVLA*")}],
+                }
+            ]
+        },
+        {
+            "data": [
+                {
+                    "id": "ENSG_A",
+                    "homologies": [{"source": _member("ENSG_A"), "target": _member(seq="ATG-CCC")}],
+                }
+            ]
+        },
+        {
+            "data": [
+                {
+                    "id": "ENSG_A",
+                    "homologies": [{"source": _member("ENSG_A"), "target": _member(seq=12345)}],
+                }
+            ]
+        },
+        {
+            "data": [
+                {
+                    "id": "ENSG_A",
+                    "homologies": [{"source": _member("ENSG_A"), "target": _member(id_=True)}],
+                }
+            ]
+        },
+        {
+            "data": [
+                {
+                    "id": "ENSG_A",
+                    "homologies": [{"source": _member("ENSG_A"), "target": _member(id_="  ")}],
+                }
+            ]
+        },
+        {"data": [{"id": "ENSG_A", "homologies": [{"source": _member(" "), "target": _member()}]}]},
+    ],
+)
+def test_blank_or_invalid_ids_and_sequences_make_the_lookup_incomplete(payload):
+    parsed = parse_homology_response("AAA", payload)
+    assert parsed["complete"] is False
+    assert parsed["missing"]
+
+
+def test_valid_homology_response_stays_complete_and_is_normalised():
+    payload = {
+        "data": [
+            {
+                "id": " ENSG_A ",
+                "homologies": [
+                    {
+                        "source": _member("ENSG_A", "atgaaaN"),
+                        "target": _member("ENSG_P", " ATGCCC\n"),
+                    }
+                ],
+            }
+        ]
+    }
+    parsed = parse_homology_response("AAA", payload)
+    assert parsed["complete"] is True
+    assert parsed["sequences"] == {
+        "AAA:compara_canonical:ENSG_A": "atgaaaN",
+        "AAA:paralog:ENSG_P": "ATGCCC",
+    }
+    verified_empty = parse_homology_response("AAA", {"data": [{"id": "ENSG_A", "homologies": []}]})
+    assert verified_empty["complete"] is True and verified_empty["sequences"] == {}
+
+
+@pytest.mark.parametrize(
+    "payload",
+    [
+        {"data": [{"id": True, "homologies": []}]},
+        {"data": [{"id": "   ", "homologies": []}]},
+    ],
+)
+def test_blank_gene_ids_from_rest_make_the_paralog_flag_not_assessed(tmp_path, payload):
+    five, three = _random_dna(400, 11), _random_dna(400, 12)
+    window = (five[:200] + three[200:])[150:250]
+    session = FakeSession(
+        {
+            "/homology/symbol/human/AAA": FakeResponse(payload),
+            "/homology/symbol/human/BBB": FakeResponse(
+                {"data": [{"id": "ENSG_B", "homologies": []}]}
+            ),
+            "/sequence/id/ENST_A": FakeResponse({"seq": five}),
+            "/sequence/id/ENST_B": FakeResponse({"seq": three}),
+        }
+    )
+    out = paralog_flag(
+        _row(junction_context_nt=window), EnsemblSequenceSource("GRCh37", tmp_path, session=session)
+    )
+    assert out["paralog_sequence_flag"] == NOT_ASSESSED
+
+
+def test_a_blank_paralogue_sequence_cannot_let_the_paralog_flag_pass(tmp_path):
+    five, three = _random_dna(400, 11), _random_dna(400, 12)
+    window = (five[:200] + three[200:])[150:250]
+    blank_target = {
+        "data": [
+            {
+                "id": "ENSG_A",
+                "homologies": [
+                    {"source": _member("ENSG_A", five), "target": _member("ENSG_P", "   ")}
+                ],
+            }
+        ]
+    }
+    session = FakeSession(
+        {
+            "/homology/symbol/human/AAA": FakeResponse(blank_target),
+            "/homology/symbol/human/BBB": FakeResponse(
+                {"data": [{"id": "ENSG_B", "homologies": []}]}
+            ),
+            "/sequence/id/ENST_A": FakeResponse({"seq": five}),
+            "/sequence/id/ENST_B": FakeResponse({"seq": three}),
+        }
+    )
+    out = paralog_flag(
+        _row(junction_context_nt=window), EnsemblSequenceSource("GRCh37", tmp_path, session=session)
+    )
+    assert out["paralog_sequence_flag"] == NOT_ASSESSED
