@@ -434,9 +434,16 @@ def test_untranslated_rows_are_not_applicable_but_count_toward_sample_burden(tmp
         prefetch_workers=1,
     )
     untranslated = annotated[1]
-    for flag in ("paralog_sequence", "genomic_similarity", "normal_recurrence"):
+    for flag in (
+        "paralog_sequence",
+        "genomic_similarity",
+        "normal_recurrence",
+        "breakpoint_repeat",
+        "read_evidence",
+    ):
         assert untranslated[f"{flag}_flag"] == NOT_APPLICABLE
         assert "no_transcript_model" in untranslated[f"{flag}_reason"]
+    assert untranslated["sample_burden_flag"] == NOT_APPLICABLE
     assert annotated[0]["sample_shared_family_calls"] == 2
     # one widest-window request per breakpoint, made by the prefetch and then cached
     assert sorted(set(sequences.region_calls)) == [("1", 500, 1500), ("2", 1500, 2500)]

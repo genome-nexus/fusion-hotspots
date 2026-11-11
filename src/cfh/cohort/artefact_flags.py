@@ -1174,9 +1174,12 @@ def annotate_rows(
                 "paralog_sequence_flag",
                 "genomic_similarity_flag",
                 "normal_recurrence_flag",
+                "breakpoint_repeat_flag",
+                "read_evidence_flag",
             ):
                 out[flag] = NOT_APPLICABLE
                 out[flag.replace("_flag", "_reason")] = reason
+            out["sample_burden_flag"] = NOT_APPLICABLE
             annotated.append(out)
             continue
         build = normalize_genome_build(row.get("genome_build")) or ""
