@@ -8,6 +8,7 @@ examined. Output is one row per event and family, plus a summary.
 
 from __future__ import annotations
 
+import copy
 import csv
 import json
 from collections import Counter
@@ -160,6 +161,9 @@ def screen_cohort(
 
     rows: list[dict[str, Any]] = []
     class_counts: Counter[str] = Counter()
+    # assess_event is a pure function of these inputs; recurrent junctions (the
+    # same readthrough or paralogue join in many samples) are assessed once.
+    assessed: dict[tuple[Any, ...], list[dict[str, Any]]] = {}
     for index, (row, event) in enumerate(pairs, start=1):
         five_gene, three_gene = event.Five_prime_gene, event.Three_prime_gene
         assert five_gene is not None and three_gene is not None
@@ -179,16 +183,20 @@ def screen_cohort(
             }
             family_filter = allowed.intersection
 
-        calls = assess_event(
-            five_prime_gene=five_gene,
-            five_prime_breakpoint=five_breakpoint,
-            three_prime_gene=three_gene,
-            three_prime_breakpoint=three_breakpoint,
-            annotation=annotation,
-            genome_build=_clean(row.get("NCBI_Build")),
-            source=source,
-            family_filter=family_filter,
-        )
+        build = _clean(row.get("NCBI_Build"))
+        memo_key = (five_gene, five_breakpoint, three_gene, three_breakpoint, annotation, build)
+        if memo_key not in assessed:
+            assessed[memo_key] = assess_event(
+                five_prime_gene=five_gene,
+                five_prime_breakpoint=five_breakpoint,
+                three_prime_gene=three_gene,
+                three_prime_breakpoint=three_breakpoint,
+                annotation=annotation,
+                genome_build=build,
+                source=source,
+                family_filter=family_filter,
+            )
+        calls = copy.deepcopy(assessed[memo_key])
         locus_note = "; ".join(error for error in (five_error, three_error) if error)
         for call in calls:
             class_counts[call["reconstitution_class"]] += 1

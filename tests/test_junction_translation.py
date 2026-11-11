@@ -1399,3 +1399,66 @@ def test_prefetch_uses_the_configured_batch_size(monkeypatch):
     )
     source.prefetch_canonical(["AAA"])
     assert seen["batch_size"] == 50
+
+
+def test_screen_assesses_a_recurrent_junction_once_and_copies_its_rows(monkeypatch):
+    from cfh.cohort import domain_screen
+
+    calls = []
+    real = domain_screen.assess_event
+
+    def counting(**kwargs):
+        calls.append(kwargs["five_prime_breakpoint"])
+        return real(**kwargs)
+
+    monkeypatch.setattr(domain_screen, "assess_event", counting)
+    frame = pd.concat([_screen_frame()] * 3, ignore_index=True)
+    frame.loc[1, "Sample_Id"] = "S2"
+    frame.loc[2, "Sample_Id"] = "S3"
+    frame.loc[2, "Tumor_Split_Read_Count"] = 1
+    rows, summary = screen_cohort(frame, _synthetic_source(), cohort="demo")
+    assert len(calls) == 1
+    assert summary["family_rows"] == 6
+    clean = [row for row in rows if row["pfam_family"] == OTHER_FAMILY]
+    assert [row["sample_id"] for row in clean] == ["S1", "S2", "S3"]
+    assert [row["tumor_split_reads"] for row in clean] == [7, 7, 1]
+    unmemoised, _ = screen_cohort(_screen_frame(), _synthetic_source(), cohort="demo")
+    assert rows[:2] == unmemoised
+
+    clean[0]["class_reason"] = "edited"
+    assert clean[1]["class_reason"] != "edited"
+
+
+def test_genome_nexus_not_found_is_recorded_and_not_requested_again(tmp_path):
+    from cfh.mapping.genome_nexus_source import GenomeNexusGeneNotFound
+
+    class Client(SyntheticGenomeNexus):
+        requested = []
+
+        def fetch_canonical_transcript(self, gene):
+            self.requested.append(gene)
+            if gene == "GONE":
+                raise GenomeNexusGeneNotFound(gene)
+            return super().fetch_canonical_transcript(gene)
+
+    def source():
+        client = Client()
+        built = TranscriptModelSource(
+            BUILD,
+            genome_nexus_client=client,
+            cds_client=SyntheticCds(client.cds),
+            cache_dir=tmp_path,
+        )
+        return built, client
+
+    first, client = source()
+    assert first.canonical("GONE") is None
+    assert client.requested == ["GONE"]
+    marker = next(tmp_path.rglob("GONE.notfound"))
+    assert marker.parent.name == BUILD
+
+    second, client2 = source()
+    Client.requested = []
+    assert second.canonical("GONE") is None
+    second.prefetch_canonical(["GONE"])  # skipped: nothing left to batch
+    assert Client.requested == []

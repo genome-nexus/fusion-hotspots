@@ -275,9 +275,25 @@ class TranscriptModelSource:
     def _canonical_cache_dir(self) -> Path | None:
         return self._build_cache_dir("genome_nexus_canonical_transcripts_mskcc")
 
+    def _not_found_marker(self, gene: str) -> Path | None:
+        """Disk record that Genome Nexus answered 404 for ``gene`` (this build, this URL)."""
+        cache_dir = self._canonical_cache_dir
+        return cache_dir / f"{gene.upper()}.notfound" if cache_dir else None
+
     def prefetch_canonical(self, genes: list[str]) -> None:
-        """Resolve many genes through the cohort scan's batch and cache path."""
-        pending = sorted({gene for gene in genes if gene not in self._canonical})
+        """Resolve many genes through the cohort scan's batch and cache path.
+
+        Genes already recorded as not found are not requested again.
+        """
+        pending = []
+        for gene in sorted(set(genes)):
+            if gene in self._canonical:
+                continue
+            marker = self._not_found_marker(gene)
+            if marker is not None and marker.exists():
+                self._canonical[gene] = None
+                continue
+            pending.append(gene)
         if not pending:
             return
         result = batch_fetch_canonical_transcripts(
@@ -304,10 +320,17 @@ class TranscriptModelSource:
                 return self._canonical[gene]
             except (OSError, json.JSONDecodeError, KeyError):
                 pass
+        marker = self._not_found_marker(gene)
+        if marker is not None and marker.exists():
+            self._canonical[gene] = None
+            return None
         try:
             payload = self.client.fetch_canonical_transcript(gene)
         except GenomeNexusGeneNotFound:
             self._canonical[gene] = None
+            if marker is not None:
+                marker.parent.mkdir(parents=True, exist_ok=True)
+                marker.write_text("404\n")
             return None
         if cache_file is not None:
             cache_file.parent.mkdir(parents=True, exist_ok=True)
