@@ -13,6 +13,7 @@ from cfh.cohort.artefact_flags import (
     PASS,
     EnsemblReleaseFiles,
     EnsemblSequenceSource,
+    ParalogLookup,
     RepeatTracks,
     TwoBitReference,
     annotate_rows,
@@ -20,6 +21,7 @@ from cfh.cohort.artefact_flags import (
     breakpoint_similarity,
     breakpoint_windows,
     chromosome_name,
+    explaining_min_score,
     genomic_flags,
     junction_key,
     local_align,
@@ -28,6 +30,7 @@ from cfh.cohort.artefact_flags import (
     prefetch_sequences,
     reverse_complement,
     sample_call_counts,
+    target_scores,
     tcga_gtex_index,
 )
 from cfh.ingestion.open_fusion_tables import SCHEMA
@@ -175,8 +178,15 @@ class FakeSequences:
         base = self.regions.get(chromosome)
         return base[start - 1 : end] if base else None
 
-    def paralog_cds(self, gene, transcript_id=None):
-        return self.paralogs.get(gene, {})
+    def paralog_lookup(self, gene, transcript_id=None):
+        """``paralogs[gene] = None`` simulates a failed lookup."""
+        found = self.paralogs.get(gene, {})
+        if found is None:
+            return ParalogLookup({}, False, (f"lookup for {gene} failed",))
+        return ParalogLookup(found, True)
+
+    def paralog_cds(self, gene, transcript_id=None):  # the pre-completeness interface
+        return self.paralogs.get(gene) or {}
 
     def transcript_cds(self, transcript_id):
         return self.cds.get(transcript_id)
@@ -453,9 +463,9 @@ def test_prefetch_requests_each_fetch_once_per_build():
     calls = []
 
     class Recording(FakeSequences):
-        def paralog_cds(self, gene, transcript_id=None):
+        def paralog_lookup(self, gene, transcript_id=None):
             calls.append(("paralogs", gene))
-            return {}
+            return ParalogLookup({}, True)
 
         def transcript_cds(self, transcript_id):
             calls.append(("cds", transcript_id))
@@ -716,3 +726,286 @@ def test_ensembl_release_files_mirror_the_rest_paralogue_view(tmp_path):
     source = EnsemblSequenceSource("GRCh38", tmp_path / "c", release_files=files)
     assert source.paralog_cds("AAA") == files.paralog_cds("AAA")
     assert source.transcript_cds("ENST2") == "ATG" + "C" * 80
+
+
+# --- review regressions (PR #154) ------------------------------------------------------
+
+
+def test_paralog_flag_is_not_assessed_when_a_parent_cds_is_missing():
+    """Missing data must not pass: parent B's CDS is absent, so B could explain it."""
+    sequences = FakeSequences(cds={"ENST_A": "C" * 200}, paralogs={"AAA": {}, "BBB": {}})
+    out = paralog_flag(_row(junction_context_nt="A" * 100), sequences)
+    assert out["paralog_sequence_flag"] == NOT_ASSESSED
+    assert "incomplete: no CDS for BBB parent ENST_B" in out["paralog_sequence_reason"]
+
+
+def test_paralog_flag_is_not_assessed_when_a_paralogue_lookup_fails():
+    five, three = _random_dna(400, 11), _random_dna(400, 12)
+    window = (five[:200] + three[200:])[150:250]
+    sequences = FakeSequences(cds={"ENST_A": five, "ENST_B": three}, paralogs={"BBB": None})
+    out = paralog_flag(_row(junction_context_nt=window), sequences)
+    assert out["paralog_sequence_flag"] == NOT_ASSESSED
+    assert "lookup for BBB failed" in out["paralog_sequence_reason"]
+
+    # a verified empty lookup is complete: the same junction passes
+    sequences.paralogs = {"AAA": {}, "BBB": {}}
+    complete = paralog_flag(_row(junction_context_nt=window), sequences)
+    assert complete["paralog_sequence_flag"] == PASS
+    assert "BBB has no Compara paralogues" in complete["paralog_sequence_reason"]
+
+
+def test_paralog_flag_still_flags_when_an_available_sequence_explains_despite_gaps():
+    five, three = _random_dna(400, 11), _random_dna(400, 12)
+    window = (five[:200] + three[200:])[150:250]
+    sequences = FakeSequences(
+        cds={"ENST_A": five},  # parent B missing
+        paralogs={"AAA": {"AAA:paralog:ENSG_P": five[:200] + three[200:]}, "BBB": None},
+    )
+    out = paralog_flag(_row(junction_context_nt=window), sequences)
+    assert out["paralog_sequence_flag"] == FLAGGED
+
+
+def test_rest_homology_400_is_an_incomplete_lookup_not_an_empty_one(tmp_path):
+    session = FakeSession(
+        {
+            "/homology/symbol/human/NOPE": FakeResponse({"error": "not found"}, 400),
+            "/homology/symbol/human/LONELY": FakeResponse({"data": [{"homologies": []}]}),
+        }
+    )
+    source = EnsemblSequenceSource("GRCh37", tmp_path, session=session)
+    failed = source.paralog_lookup("NOPE")
+    assert failed.complete is False and failed.sequences == {}
+    assert "400/404" in failed.missing[0]
+    empty = source.paralog_lookup("LONELY")
+    assert empty.complete is True and empty.sequences == {}
+    # the distinction survives the on-disk cache
+    reread = EnsemblSequenceSource("GRCh37", tmp_path, session=FakeSession({}))
+    assert reread.paralog_lookup("NOPE").complete is False
+    assert reread.paralog_lookup("LONELY").complete is True
+
+
+def test_release_file_lookup_of_an_unknown_gene_is_incomplete(tmp_path):
+    cds = tmp_path / "cds.fa.gz"
+    pep = tmp_path / "pep.fa.gz"
+    homologies = tmp_path / "hom.tsv.gz"
+    with gzip.open(cds, "wt") as handle:
+        handle.write(
+            ">ENST1.1 cds chromosome:GRCh38:1:1:90:1 gene:ENSG1.1 gene_symbol:AAA\n"
+            + "ATG"
+            + "A" * 80
+            + "\n"
+        )
+    with gzip.open(pep, "wt") as handle:
+        handle.write(">ENSP1.1 pep chromosome:GRCh38:1:1:90:1 gene:ENSG1.1 transcript:ENST1.1\nM\n")
+    _gz(
+        homologies,
+        [
+            [
+                "gene_stable_id",
+                "protein_stable_id",
+                "species",
+                "identity",
+                "homology_type",
+                "homology_gene_stable_id",
+                "homology_protein_stable_id",
+                "homology_species",
+            ],
+            [
+                "ENSG1",
+                "ENSP1",
+                "homo_sapiens",
+                "50",
+                "within_species_paralog",
+                "ENSG9",
+                "ENSP9",
+                "homo_sapiens",
+            ],
+        ],
+    )
+    files = EnsemblReleaseFiles(cds, pep, homologies)
+    assert files.paralog_lookup("NOPE").complete is False
+    # ENSG9's protein has no CDS in the release files: incomplete, and says which
+    partial = files.paralog_lookup("AAA")
+    assert partial.complete is False
+    assert any("ENSG9" in note for note in partial.missing)
+
+
+def test_genomic_flag_is_not_assessed_without_a_split_read_count():
+    out = genomic_flags(_row(tumor_split_reads=None), FakeSequences(regions=_genome(False)), {}, 1)
+    assert out["read_evidence_flag"] == NOT_ASSESSED
+    assert out["genomic_similarity_flag"] == NOT_ASSESSED
+    assert "split reads present" not in out["genomic_similarity_reason"]
+    assert "read support not assessed" in out["genomic_similarity_reason"]
+
+
+def test_explaining_cutoff_scales_with_the_query_length():
+    assert explaining_min_score(100) == 63
+    assert explaining_min_score(50) == 31
+    assert explaining_min_score(51) == 32  # span 46 -> 0.7 * 46 = 32.2
+    for length in range(10, 101):
+        span = -(-9 * length // 10)
+        # the cheapest explaining alignment: span columns, 10% of them gaps
+        assert explaining_min_score(length) <= span - 3 * (span // 10)
+
+
+def test_a_clipped_window_finds_an_explaining_target_that_scores_below_the_top_one():
+    query = _random_dna(50, 31)
+    flank = _random_dna(300, 32)
+    # top-scoring target: an exact copy of 44 nt (score 44) - covers only 88%
+    partial = flank[:150] + query[:44] + flank[150:]
+    # explaining target: 49 nt with 4 mismatches (score 41, 98% coverage, 91.8% identity)
+    copy = list(query[:49])
+    for index in (10, 20, 30, 40):
+        copy[index] = "A" if copy[index] != "A" else "C"
+    near = _random_dna(300, 33)
+    explaining = near[:150] + "".join(copy) + near[150:]
+    match = best_single_sequence_match(query, {"partial": partial, "explaining": explaining})
+    assert match is not None
+    assert match.target == "explaining"
+    assert match.explains
+    # it scores below the top (non-explaining) target and below the old fixed
+    # 100-nt cutoff of 63, but above the 50-nt cutoff, so it must be traced back
+    scores = target_scores(query, {"partial": partial, "explaining": explaining})
+    assert scores["explaining"] < scores["partial"]
+    assert explaining_min_score(50) <= scores["explaining"] < 63
+    assert match.coverage >= 0.9 and 0.9 <= match.alignment.identity < 0.95
+
+
+def _load_audit_script():
+    import importlib.util
+    from pathlib import Path
+
+    path = Path(__file__).resolve().parents[1] / "scripts" / "domain_screen_pilot_clean_audit.py"
+    spec = importlib.util.spec_from_file_location("domain_screen_pilot_clean_audit", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_tier2_excludes_rows_with_unmeasured_breakpoint_similarity(tmp_path):
+    audit = _load_audit_script()
+    columns = [
+        "cohort",
+        "sample_id",
+        "five_prime_gene",
+        "three_prime_gene",
+        "five_prime_chromosome",
+        "three_prime_chromosome",
+        "five_prime_breakpoint",
+        "three_prime_breakpoint",
+        "pfam_family",
+        "reconstitution_class",
+        "translated_frame_status",
+        "alternative_convention_frame_status",
+        "paralog_sequence_flag",
+        "genomic_similarity_flag",
+        "normal_recurrence_flag",
+        "breakpoint_repeat_flag",
+        "read_evidence_flag",
+        "genomic_identity_150",
+        "genomic_aligned_length_150",
+        "genomic_identity_500",
+        "genomic_aligned_length_500",
+        "five_prime_domain_span",
+        "three_prime_domain_span",
+        "alignment_identity",
+        "Open_strand_5p",
+        "Open_strand_3p",
+        "five_prime_ensembl_transcript",
+        "three_prime_ensembl_transcript",
+        "tumor_split_reads",
+        "tumor_paired_end_reads",
+        "junction_peptide",
+        "junction_indel_sequence",
+        "sample_shared_family_calls",
+        "paralog_sequence_reason",
+        "genomic_similarity_reason",
+        "normal_recurrence_reason",
+        "Open_splice_type",
+        "alignment_parent",
+    ]
+    base = dict.fromkeys(columns, "")
+    base.update(
+        cohort="demo",
+        reconstitution_class="clean_reconstitution",
+        translated_frame_status="in_frame",
+        alternative_convention_frame_status="out_of_frame",
+        paralog_sequence_flag="pass",
+        genomic_similarity_flag="flagged",
+        normal_recurrence_flag="pass",
+        breakpoint_repeat_flag="pass",
+        read_evidence_flag="pass",
+        five_prime_chromosome="1",
+        three_prime_chromosome="2",
+        pfam_family="PF1",
+        five_prime_domain_span="1-100 kept 1-50",
+        three_prime_domain_span="1-100 kept 51-100",
+        alignment_identity="0.8",
+        tumor_split_reads="3",
+        tumor_paired_end_reads="1",
+        genomic_identity_150="0.5",
+        genomic_aligned_length_150="20",
+        genomic_identity_500="0.6",
+        genomic_aligned_length_500="30",
+        sample_shared_family_calls="4",
+    )
+    measured = dict(
+        base,
+        sample_id="S1",
+        five_prime_gene="AAA",
+        three_prime_gene="BBB",
+        five_prime_breakpoint="100",
+        three_prime_breakpoint="200",
+    )
+    blank = dict(
+        base,
+        sample_id="S2",
+        five_prime_gene="CCC",
+        three_prime_gene="DDD",
+        five_prime_breakpoint="300",
+        three_prime_breakpoint="400",
+        genomic_identity_500="",
+        genomic_aligned_length_500="",
+    )
+    malformed = dict(
+        base,
+        sample_id="S3",
+        five_prime_gene="EEE",
+        three_prime_gene="FFF",
+        five_prime_breakpoint="500",
+        three_prime_breakpoint="600",
+        genomic_aligned_length_150="n/a",
+    )
+    with (tmp_path / "demo.domain_screen.tsv").open("w", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=columns, delimiter="\t")
+        writer.writeheader()
+        writer.writerows([measured, blank, malformed])
+    (tmp_path / "flag_summary.json").write_text(json.dumps({"screen_summaries": {"demo": {}}}))
+    pep = tmp_path / "pep.fa.gz"
+    with gzip.open(pep, "wt") as handle:
+        handle.write(
+            ">ENSP1.1 pep chromosome:GRCh38:1:1:9:1 gene:ENSG1.1 transcript:ENST1.1 "
+            "gene_symbol:AAA\nM\n"
+        )
+    homologies = tmp_path / "hom.tsv.gz"
+    _gz(
+        homologies,
+        [
+            [
+                "gene_stable_id",
+                "species",
+                "homology_type",
+                "homology_gene_stable_id",
+                "homology_species",
+            ]
+        ],
+    )
+
+    result = audit.tier2_candidates(tmp_path, pep, homologies)
+    candidates, excluded = result if isinstance(result, tuple) else (result, None)
+    # unmeasured similarity is not a negative: only the measured row qualifies
+    assert sorted(c["pair"] for c in candidates) == ["AAA::BBB"]
+    assert excluded == {"window_similarity_unassessed": 2}
+    assert audit.window_similarity(measured) == "not_similar"
+    assert audit.window_similarity(blank) == "unassessed"
+    assert audit.window_similarity(malformed) == "unassessed"

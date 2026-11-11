@@ -411,7 +411,31 @@ TIER2_CLASSES = (
 )
 
 
-def tier2_candidates(run_dir: Path, pep: Path, homologies: Path) -> list[dict[str, Any]]:
+def window_similarity(row: dict[str, str]) -> str:
+    """``similar``, ``not_similar`` or ``unassessed`` from both breakpoint windows.
+
+    Both the +/-150 and +/-500 bp measurements (identity and aligned length)
+    must be present and numeric; a blank or malformed one is ``unassessed``,
+    never read as zero.
+    """
+    similar = False
+    for window in (150, 500):
+        identity_text = (row.get(f"genomic_identity_{window}") or "").strip()
+        length_text = (row.get(f"genomic_aligned_length_{window}") or "").strip()
+        try:
+            identity = float(identity_text)
+            length = float(length_text)
+        except ValueError:
+            return "unassessed"
+        if identity != identity or length != length:  # NaN
+            return "unassessed"
+        similar |= identity >= 0.80 and length >= 100
+    return "similar" if similar else "not_similar"
+
+
+def tier2_candidates(
+    run_dir: Path, pep: Path, homologies: Path
+) -> tuple[list[dict[str, Any]], Counter[str]]:
     """Distinct junctions that pass every artefact check except sample burden.
 
     Kept: class in :data:`TIER2_CLASSES`, in frame under the translated
@@ -419,7 +443,11 @@ def tier2_candidates(run_dir: Path, pep: Path, homologies: Path) -> list[dict[st
     breakpoint-window similarity, no segdup/repeat, split reads present,
     not read-through, no minor side. Sample burden is reported, not gated, because
     in the RNA tables almost every sample carries >= 2 shared-family calls.
+    Rows whose breakpoint-window similarity was not measured on both windows
+    are excluded and counted, since unassessed similarity is not a negative.
+    Returns the candidates and the excluded-row counts by reason.
     """
+    excluded: Counter[str] = Counter()
     transcript_gene, symbol_genes = ensembl_gene_maps(pep)
     paralogues = human_paralogues(homologies)
     cohorts = list(json.loads((run_dir / "flag_summary.json").read_text())["screen_summaries"])
@@ -434,15 +462,11 @@ def tier2_candidates(run_dir: Path, pep: Path, homologies: Path) -> list[dict[st
                 continue
             if row["breakpoint_repeat_flag"] != "pass" or row["read_evidence_flag"] != "pass":
                 continue
-            similar = False
-            for window in (150, 500):
-                try:
-                    identity = float(row[f"genomic_identity_{window}"] or 0)
-                    length = int(float(row[f"genomic_aligned_length_{window}"] or 0))
-                except ValueError:
-                    continue
-                similar |= identity >= 0.80 and length >= 100
-            if similar:
+            status = window_similarity(row)
+            if status == "unassessed":
+                excluded["window_similarity_unassessed"] += 1
+                continue
+            if status == "similar":
                 continue
             info = audit_row(row, transcript_gene, symbol_genes, paralogues)
             if info["readthrough"] or info["minor_side"] is not False:
@@ -486,14 +510,15 @@ def tier2_candidates(run_dir: Path, pep: Path, homologies: Path) -> list[dict[st
             }
         )
     out.sort(key=lambda c: (-c["n_samples"], -c["max_split_reads"], c["pair"]))
-    return out
+    return out, excluded
 
 
 def tier2_main() -> None:
     run_dir, pep, homologies = (Path(arg) for arg in sys.argv[2:5])
-    rows = tier2_candidates(run_dir, pep, homologies)
+    rows, excluded = tier2_candidates(run_dir, pep, homologies)
     (run_dir / "tier2_candidates.json").write_text(json.dumps(rows, indent=1) + "\n")
-    print(len(rows))
+    (run_dir / "tier2_exclusions.json").write_text(json.dumps(dict(excluded), indent=1) + "\n")
+    print(len(rows), "excluded:", dict(excluded))
     for row in rows[:40]:
         print(
             json.dumps(

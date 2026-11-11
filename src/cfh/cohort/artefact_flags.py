@@ -176,10 +176,25 @@ scores at most the query length (100), so no alignment crosses a spacer."""
 
 CHUNK_BASES = 400_000
 
-EXPLAINING_MIN_SCORE = 63
-"""Lowest score of an alignment that explains a 100 nt window: >=90 columns at
->=90% identity scores at least 0.9c - 2 * 0.1c = 0.7c >= 63. Only targets whose
-best local score reaches it (or the overall best target) are traced back."""
+
+def explaining_min_score(query_length: int) -> int:
+    """Lowest score any alignment that explains a ``query_length`` window can have.
+
+    Explaining needs a query span of at least ``ceil(0.9 L)`` (so at least that
+    many columns, ``c``) at >= 90% identity; with match +1, mismatch -1 and gap -2
+    the worst case is all non-matching columns gaps: ``0.9c - 2 * 0.1c = 0.7c``.
+    Rounded down, so the cutoff never exceeds the true bound. Targets scoring
+    below it cannot explain the window and need not be traced back.
+    """
+    span = -(-PARALOG_MIN_COVERAGE_TENTHS * query_length // 10)
+    return 7 * span // 10
+
+
+PARALOG_MIN_COVERAGE_TENTHS = 9
+""":data:`PARALOG_MIN_COVERAGE` in tenths, for integer arithmetic."""
+
+EXPLAINING_MIN_SCORE = explaining_min_score(100)
+"""The cutoff for a full 100 nt window (63)."""
 
 
 def _column_maxima(query: np.ndarray, target: np.ndarray) -> np.ndarray:
@@ -252,7 +267,7 @@ def best_single_sequence_match(query: str, targets: Mapping[str, str]) -> Sequen
     """The target that best explains all of ``query`` (explaining first, then score).
 
     All targets are scored at once; the best-scoring local alignment of each
-    target scoring at least :data:`EXPLAINING_MIN_SCORE`, and of the overall
+    target scoring at least :func:`explaining_min_score` of the query length, and of the overall
     best target, is traced back. ``None`` when no target aligns at all.
     Memoised on the query and the whole target set: many rows share a junction.
     """
@@ -268,7 +283,8 @@ def _best_single_sequence_match(
     if not scores or max(scores.values()) <= 0:
         return None
     top = max(scores, key=lambda name: (scores[name], name))
-    traced = {name for name, score in scores.items() if score >= EXPLAINING_MIN_SCORE} | {top}
+    cutoff = explaining_min_score(len(query))
+    traced = {name for name, score in scores.items() if score >= cutoff} | {top}
     best: SequenceMatch | None = None
     for name in sorted(traced):
         match = SequenceMatch(name, local_align(query, targets[name]), len(query))
@@ -342,12 +358,26 @@ def chromosome_name(value: Any) -> str | None:
     return "MT" if name.upper() == "M" else name
 
 
+@dataclass(frozen=True)
+class ParalogLookup:
+    """Paralogue CDS for one gene, and whether the lookup is complete.
+
+    ``complete`` is False when the gene could not be resolved, the lookup
+    failed (e.g. HTTP 400/404), or a paralogue's CDS is missing; an empty
+    ``sequences`` with ``complete`` True is a verified "no paralogues".
+    """
+
+    sequences: dict[str, str]
+    complete: bool
+    missing: tuple[str, ...] = ()
+
+
 class SequenceSource(Protocol):
     genome_build: str
 
     def region(self, chromosome: str, start: int, end: int) -> str | None: ...
 
-    def paralog_cds(self, gene: str, transcript_id: str | None = None) -> dict[str, str]: ...
+    def paralog_lookup(self, gene: str, transcript_id: str | None = None) -> ParalogLookup: ...
 
     def transcript_cds(self, transcript_id: str) -> str | None: ...
 
@@ -419,19 +449,35 @@ class EnsemblReleaseFiles:
                 return {known}
         return set(self.genes_of_symbol.get(gene, ()))
 
-    def paralog_cds(self, gene: str, transcript_id: str | None = None) -> dict[str, str]:
-        """Same keys as :meth:`EnsemblSequenceSource.paralog_cds`."""
+    def paralog_lookup(self, gene: str, transcript_id: str | None = None) -> ParalogLookup:
+        """Same keys as :meth:`EnsemblSequenceSource.paralog_lookup`.
+
+        Incomplete when the gene does not resolve to an Ensembl gene, or when a
+        Compara member protein's CDS is absent from the release files.
+        """
+        gene_ids = self.gene_ids(gene, transcript_id)
+        if not gene_ids:
+            return ParalogLookup({}, False, (f"{gene} not in the Ensembl release files",))
         result: dict[str, str] = {}
-        for gene_id in sorted(self.gene_ids(gene, transcript_id)):
+        missing: list[str] = []
+        for gene_id in sorted(gene_ids):
             own = self.member_protein.get(gene_id)
-            own_cds = self._protein_cds(own) if own else None
-            if own_cds:
-                result[f"{gene}:compara_canonical:{gene_id}"] = own_cds
+            if own:
+                own_cds = self._protein_cds(own)
+                if own_cds:
+                    result[f"{gene}:compara_canonical:{gene_id}"] = own_cds
+                else:
+                    missing.append(f"no CDS for {gene} Compara member {own}")
             for other, protein in sorted(self.paralogues.get(gene_id, {}).items()):
                 sequence = self._protein_cds(protein)
                 if sequence:
                     result[f"{gene}:paralog:{other}"] = sequence
-        return result
+                else:
+                    missing.append(f"no CDS for {gene} paralogue {other} ({protein})")
+        return ParalogLookup(result, not missing, tuple(missing))
+
+    def paralog_cds(self, gene: str, transcript_id: str | None = None) -> dict[str, str]:
+        return self.paralog_lookup(gene, transcript_id).sequences
 
     def transcript_cds(self, transcript_id: str) -> str | None:
         return self.cds.get(_unversioned(transcript_id))
@@ -625,31 +671,46 @@ class EnsemblSequenceSource:
 
         return self._cached(f"region_{chromosome}_{start}_{end}", fetch)
 
-    def paralog_cds(self, gene: str, transcript_id: str | None = None) -> dict[str, str]:
+    def paralog_lookup(self, gene: str, transcript_id: str | None = None) -> ParalogLookup:
         """``{"<gene>:paralog:<ENSG>": cds, "<gene>:compara_canonical:<ENSG>": cds}``.
 
         REST looks the gene up by symbol; release files use ``transcript_id``'s
-        gene when given.
+        gene when given. A REST 400/404 (unknown symbol) is an incomplete
+        lookup, not an empty one; so is a homology entry without a sequence.
         """
         if self.release_files is not None:
-            return self.release_files.paralog_cds(gene, transcript_id)
+            return self.release_files.paralog_lookup(gene, transcript_id)
 
-        def fetch() -> dict[str, str]:
+        def fetch() -> dict[str, Any]:
             data = self._get(
                 f"/homology/symbol/human/{gene}",
                 {"type": "paralogues", "sequence": "cdna", "aligned": "0"},
             )
+            if data is None:
+                return {
+                    "sequences": {},
+                    "complete": False,
+                    "missing": [f"Ensembl homology lookup for {gene} returned 400/404"],
+                }
             result: dict[str, str] = {}
-            for entry in (data or {}).get("data", []):
+            missing: list[str] = []
+            for entry in data.get("data", []):
                 for homology in entry.get("homologies", []):
-                    source, target = homology.get("source", {}), homology.get("target", {})
-                    if source.get("seq"):
-                        result[f"{gene}:compara_canonical:{source.get('id')}"] = source["seq"]
-                    if target.get("seq"):
-                        result[f"{gene}:paralog:{target.get('id')}"] = target["seq"]
-            return result
+                    for role, label in (("source", "compara_canonical"), ("target", "paralog")):
+                        member = homology.get(role, {})
+                        if member.get("seq"):
+                            result[f"{gene}:{label}:{member.get('id')}"] = member["seq"]
+                        else:
+                            missing.append(f"no sequence for {gene} {label} {member.get('id')}")
+            return {"sequences": result, "complete": not missing, "missing": missing}
 
-        return self._cached(f"paralogs_{gene}", fetch)
+        # A new key: entries cached before completeness was tracked cannot tell a
+        # failed lookup from an empty one, so they are not reused.
+        value = self._cached(f"paralog_lookup_{gene}", fetch)
+        return ParalogLookup(value["sequences"], value["complete"], tuple(value["missing"]))
+
+    def paralog_cds(self, gene: str, transcript_id: str | None = None) -> dict[str, str]:
+        return self.paralog_lookup(gene, transcript_id).sequences
 
     def transcript_cds(self, transcript_id: str) -> str | None:
         if self.release_files is not None:
@@ -805,7 +866,8 @@ def paralog_flag(row: Mapping[str, Any], sequences: SequenceSource) -> dict[str,
             f"({row.get('reconstitution_class')}); no junction sequence to test",
         }
     targets: dict[str, str] = {}
-    gaps: list[str] = []
+    gaps: list[str] = []  # missing data: the test is incomplete
+    notes: list[str] = []  # verified facts, e.g. a gene with no paralogues
     for side in ("five_prime", "three_prime"):
         gene = row[f"{side}_gene"]
         transcript = row.get(f"{side}_ensembl_transcript")
@@ -815,21 +877,33 @@ def paralog_flag(row: Mapping[str, Any], sequences: SequenceSource) -> dict[str,
                 targets[f"{gene}:parent:{transcript}"] = cds
             else:
                 gaps.append(f"no CDS for {gene} parent {transcript}")
-        paralogues = sequences.paralog_cds(gene, transcript or None)
-        if not any(":paralog:" in name for name in paralogues):
-            gaps.append(f"no Compara paralogues for {gene}")
-        targets.update(paralogues)
-    gap_note = f" ({'; '.join(gaps)})" if gaps else ""
+        else:
+            gaps.append(f"no Ensembl transcript for {gene}")
+        lookup = sequences.paralog_lookup(gene, transcript or None)
+        if not lookup.complete:
+            gaps.extend(lookup.missing or (f"paralogue lookup for {gene} incomplete",))
+        elif not any(":paralog:" in name for name in lookup.sequences):
+            notes.append(f"{gene} has no Compara paralogues")
+        targets.update(lookup.sequences)
+    gap_note = f"; incomplete: {'; '.join(gaps)}" if gaps else ""
+    note = f" ({'; '.join(notes)})" if notes else ""
     if not targets:
         return {
             "paralog_sequence_flag": NOT_ASSESSED,
-            "paralog_sequence_reason": "no parent or paralogue CDS available" + gap_note,
+            "paralog_sequence_reason": "no parent or paralogue CDS available" + note + gap_note,
         }
     match = best_single_sequence_match(window, targets)
+    if match is not None and match.explains:
+        flag = FLAGGED  # an available sequence already explains the junction
+    elif gaps:
+        flag = NOT_ASSESSED  # a missing sequence might have explained it
+    else:
+        flag = PASS
     if match is None:
         return {
-            "paralog_sequence_flag": PASS,
+            "paralog_sequence_flag": flag,
             "paralog_sequence_reason": f"no local alignment to any of {len(targets)} sequences"
+            + note
             + gap_note,
         }
     summary = (
@@ -837,11 +911,11 @@ def paralog_flag(row: Mapping[str, Any], sequences: SequenceSource) -> dict[str,
         f"{match.alignment.query_span}/{len(window)} nt"
     )
     return {
-        "paralog_sequence_flag": FLAGGED if match.explains else PASS,
+        "paralog_sequence_flag": flag,
         "paralog_sequence_reason": (
             f"junction window explained by one sequence: {summary}"
             if match.explains
-            else f"best single sequence ({len(targets)} tested): {summary}{gap_note}"
+            else f"best single sequence ({len(targets)} tested): {summary}{note}{gap_note}"
         ),
         "paralog_best_target": match.target,
         "paralog_best_identity": round(match.alignment.identity, 4),
@@ -934,6 +1008,9 @@ def genomic_flags(
     if weak:
         states.append(FLAGGED)
         parts.append("; ".join(weak))
+    elif split is None:
+        states.append(NOT_ASSESSED)
+        parts.append("read support not assessed: no split-read count")
 
     if FLAGGED in states:
         flag = FLAGGED
@@ -1080,7 +1157,7 @@ def prefetch_sequences(
                 tasks.add(
                     (
                         build,
-                        "paralog_cds",
+                        "paralog_lookup",
                         (row[f"{side}_gene"], row.get(f"{side}_ensembl_transcript") or None),
                     )
                 )
