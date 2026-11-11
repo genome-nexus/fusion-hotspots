@@ -11,6 +11,7 @@ from cfh.cohort.artefact_flags import (
     NOT_APPLICABLE,
     NOT_ASSESSED,
     PASS,
+    EnsemblReleaseFiles,
     EnsemblSequenceSource,
     RepeatTracks,
     TwoBitReference,
@@ -174,7 +175,7 @@ class FakeSequences:
         base = self.regions.get(chromosome)
         return base[start - 1 : end] if base else None
 
-    def paralog_cds(self, gene):
+    def paralog_cds(self, gene, transcript_id=None):
         return self.paralogs.get(gene, {})
 
     def transcript_cds(self, transcript_id):
@@ -445,7 +446,7 @@ def test_prefetch_requests_each_fetch_once_per_build():
     calls = []
 
     class Recording(FakeSequences):
-        def paralog_cds(self, gene):
+        def paralog_cds(self, gene, transcript_id=None):
             calls.append(("paralogs", gene))
             return {}
 
@@ -635,3 +636,76 @@ def test_two_bit_reference_reads_regions_with_n_blocks_and_ignores_masking(tmp_p
     (tmp_path / "bad.2bit").write_bytes(b"\0" * 16)
     with pytest.raises(ValueError, match="not a 2bit"):
         TwoBitReference(tmp_path / "bad.2bit")
+
+
+def test_ensembl_release_files_mirror_the_rest_paralogue_view(tmp_path):
+    def fasta(path, records):
+        with gzip.open(path, "wt") as handle:
+            for header, sequence in records:
+                handle.write(f">{header}\n{sequence[:60]}\n{sequence[60:]}\n")
+        return path
+
+    loc = "chromosome:GRCh38:1:1:100:1"
+    patch = "scaffold:GRCh38:HG1_PATCH:1:100:1"
+    cds = fasta(
+        tmp_path / "cds.fa.gz",
+        [
+            (f"ENST1.3 cds {loc} gene:ENSG1.2 gene_symbol:AAA", "ATG" + "A" * 80),
+            (f"ENST2.1 cds {loc} gene:ENSG2.1 gene_symbol:BBB", "ATG" + "C" * 80),
+            (f"ENST9.1 cds {patch} gene:ENSG9.1 gene_symbol:AAA", "ATG" + "T" * 80),
+            (f"ENST1.3_PAR_Y cds {loc} gene:ENSG1.2 gene_symbol:AAA", "NNN"),
+        ],
+    )
+    pep = fasta(
+        tmp_path / "pep.fa.gz",
+        [
+            (f"ENSP1.1 pep {loc} gene:ENSG1.2 transcript:ENST1.3", "MK"),
+            (f"ENSP2.1 pep {loc} gene:ENSG2.1 transcript:ENST2.1", "MP"),
+        ],
+    )
+    homologies = tmp_path / "hom.tsv.gz"
+    header = (
+        "gene_stable_id protein_stable_id species identity homology_type "
+        "homology_gene_stable_id homology_protein_stable_id homology_species"
+    ).split()
+    rows = [
+        [
+            "ENSG1",
+            "ENSP1",
+            "homo_sapiens",
+            "50",
+            "within_species_paralog",
+            "ENSG2",
+            "ENSP2",
+            "homo_sapiens",
+        ],
+        [
+            "ENSG1",
+            "ENSP1",
+            "homo_sapiens",
+            "90",
+            "ortholog_one2one",
+            "ENSMUSG1",
+            "ENSMUSP1",
+            "mus_musculus",
+        ],
+    ]
+    _gz(homologies, [header, *rows])
+    files = EnsemblReleaseFiles(cds, pep, homologies)
+
+    assert files.transcript_cds("ENST1.3") == "ATG" + "A" * 80
+    assert files.gene_ids("AAA") == {"ENSG1"}  # the patch-scaffold gene is ignored
+    assert files.gene_ids("XYZ", "ENST2") == {"ENSG2"}  # transcript's gene beats the symbol
+    assert files.paralog_cds("AAA") == {
+        "AAA:compara_canonical:ENSG1": "ATG" + "A" * 80,
+        "AAA:paralog:ENSG2": "ATG" + "C" * 80,
+    }
+    assert files.paralog_cds("BBB") == {
+        "BBB:compara_canonical:ENSG2": "ATG" + "C" * 80,
+        "BBB:paralog:ENSG1": "ATG" + "A" * 80,
+    }
+    assert files.paralog_cds("NOPE") == {}
+
+    source = EnsemblSequenceSource("GRCh38", tmp_path / "c", release_files=files)
+    assert source.paralog_cds("AAA") == files.paralog_cds("AAA")
+    assert source.transcript_cds("ENST2") == "ATG" + "C" * 80

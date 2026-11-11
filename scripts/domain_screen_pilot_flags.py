@@ -7,6 +7,7 @@ Usage::
         --tcga-gtex NORMALIZED_TCGA_GTEX.tsv \\
         --repeats BUILD=SUPERDUPS.txt.gz,RMSK.txt.gz ...
         --reference BUILD=GENOME.2bit ...        # local reference windows (else Ensembl)
+        --ensembl-release BUILD=CDS.fa.gz,PEP.fa.gz,HOMOLOGIES.tsv.gz ...  # else REST
         --cache-dir FRESH_FLAG_CACHE --output-dir runs/<pilot>
 
 Inputs are read as data only. For every cohort it writes
@@ -27,6 +28,7 @@ from typing import Any
 
 from cfh.cohort.artefact_flags import (
     FLAG_COLUMNS,
+    EnsemblReleaseFiles,
     EnsemblSequenceSource,
     RepeatTracks,
     TwoBitReference,
@@ -60,6 +62,7 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--tcga-gtex", type=Path, required=True)
     parser.add_argument("--repeats", action="append", default=[])
     parser.add_argument("--reference", action="append", default=[])
+    parser.add_argument("--ensembl-release", action="append", default=[])
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--cache-dir", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
@@ -84,9 +87,18 @@ def main(argv: list[str] | None = None) -> None:
         build: TwoBitReference(path)
         for build, path in (spec.split("=", 1) for spec in args.reference)
     }
+    release_files = {}
+    for spec in args.ensembl_release:
+        build, files = spec.split("=", 1)
+        cds, pep, homologies = files.split(",")
+        print(f"loading Ensembl release files for {build}", file=sys.stderr, flush=True)
+        release_files[build] = EnsemblReleaseFiles(cds, pep, homologies)
     sequences = {
         build: EnsemblSequenceSource(
-            build, args.cache_dir / f"flags_{build}", reference=references.get(build)
+            build,
+            args.cache_dir / f"flags_{build}",
+            reference=references.get(build),
+            release_files=release_files.get(build),
         )
         for build in builds
     }

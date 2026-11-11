@@ -347,9 +347,113 @@ class SequenceSource(Protocol):
 
     def region(self, chromosome: str, start: int, end: int) -> str | None: ...
 
-    def paralog_cds(self, gene: str) -> dict[str, str]: ...
+    def paralog_cds(self, gene: str, transcript_id: str | None = None) -> dict[str, str]: ...
 
     def transcript_cds(self, transcript_id: str) -> str | None: ...
+
+
+class EnsemblReleaseFiles:
+    """Paralogue and transcript CDS from one Ensembl release's published files.
+
+    The same data :class:`EnsemblSequenceSource` fetches over REST, read from
+    ``Homo_sapiens.<assembly>.cds.all.fa.gz``, ``...pep.all.fa.gz`` (protein to
+    transcript) and the human ``Compara.<release>.protein_default.homologies.tsv.gz``.
+    Paralogues are human-human pairs whose homology type contains ``paralog``;
+    each pair's CDS is that of the Compara member protein's transcript, as the
+    REST ``sequence=cdna`` view returns it. A symbol maps to primary-assembly
+    genes only (patch and haplotype scaffolds are ignored); a caller that
+    knows the transcript passes it so its gene is used instead of the symbol.
+    """
+
+    def __init__(self, cds_fasta: str | Path, pep_fasta: str | Path, homologies: str | Path):
+        self.cds: dict[str, str] = {}
+        self.gene_of_transcript: dict[str, str] = {}
+        self.genes_of_symbol: dict[str, set[str]] = defaultdict(set)
+        for header, sequence in _fasta(cds_fasta):
+            fields = header.split()
+            transcript = _unversioned(fields[0])
+            if "_PAR_Y" in fields[0]:
+                continue
+            self.cds[transcript] = sequence
+            tags = dict(field.split(":", 1) for field in fields[2:] if ":" in field)
+            gene = _unversioned(tags.get("gene", ""))
+            self.gene_of_transcript[transcript] = gene
+            if (
+                fields[1] == "cds"
+                and fields[2].startswith("chromosome:")
+                and tags.get("gene_symbol")
+            ):
+                self.genes_of_symbol[tags["gene_symbol"]].add(gene)
+        self.transcript_of_protein: dict[str, str] = {}
+        for header, _ in _fasta(pep_fasta):
+            fields = header.split()
+            tags = dict(field.split(":", 1) for field in fields[2:] if ":" in field)
+            if "_PAR_Y" not in fields[0] and tags.get("transcript"):
+                self.transcript_of_protein[_unversioned(fields[0])] = _unversioned(
+                    tags["transcript"]
+                )
+        self.paralogues: dict[str, dict[str, str]] = defaultdict(dict)
+        self.member_protein: dict[str, str] = {}
+        with gzip.open(homologies, "rt", newline="") as handle:
+            for row in csv.DictReader(handle, delimiter="\t"):
+                if (
+                    row["species"] != "homo_sapiens"
+                    or row["homology_species"] != "homo_sapiens"
+                    or "paralog" not in row["homology_type"]
+                ):
+                    continue
+                gene, other = row["gene_stable_id"], row["homology_gene_stable_id"]
+                self.member_protein[gene] = row["protein_stable_id"]
+                self.member_protein[other] = row["homology_protein_stable_id"]
+                self.paralogues[gene][other] = row["homology_protein_stable_id"]
+                self.paralogues[other][gene] = row["protein_stable_id"]
+
+    def _protein_cds(self, protein: str) -> str | None:
+        transcript = self.transcript_of_protein.get(_unversioned(protein))
+        return self.cds.get(transcript) if transcript else None
+
+    def gene_ids(self, gene: str, transcript_id: str | None = None) -> set[str]:
+        if transcript_id:
+            known = self.gene_of_transcript.get(_unversioned(transcript_id))
+            if known:
+                return {known}
+        return set(self.genes_of_symbol.get(gene, ()))
+
+    def paralog_cds(self, gene: str, transcript_id: str | None = None) -> dict[str, str]:
+        """Same keys as :meth:`EnsemblSequenceSource.paralog_cds`."""
+        result: dict[str, str] = {}
+        for gene_id in sorted(self.gene_ids(gene, transcript_id)):
+            own = self.member_protein.get(gene_id)
+            own_cds = self._protein_cds(own) if own else None
+            if own_cds:
+                result[f"{gene}:compara_canonical:{gene_id}"] = own_cds
+            for other, protein in sorted(self.paralogues.get(gene_id, {}).items()):
+                sequence = self._protein_cds(protein)
+                if sequence:
+                    result[f"{gene}:paralog:{other}"] = sequence
+        return result
+
+    def transcript_cds(self, transcript_id: str) -> str | None:
+        return self.cds.get(_unversioned(transcript_id))
+
+
+def _unversioned(identifier: str) -> str:
+    return identifier.split(".")[0]
+
+
+def _fasta(path: str | Path) -> Iterator[tuple[str, str]]:
+    header: str | None = None
+    parts: list[str] = []
+    with gzip.open(path, "rt") as handle:
+        for line in handle:
+            if line.startswith(">"):
+                if header is not None:
+                    yield header, "".join(parts)
+                header, parts = line[1:].strip(), []
+            else:
+                parts.append(line.strip())
+    if header is not None:
+        yield header, "".join(parts)
 
 
 class TwoBitReference:
@@ -450,8 +554,10 @@ class EnsemblSequenceSource:
         backoff_seconds: float = 1.0,
         timeout: float = 120,
         reference: TwoBitReference | None = None,
+        release_files: EnsemblReleaseFiles | None = None,
     ):
-        """``reference``, when given, serves :meth:`region` locally instead of Ensembl."""
+        """``reference`` serves :meth:`region` and ``release_files`` serves
+        :meth:`paralog_cds` / :meth:`transcript_cds` locally instead of REST."""
         build = normalize_genome_build(genome_build)
         if build not in ENSEMBL_REST:
             raise ValueError(f"no Ensembl REST host for genome build {genome_build!r}")
@@ -464,6 +570,7 @@ class EnsemblSequenceSource:
         self.backoff_seconds = backoff_seconds
         self.timeout = timeout
         self.reference = reference
+        self.release_files = release_files
         self._memory: dict[str, Any] = {}
 
     def _cached(self, key: str, fetch: Any) -> Any:
@@ -518,8 +625,14 @@ class EnsemblSequenceSource:
 
         return self._cached(f"region_{chromosome}_{start}_{end}", fetch)
 
-    def paralog_cds(self, gene: str) -> dict[str, str]:
-        """``{"paralog:<ENSG> (<perc_id>%)": cds}`` for Compara paralogues of ``gene``."""
+    def paralog_cds(self, gene: str, transcript_id: str | None = None) -> dict[str, str]:
+        """``{"<gene>:paralog:<ENSG>": cds, "<gene>:compara_canonical:<ENSG>": cds}``.
+
+        REST looks the gene up by symbol; release files use ``transcript_id``'s
+        gene when given.
+        """
+        if self.release_files is not None:
+            return self.release_files.paralog_cds(gene, transcript_id)
 
         def fetch() -> dict[str, str]:
             data = self._get(
@@ -539,6 +652,9 @@ class EnsemblSequenceSource:
         return self._cached(f"paralogs_{gene}", fetch)
 
     def transcript_cds(self, transcript_id: str) -> str | None:
+        if self.release_files is not None:
+            return self.release_files.transcript_cds(transcript_id)
+
         def fetch() -> str | None:
             data = self._get(f"/sequence/id/{transcript_id}", {"type": "cds"})
             return data.get("seq") if data else None
@@ -689,6 +805,7 @@ def paralog_flag(row: Mapping[str, Any], sequences: SequenceSource) -> dict[str,
             f"({row.get('reconstitution_class')}); no junction sequence to test",
         }
     targets: dict[str, str] = {}
+    gaps: list[str] = []
     for side in ("five_prime", "three_prime"):
         gene = row[f"{side}_gene"]
         transcript = row.get(f"{side}_ensembl_transcript")
@@ -696,17 +813,24 @@ def paralog_flag(row: Mapping[str, Any], sequences: SequenceSource) -> dict[str,
             cds = sequences.transcript_cds(transcript)
             if cds:
                 targets[f"{gene}:parent:{transcript}"] = cds
-        targets.update(sequences.paralog_cds(gene))
+            else:
+                gaps.append(f"no CDS for {gene} parent {transcript}")
+        paralogues = sequences.paralog_cds(gene, transcript or None)
+        if not any(":paralog:" in name for name in paralogues):
+            gaps.append(f"no Compara paralogues for {gene}")
+        targets.update(paralogues)
+    gap_note = f" ({'; '.join(gaps)})" if gaps else ""
     if not targets:
         return {
             "paralog_sequence_flag": NOT_ASSESSED,
-            "paralog_sequence_reason": "no parent or paralogue CDS available",
+            "paralog_sequence_reason": "no parent or paralogue CDS available" + gap_note,
         }
     match = best_single_sequence_match(window, targets)
     if match is None:
         return {
             "paralog_sequence_flag": PASS,
-            "paralog_sequence_reason": f"no local alignment to any of {len(targets)} sequences",
+            "paralog_sequence_reason": f"no local alignment to any of {len(targets)} sequences"
+            + gap_note,
         }
     summary = (
         f"{match.target} {match.alignment.identity:.1%} identity over "
@@ -717,7 +841,7 @@ def paralog_flag(row: Mapping[str, Any], sequences: SequenceSource) -> dict[str,
         "paralog_sequence_reason": (
             f"junction window explained by one sequence: {summary}"
             if match.explains
-            else f"best single sequence ({len(targets)} tested): {summary}"
+            else f"best single sequence ({len(targets)} tested): {summary}{gap_note}"
         ),
         "paralog_best_target": match.target,
         "paralog_best_identity": round(match.alignment.identity, 4),
@@ -953,7 +1077,13 @@ def prefetch_sequences(
             continue
         for side in ("five_prime", "three_prime"):
             if row.get("junction_context_nt"):
-                tasks.add((build, "paralog_cds", (row[f"{side}_gene"],)))
+                tasks.add(
+                    (
+                        build,
+                        "paralog_cds",
+                        (row[f"{side}_gene"], row.get(f"{side}_ensembl_transcript") or None),
+                    )
+                )
                 transcript = row.get(f"{side}_ensembl_transcript")
                 if transcript:
                     tasks.add((build, "transcript_cds", (transcript,)))
