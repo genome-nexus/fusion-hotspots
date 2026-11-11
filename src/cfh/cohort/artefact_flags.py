@@ -587,6 +587,49 @@ _TWO_BIT_BYTE = [
 ]
 
 
+PARALOG_CACHE_PREFIX = "paralog_lookup_v2_"
+
+
+def parse_homology_response(gene: str, data: Any) -> dict[str, Any]:
+    """Paralogue CDS from an Ensembl REST ``/homology/symbol`` payload, fail-closed.
+
+    Complete only when the payload has a non-empty ``data`` list whose every
+    entry names the resolved gene (``id``) and carries an explicit
+    ``homologies`` list, and every homology has a source and target with an id
+    and a sequence. An empty ``homologies`` list on a resolved gene is the one
+    verified "no paralogues". Anything else (no payload, ``{}``, ``data: []``,
+    an entry without ``homologies``, a member without a sequence) is incomplete.
+    """
+    missing: list[str] = []
+    result: dict[str, str] = {}
+    entries = data.get("data") if isinstance(data, dict) else None
+    if data is None:
+        missing.append(f"Ensembl homology lookup for {gene} returned 400/404")
+    elif not isinstance(entries, list) or not entries:
+        missing.append(f"Ensembl homology response for {gene} resolved no gene")
+    else:
+        for entry in entries:
+            if not isinstance(entry, dict) or not entry.get("id"):
+                missing.append(f"Ensembl homology entry for {gene} names no gene")
+                continue
+            homologies = entry.get("homologies")
+            if not isinstance(homologies, list):
+                missing.append(f"Ensembl homology entry {entry['id']} for {gene} has no list")
+                continue
+            for homology in homologies:
+                if not isinstance(homology, dict):
+                    missing.append(f"malformed homology for {gene}")
+                    continue
+                for role, label in (("source", "compara_canonical"), ("target", "paralog")):
+                    member = homology.get(role)
+                    if isinstance(member, dict) and member.get("id") and member.get("seq"):
+                        result[f"{gene}:{label}:{member['id']}"] = member["seq"]
+                    else:
+                        member_id = member.get("id") if isinstance(member, dict) else None
+                        missing.append(f"no sequence for {gene} {label} {member_id}")
+    return {"sequences": result, "complete": not missing, "missing": missing}
+
+
 class EnsemblSequenceSource:
     """Reference regions, paralogue CDS and liftover from Ensembl REST, cached per build."""
 
@@ -686,27 +729,11 @@ class EnsemblSequenceSource:
                 f"/homology/symbol/human/{gene}",
                 {"type": "paralogues", "sequence": "cdna", "aligned": "0"},
             )
-            if data is None:
-                return {
-                    "sequences": {},
-                    "complete": False,
-                    "missing": [f"Ensembl homology lookup for {gene} returned 400/404"],
-                }
-            result: dict[str, str] = {}
-            missing: list[str] = []
-            for entry in data.get("data", []):
-                for homology in entry.get("homologies", []):
-                    for role, label in (("source", "compara_canonical"), ("target", "paralog")):
-                        member = homology.get(role, {})
-                        if member.get("seq"):
-                            result[f"{gene}:{label}:{member.get('id')}"] = member["seq"]
-                        else:
-                            missing.append(f"no sequence for {gene} {label} {member.get('id')}")
-            return {"sequences": result, "complete": not missing, "missing": missing}
+            return parse_homology_response(gene, data)
 
-        # A new key: entries cached before completeness was tracked cannot tell a
-        # failed lookup from an empty one, so they are not reused.
-        value = self._cached(f"paralog_lookup_{gene}", fetch)
+        # Versioned key: entries cached under earlier completeness rules
+        # (``paralogs_<gene>``, ``paralog_lookup_<gene>``) are never reused.
+        value = self._cached(f"{PARALOG_CACHE_PREFIX}{gene}", fetch)
         return ParalogLookup(value["sequences"], value["complete"], tuple(value["missing"]))
 
     def paralog_cds(self, gene: str, transcript_id: str | None = None) -> dict[str, str]:

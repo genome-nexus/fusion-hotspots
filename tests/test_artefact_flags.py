@@ -10,6 +10,7 @@ from cfh.cohort.artefact_flags import (
     FLAGGED,
     NOT_APPLICABLE,
     NOT_ASSESSED,
+    PARALOG_CACHE_PREFIX,
     PASS,
     EnsemblReleaseFiles,
     EnsemblSequenceSource,
@@ -27,6 +28,7 @@ from cfh.cohort.artefact_flags import (
     local_align,
     normal_flag,
     paralog_flag,
+    parse_homology_response,
     prefetch_sequences,
     reverse_complement,
     sample_call_counts,
@@ -519,12 +521,13 @@ def test_ensembl_source_caches_per_build_and_parses_homology(tmp_path):
                 {
                     "data": [
                         {
+                            "id": "ENSG_ERG",
                             "homologies": [
                                 {
                                     "source": {"id": "ENSG_ERG", "seq": "ATGAAA"},
                                     "target": {"id": "ENSG_FLI1", "seq": "ATGCCC"},
                                 }
-                            ]
+                            ],
                         }
                     ]
                 }
@@ -769,7 +772,9 @@ def test_rest_homology_400_is_an_incomplete_lookup_not_an_empty_one(tmp_path):
     session = FakeSession(
         {
             "/homology/symbol/human/NOPE": FakeResponse({"error": "not found"}, 400),
-            "/homology/symbol/human/LONELY": FakeResponse({"data": [{"homologies": []}]}),
+            "/homology/symbol/human/LONELY": FakeResponse(
+                {"data": [{"id": "ENSG_LONELY", "homologies": []}]}
+            ),
         }
     )
     source = EnsemblSequenceSource("GRCh37", tmp_path, session=session)
@@ -976,10 +981,33 @@ def test_tier2_excludes_rows_with_unmeasured_breakpoint_similarity(tmp_path):
         three_prime_breakpoint="600",
         genomic_aligned_length_150="n/a",
     )
+    bad_values = [
+        ("genomic_identity_500", "-inf"),
+        ("genomic_aligned_length_500", "inf"),
+        ("genomic_identity_150", "nan"),
+        ("genomic_identity_150", "1.2"),
+        ("genomic_identity_500", "-0.1"),
+        ("genomic_aligned_length_150", "-5"),
+        ("genomic_aligned_length_500", "30.5"),
+    ]
+    bad_rows = [
+        dict(
+            base,
+            sample_id=f"B{i}",
+            five_prime_gene=f"G{i}",
+            three_prime_gene=f"H{i}",
+            five_prime_breakpoint=str(1000 + i),
+            three_prime_breakpoint=str(2000 + i),
+            **{column: value},
+        )
+        for i, (column, value) in enumerate(bad_values)
+    ]
+    for row in bad_rows:
+        assert audit.window_similarity(row) == "unassessed", row
     with (tmp_path / "demo.domain_screen.tsv").open("w", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=columns, delimiter="\t")
         writer.writeheader()
-        writer.writerows([measured, blank, malformed])
+        writer.writerows([measured, blank, malformed, *bad_rows])
     (tmp_path / "flag_summary.json").write_text(json.dumps({"screen_summaries": {"demo": {}}}))
     pep = tmp_path / "pep.fa.gz"
     with gzip.open(pep, "wt") as handle:
@@ -1005,7 +1033,86 @@ def test_tier2_excludes_rows_with_unmeasured_breakpoint_similarity(tmp_path):
     candidates, excluded = result if isinstance(result, tuple) else (result, None)
     # unmeasured similarity is not a negative: only the measured row qualifies
     assert sorted(c["pair"] for c in candidates) == ["AAA::BBB"]
-    assert excluded == {"window_similarity_unassessed": 2}
+    assert excluded == {"window_similarity_unassessed": 2 + len(bad_rows)}
     assert audit.window_similarity(measured) == "not_similar"
     assert audit.window_similarity(blank) == "unassessed"
     assert audit.window_similarity(malformed) == "unassessed"
+
+
+# --- review round 2 (PR #154) -------------------------------------------------------
+
+_HOMOLOGY = {
+    "source": {"id": "ENSG_A", "seq": "ATGAAA"},
+    "target": {"id": "ENSG_P", "seq": "ATGCCC"},
+}
+
+
+@pytest.mark.parametrize(
+    "payload",
+    [
+        None,  # HTTP 400/404
+        {},  # missing response structure
+        {"data": []},  # nothing resolved
+        {"data": [{}]},  # entry without gene or homologies
+        {"data": [{"id": "ENSG_A"}]},  # resolved gene, homologies absent
+        {"data": [{"id": "ENSG_A", "homologies": None}]},  # homologies not a list
+        {"data": [{"homologies": []}]},  # unresolved gene (no id)
+        {"data": "nope"},
+        {"data": [{"id": "ENSG_A", "homologies": [{"source": {"id": "ENSG_A"}}]}]},
+        {"data": [{"id": "ENSG_A", "homologies": [_HOMOLOGY, "junk"]}]},
+    ],
+)
+def test_incomplete_homology_responses_are_never_verified_empty(payload):
+    parsed = parse_homology_response("AAA", payload)
+    assert parsed["complete"] is False
+    assert parsed["missing"]
+
+
+def test_verified_empty_and_full_homology_responses_are_complete():
+    empty = parse_homology_response("AAA", {"data": [{"id": "ENSG_A", "homologies": []}]})
+    assert empty == {"sequences": {}, "complete": True, "missing": []}
+    full = parse_homology_response("AAA", {"data": [{"id": "ENSG_A", "homologies": [_HOMOLOGY]}]})
+    assert full["complete"] is True
+    assert full["sequences"] == {
+        "AAA:compara_canonical:ENSG_A": "ATGAAA",
+        "AAA:paralog:ENSG_P": "ATGCCC",
+    }
+
+
+@pytest.mark.parametrize("payload", [{}, {"data": []}, {"data": [{}]}])
+def test_malformed_rest_homology_makes_the_paralog_flag_not_assessed(tmp_path, payload):
+    five, three = _random_dna(400, 11), _random_dna(400, 12)
+    window = (five[:200] + three[200:])[150:250]
+    session = FakeSession(
+        {
+            "/homology/symbol/human/AAA": FakeResponse(payload),
+            "/homology/symbol/human/BBB": FakeResponse(
+                {"data": [{"id": "ENSG_B", "homologies": []}]}
+            ),
+            "/sequence/id/ENST_A": FakeResponse({"seq": five}),
+            "/sequence/id/ENST_B": FakeResponse({"seq": three}),
+        }
+    )
+    source = EnsemblSequenceSource("GRCh37", tmp_path, session=session)
+    out = paralog_flag(_row(junction_context_nt=window), source)
+    assert out["paralog_sequence_flag"] == NOT_ASSESSED
+    # and the incompleteness is what the cache persists
+    reread = EnsemblSequenceSource("GRCh37", tmp_path, session=FakeSession({}))
+    assert reread.paralog_lookup("AAA").complete is False
+
+
+@pytest.mark.parametrize("old_key", ["paralogs_AAA", "paralog_lookup_AAA"])
+def test_paralog_entries_cached_under_older_rules_are_refetched(tmp_path, old_key):
+    cache = tmp_path / "ensembl_sequence" / "GRCh37"
+    EnsemblSequenceSource("GRCh37", tmp_path, session=FakeSession({}))  # stamps provenance
+    stale = (
+        {"value": {}}
+        if old_key.startswith("paralogs_")
+        else {"value": {"sequences": {}, "complete": True, "missing": []}}
+    )
+    (cache / f"{old_key}.json").write_text(json.dumps(stale))
+    session = FakeSession({"/homology/symbol/human/AAA": FakeResponse({}, 404)})
+    lookup = EnsemblSequenceSource("GRCh37", tmp_path, session=session).paralog_lookup("AAA")
+    assert any("/homology/symbol/human/AAA" in url for url, _ in session.calls)
+    assert lookup.complete is False
+    assert (cache / f"{PARALOG_CACHE_PREFIX}AAA.json").exists()

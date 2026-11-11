@@ -150,7 +150,7 @@ def test_cli_reads_an_open_fusion_table(tmp_path, monkeypatch):
 
 # --- source-format round trips: raw table -> normalize_table -> SV rows -----------
 
-# Real-shaped minus-strand junction (TMPRSS2 exon 1 -> ERG exon 4, both on chr21 '-'),
+# Minus-strand junction coordinates on chr21 (both '-') for the fixture's ETV5::ETV1 row,
 # with each source's own read-count columns.
 _MINUS_STRAND = {"LeftBreakpoint": "chr21:41508081:-", "RightBreakpoint": "chr21:38445621:-"}
 _SOURCE_COUNTS = {

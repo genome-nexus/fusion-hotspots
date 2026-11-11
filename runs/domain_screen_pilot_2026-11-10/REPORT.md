@@ -282,6 +282,19 @@ The review's bugs were real but latent in these data:
 The cutoff fix changed the best single-sequence target on short windows. One example is PTMA::PTMS: before, the PTMA parent at 91.0% over 82% of the window; after, the PTMS parent at 82.3% over 100%. None of these changes reaches the 90%/90% "explains" threshold.
 
 
+### Review round 2 (fail-closed parsing; outputs unchanged)
+
+Two more fail-closed rules followed:
+
+1. **REST paralogue lookups.** A REST paralogue lookup is now complete only when the response resolves the gene: a non-empty `data` list whose entries carry an `id` and an explicit `homologies` list, with an id and a sequence for every member. Responses `{}`, `{"data": []}`, `{"data": [{}]}`, an entry without `homologies`, or an unresolved gene are all incomplete, so the paralog flag is `not_assessed`. A resolved gene with `homologies: []` is the only verified empty. The cache key is now `paralog_lookup_v2_<gene>`, so entries stored under the earlier rules are re-fetched.
+2. **Tier-2 window measurements.** Tier 2 now also rejects non-finite or out-of-range identities and negative or fractional aligned lengths. Such rows are `unassessed` and counted in `tier2_exclusions.json`.
+
+Neither rule changes these outputs, so the flag pass was not re-run:
+
+- **REST lookups.** Only the MSK GRCh37 rows use REST paralogue lookups; the GRCh38 cohorts read the Ensembl 116 release files. All 58 MSK lookups were re-fetched under the new rule. All 58 are complete and identical, in sequences and completeness, to what the committed flags used.
+- **Window measurements.** Across all five committed TSVs, all 530,164 non-blank window measurements are valid (finite, identity in [0, 1], integral non-negative length). 0 are non-finite, out of range, fractional or non-numeric. Blanks occur only outside the tier-2 classes.
+- **Tier 2.** Re-run under the new rule, it reproduces `tier2_candidates.json` and `tier2_exclusions.json` byte for byte: 609 junctions, 0 exclusions.
+
 ## How the pilot was run
 
 - **Inputs.**

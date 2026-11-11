@@ -38,6 +38,7 @@ from __future__ import annotations
 import csv
 import gzip
 import json
+import math
 import re
 import sys
 from collections import Counter, defaultdict
@@ -414,9 +415,10 @@ TIER2_CLASSES = (
 def window_similarity(row: dict[str, str]) -> str:
     """``similar``, ``not_similar`` or ``unassessed`` from both breakpoint windows.
 
-    Both the +/-150 and +/-500 bp measurements (identity and aligned length)
-    must be present and numeric; a blank or malformed one is ``unassessed``,
-    never read as zero.
+    Both the +/-150 and +/-500 bp measurements must be valid: identity a finite
+    number in [0, 1] and aligned length a finite, non-negative integer. A blank,
+    non-numeric, NaN, infinite, out-of-range or fractional value is
+    ``unassessed``, never read as zero or as "not similar".
     """
     similar = False
     for window in (150, 500):
@@ -427,7 +429,9 @@ def window_similarity(row: dict[str, str]) -> str:
             length = float(length_text)
         except ValueError:
             return "unassessed"
-        if identity != identity or length != length:  # NaN
+        if not (math.isfinite(identity) and 0.0 <= identity <= 1.0):
+            return "unassessed"
+        if not (math.isfinite(length) and length >= 0 and length.is_integer()):
             return "unassessed"
         similar |= identity >= 0.80 and length >= 100
     return "similar" if similar else "not_similar"
