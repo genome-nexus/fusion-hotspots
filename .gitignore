@@ -20,3 +20,4 @@ runs/.cohort_scan_cache/
 
 # domain-screen pilot downloads, normalized tables, caches and logs (not committed)
 runs/.domain_screen_pilot_work/
+runs/.domain_function_seq_work/
