@@ -121,14 +121,22 @@ translocation breakpoints), DNA binding, Motif, Region (excluding Disordered).
 UniProt positions map to the parent transcript protein by global alignment.
 
 *Annotation status per parent* (`key_annotation_status_5p/3p`): `annotated` or
-`no_annotations_in_window` count as assessed. `no_uniprot_entry`,
+`no_annotations_in_domain` count as assessed. `no_uniprot_entry`,
 `low_uniprot_identity` (< 90 % identity over the parent window) and
 `incomplete_annotation` do not. A key feature whose start or end is not an
 exact integer (UniProt modifiers UNKNOWN / UNSURE / OUTSIDE, or a missing value)
 is kept, not dropped. If it could overlap the parent window it makes that parent
 `incomplete_annotation`, listed in `key_incomplete_annotations`.
 
-*Residue status.* Features are evaluated over the parent window (domain ± 30).
+*Scope.* Features overlapping the parent's Pfam domain span are judged over their
+in-domain residues, and only these drive counts, lists and rules. Features only
+in the ±30 flanks are listed in `key_flank_features` as `label=status` and never
+tiered. Past the crossover the two parents' flanks are usually not homologous
+(e.g. the L40 vs S27a tails after ubiquitin in UBA52::RPS27A), so a "lost" call
+there is an alignment artefact, not domain damage. A first version of this fix
+tiered flank sites, and 42 of its 123 B3 calls rested only on such sites.
+
+*Residue status.*
 Whether a parent residue is in the chimera is decided from the junction
 coordinates, not the alignment: the 5' parent contributes residues 1..F, the 3'
 parent residues T.. onwards. A present residue is **retained**. For an absent

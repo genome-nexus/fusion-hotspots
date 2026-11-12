@@ -76,7 +76,7 @@ def keys(row: dict[str, str]) -> str:
             f"{p}: {row.get(f'key_annotation_status_{p}', '?')}"
             for p in ("5p", "3p")
             if row.get(f"key_annotation_status_{p}")
-            not in ("annotated", "no_annotations_in_window")
+            not in ("annotated", "no_annotations_in_domain")
         ]
         return "not assessed (" + ", ".join(statuses) + ")"
     parts = []

@@ -395,7 +395,7 @@ _PASS = {
     "indel_in_ss": False,
     "junction_near_key": False,
     "key_annotation_status_5p": "annotated",
-    "key_annotation_status_3p": "no_annotations_in_window",
+    "key_annotation_status_3p": "no_annotations_in_domain",
     "key_unresolved": 0,
     "key_span_lost_or_altered": "",
     "key_motif_lost_or_altered": "",
@@ -864,7 +864,7 @@ def test_review3_incomplete_annotation_is_not_assessed():
     report = key_residue_report(record, parents, placed, {"five": incomplete, "three": empty})
     assert report["key_features_assessed"] is False
     assert report["key_annotation_status_5p"] == "incomplete_annotation"
-    assert report["key_annotation_status_3p"] == "no_annotations_in_window"
+    assert report["key_annotation_status_3p"] == "no_annotations_in_domain"
     assert report["key_features_assessed"] is False
     tier, _, missing = assign_tier({**_PASS, **report})
     assert tier == NOT_ASSESSED and "key_annotation_5p:incomplete_annotation" in missing
@@ -873,7 +873,7 @@ def test_review3_incomplete_annotation_is_not_assessed():
         record, parents, placed, {"five": _entry("GENEA", _PARENT, ()), "three": empty}
     )
     assert clean["key_features_assessed"] is True
-    assert clean["key_annotation_status_5p"] == "no_annotations_in_window"
+    assert clean["key_annotation_status_5p"] == "no_annotations_in_domain"
 
 
 # Review item 4: count each biological sample once; never sum one sample's rows.
@@ -1087,3 +1087,25 @@ def test_review5_real_rebuild_keeps_same_sequence_from_two_crossovers():
     assert len(records) == 2
     assert sorted(r.five.junction_residue for r in records) == [30, 31]
     assert len({getattr(r, "sequence_id", None) for r in records}) == 1
+
+
+def test_review_flank_only_site_is_reported_not_tiered():
+    """A site outside the Pfam domain (non-homologous flank) never drives the tier."""
+    record = _make(
+        _FIVE_WITH_INSERT,
+        _THREE_BASE,
+        five_last=50,
+        three_first=51,
+        five_domain=(5, 70),  # residue 80 is in the +/-30 flank, not the domain
+        three_domain=(5, 70),
+    )
+    parents = align_parents(record)
+    five = _entry("GENEA", _FIVE_WITH_INSERT, (KeyFeature("Active site", 80, 80, ""),))
+    three = _entry("GENEB", _THREE_BASE, ())
+    report = key_residue_report(
+        record, parents, place_chimera(record, parents), {"five": five, "three": three}
+    )
+    assert report["key_flank_features"] == "GENEA:Active site:80=lost"
+    assert report["key_point_lost"] == "" and report["key_lost"] == 0
+    assert report["key_annotation_status_5p"] == "no_annotations_in_domain"
+    assert assign_tier({**_PASS, **report})[0] == LIKELY_INTACT

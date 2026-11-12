@@ -195,7 +195,7 @@ STATUS_ORDER = ("retained", "conserved", "swapped", "altered", "unresolved", "lo
 
 A feature takes its worst residue status."""
 
-KEY_ANNOTATION_OK = ("annotated", "no_annotations_in_window")
+KEY_ANNOTATION_OK = ("annotated", "no_annotations_in_domain")
 """Per-parent annotation statuses that count as assessed."""
 
 
@@ -263,11 +263,18 @@ def key_residue_report(
     """Key-feature survival for both parents.
 
     Each parent gets ``key_annotation_status_*``: ``annotated`` /
-    ``no_annotations_in_window`` (assessed) or ``no_uniprot_entry`` /
+    ``no_annotations_in_domain`` (assessed) or ``no_uniprot_entry`` /
     ``low_uniprot_identity`` / ``incomplete_annotation`` (not assessed).
     ``key_features_assessed`` is True only when both parents are assessed.
-    Features are evaluated over the parent window (domain +/- FLANK, in UniProt
-    coordinates the span between the first and last window residues that align).
+
+    Scope. Features overlapping the parent's Pfam domain span (in UniProt
+    coordinates: between the first and last domain residues that align) are
+    judged over their in-domain residues; these drive every count, list and
+    rule. Features only in the flanks (domain +/- FLANK) are listed in
+    ``key_flank_features`` as ``label=status`` and never tiered: past the
+    crossover the flanks of two parents are usually not homologous (e.g. the
+    L40 vs S27a tails after ubiquitin), so loss calls there are alignment
+    artefacts rather than domain damage.
     """
     report: dict[str, Any] = {}
     statuses: dict[str, list[str]] = {s: [] for s in STATUS_ORDER}
@@ -275,6 +282,7 @@ def key_residue_report(
     point_altered: list[str] = []
     span_lost_altered: list[str] = []
     motif_lost_altered: list[str] = []
+    flank_features: list[str] = []
     incomplete_labels: list[str] = []
     assessed_all = True
     for which, parent in (("five", record.five), ("three", record.three)):
@@ -294,7 +302,9 @@ def key_residue_report(
         w_start, w_end = parent.window()
         in_window = [u for u, p in mapping.items() if w_start <= p <= w_end]
         u_low, u_high = min(in_window), max(in_window)
-        relevant_incomplete = [f for f in entry.incomplete if f.may_overlap(u_low, u_high)]
+        in_domain = [u for u, p in mapping.items() if parent.domain_start <= p <= parent.domain_end]
+        d_low, d_high = min(in_domain), max(in_domain)
+        relevant_incomplete = [f for f in entry.incomplete if f.may_overlap(d_low, d_high)]
         if relevant_incomplete:
             incomplete_labels += [f"{parent.gene}:{f.label}" for f in relevant_incomplete]
             _empty_parent_report(report, prefix, "incomplete_annotation")
@@ -303,17 +313,22 @@ def key_residue_report(
         n_features = 0
         key_positions: list[int] = []
         for feature in entry.features:
-            uniprot_positions = range(max(feature.start, u_low), min(feature.end, u_high) + 1)
+            domain_positions = range(max(feature.start, d_low), min(feature.end, d_high) + 1)
+            flank = not domain_positions
+            uniprot_positions = (
+                range(max(feature.start, u_low), min(feature.end, u_high) + 1)
+                if flank
+                else domain_positions
+            )
             if not uniprot_positions:
                 continue
-            n_features += 1
             worst = "retained"
             for u in uniprot_positions:
                 if u not in mapping:
                     status = "unresolved"
                 else:
                     status = residue_status(record, parents, placed, which, mapping[u])
-                    if (
+                    if not flank and (
                         feature.type in POINT_FEATURE_TYPES
                         or feature.end - feature.start < MAX_SITE_SPAN
                     ):
@@ -321,6 +336,10 @@ def key_residue_report(
                 if STATUS_ORDER.index(status) > STATUS_ORDER.index(worst):
                     worst = status
             label = f"{parent.gene}:{feature.label}"
+            if flank:
+                flank_features.append(f"{label}={worst}")
+                continue
+            n_features += 1
             statuses[worst].append(label)
             point = feature.type in POINT_FEATURE_TYPES
             if point and worst == "lost":
@@ -332,7 +351,7 @@ def key_residue_report(
                 if feature.end - feature.start < MAX_SITE_SPAN:
                     motif_lost_altered.append(label)
         report[f"key_annotation_status_{prefix}"] = (
-            "annotated" if n_features else "no_annotations_in_window"
+            "annotated" if n_features else "no_annotations_in_domain"
         )
         report[f"key_features_{prefix}"] = n_features
         junction = parent.junction_residue
@@ -348,6 +367,7 @@ def key_residue_report(
     report["key_span_lost_or_altered"] = ";".join(span_lost_altered)
     report["key_motif_lost_or_altered"] = ";".join(motif_lost_altered)
     report["key_incomplete_annotations"] = ";".join(incomplete_labels)
+    report["key_flank_features"] = ";".join(flank_features)
     distances: list[int] = [
         value
         for value in (report.get("junction_to_key_5p"), report.get("junction_to_key_3p"))
