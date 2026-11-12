@@ -106,6 +106,9 @@ ID_COLUMNS = (
 )
 
 
+FLAG_COLUMNS = ("structure_flag", "structure_flag_rules", "structure_flag_missing")
+
+
 def assess(
     record_jobs: list[RecordJobs],
     predictions: dict[str, Prediction],
@@ -143,11 +146,12 @@ def _cell(value: Any) -> Any:
 
 
 def write_tsv(rows: list[dict[str, Any]], path: Path) -> None:
-    columns: list[str] = []
-    for row in rows:
+    columns = ["pr1_tier" if c == "tier" else c for c in ID_COLUMNS] + list(FLAG_COLUMNS)
+    for row in sorted(rows, key=len, reverse=True):  # the most complete row sets the order
         for key in row:
             if key not in columns:
                 columns.append(key)
+    columns = [c for c in columns if any(c in row for row in rows)]
     with gzip.open(path, "wt", newline="") as handle:
         writer = csv.DictWriter(handle, columns, delimiter="\t", lineterminator="\n")
         writer.writeheader()
@@ -207,3 +211,42 @@ def flag_counts(rows: list[dict[str, Any]], records: list[ChimeraRecord]) -> dic
         "by_pr1_tier": {k: dict(v) for k, v in sorted(by_tier.items())},
         "rules_fired": dict(rules),
     }
+
+
+TABLE_COLUMNS = (
+    ("fusion", "fusion"),
+    ("pfam_family", "Pfam"),
+    ("pr1_tier", "PR1 tier"),
+    ("structure_flag", "flag"),
+    ("structure_flag_rules", "rules"),
+    ("chimera_domain_plddt", "dom pLDDT C"),
+    ("parent5_domain_plddt", "5'"),
+    ("parent3_domain_plddt", "3'"),
+    ("delta_domain_plddt_vs_better_parent", "Δdom"),
+    ("chimera_junction_plddt_mean", "jx mean C"),
+    ("chimera_junction_plddt_min", "jx min C"),
+    ("delta_junction_plddt_mean_vs_better_parent", "Δjx"),
+    ("chimera_interhalf_pae", "half PAE C"),
+    ("parent5_interhalf_pae", "5'"),
+    ("parent3_interhalf_pae", "3'"),
+    ("chimera_ptm", "pTM C"),
+    ("vs_5p_tm", "TM vs 5'"),
+    ("vs_3p_tm", "TM vs 3'"),
+    ("vs_5p_local_rmsd", "jx RMSD 5'"),
+    ("vs_3p_local_rmsd", "jx RMSD 3'"),
+    ("vs_afdb_5p_tm", "TM AFDB 5'"),
+    ("vs_afdb_3p_tm", "TM AFDB 3'"),
+)
+
+
+def report_table(rows: list[dict[str, Any]]) -> str:
+    """Markdown table of the main per-record measures (for REPORT.md)."""
+    header = "| " + " | ".join(label for _, label in TABLE_COLUMNS) + " |"
+    lines = [header, "|" + "---|" * len(TABLE_COLUMNS)]
+    for row in rows:
+        cells = []
+        for key, _ in TABLE_COLUMNS:
+            value = row.get(key)
+            cells.append("" if value is None else str(value).replace("|", "/"))
+        lines.append("| " + " | ".join(cells) + " |")
+    return "\n".join(lines) + "\n"

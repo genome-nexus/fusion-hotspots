@@ -50,6 +50,7 @@ from cfh.domain_structure.run import (
     flag_counts,
     load_predictions,
     predict_all,
+    report_table,
     write_tsv,
 )
 
@@ -122,6 +123,7 @@ def main() -> int:
     afdb = afdb_models(record_jobs, AfdbCoordinates(args.work / "afdb"))
     rows = assess(record_jobs, predictions, failures, afdb)
     write_tsv(rows, out / "domain_structure_metrics.tsv.gz")
+    (out / "report_tables.md").write_text(report_table(rows))
     index = export_models(jobs, predictions, out / "models")
     counts = flag_counts(rows, records)
     (out / "flag_counts.json").write_text(json.dumps(counts, indent=1) + "\n")
