@@ -28,7 +28,7 @@ dev = [
     "pre-commit>=4.6.2",
     "pytest>=9.2.0",
     "ruff>=0.17.3",
-    "pypdf>=6.21.2",
+    "pypdf>=7.0.0",
 ]
 
 [project.scripts]
