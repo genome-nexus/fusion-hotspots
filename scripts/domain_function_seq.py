@@ -15,12 +15,11 @@ so a rerun only repeats what changed.
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
-import pickle
 import subprocess
 import sys
 import time
+from collections import Counter
 from importlib.metadata import version
 from pathlib import Path
 
@@ -42,24 +41,22 @@ from cfh.domain_function.record import FLANK, TRANSLATED_CLASSES, build_records
 from cfh.domain_function.run import (
     assess_all,
     load_hmms,
+    load_or_build_records,
     load_structures,
     read_screen_rows,
+    records_fingerprint,
     shortlist,
     tier_counts,
     write_records,
     write_tsv,
 )
-from cfh.domain_function.tiers import RULES, TIER_LABEL
+from cfh.domain_function.tiers import REQUIRED_INPUTS, RULES, TIER_LABEL
 from cfh.domain_function.uniprot import UniProtClient
 from cfh.mapping.transcript_models import TranscriptModelSource
 
 
 def log(message: str) -> None:
     print(time.strftime("%H:%M:%S"), message, flush=True)
-
-
-def sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def main() -> int:
@@ -75,17 +72,25 @@ def main() -> int:
 
     log("reading screen rows")
     rows = read_screen_rows(args.screen)
-    records_cache = args.work / "records.pickle"
-    if records_cache.exists():
-        records, problems = pickle.loads(records_cache.read_bytes())
-    else:
+    cache_dirs = {"GRCh38": args.grch38_cache, "GRCh37": args.grch37_cache}
+
+    def build() -> tuple[list, Counter]:
         sources = {
-            "GRCh38": TranscriptModelSource("GRCh38", cache_dir=args.grch38_cache),
-            "GRCh37": TranscriptModelSource("GRCh37", cache_dir=args.grch37_cache),
+            build: TranscriptModelSource(build, cache_dir=path)
+            for build, path in cache_dirs.items()
         }
-        records, problems = build_records(rows, sources, progress=log)
-        records_cache.write_bytes(pickle.dumps((records, problems)))
-    log(f"{len(records)} records; rebuild problems {dict(problems)}")
+        return build_records(rows, sources, progress=log)
+
+    records, problems, fingerprint, reused = load_or_build_records(
+        args.work / "records.pickle",
+        lambda: records_fingerprint(args.screen, cache_dirs),
+        build,
+        progress=log,
+    )
+    log(
+        f"{len(records)} records ({'reused cache' if reused else 'rebuilt'}); "
+        f"rebuild problems {dict(problems)}"
+    )
 
     cache = args.work / "cache"
     hmms, hmm_problems = load_hmms(
@@ -103,7 +108,9 @@ def main() -> int:
     structures, afdb_problems = load_structures(accessions, cache / "afdb", progress=log)
     log(f"AFDB: {sum(s is not None for s in structures.values())}/{len(accessions)}")
 
-    metrics = assess_all(records, hmms, entries, structures, progress=log)
+    metrics = assess_all(
+        records, hmms, entries, structures, progress=log, structure_problems=afdb_problems
+    )
     counts = tier_counts(metrics, records)
     short = shortlist(metrics)
 
@@ -123,7 +130,9 @@ def main() -> int:
         "code_sha": git_sha,
         "code_dirty": bool(dirty),
         "input_screen": str(args.screen),
-        "input_screen_sha256": sha256(args.screen),
+        "input_screen_sha256": fingerprint["screen_sha256"],
+        "records_fingerprint": fingerprint,
+        "records_cache_reused": reused,
         "translated_classes": list(TRANSLATED_CLASSES),
     }
     write_records(records, args.out / "chimera_records.json.gz", provenance)
@@ -135,7 +144,19 @@ def main() -> int:
         **provenance,
         "tier_kind": TIER_LABEL,
         "tier_rules": RULES,
+        "tier_required_inputs_for_likely_intact": list(REQUIRED_INPUTS),
         "records": len(records),
+        "distinct_sequences": len({r.sequence_id for r in records}),
+        "record_identity": (
+            "record_id: family, class, parent transcripts, parent domain spans, junction "
+            "residues, hybrid residue, chimeric domain span and flanked sequence; "
+            "sequence_id: family, parent transcripts and flanked sequence"
+        ),
+        "read_support_rule": (
+            "samples counted once per biological sample (both TARGET tables share one "
+            "namespace); a sample's reads = max over its rows, never summed; "
+            "total = sum over samples of per-sample max"
+        ),
         "rebuild_problems": dict(problems),
         "screen_rows_in_translated_classes": sum(
             1 for r in rows if r["reconstitution_class"] in TRANSLATED_CLASSES

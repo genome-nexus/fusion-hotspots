@@ -70,8 +70,17 @@ def flag_summary(row: dict[str, str]) -> str:
 
 
 def keys(row: dict[str, str]) -> str:
+    """Key-feature statuses, or why they could not be assessed."""
+    if row.get("key_features_assessed") != "True":
+        statuses = [
+            f"{p}: {row.get(f'key_annotation_status_{p}', '?')}"
+            for p in ("5p", "3p")
+            if row.get(f"key_annotation_status_{p}")
+            not in ("annotated", "no_annotations_in_window")
+        ]
+        return "not assessed (" + ", ".join(statuses) + ")"
     parts = []
-    for status in ("lost", "altered", "swapped", "retained"):
+    for status in ("lost", "unresolved", "altered", "swapped", "conserved", "retained"):
         value = row.get(f"key_{status}", "")
         if value not in ("", "0"):
             parts.append(f"{status} {value}")
@@ -79,7 +88,16 @@ def keys(row: dict[str, str]) -> str:
         parts.append(f"POINT LOST {row['key_point_lost']}")
     if row.get("key_point_altered"):
         parts.append(f"point altered {row['key_point_altered']}")
-    return "; ".join(parts) or ("none in window" if row.get("key_lost") == "0" else "n/a")
+    if row.get("key_span_lost_or_altered"):
+        parts.append(f"span lost/altered {row['key_span_lost_or_altered']}")
+    return "; ".join(parts) or "no annotated feature in window"
+
+
+def reads(row: dict[str, str]) -> str:
+    """``max one sample / total over samples (samples)``."""
+    best = row.get("max_split_reads_one_sample") or "-"
+    total = row.get("total_split_reads_over_samples") or "-"
+    return f"{best} / {total} ({row.get('n_samples')})"
 
 
 def bits_vs_ga(row: dict[str, str]) -> str:
@@ -104,7 +122,7 @@ def candidate_rows(rows: list[dict[str, str]]) -> list[list[object]]:
                 f"{row.get('schema_E_5p', '')}/{row.get('schema_E_3p', '')}",
                 row.get("indel_ss", ""),
                 keys(row),
-                f"{row.get('max_split_reads') or '-'} / {row.get('n_samples')}",
+                reads(row),
                 row["cohorts"].replace(";", ", "),
                 flag_summary(row),
                 row.get("shortlist_reason", ""),
@@ -124,7 +142,7 @@ CANDIDATE_HEADER = [
     "E 5'/3'",
     "indel SS",
     "key residues",
-    "max split reads / samples",
+    "split reads: best sample / sum over samples (samples)",
     "cohorts",
     "artefact flags (rows flagged)",
     "shortlist",
@@ -143,7 +161,10 @@ def main() -> int:
     by_class: dict[str, Counter[str]] = defaultdict(Counter)
     for row in metrics:
         by_class[row["junction_class"]][row["tier"]] += 1
-    out.append("Distinct chimeric-domain records, all cohorts:\n")
+    out.append(
+        f"Distinct chimeric-domain records (sequence + origin), all cohorts; "
+        f"{counts['distinct_sequences']} distinct sequences:\n"
+    )
     out.append(
         table(
             ["class", *TIERS, "total"],
@@ -164,7 +185,13 @@ def main() -> int:
         "\nRecords per cohort and class (a record seen in several cohorts counts in each):\n"
     )
     out.append(counts_table(counts["records"]))
-    out.append("\nScreen rows (samples) per cohort and class, by their record's tier:\n")
+    out.append(
+        "\nDistinct biological samples per cohort and class, by their record's tier (a "
+        "TARGET sample in both TARGET tables appears in both rows here but once in record "
+        "totals):\n"
+    )
+    out.append(counts_table(counts["samples"]))
+    out.append("\nScreen rows (observations) per cohort and class, by their record's tier:\n")
     out.append(counts_table(counts["rows"]))
 
     rules: Counter[str] = Counter()
@@ -180,6 +207,21 @@ def main() -> int:
     out.append(table(["missing input", "records"], sorted(missing.items())))
     out.append("")
     out.append(table(["disagreement", "records"], sorted(disagreements.items())))
+    for title, column in (
+        ("structure status (AlphaFold DB)", "structure_status"),
+        ("key-annotation status (UniProt)", "key_annotation_status"),
+    ):
+        tally: Counter[tuple[str, str]] = Counter()
+        for row in metrics:
+            for prefix in ("5p", "3p"):
+                tally[(prefix, row.get(f"{column}_{prefix}", ""))] += 1
+        out.append("")
+        out.append(
+            table(
+                ["parent", title, "records"],
+                [[p, status, n] for (p, status), n in sorted(tally.items())],
+            )
+        )
 
     out.append("\n## Shortlist for PR 2 structure prediction\n")
     out.append(

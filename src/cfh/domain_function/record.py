@@ -1,12 +1,22 @@
-"""Per-chimera records: one per distinct chimeric domain sequence.
+"""Per-chimera records: one per distinct chimeric domain *and origin*.
 
 A record is rebuilt from the junction screen's own functions
 (:func:`~cfh.mapping.junction_translation.predict_junction` and
 :func:`~cfh.mapping.junction_domain_classifier.classify_family`) on the same
 transcript models, so its chimeric domain is exactly the one the screen
-classified. Screen rows (one per sample) that give the same chimeric domain
-(same family, parent transcripts and flanked sequence) collapse into one record
-that keeps every cohort, sample count, read support and artefact flag.
+classified.
+
+Identity. ``record_id`` hashes the family, both parent transcripts, both parent
+domain spans, both junction residues, the hybrid-codon residue, the junction
+class and the flanked chimeric sequence: two junctions that happen to give the
+same sequence from different crossover points stay separate records (each is
+assessed on its own coordinates). ``sequence_id`` hashes only family,
+transcripts and flanked sequence, so later steps can predict one structure per
+sequence.
+
+Provenance. Every screen row folded into a record is kept as an observation
+(cohort, sample, biological sample, breakpoints, reads, artefact flags).
+Sample-level support is derived from them by :func:`finalize_support`.
 """
 
 from __future__ import annotations
@@ -50,6 +60,27 @@ ARTEFACT_FLAG_COLUMNS = (
     "normal_recurrence_flag",
 )
 """Pilot artefact flags (``pass`` / ``flagged`` / ``not_assessed``) carried per row."""
+
+SHARED_SAMPLE_NAMESPACES = {
+    "target_consolidated": "TARGET",
+    "target_starfusion": "TARGET",
+}
+"""Cohorts whose sample ids name the same biological samples. The two TARGET
+tables are two call sets (STAR-Fusion+FusionInspector, STAR-Fusion) over the
+same TARGET RNA-seq, with identical barcodes (e.g. TARGET-30-PASEGA-01A)."""
+
+
+def biological_sample(cohort: str, sample_id: str, row_index: int) -> str:
+    """Namespace for counting a sample once across tables (see SHARED_SAMPLE_NAMESPACES).
+
+    A row without a sample id cannot be matched to any other row, so it is its
+    own sample (``<cohort>:row<index>``).
+    """
+    namespace = SHARED_SAMPLE_NAMESPACES.get(cohort, cohort)
+    if not sample_id:
+        return f"{cohort}:row{row_index}"
+    return f"{namespace}:{sample_id}"
+
 
 CONTEXT_FLAG_COLUMNS = ("genomic_similarity_flag", "sample_burden_flag")
 """Flags raised on almost every shared-domain fusion (paralogous partners in segmental
@@ -101,14 +132,24 @@ class ChimeraRecord:
     pilot_indel_sequence: str
     pilot_alignment_parent: str
     pilot_alignment_identity: float | None
+    sequence_id: str = ""
+    """Groups records with the same family, transcripts and flanked sequence."""
     genome_builds: list[str] = field(default_factory=list)
     cohorts: list[str] = field(default_factory=list)
     fusions: list[str] = field(default_factory=list)
+    observations: list[dict[str, Any]] = field(default_factory=list)
+    """One entry per screen row (provenance); see :func:`add_row`."""
     n_rows: int = 0
+    """Screen rows (observations); one sample can contribute several."""
     n_samples: int = 0
+    """Distinct biological samples (see :func:`biological_sample`)."""
     rows_per_cohort: dict[str, int] = field(default_factory=dict)
+    samples_per_cohort: dict[str, int] = field(default_factory=dict)
     max_split_reads: int | None = None
-    total_split_reads: int = 0
+    """Largest split-read count of any one sample (None: no row reports reads)."""
+    total_split_reads: int | None = None
+    """Sum over distinct samples of each sample's largest split-read count."""
+    samples_with_split_reads: int = 0
     max_paired_end_reads: int | None = None
     artefact_flag_counts: dict[str, dict[str, int]] = field(default_factory=dict)
     artefact_clean_rows: int = 0
@@ -149,10 +190,63 @@ class ChimeraRecord:
         offset = position - five_kept - (1 if self.hybrid_residue else 0)
         return "three", self.three.junction_residue + offset - 1
 
+    def chimera_position(self, which: str, parent_position: int) -> int | None:
+        """Chimera position of parent residue ``parent_position``; None if not in the chimera.
 
-def record_key(family: str, five_tx: str, three_tx: str, flanked: str) -> str:
-    digest = hashlib.sha256(f"{family}|{five_tx}|{three_tx}|{flanked}".encode()).hexdigest()
-    return f"chim_{digest[:16]}"
+        The 5' parent contributes residues 1..``five.junction_residue``; the 3'
+        parent contributes ``three.junction_residue`` onwards, through the end
+        of the translated fusion protein.
+        """
+        if which == "five":
+            return parent_position if 1 <= parent_position <= self.five.junction_residue else None
+        first = self.three.junction_residue
+        if parent_position < first:
+            return None
+        position = (
+            self.five.junction_residue + len(self.hybrid_residue) + parent_position - first + 1
+        )
+        return position if position <= len(self.chimeric_protein) else None
+
+
+def _digest(prefix: str, parts: Iterable[Any]) -> str:
+    text = "|".join(str(part) for part in parts)
+    return f"{prefix}_{hashlib.sha256(text.encode()).hexdigest()[:16]}"
+
+
+def sequence_key(record: ChimeraRecord) -> str:
+    """Family + parent transcripts + flanked chimeric sequence."""
+    return _digest(
+        "seq",
+        (
+            record.pfam_family,
+            record.five.transcript,
+            record.three.transcript,
+            record.chimeric_domain_flanked,
+        ),
+    )
+
+
+def record_key(record: ChimeraRecord) -> str:
+    """Sequence identity plus origin: domain spans, junction residues, hybrid residue, class."""
+    return _digest(
+        "chim",
+        (
+            record.pfam_family,
+            record.junction_class,
+            record.five.transcript,
+            record.five.domain_start,
+            record.five.domain_end,
+            record.five.junction_residue,
+            record.three.transcript,
+            record.three.domain_start,
+            record.three.domain_end,
+            record.three.junction_residue,
+            record.hybrid_residue,
+            record.domain_start,
+            record.domain_end,
+            record.chimeric_domain_flanked,
+        ),
+    )
 
 
 def _int(value: Any) -> int | None:
@@ -246,15 +340,19 @@ def build_core(
         pilot_alignment_parent=call.alignment_parent or "",
         pilot_alignment_identity=call.alignment_identity,
     )
-    record.record_id = record_key(
-        family, record.five.transcript, record.three.transcript, record.chimeric_domain_flanked
-    )
+    record.record_id = record_key(record)
+    record.sequence_id = sequence_key(record)
     return record, None
 
 
-def add_row(record: ChimeraRecord, row: Mapping[str, Any]) -> None:
-    """Fold one screen row's cohort, read support and artefact flags into ``record``."""
+def add_row(record: ChimeraRecord, row: Mapping[str, Any], row_index: int = 0) -> None:
+    """Fold one screen row into ``record`` as an observation.
+
+    Call :func:`finalize_support` once all rows are added; it derives the
+    sample-level counts and read support from the observations.
+    """
     cohort = str(row.get("cohort") or "")
+    sample_id = str(row.get("sample_id") or "")
     record.n_rows += 1
     record.rows_per_cohort[cohort] = record.rows_per_cohort.get(cohort, 0) + 1
     for values, value in (
@@ -265,15 +363,11 @@ def add_row(record: ChimeraRecord, row: Mapping[str, Any]) -> None:
         if value and value not in values:
             values.append(value)
             values.sort()
-    split, paired = _int(row.get("tumor_split_reads")), _int(row.get("tumor_paired_end_reads"))
-    if split is not None:
-        record.total_split_reads += split
-        record.max_split_reads = max(record.max_split_reads or 0, split)
-    if paired is not None:
-        record.max_paired_end_reads = max(record.max_paired_end_reads or 0, paired)
+    flags = {}
     clean = core_clean = True
     for column in ARTEFACT_FLAG_COLUMNS:
         value = str(row.get(column) or "not_assessed")
+        flags[column.removesuffix("_flag")] = value
         counts = record.artefact_flag_counts.setdefault(column, {})
         counts[value] = counts.get(value, 0) + 1
         clean = clean and value == "pass"
@@ -281,6 +375,48 @@ def add_row(record: ChimeraRecord, row: Mapping[str, Any]) -> None:
             core_clean = core_clean and value == "pass"
     record.artefact_clean_rows += int(clean)
     record.artefact_core_clean_rows += int(core_clean)
+    record.observations.append(
+        {
+            "cohort": cohort,
+            "sample_id": sample_id,
+            "biological_sample": biological_sample(cohort, sample_id, row_index),
+            "five_prime_breakpoint": _int(row.get("five_prime_breakpoint")),
+            "three_prime_breakpoint": _int(row.get("three_prime_breakpoint")),
+            "split_reads": _int(row.get("tumor_split_reads")),
+            "paired_end_reads": _int(row.get("tumor_paired_end_reads")),
+            "caller": str(row.get("Open_caller") or ""),
+            "flags": flags,
+        }
+    )
+
+
+def finalize_support(record: ChimeraRecord) -> None:
+    """Sample-level counts and read support from ``record.observations``.
+
+    Rule: each biological sample counts once. Rows of the same sample (several
+    tables, callers or event rows) may re-report the same reads, so a sample's
+    read support is the *largest* count among its rows, never their sum.
+    ``max_split_reads`` is the best single sample; ``total_split_reads`` sums
+    the per-sample values over distinct samples.
+    """
+    best_split: dict[str, int | None] = {}
+    best_paired: dict[str, int | None] = {}
+    cohort_samples: dict[str, set[str]] = {}
+    for observation in record.observations:
+        sample = observation["biological_sample"]
+        cohort_samples.setdefault(observation["cohort"], set()).add(sample)
+        for best, key in ((best_split, "split_reads"), (best_paired, "paired_end_reads")):
+            value = observation.get(key)
+            current = best.get(sample)
+            best[sample] = value if current is None else max(current, value or 0)
+    split_values = [v for v in best_split.values() if v is not None]
+    paired_values = [v for v in best_paired.values() if v is not None]
+    record.n_samples = len(best_split)
+    record.samples_per_cohort = {c: len(s) for c, s in sorted(cohort_samples.items())}
+    record.max_split_reads = max(split_values) if split_values else None
+    record.total_split_reads = sum(split_values) if split_values else None
+    record.samples_with_split_reads = sum(1 for v in split_values if v > 0)
+    record.max_paired_end_reads = max(paired_values) if paired_values else None
 
 
 def build_records(
@@ -297,7 +433,6 @@ def build_records(
     """
     records: dict[str, ChimeraRecord] = {}
     built: dict[tuple[Any, ...], tuple[ChimeraRecord | None, str | None]] = {}
-    samples: dict[str, set[tuple[str, str]]] = {}
     problems: Counter[str] = Counter()
     for index, row in enumerate(rows, start=1):
         if row.get("reconstitution_class") not in TRANSLATED_CLASSES:
@@ -322,14 +457,11 @@ def build_records(
             problems[problem or "unknown"] += 1
             continue
         record = records.setdefault(core.record_id, _copy_core(core))
-        add_row(record, row)
-        samples.setdefault(core.record_id, set()).add(
-            (str(row.get("cohort")), str(row.get("sample_id")))
-        )
+        add_row(record, row, index)
         if progress is not None and index % 2000 == 0:
             progress(f"rows {index}: {len(built)} junctions, {len(records)} records")
-    for record_id, record in records.items():
-        record.n_samples = len(samples[record_id])
+    for record in records.values():
+        finalize_support(record)
     return sorted(records.values(), key=lambda r: r.record_id), problems
 
 
@@ -362,6 +494,7 @@ def record_from_dict(data: Mapping[str, Any]) -> ChimeraRecord:
 
 
 def read_records_json(path: Path) -> list[ChimeraRecord]:
+    """Records from a ``chimera_records.json[.gz]``; the schema version must match."""
     raw = Path(path).read_bytes()
     payload = json.loads(gzip.decompress(raw) if raw[:2] == b"\x1f\x8b" else raw)
     if payload.get("schema_version") != SCHEMA_VERSION:

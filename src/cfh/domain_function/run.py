@@ -4,8 +4,11 @@ from __future__ import annotations
 
 import csv
 import gzip
+import hashlib
 import json
 import math
+import os
+import pickle
 from collections import Counter, defaultdict
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -13,7 +16,11 @@ from typing import Any, Callable, Iterable, Mapping
 
 from pyhmmer.plan7 import HMM
 
-from cfh.domain_function import SCHEMA_VERSION
+import cfh.domain_function.record as record_module
+import cfh.mapping.junction_domain_classifier as classifier_module
+import cfh.mapping.junction_translation as translation_module
+import cfh.mapping.transcript_models as transcript_module
+from cfh.domain_function import RECORDS_VERSION, SCHEMA_VERSION
 from cfh.domain_function.afdb import AfdbClient, ParentStructure
 from cfh.domain_function.assess import assess_record
 from cfh.domain_function.metrics import NOT_ASSESSED
@@ -39,6 +46,83 @@ NAMED_CASES = (
 SHORTLIST_SIZE = 25
 
 Progress = Callable[[str], None]
+
+
+REBUILD_MODULES = (record_module, translation_module, classifier_module, transcript_module)
+"""Modules whose code decides a record's content; their source is fingerprinted."""
+
+
+def file_sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with open(path, "rb") as handle:
+        for block in iter(lambda: handle.read(1 << 20), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def tree_digest(root: Path) -> str:
+    """Digest of every file's relative path, size and mtime under ``root``.
+
+    Any added, removed or rewritten cache file changes it (a rewrite with
+    identical content also does, which only costs a rebuild). Content hashing
+    all ~400k transcript-cache files takes minutes; this takes seconds.
+    """
+    entries = []
+    for directory, _, files in os.walk(root):
+        for name in files:
+            path = os.path.join(directory, name)
+            stat = os.stat(path)
+            entries.append(f"{os.path.relpath(path, root)}\t{stat.st_size}\t{stat.st_mtime_ns}")
+    digest = hashlib.sha256()
+    for entry in sorted(entries):
+        digest.update(entry.encode() + b"\n")
+    return digest.hexdigest()
+
+
+def records_fingerprint(screen: Path, cache_dirs: Mapping[str, Path]) -> dict[str, Any]:
+    """What a cached record set depends on: screen contents, transcript caches, code, versions."""
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "records_version": RECORDS_VERSION,
+        "screen_sha256": file_sha256(screen),
+        "transcript_caches": {
+            build: tree_digest(Path(path)) for build, path in sorted(cache_dirs.items())
+        },
+        "code": {
+            module.__name__: file_sha256(Path(str(module.__file__))) for module in REBUILD_MODULES
+        },
+    }
+
+
+def load_or_build_records(
+    cache_path: Path,
+    fingerprint: Callable[[], dict[str, Any]],
+    build: Callable[[], tuple[list[ChimeraRecord], Counter[str]]],
+    progress: Progress | None = None,
+) -> tuple[list[ChimeraRecord], Counter[str], dict[str, Any], bool]:
+    """``(records, problems, fingerprint, reused)``.
+
+    A cached record set is reused only when its stored fingerprint equals the
+    current one; an old-format, unreadable or mismatching cache is rebuilt. The
+    fingerprint stored with a new build is taken after the build, since building
+    can add files to the transcript caches.
+    """
+    current = fingerprint()
+    if cache_path.exists():
+        try:
+            payload = pickle.loads(cache_path.read_bytes())
+        except Exception:  # noqa: BLE001 - any unreadable cache is rebuilt
+            payload = None
+        if isinstance(payload, dict) and payload.get("fingerprint") == current:
+            return payload["records"], payload["problems"], current, True
+        if progress:
+            progress("records cache is stale or unreadable; rebuilding")
+    records, problems = build()
+    stored = fingerprint()
+    cache_path.write_bytes(
+        pickle.dumps({"fingerprint": stored, "records": records, "problems": problems})
+    )
+    return records, problems, stored, False
 
 
 def read_screen_rows(path: Path) -> list[dict[str, str]]:
@@ -91,7 +175,10 @@ def assess_all(
     entries: Mapping[str, UniProtEntry | None],
     structures: Mapping[str, ParentStructure | None],
     progress: Progress | None = None,
+    structure_problems: Mapping[str, str] | None = None,
 ) -> list[dict[str, Any]]:
+    """Metrics for every record; ``structure_problems`` maps accession -> fetch error."""
+    fetch_problems = structure_problems or {}
     out = []
     for index, record in enumerate(records, start=1):
         record_entries = {
@@ -102,8 +189,16 @@ def assess_all(
             which: structures.get(entry.accession) if entry else None
             for which, entry in record_entries.items()
         }
+        record_problems = {
+            which: fetch_problems.get(entry.accession, "") if entry else ""
+            for which, entry in record_entries.items()
+        }
         metrics = assess_record(
-            record, hmms.get(record.pfam_family), record_entries, record_structures
+            record,
+            hmms.get(record.pfam_family),
+            record_entries,
+            record_structures,
+            record_problems,
         )
         out.append({**summary_columns(record), **metrics})
         if progress and index % 250 == 0:
@@ -121,17 +216,22 @@ def summary_columns(record: ChimeraRecord) -> dict[str, Any]:
     }
     return {
         "record_id": record.record_id,
+        "sequence_id": record.sequence_id,
         "fusion": record.fusion,
         "fusions": ";".join(record.fusions),
         "pfam_family": record.pfam_family,
         "junction_class": record.junction_class,
         "cohorts": ";".join(record.cohorts),
         "rows_per_cohort": ";".join(f"{k}:{v}" for k, v in sorted(record.rows_per_cohort.items())),
+        "samples_per_cohort": ";".join(
+            f"{k}:{v}" for k, v in sorted(record.samples_per_cohort.items())
+        ),
         "n_rows": record.n_rows,
         "n_samples": record.n_samples,
-        "max_split_reads": record.max_split_reads,
-        "total_split_reads": record.total_split_reads,
-        "max_paired_end_reads": record.max_paired_end_reads,
+        "max_split_reads_one_sample": record.max_split_reads,
+        "total_split_reads_over_samples": record.total_split_reads,
+        "samples_with_split_reads": record.samples_with_split_reads,
+        "max_paired_end_reads_one_sample": record.max_paired_end_reads,
         "artefact_clean_rows": record.artefact_clean_rows,
         "artefact_core_clean_rows": record.artefact_core_clean_rows,
         **flags,
@@ -196,7 +296,7 @@ def shortlist(rows: list[dict[str, Any]], size: int = SHORTLIST_SIZE) -> list[di
             TIER_ORDER.index(row["tier"]),
             schema_e_max(row),
             -(margin if isinstance(margin, (int, float)) else -math.inf),
-            -_as_int(row.get("max_split_reads")),
+            -_as_int(row.get("max_split_reads_one_sample")),
             -_as_int(row.get("n_samples")),
             row["record_id"],
         )
@@ -237,22 +337,33 @@ def shortlist(rows: list[dict[str, Any]], size: int = SHORTLIST_SIZE) -> list[di
 
 
 def tier_counts(rows: list[dict[str, Any]], records: list[ChimeraRecord]) -> dict[str, Any]:
-    """Tier counts per cohort and junction class, by record and by screen row."""
+    """Tier counts per cohort and junction class: by record, screen row and sample.
+
+    A sample seen in a cohort counts once per record in that cohort (two
+    records of one sample count twice; one record per sample is the norm).
+    """
     by_id = {record.record_id: record for record in records}
     record_counts: dict[str, Counter[str]] = defaultdict(Counter)
     row_counts: dict[str, Counter[str]] = defaultdict(Counter)
+    sample_counts: dict[str, Counter[str]] = defaultdict(Counter)
     overall: Counter[str] = Counter()
+    sequences: dict[str, set[str]] = defaultdict(set)
     for row in rows:
         record = by_id[row["record_id"]]
         overall[row["tier"]] += 1
+        sequences[row["tier"]].add(record.sequence_id)
         for cohort, n in record.rows_per_cohort.items():
             group = f"{cohort}|{record.junction_class}"
             record_counts[group][row["tier"]] += 1
             row_counts[group][row["tier"]] += n
+            sample_counts[group][row["tier"]] += record.samples_per_cohort.get(cohort, 0)
     return {
         "overall_records": dict(overall),
+        "overall_distinct_sequences": {k: len(v) for k, v in sequences.items()},
+        "distinct_sequences": len({r.sequence_id for r in records}),
         "records": {k: dict(v) for k, v in sorted(record_counts.items())},
         "rows": {k: dict(v) for k, v in sorted(row_counts.items())},
+        "samples": {k: dict(v) for k, v in sorted(sample_counts.items())},
     }
 
 

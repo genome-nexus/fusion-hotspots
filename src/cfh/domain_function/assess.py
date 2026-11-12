@@ -155,7 +155,15 @@ def assess_record(
     hmm: HMM | None,
     entries: dict[str, UniProtEntry | None],
     structures: dict[str, ParentStructure | None],
+    structure_problems: dict[str, str] | None = None,
 ) -> dict[str, Any]:
+    """Every metric plus the HEURISTIC tier for ``record``.
+
+    ``entries`` / ``structures`` / ``structure_problems`` are keyed ``five`` /
+    ``three``; ``structure_problems`` holds a fetch error when AFDB could not be
+    reached, so a failed download is reported as such rather than as "no model".
+    """
+    problems = structure_problems or {}
     parents = align_parents(record)
     placed = place_chimera(record, parents)
     junction_positions = sorted(
@@ -181,14 +189,17 @@ def assess_record(
     mapped = {}
     for which, parent in (("five", record.five), ("three", record.three)):
         prefix = "5p" if which == "five" else "3p"
-        result, reason = map_structure(parent, entries.get(which), structures.get(which))
+        result, status, detail = map_structure(
+            parent, entries.get(which), structures.get(which), problems.get(which, "")
+        )
         mapped[which] = result
         metrics[f"structure_{prefix}"] = (
             f"{result.structure.model_id} v{result.structure.model_version}"
             if result
             else NOT_ASSESSED
         )
-        metrics[f"structure_note_{prefix}"] = reason
+        metrics[f"structure_status_{prefix}"] = status
+        metrics[f"structure_note_{prefix}"] = detail
     metrics.update(junction_structure_report(record, placed, mapped))
     metrics.update(schema_report(record, parents, placed, mapped))
     tier, rules, missing = assign_tier(metrics)

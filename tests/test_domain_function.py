@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import gzip
+from collections import Counter
 from pathlib import Path
 
 import pytest
@@ -311,9 +312,14 @@ def test_clean_junction_reports_no_indel():
 def test_map_structure_rejects_sequence_mismatch():
     record = _record(_PARENT, _PARTNER, five_last=30, three_first=31)
     entry = _entry("GENEA", _PARENT, ())
-    mapped, reason = map_structure(record.five, entry, _structure(_PARTNER, "-" * 63))
-    assert mapped is None and "differs" in reason
-    assert map_structure(record.five, None, None)[0] is None
+    mapped, status, detail = map_structure(record.five, entry, _structure(_PARTNER, "-" * 63))
+    assert mapped is None and status == "afdb_sequence_mismatch" and "differs" in detail
+    assert map_structure(record.five, None, None)[:2] == (None, "no_uniprot_entry")
+    assert map_structure(record.five, entry, None)[:2] == (None, "no_afdb_model")
+    assert map_structure(record.five, entry, None, "RuntimeError: 429")[:2] == (
+        None,
+        "afdb_fetch_failed",
+    )
 
 
 def test_schema_counts_broken_lost_and_inserted_contacts():
@@ -388,6 +394,12 @@ _PASS = {
     "indel_ss": "no_indel",
     "indel_in_ss": False,
     "junction_near_key": False,
+    "key_annotation_status_5p": "annotated",
+    "key_annotation_status_3p": "no_annotations_in_window",
+    "key_unresolved": 0,
+    "key_span_lost_or_altered": "",
+    "structure_status_5p": "ok",
+    "structure_status_3p": "ok",
 }
 
 
@@ -470,8 +482,19 @@ def test_record_roundtrip_and_row_aggregation():
         "read_evidence_flag": "pass",
         "normal_recurrence_flag": "pass",
     }
-    add_row(record, {"cohort": "c1", "tumor_split_reads": "4", **flags})
-    add_row(record, {"cohort": "c2", "tumor_split_reads": "", "read_evidence_flag": "flagged"})
+    add_row(record, {"cohort": "c1", "sample_id": "s1", "tumor_split_reads": "4", **flags})
+    add_row(
+        record,
+        {
+            "cohort": "c2",
+            "sample_id": "s2",
+            "tumor_split_reads": "",
+            "read_evidence_flag": "flagged",
+        },
+    )
+    from cfh.domain_function.record import finalize_support
+
+    finalize_support(record)
     assert record.n_rows == 2 and record.cohorts == ["c1", "c2"]
     assert record.artefact_clean_rows == 1
     assert record.artefact_core_clean_rows == 1
@@ -653,3 +676,399 @@ def test_union_match_coverage(ets_hmm):
     hits = overlapping_hits(result, 31, 111)
     assert len(hits) == 1 and union_match_coverage(hits) == hits[0].match_state_coverage
     assert overlapping_hits(None, 1, 10) == []
+
+
+# ------------------------------------------- regression tests for the #155 review
+def _make(
+    five: str,
+    three: str,
+    *,
+    five_last: int,
+    three_first: int,
+    five_domain: tuple[int, int] = (5, 60),
+    three_domain: tuple[int, int] = (5, 60),
+    hybrid: str = "",
+    five_tx: str = "TXA",
+    three_tx: str = "TXB",
+) -> ChimeraRecord:
+    protein = five[:five_last] + hybrid + three[three_first - 1 :]
+    junction = five_last + len(hybrid)
+    return ChimeraRecord(
+        record_id="chim_test",
+        pfam_family="PF00000",
+        junction_class="test",
+        class_reason="",
+        five=ParentDomain("GENEA", five_tx, five, five_domain[0], five_domain[1], five_last),
+        three=ParentDomain("GENEB", three_tx, three, three_domain[0], three_domain[1], three_first),
+        hybrid_residue=hybrid,
+        chimeric_protein=protein,
+        domain_start=five_domain[0],
+        domain_end=junction + (three_domain[1] - three_first + 1),
+        junction_index=junction,
+        pilot_indel_residues=None,
+        pilot_indel_sequence="",
+        pilot_alignment_parent="",
+        pilot_alignment_identity=None,
+    )
+
+
+def _fli1_self_chimera() -> ChimeraRecord:
+    """A FLI1/FLI1 junction inside the ETS domain: the chimera equals the parent."""
+    record = _make(
+        FLI1,
+        FLI1,
+        five_last=320,
+        three_first=321,
+        five_domain=FLI1_ETS,
+        three_domain=FLI1_ETS,
+    )
+    record.five.gene = record.three.gene = "FLI1"
+    return record
+
+
+def _fli1_structure(sequence: str = FLI1) -> ParentStructure:
+    n = len(sequence)
+    return ParentStructure(
+        accession="Q01543",
+        model_id="AF-Q01543-F1",
+        model_version="6",
+        sequence=sequence,
+        first=1,
+        plddt=tuple([90.0] * n),
+        ss="-" * n,
+        contacts=(),
+        rsa=tuple([0.5] * n),
+    )
+
+
+# Review item 1: missing or rejected AlphaFold DB data must never give likely_intact.
+def test_review1_tier_requires_validated_structures():
+    old_style = {k: v for k, v in _PASS.items() if not k.startswith("structure_status")}
+    tier, _, missing = assign_tier({**old_style, "structure_5p": NOT_ASSESSED})
+    assert tier == NOT_ASSESSED
+    assert any(item.startswith("structure_5p") for item in missing)
+    tier, _, missing = assign_tier({**_PASS, "structure_status_3p": "afdb_sequence_mismatch"})
+    assert tier == NOT_ASSESSED and "structure_3p:afdb_sequence_mismatch" in missing
+
+
+def test_review1_missing_and_mismatched_models_end_to_end(ets_hmm):
+    record = _fli1_self_chimera()
+    entry = UniProtEntry("FLI1", "Q01543", FLI1, ())
+    entries = {"five": entry, "three": entry}
+    rejected = {"five": None, "three": _fli1_structure(FLI1[:-1] + "W")}
+    metrics = assess_record(record, ets_hmm, entries, rejected)
+    assert metrics["chimera_passes_ga"] is True  # everything else would pass
+    assert metrics["tier"] == NOT_ASSESSED
+    assert "structure_5p:no_afdb_model" in metrics["tier_missing_inputs"]
+    assert "structure_3p:afdb_sequence_mismatch" in metrics["tier_missing_inputs"]
+
+    valid = {"five": _fli1_structure(), "three": _fli1_structure()}
+    assert assess_record(record, ets_hmm, entries, valid)["tier"] == LIKELY_INTACT
+
+
+# Review item 2: absent key residues must not be reported as retained.
+_FIVE_BASE = _PARENT + _PARTNER[:40]
+_THREE_BASE = _PARTNER + _PARENT[:40]
+_FIVE_WITH_INSERT = _FIVE_BASE[:79] + "C" + _FIVE_BASE[79:]  # residue 80 has no 3' partner
+
+
+def test_review2_parent_only_column_after_crossover_is_lost():
+    record = _make(
+        _FIVE_WITH_INSERT,
+        _THREE_BASE,
+        five_last=50,
+        three_first=51,
+        five_domain=(5, 95),
+        three_domain=(5, 94),
+    )
+    parents = align_parents(record)
+    assert parents.columns[parents.five_col[80]][1] is None  # gap in the 3' parent
+    five = _entry("GENEA", _FIVE_WITH_INSERT, (KeyFeature("Active site", 80, 80, ""),))
+    three = _entry("GENEB", _THREE_BASE, ())
+    report = key_residue_report(
+        record, parents, place_chimera(record, parents), {"five": five, "three": three}
+    )
+    assert "GENEA:Active site:80" not in report["key_retained_list"]
+    assert report["key_lost"] == 1 and "GENEA:Active site:80" in report["key_point_lost"]
+    assert assign_tier({**_PASS, **report})[0] == LIKELY_BROKEN
+
+
+def test_review2_survival_is_decided_from_junction_coordinates():
+    record = _make(_PARENT, _PARTNER, five_last=30, three_first=31)
+    parents = align_parents(record)
+    placed = place_chimera(record, parents)
+    from cfh.domain_function.metrics import residue_status
+
+    assert residue_status(record, parents, placed, "five", 14) == "retained"
+    assert residue_status(record, parents, placed, "three", 38) == "retained"
+    # 5' residue 38 (A) is past the crossover; the chimera has the 3' parent's S there.
+    assert residue_status(record, parents, placed, "five", 38) == "swapped"
+    # 5' residue 33 is past the crossover but both parents have the same residue.
+    assert residue_status(record, parents, placed, "five", 33) == "conserved"
+
+
+def test_review2_unaligned_uniprot_position_is_unresolved_not_retained():
+    record = _make(_PARENT, _PARTNER, five_last=30, three_first=31)
+    parents = align_parents(record)
+    uniprot = _PARENT[:29] + "W" + _PARENT[29:]  # UniProt residue 30 has no transcript residue
+    five = _entry("GENEA", uniprot, (KeyFeature("Active site", 30, 30, ""),))
+    three = _entry("GENEB", _PARTNER, ())
+    report = key_residue_report(
+        record, parents, place_chimera(record, parents), {"five": five, "three": three}
+    )
+    # 334c050 dropped the unaligned position, leaving an "assessed" empty feature set.
+    assert report["key_features_5p"] == 1
+    assert report["key_unresolved"] == 1
+    assert report["key_retained"] == 0
+    tier, _, missing = assign_tier({**_PASS, **report})
+    assert tier != LIKELY_INTACT and "key_residue_mapping" in missing
+
+
+# Review item 3: unusable UniProt coordinates are "incomplete", not "nothing annotated".
+_FUZZY_RAW = {
+    "primaryAccession": "Q1",
+    "sequence": {"value": _PARENT},
+    "features": [
+        {
+            "type": "Active site",
+            "location": {
+                "start": {"value": None, "modifier": "UNKNOWN"},
+                "end": {"value": 40, "modifier": "EXACT"},
+            },
+        },
+        {
+            "type": "Binding site",
+            "location": {
+                "start": {"value": 20, "modifier": "UNSURE"},
+                "end": {"value": 20, "modifier": "UNSURE"},
+            },
+        },
+    ],
+}
+
+
+def test_review3_fuzzy_features_are_kept_as_incomplete():
+    entry = parse_entry("GENEA", _FUZZY_RAW)
+    assert entry.features == ()
+    assert len(entry.incomplete) == 2
+    assert entry.incomplete[0].may_overlap(30, 50) and not entry.incomplete[0].may_overlap(41, 50)
+
+
+def test_review3_incomplete_annotation_is_not_assessed():
+    record = _make(_PARENT, _PARTNER, five_last=30, three_first=31)
+    parents = align_parents(record)
+    placed = place_chimera(record, parents)
+    incomplete = parse_entry("GENEA", _FUZZY_RAW)
+    empty = _entry("GENEB", _PARTNER, ())
+    report = key_residue_report(record, parents, placed, {"five": incomplete, "three": empty})
+    assert report["key_features_assessed"] is False
+    assert report["key_annotation_status_5p"] == "incomplete_annotation"
+    assert report["key_annotation_status_3p"] == "no_annotations_in_window"
+    assert report["key_features_assessed"] is False
+    tier, _, missing = assign_tier({**_PASS, **report})
+    assert tier == NOT_ASSESSED and "key_annotation_5p:incomplete_annotation" in missing
+
+    clean = key_residue_report(
+        record, parents, placed, {"five": _entry("GENEA", _PARENT, ()), "three": empty}
+    )
+    assert clean["key_features_assessed"] is True
+    assert clean["key_annotation_status_5p"] == "no_annotations_in_window"
+
+
+# Review item 4: count each biological sample once; never sum one sample's rows.
+def test_review4_samples_and_reads_are_counted_once(monkeypatch):
+    import cfh.domain_function.record as record_module
+
+    core = _record(_PARENT, _PARTNER, five_last=30, three_first=31)
+    monkeypatch.setattr(record_module, "build_core", lambda row, source: (core, None))
+
+    def row(cohort, sample, split, five_bp="1"):
+        return {
+            "cohort": cohort,
+            "sample_id": sample,
+            "tumor_split_reads": str(split),
+            "reconstitution_class": "clean_reconstitution",
+            "genome_build": "GRCh38",
+            "five_prime_breakpoint": five_bp,
+        }
+
+    rows = [
+        row("target_consolidated", "TARGET-30-PASEGA-01A", 2),
+        row("target_starfusion", "TARGET-30-PASEGA-01A", 2),
+        row("depmap_22q2", "ACH-001552", 48),
+        row("depmap_22q2", "ACH-001552", 3, five_bp="2"),  # second event row, same sample
+        row("depmap_22q2", "ACH-000555", 5),
+    ]
+    records, _ = record_module.build_records(rows, {"GRCh38": object()})  # type: ignore[dict-item]
+    (record,) = records
+    assert record.n_rows == 5
+    assert record.n_samples == 3
+    assert record.max_split_reads == 48
+    assert record.total_split_reads == 2 + 48 + 5
+    assert record.samples_per_cohort == {
+        "depmap_22q2": 2,
+        "target_consolidated": 1,
+        "target_starfusion": 1,
+    }
+    assert {o["biological_sample"] for o in record.observations} == {
+        "TARGET:TARGET-30-PASEGA-01A",
+        "depmap_22q2:ACH-001552",
+        "depmap_22q2:ACH-000555",
+    }
+    assert record_from_dict(record_to_dict(record)) == record
+
+
+# Review item 5: the same sequence from different origins stays separate.
+def test_review5_record_identity_includes_origin():
+    from cfh.domain_function.record import record_key, sequence_key
+
+    # Parents are identical at residues 29-37, so both crossovers give one sequence.
+    first = _record(_PARENT, _PARTNER, five_last=30, three_first=31)
+    second = _record(_PARENT, _PARTNER, five_last=31, three_first=32)
+    assert first.chimeric_domain_flanked == second.chimeric_domain_flanked
+    assert sequence_key(first) == sequence_key(second)
+    assert record_key(first) != record_key(second)
+    moved_domain = _make(_PARENT, _PARTNER, five_last=30, three_first=31, five_domain=(6, 60))
+    assert record_key(moved_domain) != record_key(first)
+
+
+def test_review5_build_records_keeps_each_origin(monkeypatch):
+    import cfh.domain_function.record as record_module
+    from cfh.domain_function.record import record_key
+
+    cores = {}
+    for five_last in (30, 31):
+        core = _record(_PARENT, _PARTNER, five_last=five_last, three_first=five_last + 1)
+        core.record_id = record_key(core)
+        cores[str(five_last)] = core
+    monkeypatch.setattr(
+        record_module, "build_core", lambda row, source: (cores[row["five_prime_breakpoint"]], None)
+    )
+    rows = [
+        {
+            "cohort": "c",
+            "sample_id": f"s{bp}",
+            "five_prime_breakpoint": bp,
+            "reconstitution_class": "clean_reconstitution",
+            "genome_build": "GRCh38",
+        }
+        for bp in ("30", "31")
+    ]
+    records, _ = record_module.build_records(rows, {"GRCh38": object()})  # type: ignore[dict-item]
+    assert len(records) == 2
+    assert {r.five.junction_residue for r in records} == {30, 31}
+
+
+# Review item 6: the records cache is reused only when its fingerprint matches.
+def test_review6_records_cache_is_fingerprinted(tmp_path):
+    import pickle
+
+    from cfh.domain_function.run import load_or_build_records
+
+    builds = []
+
+    def build():
+        builds.append(1)
+        return [len(builds)], Counter({"p": len(builds)})
+
+    cache = tmp_path / "records.pickle"
+    cache.write_bytes(pickle.dumps(([0], Counter())))  # pre-fingerprint cache format
+    fingerprint = {"screen_sha256": "a"}
+    records, _, _, reused = load_or_build_records(cache, lambda: fingerprint, build)
+    assert (records, reused) == ([1], False)
+    records, _, _, reused = load_or_build_records(cache, lambda: fingerprint, build)
+    assert (records, reused) == ([1], True)
+    records, _, _, reused = load_or_build_records(cache, lambda: {"screen_sha256": "b"}, build)
+    assert (records, reused) == ([2], False)
+
+
+def test_review6_fingerprint_tracks_screen_and_transcript_cache(tmp_path):
+    from cfh.domain_function.run import records_fingerprint
+
+    screen = tmp_path / "screen.tsv.gz"
+    screen.write_bytes(gzip.compress(b"a\n"))
+    transcripts = tmp_path / "tx"
+    transcripts.mkdir()
+    (transcripts / "GENE.json").write_text("{}")
+    base = records_fingerprint(screen, {"GRCh38": transcripts})
+    assert records_fingerprint(screen, {"GRCh38": transcripts}) == base
+    (transcripts / "OTHER.json").write_text("{}")
+    assert records_fingerprint(screen, {"GRCh38": transcripts}) != base
+    after_cache = records_fingerprint(screen, {"GRCh38": transcripts})
+    screen.write_bytes(gzip.compress(b"b\n"))
+    assert records_fingerprint(screen, {"GRCh38": transcripts}) != after_cache
+    assert set(base["code"]) >= {"cfh.domain_function.record", "cfh.mapping.junction_translation"}
+
+
+# Non-blocking review item: lost/altered span features block likely_intact.
+def test_review_span_feature_lost_blocks_likely_intact():
+    record = _make(_PARENT, _PARTNER, five_last=30, three_first=38)  # 7 deleted columns
+    parents = align_parents(record)
+    five = _entry("GENEA", _PARENT, (KeyFeature("Motif", 31, 36, "catalytic"),))
+    three = _entry("GENEB", _PARTNER, ())
+    report = key_residue_report(
+        record, parents, place_chimera(record, parents), {"five": five, "three": three}
+    )
+    tier, rules, _ = assign_tier({**_PASS, **report})
+    assert tier == UNCERTAIN and "U9_span_feature_lost_or_altered" in rules
+    assert report["key_span_lost_or_altered"] == "GENEA:Motif:31-36(catalytic)"
+
+
+def _synthetic_model(gene: str, protein: str, start: int):
+    from cfh.mapping.junction_translation import TranscriptDomain, TranscriptExon, TranscriptModel
+
+    codon = {
+        "A": "GCC", "C": "TGC", "D": "GAC", "E": "GAG", "F": "TTC", "G": "GGC", "H": "CAC",
+        "I": "ATC", "K": "AAG", "L": "CTG", "M": "ATG", "N": "AAC", "P": "CCC", "Q": "CAG",
+        "R": "CGC", "S": "AGC", "T": "ACC", "V": "GTG", "W": "TGG", "Y": "TAC",
+    }  # fmt: skip
+    cds = "".join(codon[aa] for aa in protein) + "TAA"
+    end = start + len(cds) - 1
+    return TranscriptModel(
+        gene,
+        f"ENST_{gene}",
+        "GRCh38",
+        1,
+        (TranscriptExon(1, start, end),),
+        start,
+        end,
+        cds,
+        (TranscriptDomain("PF00001", 5, 60),),
+    )
+
+
+def test_review5_real_rebuild_keeps_same_sequence_from_two_crossovers():
+    """Two junctions give one chimeric sequence (parents identical at 29-37)."""
+    from types import SimpleNamespace
+
+    import cfh.domain_function.record as record_module
+
+    models = {"GENEA": _synthetic_model("GENEA", _PARENT, 1000)}
+    models["GENEB"] = _synthetic_model("GENEB", _PARTNER, 5000)
+    source = SimpleNamespace(
+        resolve=lambda gene, annotated=None: gene, model=lambda gene: (models[gene], None)
+    )
+
+    def row(after_residue: int) -> dict[str, str]:
+        # both_breakpoint_bases_retained: 5' keeps through the bp, 3' starts at it.
+        return {
+            "cohort": "c",
+            "sample_id": f"s{after_residue}",
+            "five_prime_gene": "GENEA",
+            "three_prime_gene": "GENEB",
+            "five_prime_breakpoint": str(1000 + 3 * after_residue - 1),
+            "three_prime_breakpoint": str(5000 + 3 * after_residue),
+            "genome_build": "GRCh38",
+            "pfam_family": "PF00001",
+            "reconstitution_class": "clean_reconstitution",
+        }
+
+    rows = [row(30), row(31)]
+    cores = [record_module.build_core(r, source)[0] for r in rows]  # type: ignore[arg-type]
+    assert all(core is not None for core in cores)
+    assert cores[0].chimeric_domain_flanked == cores[1].chimeric_domain_flanked
+    records, problems = record_module.build_records(rows, {"GRCh38": source})  # type: ignore[dict-item]
+    assert not problems
+    assert len(records) == 2
+    assert sorted(r.five.junction_residue for r in records) == [30, 31]
+    assert len({getattr(r, "sequence_id", None) for r in records}) == 1

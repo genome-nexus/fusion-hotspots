@@ -6,6 +6,12 @@ that symbol. Key features are UniProt's own annotations of these types:
 * point-like: ``Active site``, ``Binding site`` (includes metal binding),
   ``Site`` (except translocation-breakpoint sites);
 * spans: ``DNA binding``, ``Motif``, ``Region`` (except ``Disordered``).
+
+A key feature whose start or end is not an exact integer position (UniProt
+modifiers ``UNKNOWN`` / ``UNSURE`` / ``OUTSIDE``, or a missing value) cannot be
+mapped. It is kept as an :class:`IncompleteFeature` rather than dropped, so a
+domain it may overlap is reported as ``incomplete_annotation`` (not assessed),
+never as "assessed, nothing annotated".
 """
 
 from __future__ import annotations
@@ -38,11 +44,34 @@ class KeyFeature:
 
 
 @dataclass(frozen=True)
+class IncompleteFeature:
+    """A key feature with a non-exact start and/or end (``None`` = position not usable)."""
+
+    type: str
+    start: int | None
+    end: int | None
+    description: str
+    raw_location: str
+
+    @property
+    def label(self) -> str:
+        return f"{self.type}:{self.raw_location}" + (
+            f"({self.description})" if self.description else ""
+        )
+
+    def may_overlap(self, low: int, high: int) -> bool:
+        """Whether the feature could touch UniProt positions ``low..high``."""
+        return (self.start is None or self.start <= high) and (self.end is None or self.end >= low)
+
+
+@dataclass(frozen=True)
 class UniProtEntry:
     gene: str
     accession: str
     sequence: str
     features: tuple[KeyFeature, ...]
+    incomplete: tuple[IncompleteFeature, ...] = ()
+    """Key features whose coordinates are not exact (see module docstring)."""
 
 
 def is_key_feature(raw: dict[str, Any]) -> bool:
@@ -57,26 +86,57 @@ def is_key_feature(raw: dict[str, Any]) -> bool:
     return True
 
 
-def parse_entry(gene: str, raw: dict[str, Any]) -> UniProtEntry | None:
-    """A :class:`UniProtEntry` from a UniProt JSON result, or None if coordinates are fuzzy."""
+def _exact(bound: dict[str, Any]) -> int | None:
+    value = bound.get("value")
+    modifier = bound.get("modifier", "EXACT")
+    if isinstance(value, bool) or not isinstance(value, int) or modifier != "EXACT":
+        return None
+    return value
+
+
+def _describe(bound: dict[str, Any]) -> str:
+    return f"{bound.get('modifier', '?')}:{bound.get('value')}"
+
+
+def parse_entry(gene: str, raw: dict[str, Any]) -> UniProtEntry:
+    """A :class:`UniProtEntry` from a UniProt JSON result.
+
+    Key features with exact integer coordinates become :class:`KeyFeature`; the
+    rest become :class:`IncompleteFeature` (never silently dropped).
+    """
     features = []
+    incomplete = []
     for item in raw.get("features", []):
         if not is_key_feature(item):
             continue
-        start = item["location"]["start"].get("value")
-        end = item["location"]["end"].get("value")
-        if not isinstance(start, int) or not isinstance(end, int):
-            continue
+        location = item.get("location") or {}
+        start_raw, end_raw = location.get("start") or {}, location.get("end") or {}
+        start, end = _exact(start_raw), _exact(end_raw)
         description = str(item.get("description") or "")
         ligand = (item.get("ligand") or {}).get("name")
         if ligand:
             description = f"{description} {ligand}".strip()
+        if start is None or end is None or end < start:
+            # An unknown bound stays None, so may_overlap() errs towards overlapping;
+            # an inverted exact pair is unusable on both sides.
+            inverted = start is not None and end is not None and end < start
+            incomplete.append(
+                IncompleteFeature(
+                    str(item["type"]),
+                    None if inverted else start,
+                    None if inverted else end,
+                    description,
+                    f"{_describe(start_raw)}..{_describe(end_raw)}",
+                )
+            )
+            continue
         features.append(KeyFeature(str(item["type"]), start, end, description))
     return UniProtEntry(
         gene,
         raw["primaryAccession"],
         raw["sequence"]["value"],
         tuple(sorted(set(features), key=_order)),
+        tuple(incomplete),
     )
 
 

@@ -5,7 +5,17 @@ need assayed chimeras), so the tier is a transparent summary of the reported
 metrics, not a prediction. Every rule is listed in :data:`RULES`; a record's
 ``tier_rules`` column names the rules that fired. Missing inputs never count in
 favour of ``likely_intact``: a record that is not ``likely_broken`` and lacks
-any required input is ``not_assessed``.
+any required input is ``not_assessed``, and each missing input is named in
+``tier_missing_inputs``.
+
+Inputs required for ``likely_intact`` (:data:`REQUIRED_INPUTS`): the family HMM
+scores for chimera and both parents; an assessed key-residue annotation for both
+parents (UniProt entry present, transcript identity >= 90 %, no feature with
+unusable coordinates near the domain) with every annotated residue resolved; and
+a validated AlphaFold DB structure with DSSP for both parents
+(``structure_status_* == "ok"``), even when the junction has no indel -- the
+structure also feeds the reported contact metrics, and a missing or rejected
+model must not read as a pass.
 
 The SCHEMA-like broken-contact count E is reported but not used for tiering
 (there is no universal E threshold); it appears only in disagreement flags.
@@ -15,7 +25,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from cfh.domain_function.metrics import NOT_ASSESSED
+from cfh.domain_function.metrics import KEY_ANNOTATION_OK, NOT_ASSESSED, STRUCTURE_OK
 
 TIER_LABEL = "HEURISTIC"
 LIKELY_INTACT = "likely_intact"
@@ -38,7 +48,8 @@ RULES: dict[str, str] = {
     ),
     "B3_point_feature_lost": (
         "likely_broken: a UniProt Active site / Binding site / Site residue of either parent "
-        "falls in a junction-deleted column."
+        "is absent from the chimera and no chimera residue occupies its aligned column "
+        "(junction-deleted column, or a column where the other parent has a gap)."
     ),
     "U1_parent_below_GA": (
         "uncertain: a parent's own domain scores below GA, so GA is not informative for this pair."
@@ -64,13 +75,30 @@ RULES: dict[str, str] = {
     "U8_domain_split": (
         "uncertain: HMMER splits the chimeric domain into more hits than either parent's domain."
     ),
-    "N1_missing": "not_assessed: an input needed to call likely_intact is missing.",
+    "U9_span_feature_lost_or_altered": (
+        "uncertain: a UniProt DNA-binding / Motif / Region feature has a residue that is lost "
+        "or altered (not merely swapped for the other parent's aligned residue)."
+    ),
+    "N1_missing": (
+        "not_assessed: an input needed to call likely_intact is missing, rejected or "
+        "incomplete (listed in tier_missing_inputs)."
+    ),
     "I1_all_pass": (
         "likely_intact: none of the above fired and every input was assessed (passes GA, "
         f"coverage >= {MIN_COVERAGE_INTACT:.0%}, bit drop <= {MAX_BIT_DROP_INTACT:g}, no key "
-        "residue lost/altered, any indel outside parent helix/strand and away from key residues)."
+        "residue or span feature lost/altered or unresolved, any indel outside parent "
+        "helix/strand and away from key residues, both parent structures validated)."
     ),
 }
+
+
+REQUIRED_INPUTS = (
+    "hmm (GA, parent and chimera hits)",
+    "key_annotation_5p / key_annotation_3p in " + "/".join(KEY_ANNOTATION_OK),
+    "no unresolved key residue (key_residue_mapping)",
+    "indel secondary structure when the junction has an indel",
+    f"structure_status_5p / structure_status_3p == {STRUCTURE_OK!r}",
+)
 
 
 def _missing(value: Any) -> bool:
@@ -135,8 +163,23 @@ def assign_tier(metrics: dict[str, Any]) -> tuple[str, list[str], list[str]]:
             fired.append("U8_domain_split")
     if metrics.get("key_point_altered"):
         fired.append("U4_point_feature_altered")
-    if metrics.get("key_features_assessed") is not True:
+    if metrics.get("key_span_lost_or_altered"):
+        fired.append("U9_span_feature_lost_or_altered")
+    for prefix in ("5p", "3p"):
+        status = metrics.get(f"key_annotation_status_{prefix}")
+        if status not in KEY_ANNOTATION_OK:
+            missing.append(f"key_annotation_{prefix}:{status or NOT_ASSESSED}")
+    if metrics.get("key_features_assessed") is not True and not any(
+        item.startswith("key_annotation_") for item in missing
+    ):
         missing.append("key_residues")
+    unresolved = metrics.get("key_unresolved")
+    if isinstance(unresolved, int) and unresolved > 0:
+        missing.append("key_residue_mapping")
+    for prefix in ("5p", "3p"):
+        status = metrics.get(f"structure_status_{prefix}")
+        if status != STRUCTURE_OK:
+            missing.append(f"structure_{prefix}:{status or NOT_ASSESSED}")
     indel_in_ss = metrics.get("indel_in_ss")
     if indel_in_ss is True:
         fired.append("U5_indel_in_ss")

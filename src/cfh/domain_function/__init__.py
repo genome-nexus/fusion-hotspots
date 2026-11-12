@@ -19,4 +19,9 @@ Nothing here is a calibrated predictor of activity; see
 ``docs/domain_function_seq.md``.
 """
 
-SCHEMA_VERSION = "domain_function_seq/1"
+SCHEMA_VERSION = "domain_function_seq/2"
+"""Version of the committed record/metrics layout (v2: origin-aware record ids,
+observations, sample-level read support, structure and annotation statuses)."""
+
+RECORDS_VERSION = 2
+"""Bumped whenever record building changes; part of the records-cache fingerprint."""

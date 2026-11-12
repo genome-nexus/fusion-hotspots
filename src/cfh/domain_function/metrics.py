@@ -176,9 +176,80 @@ def uniprot_position_map(parent: ParentDomain, entry: UniProtEntry) -> tuple[dic
     return mapping, identity
 
 
-STATUS_ORDER = ("retained", "swapped", "altered", "lost")
-"""retained: chimera keeps the parent residue; swapped: it has the other parent's
-aligned residue; altered: differs from both parents; lost: column deleted."""
+STATUS_ORDER = ("retained", "conserved", "swapped", "altered", "unresolved", "lost")
+"""Per annotated parent residue, least to most severe:
+
+* retained: the parent's own residue is in the chimera (decided from the
+  junction coordinates, not the alignment);
+* conserved: it is absent, but the residue now at its aligned column is the
+  same amino acid (supplied by the other parent);
+* swapped: absent; the column holds the other parent's different residue;
+* altered: absent; the column holds a residue matching neither parent (the
+  hybrid-codon residue), or a present residue differs from the parent;
+* unresolved: the UniProt position does not align to the parent transcript, so
+  survival cannot be decided (mapping uncertainty -- never counted as retained);
+* lost: absent, and no chimera residue occupies its aligned column (a
+  junction-deleted column, or a column where the other parent has a gap).
+
+A feature takes its worst residue status."""
+
+KEY_ANNOTATION_OK = ("annotated", "no_annotations_in_window")
+"""Per-parent annotation statuses that count as assessed."""
+
+
+def _column_residue(
+    record: ChimeraRecord,
+    parents: ParentAlignment,
+    placed: ChimeraColumns,
+    other: str,
+    column: int,
+) -> str | None:
+    """The chimera residue at alignment ``column``, from whichever source holds it."""
+    residue = placed.col_residue.get(column)
+    if residue is not None:
+        return residue
+    other_position = parents.columns[column][0 if other == "five" else 1]
+    if other_position is None:
+        return None
+    position = record.chimera_position(other, other_position)
+    return record.chimeric_protein[position - 1] if position is not None else None
+
+
+def residue_status(
+    record: ChimeraRecord,
+    parents: ParentAlignment,
+    placed: ChimeraColumns,
+    which: str,
+    position: int,
+) -> str:
+    """Status (see :data:`STATUS_ORDER`) of parent residue ``position`` of ``which``."""
+    parent = record.five if which == "five" else record.three
+    other = "three" if which == "five" else "five"
+    own = parent.protein[position - 1]
+    present = record.chimera_position(which, position)
+    if present is not None:
+        return "retained" if record.chimeric_protein[present - 1] == own else "altered"
+    column = (parents.five_col if which == "five" else parents.three_col).get(position)
+    if column is None:
+        return "unresolved"
+    if column in set(placed.deleted_columns):
+        return "lost"
+    residue = _column_residue(record, parents, placed, other, column)
+    if residue is None:
+        return "lost"
+    if residue == own:
+        return "conserved"
+    partner = parents.columns[column][0 if other == "five" else 1]
+    partner_parent = record.five if other == "five" else record.three
+    if partner is not None and partner_parent.protein[partner - 1] == residue:
+        return "swapped"
+    return "altered"
+
+
+def _empty_parent_report(report: dict[str, Any], prefix: str, status: str) -> None:
+    report[f"key_annotation_status_{prefix}"] = status
+    report[f"key_features_{prefix}"] = NOT_ASSESSED
+    report[f"junction_to_key_{prefix}"] = NOT_ASSESSED
 
 
 def key_residue_report(
@@ -187,76 +258,77 @@ def key_residue_report(
     placed: ChimeraColumns,
     entries: dict[str, UniProtEntry | None],
 ) -> dict[str, Any]:
-    """Key-feature retention for both parents; fields are NOT_ASSESSED when data is missing."""
+    """Key-feature survival for both parents.
+
+    Each parent gets ``key_annotation_status_*``: ``annotated`` /
+    ``no_annotations_in_window`` (assessed) or ``no_uniprot_entry`` /
+    ``low_uniprot_identity`` / ``incomplete_annotation`` (not assessed).
+    ``key_features_assessed`` is True only when both parents are assessed.
+    Features are evaluated over the parent window (domain +/- FLANK, in UniProt
+    coordinates the span between the first and last window residues that align).
+    """
     report: dict[str, Any] = {}
     statuses: dict[str, list[str]] = {s: [] for s in STATUS_ORDER}
     point_lost: list[str] = []
     point_altered: list[str] = []
+    span_lost_altered: list[str] = []
+    incomplete_labels: list[str] = []
     assessed_all = True
-    deleted = set(placed.deleted_columns)
     for which, parent in (("five", record.five), ("three", record.three)):
-        other = "three" if which == "five" else "five"
         prefix = "5p" if which == "five" else "3p"
         entry = entries.get(which)
         if entry is None:
-            report[f"uniprot_{prefix}"] = NOT_ASSESSED
-            report[f"key_features_{prefix}"] = NOT_ASSESSED
-            report[f"junction_to_key_{prefix}"] = NOT_ASSESSED
+            _empty_parent_report(report, prefix, "no_uniprot_entry")
             assessed_all = False
             continue
         mapping, identity = uniprot_position_map(parent, entry)
         report[f"uniprot_{prefix}"] = entry.accession
         report[f"uniprot_identity_{prefix}"] = round(identity, 3)
         if identity < MIN_UNIPROT_IDENTITY:
-            report[f"key_features_{prefix}"] = NOT_ASSESSED
-            report[f"junction_to_key_{prefix}"] = NOT_ASSESSED
+            _empty_parent_report(report, prefix, "low_uniprot_identity")
             assessed_all = False
             continue
-        cols = parents.five_col if which == "five" else parents.three_col
         w_start, w_end = parent.window()
+        in_window = [u for u, p in mapping.items() if w_start <= p <= w_end]
+        u_low, u_high = min(in_window), max(in_window)
+        relevant_incomplete = [f for f in entry.incomplete if f.may_overlap(u_low, u_high)]
+        if relevant_incomplete:
+            incomplete_labels += [f"{parent.gene}:{f.label}" for f in relevant_incomplete]
+            _empty_parent_report(report, prefix, "incomplete_annotation")
+            assessed_all = False
+            continue
         n_features = 0
         key_positions: list[int] = []
         for feature in entry.features:
-            positions = [
-                mapping[u]
-                for u in range(feature.start, feature.end + 1)
-                if u in mapping and w_start <= mapping[u] <= w_end
-            ]
-            if not positions:
+            uniprot_positions = range(max(feature.start, u_low), min(feature.end, u_high) + 1)
+            if not uniprot_positions:
                 continue
             n_features += 1
-            if feature.type in POINT_FEATURE_TYPES or feature.end - feature.start < MAX_SITE_SPAN:
-                key_positions.extend(positions)
             worst = "retained"
-            for position in positions:
-                column = cols.get(position)
-                if column is None:
-                    continue
-                if column in deleted:
-                    status = "lost"
+            for u in uniprot_positions:
+                if u not in mapping:
+                    status = "unresolved"
                 else:
-                    chimera = placed.col_residue.get(column)
-                    if chimera is None:
-                        continue  # beyond the chimera's window
-                    own = parent.protein[position - 1]
-                    partner = parents.residue(
-                        record.three if which == "five" else record.five, other, column
-                    )
-                    status = (
-                        "retained"
-                        if chimera == own
-                        else "swapped"
-                        if chimera == partner
-                        else "altered"
-                    )
+                    status = residue_status(record, parents, placed, which, mapping[u])
+                    if (
+                        feature.type in POINT_FEATURE_TYPES
+                        or feature.end - feature.start < MAX_SITE_SPAN
+                    ):
+                        key_positions.append(mapping[u])
                 if STATUS_ORDER.index(status) > STATUS_ORDER.index(worst):
                     worst = status
             label = f"{parent.gene}:{feature.label}"
             statuses[worst].append(label)
-            if feature.type in POINT_FEATURE_TYPES and worst == "lost":
+            point = feature.type in POINT_FEATURE_TYPES
+            if point and worst == "lost":
                 point_lost.append(label)
-            if feature.type in POINT_FEATURE_TYPES and worst == "altered":
+            if point and worst == "altered":
                 point_altered.append(label)
+            if not point and worst in ("lost", "altered"):
+                span_lost_altered.append(label)
+        report[f"key_annotation_status_{prefix}"] = (
+            "annotated" if n_features else "no_annotations_in_window"
+        )
         report[f"key_features_{prefix}"] = n_features
         junction = parent.junction_residue
         report[f"junction_to_key_{prefix}"] = (
@@ -268,6 +340,8 @@ def key_residue_report(
         report[f"key_{status}_list"] = ";".join(statuses[status])
     report["key_point_lost"] = ";".join(point_lost)
     report["key_point_altered"] = ";".join(point_altered)
+    report["key_span_lost_or_altered"] = ";".join(span_lost_altered)
+    report["key_incomplete_annotations"] = ";".join(incomplete_labels)
     distances: list[int] = [
         value
         for value in (report.get("junction_to_key_5p"), report.get("junction_to_key_3p"))
@@ -286,20 +360,37 @@ class MappedStructure:
     from_parent: dict[int, int]
 
 
+STRUCTURE_OK = "ok"
+
+
 def map_structure(
-    parent: ParentDomain, entry: UniProtEntry | None, structure: ParentStructure | None
-) -> tuple[MappedStructure | None, str]:
-    """The structure on parent coordinates, or (None, reason)."""
+    parent: ParentDomain,
+    entry: UniProtEntry | None,
+    structure: ParentStructure | None,
+    fetch_problem: str = "",
+) -> tuple[MappedStructure | None, str, str]:
+    """``(mapped, status, detail)``; ``mapped`` is None unless ``status`` is ``ok``.
+
+    Statuses: ``ok``, ``no_dssp`` (mapped, but the model has no secondary
+    structure annotation), ``no_uniprot_entry``, ``afdb_fetch_failed``,
+    ``no_afdb_model``, ``afdb_sequence_mismatch`` (model built on another
+    sequence; rejected), ``low_uniprot_identity``.
+    """
     if entry is None:
-        return None, "no UniProt entry"
+        return None, "no_uniprot_entry", "no reviewed UniProt entry"
     if structure is None:
-        return None, "no AlphaFold DB model"
-    if structure.sequence and structure.sequence != entry.sequence:
-        return None, "AlphaFold DB model sequence differs from UniProt"
+        if fetch_problem:
+            return None, "afdb_fetch_failed", fetch_problem
+        return None, "no_afdb_model", "AlphaFold DB has no usable model"
+    if structure.sequence != entry.sequence:
+        return None, "afdb_sequence_mismatch", "AlphaFold DB model sequence differs from UniProt"
     mapping, identity = uniprot_position_map(parent, entry)
     if identity < MIN_UNIPROT_IDENTITY:
-        return None, f"transcript vs UniProt identity {identity:.2f} in window"
-    return MappedStructure(structure, mapping, {p: u for u, p in mapping.items()}), ""
+        return None, "low_uniprot_identity", f"transcript vs UniProt identity {identity:.2f}"
+    mapped = MappedStructure(structure, mapping, {p: u for u, p in mapping.items()})
+    if structure.ss is None:
+        return mapped, "no_dssp", "model has no _struct_conf secondary structure"
+    return mapped, STRUCTURE_OK, ""
 
 
 def _ss_codes(mapped: MappedStructure, positions: list[int]) -> list[str | None]:
