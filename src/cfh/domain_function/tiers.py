@@ -99,7 +99,7 @@ RULES: dict[str, str] = {
 REQUIRED_INPUTS = (
     "hmm (GA, parent and chimera hits)",
     "key_annotation_5p / key_annotation_3p in " + "/".join(KEY_ANNOTATION_OK),
-    "no unresolved key residue (key_residue_mapping)",
+    "no unresolved in-domain key residue position (key_unresolved_positions == 0)",
     "indel secondary structure when the junction has an indel",
     f"structure_status_5p / structure_status_3p == {STRUCTURE_OK!r}",
 )
@@ -177,8 +177,18 @@ def assign_tier(metrics: dict[str, Any]) -> tuple[str, list[str], list[str]]:
         item.startswith("key_annotation_") for item in missing
     ):
         missing.append("key_residues")
-    unresolved = metrics.get("key_unresolved")
-    if isinstance(unresolved, int) and unresolved > 0:
+    # Per-position count, not the per-feature worst status: a feature that is both
+    # lost (reported only, for long regions) and unresolved must still block intact.
+    # Fail closed when the count is absent.
+    positions = metrics.get("key_unresolved_positions")
+    features = metrics.get("key_unresolved")
+    if (
+        isinstance(features, int)
+        and features > 0
+        or not isinstance(positions, int)
+        or isinstance(positions, bool)
+        or positions > 0
+    ):
         missing.append("key_residue_mapping")
     for prefix in ("5p", "3p"):
         status = metrics.get(f"structure_status_{prefix}")

@@ -397,6 +397,7 @@ _PASS = {
     "key_annotation_status_5p": "annotated",
     "key_annotation_status_3p": "no_annotations_in_domain",
     "key_unresolved": 0,
+    "key_unresolved_positions": 0,
     "key_span_lost_or_altered": "",
     "key_motif_lost_or_altered": "",
     "structure_status_5p": "ok",
@@ -1109,3 +1110,37 @@ def test_review_flank_only_site_is_reported_not_tiered():
     assert report["key_point_lost"] == "" and report["key_lost"] == 0
     assert report["key_annotation_status_5p"] == "no_annotations_in_domain"
     assert assign_tier({**_PASS, **report})[0] == LIKELY_INTACT
+
+
+# Review round 2: a lost residue must not hide an unresolved one in the same feature.
+def test_review_r2_unresolved_position_hidden_by_lost_still_blocks_intact():
+    record = _make(
+        _FIVE_WITH_INSERT,
+        _THREE_BASE,
+        five_last=50,
+        three_first=51,
+        five_domain=(5, 95),
+        three_domain=(5, 94),
+    )
+    parents = align_parents(record)
+    # UniProt carries one residue the transcript lacks: UniProt 45 does not align, and
+    # transcript residue 80 (5'-only column, past the crossover) is UniProt 81.
+    uniprot = _FIVE_WITH_INSERT[:44] + "W" + _FIVE_WITH_INSERT[44:]
+    five = _entry("GENEA", uniprot, (KeyFeature("Region", 30, 90, "long region"),))
+    three = _entry("GENEB", _THREE_BASE, ())
+    report = key_residue_report(
+        record, parents, place_chimera(record, parents), {"five": five, "three": three}
+    )
+    assert report["key_features_assessed"] is True
+    assert report["key_lost"] == 1 and report["key_unresolved"] == 0  # worst kept for display
+    assert report["key_span_lost_or_altered"] == "GENEA:Region:30-90(long region)"
+    tier, rules, missing = assign_tier({**_PASS, **report})
+    assert tier == NOT_ASSESSED, (tier, rules, missing)
+    assert "key_residue_mapping" in missing
+    assert report["key_unresolved_positions"] == 1
+
+
+def test_review_r2_missing_unresolved_position_count_fails_closed():
+    metrics = {k: v for k, v in _PASS.items() if k != "key_unresolved_positions"}
+    tier, _, missing = assign_tier(metrics)
+    assert tier == NOT_ASSESSED and "key_residue_mapping" in missing

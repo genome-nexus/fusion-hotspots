@@ -189,7 +189,10 @@ STATUS_ORDER = ("retained", "conserved", "swapped", "altered", "unresolved", "lo
 * altered: absent; the column holds a residue matching neither parent (the
   hybrid-codon residue), or a present residue differs from the parent;
 * unresolved: the UniProt position does not align to the parent transcript, so
-  survival cannot be decided (mapping uncertainty -- never counted as retained);
+  survival cannot be decided (mapping uncertainty -- never counted as retained).
+  Unresolved in-domain positions are also counted per record
+  (``key_unresolved_positions``), independently of each feature's worst status,
+  so a feature that is both lost and unresolved still blocks likely_intact;
 * lost: absent, and no chimera residue occupies its aligned column (a
   junction-deleted column, or a column where the other parent has a gap).
 
@@ -283,6 +286,7 @@ def key_residue_report(
     span_lost_altered: list[str] = []
     motif_lost_altered: list[str] = []
     flank_features: list[str] = []
+    unresolved_positions: set[str] = set()
     incomplete_labels: list[str] = []
     assessed_all = True
     for which, parent in (("five", record.five), ("three", record.three)):
@@ -326,6 +330,10 @@ def key_residue_report(
             for u in uniprot_positions:
                 if u not in mapping:
                     status = "unresolved"
+                    if not flank:
+                        # Tracked per position, independent of the feature's worst
+                        # status: a lost residue elsewhere in the feature must not hide it.
+                        unresolved_positions.add(f"{parent.gene}:{u}")
                 else:
                     status = residue_status(record, parents, placed, which, mapping[u])
                     if not flank and (
@@ -368,6 +376,10 @@ def key_residue_report(
     report["key_motif_lost_or_altered"] = ";".join(motif_lost_altered)
     report["key_incomplete_annotations"] = ";".join(incomplete_labels)
     report["key_flank_features"] = ";".join(flank_features)
+    report["key_unresolved_positions"] = len(unresolved_positions)
+    report["key_unresolved_positions_list"] = ";".join(
+        sorted(unresolved_positions, key=lambda item: (item.split(":")[0], int(item.split(":")[1])))
+    )
     distances: list[int] = [
         value
         for value in (report.get("junction_to_key_5p"), report.get("junction_to_key_3p"))
