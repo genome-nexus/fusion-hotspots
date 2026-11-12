@@ -1,7 +1,7 @@
 {
  "schema_version": "domain_function_seq/2",
- "generated": "2026-11-12T20:33:15Z",
- "code_sha": "16caf07d04739d0292df554613a2222099947a07",
+ "generated": "2026-11-12T20:45:33Z",
+ "code_sha": "00680e04a9680e7076de394760f1805a28c4b89d",
  "code_dirty": false,
  "input_screen": "runs/domain_screen_pilot_2026-11-10/combined_candidates.tsv.gz",
  "input_screen_sha256": "b16b4d1bbb3957bded5df77cdb4f9a2377232dbba0479d8d9be5c4da559f9191",
@@ -20,7 +20,7 @@
    "cfh.mapping.transcript_models": "fa5db6667ea54e1c26cff59720f79885f602ef3dcc6000dd8740f56853e079a7"
   }
  },
- "records_cache_reused": false,
+ "records_cache_reused": true,
  "translated_classes": [
   "clean_reconstitution",
   "tandem_duplication_or_insertion",
@@ -47,7 +47,7 @@
  "tier_required_inputs_for_likely_intact": [
   "hmm (GA, parent and chimera hits)",
   "key_annotation_5p / key_annotation_3p in annotated/no_annotations_in_domain",
-  "no unresolved key residue (key_residue_mapping)",
+  "no unresolved in-domain key residue position (key_unresolved_positions == 0)",
   "indel secondary structure when the junction has an indel",
   "structure_status_5p / structure_status_3p == 'ok'"
  ],

@@ -147,9 +147,13 @@ different residue, the expected outcome of a paralogue chimera), **altered**
 residue occupies the column: a junction-deleted column, or a column where the
 other parent has a gap). A UniProt position that does not align to the
 transcript is **unresolved**. That is mapping uncertainty: it is never counted
-as retained, and any unresolved feature blocks `likely_intact`
-(`key_residue_mapping`). A feature takes its worst residue status (retained <
-conserved < swapped < altered < unresolved < lost).
+as retained. A feature takes its worst residue status for display (retained <
+conserved < swapped < altered < unresolved < lost). Unresolved in-domain
+positions are also counted per record (`key_unresolved_positions`, listed in
+`key_unresolved_positions_list`), independently of each feature's worst
+status. Any unresolved position blocks `likely_intact` (`key_residue_mapping`),
+even inside a feature whose worst status is `lost`; for a long region, loss
+alone is reported only.
 `junction_to_key_5p/3p` = residues from the junction to the nearest key *site*
 (point features and spans ≤ 10 residues; a whole-domain DNA-binding span would
 make every junction "near"); `junction_near_key` = within 5.

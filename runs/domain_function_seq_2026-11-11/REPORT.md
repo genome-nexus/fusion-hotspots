@@ -18,7 +18,7 @@ This run replaces the first one (commit 334c050) after review. The section
 | | |
 |---|---|
 | input | `runs/domain_screen_pilot_2026-11-10/combined_candidates.tsv.gz` (sha256 in `run_manifest.json`) |
-| code | commit `16caf07` (`code_dirty: false`); records rebuilt, not loaded from cache (`records_cache_reused: false`) |
+| code | commit `00680e0` (`code_dirty: false`). Records were rebuilt from scratch at `16caf07`; this assessment reused them because the records-cache fingerprint matched (`records_cache_reused: true`; record-building code, screen and transcript caches unchanged) |
 | classes | clean_reconstitution, tandem_duplication_or_insertion, gap_or_deletion, ambiguous_junction_register |
 | screen rows in those classes | 50,226 (all five cohorts) |
 | rows used | 50,113. The other 113 have a parent CDS with an internal UGA (selenoproteins such as GPX1/2/3/4/6), so the translated fusion stops early and no full domain exists; they are excluded and counted in the manifest |
@@ -181,9 +181,16 @@ residues):
 | not_assessed → likely_broken | 2 | B3, as above |
 | likely_intact → uncertain | 15 | U9: a motif-scale feature lost or altered |
 | not_assessed → uncertain | 2 | U9 |
-| likely_intact → not_assessed | 10 | a missing or rejected parent structure. 9 of the 11 records the review cited go here (e.g. FBN1::FBN3: no model for either parent; PLEC::DSP: no model / sequence mismatch); the 11th is now uncertain |
+| likely_intact → not_assessed | 10 | a missing or rejected parent structure. 10 of the 11 records the round-1 review cited go here (e.g. FBN1::FBN3: no model for either parent; PLEC::DSP: no model / sequence mismatch). The 11th, COL12A1::COL1A1, is now uncertain via U9, and its rejected structure is still listed in its missing inputs |
 | uncertain → not_assessed | 1 | missing structure and indel secondary structure |
 | (new origins) | 86 | 66 likely_intact, 15 not_assessed, 5 uncertain |
+
+**Round 2.** One more blocking issue: a feature that was both lost and unresolved
+counted only as lost, and for long regions loss is reported only, so the
+unresolved residue could not block likely_intact. Unresolved in-domain positions
+are now counted per record (`key_unresolved_positions`), independently of each
+feature's worst status. Measured on this run, no record has an unresolved
+in-domain position, so no tier, rule or shortlist row changed.
 
 No likely_intact record now has a parent structure status other than `ok`,
 or an unassessed UniProt annotation.
