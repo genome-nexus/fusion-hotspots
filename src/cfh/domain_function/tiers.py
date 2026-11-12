@@ -75,9 +75,12 @@ RULES: dict[str, str] = {
     "U8_domain_split": (
         "uncertain: HMMER splits the chimeric domain into more hits than either parent's domain."
     ),
-    "U9_span_feature_lost_or_altered": (
-        "uncertain: a UniProt DNA-binding / Motif / Region feature has a residue that is lost "
-        "or altered (not merely swapped for the other parent's aligned residue)."
+    "U9_motif_lost_or_altered": (
+        "uncertain: a motif-scale (<= 10 residues) UniProt DNA-binding / Motif / Region "
+        "feature has a residue that is lost or altered (not merely swapped for the other "
+        "parent's aligned residue). Longer regions are reported, not tiered: past the "
+        "crossover they are routinely replaced by the other parent's equivalent region, and "
+        "their domain-scale integrity is what the HMM rules measure."
     ),
     "N1_missing": (
         "not_assessed: an input needed to call likely_intact is missing, rejected or "
@@ -86,7 +89,8 @@ RULES: dict[str, str] = {
     "I1_all_pass": (
         "likely_intact: none of the above fired and every input was assessed (passes GA, "
         f"coverage >= {MIN_COVERAGE_INTACT:.0%}, bit drop <= {MAX_BIT_DROP_INTACT:g}, no key "
-        "residue or span feature lost/altered or unresolved, any indel outside parent "
+        "point site or motif-scale feature lost/altered, no key residue unresolved, any "
+        "indel outside parent "
         "helix/strand and away from key residues, both parent structures validated)."
     ),
 }
@@ -163,8 +167,8 @@ def assign_tier(metrics: dict[str, Any]) -> tuple[str, list[str], list[str]]:
             fired.append("U8_domain_split")
     if metrics.get("key_point_altered"):
         fired.append("U4_point_feature_altered")
-    if metrics.get("key_span_lost_or_altered"):
-        fired.append("U9_span_feature_lost_or_altered")
+    if metrics.get("key_motif_lost_or_altered"):
+        fired.append("U9_motif_lost_or_altered")
     for prefix in ("5p", "3p"):
         status = metrics.get(f"key_annotation_status_{prefix}")
         if status not in KEY_ANNOTATION_OK:

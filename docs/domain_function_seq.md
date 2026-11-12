@@ -22,19 +22,48 @@ four translated shared-domain classes are used: `clean_reconstitution`,
 Each junction is rebuilt with the screen's own `predict_junction` +
 `classify_family` on the same cached transcript models, and the rebuilt class
 must equal the screen's class (a mismatch is counted in the manifest, never
-accepted). Rows whose chimeric domain is identical (same Pfam family, parent
-transcripts and domain sequence with ±30 flanking residues) collapse into one
-**record** (`chimera_records.json.gz`, `schema_version =
-"domain_function_seq/1"`). A record carries: cohorts and per-cohort row counts,
-fusion name(s), Pfam accession, 5'/3' parent gene, transcript, full protein,
-parent domain span and sequence, junction residues, hybrid-codon residue, the
-full translated fusion protein, the chimeric domain span (+ flanked sequence),
-the screen's junction class/reason and indel (size, residues), read support
-(max/total split reads, max paired-end reads, sample count) and the per-row
-counts of every pilot artefact flag (`artefact_clean_rows` = rows where all six
-flags pass; `artefact_core_clean_rows` = rows where all but the two context flags
-pass, see the shortlist section). `cfh.domain_function.record.read_records_json` loads it and checks
-the schema version.
+accepted). Parents with an internal stop codon (selenoproteins) are excluded and
+counted. Records are written to `chimera_records.json.gz` (`schema_version =
+"domain_function_seq/2"`); `cfh.domain_function.record.read_records_json` loads
+it and checks the version.
+
+**Identity.** A record is one chimeric domain *from one origin*: `record_id`
+hashes the Pfam family, junction class, both parent transcripts, both parent
+domain spans, both junction residues, the hybrid-codon residue, the chimeric
+domain span and the flanked sequence (domain ± 30 residues). Two junctions that
+produce the same sequence from different crossover points (common between
+paralogues that are identical around the junction) are separate records, each
+assessed on its own coordinates. `sequence_id` hashes only family, transcripts
+and flanked sequence, so PR 2 can predict one structure per sequence.
+
+**Contents.** Fusion name(s), Pfam accession, 5'/3' parent gene, transcript,
+full protein, parent domain span and sequence, junction residues, hybrid-codon
+residue, the full translated fusion protein, the chimeric domain span (+ flanked
+sequence), the screen's junction class/reason and indel (size, residues), and
+**observations**: one entry per screen row (cohort, sample id, biological
+sample, breakpoints, split / paired-end reads, caller, the six pilot artefact
+flags).
+
+**Samples and read support** (`finalize_support`). Each biological sample counts
+once. Sample ids are namespaced by cohort, except that the two TARGET tables
+(`target_consolidated`, `target_starfusion`) share one `TARGET:` namespace:
+they are two call sets over the same TARGET RNA-seq with identical barcodes. Rows
+of one sample (two tables, callers, or several event rows) may re-report the same
+reads, so a sample's read support is the **largest** count among its rows, never
+a sum. Reported: `n_samples` (distinct biological samples), `n_rows`
+(observations), `samples_per_cohort`, `max_split_reads_one_sample`,
+`total_split_reads_over_samples` (sum of per-sample maxima),
+`samples_with_split_reads` and `max_paired_end_reads_one_sample`. Artefact-flag
+counts stay per row: `artefact_clean_rows` = rows where all six flags pass,
+`artefact_core_clean_rows` = rows where all but the two context flags pass (see
+the shortlist section).
+
+**Cache.** The driver caches built records in `<work>/records.pickle` with a
+fingerprint: screen sha256, a digest of every transcript-cache file (relative
+path, size, mtime), sha256 of the record-building modules, and the schema and
+records versions. Any mismatch, or an older cache format, rebuilds; the
+fingerprint is written to `run_manifest.json` (`records_fingerprint`,
+`records_cache_reused`).
 
 ## Metrics (`domain_function_metrics.tsv.gz`, one row per record)
 
@@ -89,12 +118,30 @@ call is kept alongside (`pilot_indel_residues`, `pilot_indel_sequence`).
 Each parent gene maps to the reviewed human entry with that primary gene name.
 Key features: Active site, Binding site (incl. metal), Site (excluding
 translocation breakpoints), DNA binding, Motif, Region (excluding Disordered).
-UniProt positions map to the parent transcript protein by global alignment;
-below 90 % identity over the parent window → `not_assessed`. Each feature
-overlapping the parent window gets its worst residue status: **retained**
-(chimera keeps the parent residue), **swapped** (chimera has the other
-parent's aligned residue — the expected outcome of a paralogue chimera),
-**altered** (differs from both), **lost** (column junction-deleted).
+UniProt positions map to the parent transcript protein by global alignment.
+
+*Annotation status per parent* (`key_annotation_status_5p/3p`): `annotated` or
+`no_annotations_in_window` count as assessed. `no_uniprot_entry`,
+`low_uniprot_identity` (< 90 % identity over the parent window) and
+`incomplete_annotation` do not. A key feature whose start or end is not an
+exact integer (UniProt modifiers UNKNOWN / UNSURE / OUTSIDE, or a missing value)
+is kept, not dropped. If it could overlap the parent window it makes that parent
+`incomplete_annotation`, listed in `key_incomplete_annotations`.
+
+*Residue status.* Features are evaluated over the parent window (domain ± 30).
+Whether a parent residue is in the chimera is decided from the junction
+coordinates, not the alignment: the 5' parent contributes residues 1..F, the 3'
+parent residues T.. onwards. A present residue is **retained**. For an absent
+residue, the residue now occupying its aligned column decides: **conserved**
+(same amino acid, from the other parent), **swapped** (the other parent's
+different residue, the expected outcome of a paralogue chimera), **altered**
+(matches neither, e.g. the hybrid-codon residue), or **lost** (no chimera
+residue occupies the column: a junction-deleted column, or a column where the
+other parent has a gap). A UniProt position that does not align to the
+transcript is **unresolved**. That is mapping uncertainty: it is never counted
+as retained, and any unresolved feature blocks `likely_intact`
+(`key_residue_mapping`). A feature takes its worst residue status (retained <
+conserved < swapped < altered < unresolved < lost).
 `junction_to_key_5p/3p` = residues from the junction to the nearest key *site*
 (point features and spans ≤ 10 residues; a whole-domain DNA-binding span would
 make every junction "near"); `junction_near_key` = within 5.
@@ -105,9 +152,13 @@ For each parent's UniProt accession the AFDB model (`/api/prediction/<acc>`,
 current version, fragment F1) is downloaded once; only a compact derived JSON is
 cached and the mmCIF is deleted. Secondary structure is the file's own
 `_struct_conf` category (AFDB writes DSSP there): H/G/I → helix, E → strand,
-anything else (turn, bend, PPII, coil) → loop. A model without `_struct_conf`,
-a missing model, or a model whose sequence differs from UniProt gives
-`not_assessed` — never an assumed loop. Reported: DSSP context of 7 residues
+anything else (turn, bend, PPII, coil) → loop. Each parent gets
+`structure_status_5p/3p`: `ok`, `no_dssp` (no `_struct_conf`),
+`no_uniprot_entry`, `no_afdb_model`, `afdb_fetch_failed`,
+`afdb_sequence_mismatch` (the model's sequence, including an empty one,
+differs from UniProt; the model is rejected) or `low_uniprot_identity`. Anything
+but `ok` gives `not_assessed` secondary structure — never an assumed loop — and
+blocks `likely_intact`, even when the junction has no indel. Reported: DSSP context of 7 residues
 around each parent's junction, `junction_ss_5p/3p`, the classes of the
 junction-indel residues (`indel_ss`, `indel_in_ss`; `no_indel` for none) and the
 minimum pLDDT of those residues.
@@ -137,7 +188,7 @@ Rules (also in `run_manifest.json` → `tier_rules`, and per record in
 |---|---|---|
 | B1_below_GA | likely_broken | chimera best hit < domain GA (or no hit) while both parents ≥ GA |
 | B2_low_coverage | likely_broken | chimera hits in the domain together span < 50 % of match states while both parents ≥ GA |
-| B3_point_feature_lost | likely_broken | an Active site / Binding site / Site residue is in a deleted column |
+| B3_point_feature_lost | likely_broken | an Active site / Binding site / Site residue is lost (absent, and nothing occupies its aligned column) |
 | U1_parent_below_GA | uncertain | a parent scores below GA |
 | U2_bit_drop | uncertain | chimera bits > 10 below the weaker parent |
 | U3_partial_coverage | uncertain | chimera coverage < 80 % |
@@ -146,12 +197,37 @@ Rules (also in `run_manifest.json` → `tier_rules`, and per record in
 | U6_indel_near_key | uncertain | indel present and junction ≤ 5 residues from a key site |
 | U7_junction_outside_hit | uncertain | the chimera's best hit does not span the junction |
 | U8_domain_split | uncertain | HMMER splits the chimeric domain into more hits than either parent |
-| N1_missing | not_assessed | not broken, no U rule fired, but an input needed for intact is missing |
+| U9_motif_lost_or_altered | uncertain | a motif-scale (≤ 10 residues) DNA-binding / Motif / Region feature has a lost or altered residue |
+| N1_missing | not_assessed | not broken, no U rule fired, but an input needed for intact is missing, rejected or incomplete (named in `tier_missing_inputs`) |
 | I1_all_pass | likely_intact | everything assessed and nothing above fired |
 
-Broken rules fire on whatever is available; `likely_intact` requires every
-input (HMM, key residues for both parents, indel secondary structure when there
-is an indel). Thresholds (50 %, 80 %, 10 bits, 5 residues) are documented
+Broken rules fire on whatever is available. `likely_intact` requires every
+input:
+
+* HMM scores for the chimera and both parents;
+* an assessed key-residue annotation for both parents, with no unresolved
+  residue;
+* a validated AlphaFold DB structure with DSSP for both parents
+  (`structure_status_* == ok`);
+* indel secondary structure, when there is an indel.
+
+So `likely_intact` means: the domain still scores as its family; no point key
+site (Active site / Binding site / Site) and no motif-scale feature (≤ 10
+residues) is lost or altered; and no key residue is unresolved. Swapped and
+conserved features are allowed, since replacing a residue with the other
+paralogue's aligned residue is what a paralogue chimera does. Longer span
+features (domain-scale DNA-binding regions, tails, triple-helical or interaction
+regions) are listed in `key_span_lost_or_altered` but not tiered. Their residues
+past the crossover are routinely replaced by the other parent's equivalent
+region, or follow the other parent's architecture where it lacks the segment,
+and their domain-scale integrity is what the HMM rules measure. With exact
+survival, 1,964 long-region lost/altered calls in the pilot came from this
+replacement against 71 motif-scale calls. This was decided after review: under
+the old survival logic, 44 likely_intact records listed a lost or altered span
+feature. Motif-scale features now block likely_intact (rule U9); the wording is
+narrowed for longer regions.
+
+Thresholds (50 %, 80 %, 10 bits, 5 residues) are documented
 heuristics, not calibrated values. `metric_disagreements` lists metric pairs
 that point different ways (e.g. passes GA but indel in a helix; passes GA with
 junction residues in insert states; below GA but key sites retained; intact but
@@ -162,7 +238,8 @@ broken core contacts) instead of hiding them.
 `shortlist_for_structure.tsv`: one record per fusion and Pfam family. Within each
 stage records are ordered by tier (intact, uncertain, not_assessed, broken),
 then lowest `schema_E_max` (max over the two parent structures; missing last),
-then highest GA margin, then max split reads and sample count. Up to 25 rows:
+then highest GA margin, then the best single sample's split reads and the number
+of distinct samples. Up to 25 rows:
 
 1. `ranked` — records with at least one screen row on which all six pilot
    artefact flags pass;

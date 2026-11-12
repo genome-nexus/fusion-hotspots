@@ -398,6 +398,7 @@ _PASS = {
     "key_annotation_status_3p": "no_annotations_in_window",
     "key_unresolved": 0,
     "key_span_lost_or_altered": "",
+    "key_motif_lost_or_altered": "",
     "structure_status_5p": "ok",
     "structure_status_3p": "ok",
 }
@@ -1010,8 +1011,22 @@ def test_review_span_feature_lost_blocks_likely_intact():
         record, parents, place_chimera(record, parents), {"five": five, "three": three}
     )
     tier, rules, _ = assign_tier({**_PASS, **report})
-    assert tier == UNCERTAIN and "U9_span_feature_lost_or_altered" in rules
+    assert tier == UNCERTAIN and "U9_motif_lost_or_altered" in rules
     assert report["key_span_lost_or_altered"] == "GENEA:Motif:31-36(catalytic)"
+    assert report["key_motif_lost_or_altered"] == "GENEA:Motif:31-36(catalytic)"
+
+
+def test_review_long_region_lost_is_reported_not_tiered():
+    record = _make(_PARENT, _PARTNER, five_last=30, three_first=38)  # 7 deleted columns
+    parents = align_parents(record)
+    five = _entry("GENEA", _PARENT, (KeyFeature("Region", 20, 50, "interaction"),))
+    three = _entry("GENEB", _PARTNER, ())
+    report = key_residue_report(
+        record, parents, place_chimera(record, parents), {"five": five, "three": three}
+    )
+    assert report["key_span_lost_or_altered"] == "GENEA:Region:20-50(interaction)"
+    assert report["key_motif_lost_or_altered"] == ""
+    assert assign_tier({**_PASS, **report})[0] == LIKELY_INTACT
 
 
 def _synthetic_model(gene: str, protein: str, start: int):

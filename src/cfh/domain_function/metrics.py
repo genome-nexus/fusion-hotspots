@@ -33,8 +33,10 @@ NOT_ASSESSED = "not_assessed"
 KEY_RESIDUE_PROXIMITY = 5
 """Junction/indel within this many parent residues of a key site is reported."""
 MAX_SITE_SPAN = 10
-"""Proximity uses point features and spans of at most this many residues (e.g. motifs);
-a DNA-binding region covering the whole domain would make every junction 'near'."""
+"""Motif scale. Spans of at most this many residues count as key *sites*: for junction
+proximity (a DNA-binding region covering the whole domain would make every junction
+'near') and for tiering a lost/altered span (rule U9). Longer regions are reported
+in ``key_span_lost_or_altered`` only."""
 MIN_UNIPROT_IDENTITY = 0.9
 """Minimum transcript-protein vs UniProt identity over the parent window to map features."""
 JUNCTION_HALF_WINDOW = 3
@@ -272,6 +274,7 @@ def key_residue_report(
     point_lost: list[str] = []
     point_altered: list[str] = []
     span_lost_altered: list[str] = []
+    motif_lost_altered: list[str] = []
     incomplete_labels: list[str] = []
     assessed_all = True
     for which, parent in (("five", record.five), ("three", record.three)):
@@ -326,6 +329,8 @@ def key_residue_report(
                 point_altered.append(label)
             if not point and worst in ("lost", "altered"):
                 span_lost_altered.append(label)
+                if feature.end - feature.start < MAX_SITE_SPAN:
+                    motif_lost_altered.append(label)
         report[f"key_annotation_status_{prefix}"] = (
             "annotated" if n_features else "no_annotations_in_window"
         )
@@ -341,6 +346,7 @@ def key_residue_report(
     report["key_point_lost"] = ";".join(point_lost)
     report["key_point_altered"] = ";".join(point_altered)
     report["key_span_lost_or_altered"] = ";".join(span_lost_altered)
+    report["key_motif_lost_or_altered"] = ";".join(motif_lost_altered)
     report["key_incomplete_annotations"] = ";".join(incomplete_labels)
     distances: list[int] = [
         value
