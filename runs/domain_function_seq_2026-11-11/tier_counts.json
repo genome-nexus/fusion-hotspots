@@ -1,54 +1,61 @@
 {
  "overall_records": {
-  "likely_intact": 2162,
-  "uncertain": 577,
-  "likely_broken": 106,
-  "not_assessed": 103
+  "likely_intact": 2178,
+  "not_assessed": 125,
+  "uncertain": 584,
+  "likely_broken": 147
  },
+ "overall_distinct_sequences": {
+  "likely_intact": 2112,
+  "not_assessed": 112,
+  "uncertain": 579,
+  "likely_broken": 147
+ },
+ "distinct_sequences": 2948,
  "records": {
   "depmap_22q2|ambiguous_junction_register": {
-   "uncertain": 36,
-   "likely_intact": 207,
-   "likely_broken": 4,
-   "not_assessed": 6
+   "likely_intact": 197,
+   "likely_broken": 15,
+   "uncertain": 38,
+   "not_assessed": 5
   },
   "depmap_22q2|clean_reconstitution": {
-   "likely_intact": 694,
+   "likely_intact": 732,
+   "not_assessed": 44,
    "uncertain": 36,
-   "not_assessed": 38,
-   "likely_broken": 3
+   "likely_broken": 7
   },
   "depmap_22q2|gap_or_deletion": {
-   "likely_intact": 25,
-   "likely_broken": 21,
-   "uncertain": 61
+   "uncertain": 62,
+   "likely_intact": 22,
+   "likely_broken": 24
   },
   "depmap_22q2|tandem_duplication_or_insertion": {
-   "uncertain": 85,
+   "uncertain": 88,
    "likely_broken": 7,
-   "likely_intact": 15,
-   "not_assessed": 1
+   "likely_intact": 12,
+   "not_assessed": 3
   },
   "msk_impact_50k_2026|tandem_duplication_or_insertion": {
    "uncertain": 2
   },
   "target_consolidated|ambiguous_junction_register": {
-   "likely_intact": 19,
+   "likely_intact": 18,
+   "not_assessed": 2,
    "uncertain": 15,
-   "not_assessed": 3,
-   "likely_broken": 1
+   "likely_broken": 2
   },
   "target_consolidated|clean_reconstitution": {
-   "likely_intact": 118,
-   "not_assessed": 16,
-   "uncertain": 10,
-   "likely_broken": 5
+   "not_assessed": 27,
+   "likely_intact": 123,
+   "uncertain": 11,
+   "likely_broken": 6
   },
   "target_consolidated|gap_or_deletion": {
-   "likely_intact": 13,
-   "uncertain": 35,
-   "likely_broken": 16,
-   "not_assessed": 2
+   "likely_broken": 17,
+   "uncertain": 36,
+   "not_assessed": 2,
+   "likely_intact": 11
   },
   "target_consolidated|tandem_duplication_or_insertion": {
    "likely_intact": 16,
@@ -58,93 +65,93 @@
   "target_starfusion|ambiguous_junction_register": {
    "likely_intact": 14,
    "uncertain": 9,
-   "not_assessed": 2,
-   "likely_broken": 1
+   "likely_broken": 2,
+   "not_assessed": 1
   },
   "target_starfusion|clean_reconstitution": {
-   "likely_intact": 70,
-   "not_assessed": 8,
+   "not_assessed": 11,
    "uncertain": 7,
+   "likely_intact": 71,
    "likely_broken": 5
   },
   "target_starfusion|gap_or_deletion": {
-   "likely_broken": 9,
+   "uncertain": 5,
    "likely_intact": 3,
-   "uncertain": 5
+   "likely_broken": 9
   },
   "target_starfusion|tandem_duplication_or_insertion": {
    "uncertain": 13,
-   "likely_intact": 1,
-   "likely_broken": 1
+   "likely_broken": 1,
+   "likely_intact": 1
   },
   "tcga_gtex|ambiguous_junction_register": {
-   "likely_intact": 483,
-   "likely_broken": 6,
-   "uncertain": 43,
-   "not_assessed": 10
+   "likely_intact": 469,
+   "not_assessed": 13,
+   "uncertain": 46,
+   "likely_broken": 18
   },
   "tcga_gtex|clean_reconstitution": {
-   "likely_intact": 1086,
-   "uncertain": 48,
-   "not_assessed": 57,
-   "likely_broken": 7
+   "likely_intact": 1089,
+   "not_assessed": 64,
+   "uncertain": 53,
+   "likely_broken": 12
   },
   "tcga_gtex|gap_or_deletion": {
-   "likely_intact": 35,
-   "uncertain": 92,
-   "likely_broken": 43
+   "uncertain": 88,
+   "likely_intact": 34,
+   "likely_broken": 49
   },
   "tcga_gtex|tandem_duplication_or_insertion": {
-   "uncertain": 163,
    "likely_intact": 22,
-   "likely_broken": 8,
+   "uncertain": 160,
+   "likely_broken": 11,
    "not_assessed": 1
   }
  },
  "rows": {
   "depmap_22q2|ambiguous_junction_register": {
-   "uncertain": 679,
-   "likely_intact": 1115,
-   "likely_broken": 6,
-   "not_assessed": 6
+   "likely_intact": 1092,
+   "likely_broken": 23,
+   "uncertain": 682,
+   "not_assessed": 5
   },
   "depmap_22q2|clean_reconstitution": {
-   "likely_intact": 8578,
-   "uncertain": 746,
-   "not_assessed": 230,
-   "likely_broken": 3
+   "likely_intact": 8573,
+   "not_assessed": 250,
+   "uncertain": 728,
+   "likely_broken": 10
   },
   "depmap_22q2|gap_or_deletion": {
-   "likely_intact": 79,
-   "likely_broken": 39,
-   "uncertain": 125
+   "uncertain": 125,
+   "likely_intact": 76,
+   "likely_broken": 42
   },
   "depmap_22q2|tandem_duplication_or_insertion": {
-   "uncertain": 250,
+   "uncertain": 261,
    "likely_broken": 13,
-   "likely_intact": 30,
-   "not_assessed": 24
+   "likely_intact": 17,
+   "not_assessed": 26
   },
   "msk_impact_50k_2026|tandem_duplication_or_insertion": {
    "uncertain": 2
   },
   "target_consolidated|ambiguous_junction_register": {
-   "likely_intact": 73,
+   "likely_intact": 62,
+   "not_assessed": 2,
    "uncertain": 27,
-   "not_assessed": 5,
-   "likely_broken": 1
+   "likely_broken": 4
   },
   "target_consolidated|clean_reconstitution": {
-   "likely_intact": 732,
-   "not_assessed": 37,
-   "uncertain": 30,
-   "likely_broken": 8
+   "not_assessed": 52,
+   "likely_intact": 741,
+   "uncertain": 16,
+   "likely_broken": 9
   },
   "target_consolidated|gap_or_deletion": {
-   "likely_intact": 19,
-   "uncertain": 68,
-   "likely_broken": 25,
-   "not_assessed": 4
+   "likely_broken": 26,
+   "uncertain": 69,
+   "not_assessed": 4,
+   "likely_intact": 17
   },
   "target_consolidated|tandem_duplication_or_insertion": {
    "likely_intact": 29,
@@ -154,46 +161,142 @@
   "target_starfusion|ambiguous_junction_register": {
    "likely_intact": 46,
    "uncertain": 14,
-   "not_assessed": 4,
-   "likely_broken": 1
+   "likely_broken": 4,
+   "not_assessed": 1
   },
   "target_starfusion|clean_reconstitution": {
+   "not_assessed": 23,
+   "uncertain": 11,
    "likely_intact": 559,
-   "not_assessed": 18,
-   "uncertain": 16,
    "likely_broken": 8
   },
   "target_starfusion|gap_or_deletion": {
-   "likely_broken": 12,
+   "uncertain": 6,
    "likely_intact": 3,
-   "uncertain": 6
+   "likely_broken": 12
   },
   "target_starfusion|tandem_duplication_or_insertion": {
    "uncertain": 92,
-   "likely_intact": 1,
-   "likely_broken": 1
+   "likely_broken": 1,
+   "likely_intact": 1
   },
   "tcga_gtex|ambiguous_junction_register": {
-   "likely_intact": 8496,
-   "likely_broken": 11,
-   "uncertain": 349,
-   "not_assessed": 591
+   "likely_intact": 8031,
+   "not_assessed": 240,
+   "uncertain": 785,
+   "likely_broken": 391
   },
   "tcga_gtex|clean_reconstitution": {
-   "likely_intact": 22788,
-   "uncertain": 816,
-   "not_assessed": 998,
-   "likely_broken": 23
+   "likely_intact": 22617,
+   "not_assessed": 902,
+   "uncertain": 967,
+   "likely_broken": 139
   },
   "tcga_gtex|gap_or_deletion": {
-   "likely_intact": 348,
-   "uncertain": 200,
-   "likely_broken": 261
+   "uncertain": 169,
+   "likely_intact": 347,
+   "likely_broken": 293
   },
   "tcga_gtex|tandem_duplication_or_insertion": {
-   "uncertain": 1247,
    "likely_intact": 28,
-   "likely_broken": 10,
+   "uncertain": 1244,
+   "likely_broken": 13,
+   "not_assessed": 1
+  }
+ },
+ "samples": {
+  "depmap_22q2|ambiguous_junction_register": {
+   "likely_intact": 1092,
+   "likely_broken": 22,
+   "uncertain": 682,
+   "not_assessed": 5
+  },
+  "depmap_22q2|clean_reconstitution": {
+   "likely_intact": 8553,
+   "not_assessed": 250,
+   "uncertain": 728,
+   "likely_broken": 10
+  },
+  "depmap_22q2|gap_or_deletion": {
+   "uncertain": 124,
+   "likely_intact": 76,
+   "likely_broken": 42
+  },
+  "depmap_22q2|tandem_duplication_or_insertion": {
+   "uncertain": 261,
+   "likely_broken": 13,
+   "likely_intact": 17,
+   "not_assessed": 26
+  },
+  "msk_impact_50k_2026|tandem_duplication_or_insertion": {
+   "uncertain": 2
+  },
+  "target_consolidated|ambiguous_junction_register": {
+   "likely_intact": 62,
+   "not_assessed": 2,
+   "uncertain": 27,
+   "likely_broken": 4
+  },
+  "target_consolidated|clean_reconstitution": {
+   "not_assessed": 52,
+   "likely_intact": 741,
+   "uncertain": 16,
+   "likely_broken": 9
+  },
+  "target_consolidated|gap_or_deletion": {
+   "likely_broken": 26,
+   "uncertain": 69,
+   "not_assessed": 4,
+   "likely_intact": 17
+  },
+  "target_consolidated|tandem_duplication_or_insertion": {
+   "likely_intact": 29,
+   "uncertain": 176,
+   "likely_broken": 5
+  },
+  "target_starfusion|ambiguous_junction_register": {
+   "likely_intact": 46,
+   "uncertain": 14,
+   "likely_broken": 4,
+   "not_assessed": 1
+  },
+  "target_starfusion|clean_reconstitution": {
+   "not_assessed": 23,
+   "uncertain": 11,
+   "likely_intact": 559,
+   "likely_broken": 8
+  },
+  "target_starfusion|gap_or_deletion": {
+   "uncertain": 6,
+   "likely_intact": 3,
+   "likely_broken": 12
+  },
+  "target_starfusion|tandem_duplication_or_insertion": {
+   "uncertain": 92,
+   "likely_broken": 1,
+   "likely_intact": 1
+  },
+  "tcga_gtex|ambiguous_junction_register": {
+   "likely_intact": 7540,
+   "not_assessed": 240,
+   "uncertain": 567,
+   "likely_broken": 391
+  },
+  "tcga_gtex|clean_reconstitution": {
+   "likely_intact": 22543,
+   "not_assessed": 902,
+   "uncertain": 967,
+   "likely_broken": 139
+  },
+  "tcga_gtex|gap_or_deletion": {
+   "uncertain": 169,
+   "likely_intact": 347,
+   "likely_broken": 293
+  },
+  "tcga_gtex|tandem_duplication_or_insertion": {
+   "likely_intact": 28,
+   "uncertain": 1243,
+   "likely_broken": 13,
    "not_assessed": 1
   }
  }

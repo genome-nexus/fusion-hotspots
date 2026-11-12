@@ -228,9 +228,9 @@ features (domain-scale DNA-binding regions, tails, triple-helical or interaction
 regions) are listed in `key_span_lost_or_altered` but not tiered. Their residues
 past the crossover are routinely replaced by the other parent's equivalent
 region, or follow the other parent's architecture where it lacks the segment,
-and their domain-scale integrity is what the HMM rules measure. With exact
-survival, 1,964 long-region lost/altered calls in the pilot came from this
-replacement against 71 motif-scale calls. This was decided after review: under
+and their domain-scale integrity is what the HMM rules measure. In the pilot
+run, 507 records list a longer region as lost or altered (reported only), and 28
+have a motif-scale one (U9). This was decided after review: under
 the old survival logic, 44 likely_intact records listed a lost or altered span
 feature. Motif-scale features now block likely_intact (rule U9); the wording is
 narrowed for longer regions.
@@ -253,7 +253,7 @@ of distinct samples. Up to 25 rows:
    artefact flags pass;
 2. `fill` — records with a row passing every flag except the two *context*
    flags, `genomic_similarity` and `sample_burden`. These fire on > 99 % of
-   shared-domain records (2930 and 2923 of 2948 in the pilot run): the partners
+   shared-domain records (3015 and 3008 of 3034 in the pilot run): the partners
    are paralogues, usually in segmental duplications, and the samples carry many
    shared-family calls, so within this set the two flags do not separate
    candidates. The flags that fired are named in `shortlist_reason`

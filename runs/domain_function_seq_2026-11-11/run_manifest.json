@@ -1,10 +1,26 @@
 {
- "schema_version": "domain_function_seq/1",
- "generated": "2026-11-11T23:49:11Z",
- "code_sha": "68bd6027e60f9688121ac52ec472bf05095241a3",
+ "schema_version": "domain_function_seq/2",
+ "generated": "2026-11-12T20:33:15Z",
+ "code_sha": "16caf07d04739d0292df554613a2222099947a07",
  "code_dirty": false,
  "input_screen": "runs/domain_screen_pilot_2026-11-10/combined_candidates.tsv.gz",
  "input_screen_sha256": "b16b4d1bbb3957bded5df77cdb4f9a2377232dbba0479d8d9be5c4da559f9191",
+ "records_fingerprint": {
+  "schema_version": "domain_function_seq/2",
+  "records_version": 2,
+  "screen_sha256": "b16b4d1bbb3957bded5df77cdb4f9a2377232dbba0479d8d9be5c4da559f9191",
+  "transcript_caches": {
+   "GRCh37": "b71e55a3d8f2f92445f3b623f38c0dce72acb45b668ea816fa040be5e65e313d",
+   "GRCh38": "20a1b1ea9243aa21a08dbee1102844a52f2e52b3d9d68f48be64e6accda914de"
+  },
+  "code": {
+   "cfh.domain_function.record": "3523e4d7cf2fb4f626c61cb959a73305f3a077d18c643fcfedb57386540c7b83",
+   "cfh.mapping.junction_translation": "ea2aefefad1889439c65efacd7e624519ca6e9de4741c3ec82ef5152fcc5686d",
+   "cfh.mapping.junction_domain_classifier": "d216c4a4cc13fcf5bbeec8ea7a4ffc0c137ddcae18506d37b87dca697cf768c7",
+   "cfh.mapping.transcript_models": "fa5db6667ea54e1c26cff59720f79885f602ef3dcc6000dd8740f56853e079a7"
+  }
+ },
+ "records_cache_reused": false,
  "translated_classes": [
   "clean_reconstitution",
   "tandem_duplication_or_insertion",
@@ -15,7 +31,7 @@
  "tier_rules": {
   "B1_below_GA": "likely_broken: the chimera's best domain hit scores below the family's Pfam domain GA while both parents' domains score at or above GA (or the chimera has no hit at all).",
   "B2_low_coverage": "likely_broken: the chimera's hits in the domain together span < 50% of the HMM's match states while both parents pass GA.",
-  "B3_point_feature_lost": "likely_broken: a UniProt Active site / Binding site / Site residue of either parent falls in a junction-deleted column.",
+  "B3_point_feature_lost": "likely_broken: a UniProt Active site / Binding site / Site residue of either parent is absent from the chimera and no chimera residue occupies its aligned column (junction-deleted column, or a column where the other parent has a gap).",
   "U1_parent_below_GA": "uncertain: a parent's own domain scores below GA, so GA is not informative for this pair.",
   "U2_bit_drop": "uncertain: chimera domain bits are more than 10 below the weaker parent's.",
   "U3_partial_coverage": "uncertain: chimera match-state coverage below 80%.",
@@ -24,10 +40,21 @@
   "U6_indel_near_key": "uncertain: the junction has an indel and lies within 5 residues of a key feature.",
   "U7_junction_outside_hit": "uncertain: the chimera's best hit does not span the junction (it may be one parent's fragment).",
   "U8_domain_split": "uncertain: HMMER splits the chimeric domain into more hits than either parent's domain.",
-  "N1_missing": "not_assessed: an input needed to call likely_intact is missing.",
-  "I1_all_pass": "likely_intact: none of the above fired and every input was assessed (passes GA, coverage >= 80%, bit drop <= 10, no key residue lost/altered, any indel outside parent helix/strand and away from key residues)."
+  "U9_motif_lost_or_altered": "uncertain: a motif-scale (<= 10 residues) UniProt DNA-binding / Motif / Region feature has a residue that is lost or altered (not merely swapped for the other parent's aligned residue). Longer regions are reported, not tiered: past the crossover they are routinely replaced by the other parent's equivalent region, and their domain-scale integrity is what the HMM rules measure.",
+  "N1_missing": "not_assessed: an input needed to call likely_intact is missing, rejected or incomplete (listed in tier_missing_inputs).",
+  "I1_all_pass": "likely_intact: none of the above fired and every input was assessed (passes GA, coverage >= 80%, bit drop <= 10, no key point site or motif-scale feature lost/altered, no key residue unresolved, any indel outside parent helix/strand and away from key residues, both parent structures validated)."
  },
- "records": 2948,
+ "tier_required_inputs_for_likely_intact": [
+  "hmm (GA, parent and chimera hits)",
+  "key_annotation_5p / key_annotation_3p in annotated/no_annotations_in_domain",
+  "no unresolved key residue (key_residue_mapping)",
+  "indel secondary structure when the junction has an indel",
+  "structure_status_5p / structure_status_3p == 'ok'"
+ ],
+ "records": 3034,
+ "distinct_sequences": 2948,
+ "record_identity": "record_id: family, class, parent transcripts, parent domain spans, junction residues, hybrid residue, chimeric domain span and flanked sequence; sequence_id: family, parent transcripts and flanked sequence",
+ "read_support_rule": "samples counted once per biological sample (both TARGET tables share one namespace); a sample's reads = max over its rows, never summed; total = sum over samples of per-sample max",
  "rebuild_problems": {
   "parent CDS has an internal stop codon (selenocysteine UGA?)": 113
  },
