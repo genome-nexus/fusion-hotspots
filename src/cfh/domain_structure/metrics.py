@@ -148,15 +148,24 @@ def confidence(window: Window, domain: list[int], junction: list[int], halves) -
 def mapped_pairs(
     record: ChimeraRecord, parents: ParentAlignment, placed: ChimeraColumns, which: str
 ) -> list[tuple[int, int]]:
-    """(chimera position, parent position) for mapped chimera *domain* residues."""
+    """(chimera position, parent position) pairs with BOTH residues in their Pfam domains.
+
+    The chimera side is restricted to the chimeric domain and the parent side
+    to that parent's domain, so the pairs never outnumber the parent domain
+    length that ``tm`` is normalised by (flank residues never count).
+    """
     side = 0 if which == "five" else 1
+    parent = record.five if which == "five" else record.three
     pairs = []
     for position in range(record.domain_start, record.domain_end + 1):
         column = placed.chimera_col.get(position)
         if column is None:
             continue
         parent_position = parents.columns[column][side]
-        if parent_position is not None:
+        if (
+            parent_position is not None
+            and parent.domain_start <= parent_position <= parent.domain_end
+        ):
             pairs.append((position, parent_position))
     return pairs
 
@@ -189,11 +198,20 @@ def compare(
     ]
     if len(pairs) < MIN_MAPPED_PAIRS:
         return {"status": f"mapping_failed: {len(pairs)} mapped residues"}
+    if len(pairs) > min(reference_length, chimera_length):
+        return {
+            "status": f"mapping_failed: {len(pairs)} mapped residues exceed the domain length "
+            f"({reference_length} reference, {chimera_length} chimera)"
+        }
+    if len({p for _, p in pairs}) != len(pairs) or len({c for c, _ in pairs}) != len(pairs):
+        return {"status": "mapping_failed: residue mapping is not one-to-one"}
     ca = _coords(chimera)
     mobile = np.asarray([ca[c - chimera.start] for c, _ in pairs])
     target = np.asarray([target_coords[p - target_start] for _, p in pairs])
     tm = tm_score_fixed(mobile, target, reference_length)
     tm_chim = tm_score_fixed(mobile, target, chimera_length)
+    if not (0.0 <= tm.tm_score <= 1.0 and 0.0 <= tm_chim.tm_score <= 1.0):
+        return {"status": f"mapping_failed: TM-score out of range ({tm.tm_score})"}
     junction_ca = [ca[c - chimera.start] for c in chimera.inside(junction_residues)]
     local_rmsd = None
     n_local = 0

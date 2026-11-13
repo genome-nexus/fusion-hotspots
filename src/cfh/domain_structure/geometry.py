@@ -10,7 +10,10 @@ residue sits, not how well two shapes can be matched in any register.
   for a fixed correspondence: the rotation maximising the TM sum is searched
   as in the TM-score program (seed fragments of length L, L/2, L/4, ... >= 4,
   each refined by re-superposing the pairs closer than a growing cutoff).
-  Normalised by the length passed in (here the chimera's domain length).
+  Normalised by the length passed in: the reference (parent) domain length
+  for ``tm`` and the chimera domain length for ``tm_chim_norm`` (see
+  :func:`cfh.domain_structure.metrics.compare`). The number of mapped pairs
+  may not exceed that length (raises ``ValueError``), so the score is <= 1.
 * :func:`tm_align` -- sequence-independent TM-align via ``tmtools``, reported
   alongside as a secondary, register-free check.
 """
@@ -79,6 +82,8 @@ def tm_score_fixed(mobile: Coords, target: Coords, norm_length: int) -> TmResult
     n = mobile.shape[0]
     if n < 3 or norm_length < 1:
         raise ValueError("need at least 3 mapped pairs")
+    if n > norm_length:
+        raise ValueError(f"{n} mapped pairs exceed the normalisation length {norm_length}")
     d0 = tm_d0(norm_length)
     d_search = min(max(4.5, d0), 8.0)
     best = 0.0

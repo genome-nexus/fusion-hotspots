@@ -33,8 +33,19 @@ informative. Nothing here is a calibrated predictor of folding or activity.
 ColabFold 1.6.3 (`colabfold_batch`, AlphaFold2 weights
 `alphafold_params_2021-07-14`, `alphafold2_ptm`), CPU JAX on an Apple M3 (no
 GPU). Settings are one `PredictorConfig` (JSON override with `--config`); the
-settings that change a prediction are hashed into a `settings_id`, and cached
-predictions live under it, so changing a setting never reuses old results.
+settings that change a prediction -- including the MSA source (`msa_mode`,
+`host_url`) -- are hashed into a `settings_id`, and cached predictions live
+under it, so changing a setting or MSA server never reuses old results.
+
+*Checkpoint migration.* Checkpoints written up to 0bf17b3 were keyed without
+`host_url`. `migrate_legacy_checkpoints` (run automatically before
+`predict`/`analyze`) moves them to the current key only if their MSA source
+is provable: the work directory holds exactly one MSA cache and it is this
+config's (`msa_<sha256(msa_mode|host_url)[:8]>`; the predictor reads MSAs only
+from its own config's cache), every legacy job records the legacy id,
+re-validates, and has its query's a3m in that cache. Otherwise nothing moves
+and the run stops. Migrated checkpoints record `migrated_from`; the manifest
+counts them (`checkpoints_migrated_total`).
 
 | setting | value | why |
 |---|---|---|
@@ -88,7 +99,9 @@ A prediction is cached (`predictions/<settings_id>/<job>/result.json`, model
 `model.pdb.gz`, scores `scores.json.gz`) only after validation: exit status 0,
 exactly one rank-1 model and score file, pLDDT and PAE of the query's length,
 finite pLDDT/PAE/pTM, and a single-chain model whose sequence is the query.
-Cached results are re-validated on load; a corrupt checkpoint is discarded.
+Loaded checkpoints go through the same check (`check_scores`: numeric and
+finite pLDDT[L], PAE[L][L] and pTM, model sequence = query); a corrupt
+checkpoint is discarded and re-predicted, never used.
 Any failure -- MSA server error, missing MSA, ColabFold exit status, timeout
 (`job_timeout_seconds`), missing model file, parse error -- is written to
 `failure.json` with its reason, never read back as a result, and retried on
@@ -117,8 +130,12 @@ Positions are each protein's own 1-based residue numbers.
 * **Residue mapping** -- chimera residue -> parent residue through PR 1's
   parent-window alignment (`align_parents` / `place_chimera`: BLOSUM62,
   global, gap -11/-1, free end gaps). Junction-inserted chimera residues and
-  columns where the parent has a gap are unmapped. Comparisons use mapped
-  domain residues only (`vs_*_n_mapped`); fewer than 10 is a mapping failure.
+  columns where the parent has a gap are unmapped. A pair is kept only when
+  the chimera residue is in the chimeric domain **and** the parent residue is
+  in that parent's Pfam domain (flank residues never count), for both the
+  ColabFold-parent and the AFDB comparisons (`vs_*_n_mapped`). Fewer than 10
+  pairs, more pairs than the parent or chimera domain length, a mapping that
+  is not one-to-one, or a TM-score outside [0, 1] is a mapping failure.
 
 ## Measures (`domain_structure_metrics.tsv.gz`, one row per record)
 
@@ -185,12 +202,15 @@ parent domain, and `afdb_*_domain_plddt` gives AFDB's own domain pLDDT.
 | D4_junction_plddt_drop | fold_doubtful | chimera minus better parent junction-window mean pLDDT <= -15 |
 | D5_halves_not_packed | fold_doubtful | chimera inter-half PAE >= 10 A and >= 5 A above the lower parent inter-half PAE |
 | D6_fold_differs | fold_doubtful | mapped TM-score (normalised by the parent domain) < 0.5 against both parent predictions |
-| N2_metric_missing | not_assessed | no doubt rule fired, but a measure needed for fold_supported is missing (named) |
+| N2_metric_missing | not_assessed | no doubt rule fired, but a measure needed for fold_supported is missing (named); a NaN/inf value counts as missing |
+| N3_afdb_comparison_missing | not_assessed | no doubt rule fired, but the comparison with either parent's AlphaFold DB model was refused or failed (no model, sequence mismatch, identity < 0.9, mapping failure) |
 | S1_all_pass | fold_supported | everything assessed, no doubt rule fired |
 
-Doubt rules fire on whatever is available; `fold_supported` needs every
-input (all three predictions, both mappings, the pLDDT deltas, the junction
-minimum, and inter-half PAE for the chimera and at least one parent).
+Doubt rules fire on whatever is available (finite values only);
+`fold_supported` needs every input: all three predictions, both mapped
+ColabFold-parent comparisons, **both AFDB parent comparisons**, the pLDDT
+deltas, the junction minimum, and inter-half PAE for the chimera and at least
+one parent. Every rule input must be a finite number; NaN or inf is missing.
 
 Thresholds, justified:
 

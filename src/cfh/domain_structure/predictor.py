@@ -92,8 +92,13 @@ class PredictorConfig:
         "num_seeds",
         "max_msa",
         "msa_mode",
+        "host_url",
         "extra_args",
     )
+    """Everything that changes a prediction, including where its MSA came from."""
+
+    LEGACY_PREDICTION_SETTINGS = tuple(k for k in PREDICTION_SETTINGS if k != "host_url")
+    """Key of checkpoints written before the MSA source was part of the key (<= 0bf17b3)."""
 
     @classmethod
     def load(cls, path: Path | None) -> PredictorConfig:
@@ -112,6 +117,12 @@ class PredictorConfig:
 
     def settings_id(self) -> str:
         text = json.dumps(self.prediction_settings(), sort_keys=True)
+        return "set_" + hashlib.sha256(text.encode()).hexdigest()[:12]
+
+    def legacy_settings_id(self) -> str:
+        """The pre-MSA-source key, used only by :func:`migrate_legacy_checkpoints`."""
+        data = asdict(self)
+        text = json.dumps({k: data[k] for k in self.LEGACY_PREDICTION_SETTINGS}, sort_keys=True)
         return "set_" + hashlib.sha256(text.encode()).hexdigest()[:12]
 
     def msa_id(self) -> str:
@@ -263,6 +274,8 @@ class Prediction:
     pdb_path: Path
     wall_seconds: float | None = None
     settings_id: str = ""
+    migrated_from: str = ""
+    """Legacy settings id this checkpoint was migrated from ('' if predicted under its key)."""
 
     def ca_coords(self) -> list[tuple[float, float, float]]:
         return read_ca(self.pdb_path, self.sequence)
@@ -310,19 +323,34 @@ def validate_outputs(out_dir: Path, job_id: str, sequence: str) -> tuple[Path, P
         data = json.loads(scores[0].read_text())
     except (OSError, ValueError) as error:
         raise PredictionFailure(f"parse_error: score json: {error}") from error
-    length = len(sequence)
+    check_scores(data, len(sequence))
+    read_ca(models[0], sequence)
+    return models[0], scores[0], data
+
+
+def _finite_number(value: Any) -> bool:
+    return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+
+
+def check_scores(data: Any, length: int) -> None:
+    """Raise PredictionFailure unless ``data`` holds finite pLDDT[L], PAE[L][L] and pTM.
+
+    Applied identically to fresh ColabFold output and to every loaded checkpoint.
+    """
+    if not isinstance(data, dict):
+        raise PredictionFailure("parse_error: scores are not a JSON object")
     plddt, pae, ptm = data.get("plddt"), data.get("pae"), data.get("ptm")
     if not isinstance(plddt, list) or len(plddt) != length:
         raise PredictionFailure("parse_error: pLDDT length differs from the sequence")
-    if not isinstance(pae, list) or len(pae) != length or any(len(r) != length for r in pae):
-        raise PredictionFailure("parse_error: PAE is not L x L")
-    values = [*plddt, *(v for row in pae for v in row)]
-    if not isinstance(ptm, (int, float)) or not all(
-        isinstance(v, (int, float)) and math.isfinite(v) for v in [ptm, *values]
+    if (
+        not isinstance(pae, list)
+        or len(pae) != length
+        or any(not isinstance(row, list) or len(row) != length for row in pae)
     ):
-        raise PredictionFailure("parse_error: non-finite pLDDT/PAE/pTM")
-    read_ca(models[0], sequence)
-    return models[0], scores[0], data
+        raise PredictionFailure("parse_error: PAE is not L x L")
+    values = [ptm, *plddt, *(v for row in pae for v in row)]
+    if not all(_finite_number(v) for v in values):
+        raise PredictionFailure("parse_error: non-finite or non-numeric pLDDT/PAE/pTM")
 
 
 class Predictor:
@@ -428,9 +456,7 @@ def load_prediction(directory: Path, sequence: str) -> Prediction:
     scores_path = directory / "scores.json.gz"
     with gzip.open(scores_path, "rt") as handle:
         scores = json.load(handle)
-    length = len(sequence)
-    if len(scores["plddt"]) != length or len(scores["pae"]) != length:
-        raise PredictionFailure("parse_error: cached scores have the wrong length")
+    check_scores(scores, len(sequence))
     model = directory / "model.pdb.gz"
     read_ca(model, sequence)
     return Prediction(
@@ -443,6 +469,7 @@ def load_prediction(directory: Path, sequence: str) -> Prediction:
         pdb_path=model,
         wall_seconds=meta.get("wall_seconds"),
         settings_id=meta.get("settings_id", ""),
+        migrated_from=(meta.get("migrated_from") or {}).get("settings_id", ""),
     )
 
 
@@ -477,3 +504,73 @@ def weights_manifest(config: PredictorConfig) -> dict[str, str]:
         else:
             out[path.name] = "missing"
     return out
+
+
+def migrate_legacy_checkpoints(
+    predictions_root: Path,
+    config: PredictorConfig,
+    msas: MsaCache,
+    work: Path,
+    log: Callable[[str], None] = print,
+) -> int:
+    """Move checkpoints from the pre-MSA-source key to ``config.settings_id()``, if provable.
+
+    Checkpoints written up to 0bf17b3 were keyed without the MSA server. They
+    are moved (not re-predicted) only when it is provable that they used this
+    config's MSA source:
+
+    * the work directory holds exactly one MSA cache, and it is this config's
+      (``msa_<sha256(msa_mode|host_url)[:8]>``) -- the predictor only ever
+      reads MSAs from its own config's cache, so no other source was possible;
+    * every legacy job is a valid checkpoint (same validation as fresh output),
+      records the legacy settings id, and its query has an a3m in that cache.
+
+    Otherwise nothing is moved and :class:`PredictionFailure` is raised.
+    Returns the number of checkpoints moved (0 if there is nothing to migrate).
+    """
+    legacy = predictions_root / config.legacy_settings_id()
+    target = predictions_root / config.settings_id()
+    jobs = sorted(path for path in legacy.glob("job_*") if path.is_dir()) if legacy.exists() else []
+    if not jobs:
+        return 0
+    if any(target.glob("job_*")):
+        raise PredictionFailure(f"migration: {target.name} already has checkpoints")
+    caches = sorted(path.name for path in work.glob("msa_*") if path.is_dir())
+    if caches != [msas.root.name]:
+        raise PredictionFailure(
+            f"migration: cannot prove the MSA source; MSA caches present: {caches}, "
+            f"this config's: {msas.root.name}"
+        )
+    for directory in jobs:
+        if not (directory / "result.json").exists():
+            continue  # a failure record, not a result: nothing to keep
+        meta = json.loads((directory / "result.json").read_text())
+        if meta.get("settings_id") != legacy.name:
+            raise PredictionFailure(f"migration: {directory.name} records another settings id")
+        sequence = meta.get("sequence", "")
+        load_prediction(directory, sequence)
+        if msas.get(sequence) is None:
+            raise PredictionFailure(f"migration: no {msas.root.name} MSA for {directory.name}")
+    target.mkdir(parents=True, exist_ok=True)
+    moved = 0
+    for directory in jobs:
+        result = directory / "result.json"
+        if result.exists():
+            meta = json.loads(result.read_text())
+            meta["settings_id"] = target.name
+            meta["migrated_from"] = {
+                "settings_id": legacy.name,
+                "msa_cache": msas.root.name,
+                "host_url": config.host_url,
+                "msa_mode": config.msa_mode,
+                "reason": "pre-0bf17b3 key omitted the MSA source; the only MSA cache "
+                "in the work directory is this config's",
+            }
+            result.write_text(json.dumps(meta, indent=1))
+            moved += 1
+        directory.rename(target / directory.name)
+    for leftover in legacy.iterdir():
+        leftover.rename(target / leftover.name)
+    legacy.rmdir()
+    log(f"migrated {moved} checkpoints {legacy.name} -> {target.name} ({msas.root.name})")
+    return moved

@@ -26,6 +26,7 @@ from cfh.domain_structure.metrics import (
     chimera_halves,
     compare,
     junction_window,
+    mapped_pairs,
     parent_halves,
     record_metrics,
 )
@@ -38,6 +39,8 @@ from cfh.domain_structure.predictor import (
     PredictorConfig,
     a3m_query,
     check_disk,
+    load_prediction,
+    migrate_legacy_checkpoints,
     read_ca,
     validate_outputs,
 )
@@ -364,6 +367,18 @@ def _predictions(tmp_path, record, chimera_plddt=90.0, chimera_pae=3.0, chimera_
     }
 
 
+def _afdb_both() -> dict:
+    """AFDB stand-ins identical to the fixture parent predictions (TM 1 against both)."""
+    return {
+        "five": AfdbModel("P00001", "6", _PARENT,
+                          tuple(tuple(x) for x in _rotate(_helix(len(_PARENT))).tolist()),
+                          tuple([90.0] * len(_PARENT))),
+        "three": AfdbModel("P00002", "6", _PARTNER,
+                           tuple(tuple(x) for x in _helix(len(_PARTNER)).tolist()),
+                           tuple([90.0] * len(_PARTNER))),
+    }  # fmt: skip
+
+
 def test_build_jobs_dedupes_sequences_and_keeps_windows():
     record = _record()
     rj, jobs = _jobs(record)
@@ -395,13 +410,13 @@ def test_windows_and_halves():
 def test_record_metrics_identical_fold_is_supported(tmp_path):
     record = _record()
     rj, predictions = _predictions(tmp_path, record)
-    row = record_metrics(rj, predictions, {}, {})
+    row = record_metrics(rj, predictions, {}, _afdb_both())
     assert row["vs_5p_status"] == "ok" and row["vs_5p_tm"] == pytest.approx(1.0, abs=1e-3)
     assert row["vs_3p_tm"] == pytest.approx(1.0, abs=1e-3)
     assert row["vs_5p_local_rmsd"] < 1e-2
     assert row["delta_domain_plddt_vs_better_parent"] == 0.0
     assert row["chimera_interhalf_pae"] == 3.0
-    assert row["vs_afdb_5p_status"].startswith("not_assessed")
+    assert row["vs_afdb_5p_status"] == "ok" and row["vs_afdb_3p_status"] == "ok"
     flag, rules, _ = assign_flag(row)
     assert (flag, rules) == (FOLD_SUPPORTED, ["S1_all_pass"])
 
@@ -490,8 +505,12 @@ def test_assess_and_counts(tmp_path):
     record = _record()
     record.cohorts = ["cohortA"]
     rj, predictions = _predictions(tmp_path, record)
-    rows = assess([rj], predictions, {}, {})
+    rj.shortlist.update(uniprot_5p="P00001", uniprot_3p="P00002")
+    rows = assess(
+        [rj], predictions, {}, {"P00001": _afdb_both()["five"], "P00002": _afdb_both()["three"]}
+    )
     assert rows[0]["pr1_tier"] == "uncertain"
+    assert rows[0]["structure_flag_missing"] == ""
     counts = flag_counts(rows, [record])
     assert counts["by_flag"] == {FOLD_SUPPORTED: 1}
     assert counts["by_cohort"] == {"cohortA": {FOLD_SUPPORTED: 1}}
@@ -534,6 +553,139 @@ def test_export_models_only_selected_jobs_and_rounds_pae(tmp_path):
     with gzip.open(tmp_path / "out" / "job_e.scores.json.gz", "rt") as handle:
         scores = json.load(handle)
     assert scores["pae"][0][1] == 2 and scores["pae_decimals"] == 0
+
+
+# --------------------------------------------------------------------------- review fixes
+def _supported_row(tmp_path) -> dict:
+    record = _record()
+    rj, predictions = _predictions(tmp_path, record)
+    row = record_metrics(rj, predictions, {}, _afdb_both())
+    assert assign_flag(row)[0] == FOLD_SUPPORTED
+    return row
+
+
+def test_corrupt_checkpoint_scores_are_rejected(tmp_path):
+    """Review #1: a cached NaN pLDDT / ragged PAE / NaN pTM is not a result."""
+    predictor, _ = _predictor(tmp_path)
+    predictor.predict("job_a", FLI1_ERG, log=lambda _: None)
+    directory = predictor.job_dir("job_a")
+    with gzip.open(directory / "scores.json.gz", "rt") as handle:
+        good = json.load(handle)
+    for damage in ("nan_plddt", "ragged_pae", "nan_ptm", "string_pae"):
+        scores = json.loads(json.dumps(good))
+        if damage == "nan_plddt":
+            scores["plddt"] = [float("nan")] * len(scores["plddt"])
+        elif damage == "ragged_pae":
+            scores["pae"][5] = scores["pae"][5][:-1]
+        elif damage == "nan_ptm":
+            scores["ptm"] = float("nan")
+        else:
+            scores["pae"][2][2] = "1.0"
+        with gzip.open(directory / "scores.json.gz", "wt") as handle:
+            json.dump(scores, handle)
+        with pytest.raises(PredictionFailure, match="parse_error"):
+            load_prediction(directory, FLI1_ERG)
+
+
+def test_non_finite_rule_inputs_never_give_supported(tmp_path):
+    """Review #1: NaN/inf confidence metrics count as missing -> not_assessed."""
+    base = _supported_row(tmp_path)
+    for key in ("chimera_domain_plddt", "chimera_junction_plddt_min", "chimera_interhalf_pae",
+                "parent5_interhalf_pae", "delta_domain_plddt_vs_better_parent", "vs_5p_tm",
+                "vs_afdb_3p_tm"):  # fmt: skip
+        for bad in (float("nan"), float("inf")):
+            row = dict(base)
+            row[key] = bad
+            if key == "parent5_interhalf_pae":
+                row["parent3_interhalf_pae"] = bad
+            flag, _, missing = assign_flag(row)
+            assert flag == NOT_ASSESSED, (key, bad)
+            assert missing
+
+
+def test_mapping_excludes_parent_flank_residues():
+    """Review #2: a chimera domain residue aligned to a parent flank residue is not mapped."""
+    record = _record()
+    record.three.domain_start = 15  # chimera domain 5..60 now overhangs the 3' domain
+    from cfh.domain_function.metrics import align_parents, place_chimera
+
+    parents = align_parents(record)
+    placed = place_chimera(record, parents)
+    pairs = mapped_pairs(record, parents, placed, "three")
+    assert pairs and all(15 <= p <= 60 for _, p in pairs)
+    assert len(pairs) <= 60 - 15 + 1
+
+
+def test_tm_score_never_exceeds_one():
+    """Review #2: more pairs than the normalisation length is an error, not TM 2.0."""
+    coords = _helix(40)
+    with pytest.raises(ValueError):
+        tm_score_fixed(coords, coords, 20)
+
+
+def test_compare_fails_closed_when_pairs_exceed_reference(tmp_path):
+    coords = _helix(40)
+    window = Window(_prediction(tmp_path, "x", "A" * 40, coords, 90.0, 3.0), 1)
+    pairs = [(c, c) for c in range(1, 41)]
+    result = compare(window, coords, 1, pairs, [20], 20, 40)
+    assert result["status"].startswith("mapping_failed")
+
+
+def test_refused_afdb_comparison_blocks_supported(tmp_path):
+    """Review #3: GNAL::GNAS-like low-identity AFDB entry -> not_assessed, not supported."""
+    record = _record()
+    rj, predictions = _predictions(tmp_path, record)
+    wrong = AfdbModel("P84996", "6", "M" * 40, tuple((float(i), 0.0, 0.0) for i in range(40)),
+                      tuple([50.0] * 40))  # fmt: skip
+    row = record_metrics(rj, predictions, {}, {"five": _afdb_both()["five"], "three": wrong})
+    assert row["vs_afdb_3p_status"] == "not_assessed: low identity to AFDB sequence"
+    flag, rules, missing = assign_flag(row)
+    assert (flag, rules) == (NOT_ASSESSED, ["N3_afdb_comparison_missing"])
+    assert "low identity" in missing[0]
+    row = record_metrics(rj, predictions, {}, {"five": _afdb_both()["five"]})
+    assert assign_flag(row)[0] == NOT_ASSESSED  # no AFDB model at all
+
+
+def test_prediction_key_includes_msa_source():
+    """Review #4: another MSA server must not reuse these predictions."""
+    base = PredictorConfig()
+    other = PredictorConfig(host_url="https://different.example")
+    assert other.settings_id() != base.settings_id()
+    assert other.legacy_settings_id() == base.legacy_settings_id()
+
+
+def _legacy_checkpoint(tmp_path):
+    predictor, msas = _predictor(tmp_path)
+    predictor.predict("job_a", FLI1_ERG, log=lambda _: None)
+    config = predictor.config
+    legacy = predictor.root.parent / config.legacy_settings_id()
+    predictor.root.rename(legacy)
+    meta = json.loads((legacy / "job_a" / "result.json").read_text())
+    meta["settings_id"] = legacy.name
+    (legacy / "job_a" / "result.json").write_text(json.dumps(meta))
+    return config, msas, legacy
+
+
+def test_legacy_checkpoints_migrate_when_the_msa_source_is_provable(tmp_path):
+    config, msas, legacy = _legacy_checkpoint(tmp_path)
+    work = tmp_path / "work"
+    assert migrate_legacy_checkpoints(work / "predictions", config, msas, work, lambda _: None) == 1
+    assert not legacy.exists()
+    migrated = Predictor(work / "predictions", config, msas)
+    config.colabfold_command = ["false"]  # never re-predicted
+    prediction = migrated.predict("job_a", FLI1_ERG, log=lambda _: None)
+    assert prediction.settings_id == config.settings_id()
+    assert prediction.migrated_from == legacy.name
+
+
+def test_legacy_checkpoints_stay_put_when_the_msa_source_is_unprovable(tmp_path):
+    config, msas, legacy = _legacy_checkpoint(tmp_path)
+    work = tmp_path / "work"
+    (work / "msa_deadbeef").mkdir()  # a second MSA source existed
+    with pytest.raises(PredictionFailure, match="cannot prove"):
+        migrate_legacy_checkpoints(work / "predictions", config, msas, work, lambda _: None)
+    assert (legacy / "job_a" / "result.json").exists()
+    assert not any((work / "predictions" / config.settings_id()).glob("job_*"))
 
 
 # --------------------------------------------------------------------------- live

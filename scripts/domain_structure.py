@@ -41,6 +41,7 @@ from cfh.domain_structure.predictor import (
     PredictorConfig,
     check_disk,
     colabfold_version,
+    migrate_legacy_checkpoints,
     weights_manifest,
 )
 from cfh.domain_structure.run import (
@@ -99,6 +100,7 @@ def main() -> int:
         jobs = jobs[: args.limit]
     args.work.mkdir(parents=True, exist_ok=True)
     msas = MsaCache(args.work, config)
+    migrated = migrate_legacy_checkpoints(args.work / "predictions", config, msas, args.work, log)
     predictor = Predictor(args.work / "predictions", config, msas)
     log(
         f"{len(record_jobs)} records, {len(jobs)} distinct sequences "
@@ -159,6 +161,8 @@ def main() -> int:
         "predictor": {
             "version": colabfold_version(config),
             "settings_id": config.settings_id(),
+            "checkpoints_migrated_this_run": migrated,
+            "checkpoints_migrated_total": sum(1 for p in predictions.values() if p.migrated_from),
             "settings": config.prediction_settings(),
             "msa_server": config.host_url,
             "msa_user_agent": config.user_agent,

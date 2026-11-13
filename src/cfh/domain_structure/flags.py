@@ -2,8 +2,9 @@
 
 ``fold_doubtful`` -- a doubt rule fired; ``fold_supported`` -- every input
 was assessed and nothing fired; ``not_assessed`` -- anything needed is missing
-(failed prediction, MSA error, missing model, parse or mapping failure, or
-parents that are not themselves confidently predicted under these settings).
+(failed prediction, MSA error, missing model, parse or mapping failure, a
+non-finite rule input, a refused AFDB comparison, or parents that are not
+themselves confidently predicted under these settings).
 
 Asymmetry. For near-identical paralogue chimeras an AlphaFold-family model is
 fed essentially the parents' MSA and will usually predict a confident,
@@ -22,6 +23,7 @@ Thresholds (documented heuristics, not calibrated values):
 
 from __future__ import annotations
 
+import math
 from typing import Any
 
 FOLD_SUPPORTED = "fold_supported"
@@ -50,7 +52,10 @@ RULES = {
     "N0_prediction_missing": "a chimera or parent prediction failed / is missing",
     "N1_parents_not_confident": f"neither parent's domain pLDDT is >= {CONFIDENT_PLDDT:g}: "
     "no confident reference fold to compare with",
-    "N2_metric_missing": "not doubtful, but a metric needed for fold_supported is missing",
+    "N2_metric_missing": "not doubtful, but a metric needed for fold_supported is missing "
+    "(a non-finite value counts as missing)",
+    "N3_afdb_comparison_missing": "not doubtful, but the comparison with a parent's AlphaFold DB "
+    "model was refused or failed (no model, sequence mismatch, low identity, mapping failure)",
     "S1_all_pass": "every input assessed, no doubt rule fired",
 }
 
@@ -68,8 +73,11 @@ REQUIRED_FOR_SUPPORTED = (
 
 
 def _num(row: dict[str, Any], key: str) -> float | None:
+    """A finite numeric rule input, else None (missing): NaN/inf never pass a rule."""
     value = row.get(key)
-    return float(value) if isinstance(value, (int, float)) else None
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return None
+    return float(value) if math.isfinite(value) else None
 
 
 def assign_flag(row: dict[str, Any]) -> tuple[str, list[str], list[str]]:
@@ -141,4 +149,11 @@ def assign_flag(row: dict[str, Any]) -> tuple[str, list[str], list[str]]:
             missing.append(f"vs_{short}: {row.get(f'vs_{short}_status')}")
     if missing:
         return NOT_ASSESSED, ["N2_metric_missing"], missing
+    afdb_missing = [
+        f"vs_afdb_{short}: {row.get(f'vs_afdb_{short}_status') or 'missing'}"
+        for short in ("5p", "3p")
+        if row.get(f"vs_afdb_{short}_status") != "ok" or _num(row, f"vs_afdb_{short}_tm") is None
+    ]
+    if afdb_missing:
+        return NOT_ASSESSED, ["N3_afdb_comparison_missing"], afdb_missing
     return FOLD_SUPPORTED, ["S1_all_pass"], []
