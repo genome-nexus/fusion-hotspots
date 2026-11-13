@@ -1,0 +1,60 @@
+{
+  "sources": {
+    "consensus.tgz": "https://object.genomeinformatics.org/icgc25k-open/PCAWG/consensus_sv/final_consensus_sv_bedpe_passonly.tcga.public.tgz",
+    "pcawg_sample_sheet.tsv": "https://object.genomeinformatics.org/icgc25k-open/PCAWG/donors_and_biospecimens/pcawg_sample_sheet.tsv",
+    "gencode_comp.txt.gz": "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/database/wgEncodeGencodeCompV19.txt.gz",
+    "gencode_attrs.txt.gz": "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/database/wgEncodeGencodeAttrsV19.txt.gz",
+    "assembly.json": "https://grch37.rest.ensembl.org/info/assembly/homo_sapiens?content-type=application/json"
+  },
+  "genome_build": "GRCh37",
+  "alignment_reference": "hs37d5",
+  "genome_nexus": "https://www.genomenexus.org",
+  "transcript_override": "mskcc",
+  "ensembl": "https://grch37.rest.ensembl.org",
+  "gene_annotation": "GENCODE v19 (GRCh37), UCSC hg19 tables",
+  "hashes": {
+    "consensus.tgz": {
+      "sha256": "3be5502baa2726142137ac83c234623ca215fb356b8645c63933ee516e5c94f6",
+      "bytes": 3128049
+    },
+    "pcawg_sample_sheet.tsv": {
+      "sha256": "0dc9871196e5c4587b2b562d94e1c62305adc2daf7f9439a7ad759f17bec7572",
+      "bytes": 1486947
+    },
+    "gencode_comp.txt.gz": {
+      "sha256": "630ca235b9daf221b512ad0ed8def4ae3aadc71e06ff4e86c9bc45cbb7063b4f",
+      "bytes": 8319514
+    },
+    "gencode_attrs.txt.gz": {
+      "sha256": "d464efa58f6b72f0fcfea646addfe121c9b79a93cc1c02148562a841e492c941",
+      "bytes": 4542096
+    },
+    "assembly.json": {
+      "sha256": "3b1a1131a0273acc634621b6185db62a51ad3b2f2642f24b0360db0937a3ac48",
+      "bytes": 5964
+    }
+  },
+  "archive_published_md5": "650981d737522350503bba74e6d2c65d",
+  "archive_md5": "650981d737522350503bba74e6d2c65d",
+  "assembly_evidence": "https://www.nature.com/articles/s41586-020-1969-6 (Extended Data Fig. 1: alignment genome build hs37d5)",
+  "code_sha256": {
+    "src/cfh/ingestion/pcawg_sv.py": "14331b4daf0751d32a39c169cd762caaa0a3da967ea9aea55cd1316bd1090540",
+    "scripts/pcawg_tcga_sv_report.py": "44ea6fcd782ed5a2bd10230adb7c4effd2c9be1a8595c04fd670772619918bee",
+    "scripts/pcawg_tcga_sv_screen.py": "714b6f63cd5a9ad6fe0170a58baa70ae5bc14739b02ff4e32ef45680281adf14",
+    "src/cfh/domain_function/uniprot.py": "fd5ba8a0f81c370a3b1d176d8bf5fa024a0b02a53a26bb161c25185f7d01a1ff",
+    "src/cfh/domain_function/metrics.py": "399a1ae7930785de0ef4304b74daa25075578b2f7bd3602bc568b4b0a8f63967",
+    "src/cfh/domain_function/run.py": "78bb1c2d90100e23c8a062a33450a2ecca9973d765bcbce21226e10a44438359",
+    "src/cfh/domain_function/afdb.py": "f88bf03523af48f87745c59b25d071f8c66f74ec8bc383ff676a2a4adeeb0093",
+    "src/cfh/domain_function/__init__.py": "bc3a012f2b24aa2c16211aa7a1962507a25850cc29d29f79f1339f4855765ce2",
+    "src/cfh/domain_function/assess.py": "5d36ba316edae60e3f967786dfe1828f91cfa2843746c96f3ebc0c2fc58f3703",
+    "src/cfh/domain_function/pfam_hmm.py": "f674a6bab28b3b19761ea1439f68bef9c1b278f80c7863fc0ed02ca41e255008",
+    "src/cfh/domain_function/record.py": "3523e4d7cf2fb4f626c61cb959a73305f3a077d18c643fcfedb57386540c7b83",
+    "src/cfh/domain_function/tiers.py": "04d352d1125723ea8ba9164faf1e1726111a99fa8b23239cfeaba3720c21118e",
+    "src/cfh/cohort/artefact_flags.py": "0b4ac89cc00c2bdff12f1fa224b7413d1068ced273cc6ebac02ea0ee51bab06f",
+    "src/cfh/cohort/domain_screen.py": "e75c445019b4c81b45b4b17563f016811c8ae1ed067658c1b9f278a1c165fc9b",
+    "src/cfh/mapping/junction_domain_classifier.py": "d216c4a4cc13fcf5bbeec8ea7a4ffc0c137ddcae18506d37b87dca697cf768c7",
+    "src/cfh/mapping/junction_event.py": "00b046231d7e09368a250e649bcf371963f5cfdff006e092644dd0ec92e66d0b",
+    "src/cfh/mapping/junction_translation.py": "ea2aefefad1889439c65efacd7e624519ca6e9de4741c3ec82ef5152fcc5686d",
+    "src/cfh/mapping/transcript_models.py": "fa5db6667ea54e1c26cff59720f79885f602ef3dcc6000dd8740f56853e079a7"
+  }
+}
