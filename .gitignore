@@ -21,3 +21,7 @@ runs/.cohort_scan_cache/
 # domain-screen pilot downloads, normalized tables, caches and logs (not committed)
 runs/.domain_screen_pilot_work/
 runs/.domain_function_seq_work/
+
+# Untrusted PCAWG downloads and local analysis caches
+data/raw/pcawg_sv/
+runs/.pcawg_tcga_sv_work/

@@ -1,0 +1,47 @@
+{
+  "gates": [
+    {
+      "command": "uv run --extra dev ruff check .",
+      "file_set": "all repository Python files",
+      "status": "passed"
+    },
+    {
+      "command": "uv run --extra dev ruff format --check .",
+      "file_set": "all repository Python files",
+      "status": "passed"
+    },
+    {
+      "command": "uv run --extra dev mypy src",
+      "file_set": "src/ (111 Python source files)",
+      "status": "passed"
+    },
+    {
+      "command": "uv run --extra dev pytest -q",
+      "file_set": "tests/ (full suite, no marker exclusion)",
+      "collected_cases": 1419,
+      "passed_cases": 1406,
+      "skipped_cases": 13,
+      "warnings": 2,
+      "status": "passed"
+    }
+  ],
+  "ingest_and_pairing": {
+    "command": "uv run --extra dev pytest -q tests/test_pcawg_sv.py",
+    "files": [
+      "tests/test_pcawg_sv.py"
+    ],
+    "collected_cases": 74,
+    "passed_cases": 74,
+    "test_functions": 24
+  },
+  "artifact_checks": {
+    "audit_rows": 129273,
+    "screen_outcome_rows": 21004,
+    "nontrivial_rows": 16,
+    "nontrivial_svs": 15,
+    "sequence_records": 5,
+    "counts_reconciled": true,
+    "input_hashes_verified": true
+  },
+  "final_commit": "Gates repeated on the final committed tree; SHA recorded in the PR."
+}

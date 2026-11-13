@@ -1,0 +1,15 @@
+{
+  "cohort": "pcawg_tcga_sv",
+  "genome_build": "GRCh37",
+  "input_shared_family_flags_sha256": "5eb3aa1db65610f6525d00afd901e1a15cc212cf8dba5486e56bffc7cf4696c2",
+  "databases": {
+    "pfam_version": "39.0",
+    "pfam_release_date": "2026-10-01T00:00:00Z",
+    "interpro_version": "111.0",
+    "interpro_release_date": "2026-11-05T00:00:00Z",
+    "uniprot_release": "2026_04",
+    "afdb_model_versions": [
+      "6"
+    ]
+  }
+}
