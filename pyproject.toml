@@ -24,6 +24,7 @@ dependencies = [
     "gemmi>=0.7.5",
     "biopython>=1.88",
     "freesasa>=2.2.1",
+    "tmtools>=0.2.0",
 ]
 
 [project.optional-dependencies]

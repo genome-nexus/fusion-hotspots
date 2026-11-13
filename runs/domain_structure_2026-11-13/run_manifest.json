@@ -1,0 +1,1113 @@
+{
+ "schema_version": "domain_structure/1",
+ "code_commit": "421acd6188120dbf68d41b6705eaa819f263c079",
+ "generated": "2026-11-13T09:28:56",
+ "inputs": {
+  "shortlist": {
+   "path": "runs/domain_function_seq_2026-11-11/shortlist_for_structure.tsv",
+   "sha256": "32998c6bfc8d5c0371c3d313e63d715449f473b47182b840f63d3422bad3b8db"
+  },
+  "records": {
+   "path": "runs/domain_function_seq_2026-11-11/chimera_records.json.gz",
+   "sha256": "96a279bdfc5d91dbb708a9f258c53500274b5408655dfd0c065578558eb4f5b1"
+  }
+ },
+ "predictor": {
+  "version": "colabfold 1.6.3; alphafold-colabfold 2.3.20; jax 0.10.2",
+  "settings_id": "set_f6b2876d27c8",
+  "msa_source": {
+   "msa_mode": "mmseqs2_uniref_env",
+   "host_url": "https://api.colabfold.com",
+   "msa_cache": "msa_c3444ece"
+  },
+  "msa_provenance_counts": {
+   "inferred": 71
+  },
+  "msa_provenance_note": "recorded = written at prediction time; inferred = written afterwards by scripts/domain_structure_inferred_provenance.py from run-level evidence (per-checkpoint msa_provenance_evidence; docs/domain_structure.md)",
+  "settings": {
+   "backend": "colabfold_batch",
+   "model_type": "alphafold2_ptm",
+   "num_models": 1,
+   "model_order": "1",
+   "num_recycle": 1,
+   "recycle_early_stop_tolerance": null,
+   "templates": false,
+   "random_seed": 0,
+   "num_seeds": 1,
+   "max_msa": "256:512",
+   "msa_mode": "mmseqs2_uniref_env",
+   "host_url": "https://api.colabfold.com",
+   "extra_args": []
+  },
+  "msa_server": "https://api.colabfold.com",
+  "msa_user_agent": "cfh-domain-structure/1",
+  "msa_batch_size": 8,
+  "weights": {
+   "source": "https://storage.googleapis.com/alphafold/alphafold_params_2021-07-14.tar",
+   "sha256": {
+    "params_model_1_ptm.npz": "5e564f79af5bcd54ccef6e2a6bb0ff01015d01650ebc41d4575e35f0de9ecc84"
+   }
+  },
+  "relax": false,
+  "platform": "darwin; CPU JAX"
+ },
+ "windows": {
+  "flank": 30,
+  "junction_flank": 10
+ },
+ "comparison": {
+  "local_radius_A": 8.0,
+  "min_mapped_pairs": 10
+ },
+ "flag_rules": {
+  "D1_domain_plddt_low": "chimera domain pLDDT < 70 (a parent is >= it)",
+  "D2_domain_plddt_drop": "chimera minus better parent domain pLDDT <= -10",
+  "D3_junction_very_low": "chimera junction-window min pLDDT < 50 while the better parent's junction-window mean is >= 70",
+  "D4_junction_plddt_drop": "chimera minus better parent junction-window mean pLDDT <= -15",
+  "D5_halves_not_packed": "chimera inter-half PAE >= 10 A and >= 5 A above the lower parent inter-half PAE",
+  "D6_fold_differs": "mapped TM-score (normalised by the parent domain) < 0.5 against both parent predictions",
+  "N0_prediction_missing": "a chimera or parent prediction failed / is missing",
+  "N1_parents_not_confident": "neither parent's domain pLDDT is >= 70: no confident reference fold to compare with",
+  "N2_metric_missing": "not doubtful, but a metric needed for fold_supported is missing (a non-finite value counts as missing)",
+  "N3_afdb_comparison_missing": "not doubtful, but the comparison with a parent's AlphaFold DB model was refused or failed (no model, sequence mismatch, low identity, mapping failure)",
+  "S1_all_pass": "every input assessed, no doubt rule fired"
+ },
+ "jobs": {
+  "distinct_sequences": 71,
+  "residues": 22812,
+  "predicted": 71,
+  "failed": {}
+ },
+ "wall_time": {
+  "prediction_seconds_sum": 42341.2,
+  "prediction_hours_sum": 11.76,
+  "per_job_seconds": {
+   "job_543d3176374f7b53": 52.6,
+   "job_d1016e9507ae9b5e": 58.4,
+   "job_dd8257b788aba44a": 62.2,
+   "job_94a43fb2059b543d": 63.7,
+   "job_2edc75665bd4a4e8": 65.5,
+   "job_79ddfc1cbb450491": 65.5,
+   "job_b834d52a7a94f29d": 79.6,
+   "job_950626dd6d814a68": 76.0,
+   "job_b79503ccc60be8e4": 77.9,
+   "job_fe179b168525975a": 84.6,
+   "job_ca8b662c70c37746": 85.8,
+   "job_2d54f8075ddc4323": 23.2,
+   "job_98ef1e1b2674a26e": 26.4,
+   "job_3a29b13dcb80a897": 25.2,
+   "job_949c4fa0f42412fa": 96.0,
+   "job_d19b16e9e86fde7c": 89.4,
+   "job_f6f09ffc43411263": 26.8,
+   "job_2445adba0cb0a9a5": 31.2,
+   "job_03a94fc9ca22fbb8": 128.3,
+   "job_0d8ca49e544398c8": 131.6,
+   "job_47c289e5003afbfe": 133.0,
+   "job_9c5e0f7ced25cae2": 148.0,
+   "job_b9ec7cda5ff825ff": 152.7,
+   "job_43b314fafbe68bed": 255.7,
+   "job_0579d49b17828ae2": 263.3,
+   "job_d768ea1c9a7d35ca": 266.3,
+   "job_f6eb0debd8fc126e": 285.5,
+   "job_dbadc085543693fc": 288.3,
+   "job_8f4afbc09a9de5f9": 289.9,
+   "job_087ec39e04049bcd": 329.3,
+   "job_6f461f21f9f0e439": 372.5,
+   "job_f03ab65b4eb59436": 392.9,
+   "job_e02959dbabb139d4": 417.0,
+   "job_97b7ddbf9fddc73f": 427.0,
+   "job_f16e775d7e2557a6": 428.4,
+   "job_763ed499d54530e8": 422.0,
+   "job_fbd6e8a2122c8eeb": 459.3,
+   "job_0c219203f3132902": 523.5,
+   "job_2d2c24833362bb2c": 575.8,
+   "job_60fa7d740216ee0e": 567.3,
+   "job_4b1c1a63a35f7a9e": 583.2,
+   "job_23694e1cbc7d16ee": 574.0,
+   "job_561b014c8a6686de": 573.3,
+   "job_7b7ae83cd1b4a644": 569.1,
+   "job_86089f7b578437d2": 568.1,
+   "job_ff48b77257b2dd11": 578.5,
+   "job_3492c32e983f50d9": 584.9,
+   "job_6ad588dc62e068c0": 584.9,
+   "job_9bb638e73ce145ce": 585.0,
+   "job_ac71bd75e0dbe545": 583.3,
+   "job_dc54faf8e5ab49ff": 586.6,
+   "job_5ed44052ebec1807": 572.3,
+   "job_fba421c88995ab23": 582.9,
+   "job_65655cba4781583f": 597.4,
+   "job_8ede7d447306faa6": 595.5,
+   "job_6dedace6845efaa2": 655.0,
+   "job_a67cb310a36ae844": 658.5,
+   "job_16c3b8b45c0abffc": 723.5,
+   "job_96fc37a5747a8d31": 709.0,
+   "job_44da1ef40ff8f2a1": 1197.4,
+   "job_3a43adca04e1d34c": 1194.6,
+   "job_3674855bc2c05f89": 1270.4,
+   "job_77dfca719964bc76": 1313.2,
+   "job_0fc9e48fd4c19caf": 1457.0,
+   "job_00c5c3adbcd93664": 1514.3,
+   "job_fe3b0ecb1dda3597": 1474.0,
+   "job_c56c2f5d6347f12d": 1466.7,
+   "job_4c07807eb65cb242": 2229.4,
+   "job_8eecf14ffd7b5a81": 2264.7,
+   "job_d1f06c2ee54ea994": 2232.7,
+   "job_515a80b9443b90f3": 4914.2
+  }
+ },
+ "models": {
+  "job_543d3176374f7b53": {
+   "roles": [
+    "parent5:CRIP1"
+   ],
+   "length": 77,
+   "wall_seconds": 52.6,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "86686ba830ce5926831db578779fc4a0d0c329e153afccfbcfc2c39f65630b11",
+   "exported": false
+  },
+  "job_d1016e9507ae9b5e": {
+   "roles": [
+    "chimera:COL1A1::COL12A1"
+   ],
+   "length": 88,
+   "wall_seconds": 58.4,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "a931a1fb7c222063a21c4654b6f3941c7b82e6a04d994af241d286a616ed54c7",
+   "exported": false
+  },
+  "job_dd8257b788aba44a": {
+   "roles": [
+    "chimera:CRIP1::CRIP2"
+   ],
+   "length": 90,
+   "wall_seconds": 62.2,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "dca739a46046b4b444ec77b8b7ee99bca214afbaf38403cc428de0d0a8e4a4bc",
+   "exported": false
+  },
+  "job_94a43fb2059b543d": {
+   "roles": [
+    "parent3:CRIP2"
+   ],
+   "length": 91,
+   "wall_seconds": 63.7,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "0fb78170bd7013696303cd47b4c009ed73a6895406a984e2727d5449d86ab1da",
+   "exported": false
+  },
+  "job_2edc75665bd4a4e8": {
+   "roles": [
+    "chimera:PTN::MDK"
+   ],
+   "length": 93,
+   "wall_seconds": 65.5,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "5be448a0cc42072f1a29c13f88a520c75780e5b95d386447ef0c4457be1ee535",
+   "exported": false
+  },
+  "job_79ddfc1cbb450491": {
+   "roles": [
+    "parent3:MDK"
+   ],
+   "length": 93,
+   "wall_seconds": 65.5,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "b079c5ef2794cb827f40206eb89bf0f35bade26014a07fa6392b00c8f6114e40",
+   "exported": false
+  },
+  "job_b834d52a7a94f29d": {
+   "roles": [
+    "parent5:PTN"
+   ],
+   "length": 103,
+   "wall_seconds": 79.6,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "90a3d636b6393a70074e3765e441a5703dd8b8ddb18afacf4dc26abcd8a1356b",
+   "exported": false
+  },
+  "job_950626dd6d814a68": {
+   "roles": [
+    "chimera:GPC6::GPC5"
+   ],
+   "length": 105,
+   "wall_seconds": 76.0,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "66e455224d0713d51d642f7b38446ee794084937890739ecf9d5e25bd1f7579e",
+   "exported": true
+  },
+  "job_b79503ccc60be8e4": {
+   "roles": [
+    "chimera:GPC4::GPC3"
+   ],
+   "length": 109,
+   "wall_seconds": 77.9,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "5feb498726153a85e84f10bbe9e661fc32a5edc668364468f4f25990bdf12576",
+   "exported": true
+  },
+  "job_fe179b168525975a": {
+   "roles": [
+    "chimera:CMTM7::CMTM8"
+   ],
+   "length": 110,
+   "wall_seconds": 84.6,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "62bbc93b171568a766bebce4b91f8e07a4715b25a886dda11898632ada4b80df",
+   "exported": false
+  },
+  "job_ca8b662c70c37746": {
+   "roles": [
+    "parent3:COL12A1"
+   ],
+   "length": 112,
+   "wall_seconds": 85.8,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "0ebcb5523ac2c2ffa2b271a703ab5da016a336ed16d078b7349a85d4503e6002",
+   "exported": false
+  },
+  "job_2d54f8075ddc4323": {
+   "roles": [
+    "chimera:COL3A1::COL1A1"
+   ],
+   "length": 113,
+   "wall_seconds": 23.2,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "8758e4e3b281b99adf9168e122abbf051bf2381f0bc7be1db57d29d0d85bded6",
+   "exported": false
+  },
+  "job_98ef1e1b2674a26e": {
+   "roles": [
+    "parent3:COL18A1"
+   ],
+   "length": 115,
+   "wall_seconds": 26.4,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "996ac0dec17f3c2347c069acffa99ae5691b1da22de7c09a75f4ceb453359741",
+   "exported": false
+  },
+  "job_3a29b13dcb80a897": {
+   "roles": [
+    "parent3:COL1A1"
+   ],
+   "length": 119,
+   "wall_seconds": 25.2,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "6d39b22f07baaaaef11e4145f9e12da021a528cc0b8fe0e13018d3f73ca17355",
+   "exported": false
+  },
+  "job_949c4fa0f42412fa": {
+   "roles": [
+    "parent5:COL1A1"
+   ],
+   "length": 119,
+   "wall_seconds": 96.0,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "129cf73c6d76fd754a6a94f90059cb1b66ee9d6795a458c49a193f95f7d39f61",
+   "exported": false
+  },
+  "job_d19b16e9e86fde7c": {
+   "roles": [
+    "parent5:COL1A1"
+   ],
+   "length": 119,
+   "wall_seconds": 89.4,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "3c249928a85868ed37e18aa6b0a750ae7a157939cb010f56df907f1f9dfe917b",
+   "exported": false
+  },
+  "job_f6f09ffc43411263": {
+   "roles": [
+    "parent5:COL3A1"
+   ],
+   "length": 119,
+   "wall_seconds": 26.8,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "b1eb91dfc061ad060ea13b642cc6c51af054dda137b8c137b40752c8175b536a",
+   "exported": false
+  },
+  "job_2445adba0cb0a9a5": {
+   "roles": [
+    "chimera:COL1A1::COL18A1"
+   ],
+   "length": 139,
+   "wall_seconds": 31.2,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "baf3763e407bfe4d544a717e646a7af4749bfaf45f15e9115240bd28dbb60dc6",
+   "exported": false
+  },
+  "job_03a94fc9ca22fbb8": {
+   "roles": [
+    "parent5:FLI1"
+   ],
+   "length": 143,
+   "wall_seconds": 128.3,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "5adaa6b5c6c4f8b4fe7686e31db5fe7738f5f2963c0d08b58e06b65949399afa",
+   "exported": true
+  },
+  "job_0d8ca49e544398c8": {
+   "roles": [
+    "parent3:ERG"
+   ],
+   "length": 143,
+   "wall_seconds": 131.6,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "bfaf006484111f7b25d130066b1a34e0d15b3492ce472c8603e419c513964e7a",
+   "exported": true
+  },
+  "job_47c289e5003afbfe": {
+   "roles": [
+    "chimera:FLI1::ERG"
+   ],
+   "length": 150,
+   "wall_seconds": 133.0,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "24d565f6ae716ee36d0316fedd36faa7e26e90ca31c145d2d952840ad1d745a8",
+   "exported": true
+  },
+  "job_9c5e0f7ced25cae2": {
+   "roles": [
+    "parent5:CMTM7"
+   ],
+   "length": 166,
+   "wall_seconds": 148.0,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "1c589bb82e70f6c17ad614ab95341f29a3d054b406b6cf68731f25b8c0f91c85",
+   "exported": false
+  },
+  "job_b9ec7cda5ff825ff": {
+   "roles": [
+    "parent3:CMTM8"
+   ],
+   "length": 168,
+   "wall_seconds": 152.7,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "468c8b9c21d661d43e3a571f53506bcb493499a615aa09c1b756671810ba154a",
+   "exported": false
+  },
+  "job_43b314fafbe68bed": {
+   "roles": [
+    "parent3:ALB"
+   ],
+   "length": 232,
+   "wall_seconds": 255.7,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "70944a9376303700dc539e9f57a6f3e6b3c54cb9a65a5f73b24f91de6153c4c6",
+   "exported": false
+  },
+  "job_0579d49b17828ae2": {
+   "roles": [
+    "parent5:AFM"
+   ],
+   "length": 233,
+   "wall_seconds": 263.3,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "9b5ede97508b1972e17880de42a815ff4fa44415ebe9d66957ee8cd8d3d6b71b",
+   "exported": false
+  },
+  "job_d768ea1c9a7d35ca": {
+   "roles": [
+    "chimera:AFM::ALB"
+   ],
+   "length": 233,
+   "wall_seconds": 266.3,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "6429bbef309986cb864b152963d8a06c5c4319930b332437e463364e65208d22",
+   "exported": false
+  },
+  "job_f6eb0debd8fc126e": {
+   "roles": [
+    "parent3:YWHAZ"
+   ],
+   "length": 245,
+   "wall_seconds": 285.5,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "4e335ce7831a6a4de90fdcc4ff9a56ecf7ed61c854e2bf9a77e21942604e403b",
+   "exported": false
+  },
+  "job_dbadc085543693fc": {
+   "roles": [
+    "parent5:YWHAB"
+   ],
+   "length": 246,
+   "wall_seconds": 288.3,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "90dae82013c11cc77f6c5d1e8a13527ed042ce30324866177345fa45bdbe8498",
+   "exported": false
+  },
+  "job_8f4afbc09a9de5f9": {
+   "roles": [
+    "chimera:YWHAB::YWHAZ"
+   ],
+   "length": 247,
+   "wall_seconds": 289.9,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "13c50eaa9154813dcd304074ebec6f881af252a12f717fb935e9b97d1bf95edc",
+   "exported": false
+  },
+  "job_087ec39e04049bcd": {
+   "roles": [
+    "parent5:KLK3"
+   ],
+   "length": 261,
+   "wall_seconds": 329.3,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "a914cbe357e2a4e6e9f742bd205543759a7c12496ebe7230aed50d8c0ae3005f",
+   "exported": false
+  },
+  "job_6f461f21f9f0e439": {
+   "roles": [
+    "chimera:KLK3::PRSS8"
+   ],
+   "length": 286,
+   "wall_seconds": 372.5,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "f56d480c5bfa8b33fa5d75f1122d1390c25be707eac14d8e9a4505ea335f1728",
+   "exported": false
+  },
+  "job_f03ab65b4eb59436": {
+   "roles": [
+    "parent3:PRSS8"
+   ],
+   "length": 297,
+   "wall_seconds": 392.9,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "2f47a415b74a98a5176cf21da4a546ba68938c58fed8fb91b6da66114274f2ba",
+   "exported": false
+  },
+  "job_e02959dbabb139d4": {
+   "roles": [
+    "parent3:ULK1"
+   ],
+   "length": 308,
+   "wall_seconds": 417.0,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "0a12a6430c7606aeda5ef59d586d4506281acbaf5b323641d2ed4a8c7959e910",
+   "exported": true
+  },
+  "job_97b7ddbf9fddc73f": {
+   "roles": [
+    "parent3:STAT5A"
+   ],
+   "length": 312,
+   "wall_seconds": 427.0,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "05f1b8a899cc1d78a39a44525860baa7d64097c8a9d786883c53a8cd0532d857",
+   "exported": true
+  },
+  "job_f16e775d7e2557a6": {
+   "roles": [
+    "parent5:STAT5B"
+   ],
+   "length": 312,
+   "wall_seconds": 428.4,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "dd71ce184d94f2eb12c9e8eccec3c71482aa783c9e8a2fc415cb882ab68d6a4a",
+   "exported": true
+  },
+  "job_763ed499d54530e8": {
+   "roles": [
+    "parent5:PIM3"
+   ],
+   "length": 314,
+   "wall_seconds": 422.0,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "947946f9e3a9dd014e6fa9b818d746673b92b54212289def08d812e0281dff77",
+   "exported": true
+  },
+  "job_fbd6e8a2122c8eeb": {
+   "roles": [
+    "chimera:STAT5B::STAT5A"
+   ],
+   "length": 328,
+   "wall_seconds": 459.3,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "412fad7668b49a3f905e4847bc87c076f170959e2391e369302da1542f12ebd8",
+   "exported": true
+  },
+  "job_0c219203f3132902": {
+   "roles": [
+    "parent5:KRT19"
+   ],
+   "length": 352,
+   "wall_seconds": 523.5,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "bf2abb57202567221b9b1c550df2aa7a026a5e2e488a55cbd562f9a12bd35bdd",
+   "exported": false
+  },
+  "job_2d2c24833362bb2c": {
+   "roles": [
+    "chimera:VIM::KRT18"
+   ],
+   "length": 369,
+   "wall_seconds": 575.8,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "dc731131490e44eb0ee1ecdf1b4d547960b882a02ee86806d92ad4fb00c68336",
+   "exported": false
+  },
+  "job_60fa7d740216ee0e": {
+   "roles": [
+    "parent5:VIM"
+   ],
+   "length": 369,
+   "wall_seconds": 567.3,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "d0778dfb147ac87867113c27e413cbf01cb5131f478276a79cad6b6908cb946d",
+   "exported": false
+  },
+  "job_4b1c1a63a35f7a9e": {
+   "roles": [
+    "parent3:KRT18"
+   ],
+   "length": 371,
+   "wall_seconds": 583.2,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "0104b8d188e3949bd4435171b8020d5041833799a251c3b00201c4c19e0c364a",
+   "exported": false
+  },
+  "job_23694e1cbc7d16ee": {
+   "roles": [
+    "parent5:KRT13",
+    "parent3:KRT13"
+   ],
+   "length": 372,
+   "wall_seconds": 574.0,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "fdfa15f722e9bb0f30c08d5c8697065c2d5d9b819af57dc4fda58781b6868c13",
+   "exported": false
+  },
+  "job_561b014c8a6686de": {
+   "roles": [
+    "parent5:KRT82"
+   ],
+   "length": 372,
+   "wall_seconds": 573.3,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "ed6f386cfe811492654df53a09722a98674b95584529820cf0cceb38434bde85",
+   "exported": false
+  },
+  "job_7b7ae83cd1b4a644": {
+   "roles": [
+    "chimera:KRT8::KRT5"
+   ],
+   "length": 372,
+   "wall_seconds": 569.1,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "5aa4f9dcc63c97ff28460bda231906ecfc22b75631988046377a7f45147a172e",
+   "exported": false
+  },
+  "job_86089f7b578437d2": {
+   "roles": [
+    "chimera:KRT82::KRT7"
+   ],
+   "length": 372,
+   "wall_seconds": 568.1,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "c1a4591d1380123733de1b2580fa374a07b4b0aef754f0a07699f2d7fa4ce766",
+   "exported": false
+  },
+  "job_ff48b77257b2dd11": {
+   "roles": [
+    "parent5:KRT8",
+    "parent3:KRT8"
+   ],
+   "length": 372,
+   "wall_seconds": 578.5,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "195b00522ab55370149e3a6ff232698bb89e3bd7ea97c70946c253996f6818e4",
+   "exported": false
+  },
+  "job_3492c32e983f50d9": {
+   "roles": [
+    "chimera:KRT13::KRT5"
+   ],
+   "length": 373,
+   "wall_seconds": 584.9,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "4a96fc707cbdd5b2bd5c1599d77cc4c1d23ef05a330b11eeedc32fa15e68b629",
+   "exported": false
+  },
+  "job_6ad588dc62e068c0": {
+   "roles": [
+    "chimera:KRT13::KRT7"
+   ],
+   "length": 373,
+   "wall_seconds": 584.9,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "8182ce3ba10d54e6f43f2891495e3939c1a1d04056c328abdc391d51102c5cab",
+   "exported": false
+  },
+  "job_9bb638e73ce145ce": {
+   "roles": [
+    "parent3:KRT7"
+   ],
+   "length": 373,
+   "wall_seconds": 585.0,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "5d242118c6835f441be2027153948cf41995cd37e77b52b9ab1db2e0d0014a45",
+   "exported": false
+  },
+  "job_ac71bd75e0dbe545": {
+   "roles": [
+    "chimera:KRT5::KRT13"
+   ],
+   "length": 373,
+   "wall_seconds": 583.3,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "56ed267fb4470e9324ace64d2d7e197f0a222dadcdc0d90fd29ab68322215ff9",
+   "exported": false
+  },
+  "job_dc54faf8e5ab49ff": {
+   "roles": [
+    "chimera:KRT19::KRT7"
+   ],
+   "length": 373,
+   "wall_seconds": 586.6,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "9f7ae255709189d4ed21101315ffa57ca817915f5dfe4149fd0a08397a2f4560",
+   "exported": false
+  },
+  "job_5ed44052ebec1807": {
+   "roles": [
+    "chimera:KRT5::KRT8"
+   ],
+   "length": 374,
+   "wall_seconds": 572.3,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "73cebf118d29db127e71e6c66db325bf6b95ac04be69aedb82d381e7f101b7c2",
+   "exported": false
+  },
+  "job_fba421c88995ab23": {
+   "roles": [
+    "parent3:KRT5",
+    "parent5:KRT5"
+   ],
+   "length": 374,
+   "wall_seconds": 582.9,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "3770b59fdaffefe902211daf4403838936729bd1b867c65998d7efb1b1913873",
+   "exported": false
+  },
+  "job_65655cba4781583f": {
+   "roles": [
+    "chimera:GNAL::GNAS"
+   ],
+   "length": 381,
+   "wall_seconds": 597.4,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "7318e187952f5d8c2e18bfa5745677bb7a3e84531b0f5b9c078212cb2318fc3b",
+   "exported": false
+  },
+  "job_8ede7d447306faa6": {
+   "roles": [
+    "parent5:GNAL"
+   ],
+   "length": 381,
+   "wall_seconds": 595.5,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "7f6d255557452debdc43d21f4f14b94ad737ec4719f7d0b7b270f2ccf2e9bab4",
+   "exported": false
+  },
+  "job_6dedace6845efaa2": {
+   "roles": [
+    "parent3:GNAS"
+   ],
+   "length": 394,
+   "wall_seconds": 655.0,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "d380cd261fca669ddbe2e4de276ab91c525ea5c53ff041482dcd0471e4a211b6",
+   "exported": false
+  },
+  "job_a67cb310a36ae844": {
+   "roles": [
+    "chimera:PIM3::ULK1"
+   ],
+   "length": 399,
+   "wall_seconds": 658.5,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "2e0b51ae37b64e98b3d029814af1add57a24fbb19cfbec2ddc6c636e05eb500b",
+   "exported": true
+  },
+  "job_16c3b8b45c0abffc": {
+   "roles": [
+    "parent3:SPNS3"
+   ],
+   "length": 422,
+   "wall_seconds": 723.5,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "6224df0ab024900fbf335e2f157cd91434b6bd0b335c1f45ba0cb8cb503f1ea9",
+   "exported": false
+  },
+  "job_96fc37a5747a8d31": {
+   "roles": [
+    "parent5:SPNS2"
+   ],
+   "length": 422,
+   "wall_seconds": 709.0,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "28e8f07d12b3dbc3331befdd452ce36c20d612735a4427869f9212c319161d97",
+   "exported": false
+  },
+  "job_44da1ef40ff8f2a1": {
+   "roles": [
+    "parent5:GPC6"
+   ],
+   "length": 555,
+   "wall_seconds": 1197.4,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "1e57544f2ace188f64165e70dbc4f0734328d567fb429818a2ba4efc775b87fb",
+   "exported": true
+  },
+  "job_3a43adca04e1d34c": {
+   "roles": [
+    "parent3:GPC4",
+    "parent5:GPC4"
+   ],
+   "length": 556,
+   "wall_seconds": 1194.6,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "19be7c428ac247a703579894f7fdc381ea5598fcb258db445a12128b5885a3f2",
+   "exported": true
+  },
+  "job_3674855bc2c05f89": {
+   "roles": [
+    "parent3:GPC5"
+   ],
+   "length": 572,
+   "wall_seconds": 1270.4,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "f4b189b0508ced9049d3ac425ecdf9c09897770233f3910307a9a57900793523",
+   "exported": true
+  },
+  "job_77dfca719964bc76": {
+   "roles": [
+    "parent5:GPC3",
+    "parent3:GPC3"
+   ],
+   "length": 580,
+   "wall_seconds": 1313.2,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "d6716020e37392b036add0858d04110ce0e77733f3c1a34c6c4e15794131be86",
+   "exported": true
+  },
+  "job_0fc9e48fd4c19caf": {
+   "roles": [
+    "parent3:MPO"
+   ],
+   "length": 603,
+   "wall_seconds": 1457.0,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "89a8a3637faf31e10e29f35c55a40b1f5bfa10bcd8931669e1ad6af273325abc",
+   "exported": true
+  },
+  "job_00c5c3adbcd93664": {
+   "roles": [
+    "chimera:LPO::MPO"
+   ],
+   "length": 605,
+   "wall_seconds": 1514.3,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "29f51f4571ec45c3ccc65c1604dea28f6bece58fa73e536c1a57b4ded723fe7b",
+   "exported": true
+  },
+  "job_fe3b0ecb1dda3597": {
+   "roles": [
+    "parent5:LPO"
+   ],
+   "length": 605,
+   "wall_seconds": 1474.0,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "086179ce98f0f9263b03df671f1f91c9287561ab37566c71e6f4f80b4f3ce05d",
+   "exported": true
+  },
+  "job_c56c2f5d6347f12d": {
+   "roles": [
+    "chimera:SPNS2::SPNS3"
+   ],
+   "length": 607,
+   "wall_seconds": 1466.7,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "e70c0d5f0f655ea19b75d28612b2300d04f9159d3cf844aaa9eb6b5b1d2fdda0",
+   "exported": false
+  },
+  "job_4c07807eb65cb242": {
+   "roles": [
+    "parent3:MYH14"
+   ],
+   "length": 741,
+   "wall_seconds": 2229.4,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "ba7209d3bc24e07c441de13e18fb6a9deff516a8bf248626644b27324d680510",
+   "exported": false
+  },
+  "job_8eecf14ffd7b5a81": {
+   "roles": [
+    "parent5:MYH10"
+   ],
+   "length": 745,
+   "wall_seconds": 2264.7,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "fee3130335dbb611eb102fa275ae4f891723b7a4d2c3f0096f5fa85f276a39d5",
+   "exported": false
+  },
+  "job_d1f06c2ee54ea994": {
+   "roles": [
+    "chimera:MYH10::MYH14"
+   ],
+   "length": 745,
+   "wall_seconds": 2232.7,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "db83e10de9854c776555fc38ea5bd62c3303b0a2907f811ffd92128576845466",
+   "exported": false
+  },
+  "job_515a80b9443b90f3": {
+   "roles": [
+    "chimera:GPC3::GPC4"
+   ],
+   "length": 1027,
+   "wall_seconds": 4914.2,
+   "model_name": "alphafold2_ptm_model_1_seed_000",
+   "msa_host_url": "https://api.colabfold.com",
+   "msa_provenance": "inferred",
+   "a3m_sha256": "6fc1e4950cf4506512ec746f04e663113b6d10a4be2e9ebedb6d152e78af4c87",
+   "exported": true
+  }
+ },
+ "models_export": {
+  "fusions": [
+   "FLI1::ERG",
+   "GPC3::GPC4",
+   "GPC4::GPC3",
+   "GPC6::GPC5",
+   "LPO::MPO",
+   "PIM3::ULK1",
+   "STAT5B::STAT5A"
+  ],
+  "pae_decimals": 0,
+  "note": "models not exported stay in the work cache (<work>/predictions/<settings_id>/<job>/), not committed"
+ },
+ "flag_counts": {
+  "records": 27,
+  "by_flag": {
+   "fold_supported": 14,
+   "fold_doubtful": 9,
+   "not_assessed": 4
+  },
+  "by_cohort": {
+   "depmap_22q2": {
+    "fold_supported": 8,
+    "fold_doubtful": 4
+   },
+   "msk_impact_50k_2026": {
+    "fold_doubtful": 2
+   },
+   "target_consolidated": {
+    "fold_doubtful": 3,
+    "not_assessed": 1
+   },
+   "target_starfusion": {
+    "fold_doubtful": 3,
+    "not_assessed": 1
+   },
+   "tcga_gtex": {
+    "fold_supported": 10,
+    "fold_doubtful": 5,
+    "not_assessed": 4
+   }
+  },
+  "by_pr1_tier": {
+   "likely_broken": {
+    "not_assessed": 2,
+    "fold_doubtful": 3
+   },
+   "likely_intact": {
+    "fold_supported": 13,
+    "fold_doubtful": 1
+   },
+   "not_assessed": {
+    "not_assessed": 1
+   },
+   "uncertain": {
+    "fold_doubtful": 5,
+    "fold_supported": 1,
+    "not_assessed": 1
+   }
+  },
+  "rules_fired": {
+   "S1_all_pass": 14,
+   "D3_junction_very_low": 8,
+   "D5_halves_not_packed": 5,
+   "N1_parents_not_confident": 3,
+   "D2_domain_plddt_drop": 3,
+   "D4_junction_plddt_drop": 7,
+   "N3_afdb_comparison_missing": 1,
+   "D1_domain_plddt_low": 3,
+   "D6_fold_differs": 3
+  }
+ },
+ "config": {
+  "backend": "colabfold_batch",
+  "colabfold_command": [
+   "/Users/foriskuang/.cache/cfh_colabfold/env/bin/colabfold_batch"
+  ],
+  "msa_python": "/Users/foriskuang/.cache/cfh_colabfold/env/bin/python",
+  "data_dir": "/Users/foriskuang/.cache/cfh_colabfold/weights",
+  "model_type": "alphafold2_ptm",
+  "num_models": 1,
+  "model_order": "1",
+  "num_recycle": 1,
+  "recycle_early_stop_tolerance": null,
+  "templates": false,
+  "random_seed": 0,
+  "num_seeds": 1,
+  "max_msa": "256:512",
+  "msa_mode": "mmseqs2_uniref_env",
+  "host_url": "https://api.colabfold.com",
+  "msa_batch_size": 8,
+  "msa_pause_seconds": 20.0,
+  "job_timeout_seconds": 21600,
+  "min_free_disk_gb": 5.0,
+  "extra_args": []
+ }
+}
