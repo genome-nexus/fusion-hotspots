@@ -8,10 +8,11 @@ examined. Output is one row per event and family, plus a summary.
 
 from __future__ import annotations
 
+import copy
 import csv
 import json
 from collections import Counter
-from collections.abc import Iterable
+from collections.abc import Iterable, Sequence
 from pathlib import Path
 from typing import Any, Callable
 
@@ -27,6 +28,7 @@ from cfh.mapping.junction_event import (
     MODE_KEY_DOMAIN,
     NO_SHARED_FAMILY,
     READ_SUPPORT_COLUMNS,
+    SEQUENCE_CONTEXT_COLUMNS,
     assess_event,
     read_support_columns,
 )
@@ -43,9 +45,12 @@ SCREEN_COLUMNS = (
     "three_prime_gene",
     "five_prime_breakpoint",
     "three_prime_breakpoint",
+    "five_prime_chromosome",
+    "three_prime_chromosome",
     *JUNCTION_CALL_COLUMNS,
     *READ_SUPPORT_COLUMNS,
     "source_annotation",
+    *SEQUENCE_CONTEXT_COLUMNS,
 )
 
 
@@ -96,6 +101,26 @@ def _partner_breakpoint(
         return None, str(exc)
 
 
+def _site_chromosome(row: dict[str, Any], gene: str, position: int | None) -> str | None:
+    """Chromosome of the site reporting ``position``, preferring ``gene``'s site."""
+    if position is None:
+        return None
+    matches = []
+    for site in ("Site1", "Site2"):
+        try:
+            same_position = int(row.get(f"{site}_Position")) == position  # type: ignore[arg-type]
+        except (TypeError, ValueError):
+            continue
+        chromosome = _clean(row.get(f"{site}_Chromosome"))
+        if same_position and chromosome is not None:
+            matches.append((row.get(f"{site}_Hugo_Symbol") == gene, str(chromosome)))
+    if not matches:
+        return None
+    named = [chromosome for is_gene, chromosome in matches if is_gene]
+    candidates = set(named) or {chromosome for _, chromosome in matches}
+    return candidates.pop() if len(candidates) == 1 else None
+
+
 def _clean(value: Any) -> Any:
     return None if value is None or (isinstance(value, float) and pd.isna(value)) else value
 
@@ -108,11 +133,16 @@ def screen_cohort(
     mode: str = MODE_ANY_DOMAIN,
     key_family: Callable[[str], str | None] | None = None,
     progress: Callable[[str], None] | None = None,
+    passthrough_columns: Sequence[str] = (),
+    keep_unshared_rows: bool = True,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     """Screen ``raw_rows`` (see ``sv_parser``); returns ``(rows, summary)``.
 
     ``key_family`` is required in key-domain mode and maps a gene to its key
-    family (see :func:`key_domain_family`).
+    family (see :func:`key_domain_family`). ``passthrough_columns`` are copied
+    from each input row onto its output rows. With ``keep_unshared_rows``
+    false, ``no_shared_family`` rows are counted in the summary but not
+    returned, which bounds memory on very large tables.
     """
     if mode not in (MODE_ANY_DOMAIN, MODE_KEY_DOMAIN):
         raise ValueError(f"unknown screen mode {mode!r}")
@@ -130,6 +160,10 @@ def screen_cohort(
     )
 
     rows: list[dict[str, Any]] = []
+    class_counts: Counter[str] = Counter()
+    # assess_event is a pure function of these inputs; recurrent junctions (the
+    # same readthrough or paralogue join in many samples) are assessed once.
+    assessed: dict[tuple[Any, ...], list[dict[str, Any]]] = {}
     for index, (row, event) in enumerate(pairs, start=1):
         five_gene, three_gene = event.Five_prime_gene, event.Three_prime_gene
         assert five_gene is not None and three_gene is not None
@@ -149,18 +183,25 @@ def screen_cohort(
             }
             family_filter = allowed.intersection
 
-        calls = assess_event(
-            five_prime_gene=five_gene,
-            five_prime_breakpoint=five_breakpoint,
-            three_prime_gene=three_gene,
-            three_prime_breakpoint=three_breakpoint,
-            annotation=annotation,
-            genome_build=_clean(row.get("NCBI_Build")),
-            source=source,
-            family_filter=family_filter,
-        )
+        build = _clean(row.get("NCBI_Build"))
+        memo_key = (five_gene, five_breakpoint, three_gene, three_breakpoint, annotation, build)
+        if memo_key not in assessed:
+            assessed[memo_key] = assess_event(
+                five_prime_gene=five_gene,
+                five_prime_breakpoint=five_breakpoint,
+                three_prime_gene=three_gene,
+                three_prime_breakpoint=three_breakpoint,
+                annotation=annotation,
+                genome_build=build,
+                source=source,
+                family_filter=family_filter,
+            )
+        calls = copy.deepcopy(assessed[memo_key])
         locus_note = "; ".join(error for error in (five_error, three_error) if error)
         for call in calls:
+            class_counts[call["reconstitution_class"]] += 1
+            if not keep_unshared_rows and call["reconstitution_class"] == NO_SHARED_FAMILY:
+                continue
             if locus_note:
                 call["no_product_reason"] = locus_note
                 if call["reconstitution_class"] != NO_SHARED_FAMILY:
@@ -174,21 +215,35 @@ def screen_cohort(
                     "three_prime_gene": three_gene,
                     "five_prime_breakpoint": five_breakpoint,
                     "three_prime_breakpoint": three_breakpoint,
+                    "five_prime_chromosome": _site_chromosome(row, five_gene, five_breakpoint),
+                    "three_prime_chromosome": _site_chromosome(row, three_gene, three_breakpoint),
                     **call,
                     **read_support_columns(row),
                     "source_annotation": annotation,
+                    **{column: _clean(row.get(column)) for column in passthrough_columns},
                 }
             )
         if progress is not None and index % 200 == 0:
             progress(f"screened {index}/{len(pairs)} fusions")
 
-    return rows, summarize_screen(rows, screened_events=len(pairs), mode=mode)
+    summary = summarize_screen(
+        rows, screened_events=len(pairs), mode=mode, class_counts=class_counts
+    )
+    return rows, summary
 
 
 def summarize_screen(
-    rows: Iterable[dict[str, Any]], *, screened_events: int, mode: str
+    rows: Iterable[dict[str, Any]],
+    *,
+    screened_events: int,
+    mode: str,
+    class_counts: Counter[str] | None = None,
 ) -> dict[str, Any]:
-    """Counts by class; ``no_shared_family`` rows are counted but not listed."""
+    """Counts by class; ``no_shared_family`` rows are counted but not listed.
+
+    ``class_counts`` overrides the counts taken from ``rows``, for a screen
+    that did not retain its ``no_shared_family`` rows.
+    """
     rows = list(rows)
     classified = [row for row in rows if row["reconstitution_class"] != NO_SHARED_FAMILY]
     return {
@@ -201,7 +256,15 @@ def summarize_screen(
             }
         ),
         "family_rows": len(classified),
-        "class_counts": dict(sorted(Counter(row["reconstitution_class"] for row in rows).items())),
+        "class_counts": dict(
+            sorted(
+                (
+                    class_counts
+                    if class_counts is not None
+                    else Counter(row["reconstitution_class"] for row in rows)
+                ).items()
+            )
+        ),
         "mechanism_counts": dict(
             sorted(Counter(str(row["junction_mechanism"]) for row in classified).items())
         ),
@@ -209,16 +272,23 @@ def summarize_screen(
 
 
 def write_screen_outputs(
-    rows: list[dict[str, Any]], summary: dict[str, Any], output_dir: str | Path
+    rows: list[dict[str, Any]],
+    summary: dict[str, Any],
+    output_dir: str | Path,
+    extra_columns: Sequence[str] = (),
 ) -> dict[str, Path]:
-    """Write ``domain_screen.tsv`` and ``domain_screen_summary.json``."""
+    """Write ``domain_screen.tsv`` and ``domain_screen_summary.json``.
+
+    ``extra_columns`` (e.g. a screen's passthrough columns) follow
+    :data:`SCREEN_COLUMNS`.
+    """
     destination = Path(output_dir)
     destination.mkdir(parents=True, exist_ok=True)
     table = destination / "domain_screen.tsv"
     with table.open("w", newline="") as handle:
         writer = csv.DictWriter(
             handle,
-            fieldnames=list(SCREEN_COLUMNS),
+            fieldnames=[*SCREEN_COLUMNS, *extra_columns],
             delimiter="\t",
             lineterminator="\n",
             extrasaction="ignore",

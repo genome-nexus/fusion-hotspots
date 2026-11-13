@@ -1,0 +1,735 @@
+{
+ "definitions": {
+  "readthrough_bp": 200000,
+  "min_side_residues": 10,
+  "min_side_fraction": 0.1,
+  "near_identical": 0.95
+ },
+ "cohorts": {
+  "depmap_22q2": {
+   "counts": {
+    "rows": 9567,
+    "same_gene": 0,
+    "readthrough": 227,
+    "same_chrom_within_200kb": 302,
+    "near_identical_parent": 7095,
+    "flags_pass": 0,
+    "paralog_seq_flagged": 8646,
+    "strict": 0,
+    "paralog:compara_paralog": 9484,
+    "splice:ONLY_REF_SPLICE": 9437,
+    "both_sides_substantial": 7845,
+    "splice:INCL_NON_REF_SPLICE": 130,
+    "minor_side": 1722,
+    "paralog:not_paralog_same_family": 83
+   },
+   "distinct_junctions": 831,
+   "distinct_samples": 1282,
+   "distinct_gene_pairs": 541,
+   "chimera_parent_identity": {
+    "0.80-0.95": 2198,
+    ">=0.95": 7095,
+    "<0.80": 274
+   },
+   "strict_distinct_junctions": 0,
+   "top_pairs": [
+    {
+     "pair": "ACTG2::ACTG1",
+     "rows": 827,
+     "samples": 818,
+     "junctions": 4,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF00022"
+     ]
+    },
+    {
+     "pair": "CALM3::CALM2",
+     "rows": 657,
+     "samples": 450,
+     "junctions": 3,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF13499"
+     ]
+    },
+    {
+     "pair": "EEF1A2::EEF1A1",
+     "rows": 584,
+     "samples": 437,
+     "junctions": 5,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF00009",
+      "PF22594"
+     ]
+    },
+    {
+     "pair": "HDGFL3::HDGF",
+     "rows": 435,
+     "samples": 435,
+     "junctions": 1,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF00855"
+     ]
+    },
+    {
+     "pair": "FLNB::FLNA",
+     "rows": 368,
+     "samples": 269,
+     "junctions": 22,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF00307",
+      "PF00630"
+     ]
+    },
+    {
+     "pair": "FLNA::FLNB",
+     "rows": 356,
+     "samples": 231,
+     "junctions": 23,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF00307",
+      "PF00630"
+     ]
+    },
+    {
+     "pair": "EEF1A1::EEF1A2",
+     "rows": 354,
+     "samples": 250,
+     "junctions": 5,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF00009",
+      "PF22594"
+     ]
+    },
+    {
+     "pair": "YBX1::YBX3",
+     "rows": 236,
+     "samples": 190,
+     "junctions": 3,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF00313"
+     ]
+    },
+    {
+     "pair": "HSP90AB1::HSP90AA1",
+     "rows": 233,
+     "samples": 232,
+     "junctions": 2,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF00183",
+      "PF13589"
+     ]
+    },
+    {
+     "pair": "RHOA::RHOC",
+     "rows": 193,
+     "samples": 193,
+     "junctions": 1,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF00071"
+     ]
+    }
+   ]
+  },
+  "msk_impact_50k_2026": {
+   "counts": {},
+   "distinct_junctions": 0,
+   "distinct_samples": 0,
+   "distinct_gene_pairs": 0,
+   "chimera_parent_identity": {},
+   "strict_distinct_junctions": 0,
+   "top_pairs": []
+  },
+  "target_consolidated": {
+   "counts": {
+    "rows": 819,
+    "same_gene": 0,
+    "readthrough": 119,
+    "same_chrom_within_200kb": 150,
+    "near_identical_parent": 393,
+    "flags_pass": 0,
+    "paralog_seq_flagged": 562,
+    "strict": 0,
+    "paralog:compara_paralog": 815,
+    "splice:not_reported": 819,
+    "minor_side": 108,
+    "both_sides_substantial": 711,
+    "paralog:not_paralog_same_family": 4
+   },
+   "distinct_junctions": 169,
+   "distinct_samples": 415,
+   "distinct_gene_pairs": 89,
+   "chimera_parent_identity": {
+    ">=0.95": 393,
+    "0.80-0.95": 331,
+    "<0.80": 95
+   },
+   "strict_distinct_junctions": 0,
+   "top_pairs": [
+    {
+     "pair": "ACTG2::ACTG1",
+     "rows": 198,
+     "samples": 153,
+     "junctions": 5,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF00022"
+     ]
+    },
+    {
+     "pair": "CMTM8::CMTM7",
+     "rows": 138,
+     "samples": 138,
+     "junctions": 1,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF01284"
+     ]
+    },
+    {
+     "pair": "HBB::HBG2",
+     "rows": 71,
+     "samples": 29,
+     "junctions": 8,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 71,
+     "families": [
+      "PF00042"
+     ]
+    },
+    {
+     "pair": "HBB::HBG1",
+     "rows": 42,
+     "samples": 24,
+     "junctions": 11,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 42,
+     "families": [
+      "PF00042"
+     ]
+    },
+    {
+     "pair": "COL3A1::COL1A1",
+     "rows": 30,
+     "samples": 14,
+     "junctions": 9,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF01391",
+      "PF01410"
+     ]
+    },
+    {
+     "pair": "SAA4::SAA1",
+     "rows": 30,
+     "samples": 30,
+     "junctions": 1,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF00277"
+     ]
+    },
+    {
+     "pair": "CPSF7::CPSF6",
+     "rows": 27,
+     "samples": 27,
+     "junctions": 1,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF00076"
+     ]
+    },
+    {
+     "pair": "FTL::FTH1",
+     "rows": 24,
+     "samples": 6,
+     "junctions": 8,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF00210"
+     ]
+    },
+    {
+     "pair": "HBG1::HBA2",
+     "rows": 24,
+     "samples": 6,
+     "junctions": 10,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF00042"
+     ]
+    },
+    {
+     "pair": "ACTG1::ACTA2",
+     "rows": 22,
+     "samples": 20,
+     "junctions": 3,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF00022"
+     ]
+    }
+   ]
+  },
+  "target_starfusion": {
+   "counts": {
+    "rows": 602,
+    "same_gene": 0,
+    "readthrough": 69,
+    "same_chrom_within_200kb": 99,
+    "near_identical_parent": 286,
+    "flags_pass": 0,
+    "paralog_seq_flagged": 428,
+    "strict": 0,
+    "paralog:compara_paralog": 598,
+    "splice:ONLY_REF_SPLICE": 600,
+    "both_sides_substantial": 540,
+    "minor_side": 62,
+    "splice:INCL_NON_REF_SPLICE": 2,
+    "paralog:not_paralog_same_family": 4
+   },
+   "distinct_junctions": 96,
+   "distinct_samples": 404,
+   "distinct_gene_pairs": 79,
+   "chimera_parent_identity": {
+    ">=0.95": 286,
+    "0.80-0.95": 245,
+    "<0.80": 71
+   },
+   "strict_distinct_junctions": 0,
+   "top_pairs": [
+    {
+     "pair": "ACTG2::ACTG1",
+     "rows": 153,
+     "samples": 153,
+     "junctions": 2,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF00022"
+     ]
+    },
+    {
+     "pair": "CMTM8::CMTM7",
+     "rows": 138,
+     "samples": 138,
+     "junctions": 1,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF01284"
+     ]
+    },
+    {
+     "pair": "HBB::HBG2",
+     "rows": 36,
+     "samples": 29,
+     "junctions": 2,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 36,
+     "families": [
+      "PF00042"
+     ]
+    },
+    {
+     "pair": "SAA4::SAA1",
+     "rows": 30,
+     "samples": 30,
+     "junctions": 1,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF00277"
+     ]
+    },
+    {
+     "pair": "HBB::HBG1",
+     "rows": 28,
+     "samples": 24,
+     "junctions": 2,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 28,
+     "families": [
+      "PF00042"
+     ]
+    },
+    {
+     "pair": "CPSF7::CPSF6",
+     "rows": 27,
+     "samples": 27,
+     "junctions": 1,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF00076"
+     ]
+    },
+    {
+     "pair": "ACTG1::ACTA2",
+     "rows": 21,
+     "samples": 20,
+     "junctions": 2,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF00022"
+     ]
+    },
+    {
+     "pair": "SLC25A4::SLC25A6",
+     "rows": 10,
+     "samples": 10,
+     "junctions": 1,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF00153"
+     ]
+    },
+    {
+     "pair": "TAF15::FUS",
+     "rows": 9,
+     "samples": 9,
+     "junctions": 1,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF00076"
+     ]
+    },
+    {
+     "pair": "EEF1A2::EEF1A1",
+     "rows": 8,
+     "samples": 8,
+     "junctions": 1,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF00009"
+     ]
+    }
+   ]
+  },
+  "tcga_gtex": {
+   "counts": {
+    "rows": 24728,
+    "same_gene": 0,
+    "readthrough": 3885,
+    "same_chrom_within_200kb": 6171,
+    "near_identical_parent": 11577,
+    "flags_pass": 11,
+    "paralog_seq_flagged": 17877,
+    "strict": 7,
+    "paralog:compara_paralog": 22707,
+    "splice:ONLY_REF_SPLICE": 24610,
+    "both_sides_substantial": 21300,
+    "splice:INCL_NON_REF_SPLICE": 118,
+    "minor_side": 3428,
+    "paralog:not_paralog_same_family": 2021
+   },
+   "distinct_junctions": 1234,
+   "distinct_samples": 10874,
+   "distinct_gene_pairs": 840,
+   "chimera_parent_identity": {
+    "0.80-0.95": 9563,
+    ">=0.95": 11577,
+    "<0.80": 3588
+   },
+   "strict_distinct_junctions": 5,
+   "top_pairs": [
+    {
+     "pair": "ACTG2::ACTG1",
+     "rows": 2643,
+     "samples": 2589,
+     "junctions": 5,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF00022"
+     ]
+    },
+    {
+     "pair": "SAA4::SAA1",
+     "rows": 1786,
+     "samples": 1786,
+     "junctions": 1,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF00277"
+     ]
+    },
+    {
+     "pair": "CMTM8::CMTM7",
+     "rows": 1133,
+     "samples": 1133,
+     "junctions": 1,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF01284"
+     ]
+    },
+    {
+     "pair": "ACTG1::ACTA2",
+     "rows": 1080,
+     "samples": 926,
+     "junctions": 4,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF00022"
+     ]
+    },
+    {
+     "pair": "FLNA::FLNB",
+     "rows": 731,
+     "samples": 707,
+     "junctions": 14,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF00307",
+      "PF00630"
+     ]
+    },
+    {
+     "pair": "PRSS27::TPSAB1",
+     "rows": 671,
+     "samples": 671,
+     "junctions": 1,
+     "paralog": "not_paralog_same_family",
+     "readthrough_rows": 0,
+     "families": [
+      "PF00089"
+     ]
+    },
+    {
+     "pair": "ACTA2::ACTG1",
+     "rows": 637,
+     "samples": 605,
+     "junctions": 5,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF00022"
+     ]
+    },
+    {
+     "pair": "ACTG1::ACTG2",
+     "rows": 529,
+     "samples": 460,
+     "junctions": 5,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 0,
+     "families": [
+      "PF00022"
+     ]
+    },
+    {
+     "pair": "CELA2A::CTRC",
+     "rows": 401,
+     "samples": 203,
+     "junctions": 6,
+     "paralog": "not_paralog_same_family",
+     "readthrough_rows": 401,
+     "families": [
+      "PF00089"
+     ]
+    },
+    {
+     "pair": "KRT2::KRT1",
+     "rows": 394,
+     "samples": 347,
+     "junctions": 5,
+     "paralog": "compara_paralog",
+     "readthrough_rows": 394,
+     "families": [
+      "PF00038"
+     ]
+    }
+   ]
+  }
+ },
+ "strict_candidates": [
+  {
+   "cohort": "tcga_gtex",
+   "pair": "LPO::MPO",
+   "family": "PF03098",
+   "breakpoints": "chr17:58252506 / chr17:58275702",
+   "samples": [
+    "LAML-AB-2862-TB (tumor,LAML)",
+    "LAML-AB-2982-TB (tumor,LAML)",
+    "LAML-AB-3012-TB (tumor,LAML)"
+   ],
+   "n_samples": 3,
+   "max_split_reads": 2,
+   "reads": "LAML-AB-2862-TB 1/4 FFPM 0.0679; LAML-AB-2982-TB 2/4 FFPM 0.0795; LAML-AB-3012-TB 2/6 FFPM 0.1067",
+   "junction_peptide": "CEFINTTARVPCFLAG|DTRSSEMPELTSMHT",
+   "frame": "in_frame / alt out_of_frame",
+   "five_kept": "138-684 kept 138-368",
+   "three_kept": "173-717 kept 403-717",
+   "identity_to_parent": "0.762",
+   "alignment_parent": "LPO",
+   "paralog_relation": "compara_paralog",
+   "splice_type": "ONLY_REF_SPLICE",
+   "flags": {
+    "paralog_sequence_flag": "pass",
+    "genomic_similarity_flag": "pass",
+    "normal_recurrence_flag": "pass"
+   },
+   "flag_reasons": {
+    "paralog": "best single sequence (14 tested): LPO:paralog:ENSG00000005381 87.0% identity over 100/100 nt",
+    "genomic": "breakpoint regions <80% over >=100 bp; no segdup/repeat; single call in sample; split reads present",
+    "normal": "exact junction absent from all TCGA/GTEx normal samples; gene pair in TCGA+GTEx: 0 normal, 0 cell-line, 8 tumor rows"
+   }
+  },
+  {
+   "cohort": "tcga_gtex",
+   "pair": "GNAL::GNAS",
+   "family": "PF00503",
+   "breakpoints": "chr18:11876688 / chr20:58910683",
+   "samples": [
+    "THCA-KS-A41I-TP (tumor,THCA)"
+   ],
+   "n_samples": 1,
+   "max_split_reads": 1,
+   "reads": "THCA-KS-A41I-TP 1/2 FFPM 0.0451",
+   "junction_peptide": "PKVTRAKFFIRDLFL|RISTASGDGRHYCYP",
+   "frame": "in_frame / alt out_of_frame",
+   "five_kept": "23-370 kept 23-333",
+   "three_kept": "21-383 kept 347-383",
+   "identity_to_parent": "0.994",
+   "alignment_parent": "GNAL",
+   "paralog_relation": "compara_paralog",
+   "splice_type": "ONLY_REF_SPLICE",
+   "flags": {
+    "paralog_sequence_flag": "pass",
+    "genomic_similarity_flag": "pass",
+    "normal_recurrence_flag": "pass"
+   },
+   "flag_reasons": {
+    "paralog": "best single sequence (34 tested): GNAL:compara_canonical:ENSG00000141404 88.0% identity over 100/100 nt",
+    "genomic": "breakpoint regions <80% over >=100 bp; no segdup/repeat; single call in sample; split reads present",
+    "normal": "exact junction absent from all TCGA/GTEx normal samples; gene pair in TCGA+GTEx: 9 normal, 0 cell-line, 103 tumor rows"
+   }
+  },
+  {
+   "cohort": "tcga_gtex",
+   "pair": "KRT82::KRT7",
+   "family": "PF00038",
+   "breakpoints": "chr12:52401289 / chr12:52238680",
+   "samples": [
+    "BLCA-CF-A5UA-TP (tumor,BLCA)"
+   ],
+   "n_samples": 1,
+   "max_split_reads": 1,
+   "reads": "BLCA-CF-A5UA-TP 1/2 FFPM 0.0495",
+   "junction_peptide": "SLRPCVENEFVALKK|DVDAAYMSKVELEAK",
+   "frame": "in_frame / alt out_of_frame",
+   "five_kept": "119-430 kept 119-227",
+   "three_kept": "90-402 kept 200-402",
+   "identity_to_parent": "0.756",
+   "alignment_parent": "KRT82",
+   "paralog_relation": "compara_paralog",
+   "splice_type": "ONLY_REF_SPLICE",
+   "flags": {
+    "paralog_sequence_flag": "pass",
+    "genomic_similarity_flag": "pass",
+    "normal_recurrence_flag": "pass"
+   },
+   "flag_reasons": {
+    "paralog": "best single sequence (140 tested): KRT7:paralog:ENSG00000161850 87.2% identity over 94/100 nt",
+    "genomic": "breakpoint regions <80% over >=100 bp; no segdup/repeat; single call in sample; split reads present",
+    "normal": "exact junction absent from all TCGA/GTEx normal samples; gene pair in TCGA+GTEx: 0 normal, 0 cell-line, 3 tumor rows"
+   }
+  },
+  {
+   "cohort": "tcga_gtex",
+   "pair": "VIM::KRT18",
+   "family": "PF00038",
+   "breakpoints": "chr10:17233682 / chr12:52951481",
+   "samples": [
+    "LUAD-05-4415-TP (tumor,LUAD)"
+   ],
+   "n_samples": 1,
+   "max_split_reads": 1,
+   "reads": "LUAD-05-4415-TP 1/5 FFPM 0.1027",
+   "junction_peptide": "SLQEEIAFLKKLHEE|EVKGLQAQIASSGLT",
+   "frame": "in_frame / alt out_of_frame",
+   "five_kept": "102-410 kept 102-240",
+   "three_kept": "79-389 kept 220-389",
+   "identity_to_parent": "0.642",
+   "alignment_parent": "VIM",
+   "paralog_relation": "compara_paralog",
+   "splice_type": "ONLY_REF_SPLICE",
+   "flags": {
+    "paralog_sequence_flag": "pass",
+    "genomic_similarity_flag": "pass",
+    "normal_recurrence_flag": "pass"
+   },
+   "flag_reasons": {
+    "paralog": "best single sequence (140 tested): KRT18:compara_canonical:ENSG00000111057 89.0% identity over 89/100 nt",
+    "genomic": "breakpoint regions <80% over >=100 bp; no segdup/repeat; single call in sample; split reads present",
+    "normal": "exact junction absent from all TCGA/GTEx normal samples; gene pair in TCGA+GTEx: 0 normal, 0 cell-line, 1 tumor rows"
+   }
+  },
+  {
+   "cohort": "tcga_gtex",
+   "pair": "YWHAB::YWHAZ",
+   "family": "PF00244",
+   "breakpoints": "chr20:44901833 / chr8:100925039",
+   "samples": [
+    "LUSC-18-3419-TP (tumor,LUSC)"
+   ],
+   "n_samples": 1,
+   "max_split_reads": 1,
+   "reads": "LUSC-18-3419-TP 1/2 FFPM 0.0548",
+   "junction_peptide": "EKIEAELQDICNDVL|SLLEKFLIPNASQAE",
+   "frame": "in_frame / alt out_of_frame",
+   "five_kept": "11-231 kept 11-100",
+   "three_kept": "9-229 kept 99-229",
+   "identity_to_parent": "0.955",
+   "alignment_parent": "YWHAZ",
+   "paralog_relation": "compara_paralog",
+   "splice_type": "ONLY_REF_SPLICE",
+   "flags": {
+    "paralog_sequence_flag": "pass",
+    "genomic_similarity_flag": "pass",
+    "normal_recurrence_flag": "pass"
+   },
+   "flag_reasons": {
+    "paralog": "best single sequence (16 tested): YWHAB:paralog:ENSG00000164924 88.1% identity over 100/100 nt",
+    "genomic": "breakpoint regions <80% over >=100 bp; no segdup/repeat; single call in sample; split reads present",
+    "normal": "exact junction absent from all TCGA/GTEx normal samples; gene pair in TCGA+GTEx: 0 normal, 0 cell-line, 3 tumor rows"
+   }
+  }
+ ]
+}

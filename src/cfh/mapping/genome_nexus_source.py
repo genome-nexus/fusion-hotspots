@@ -20,6 +20,7 @@ from __future__ import annotations
 import math
 import time
 from dataclasses import dataclass
+from urllib.parse import quote
 
 import requests
 
@@ -29,6 +30,8 @@ DEFAULT_BASE_URL = "https://www.genomenexus.org"
 DEFAULT_ISOFORM_OVERRIDE_SOURCE = "mskcc"
 
 _RETRYABLE_STATUS_CODES = {429, 500, 502, 503, 504}
+TRANSIENT_REQUEST_ERRORS = (requests.Timeout, requests.ConnectionError)
+"""Request failures retried like a retryable status; re-raised once retries run out."""
 
 
 class GenomeNexusGeneNotFound(RuntimeError):
@@ -113,9 +116,17 @@ class GenomeNexusClient:
         url = f"{self.base_url}{path}"
         attempt = 0
         while True:
-            response = self.session.get(url, params=params, timeout=30)
-            if response.status_code not in _RETRYABLE_STATUS_CODES or attempt >= self.max_retries:
-                return response
+            try:
+                response = self.session.get(url, params=params, timeout=30)
+            except TRANSIENT_REQUEST_ERRORS:
+                if attempt >= self.max_retries:
+                    raise
+            else:
+                if (
+                    response.status_code not in _RETRYABLE_STATUS_CODES
+                    or attempt >= self.max_retries
+                ):
+                    return response
             time.sleep(self.backoff_seconds * (2**attempt))
             attempt += 1
 
@@ -127,16 +138,26 @@ class GenomeNexusClient:
         if cache_key in self._canonical_transcript_cache:
             return self._canonical_transcript_cache[cache_key]
 
+        # The symbol is one path segment: encode it, or a symbol such as
+        # "THRA1/BTR" (DepMap) reaches the web app, which answers 200 with HTML.
         response = self._get(
-            f"/ensembl/canonical-transcript/hgnc/{hugo_symbol}",
+            f"/ensembl/canonical-transcript/hgnc/{quote(hugo_symbol, safe='')}",
             params={"isoformOverrideSource": isoform_override_source},
         )
-        if response.status_code == 404:
+        if response.status_code in (400, 404):
+            # 400: Genome Nexus rejects the symbol itself (e.g. an encoded "/").
             raise GenomeNexusGeneNotFound(
                 f"Genome Nexus has no canonical-transcript mapping for gene symbol {hugo_symbol!r}"
+                f" (HTTP {response.status_code})"
             )
         response.raise_for_status()
-        payload = response.json()
+        try:
+            payload = response.json()
+        except ValueError as exc:
+            raise ValueError(
+                f"Genome Nexus answered {response.status_code} with a non-JSON body for "
+                f"{hugo_symbol!r} ({response.headers.get('content-type')})"
+            ) from exc
         self._canonical_transcript_cache[cache_key] = payload
         return payload
 
@@ -159,9 +180,17 @@ class GenomeNexusClient:
         url = f"{self.base_url}/ensembl/transcript"
         attempt = 0
         while True:
-            response = self.session.post(url, json={"hugoSymbols": [hugo_symbol]}, timeout=30)
-            if response.status_code not in _RETRYABLE_STATUS_CODES or attempt >= self.max_retries:
-                break
+            try:
+                response = self.session.post(url, json={"hugoSymbols": [hugo_symbol]}, timeout=30)
+            except TRANSIENT_REQUEST_ERRORS:
+                if attempt >= self.max_retries:
+                    raise
+            else:
+                if (
+                    response.status_code not in _RETRYABLE_STATUS_CODES
+                    or attempt >= self.max_retries
+                ):
+                    break
             time.sleep(self.backoff_seconds * (2**attempt))
             attempt += 1
         response.raise_for_status()

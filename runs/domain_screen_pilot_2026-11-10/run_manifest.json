@@ -1,0 +1,267 @@
+{
+  "pilot": "domain_screen_pilot_2026-11-10",
+  "code_commit_sha": "832a267923cb38e0cdc219852b817d5696ebd7d0",
+  "screen_commit_shas": {
+    "msk_impact_50k_2026": "a8a33b1fa376052452e24b5a02138987ab615812",
+    "target_starfusion": "a8a33b1fa376052452e24b5a02138987ab615812",
+    "target_consolidated": "a8a33b1fa376052452e24b5a02138987ab615812",
+    "tcga_gtex": "a8a33b1fa376052452e24b5a02138987ab615812",
+    "depmap_22q2": "13002e33d24c8b53fd023c4979e186111f21d4bf"
+  },
+  "screen_sha_note": "a8a33b1..13002e3 only percent-encodes gene symbols in Genome Nexus single lookups (affects the DepMap symbol THRA1/BTR); MSK, TARGET x2 outputs at a8a33b1 are byte-identical to earlier-SHA runs",
+  "flag_commit_sha": "832a267923cb38e0cdc219852b817d5696ebd7d0",
+  "flag_rerun_note": "flag pass re-run at 832a267 after the #154 review on the unchanged screen outputs; 13002e3 flag outputs superseded (no flag value changed)",
+  "branch": "polly/domain-screen-pilot",
+  "base": "origin/main dd2bda1",
+  "mode": "any-domain",
+  "cohorts": {
+    "msk_impact_50k_2026": {
+      "genome_build": "GRCh37",
+      "input": "dl_msk"
+    },
+    "target_starfusion": {
+      "genome_build": "GRCh38",
+      "input": "dl_target_starfusion"
+    },
+    "target_consolidated": {
+      "genome_build": "GRCh38",
+      "input": "dl_target_consolidated"
+    },
+    "depmap_22q2": {
+      "genome_build": "GRCh38",
+      "input": "dl_depmap_22q2"
+    },
+    "tcga_gtex": {
+      "genome_build": "GRCh38",
+      "input": "dl_tcga_gtex"
+    }
+  },
+  "service_urls": {
+    "GRCh37": {
+      "genome_nexus": "https://www.genomenexus.org",
+      "ensembl_rest": "https://grch37.rest.ensembl.org",
+      "ucsc_tables": "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/database/"
+    },
+    "GRCh38": {
+      "genome_nexus": "https://grch38.genomenexus.org",
+      "ensembl_rest": "https://rest.ensembl.org",
+      "ucsc_tables": "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/"
+    },
+    "pfam_descriptions": "InterPro (cfh.cohort.auto_config.PfamDescriptionSource)",
+    "open_tables": "pinned URLs and SHA-256 in src/cfh/ingestion/open_fusion_manifest.py"
+  },
+  "cache_dirs": {
+    "msk_impact_50k_2026 (GRCh37)": "runs/.domain_screen_pilot_work/cache/msk_impact_50k_2026_GRCh37",
+    "open tables (GRCh38)": "runs/.domain_screen_pilot_work/cache/target_starfusion_GRCh38",
+    "artefact flags": "runs/.domain_screen_pilot_work/cache/flags/flags_<build>",
+    "note": "Both screen caches and the flag cache were created empty in this pilot. GRCh37 and GRCh38 never share a directory (each is provenance-stamped with its build). The GRCh38 cache was filled by target_starfusion and reused by the other three GRCh38 tables, to avoid re-fetching the same genes. A failed attempt resumes the same cohort's cache."
+  },
+  "inputs": {
+    "dl_depmap_22q2": {
+      "path": "runs/.domain_screen_pilot_work/dl_depmap_22q2/CCLE_fusions_unfiltered.csv",
+      "bytes": 85101250,
+      "sha256": "5e69e36e8092097b3ce549d8608249419468164afbbb8823b86e579f152e5d06"
+    },
+    "dl_ensembl116_cds": {
+      "path": "runs/.domain_screen_pilot_work/dl_ensembl116_cds/Homo_sapiens.GRCh38.cds.all.fa.gz",
+      "bytes": 36943537,
+      "sha256": "f8c6731e185957e29816a8a38ce21dc61ef6c3fc4963fbb9c0cdd8ebd20f1342",
+      "last_modified": "Tue, 24 Mar 2026 20:10:15 GMT"
+    },
+    "dl_ensembl116_checksums": {
+      "path": "runs/.domain_screen_pilot_work/dl_ensembl116_checksums/CHECKSUMS.txt",
+      "bytes": 673,
+      "sha256": "51fe6bae5495349f49fc8a2344ad598f3fe4472bb04eef805c70d4b66d043f5d"
+    },
+    "dl_ensembl116_homologies": {
+      "path": "runs/.domain_screen_pilot_work/dl_ensembl116_homologies/Compara.116.protein_default.homologies.tsv.gz",
+      "bytes": 109478724,
+      "sha256": "fc101ab6e90966091064e5f2e695e46da50d9bc50f4543340ded7d0ccd6e7933",
+      "last_modified": "Fri, 24 Apr 2026 10:06:15 GMT"
+    },
+    "dl_ensembl116_pep": {
+      "path": "runs/.domain_screen_pilot_work/dl_ensembl116_pep/Homo_sapiens.GRCh38.pep.all.fa.gz",
+      "bytes": 23319936,
+      "sha256": "9b43da92651b35814597af6a8b18f500b768679a49fa4678224f384917ce7668",
+      "last_modified": "Tue, 24 Mar 2026 20:09:51 GMT"
+    },
+    "dl_msk": {
+      "path": "runs/.domain_screen_pilot_work/dl_msk/msk_impact_50k_2026.tar.gz",
+      "bytes": 98715367,
+      "sha256": "c9522b3ed7cfcf803fe2838868bdc566166c45a603de7962859416c24c9e7d38"
+    },
+    "dl_target_consolidated": {
+      "path": "runs/.domain_screen_pilot_work/dl_target_consolidated/TARGET_STAR-Fusion-v1.10.0_FusionInspector-v2.4.0.fusions.tsv.gz",
+      "bytes": 11387769,
+      "sha256": "9a91c974ca28881ae765294c8b405c39bb78ea2cd87096e6b1d50b7718a532f3"
+    },
+    "dl_target_metadata": {
+      "path": "runs/.domain_screen_pilot_work/dl_target_metadata/TARGETdb.sample_info.tsv",
+      "bytes": 131767,
+      "sha256": "0fe08262d39a8e69cb6fa79a7dacb5f97a3173aa0a8d8485fb340248ff8462aa"
+    },
+    "dl_target_starfusion": {
+      "path": "runs/.domain_screen_pilot_work/dl_target_starfusion/STAR-Fusion.v1.10.0.TARGETdb.tsv.gz",
+      "bytes": 11003241,
+      "sha256": "6814bec6dc4209eec68876b8ac887d20e73d308a191c8c12b9c127838edd1709"
+    },
+    "dl_tcga_gtex": {
+      "path": "runs/.domain_screen_pilot_work/dl_tcga_gtex/TCGA_n_GTEx.STAR-Fusion.v1.7.fusion_preds.tsv.gz",
+      "bytes": 39095107,
+      "sha256": "db6e61750b33def456dde0d9430ecd923985bf931295f0039b2b446f59dfbcf4"
+    },
+    "dl_ucsc_hg19_2bit": {
+      "path": "runs/.domain_screen_pilot_work/dl_ucsc_hg19_2bit/hg19.2bit",
+      "bytes": 816241703,
+      "sha256": "797bdb4391cbe23bd30268d41d0d86676fd7b36b7f8e76797b1882d585766fa3",
+      "last_modified": "Sun, 08 Mar 2009 22:29:44 GMT"
+    },
+    "dl_ucsc_hg19_genomicSuperDups": {
+      "path": "runs/.domain_screen_pilot_work/dl_ucsc_hg19_genomicSuperDups/genomicSuperDups.txt.gz",
+      "bytes": 3002024,
+      "sha256": "832689d7379f4b63266f450da949e10df48547a9561699b7ea33ca669d01b88e",
+      "last_modified": "Tue, 25 Oct 2011 22:43:19 GMT"
+    },
+    "dl_ucsc_hg19_rmsk": {
+      "path": "runs/.domain_screen_pilot_work/dl_ucsc_hg19_rmsk/rmsk.txt.gz",
+      "bytes": 148359433,
+      "sha256": "af22a795f18a4b7d8dbe9c065f8a83f53271cbff1e04bc519ab31a5159a74416",
+      "last_modified": "Sun, 22 Mar 2020 10:28:03 GMT"
+    },
+    "dl_ucsc_hg38_2bit": {
+      "path": "runs/.domain_screen_pilot_work/dl_ucsc_hg38_2bit/hg38.2bit",
+      "bytes": 835393456,
+      "sha256": "1f67aaa17a77b327738fe750ab37430a85dddf73c7d9189385ad1839259acec0",
+      "last_modified": "Thu, 30 Apr 2015 23:16:38 GMT"
+    },
+    "dl_ucsc_hg38_genomicSuperDups": {
+      "path": "runs/.domain_screen_pilot_work/dl_ucsc_hg38_genomicSuperDups/genomicSuperDups.txt.gz",
+      "bytes": 4202400,
+      "sha256": "3f4388ed3eb7462034e89c1f45314160bdb14558502092326063105c095061df",
+      "last_modified": "Sun, 19 Oct 2014 19:48:10 GMT"
+    },
+    "dl_ucsc_hg38_rmsk": {
+      "path": "runs/.domain_screen_pilot_work/dl_ucsc_hg38_rmsk/rmsk.txt.gz",
+      "bytes": 155633856,
+      "sha256": "db60e6aa7ac175f8f5465cd01b48b550e67e1fb0fd828608d8343481867bb276",
+      "last_modified": "Wed, 19 Oct 2022 06:39:32 GMT"
+    },
+    "normalized_depmap_22q2": {
+      "path": "runs/.domain_screen_pilot_work/normalized/depmap_22q2.tsv",
+      "bytes": 345028795,
+      "sha256": "a061e132c65e7cc7f59b5b9734e99d2bf7c8a1ce68d8b7bc698181d557a97834"
+    },
+    "normalized_target_consolidated": {
+      "path": "runs/.domain_screen_pilot_work/normalized/target_consolidated.tsv",
+      "bytes": 339168038,
+      "sha256": "4df37fbf352350798257585290d02f30a00e4fa281ac9bb1350e8c170451cfb4"
+    },
+    "normalized_target_starfusion": {
+      "path": "runs/.domain_screen_pilot_work/normalized/target_starfusion.tsv",
+      "bytes": 213879135,
+      "sha256": "e465cd78de0c6f22791285a4dc18e2b4dbc2cee86d6502c353391061eb59f2f1"
+    },
+    "normalized_tcga_gtex": {
+      "path": "runs/.domain_screen_pilot_work/normalized/tcga_gtex.tsv",
+      "bytes": 839473736,
+      "sha256": "e5825018443fc39b94bd760fd9bee9ea8b51150387e2f0999cc78b0466a692c1"
+    }
+  },
+  "commands": {
+    "depmap_22q2": ".venv/bin/python -I -m cfh.cli domain-screen runs/.domain_screen_pilot_work/normalized/depmap_22q2.tsv --cohort depmap_22q2 --genome-build GRCh38 --mode any-domain --input-format open-fusion-table --omit-unshared-rows --genome-nexus-batch-size 200 --output-dir runs/.domain_screen_pilot_work/screen/depmap_22q2 --cache-dir runs/.domain_screen_pilot_work/cache/target_starfusion_GRCh38",
+    "flags": ".venv/bin/python -I scripts/domain_screen_pilot_flags.py --screen msk_impact_50k_2026=GRCh37=runs/.domain_screen_pilot_work/screen/msk_impact_50k_2026 --screen target_starfusion=GRCh38=runs/.domain_screen_pilot_work/screen/target_starfusion --screen target_consolidated=GRCh38=runs/.domain_screen_pilot_work/screen/target_consolidated --screen depmap_22q2=GRCh38=runs/.domain_screen_pilot_work/screen/depmap_22q2 --screen tcga_gtex=GRCh38=runs/.domain_screen_pilot_work/screen/tcga_gtex --tcga-gtex runs/.domain_screen_pilot_work/normalized/tcga_gtex.tsv --repeats GRCh38=runs/.domain_screen_pilot_work/dl_ucsc_hg38_genomicSuperDups/genomicSuperDups.txt.gz,runs/.domain_screen_pilot_work/dl_ucsc_hg38_rmsk/rmsk.txt.gz --repeats GRCh37=runs/.domain_screen_pilot_work/dl_ucsc_hg19_genomicSuperDups/genomicSuperDups.txt.gz,runs/.domain_screen_pilot_work/dl_ucsc_hg19_rmsk/rmsk.txt.gz --reference GRCh38=runs/.domain_screen_pilot_work/dl_ucsc_hg38_2bit/hg38.2bit --reference GRCh37=runs/.domain_screen_pilot_work/dl_ucsc_hg19_2bit/hg19.2bit --ensembl-release GRCh38=runs/.domain_screen_pilot_work/dl_ensembl116_cds/Homo_sapiens.GRCh38.cds.all.fa.gz,runs/.domain_screen_pilot_work/dl_ensembl116_pep/Homo_sapiens.GRCh38.pep.all.fa.gz,runs/.domain_screen_pilot_work/dl_ensembl116_homologies/Compara.116.protein_default.homologies.tsv.gz --workers 4 --cache-dir runs/.domain_screen_pilot_work/cache/flags --output-dir runs/domain_screen_pilot_2026-11-10",
+    "msk_impact_50k_2026": ".venv/bin/python -I -m cfh.cli domain-screen runs/.domain_screen_pilot_work/dl_msk/msk_impact_50k_2026.tar.gz --cohort msk_impact_50k_2026 --genome-build GRCh37 --mode any-domain --input-format cbioportal-sv --omit-unshared-rows --genome-nexus-batch-size 200 --output-dir runs/.domain_screen_pilot_work/screen/msk_impact_50k_2026 --cache-dir runs/.domain_screen_pilot_work/cache/msk_impact_50k_2026_GRCh37",
+    "target_consolidated": ".venv/bin/python -I -m cfh.cli domain-screen runs/.domain_screen_pilot_work/normalized/target_consolidated.tsv --cohort target_consolidated --genome-build GRCh38 --mode any-domain --input-format open-fusion-table --omit-unshared-rows --genome-nexus-batch-size 200 --output-dir runs/.domain_screen_pilot_work/screen/target_consolidated --cache-dir runs/.domain_screen_pilot_work/cache/target_starfusion_GRCh38",
+    "target_starfusion": ".venv/bin/python -I -m cfh.cli domain-screen runs/.domain_screen_pilot_work/normalized/target_starfusion.tsv --cohort target_starfusion --genome-build GRCh38 --mode any-domain --input-format open-fusion-table --omit-unshared-rows --genome-nexus-batch-size 200 --output-dir runs/.domain_screen_pilot_work/screen/target_starfusion --cache-dir runs/.domain_screen_pilot_work/cache/target_starfusion_GRCh38",
+    "tcga_gtex": ".venv/bin/python -I -m cfh.cli domain-screen runs/.domain_screen_pilot_work/normalized/tcga_gtex.tsv --cohort tcga_gtex --genome-build GRCh38 --mode any-domain --input-format open-fusion-table --omit-unshared-rows --genome-nexus-batch-size 200 --output-dir runs/.domain_screen_pilot_work/screen/tcga_gtex --cache-dir runs/.domain_screen_pilot_work/cache/target_starfusion_GRCh38"
+  },
+  "flag_command": ".venv/bin/python -I scripts/domain_screen_pilot_flags.py --screen msk_impact_50k_2026=GRCh37=runs/.domain_screen_pilot_work/screen/msk_impact_50k_2026 --screen target_starfusion=GRCh38=runs/.domain_screen_pilot_work/screen/target_starfusion --screen target_consolidated=GRCh38=runs/.domain_screen_pilot_work/screen/target_consolidated --screen depmap_22q2=GRCh38=runs/.domain_screen_pilot_work/screen/depmap_22q2 --screen tcga_gtex=GRCh38=runs/.domain_screen_pilot_work/screen/tcga_gtex --tcga-gtex runs/.domain_screen_pilot_work/normalized/tcga_gtex.tsv --repeats GRCh38=runs/.domain_screen_pilot_work/dl_ucsc_hg38_genomicSuperDups/genomicSuperDups.txt.gz,runs/.domain_screen_pilot_work/dl_ucsc_hg38_rmsk/rmsk.txt.gz --repeats GRCh37=runs/.domain_screen_pilot_work/dl_ucsc_hg19_genomicSuperDups/genomicSuperDups.txt.gz,runs/.domain_screen_pilot_work/dl_ucsc_hg19_rmsk/rmsk.txt.gz --reference GRCh38=runs/.domain_screen_pilot_work/dl_ucsc_hg38_2bit/hg38.2bit --reference GRCh37=runs/.domain_screen_pilot_work/dl_ucsc_hg19_2bit/hg19.2bit --ensembl-release GRCh38=runs/.domain_screen_pilot_work/dl_ensembl116_cds/Homo_sapiens.GRCh38.cds.all.fa.gz,runs/.domain_screen_pilot_work/dl_ensembl116_pep/Homo_sapiens.GRCh38.pep.all.fa.gz,runs/.domain_screen_pilot_work/dl_ensembl116_homologies/Compara.116.protein_default.homologies.tsv.gz --workers 4 --cache-dir runs/.domain_screen_pilot_work/cache/flags --output-dir runs/domain_screen_pilot_2026-11-10",
+  "attempt_wall_seconds": {
+    "depmap_22q2.attempt1": 2330.47,
+    "depmap_22q2.attempt2": 5663.91,
+    "depmap_22q2.attempt3": null,
+    "depmap_22q2.attempt4": 1133.13,
+    "depmap_22q2.attempt5": null,
+    "depmap_22q2.attempt6": 2243.81,
+    "depmap_22q2.attempt7": 1572.37,
+    "msk_impact_50k_2026.attempt1": 233.9,
+    "msk_impact_50k_2026.attempt2": 268.66,
+    "msk_impact_50k_2026.attempt3": 21.38,
+    "target_consolidated.attempt1": 1012.08,
+    "target_consolidated.attempt2": 329.43,
+    "target_starfusion.attempt1": 3334.11,
+    "target_starfusion.attempt2": null,
+    "target_starfusion.attempt3": 3941.27,
+    "target_starfusion.attempt4": 697.85,
+    "tcga_gtex.attempt1": null,
+    "tcga_gtex.attempt2": 4162.23
+  },
+  "pipeline_log": [
+    "2026-11-10T22:48:57Z head=02ff7d6d03dfeca86075a725aacaaba850c2902c",
+    "2026-11-10T22:48:57Z fetch start",
+    "2026-11-10T22:51:01Z fetch done",
+    "2026-11-10T22:51:43Z ucsc done",
+    "2026-11-10T22:51:43Z msk_impact_50k_2026 attempt 1 start",
+    "2026-11-10T22:55:37Z msk_impact_50k_2026 attempt 1 exit=1",
+    "2026-11-10T22:56:38Z msk_impact_50k_2026 attempt 2 start",
+    "2026-11-10T23:01:06Z msk_impact_50k_2026 attempt 2 exit=0",
+    "2026-11-10T23:01:06Z target_starfusion attempt 1 start",
+    "2026-11-10T23:07:05Z pipeline.sh stopped after target_starfusion start; pipeline2.sh takes over (shared GRCh38 cache)",
+    "2026-11-10T23:56:51Z target_starfusion attempt 1 process ended (summary present: no)",
+    "2026-11-10T23:56:51Z target_starfusion attempt 2 start (cache runs/.domain_screen_pilot_work/cache/target_starfusion_GRCh38)",
+    "2026-11-10T23:58:54Z target_starfusion attempt 2 killed at start (pipeline2 stopped to commit 78d1242 retry fix); pipeline3.sh takes over at 78d1242",
+    "2026-11-10T23:58:55Z pipeline3 head=78d12424c8a68891c3eb814834eb645582026f07",
+    "2026-11-10T23:58:56Z target_starfusion attempt 3 start (cache runs/.domain_screen_pilot_work/cache/target_starfusion_GRCh38)",
+    "2026-11-11T01:04:38Z target_starfusion attempt 3 exit=0",
+    "2026-11-11T01:04:38Z target_consolidated attempt 1 start (cache runs/.domain_screen_pilot_work/cache/target_starfusion_GRCh38)",
+    "2026-11-11T01:21:30Z target_consolidated attempt 1 exit=0",
+    "2026-11-11T01:21:30Z depmap_22q2 attempt 1 start (cache runs/.domain_screen_pilot_work/cache/target_starfusion_GRCh38)",
+    "2026-11-11T02:00:20Z depmap_22q2 attempt 1 exit=1",
+    "2026-11-11T02:01:50Z depmap_22q2 attempt 2 start (cache runs/.domain_screen_pilot_work/cache/target_starfusion_GRCh38)",
+    "2026-11-11T02:56:20Z seeded GRCh38 screen CDS cache from Ensembl release-116 cds.all.fa.gz (REST serves release 116; 1042/1042 REST-fetched entries identical)",
+    "2026-11-11T03:06:53Z pipeline3.sh stopped (depmap attempt 2 left running); pipeline4.sh runs tcga_gtex concurrently, then MSK, at affe457",
+    "2026-11-11T03:06:54Z pipeline4 head=affe457cae45b1d1372fcd865416561865200a29",
+    "2026-11-11T03:06:55Z tcga_gtex attempt 1 start (cache runs/.domain_screen_pilot_work/cache/target_starfusion_GRCh38)",
+    "2026-11-11T03:36:28Z depmap_22q2 attempt 2 ended without a summary",
+    "2026-11-11T03:36:28Z depmap_22q2 attempt 3 start (cache runs/.domain_screen_pilot_work/cache/target_starfusion_GRCh38)",
+    "2026-11-11T04:45:58Z pipeline4 stopped (depmap attempt 3 at 72.6k/356k, tcga_gtex attempt 1 at ~120k/716k, both CPU-bound) to restart at a8a33b1 (memoised assess_event, persisted 404s); pipeline5 re-runs all five cohorts at one SHA",
+    "2026-11-11T04:45:59Z pipeline5 head=a8a33b1fa376052452e24b5a02138987ab615812",
+    "2026-11-11T04:45:59Z msk_impact_50k_2026 attempt 3 start (cache runs/.domain_screen_pilot_work/cache/msk_impact_50k_2026_GRCh37)",
+    "2026-11-11T04:45:59Z depmap_22q2 attempt 4 start (cache runs/.domain_screen_pilot_work/cache/target_starfusion_GRCh38)",
+    "2026-11-11T04:45:59Z tcga_gtex attempt 2 start (cache runs/.domain_screen_pilot_work/cache/target_starfusion_GRCh38)",
+    "2026-11-11T04:45:59Z target_starfusion attempt 4 start (cache runs/.domain_screen_pilot_work/cache/target_starfusion_GRCh38)",
+    "2026-11-11T04:45:59Z tcga_gtex attempt 2 exit=127",
+    "2026-11-11T04:45:59Z depmap_22q2 attempt 4 exit=127",
+    "2026-11-11T04:45:59Z target_starfusion attempt 4 exit=127",
+    "2026-11-11T04:45:59Z msk_impact_50k_2026 attempt 3 exit=127",
+    "2026-11-11T04:46:11Z pipeline5 first launch had a wrong worktree path (exit 127, nothing ran); its four attempt logs removed; relaunched",
+    "2026-11-11T04:46:12Z pipeline5 head=a8a33b1fa376052452e24b5a02138987ab615812",
+    "2026-11-11T04:46:12Z tcga_gtex attempt 2 start (cache runs/.domain_screen_pilot_work/cache/target_starfusion_GRCh38)",
+    "2026-11-11T04:46:12Z depmap_22q2 attempt 4 start (cache runs/.domain_screen_pilot_work/cache/target_starfusion_GRCh38)",
+    "2026-11-11T04:46:12Z target_starfusion attempt 4 start (cache runs/.domain_screen_pilot_work/cache/target_starfusion_GRCh38)",
+    "2026-11-11T04:46:12Z msk_impact_50k_2026 attempt 3 start (cache runs/.domain_screen_pilot_work/cache/msk_impact_50k_2026_GRCh37)",
+    "2026-11-11T04:46:33Z msk_impact_50k_2026 attempt 3 exit=0",
+    "2026-11-11T04:57:49Z target_starfusion attempt 4 exit=0",
+    "2026-11-11T04:57:49Z target_consolidated attempt 2 start (cache runs/.domain_screen_pilot_work/cache/target_starfusion_GRCh38)",
+    "2026-11-11T05:03:19Z target_consolidated attempt 2 exit=0",
+    "2026-11-11T05:05:05Z depmap_22q2 attempt 4 exit=1",
+    "2026-11-11T05:06:35Z depmap_22q2 attempt 5 start (cache runs/.domain_screen_pilot_work/cache/target_starfusion_GRCh38)",
+    "2026-11-11T05:19:34Z depmap_22q2 attempt 5 stopped by hand (old code would fail again at THRA1/BTR); next attempt runs 13002e3",
+    "2026-11-11T05:19:35Z depmap_22q2 attempt 5 exit=143",
+    "2026-11-11T05:21:06Z depmap_22q2 attempt 6 start (cache runs/.domain_screen_pilot_work/cache/target_starfusion_GRCh38)",
+    "2026-11-11T05:55:34Z tcga_gtex attempt 2 exit=0",
+    "2026-11-11T05:58:30Z depmap_22q2 attempt 6 exit=1",
+    "2026-11-11T06:00:00Z depmap_22q2 attempt 7 start (cache runs/.domain_screen_pilot_work/cache/target_starfusion_GRCh38)",
+    "2026-11-11T06:04:39Z seeded no-CDS records for 4787 cached canonical transcripts absent from Ensembl 116 cds.all (REST 116 checked on 3: HTTP 400 'No sequences returned')",
+    "2026-11-11T06:26:13Z depmap_22q2 attempt 7 exit=0",
+    "2026-11-11T06:26:13Z PIPELINE DONE",
+    "2026-11-11T06:26:31Z flags start at 13002e3",
+    "2026-11-11T06:44:04Z flags done",
+    "FINALIZE DONE",
+    "2026-11-11T16:05:19Z review fixes committed at 832a267; flag-only re-run on existing screens (854bb1d outputs saved in before_854/)",
+    "2026-11-11T16:05:20Z flags start at 832a267",
+    "2026-11-11T18:03:53Z flags done",
+    "FINALIZE DONE"
+  ],
+  "untrusted_input_handling": "each download in its own new directory under runs/.domain_screen_pilot_work/; every Python process that read them ran with -I"
+}

@@ -476,9 +476,65 @@ def test_get_gives_up_after_max_retries(monkeypatch):
     assert mock_session.get.call_count == 3  # initial attempt + 2 retries
 
 
+def test_get_and_gene_transcripts_retry_transient_request_errors(monkeypatch):
+    import requests
+
+    monkeypatch.setattr(gns.time, "sleep", lambda *_: None)
+    ok = MagicMock(status_code=200)
+    ok.json.return_value = [{"transcriptId": "ENST1"}]
+    session = MagicMock()
+    session.get.side_effect = [requests.ReadTimeout("slow"), requests.ConnectionError("x"), ok]
+    session.post.side_effect = [requests.ReadTimeout("slow"), ok]
+    client = gns.GenomeNexusClient(session=session, max_retries=3, backoff_seconds=0.01)
+    assert client._get("/ensembl/transcript/ENST1") is ok
+    assert client.fetch_transcripts_for_gene("ERG") == [{"transcriptId": "ENST1"}]
+    assert session.get.call_count == 3 and session.post.call_count == 2
+
+
+def test_get_reraises_a_transient_error_after_max_retries(monkeypatch):
+    import requests
+
+    monkeypatch.setattr(gns.time, "sleep", lambda *_: None)
+    session = MagicMock()
+    session.get.side_effect = requests.ReadTimeout("slow")
+    client = gns.GenomeNexusClient(session=session, max_retries=2, backoff_seconds=0.01)
+    with pytest.raises(requests.ReadTimeout):
+        client._get("/ensembl/transcript/ENST1")
+    assert session.get.call_count == 3
+
+
 @pytest.mark.network
 def test_fetch_canonical_transcript_real_network_call():
     """Excluded from default `pytest -m "not network"` runs."""
     client = gns.GenomeNexusClient()
     payload = client.fetch_canonical_transcript("BRAF")
     assert payload["refseqMrnaId"] == "NM_004333"
+
+
+def test_canonical_symbol_is_one_encoded_path_segment_and_400_means_not_found():
+    from unittest.mock import MagicMock
+
+    from cfh.mapping.genome_nexus_source import GenomeNexusClient, GenomeNexusGeneNotFound
+
+    session = MagicMock()
+    session.get.return_value.status_code = 400
+    client = GenomeNexusClient(base_url="https://gn.example", session=session)
+    with pytest.raises(GenomeNexusGeneNotFound, match="THRA1/BTR"):
+        client.fetch_canonical_transcript("THRA1/BTR")
+    assert session.get.call_args.args[0] == (
+        "https://gn.example/ensembl/canonical-transcript/hgnc/THRA1%2FBTR"
+    )
+
+
+def test_canonical_non_json_body_is_reported_with_the_symbol():
+    from unittest.mock import MagicMock
+
+    from cfh.mapping.genome_nexus_source import GenomeNexusClient
+
+    session = MagicMock()
+    session.get.return_value.status_code = 200
+    session.get.return_value.headers = {"content-type": "text/html"}
+    session.get.return_value.json.side_effect = ValueError("Expecting value")
+    client = GenomeNexusClient(base_url="https://gn.example", session=session)
+    with pytest.raises(ValueError, match="non-JSON body for 'ODD'.*text/html"):
+        client.fetch_canonical_transcript("ODD")

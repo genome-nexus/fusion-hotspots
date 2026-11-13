@@ -5,9 +5,11 @@ from unittest.mock import MagicMock
 
 import pandas as pd
 import pytest
+import requests
 
 from cfh.cohort.domain_screen import (
     SCREEN_COLUMNS,
+    _site_chromosome,
     is_screenable_fusion,
     screen_cohort,
     write_screen_outputs,
@@ -876,6 +878,22 @@ def test_ensembl_cds_client_builds_per_build_and_caches(tmp_path):
     assert EnsemblCdsClient("T2T", session=session).fetch_cds("ENST3") is None
 
 
+def test_ensembl_cds_client_retries_dropped_connections(tmp_path):
+    ok = MagicMock(status_code=200)
+    ok.json.return_value = {"seq": "ATGTAA"}
+    session = MagicMock()
+    session.get.side_effect = [requests.ConnectionError("Remote end closed"), ok]
+    client = EnsemblCdsClient("GRCh38", session=session, backoff_seconds=0)
+    assert client.fetch_cds("ENST1") == "ATGTAA"
+    assert session.get.call_count == 2
+
+    session.get.side_effect = requests.ConnectionError("down")
+    with pytest.raises(requests.ConnectionError):
+        EnsemblCdsClient("GRCh38", session=session, backoff_seconds=0, max_retries=1).fetch_cds(
+            "ENST2"
+        )
+
+
 def _shifted_payloads(gene, shift):
     """The fixture's payloads for ``gene`` with every coordinate moved by ``shift``."""
     payloads = json.loads(json.dumps(TRANSCRIPTS["transcripts"][gene]))
@@ -1285,3 +1303,162 @@ def test_per_gene_pipeline_call_uses_the_key_family_and_partner_locus():
     columns = junction_call_columns(call, {"Tumor_Paired_End_Read_Count": 6})
     assert columns["reconstitution_class"] == TANDEM_DUPLICATION_OR_INSERTION
     assert columns["reconstitution_tumor_paired_end_reads"] == 6
+
+
+def test_screen_records_partner_chromosomes_and_fused_cds_context():
+    rows, _ = screen_cohort(_screen_frame(), _synthetic_source(), cohort="demo")
+    row = next(item for item in rows if item["pfam_family"] == OTHER_FAMILY)
+    assert (row["five_prime_chromosome"], row["three_prime_chromosome"]) == ("1", "2")
+    assert row["five_prime_ensembl_transcript"] == "ENST_AAA"
+    assert row["three_prime_ensembl_transcript"] == "ENST_BBB"
+    cds = SyntheticGenomeNexus().cds
+    kept = row["five_prime_cds_retained"]
+    start = row["three_prime_cds_start"]
+    fused = cds[:kept] + cds[start - 1 :]
+    assert row["junction_context_nt"] == fused[kept - 50 : kept + 50]
+    assert len(row["junction_context_nt"]) == 100
+
+
+def test_site_chromosome_prefers_the_named_gene_and_refuses_a_tie():
+    row = {
+        "Site1_Hugo_Symbol": "AAA",
+        "Site1_Chromosome": "1",
+        "Site1_Position": 500,
+        "Site2_Hugo_Symbol": "BBB",
+        "Site2_Chromosome": "2",
+        "Site2_Position": 500.0,
+    }
+    assert _site_chromosome(row, "AAA", 500) == "1"
+    assert _site_chromosome(row, "BBB", 500) == "2"
+    assert _site_chromosome(row, "CCC", 500) is None
+    assert _site_chromosome(row, "AAA", 501) is None
+    assert _site_chromosome(row, "AAA", None) is None
+
+
+def _no_family_payload(gene):
+    payload = SyntheticGenomeNexus().fetch_canonical_transcript("BBB")
+    return {**payload, "transcriptId": f"ENST_{gene}", "pfamDomains": []}
+
+
+def test_screen_can_omit_unshared_rows_but_still_counts_them():
+    frame = pd.concat([_screen_frame(), _screen_frame()], ignore_index=True)
+    frame.loc[1, "Event_Info"] = "Protein Fusion: mid-exon {AAA:ZZZ}"
+    frame.loc[1, "Site2_Hugo_Symbol"] = "ZZZ"
+    frame.loc[1, "Annotation"] = None
+
+    def source():
+        built = _synthetic_source()
+        real = built.client.fetch_canonical_transcript
+        built.client.fetch_canonical_transcript = lambda gene: (
+            _no_family_payload(gene) if gene == "ZZZ" else real(gene)
+        )
+        built.client.fetch_transcripts_for_gene = lambda gene: [
+            built.client.fetch_canonical_transcript(gene)
+        ]
+        return built
+
+    kept, kept_summary = screen_cohort(frame, source(), cohort="demo")
+    omitted, omitted_summary = screen_cohort(
+        frame, source(), cohort="demo", keep_unshared_rows=False
+    )
+    assert NO_SHARED_FAMILY in {row["reconstitution_class"] for row in kept}
+    assert NO_SHARED_FAMILY not in {row["reconstitution_class"] for row in omitted}
+    assert len(omitted) == len(kept) - 1
+    assert omitted_summary["class_counts"] == kept_summary["class_counts"]
+    assert omitted_summary["class_counts"][NO_SHARED_FAMILY] == 1
+
+
+def test_screen_passes_requested_columns_through_to_rows_and_tsv(tmp_path):
+    frame = _screen_frame()
+    frame["Open_tissue_class"] = "normal"
+    rows, summary = screen_cohort(
+        frame, _synthetic_source(), cohort="demo", passthrough_columns=("Open_tissue_class",)
+    )
+    assert {row["Open_tissue_class"] for row in rows} == {"normal"}
+    paths = write_screen_outputs(rows, summary, tmp_path, extra_columns=("Open_tissue_class",))
+    with paths["domain_screen_tsv"].open() as handle:
+        header = handle.readline().rstrip("\n").split("\t")
+    assert header == [*SCREEN_COLUMNS, "Open_tissue_class"]
+
+
+def test_prefetch_uses_the_configured_batch_size(monkeypatch):
+    import cfh.mapping.transcript_models as transcript_models
+
+    seen = {}
+
+    def fake_batch(genes, **kwargs):
+        seen.update(kwargs)
+        return SimpleNamespace(by_gene_symbol={})
+
+    monkeypatch.setattr(transcript_models, "batch_fetch_canonical_transcripts", fake_batch)
+    source = TranscriptModelSource(
+        BUILD,
+        genome_nexus_client=SyntheticGenomeNexus(),
+        cds_client=SyntheticCds(""),
+        prefetch_batch_size=50,
+    )
+    source.prefetch_canonical(["AAA"])
+    assert seen["batch_size"] == 50
+
+
+def test_screen_assesses_a_recurrent_junction_once_and_copies_its_rows(monkeypatch):
+    from cfh.cohort import domain_screen
+
+    calls = []
+    real = domain_screen.assess_event
+
+    def counting(**kwargs):
+        calls.append(kwargs["five_prime_breakpoint"])
+        return real(**kwargs)
+
+    monkeypatch.setattr(domain_screen, "assess_event", counting)
+    frame = pd.concat([_screen_frame()] * 3, ignore_index=True)
+    frame.loc[1, "Sample_Id"] = "S2"
+    frame.loc[2, "Sample_Id"] = "S3"
+    frame.loc[2, "Tumor_Split_Read_Count"] = 1
+    rows, summary = screen_cohort(frame, _synthetic_source(), cohort="demo")
+    assert len(calls) == 1
+    assert summary["family_rows"] == 6
+    clean = [row for row in rows if row["pfam_family"] == OTHER_FAMILY]
+    assert [row["sample_id"] for row in clean] == ["S1", "S2", "S3"]
+    assert [row["tumor_split_reads"] for row in clean] == [7, 7, 1]
+    unmemoised, _ = screen_cohort(_screen_frame(), _synthetic_source(), cohort="demo")
+    assert rows[:2] == unmemoised
+
+    clean[0]["class_reason"] = "edited"
+    assert clean[1]["class_reason"] != "edited"
+
+
+def test_genome_nexus_not_found_is_recorded_and_not_requested_again(tmp_path):
+    from cfh.mapping.genome_nexus_source import GenomeNexusGeneNotFound
+
+    class Client(SyntheticGenomeNexus):
+        requested = []
+
+        def fetch_canonical_transcript(self, gene):
+            self.requested.append(gene)
+            if gene == "GONE":
+                raise GenomeNexusGeneNotFound(gene)
+            return super().fetch_canonical_transcript(gene)
+
+    def source():
+        client = Client()
+        built = TranscriptModelSource(
+            BUILD,
+            genome_nexus_client=client,
+            cds_client=SyntheticCds(client.cds),
+            cache_dir=tmp_path,
+        )
+        return built, client
+
+    first, client = source()
+    assert first.canonical("GONE") is None
+    assert client.requested == ["GONE"]
+    marker = next(tmp_path.rglob("GONE.notfound"))
+    assert marker.parent.name == BUILD
+
+    second, client2 = source()
+    Client.requested = []
+    assert second.canonical("GONE") is None
+    second.prefetch_canonical(["GONE"])  # skipped: nothing left to batch
+    assert Client.requested == []
