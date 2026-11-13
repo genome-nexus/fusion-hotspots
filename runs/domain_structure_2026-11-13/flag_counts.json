@@ -1,0 +1,58 @@
+{
+ "records": 27,
+ "by_flag": {
+  "fold_supported": 15,
+  "fold_doubtful": 9,
+  "not_assessed": 3
+ },
+ "by_cohort": {
+  "depmap_22q2": {
+   "fold_supported": 8,
+   "fold_doubtful": 4
+  },
+  "msk_impact_50k_2026": {
+   "fold_doubtful": 2
+  },
+  "target_consolidated": {
+   "fold_doubtful": 3,
+   "not_assessed": 1
+  },
+  "target_starfusion": {
+   "fold_doubtful": 3,
+   "not_assessed": 1
+  },
+  "tcga_gtex": {
+   "fold_supported": 11,
+   "fold_doubtful": 5,
+   "not_assessed": 3
+  }
+ },
+ "by_pr1_tier": {
+  "likely_broken": {
+   "not_assessed": 2,
+   "fold_doubtful": 3
+  },
+  "likely_intact": {
+   "fold_supported": 13,
+   "fold_doubtful": 1
+  },
+  "not_assessed": {
+   "fold_supported": 1
+  },
+  "uncertain": {
+   "fold_doubtful": 5,
+   "fold_supported": 1,
+   "not_assessed": 1
+  }
+ },
+ "rules_fired": {
+  "S1_all_pass": 15,
+  "D3_junction_very_low": 8,
+  "D5_halves_not_packed": 5,
+  "N1_parents_not_confident": 3,
+  "D2_domain_plddt_drop": 3,
+  "D4_junction_plddt_drop": 7,
+  "D1_domain_plddt_low": 3,
+  "D6_fold_differs": 3
+ }
+}
