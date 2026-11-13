@@ -45,7 +45,8 @@ RULES = {
     f"{JUNCTION_PLDDT_DROP:g}",
     "D5_halves_not_packed": f"chimera inter-half PAE >= {INTERHALF_PAE_FLOOR:g} A and >= "
     f"{INTERHALF_PAE_RISE:g} A above the lower parent inter-half PAE",
-    "D6_fold_differs": f"mapped TM-score < {SAME_FOLD_TM:g} against both parent predictions",
+    "D6_fold_differs": f"mapped TM-score (normalised by the parent domain) < {SAME_FOLD_TM:g} "
+    "against both parent predictions",
     "N0_prediction_missing": "a chimera or parent prediction failed / is missing",
     "N1_parents_not_confident": f"neither parent's domain pLDDT is >= {CONFIDENT_PLDDT:g}: "
     "no confident reference fold to compare with",

@@ -50,6 +50,11 @@ The same settings are used for chimeras and parents, so every comparison is
 like-for-like. Wall time per prediction and the total are in
 `run_manifest.json` (`wall_time`).
 
+Committed run (`runs/domain_structure_2026-11-13/`): 71 sequences, 9 MSA
+tickets in ~53 min, then 11.8 h of prediction wall time on the M3 CPU
+(23 s for 113 residues to 82 min for the 1,027-residue GPC3::GPC4 window;
+time grows roughly with length squared), all 71 validated, none failed.
+
 **Moving to a GPU host.** Install ColabFold there and pass a config such as
 `{"colabfold_command": ["/path/to/colabfold_batch"], "msa_python":
 "/path/to/python", "data_dir": "/path/to/weights", "num_models": 5,
@@ -139,15 +144,23 @@ the two parents.
 Chimera vs each ColabFold parent model (`vs_5p_*`, `vs_3p_*`), over mapped
 domain residues:
 
-* `tm` -- TM-score with the fixed mapping, normalised by the chimera domain
-  length (own implementation of the TM-score search: seed fragments L, L/2,
-  ... >= 4, iterative re-superposition; Zhang & Skolnick 2004);
+* `tm` -- TM-score with the fixed mapping, normalised by the **parent**
+  domain length (own implementation of the TM-score search: seed fragments
+  L, L/2, ... >= 4, iterative re-superposition; Zhang & Skolnick 2004). The
+  parent is the reference, as a native structure is when a model is scored:
+  chimera residues with no parent counterpart (a junction insertion) do not
+  lower `tm`, parent domain residues missing from the chimera (a deletion) do.
+  A first version normalised by the chimera domain, which capped a
+  whole-domain duplication such as GPC3::GPC4 (985-residue chimeric domain,
+  ~520 mapped) near 0.5 however well the mapped residues matched;
+* `tm_chim_norm` -- the same superposition search normalised by the chimera
+  domain length (what fraction of the chimeric domain sits like the parent);
 * `rmsd` -- RMSD of all mapped CA pairs after least-squares superposition;
 * `local_rmsd`, `n_local` -- RMSD after local superposition of the mapped
   residues whose CA is within 8 A of a junction residue (`J`, `J+1`, and any
   junction-inserted residue) in the chimera model;
 * `tmalign_seqfree` -- sequence-independent TM-align (`tmtools`) of the two
-  domain regions, normalised by the chimera domain; secondary, register-free.
+  domain regions, normalised by the parent domain; secondary, register-free.
 
 Chimera vs the AlphaFold DB parent models used in PR 1 (`vs_afdb_5p_*`,
 `vs_afdb_3p_*`): same measures, after mapping the parent window onto the AFDB
@@ -171,7 +184,7 @@ parent domain, and `afdb_*_domain_plddt` gives AFDB's own domain pLDDT.
 | D3_junction_very_low | fold_doubtful | chimera junction-window min pLDDT < 50 while the better parent's junction-window mean >= 70 |
 | D4_junction_plddt_drop | fold_doubtful | chimera minus better parent junction-window mean pLDDT <= -15 |
 | D5_halves_not_packed | fold_doubtful | chimera inter-half PAE >= 10 A and >= 5 A above the lower parent inter-half PAE |
-| D6_fold_differs | fold_doubtful | mapped TM-score < 0.5 against both parent predictions |
+| D6_fold_differs | fold_doubtful | mapped TM-score (normalised by the parent domain) < 0.5 against both parent predictions |
 | N2_metric_missing | not_assessed | no doubt rule fired, but a measure needed for fold_supported is missing (named) |
 | S1_all_pass | fold_supported | everything assessed, no doubt rule fired |
 
@@ -195,6 +208,21 @@ Thresholds, justified:
   keeps multi-lobed domains, whose parents already have high inter-half PAE,
   from firing.
 
+Known blind spots, kept visible rather than tuned away after seeing the data:
+
+* **Rod domains (PF00038, keratin/vimentin).** A monomeric ~310-residue
+  coiled-coil rod is one long, gently curved helix; its curvature is
+  arbitrary without the partner chain, so whole-domain TM-scores sit around
+  0.5 even between our parent model and AFDB (`parent*_vs_afdb_tm`), and
+  inter-half PAE is ~25 A in parents and chimeras alike. For these records
+  the junction measures (pLDDT, local RMSD) carry the information; D6 is
+  close to its threshold by construction.
+* **Whole-domain tandem duplications** (GPC3::GPC4). The "3' half" is a
+  complete second domain, so D5 compares two separate units with a parent
+  baseline that is a single domain; D5 firing there means "two domains, not
+  one", not necessarily misfolding.
+* **Collagen** (below).
+
 These are documented heuristics, not calibrated values. Collagen
 triple-helix domains (PF01391) are not foldable as monomers, so their parents
 are typically low-confidence and the records end up `not_assessed`
@@ -203,10 +231,20 @@ are typically low-confidence and the records end up `not_assessed`
 ## Outputs (`runs/domain_structure_<date>/`)
 
 * `domain_structure_metrics.tsv.gz` -- one row per shortlisted record (ids,
-  PR 1 tier unchanged as `pr1_tier`, all measures, flag);
+  PR 1 tier unchanged as `pr1_tier`, the screen's `pilot_indel_residues` and
+  `hybrid_residue`, all measures, flag). `aligned_deleted_columns` /
+  `n_deleted_columns` come from PR 1's `place_chimera`, which counts 0
+  deleted columns when the junction has a hybrid-codon residue (the hybrid
+  takes the 3' column next to the 3' junction residue), e.g. 0 for the
+  466-residue glypican deletions; use `pilot_indel_residues` for indel size;
 * `models/<job>.pdb.gz` -- the top-ranked (only) model per distinct sequence;
-  `models/<job>.scores.json.gz` -- pLDDT (2 decimals), PAE (1 decimal; the
-  metrics use full precision), pTM. MSAs and other models are not committed;
+  `models/<job>.scores.json.gz` -- pLDDT (2 decimals), PAE
+  (`--pae-decimals`, default 1; the metrics always use the full-precision
+  cached scores), pTM. `--export-fusions A::B,C::D` writes only those
+  records' chimera and parent models (the committed 2026-11-13 run exports
+  the named cases, PAE in whole A, ~2.5 MB); every model stays in the work
+  cache and is listed in the manifest with `exported`. MSAs are never
+  committed;
 * `flag_counts.json` -- flags overall, per cohort, per PR 1 tier, rules fired;
 * `run_manifest.json` -- code commit, ColabFold/AlphaFold/JAX versions, weight
   source and sha256, settings and `settings_id`, MSA server, input sha256,

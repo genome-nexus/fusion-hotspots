@@ -99,6 +99,8 @@ ID_COLUMNS = (
     "five_prime_domain",
     "three_prime_domain",
     "junction_index",
+    "hybrid_residue",
+    "pilot_indel_residues",
     "aligned_inserted_sequence",
     "aligned_deleted_columns",
     "uniprot_5p",
@@ -160,17 +162,34 @@ def write_tsv(rows: list[dict[str, Any]], path: Path) -> None:
 
 
 def export_models(
-    jobs: list[Job], predictions: dict[str, Prediction], out_dir: Path
+    jobs: list[Job],
+    predictions: dict[str, Prediction],
+    out_dir: Path,
+    only: set[str] | None = None,
+    pae_decimals: int = 1,
 ) -> dict[str, dict[str, Any]]:
     """Top-ranked model (PDB, gzip) and compact pLDDT/PAE JSON (gzip) per prediction.
 
-    pLDDT keeps 2 decimals and PAE 1 decimal (metrics are computed before rounding).
+    ``only`` limits the written files to those job ids (every job stays in the
+    returned index, with ``exported`` saying whether its files were written).
+    pLDDT keeps 2 decimals and PAE ``pae_decimals`` (0: whole A); the metrics
+    are computed from the full-precision cached scores, before rounding.
     """
     out_dir.mkdir(parents=True, exist_ok=True)
     index: dict[str, dict[str, Any]] = {}
     for job in jobs:
         prediction = predictions.get(job.job_id)
         if prediction is None:
+            continue
+        exported = only is None or job.job_id in only
+        index[job.job_id] = {
+            "roles": job.roles,
+            "length": len(job.sequence),
+            "wall_seconds": prediction.wall_seconds,
+            "model_name": prediction.model_name,
+            "exported": exported,
+        }
+        if not exported:
             continue
         shutil.copyfile(prediction.pdb_path, out_dir / f"{job.job_id}.pdb.gz")
         scores = {
@@ -179,16 +198,14 @@ def export_models(
             "model_name": prediction.model_name,
             "ptm": round(prediction.ptm, 4),
             "plddt": [round(x, 2) for x in prediction.plddt],
-            "pae": [[round(x, 1) for x in row] for row in prediction.pae],
+            "pae_decimals": pae_decimals,
+            "pae": [
+                [round(x, pae_decimals) if pae_decimals else int(round(x)) for x in row]
+                for row in prediction.pae
+            ],
         }
         with gzip.open(out_dir / f"{job.job_id}.scores.json.gz", "wt") as handle:
             json.dump(scores, handle, separators=(",", ":"))
-        index[job.job_id] = {
-            "roles": job.roles,
-            "length": len(job.sequence),
-            "wall_seconds": prediction.wall_seconds,
-            "model_name": prediction.model_name,
-        }
     return index
 
 

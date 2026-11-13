@@ -19,11 +19,12 @@ from cfh.domain_structure.flags import (
     assign_flag,
 )
 from cfh.domain_structure.geometry import kabsch, superposed_rmsd, tm_d0, tm_score_fixed
-from cfh.domain_structure.jobs import build_jobs
+from cfh.domain_structure.jobs import Job, build_jobs
 from cfh.domain_structure.metrics import (
     AfdbModel,
     Window,
     chimera_halves,
+    compare,
     junction_window,
     parent_halves,
     record_metrics,
@@ -40,7 +41,7 @@ from cfh.domain_structure.predictor import (
     read_ca,
     validate_outputs,
 )
-from cfh.domain_structure.run import assess, flag_counts
+from cfh.domain_structure.run import assess, export_models, flag_counts
 
 DATA = Path(__file__).parent / "data" / "domain_structure"
 FLI1_ERG = (
@@ -502,6 +503,37 @@ def test_window_pae_helpers(tmp_path):
     window = Window(prediction, 11)
     assert window.inside([10, 11, 15, 16]) == [11, 15]
     assert window.mean_pae([11], [15]) == pytest.approx(6.0)
+
+
+def test_mapped_tm_is_normalised_by_the_parent_domain(tmp_path):
+    """An insertion (unmapped chimera residues) does not lower ``tm``; a deletion does."""
+    coords = _helix(40)
+    window = Window(_prediction(tmp_path, "n", "A" * 40, coords, 90.0, 3.0), 1)
+    pairs = [(c, c) for c in range(1, 21)]  # only the first 20 residues map
+    insertion = compare(window, _rotate(coords), 1, pairs, [20, 21], 20, 40)
+    assert insertion["tm"] == pytest.approx(1.0, abs=1e-3)
+    assert insertion["tm_chim_norm"] < 0.55
+    deletion = compare(window, _rotate(coords), 1, pairs, [20, 21], 40, 20)
+    assert deletion["tm"] < 0.55
+    assert deletion["tm_chim_norm"] == pytest.approx(1.0, abs=1e-3)
+    assert compare(window, coords, 1, pairs[:5], [3], 20, 20)["status"].startswith("mapping_failed")
+
+
+def test_export_models_only_selected_jobs_and_rounds_pae(tmp_path):
+    prediction = _prediction(tmp_path, "e", "ACDEF", _helix(5), 70.0, 2.4)
+    other = _prediction(tmp_path, "f", "GHIKL", _helix(5), 70.0, 2.6)
+    jobs = [Job("job_e", "ACDEF", ["chimera:X::Y"]), Job("job_f", "GHIKL", ["parent5:X"])]
+    index = export_models(
+        jobs, {"job_e": prediction, "job_f": other}, tmp_path / "out", {"job_e"}, 0
+    )
+    assert index["job_e"]["exported"] and not index["job_f"]["exported"]
+    assert sorted(p.name for p in (tmp_path / "out").iterdir()) == [
+        "job_e.pdb.gz",
+        "job_e.scores.json.gz",
+    ]
+    with gzip.open(tmp_path / "out" / "job_e.scores.json.gz", "rt") as handle:
+        scores = json.load(handle)
+    assert scores["pae"][0][1] == 2 and scores["pae_decimals"] == 0
 
 
 # --------------------------------------------------------------------------- live

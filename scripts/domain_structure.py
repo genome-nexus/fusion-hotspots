@@ -80,6 +80,14 @@ def main() -> int:
     parser.add_argument("--out", type=Path)
     parser.add_argument("--config", type=Path)
     parser.add_argument("--limit", type=int, help="only the first N jobs (smoke test)")
+    parser.add_argument(
+        "--export-fusions",
+        help="comma-separated fusions whose chimera and parent models are written to "
+        "<out>/models (default: every prediction)",
+    )
+    parser.add_argument(
+        "--pae-decimals", type=int, default=1, help="PAE precision in exported score files"
+    )
     args = parser.parse_args()
 
     config = PredictorConfig.load(args.config)
@@ -124,7 +132,19 @@ def main() -> int:
     rows = assess(record_jobs, predictions, failures, afdb)
     write_tsv(rows, out / "domain_structure_metrics.tsv.gz")
     (out / "report_tables.md").write_text(report_table(rows))
-    index = export_models(jobs, predictions, out / "models")
+    only = None
+    if args.export_fusions:
+        wanted = {name.strip() for name in args.export_fusions.split(",") if name.strip()}
+        unknown = wanted - {rj.record.fusion for rj in record_jobs}
+        if unknown:
+            parser.error(f"--export-fusions: not in the shortlist: {sorted(unknown)}")
+        only = {
+            job_id
+            for rj in record_jobs
+            if rj.record.fusion in wanted
+            for job_id in (rj.chimera, rj.parent5, rj.parent3)
+        }
+    index = export_models(jobs, predictions, out / "models", only, args.pae_decimals)
     counts = flag_counts(rows, records)
     (out / "flag_counts.json").write_text(json.dumps(counts, indent=1) + "\n")
     walls = [p.wall_seconds for p in predictions.values() if p.wall_seconds is not None]
@@ -166,6 +186,12 @@ def main() -> int:
             "per_job_seconds": {k: v["wall_seconds"] for k, v in index.items()},
         },
         "models": index,
+        "models_export": {
+            "fusions": sorted(args.export_fusions.split(",")) if args.export_fusions else "all",
+            "pae_decimals": args.pae_decimals,
+            "note": "models not exported stay in the work cache "
+            "(<work>/predictions/<settings_id>/<job>/), not committed",
+        },
         "flag_counts": counts,
         "config": {k: v for k, v in asdict(config).items() if k not in ("user_agent",)},
     }

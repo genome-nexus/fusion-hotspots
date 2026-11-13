@@ -171,9 +171,17 @@ def compare(
     target_start: int,
     pairs: list[tuple[int, int]],
     junction_residues: list[int],
-    norm_length: int,
+    reference_length: int,
+    chimera_length: int,
 ) -> dict[str, Any]:
-    """Mapped TM-score/RMSD of the chimera domain and local RMSD around the junction."""
+    """Mapped TM-score/RMSD of the chimera domain and local RMSD around the junction.
+
+    ``tm`` is normalised by ``reference_length`` (the parent domain), the
+    usual convention for scoring a model against a reference: chimera residues
+    with no parent counterpart (a junction insertion) do not lower it, parent
+    domain residues missing from the chimera (a deletion) do. ``tm_chim_norm``
+    is normalised by the chimera domain length instead.
+    """
     pairs = [
         (c, p)
         for c, p in pairs
@@ -184,7 +192,8 @@ def compare(
     ca = _coords(chimera)
     mobile = np.asarray([ca[c - chimera.start] for c, _ in pairs])
     target = np.asarray([target_coords[p - target_start] for _, p in pairs])
-    tm = tm_score_fixed(mobile, target, norm_length)
+    tm = tm_score_fixed(mobile, target, reference_length)
+    tm_chim = tm_score_fixed(mobile, target, chimera_length)
     junction_ca = [ca[c - chimera.start] for c in chimera.inside(junction_residues)]
     local_rmsd = None
     n_local = 0
@@ -201,6 +210,7 @@ def compare(
     return {
         "status": "ok",
         "tm": tm.tm_score,
+        "tm_chim_norm": tm_chim.tm_score,
         "rmsd": tm.rmsd,
         "n_mapped": tm.n_aligned,
         "local_rmsd": _r(local_rmsd, 3),
@@ -220,7 +230,7 @@ def _tmalign_domain(chimera: Window, record: ChimeraRecord, other: Window, paren
         "".join(record.chimeric_protein[c - 1] for c in c_dom),
         "".join(parent.protein[p - 1] for p in p_dom),
     )
-    return result.tm_norm_first
+    return result.tm_norm_second
 
 
 @dataclass(frozen=True)
@@ -302,18 +312,27 @@ def record_metrics(
             row[f"delta_{metric}_vs_better_parent"] = _r(chimera_value - max(known))
 
     # Chimera vs each parent prediction (like-for-like) and vs the AFDB parent models.
-    norm = record.domain_end - record.domain_start + 1
+    chimera_length = record.domain_end - record.domain_start + 1
     for role, parent, which, short in (
         ("parent5", record.five, "five", "5p"),
         ("parent3", record.three, "three", "3p"),
     ):
         pairs = mapped_pairs(record, parents, placed, which)
+        parent_length = parent.domain_end - parent.domain_start + 1
         window = windows[role]
         if chim is None or window is None:
             row[f"vs_{short}_status"] = "not_assessed: prediction missing"
         else:
             try:
-                result = compare(chim, _coords(window), window.start, pairs, j_residues, norm)
+                result = compare(
+                    chim,
+                    _coords(window),
+                    window.start,
+                    pairs,
+                    j_residues,
+                    parent_length,
+                    chimera_length,
+                )
                 row[f"vs_{short}_status"] = result.pop("status")
                 for key, value in result.items():
                     row[f"vs_{short}_{key}"] = value
@@ -336,7 +355,7 @@ def record_metrics(
         afdb_pairs = [(c, mapping[p]) for c, p in pairs if p in mapping]
         coords = np.asarray(model.ca, dtype=float)
         try:
-            result = compare(chim, coords, 0, afdb_pairs, j_residues, norm)
+            result = compare(chim, coords, 0, afdb_pairs, j_residues, parent_length, chimera_length)
         except (ValueError, np.linalg.LinAlgError) as error:
             result = {"status": f"mapping_failed: {error}"}
         row[f"vs_afdb_{short}_status"] = result.pop("status")
