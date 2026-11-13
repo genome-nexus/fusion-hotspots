@@ -22,7 +22,7 @@ from cfh.domain_plm.scoring import (
     plan_record,
     score_sequences,
 )
-from cfh.domain_plm.worker import MAX_RESIDUES, context_windows
+from cfh.domain_plm.worker import MAX_RESIDUES, batch_rows, context_windows
 from cfh.domain_plm.write import COLUMNS, counts, report_tables
 
 SPEC = ModelSpec("esm2_test", "2.0.0", "a" * 64)
@@ -473,3 +473,10 @@ def test_worker_client_rejects_bad_replies(fake_worker, mode):
 def test_worker_that_cannot_start_raises(fake_worker, mode):
     with pytest.raises(ScoringError):
         WorkerScorer(sys.executable, mode, script=fake_worker)
+
+
+def test_batch_rows_bound_tokens_per_batch():
+    assert batch_rows(100, 64) == 64
+    assert batch_rows(609, 64) == 8192 // 609
+    assert batch_rows(1024, 64) == 8
+    assert batch_rows(20000, 64) == 1

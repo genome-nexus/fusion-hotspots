@@ -95,6 +95,11 @@ def main() -> int:
     parser.add_argument("--batch-size", type=int, default=64)
     parser.add_argument("--python", default=str(PLM_HOME / "env" / "bin" / "python"))
     parser.add_argument("--max-hours", type=float, help="stop scoring after this long")
+    parser.add_argument(
+        "--from-end",
+        action="store_true",
+        help="score only the random-order records, last first (a second worker, e.g. on CPU)",
+    )
     args = parser.parse_args()
 
     records_path = args.seq_run / "chimera_records.json.gz"
@@ -142,12 +147,17 @@ def main() -> int:
         log(f"model {scorer.header}; cache {cache.dir}")
         deadline = time.time() + args.max_hours * 3600 if args.max_hours else None
         started = time.time()
-        done, failures = score_in_order(ordered, scorer, cache, log, deadline)
+        todo = ordered
+        if args.from_end:
+            todo = [item for item in ordered if item[0] == "random_order"][::-1]
+        done, failures = score_in_order(todo, scorer, cache, log, deadline)
         scorer.close()
+        tag = "_from_end" if args.from_end else ""
+        failures_path = args.work / f"failures{tag}.json"
         previous = json.loads(failures_path.read_text()) if failures_path.exists() else {}
         args.work.mkdir(parents=True, exist_ok=True)
         failures_path.write_text(json.dumps({**previous, **failures}, indent=1))
-        (args.work / "score_status.json").write_text(
+        (args.work / f"score_status{tag}.json").write_text(
             json.dumps(
                 {
                     "finished": time.strftime("%Y-%m-%dT%H:%M:%S"),
@@ -166,7 +176,9 @@ def main() -> int:
         parser.error("analyze needs --out")
     if scorer is not None:
         scorer.close()
-    failures = json.loads(failures_path.read_text()) if failures_path.exists() else {}
+    failures: dict[str, str] = {}
+    for path in sorted(args.work.glob("failures*.json")):
+        failures.update(json.loads(path.read_text()))
     structure = {row["record_id"]: row for row in read_tsv(structure_path)}
     rows = []
     profiles = []

@@ -26,6 +26,14 @@ from typing import Any
 
 MAX_RESIDUES = 1022
 """ESM-2 positional limit (1024 tokens including BOS/EOS)."""
+TOKEN_BUDGET = 8192
+"""Tokens per forward batch (batch rows x sequence tokens): bounds attention memory, which
+grows with length squared, so long sequences run in smaller batches. Results do not depend
+on it (each row is an independent forward pass)."""
+
+
+def batch_rows(n_tokens: int, batch_size: int, budget: int = TOKEN_BUDGET) -> int:
+    return max(1, min(batch_size, budget // n_tokens))
 
 
 def context_windows(
@@ -96,9 +104,10 @@ def main() -> int:
                 context = sequence[offset - 1 : offset - 1 + MAX_RESIDUES]
                 _, _, tokens = converter([("q", context)])
                 tokens = tokens.to(device)
+                rows_per_batch = batch_rows(tokens.shape[1], batch_size)
                 with torch.no_grad():
-                    for start in range(0, len(group), batch_size):
-                        chunk = group[start : start + batch_size]
+                    for start in range(0, len(group), rows_per_batch):
+                        chunk = group[start : start + rows_per_batch]
                         batch = tokens.repeat(len(chunk), 1)
                         rows = torch.arange(len(chunk), device=device)
                         # BOS at token 0: residue p of the context is token p
