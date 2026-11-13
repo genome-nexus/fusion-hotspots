@@ -31,9 +31,7 @@ class ModelSpec:
 
     @classmethod
     def from_header(cls, header: dict[str, Any]) -> "ModelSpec":
-        return cls(
-            str(header["model"]), str(header["esm_version"]), str(header["weights_sha256"])
-        )
+        return cls(str(header["model"]), str(header["esm_version"]), str(header["weights_sha256"]))
 
 
 def sequence_sha(sequence: str) -> str:

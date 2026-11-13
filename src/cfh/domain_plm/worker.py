@@ -24,6 +24,28 @@ import sys
 from pathlib import Path
 from typing import Any
 
+MAX_RESIDUES = 1022
+"""ESM-2 positional limit (1024 tokens including BOS/EOS)."""
+
+
+def context_windows(
+    length: int, positions: list[int], limit: int = MAX_RESIDUES
+) -> dict[int, list[int]]:
+    """Group 1-based positions by the 1-based start of the context they are scored in.
+
+    A sequence of at most ``limit`` residues is scored whole (one group, start 1).
+    A longer one is scored per position in the ``limit``-residue window centred
+    on that position, shifted inwards at the ends; positions sharing a window
+    share a forward batch.
+    """
+    if length <= limit:
+        return {1: sorted(positions)}
+    groups: dict[int, list[int]] = {}
+    for position in sorted(positions):
+        start = min(max(1, position - limit // 2), length - limit + 1)
+        groups.setdefault(start, []).append(position)
+    return groups
+
 
 def weights_sha256(model_name: str) -> str:
     import torch
@@ -54,7 +76,8 @@ def main() -> int:
         "torch_version": torch.__version__,
         "weights_sha256": weights_sha256(model_name),
         "device": device,
-        "max_residues": 1022,
+        "max_residues": MAX_RESIDUES,
+        "long_sequences": "per-position centred window of max_residues residues",
     }
     print(json.dumps({"header": header}), flush=True)
 
@@ -66,24 +89,25 @@ def main() -> int:
         try:
             sequence = request["sequence"]
             positions = sorted({int(p) for p in request["positions"]})
-            if len(sequence) > header["max_residues"]:
-                raise ValueError(f"sequence longer than {header['max_residues']} residues")
             if any(p < 1 or p > len(sequence) for p in positions):
                 raise ValueError("position outside the sequence")
-            _, _, tokens = converter([("q", sequence)])
-            tokens = tokens.to(device)
             logp: dict[str, float] = {}
-            with torch.no_grad():
-                for start in range(0, len(positions), batch_size):
-                    chunk = positions[start : start + batch_size]
-                    batch = tokens.repeat(len(chunk), 1)
-                    rows = torch.arange(len(chunk), device=device)
-                    cols = torch.tensor(chunk, device=device)  # BOS at 0: residue p at p
-                    batch[rows, cols] = alphabet.mask_idx
-                    logits = model(batch)["logits"].float()
-                    log_probs = torch.log_softmax(logits, dim=-1)
-                    values = log_probs[rows, cols, tokens[0, cols]].cpu().tolist()
-                    logp.update({str(p): float(v) for p, v in zip(chunk, values)})
+            for offset, group in context_windows(len(sequence), positions).items():
+                context = sequence[offset - 1 : offset - 1 + MAX_RESIDUES]
+                _, _, tokens = converter([("q", context)])
+                tokens = tokens.to(device)
+                with torch.no_grad():
+                    for start in range(0, len(group), batch_size):
+                        chunk = group[start : start + batch_size]
+                        batch = tokens.repeat(len(chunk), 1)
+                        rows = torch.arange(len(chunk), device=device)
+                        # BOS at token 0: residue p of the context is token p
+                        cols = torch.tensor([p - offset + 1 for p in chunk], device=device)
+                        batch[rows, cols] = alphabet.mask_idx
+                        logits = model(batch)["logits"].float()
+                        log_probs = torch.log_softmax(logits, dim=-1)
+                        values = log_probs[rows, cols, tokens[0, cols]].cpu().tolist()
+                        logp.update({str(p): float(v) for p, v in zip(chunk, values)})
             print(json.dumps({"id": rid, "sequence": sequence, "logp": logp}), flush=True)
         except Exception as error:  # reported per request, never replaced by a value
             print(json.dumps({"id": rid, "error": f"{type(error).__name__}: {error}"}), flush=True)

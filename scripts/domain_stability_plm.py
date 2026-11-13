@@ -28,7 +28,7 @@ from pathlib import Path
 
 from cfh.domain_function.record import FLANK, read_records_json
 from cfh.domain_plm import SCHEMA_VERSION
-from cfh.domain_plm.cache import ModelSpec, ScoreCache
+from cfh.domain_plm.cache import ScoreCache
 from cfh.domain_plm.compare import (
     DISAGREEMENT_RULES,
     RANK_FRACTION,
@@ -78,9 +78,7 @@ def git_commit() -> str:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     parser.add_argument("stage", choices=("score", "analyze"))
-    parser.add_argument(
-        "--seq-run", type=Path, default=Path("runs/domain_function_seq_2026-11-11")
-    )
+    parser.add_argument("--seq-run", type=Path, default=Path("runs/domain_function_seq_2026-11-11"))
     parser.add_argument(
         "--structure-run", type=Path, default=Path("runs/domain_structure_2026-11-13")
     )

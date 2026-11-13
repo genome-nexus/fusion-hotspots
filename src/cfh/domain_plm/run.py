@@ -25,7 +25,7 @@ NAMED_FUSIONS = (
     "LPO::MPO",
     "PIM3::ULK1",
 )
-NAMED_DNA_FUSIONS = ("MAP3K3::STRADA", "GNA14::GNAQ", "AKR1C2::AKR1C3")
+NAMED_DNA_FUSIONS = ("MAP3K3::STRADA", "GNA14::GNAQ", "ABCA6::ABCA10", "AKR1C2::AKR1C3")
 ORDER_SEED = 20261113
 """Seed of the random order in which the non-priority records are scored."""
 

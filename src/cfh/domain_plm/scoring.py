@@ -22,7 +22,10 @@ from cfh.domain_plm.cache import ModelSpec, ScoreCache, valid_logp
 
 CANONICAL = frozenset("ACDEFGHIKLMNPQRSTVWY")
 MAX_RESIDUES = 1022
-"""ESM-2 positional limit (1024 tokens including BOS/EOS)."""
+"""ESM-2 positional limit (1024 tokens including BOS/EOS); longer sequences are scored
+in per-position centred windows (see :func:`cfh.domain_plm.worker.context_windows`)."""
+HARD_LIMIT = 4000
+"""Refuse sequences longer than this (none of the scored windows comes close)."""
 JUNCTION_HALF_WINDOW = 10
 """Residues on each side of the crossover in the junction window (2 x 10 residues)."""
 
@@ -73,6 +76,10 @@ class RecordPlan:
     pairs3: tuple[tuple[int, int], ...]
     problem: str = ""
     """Non-empty: the record cannot be scored (reason); it is reported as not assessed."""
+
+    def windowed_roles(self) -> list[str]:
+        """Roles whose sequence is longer than the model context (scored in windows)."""
+        return [role for role, side in self.sides().items() if len(side.sequence) > MAX_RESIDUES]
 
     def sides(self) -> dict[str, Side]:
         return {"chimera": self.chimera, "parent5": self.parent5, "parent3": self.parent3}
@@ -125,16 +132,20 @@ def plan_record(record: ChimeraRecord, w: int = JUNCTION_HALF_WINDOW) -> RecordP
     for role, side in (("chimera", chimera), ("parent5", parent5), ("parent3", parent3)):
         if not side.sequence:
             problem = f"{role}: empty sequence"
-        elif len(side.sequence) > MAX_RESIDUES:
-            problem = f"{role}: {len(side.sequence)} residues exceeds model limit {MAX_RESIDUES}"
+        elif len(side.sequence) > HARD_LIMIT:
+            problem = f"{role}: {len(side.sequence)} residues exceeds limit {HARD_LIMIT}"
         elif set(side.sequence) - CANONICAL:
             bad = "".join(sorted(set(side.sequence) - CANONICAL))
             problem = f"{role}: non-canonical residue(s) {bad}"
         if problem:
             break
-    if not problem and chimera.sequence[
-        chimera.seq_pos(record.domain_start) - 1 : chimera.seq_pos(record.domain_end)
-    ] != record.chimeric_domain:
+    if (
+        not problem
+        and chimera.sequence[
+            chimera.seq_pos(record.domain_start) - 1 : chimera.seq_pos(record.domain_end)
+        ]
+        != record.chimeric_domain
+    ):
         problem = "chimera: domain is not a slice of the scored window"
     return RecordPlan(record, chimera, parent5, parent3, tuple(pairs5), tuple(pairs3), problem)
 
@@ -181,11 +192,13 @@ class WorkerScorer:
     device: str = "mps"
     batch_size: int = 64
     env: dict[str, str] | None = None
+    script: Path | None = None
+    """Worker script; defaults to :mod:`.worker` (tests substitute a fake)."""
     spec: ModelSpec = field(init=False)
     header: dict[str, Any] = field(init=False)
 
     def __post_init__(self) -> None:
-        worker = Path(__file__).with_name("worker.py")
+        worker = self.script or Path(__file__).with_name("worker.py")
         self._proc = subprocess.Popen(
             [self.python, "-I", str(worker), self.model, self.device, str(self.batch_size)],
             stdin=subprocess.PIPE,
@@ -194,7 +207,10 @@ class WorkerScorer:
             env=self.env,
         )
         line = self._readline()
-        self.header = json.loads(line)["header"]
+        try:
+            self.header = json.loads(line)["header"]
+        except (json.JSONDecodeError, KeyError, TypeError) as error:
+            raise ScoringError(f"PLM worker sent no valid header: {line[:200]!r}") from error
         self.spec = ModelSpec.from_header(self.header)
         self._next = 0
 
@@ -212,14 +228,20 @@ class WorkerScorer:
         request = {"id": rid, "sequence": sequence, "positions": positions}
         self._proc.stdin.write(json.dumps(request) + "\n")
         self._proc.stdin.flush()
-        reply = json.loads(self._readline())
+        try:
+            reply = json.loads(self._readline())
+        except json.JSONDecodeError as error:
+            raise ScoringError("PLM worker sent an unparsable reply") from error
         if reply.get("id") != rid:
             raise ScoringError("PLM worker reply out of order")
         if "error" in reply:
             raise ScoringError(reply["error"])
         if reply.get("sequence") != sequence:
             raise ScoringError("PLM worker scored a different sequence")
-        return {int(k): v for k, v in reply["logp"].items()}
+        try:
+            return {int(k): v for k, v in reply["logp"].items()}
+        except (KeyError, TypeError, ValueError, AttributeError) as error:
+            raise ScoringError("PLM worker reply has no valid logp map") from error
 
     def close(self) -> None:
         if self._proc.stdin:

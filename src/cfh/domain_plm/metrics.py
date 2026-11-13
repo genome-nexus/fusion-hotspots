@@ -32,6 +32,7 @@ from cfh.domain_plm.scoring import RecordPlan, Side
 METRIC_COLUMNS = (
     "plm_status",
     "plm_not_assessed_reason",
+    "plm_note",
     "chimera_domain_pll",
     "parent5_domain_pll",
     "parent3_domain_pll",
@@ -115,6 +116,10 @@ def record_metrics(
     row: dict[str, Any] = {
         "plm_status": "scored",
         "plm_not_assessed_reason": "",
+        "plm_note": ";".join(
+            f"{role}_windowed_context_{len(plan.sides()[role].sequence)}aa"
+            for role in plan.windowed_roles()
+        ),
         "chimera_domain_pll": means["chimera"],
         "parent5_domain_pll": means["parent5"],
         "parent3_domain_pll": means["parent3"],
@@ -133,7 +138,9 @@ def record_metrics(
         "parent3_junction_dip": dips["parent3"],
         "dip_excess_vs_5p": dips["chimera"] - dips["parent5"],
         "dip_excess_vs_3p": dips["chimera"] - dips["parent3"],
-        "dip_excess_worst": min(dips["chimera"] - dips["parent5"], dips["chimera"] - dips["parent3"]),
+        "dip_excess_worst": min(
+            dips["chimera"] - dips["parent5"], dips["chimera"] - dips["parent3"]
+        ),
     }
     for key, value in row.items():
         if isinstance(value, float) and not math.isfinite(value):
