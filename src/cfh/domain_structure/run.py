@@ -187,6 +187,8 @@ def export_models(
             "length": len(job.sequence),
             "wall_seconds": prediction.wall_seconds,
             "model_name": prediction.model_name,
+            "msa_host_url": prediction.msa_source.get("host_url", ""),
+            "a3m_sha256": prediction.a3m_sha256,
             "exported": exported,
         }
         if not exported:

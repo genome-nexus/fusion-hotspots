@@ -37,15 +37,14 @@ settings that change a prediction -- including the MSA source (`msa_mode`,
 `host_url`) -- are hashed into a `settings_id`, and cached predictions live
 under it, so changing a setting or MSA server never reuses old results.
 
-*Checkpoint migration.* Checkpoints written up to 0bf17b3 were keyed without
-`host_url`. `migrate_legacy_checkpoints` (run automatically before
-`predict`/`analyze`) moves them to the current key only if their MSA source
-is provable: the work directory holds exactly one MSA cache and it is this
-config's (`msa_<sha256(msa_mode|host_url)[:8]>`; the predictor reads MSAs only
-from its own config's cache), every legacy job records the legacy id,
-re-validates, and has its query's a3m in that cache. Otherwise nothing moves
-and the run stops. Migrated checkpoints record `migrated_from`; the manifest
-counts them (`checkpoints_migrated_total`).
+*Checkpoint provenance.* Each checkpoint's `result.json` records, at
+prediction time, `msa_source` (`msa_mode`, `host_url`, MSA cache name) and
+`a3m_sha256` (sha256 of the exact a3m handed to ColabFold); the manifest's
+model index repeats both per job. A checkpoint is used only if its recorded
+`msa_source` equals the current config's and it carries an a3m hash; a
+checkpoint without such a record, or with a different one, is never used and
+never relabelled (it stays on disk). There is no migration between keys:
+checkpoints under another `settings_id` are listed and ignored.
 
 | setting | value | why |
 |---|---|---|

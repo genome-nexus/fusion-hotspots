@@ -35,15 +35,20 @@ tiers are unchanged (`pr1_tier` is copied; it matches PR 1's
 * Outcome: **71/71 predictions validated, 0 failed**, 0 MSA errors. The
   only line of `predict.log` matching `error|fail` is the closing summary
   `predict finished: 71 ok, 0 failed`.
-* Checkpoint migration (no re-prediction): the predictions were made under
-  key `set_e20d3cb4e3e2`, which did not include the MSA server. After the
-  #160 review the key includes it. The 71 checkpoints were moved to
-  `set_f6b2876d27c8` only after the provenance check passed. The work
-  directory holds exactly one MSA cache, `msa_c3444ece` = sha256
-  (`mmseqs2_uniref_env|https://api.colabfold.com`)[:8], and the predictor
-  reads MSAs only from its own config's cache. Every job re-validated and has
-  its a3m there. Each checkpoint records `migrated_from`, and the manifest
-  counts 71 migrated.
+* **MSA provenance of the 71 predictions is inferred, not recorded per job
+  (decision pending).** The predictions were made under key
+  `set_e20d3cb4e3e2`, which did not include the MSA server, and the
+  checkpoints record no server or a3m hash. These numbers came from an
+  `analyze` that used a since-removed migration to key `set_f6b2876d27c8`;
+  the checkpoints are restored to their original key. Run-level evidence:
+  the session transcript shows `predict` launched without `--config`, so the
+  defaults applied, and the code default at launch (3da242a) was
+  `https://api.colabfold.com`. `predict.log` shows a single invocation. The
+  only MSA cache, `msa_c3444ece` = sha256
+  (`mmseqs2_uniref_env|https://api.colabfold.com`)[:8], was filled during that
+  invocation (a3m mtimes 16:23:37–17:16:51 on 2026-11-12), before the first
+  prediction (17:17). The one a3m seeded from the benchmark was fetched with
+  `host_url` `https://api.colabfold.com` (`bench/req.json`).
 * Committed: the metrics TSV, flag counts, manifest, this report, and the
   rank-1 model plus pLDDT/PAE (PAE rounded to whole Å; metrics use full
   precision) for the 19 distinct sequences of the named cases below (~2.5

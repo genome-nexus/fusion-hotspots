@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import gzip
+import hashlib
 import json
 import shutil
 from pathlib import Path
@@ -40,7 +41,6 @@ from cfh.domain_structure.predictor import (
     a3m_query,
     check_disk,
     load_prediction,
-    migrate_legacy_checkpoints,
     read_ca,
     validate_outputs,
 )
@@ -651,41 +651,56 @@ def test_prediction_key_includes_msa_source():
     base = PredictorConfig()
     other = PredictorConfig(host_url="https://different.example")
     assert other.settings_id() != base.settings_id()
-    assert other.legacy_settings_id() == base.legacy_settings_id()
+    assert other.msa_source()["host_url"] == "https://different.example"
 
 
-def _legacy_checkpoint(tmp_path):
+def test_checkpoint_records_msa_provenance_at_prediction_time(tmp_path):
     predictor, msas = _predictor(tmp_path)
+    prediction = predictor.predict("job_a", FLI1_ERG, log=lambda _: None)
+    meta = json.loads((predictor.job_dir("job_a") / "result.json").read_text())
+    assert meta["msa_source"] == predictor.config.msa_source()
+    assert meta["a3m_sha256"] == hashlib.sha256(msas.get(FLI1_ERG).encode()).hexdigest()
+    assert prediction.a3m_sha256 == meta["a3m_sha256"]
+
+
+def test_server_a_checkpoint_is_never_relabelled_as_server_b(tmp_path):
+    """Round-2 review: predicted with server A, A's MSA cache deleted, server B's MSAs for
+    the same queries present. Nothing may present the A prediction as a B result."""
+    a_predictor, a_msas = _predictor(tmp_path)
+    a_predictor.predict("job_a", FLI1_ERG, log=lambda _: None)
+    shutil.rmtree(a_msas.root)  # A's MSA cache is gone
+    b_config = PredictorConfig(
+        host_url="https://server-b.example",
+        colabfold_command=["false"],  # B must not silently re-predict here either
+        min_free_disk_gb=0.0,
+    )
+    b_msas = MsaCache(tmp_path / "work", b_config)
+    b_msas.path(FLI1_ERG).write_text(f">101\n{FLI1_ERG}\n")  # same query, other server
+    b_predictor = Predictor(tmp_path / "work" / "predictions", b_config, b_msas)
+    assert b_predictor.cached("job_a", FLI1_ERG) is None
+    # Even copied under B's key by hand, its recorded provenance (server A) is refused...
+    shutil.copytree(a_predictor.job_dir("job_a"), b_predictor.job_dir("job_a"))
+    assert b_predictor.cached("job_a", FLI1_ERG) is None
+    with pytest.raises(PredictionFailure, match="provenance"):
+        load_prediction(b_predictor.job_dir("job_a"), FLI1_ERG, b_config.msa_source())
+    # ...and kept on disk (evidence), not deleted.
+    assert (b_predictor.job_dir("job_a") / "result.json").exists()
+    import cfh.domain_structure.predictor as predictor_module
+
+    assert not hasattr(predictor_module, "migrate_legacy_checkpoints")
+
+
+def test_checkpoint_without_provenance_is_not_a_result(tmp_path):
+    """Checkpoints written before provenance was recorded (<= 24cd9aa) are not used."""
+    predictor, _ = _predictor(tmp_path)
     predictor.predict("job_a", FLI1_ERG, log=lambda _: None)
-    config = predictor.config
-    legacy = predictor.root.parent / config.legacy_settings_id()
-    predictor.root.rename(legacy)
-    meta = json.loads((legacy / "job_a" / "result.json").read_text())
-    meta["settings_id"] = legacy.name
-    (legacy / "job_a" / "result.json").write_text(json.dumps(meta))
-    return config, msas, legacy
-
-
-def test_legacy_checkpoints_migrate_when_the_msa_source_is_provable(tmp_path):
-    config, msas, legacy = _legacy_checkpoint(tmp_path)
-    work = tmp_path / "work"
-    assert migrate_legacy_checkpoints(work / "predictions", config, msas, work, lambda _: None) == 1
-    assert not legacy.exists()
-    migrated = Predictor(work / "predictions", config, msas)
-    config.colabfold_command = ["false"]  # never re-predicted
-    prediction = migrated.predict("job_a", FLI1_ERG, log=lambda _: None)
-    assert prediction.settings_id == config.settings_id()
-    assert prediction.migrated_from == legacy.name
-
-
-def test_legacy_checkpoints_stay_put_when_the_msa_source_is_unprovable(tmp_path):
-    config, msas, legacy = _legacy_checkpoint(tmp_path)
-    work = tmp_path / "work"
-    (work / "msa_deadbeef").mkdir()  # a second MSA source existed
-    with pytest.raises(PredictionFailure, match="cannot prove"):
-        migrate_legacy_checkpoints(work / "predictions", config, msas, work, lambda _: None)
-    assert (legacy / "job_a" / "result.json").exists()
-    assert not any((work / "predictions" / config.settings_id()).glob("job_*"))
+    result = predictor.job_dir("job_a") / "result.json"
+    meta = json.loads(result.read_text())
+    for key in ("msa_source", "a3m_sha256"):
+        stripped = {k: v for k, v in meta.items() if k != key}
+        result.write_text(json.dumps(stripped))
+        assert predictor.cached("job_a", FLI1_ERG) is None
+        assert result.exists()
 
 
 # --------------------------------------------------------------------------- live

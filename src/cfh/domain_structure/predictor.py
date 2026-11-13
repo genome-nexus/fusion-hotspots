@@ -23,6 +23,7 @@ import hashlib
 import json
 import math
 import os
+import re
 import shutil
 import subprocess
 import time
@@ -97,9 +98,6 @@ class PredictorConfig:
     )
     """Everything that changes a prediction, including where its MSA came from."""
 
-    LEGACY_PREDICTION_SETTINGS = tuple(k for k in PREDICTION_SETTINGS if k != "host_url")
-    """Key of checkpoints written before the MSA source was part of the key (<= 0bf17b3)."""
-
     @classmethod
     def load(cls, path: Path | None) -> PredictorConfig:
         if path is None:
@@ -119,14 +117,16 @@ class PredictorConfig:
         text = json.dumps(self.prediction_settings(), sort_keys=True)
         return "set_" + hashlib.sha256(text.encode()).hexdigest()[:12]
 
-    def legacy_settings_id(self) -> str:
-        """The pre-MSA-source key, used only by :func:`migrate_legacy_checkpoints`."""
-        data = asdict(self)
-        text = json.dumps({k: data[k] for k in self.LEGACY_PREDICTION_SETTINGS}, sort_keys=True)
-        return "set_" + hashlib.sha256(text.encode()).hexdigest()[:12]
-
     def msa_id(self) -> str:
         return hashlib.sha256(f"{self.msa_mode}|{self.host_url}".encode()).hexdigest()[:8]
+
+    def msa_source(self) -> dict[str, str]:
+        """MSA provenance written into every checkpoint and required when it is loaded."""
+        return {
+            "msa_mode": self.msa_mode,
+            "host_url": self.host_url,
+            "msa_cache": f"msa_{self.msa_id()}",
+        }
 
     def batch_args(self) -> list[str]:
         if self.backend != "colabfold_batch":
@@ -274,8 +274,10 @@ class Prediction:
     pdb_path: Path
     wall_seconds: float | None = None
     settings_id: str = ""
-    migrated_from: str = ""
-    """Legacy settings id this checkpoint was migrated from ('' if predicted under its key)."""
+    msa_source: dict[str, str] = field(default_factory=dict)
+    """Recorded at prediction time: MSA mode, server and cache the a3m came from."""
+    a3m_sha256: str = ""
+    """sha256 of the exact a3m text handed to ColabFold, recorded at prediction time."""
 
     def ca_coords(self) -> list[tuple[float, float, float]]:
         return read_ca(self.pdb_path, self.sequence)
@@ -372,8 +374,12 @@ class Predictor:
         if not result.exists():
             return None
         try:
-            return load_prediction(directory, sequence)
-        except (PredictionFailure, OSError, ValueError, KeyError):
+            return load_prediction(directory, sequence, self.config.msa_source())
+        except PredictionFailure as error:
+            if not str(error).startswith("provenance"):
+                result.unlink(missing_ok=True)
+            return None  # a provenance mismatch is kept on disk but never used
+        except (OSError, ValueError, KeyError):
             result.unlink(missing_ok=True)
             return None
 
@@ -431,13 +437,15 @@ class Predictor:
             "model_name": model.name.split("_rank_001_")[-1].removesuffix(".pdb"),
             "wall_seconds": wall,
             "settings_id": self.config.settings_id(),
+            "msa_source": self.config.msa_source(),
+            "a3m_sha256": hashlib.sha256(a3m.encode()).hexdigest(),
         }
         shutil.rmtree(work, ignore_errors=True)
         (directory / "failure.json").unlink(missing_ok=True)
         tmp = directory / "result.json.tmp"
         tmp.write_text(json.dumps(meta, indent=1))
         tmp.replace(directory / "result.json")
-        prediction = load_prediction(directory, sequence)
+        prediction = load_prediction(directory, sequence, self.config.msa_source())
         log(f"done {job_id} in {wall:.0f} s")
         return prediction
 
@@ -448,11 +456,28 @@ class Predictor:
         return PredictionFailure(reason)
 
 
-def load_prediction(directory: Path, sequence: str) -> Prediction:
-    """Load and re-validate a stored prediction directory (result.json + model + scores)."""
+def load_prediction(
+    directory: Path, sequence: str, expected_msa_source: dict[str, str] | None = None
+) -> Prediction:
+    """Load and re-validate a stored prediction directory (result.json + model + scores).
+
+    With ``expected_msa_source`` the checkpoint must carry provenance recorded
+    at prediction time -- the same ``msa_source`` and an a3m sha256 -- else a
+    ``provenance: ...`` PredictionFailure is raised. Checkpoints are never
+    relabelled after the fact: a missing or different record is not a result.
+    """
     meta = json.loads((directory / "result.json").read_text())
     if meta.get("sequence") != sequence:
         raise PredictionFailure("parse_error: cached prediction is for another sequence")
+    if expected_msa_source is not None:
+        recorded = meta.get("msa_source")
+        if recorded != expected_msa_source:
+            raise PredictionFailure(
+                f"provenance: checkpoint MSA source {recorded!r} != {expected_msa_source!r}"
+            )
+        digest = meta.get("a3m_sha256")
+        if not (isinstance(digest, str) and re.fullmatch(r"[0-9a-f]{64}", digest)):
+            raise PredictionFailure("provenance: checkpoint has no a3m sha256")
     scores_path = directory / "scores.json.gz"
     with gzip.open(scores_path, "rt") as handle:
         scores = json.load(handle)
@@ -469,7 +494,8 @@ def load_prediction(directory: Path, sequence: str) -> Prediction:
         pdb_path=model,
         wall_seconds=meta.get("wall_seconds"),
         settings_id=meta.get("settings_id", ""),
-        migrated_from=(meta.get("migrated_from") or {}).get("settings_id", ""),
+        msa_source=dict(meta.get("msa_source") or {}),
+        a3m_sha256=meta.get("a3m_sha256", ""),
     )
 
 
@@ -504,73 +530,3 @@ def weights_manifest(config: PredictorConfig) -> dict[str, str]:
         else:
             out[path.name] = "missing"
     return out
-
-
-def migrate_legacy_checkpoints(
-    predictions_root: Path,
-    config: PredictorConfig,
-    msas: MsaCache,
-    work: Path,
-    log: Callable[[str], None] = print,
-) -> int:
-    """Move checkpoints from the pre-MSA-source key to ``config.settings_id()``, if provable.
-
-    Checkpoints written up to 0bf17b3 were keyed without the MSA server. They
-    are moved (not re-predicted) only when it is provable that they used this
-    config's MSA source:
-
-    * the work directory holds exactly one MSA cache, and it is this config's
-      (``msa_<sha256(msa_mode|host_url)[:8]>``) -- the predictor only ever
-      reads MSAs from its own config's cache, so no other source was possible;
-    * every legacy job is a valid checkpoint (same validation as fresh output),
-      records the legacy settings id, and its query has an a3m in that cache.
-
-    Otherwise nothing is moved and :class:`PredictionFailure` is raised.
-    Returns the number of checkpoints moved (0 if there is nothing to migrate).
-    """
-    legacy = predictions_root / config.legacy_settings_id()
-    target = predictions_root / config.settings_id()
-    jobs = sorted(path for path in legacy.glob("job_*") if path.is_dir()) if legacy.exists() else []
-    if not jobs:
-        return 0
-    if any(target.glob("job_*")):
-        raise PredictionFailure(f"migration: {target.name} already has checkpoints")
-    caches = sorted(path.name for path in work.glob("msa_*") if path.is_dir())
-    if caches != [msas.root.name]:
-        raise PredictionFailure(
-            f"migration: cannot prove the MSA source; MSA caches present: {caches}, "
-            f"this config's: {msas.root.name}"
-        )
-    for directory in jobs:
-        if not (directory / "result.json").exists():
-            continue  # a failure record, not a result: nothing to keep
-        meta = json.loads((directory / "result.json").read_text())
-        if meta.get("settings_id") != legacy.name:
-            raise PredictionFailure(f"migration: {directory.name} records another settings id")
-        sequence = meta.get("sequence", "")
-        load_prediction(directory, sequence)
-        if msas.get(sequence) is None:
-            raise PredictionFailure(f"migration: no {msas.root.name} MSA for {directory.name}")
-    target.mkdir(parents=True, exist_ok=True)
-    moved = 0
-    for directory in jobs:
-        result = directory / "result.json"
-        if result.exists():
-            meta = json.loads(result.read_text())
-            meta["settings_id"] = target.name
-            meta["migrated_from"] = {
-                "settings_id": legacy.name,
-                "msa_cache": msas.root.name,
-                "host_url": config.host_url,
-                "msa_mode": config.msa_mode,
-                "reason": "pre-0bf17b3 key omitted the MSA source; the only MSA cache "
-                "in the work directory is this config's",
-            }
-            result.write_text(json.dumps(meta, indent=1))
-            moved += 1
-        directory.rename(target / directory.name)
-    for leftover in legacy.iterdir():
-        leftover.rename(target / leftover.name)
-    legacy.rmdir()
-    log(f"migrated {moved} checkpoints {legacy.name} -> {target.name} ({msas.root.name})")
-    return moved
