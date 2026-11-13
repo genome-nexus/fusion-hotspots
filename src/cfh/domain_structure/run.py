@@ -108,7 +108,12 @@ ID_COLUMNS = (
 )
 
 
-FLAG_COLUMNS = ("structure_flag", "structure_flag_rules", "structure_flag_missing")
+FLAG_COLUMNS = (
+    "structure_flag",
+    "structure_flag_rules",
+    "structure_flag_missing",
+    "msa_provenance",
+)
 
 
 def assess(
@@ -188,6 +193,7 @@ def export_models(
             "wall_seconds": prediction.wall_seconds,
             "model_name": prediction.model_name,
             "msa_host_url": prediction.msa_source.get("host_url", ""),
+            "msa_provenance": prediction.msa_provenance,
             "a3m_sha256": prediction.a3m_sha256,
             "exported": exported,
         }

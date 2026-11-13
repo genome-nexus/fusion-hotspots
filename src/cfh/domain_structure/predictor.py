@@ -277,6 +277,9 @@ class Prediction:
     msa_source: dict[str, str] = field(default_factory=dict)
     """Recorded at prediction time: MSA mode, server and cache the a3m came from."""
     a3m_sha256: str = ""
+    msa_provenance: str = ""
+    """``recorded`` (written at prediction time) or ``inferred`` (written afterwards by
+    :mod:`cfh.domain_structure.provenance` from documented run-level evidence)."""
     """sha256 of the exact a3m text handed to ColabFold, recorded at prediction time."""
 
     def ca_coords(self) -> list[tuple[float, float, float]]:
@@ -438,6 +441,7 @@ class Predictor:
             "wall_seconds": wall,
             "settings_id": self.config.settings_id(),
             "msa_source": self.config.msa_source(),
+            "msa_provenance": "recorded",
             "a3m_sha256": hashlib.sha256(a3m.encode()).hexdigest(),
         }
         shutil.rmtree(work, ignore_errors=True)
@@ -461,10 +465,13 @@ def load_prediction(
 ) -> Prediction:
     """Load and re-validate a stored prediction directory (result.json + model + scores).
 
-    With ``expected_msa_source`` the checkpoint must carry provenance recorded
-    at prediction time -- the same ``msa_source`` and an a3m sha256 -- else a
-    ``provenance: ...`` PredictionFailure is raised. Checkpoints are never
-    relabelled after the fact: a missing or different record is not a result.
+    With ``expected_msa_source`` the checkpoint must carry an MSA provenance
+    record -- the same ``msa_source``, an a3m sha256 and ``msa_provenance``
+    ``recorded`` (written at prediction time) or ``inferred`` (written later by
+    :func:`cfh.domain_structure.provenance.record_inferred_provenance`, with its
+    evidence) -- else a ``provenance: ...`` PredictionFailure is raised. An
+    inferred record is accepted only for the exact source it names; a
+    missing or different record is never a result.
     """
     meta = json.loads((directory / "result.json").read_text())
     if meta.get("sequence") != sequence:
@@ -478,6 +485,11 @@ def load_prediction(
         digest = meta.get("a3m_sha256")
         if not (isinstance(digest, str) and re.fullmatch(r"[0-9a-f]{64}", digest)):
             raise PredictionFailure("provenance: checkpoint has no a3m sha256")
+        kind = meta.get("msa_provenance")
+        if kind not in ("recorded", "inferred"):
+            raise PredictionFailure(f"provenance: unknown msa_provenance {kind!r}")
+        if kind == "inferred" and not meta.get("msa_provenance_evidence"):
+            raise PredictionFailure("provenance: inferred record without evidence")
     scores_path = directory / "scores.json.gz"
     with gzip.open(scores_path, "rt") as handle:
         scores = json.load(handle)
@@ -496,6 +508,7 @@ def load_prediction(
         settings_id=meta.get("settings_id", ""),
         msa_source=dict(meta.get("msa_source") or {}),
         a3m_sha256=meta.get("a3m_sha256", ""),
+        msa_provenance=meta.get("msa_provenance", ""),
     )
 
 

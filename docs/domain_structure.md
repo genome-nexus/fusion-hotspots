@@ -37,14 +37,49 @@ settings that change a prediction -- including the MSA source (`msa_mode`,
 `host_url`) -- are hashed into a `settings_id`, and cached predictions live
 under it, so changing a setting or MSA server never reuses old results.
 
-*Checkpoint provenance.* Each checkpoint's `result.json` records, at
-prediction time, `msa_source` (`msa_mode`, `host_url`, MSA cache name) and
-`a3m_sha256` (sha256 of the exact a3m handed to ColabFold); the manifest's
-model index repeats both per job. A checkpoint is used only if its recorded
-`msa_source` equals the current config's and it carries an a3m hash; a
-checkpoint without such a record, or with a different one, is never used and
-never relabelled (it stays on disk). There is no migration between keys:
-checkpoints under another `settings_id` are listed and ignored.
+*Checkpoint provenance.* Each checkpoint's `result.json` records
+`msa_source` (`msa_mode`, `host_url`, MSA cache name), `a3m_sha256` and
+`msa_provenance`:
+
+* `recorded` -- written by `predict` at prediction time (sha256 of the exact
+  a3m handed to ColabFold);
+* `inferred` -- written afterwards by the one-off
+  `scripts/domain_structure_inferred_provenance.py`
+  (`cfh.domain_structure.provenance`), together with
+  `msa_provenance_evidence`; its `a3m_sha256` is the a3m in the cache when
+  the record was written, not at prediction time.
+
+A checkpoint is used only if it has such a record, the recorded or inferred
+`msa_source` equals the current config's, and an inferred record carries its
+evidence. Anything else is kept on disk but never used, and there is no
+automatic migration between settings ids (checkpoints under another id are
+listed and ignored). `msa_provenance` (and `*_msa_provenance` per prediction)
+is a column of the metrics TSV, and the manifest counts both kinds.
+
+*Inferred provenance of the 2026-11-13 run.* Its 71 predictions were made at
+3da242a under `set_e20d3cb4e3e2`, before the key included the MSA server and
+before checkpoints recorded their source, so no per-job record exists. The
+user chose to keep them with inferred provenance rather than re-predict
+(~12 h CPU). The evidence (`EVIDENCE_2026_11_12`) is run-level:
+
+1. a single `predict` launch without `--config` (session transcript), so the
+   default config applied, whose `host_url` at 3da242a was
+   `https://api.colabfold.com`;
+2. a single invocation in `predict.log` (2026-11-12 16:23:38 to 2026-11-13
+   05:03:03);
+3. a single MSA cache, `msa_c3444ece` = sha256(`mmseqs2_uniref_env|
+   https://api.colabfold.com`)[:8], filled 16:23:37-17:16:51, before the
+   first prediction (17:17);
+4. the FLI1::ERG chimera a3m was seeded from the benchmark fetch, whose
+   request (`bench/req.json`) names `https://api.colabfold.com`.
+
+The step is never run by `predict` or `analyze`. It refuses, and changes
+nothing, unless the config's MSA source is exactly the evidence's (it cannot
+relabel to another server), the work directory holds only that one MSA
+cache, the legacy settings id equals the config's settings without
+`host_url`, and every job re-validates with its query's a3m in that cache.
+It then writes the inferred record and moves each checkpoint to the config's
+settings id.
 
 | setting | value | why |
 |---|---|---|

@@ -25,6 +25,7 @@ import json
 import subprocess
 import sys
 import time
+from collections import Counter
 from dataclasses import asdict
 from pathlib import Path
 
@@ -167,6 +168,12 @@ def main() -> int:
             "version": colabfold_version(config),
             "settings_id": config.settings_id(),
             "msa_source": config.msa_source(),
+            "msa_provenance_counts": dict(
+                sorted(Counter(p.msa_provenance for p in predictions.values()).items())
+            ),
+            "msa_provenance_note": "recorded = written at prediction time; inferred = written "
+            "afterwards by scripts/domain_structure_inferred_provenance.py from run-level "
+            "evidence (per-checkpoint msa_provenance_evidence; docs/domain_structure.md)",
             "settings": config.prediction_settings(),
             "msa_server": config.host_url,
             "msa_user_agent": config.user_agent,

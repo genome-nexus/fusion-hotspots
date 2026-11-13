@@ -302,8 +302,12 @@ def record_metrics(
             continue
         row[f"{role}_prediction_status"] = "ok"
         row[f"{role}_wall_seconds"] = prediction.wall_seconds
+        row[f"{role}_msa_provenance"] = prediction.msa_provenance or "unknown"
         windows[role] = Window(prediction, start)
 
+    # recorded / inferred when every prediction of the record agrees, else mixed
+    kinds = {row[f"{role}_msa_provenance"] for role in windows if windows[role] is not None}
+    row["msa_provenance"] = "" if not kinds else next(iter(kinds)) if len(kinds) == 1 else "mixed"
     chim = windows["chimera"]
     if chim is not None:
         for key, value in confidence(chim, domain, junction, chimera_halves(record)).items():

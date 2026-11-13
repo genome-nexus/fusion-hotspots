@@ -703,6 +703,98 @@ def test_checkpoint_without_provenance_is_not_a_result(tmp_path):
         assert result.exists()
 
 
+# --------------------------------------------------------------------------- inferred provenance
+def _legacy_work(tmp_path):
+    """A checkpoint as written before provenance existed (<= 0bf17b3), under the legacy key."""
+    from cfh.domain_structure.provenance import EVIDENCE_2026_11_12
+
+    predictor, msas = _predictor(tmp_path)
+    predictor.predict("job_a", FLI1_ERG, log=lambda _: None)
+    legacy = predictor.root.parent / EVIDENCE_2026_11_12.legacy_settings_id
+    predictor.root.rename(legacy)
+    result = legacy / "job_a" / "result.json"
+    meta = json.loads(result.read_text())
+    for key in ("msa_source", "msa_provenance", "a3m_sha256"):
+        meta.pop(key)
+    meta["settings_id"] = legacy.name
+    result.write_text(json.dumps(meta))
+    return predictor.config, msas, legacy, tmp_path / "work"
+
+
+def test_inferred_provenance_step_labels_and_loads(tmp_path):
+    from cfh.domain_structure.provenance import EVIDENCE_2026_11_12, record_inferred_provenance
+
+    config, msas, legacy, work = _legacy_work(tmp_path)
+    assert Predictor(work / "predictions", config, msas).cached("job_a", FLI1_ERG) is None
+    assert record_inferred_provenance(work, config, EVIDENCE_2026_11_12, lambda _: None) == 1
+    assert not legacy.exists()
+    predictor = Predictor(work / "predictions", config, msas)
+    prediction = predictor.cached("job_a", FLI1_ERG)
+    assert prediction is not None and prediction.msa_provenance == "inferred"
+    meta = json.loads((predictor.job_dir("job_a") / "result.json").read_text())
+    assert meta["msa_source"]["host_url"] == "https://api.colabfold.com"
+    assert meta["msa_provenance_evidence"]["legacy_settings_id"] == legacy.name
+    assert meta["a3m_sha256"] == hashlib.sha256(msas.get(FLI1_ERG).encode()).hexdigest()
+    # An inferred record is accepted only for the source it names.
+    other = PredictorConfig(host_url="https://server-b.example")
+    with pytest.raises(PredictionFailure, match="provenance"):
+        load_prediction(predictor.job_dir("job_a"), FLI1_ERG, other.msa_source())
+
+
+def test_inferred_provenance_refuses_relabelling_to_another_server(tmp_path):
+    """Codex A/B: evidence names server A; nothing may write it as server B."""
+    from cfh.domain_structure.provenance import EVIDENCE_2026_11_12, record_inferred_provenance
+
+    config, msas, legacy, work = _legacy_work(tmp_path)
+    b_config = PredictorConfig(host_url="https://server-b.example", min_free_disk_gb=0.0)
+    with pytest.raises(PredictionFailure, match="not the evidence"):
+        record_inferred_provenance(work, b_config, EVIDENCE_2026_11_12, lambda _: None)
+    # Config A, but A's cache is gone and only server B's MSAs for the same query exist.
+    shutil.rmtree(msas.root)
+    b_msas = MsaCache(work, b_config)
+    b_msas.path(FLI1_ERG).write_text(f">101\n{FLI1_ERG}\n")
+    with pytest.raises(PredictionFailure, match="MSA caches present"):
+        record_inferred_provenance(work, config, EVIDENCE_2026_11_12, lambda _: None)
+    meta = json.loads((legacy / "job_a" / "result.json").read_text())
+    assert "msa_provenance" not in meta and meta["settings_id"] == legacy.name  # unchanged
+
+
+def test_inferred_provenance_refuses_a_missing_a3m(tmp_path):
+    from cfh.domain_structure.provenance import EVIDENCE_2026_11_12, record_inferred_provenance
+
+    config, msas, legacy, work = _legacy_work(tmp_path)
+    msas.path(FLI1_ERG).unlink()
+    with pytest.raises(PredictionFailure, match="no a3m"):
+        record_inferred_provenance(work, config, EVIDENCE_2026_11_12, lambda _: None)
+    assert (legacy / "job_a" / "result.json").exists()
+    assert not any((work / "predictions").glob(f"{config.settings_id()}/job_*"))
+
+
+def test_inferred_record_without_evidence_is_refused(tmp_path):
+    predictor, _ = _predictor(tmp_path)
+    predictor.predict("job_a", FLI1_ERG, log=lambda _: None)
+    result = predictor.job_dir("job_a") / "result.json"
+    meta = json.loads(result.read_text())
+    meta["msa_provenance"] = "inferred"  # claims inferred but carries no evidence
+    result.write_text(json.dumps(meta))
+    assert predictor.cached("job_a", FLI1_ERG) is None
+
+
+def test_msa_provenance_is_carried_into_outputs(tmp_path):
+    record = _record()
+    rj, predictions = _predictions(tmp_path, record)
+    for prediction in predictions.values():
+        prediction.msa_provenance = "inferred"
+    row = record_metrics(rj, predictions, {}, _afdb_both())
+    assert row["msa_provenance"] == "inferred"
+    assert row["chimera_msa_provenance"] == "inferred"
+    predictions[rj.parent3].msa_provenance = "recorded"
+    assert record_metrics(rj, predictions, {}, _afdb_both())["msa_provenance"] == "mixed"
+    _, jobs = _jobs(record)
+    index = export_models(jobs, predictions, tmp_path / "out")
+    assert {entry["msa_provenance"] for entry in index.values()} == {"inferred", "recorded"}
+
+
 # --------------------------------------------------------------------------- live
 @pytest.mark.network
 def test_live_colabfold_msa_server(tmp_path):
