@@ -35,20 +35,29 @@ tiers are unchanged (`pr1_tier` is copied; it matches PR 1's
 * Outcome: **71/71 predictions validated, 0 failed**, 0 MSA errors. The
   only line of `predict.log` matching `error|fail` is the closing summary
   `predict finished: 71 ok, 0 failed`.
-* **MSA provenance of the 71 predictions is inferred, not recorded per job
-  (decision pending).** The predictions were made under key
-  `set_e20d3cb4e3e2`, which did not include the MSA server, and the
-  checkpoints record no server or a3m hash. These numbers came from an
-  `analyze` that used a since-removed migration to key `set_f6b2876d27c8`;
-  the checkpoints are restored to their original key. Run-level evidence:
-  the session transcript shows `predict` launched without `--config`, so the
-  defaults applied, and the code default at launch (3da242a) was
-  `https://api.colabfold.com`. `predict.log` shows a single invocation. The
-  only MSA cache, `msa_c3444ece` = sha256
-  (`mmseqs2_uniref_env|https://api.colabfold.com`)[:8], was filled during that
-  invocation (a3m mtimes 16:23:37–17:16:51 on 2026-11-12), before the first
-  prediction (17:17). The one a3m seeded from the benchmark was fetched with
-  `host_url` `https://api.colabfold.com` (`bench/req.json`).
+* **MSA provenance: inferred for all 71 predictions** (`msa_provenance` =
+  `inferred` in the metrics TSV and in every checkpoint; manifest
+  `msa_provenance_counts` {inferred: 71}). The predictions were made at
+  3da242a under key `set_e20d3cb4e3e2`. That key did not include the MSA
+  server, and the checkpoints did not then record their MSA source, so no
+  per-job record exists. Rather than re-predict (~12 h CPU), the user chose
+  to keep them with provenance documented as inferred. The one-off
+  `scripts/domain_structure_inferred_provenance.py` wrote the inferred record
+  (evidence + sha256 of the cached a3m) into each checkpoint and moved it to
+  the current key `set_f6b2876d27c8`. It refuses on any disagreement with the
+  evidence. The evidence is run-level:
+  1. the session transcript shows `predict` launched without `--config`, so
+     the default config applied; its `host_url` at 3da242a was
+     `https://api.colabfold.com`;
+  2. `predict.log` shows a single invocation;
+  3. the only MSA cache, `msa_c3444ece` = sha256
+     (`mmseqs2_uniref_env|https://api.colabfold.com`)[:8], was filled
+     2026-11-12 16:23:37–17:16:51, before the first prediction (17:17);
+  4. the FLI1::ERG chimera a3m was seeded from the benchmark fetch, whose
+     request (`bench/req.json`) names `https://api.colabfold.com`.
+
+  Re-running `analyze` from the current code reproduces every metric and
+  flag of the earlier commit exactly.
 * Committed: the metrics TSV, flag counts, manifest, this report, and the
   rank-1 model plus pLDDT/PAE (PAE rounded to whole Å; metrics use full
   precision) for the 19 distinct sequences of the named cases below (~2.5
