@@ -1,7 +1,7 @@
 {
   "cohort": "pcawg_tcga_sv",
   "genome_build": "GRCh37",
-  "input_shared_family_flags_sha256": "a86730da68940d5e145cb62c175d95f51d681227dbfc151a4c7919f96fb3edaf",
+  "input_shared_family_flags_sha256": "5eb3aa1db65610f6525d00afd901e1a15cc212cf8dba5486e56bffc7cf4696c2",
   "databases": {
     "pfam_version": "39.0",
     "pfam_release_date": "2026-10-01T00:00:00Z",

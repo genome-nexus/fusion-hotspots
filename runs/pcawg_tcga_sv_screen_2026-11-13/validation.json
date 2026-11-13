@@ -18,8 +18,8 @@
     {
       "command": "uv run --extra dev pytest -q",
       "file_set": "tests/ (full suite, no marker exclusion)",
-      "collected_cases": 1404,
-      "passed_cases": 1391,
+      "collected_cases": 1419,
+      "passed_cases": 1406,
       "skipped_cases": 13,
       "warnings": 2,
       "status": "passed"
@@ -30,16 +30,16 @@
     "files": [
       "tests/test_pcawg_sv.py"
     ],
-    "collected_cases": 59,
-    "passed_cases": 59,
-    "test_functions": 18
+    "collected_cases": 74,
+    "passed_cases": 74,
+    "test_functions": 24
   },
   "artifact_checks": {
     "audit_rows": 129273,
-    "screen_outcome_rows": 20928,
-    "nontrivial_rows": 13,
-    "nontrivial_svs": 12,
-    "sequence_records": 4,
+    "screen_outcome_rows": 21004,
+    "nontrivial_rows": 16,
+    "nontrivial_svs": 15,
+    "sequence_records": 5,
     "counts_reconciled": true,
     "input_hashes_verified": true
   },

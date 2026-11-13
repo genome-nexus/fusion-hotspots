@@ -267,7 +267,17 @@ def screen_driver():
     return module
 
 
-def test_successful_batch_omission_is_unassessed_and_cached(tmp_path, monkeypatch, screen_driver):
+def canonical_payload():
+    import json
+
+    return json.loads(
+        (
+            Path(__file__).parent / "fixtures" / "genome_nexus" / "canonical_transcript_braf.json"
+        ).read_text()
+    )
+
+
+def test_batch_omission_uses_single_gene_fallback(tmp_path, monkeypatch, screen_driver):
     from types import SimpleNamespace
 
     monkeypatch.setattr(screen_driver, "save_summary", lambda **kwargs: None)
@@ -277,29 +287,114 @@ def test_successful_batch_omission_is_unassessed_and_cached(tmp_path, monkeypatc
         lambda *args, **kwargs: SimpleNamespace(by_gene_symbol={}),
     )
     source = screen_driver.PcawgTranscripts("GRCh37", cache_dir=tmp_path)
-    source.prefetch_canonical(["MISSING"])
-    assert source.canonical("MISSING") is None
-    assert source._not_found_marker("MISSING").exists()
-    assert "GRCh37" in str(source._not_found_marker("MISSING"))
+    requested = []
+    payload = canonical_payload()
+
+    def single(gene):
+        requested.append(gene)
+        return payload
+
+    monkeypatch.setattr(source.client, "fetch_canonical_transcript", single)
+    source.prefetch_canonical(["CDH3"])
+    assert requested == ["CDH3"]
+    assert source.canonical("CDH3").transcript_id == payload["transcriptId"]
+    assert not source._not_found_marker("CDH3").exists()
 
 
-def test_failed_batch_is_unassessed_but_not_persisted_as_notfound(
-    tmp_path, monkeypatch, screen_driver
-):
+def test_wrong_symbol_batch_result_is_not_used(tmp_path, monkeypatch, screen_driver):
+    from functools import partial
+    from unittest.mock import MagicMock
+
+    monkeypatch.setattr(screen_driver, "save_summary", lambda **kwargs: None)
+    original_batch = screen_driver.batch_fetch_canonical_transcripts
+    session = MagicMock()
+    wrong = {**canonical_payload(), "hugoSymbols": ["CDH15"], "transcriptId": "WRONG"}
+    session.post.return_value.status_code = 200
+    session.post.return_value.json.return_value = [wrong]
+    monkeypatch.setattr(
+        screen_driver, "batch_fetch_canonical_transcripts", partial(original_batch, session=session)
+    )
+    source = screen_driver.PcawgTranscripts("GRCh37", cache_dir=tmp_path)
+    payload = canonical_payload()
+    requested = []
+
+    def single(gene):
+        requested.append(gene)
+        return payload
+
+    monkeypatch.setattr(source.client, "fetch_canonical_transcript", single)
+    source.prefetch_canonical(["CDH3"])
+    assert requested == ["CDH3"]
+    assert source.canonical("CDH3").transcript_id != "WRONG"
+    assert "CDH15" not in source._canonical
+    assert not source._not_found_marker("CDH3").exists()
+
+
+def test_failed_batch_falls_back_without_negative_cache(tmp_path, monkeypatch, screen_driver):
     import requests
 
     summaries = []
     monkeypatch.setattr(screen_driver, "save_summary", lambda **kwargs: summaries.append(kwargs))
 
     def fail(*args, **kwargs):
-        raise requests.ConnectionError("lookup unavailable")
+        raise requests.ConnectionError("batch unavailable")
 
     monkeypatch.setattr(screen_driver, "batch_fetch_canonical_transcripts", fail)
     source = screen_driver.PcawgTranscripts("GRCh37", cache_dir=tmp_path)
+    monkeypatch.setattr(
+        source.client, "fetch_canonical_transcript", lambda gene: canonical_payload()
+    )
+    source.prefetch_canonical(["CDH3"])
+    assert source.canonical("CDH3") is not None
+    assert not source._not_found_marker("CDH3").exists()
+    assert summaries[-1]["canonical_batch_errors"] == {"CDH3": "batch unavailable"}
+
+
+@pytest.mark.parametrize("failure", ["connection", "server"])
+def test_failed_single_lookup_never_caches_absence(tmp_path, monkeypatch, screen_driver, failure):
+    from types import SimpleNamespace
+
+    import requests
+
+    monkeypatch.setattr(
+        screen_driver,
+        "batch_fetch_canonical_transcripts",
+        lambda *args, **kwargs: SimpleNamespace(by_gene_symbol={}),
+    )
+    source = screen_driver.PcawgTranscripts("GRCh37", cache_dir=tmp_path)
+
+    def fail(*args, **kwargs):
+        raise (requests.ConnectionError if failure == "connection" else requests.HTTPError)(
+            "single unavailable"
+        )
+
+    monkeypatch.setattr(source.client, "fetch_canonical_transcript", fail)
+    with pytest.raises(requests.RequestException, match="single unavailable"):
+        source.prefetch_canonical(["CDH3"])
+    assert "CDH3" not in source._canonical
+    assert not source._not_found_marker("CDH3").exists()
+
+
+def test_only_definitive_single_notfound_is_cached(tmp_path, monkeypatch, screen_driver):
+    from types import SimpleNamespace
+
+    from cfh.mapping.genome_nexus_source import GenomeNexusGeneNotFound
+
+    monkeypatch.setattr(screen_driver, "save_summary", lambda **kwargs: None)
+    monkeypatch.setattr(
+        screen_driver,
+        "batch_fetch_canonical_transcripts",
+        lambda *args, **kwargs: SimpleNamespace(by_gene_symbol={}),
+    )
+    source = screen_driver.PcawgTranscripts("GRCh37", cache_dir=tmp_path)
+
+    def missing(gene):
+        raise GenomeNexusGeneNotFound("definitive not found")
+
+    monkeypatch.setattr(source.client, "fetch_canonical_transcript", missing)
     source.prefetch_canonical(["MISSING"])
     assert source.canonical("MISSING") is None
-    assert not source._not_found_marker("MISSING").exists()
-    assert summaries[-1]["canonical_lookup_errors"] == {"MISSING": "lookup unavailable"}
+    assert source._not_found_marker("MISSING").read_text() == "404\n"
 
 
 def test_missing_reference_and_homology_never_pass(tmp_path, monkeypatch, screen_driver):
@@ -398,3 +493,60 @@ def test_donor_burden_counts_unmodelled_shared_calls_once_and_fails_closed(
     assert result["sample_shared_family_calls"] == known_count
     assert result["sample_burden_flag"] == expected
     assert result["donor_family_lookup_status"] == ("not_assessed" if unknown else "assessed")
+
+
+@pytest.mark.parametrize("missing", [None, "read_evidence_flag", "breakpoint_repeat_flag"])
+def test_dna_tier_ignores_rna_but_requires_dna_evidence(screen_driver, missing):
+    row = {flag: "pass" for flag in screen_driver.DNA_REQUIRED_FLAGS}
+    row.update(gene_pairing_status="unique", normal_recurrence_flag="not_applicable")
+    if missing:
+        row[missing] = "not_assessed"
+    expected = "not_assessed" if missing else "likely_intact"
+    assert screen_driver.dna_tier(row, "likely_intact") == expected
+
+
+@pytest.mark.parametrize(
+    ("reason", "problem", "expected"),
+    [
+        ("no CDS sequence for ENST1", "", "missing_or_invalid_transcript_model"),
+        ("", "no canonical transcript mapping for A", "missing_canonical_mapping"),
+        ("base result", "A: canonical gene ID wrong", "annotation_identity_or_strand_mismatch"),
+        ("A fusion has ambiguous genomic breakpoints", "", "base_screen_ambiguous_breakpoints"),
+        ("3' break in A is past its stop codon", "", "base_screen_no_coding_product"),
+        ("5' break in A is outside the transcript", "", "base_screen_no_coding_product"),
+        (
+            "A fusion has no site breakpoint within target locus",
+            "",
+            "base_screen_outside_canonical_locus",
+        ),
+    ],
+)
+def test_model_outcome_separates_missing_data_from_base_verdicts(
+    screen_driver, reason, problem, expected
+):
+    row = {
+        "reconstitution_class": "no_transcript_model",
+        "annotation_problem": problem,
+        "pre_annotation_reason": reason,
+    }
+    assert screen_driver.model_outcome_category(row) == expected
+
+
+def test_legacy_batch_omission_marker_is_invalidated(tmp_path, monkeypatch, screen_driver):
+    from types import SimpleNamespace
+
+    monkeypatch.setattr(screen_driver, "save_summary", lambda **kwargs: None)
+    monkeypatch.setattr(
+        screen_driver,
+        "batch_fetch_canonical_transcripts",
+        lambda *args, **kwargs: SimpleNamespace(by_gene_symbol={}),
+    )
+    source = screen_driver.PcawgTranscripts("GRCh37", cache_dir=tmp_path)
+    marker = source._not_found_marker("CDH3")
+    marker.write_text("no canonical mapping in successful batch\n")
+    monkeypatch.setattr(
+        source.client, "fetch_canonical_transcript", lambda gene: canonical_payload()
+    )
+    source.prefetch_canonical(["CDH3"])
+    assert source.canonical("CDH3") is not None
+    assert not marker.exists()

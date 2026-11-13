@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from collections import Counter
 
-from pcawg_tcga_sv_screen import NONTRIVIAL, OUT, read_rows, write_rows
+from pcawg_tcga_sv_screen import NONTRIVIAL, OUT, read_rows, save_summary, write_rows
 
 ETS = ("ERG", "FLI1", "ETV1", "ETV4", "ETV5", "GABPA", "ETS1", "ETS2", "FEV")
 KINASE = {"PF00069", "PF07714"}
@@ -15,6 +15,82 @@ def table(counts: dict) -> str:
     return "| Outcome | Count |\n|---|---:|\n" + "".join(
         f"| {key} | {value:,} |\n" for key, value in sorted(counts.items())
     )
+
+
+def candidate_key(row: dict) -> tuple:
+    return tuple(
+        row[k]
+        for k in ("aliquot_id", "sv_id", "fusion_name", "pfam_family", "reconstitution_class")
+    )
+
+
+def comparison(
+    summary: dict, screen: list[dict], candidates: list[dict], kinases: list[dict]
+) -> str:
+    baseline = json.loads((OUT / "baseline_539b788.json").read_text())
+    old_keys = {candidate_key(r) for r in baseline["nontrivial_candidates"]}
+    new = [r for r in candidates if candidate_key(r) not in old_keys]
+    write_rows(OUT / "new_candidates_after_lookup_fix.tsv", new)
+    old_classes = baseline["screen"]["class_counts"]
+    new_classes = summary["screen"]["class_counts"]
+    values = {
+        "no_transcript_model class rows (all reasons)": (
+            old_classes["no_transcript_model"],
+            new_classes["no_transcript_model"],
+        ),
+        "Missing canonical mappings": (
+            baseline["model_outcome_counts"]["missing_canonical_mapping"],
+            summary["model_outcome_counts"].get("missing_canonical_mapping", 0),
+        ),
+        "Annotated shared-family rows": (
+            baseline["screen"]["family_rows"],
+            summary["screen"]["family_rows"],
+        ),
+        "Rows reaching artefact assessment": (baseline["flag_rows"], summary["flag_rows"]),
+        "Non-trivial family rows": (len(baseline["nontrivial_candidates"]), len(candidates)),
+        "Sequence records": (baseline["sequence_records"], summary["sequence_records"]),
+        "Clean reconstitutions": (
+            old_classes["clean_reconstitution"],
+            new_classes["clean_reconstitution"],
+        ),
+        "ETS non-trivial rows": (
+            0,
+            sum(bool({r["five_prime_gene"], r["three_prime_gene"]} & set(ETS)) for r in candidates),
+        ),
+        "Kinase non-trivial rows": (
+            1,
+            sum(r["reconstitution_class"] in NONTRIVIAL for r in kinases),
+        ),
+    }
+    save_summary(
+        before_after={
+            "baseline_commit": baseline["source_commit"],
+            "counts": {k: {"before": a, "after": b} for k, (a, b) in values.items()},
+            "new_nontrivial_rows": len(new),
+            "new_fusions": sorted({r["fusion_name"] for r in new}),
+            "final_tiers_before": baseline["candidate_tiers"],
+            "final_tiers_after": summary["candidate_tiers"],
+        }
+    )
+    text = "| Measure | Before 539b788 | Corrected |\n|---|---:|---:|\n"
+    text += "".join(f"| {k} | {a:,} | {b:,} |\n" for k, (a, b) in values.items())
+    text += "\nNew non-trivial candidates after restoring single-gene fallback:\n\n"
+    text += (
+        "\n".join(
+            f"- {r['fusion_name']} / {r['pfam_family']}, {r['icgc_donor_id']}: "
+            f"{r['reconstitution_class']}; sequence {r['sequence_tier']}; final DNA {r['tier']}."
+            for r in new
+        )
+        or "None."
+    )
+    text += (
+        "\n\nBaseline final DNA tiers: "
+        + str(baseline["candidate_tiers"])
+        + "; corrected: "
+        + str(summary["candidate_tiers"])
+        + ".\n"
+    )
+    return text
 
 
 def main() -> None:
@@ -89,7 +165,7 @@ def main() -> None:
             f"({r['dcc_project_code']}, {r['caller_support']}/4 callers): "
             f"{r['reconstitution_class']}; sequence-only tier {r['sequence_tier']}; "
             f"paralog check {r['paralog_sequence_flag']}, gene pairing {r['gene_pairing_status']}; "
-            f"overall **{r['tier']}** (DNA/read/repeat/RNA validation incomplete)."
+            f"overall **{r['tier']}** (DNA read/repeat validation incomplete)."
             for r in strongest
         )
         or "No non-trivial candidate rows."
@@ -111,6 +187,12 @@ def main() -> None:
             f"{metric['chimera_match_coverage']}/{metric['chimera_match_coverage_union']} | "
             f"{metric['key_lost']} | {metric['tier']} |\n"
         )
+    comparison_text = comparison(summary, screen, candidates, kinases)
+    distinct_svs = len({(r["aliquot_id"], r["sv_id"]) for r in candidates})
+    categories = summary["model_outcome_counts"]
+    overridden_ambiguous = summary["ambiguous_breakpoint_shared_rows"] - categories.get(
+        "base_screen_ambiguous_breakpoints", 0
+    )
     report = f"""# PCAWG TCGA consensus DNA SV domain-completion screen — 2026-11-13
 
 This first genome-wide DNA screen examines **{summary["ingest"]["sv_rows"]:,} PASS consensus SVs**,
@@ -120,8 +202,8 @@ have at least one SV; **33 files contain only a header**. The sample sheet conta
 Empty files and absent files are different observations, not negative biological
 results. See `sample_inventory.tsv` and `donors_without_bedpe.tsv`.
 
-There are **zero clean reconstitutions**, **{len(candidates)} non-trivial event-family rows**
-from **12 distinct SVs**, and
+There are **{summary["screen"]["class_counts"]["clean_reconstitution"]} clean reconstitutions**,
+**{len(candidates)} non-trivial event-family rows** from **{distinct_svs} distinct SVs**, and
 **{summary["sequence_records"]} distinct sequence records**. Overall candidate tiers
 remain fail-closed when evidence is absent. The #155 sequence-only tier is a
 separate heuristic about the predicted protein; it does not validate a DNA call.
@@ -187,12 +269,36 @@ when no family can be classified; they are not counts of unique SVs or donors.
 An absent canonical lookup is explicitly `no_transcript_model` / `not_assessed`,
 not a successful no-shared-family result. Missing model/CDS also cannot pass.
 Canonical gene IDs and exon strands must agree with GENCODE at each breakend;
-otherwise the row is not assessed. Successful batch omissions are cached as absent
-mappings; failed batches are
-listed in `summary.json` and are never persisted as biological negatives.
-There are **20,928 outcome rows**, with **1,073 annotated shared-family rows**
-from **598 gene-pair events**; only **149 shared-family rows** have usable models
-and reach artefact assessment. The 9,907 model-unassessed outcomes limit sensitivity.
+otherwise the row is not assessed. Batch omissions do **not** establish absence:
+the batch helper matches returned `hugoSymbols`, which can be different or missing.
+Every omitted/unavailable batch result falls back to the base single-gene GET.
+Only a definitive single-gene not-found response is negatively cached; network
+and server failures never are. Removed **3,657 poisoned omission markers** from
+the prior run. `pre_annotation_class` and `pre_annotation_reason` preserve the
+base screen result when the identity/strand check overrides it.
+There are **{len(screen):,} outcome rows**, with
+**{summary["screen"]["family_rows"]:,} annotated shared-family rows** from
+**{summary["screen"]["events_with_a_shared_family"]:,} gene-pair events**;
+**{summary["flag_rows"]:,} rows** reach artefact assessment.
+
+The inherited `no_transcript_model` class includes both missing data and base-screen
+product/locus verdicts. It must not be read as a count of missing models alone:
+
+{table(categories)}
+
+`missing_canonical_mapping` is a definitive single-gene lookup absence;
+`missing_or_invalid_transcript_model` covers missing CDS/exon/valid model data.
+Annotation ID/strand mismatches remain separate. Base-screen coding-product
+verdicts include past-stop, outside-transcript and before-CDS breaks; outside-locus
+and ambiguous-breakpoint decisions also remain separate from missing models.
+
+## Lookup correction: before and after
+
+{comparison_text}
+
+Both runs examine the same 129,273 SVs and 20,462 ordered gene pairs. Recovery
+of a partner model can introduce several Pfam family rows in place of one
+unassessed placeholder, so family-row counts need not change one-for-one.
 
 {table(summary["screen"]["class_counts"])}
 
@@ -208,13 +314,20 @@ links sequence records to sample observations. Candidate rows carry the sequence
 record ID, sequence-only tier, final tier, junction peptide, both frames, donor,
 cancer project, coordinates, caller support and all assessed flags.
 
-Final candidate tiers (DNA evidence plus sequence):
+Final candidate tiers (DNA-applicable evidence plus sequence):
+
+Normal RNA recurrence is **not applicable** to this DNA screen and is excluded
+from the final DNA gate. The remaining absent **split-read support** and
+**repeat/segmental-duplication tracks** keep the final DNA tiers `not_assessed`.
+Positive artefact flags and ambiguous gene assignments can add further limitations.
 
 {table(summary["candidate_tiers"])}
 
 Sequence-only tiers on candidate rows (unscorable rows = not assessed):
 
 {table(summary["candidate_sequence_tiers"])}
+
+{sequence_table}
 
 ## Artefact checks
 
@@ -224,7 +337,8 @@ Reference similarities at ±150 and ±500 bp retain identity and aligned length.
 No segdup/RepeatMasker tracks were supplied: repeat/duplication flags are
 `not_assessed`, never a pass. Missing read support also remains `not_assessed`.
 Consequently an unflagged reference-window comparison cannot by itself pass
-the combined genomic/evidence flag. Normal RNA recurrence is not assessed.
+the combined genomic/evidence flag. Normal RNA recurrence is reported separately
+as `not_applicable`; it does not participate in the DNA final tier.
 Shared-family call burden includes annotated shared families whose transcript
 model is unavailable, and is counted per donor by distinct aliquot + SV ID,
 without multiplying Pfam families or gene pairings. `donor_paralog_calls` counts
@@ -250,8 +364,8 @@ row, including failed/uncertain frames, is in `nontrivial_candidates.tsv`.
 
 `ets_breakend_audit.tsv` includes all SVs overlapping any requested ETS gene,
 including intergenic/antisense/intragenic cases.
-No requested ETS gene yields a non-trivial domain-completion candidate; in
-particular, there is no ERG::FLI1 or FLI1::ERG consensus call in this dataset.
+The table below reports all requested ETS outcomes after lookup recovery.
+The complete breakend audit contains no ERG/FLI1 consensus SV in either direction.
 `ets_sense_pairs.tsv` includes
 all compatible sense gene pairs and their screen outcome. This DNA approach
 can examine mid-exon ETS breaks that RNA exon-boundary fusion tables omit.
@@ -274,17 +388,27 @@ to different Pfam families.
 
 This is a PASS-only consensus screen. Homologous regions are likely under-called;
 absence of a consensus SV is not evidence that a fusion cannot occur. Canonical
-isoforms and available Pfam annotations limit sensitivity; noncoding genes,
-missing mappings, and alternate transcripts remain annotation limitations. No
+isoforms and available Pfam annotations limit sensitivity; genuine missing mappings,
+missing/invalid models, identity mismatches and alternate transcripts are separate
+limitations (see the reason-count table above). The prior run lost **722 shared-family
+rows across 52 SVs**, mostly PCDHA/UGT1A, to **ambiguous genomic breakpoints** in
+the base screen. The corrected run has **{summary["ambiguous_breakpoint_shared_rows"]:,} such rows
+across {summary["ambiguous_breakpoint_svs"]} SVs**. These are sensitivity losses from
+overlapping target loci, not missing transcript lookups; base-branch breakpoint
+selection logic is unchanged here. Of those corrected rows,
+{categories.get("base_screen_ambiguous_breakpoints", 0)} retain ambiguity as their
+primary reason; {overridden_ambiguous}
+additional rows also fail the annotation identity/strand check (the original
+ambiguity is retained in `pre_annotation_reason`). No
 RNA confirmation, inserted-junction sequence, split reads, controlled VCF
 confidence intervals, repeat/segdup track assessment or matched normal RNA
 validation is available here. Sequence-only plausibility does not imply an
 expressed, stable or functional fusion protein, nor establish oncogenicity.
 
-The ingest/strand suite contains 59 collected cases across 18 test functions
-(parametrized strand and
-malformed-input coverage), including missing-lookup and unavailable-evidence
-regressions. Final repository checks and exact suite counts are recorded in
+The focused suite covers malformed inputs and all strand combinations, plus
+batch-omission fallback, wrong-symbol responses, definitive single-gene absence,
+network/server errors, DNA-only tier gating and missing-data reason categories.
+Final repository checks and exact suite counts are recorded in
 `validation.json` and the PR description. Commands run from this worktree:
 
 ```sh

@@ -39,8 +39,8 @@
   "assembly_evidence": "https://www.nature.com/articles/s41586-020-1969-6 (Extended Data Fig. 1: alignment genome build hs37d5)",
   "code_sha256": {
     "src/cfh/ingestion/pcawg_sv.py": "14331b4daf0751d32a39c169cd762caaa0a3da967ea9aea55cd1316bd1090540",
-    "scripts/pcawg_tcga_sv_report.py": "44ea6fcd782ed5a2bd10230adb7c4effd2c9be1a8595c04fd670772619918bee",
-    "scripts/pcawg_tcga_sv_screen.py": "714b6f63cd5a9ad6fe0170a58baa70ae5bc14739b02ff4e32ef45680281adf14",
+    "scripts/pcawg_tcga_sv_report.py": "f515b5baed008186f9f26df926fb792938b5d90ed8b157aea562c60232ee399c",
+    "scripts/pcawg_tcga_sv_screen.py": "2e133dfcaba6d0b489885bedcf3444930b161612927f17cfc502aea045776780",
     "src/cfh/domain_function/uniprot.py": "fd5ba8a0f81c370a3b1d176d8bf5fa024a0b02a53a26bb161c25185f7d01a1ff",
     "src/cfh/domain_function/metrics.py": "399a1ae7930785de0ef4304b74daa25075578b2f7bd3602bc568b4b0a8f63967",
     "src/cfh/domain_function/run.py": "78bb1c2d90100e23c8a062a33450a2ecca9973d765bcbce21226e10a44438359",
@@ -56,5 +56,11 @@
     "src/cfh/mapping/junction_event.py": "00b046231d7e09368a250e649bcf371963f5cfdff006e092644dd0ec92e66d0b",
     "src/cfh/mapping/junction_translation.py": "ea2aefefad1889439c65efacd7e624519ca6e9de4741c3ec82ef5152fcc5686d",
     "src/cfh/mapping/transcript_models.py": "fa5db6667ea54e1c26cff59720f79885f602ef3dcc6000dd8740f56853e079a7"
+  },
+  "lookup_correction": {
+    "baseline_commit": "539b78874390defcd80683ad2d1045d66ae43036",
+    "removed_poisoned_markers": 3657,
+    "single_gene_fallback_required": true,
+    "definitive_notfound_only": true
   }
 }

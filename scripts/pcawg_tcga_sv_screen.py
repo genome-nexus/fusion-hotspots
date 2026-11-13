@@ -119,9 +119,10 @@ class PcawgTranscripts(TranscriptModelSource):
     """Bound public batch lookups and preserve missing mappings as unassessed.
 
     Use the same MSKCC GRCh37 transcript endpoint and build-stamped cache.
-    A successful batch omitting a symbol has no canonical mapping for that
-    symbol. Failed batches are reported separately and are never negative
-    biological results or persisted as 'not found'.
+    Batch responses are matched by returned hugoSymbols, which may differ
+    from the requested symbol. Omissions stay unset until the base class's
+    single-gene canonical lookup runs. Only its definitive not-found response
+    may write a negative cache marker; request errors never do.
     """
 
     def prefetch_canonical(self, genes: list[str]) -> None:
@@ -129,7 +130,13 @@ class PcawgTranscripts(TranscriptModelSource):
         for gene in sorted(set(genes)):
             marker = self._not_found_marker(gene)
             if marker is not None and marker.exists():
-                self._canonical[gene] = None
+                text = marker.read_text().strip()
+                if text == "no canonical mapping in successful batch":
+                    marker.unlink()  # invalidate the previous runner's poisoned omission marker
+                elif text == "404":
+                    self._canonical[gene] = None
+                else:
+                    raise ValueError(f"unrecognized negative transcript cache marker: {marker}")
             if gene not in self._canonical:
                 pending.append(gene)
         cache = self._canonical_cache_dir
@@ -155,16 +162,27 @@ class PcawgTranscripts(TranscriptModelSource):
             for index, (chunk, result, error) in enumerate(pool.map(fetch, chunks), 1):
                 found = result.by_gene_symbol if result else {}
                 for gene in chunk:
-                    self._canonical[gene] = found.get(gene)
+                    if gene in found:
+                        self._canonical[gene] = found[gene]
                     if error:
                         errors[gene] = error
-                    elif gene not in found:
-                        marker = self._not_found_marker(gene)
-                        if marker is not None:
-                            marker.write_text("no canonical mapping in successful batch\n")
                 if index % 5 == 0:
                     log(f"canonical batches {index}/{len(chunks)}")
-        save_summary(canonical_lookup_errors=errors)
+        omitted = [gene for gene in pending if gene not in self._canonical]
+        log(f"single-gene fallback for {len(omitted)} batch omissions/unavailable results")
+        # canonical() retains the base implementation's positive/definitive
+        # negative cache behavior. A failed GET raises without caching None.
+        with ThreadPoolExecutor(max_workers=4) as pool:
+            for index, _ in enumerate(pool.map(self.canonical, omitted), 1):
+                if index % 200 == 0:
+                    log(f"single-gene fallback {index}/{len(omitted)}")
+        save_summary(
+            canonical_batch_errors=errors,
+            canonical_lookup_errors={},
+            canonical_fallback_requested=len(omitted),
+            canonical_fallback_resolved=sum(self._canonical[g] is not None for g in omitted),
+            canonical_fallback_not_found=sum(self._canonical[g] is None for g in omitted),
+        )
 
 
 def annotation_problem(row: dict[str, Any], source: TranscriptModelSource) -> str | None:
@@ -184,6 +202,28 @@ def annotation_problem(row: dict[str, Any], source: TranscriptModelSource) -> st
         if {e.strand for e in transcript.exons} != {expected_strand}:
             return f"{gene}: canonical exon strand missing or inconsistent with breakend gene"
     return None
+
+
+def model_outcome_category(row: dict[str, Any]) -> str:
+    """Separate missing data from negative/ambiguous base-screen product verdicts."""
+    if row["reconstitution_class"] != "no_transcript_model":
+        return "not_applicable"
+    problem = row.get("annotation_problem") or ""
+    reason = row.get("pre_annotation_reason") or row.get("class_reason") or ""
+    if problem.startswith("no canonical transcript mapping"):
+        return "missing_canonical_mapping"
+    if problem:
+        return "annotation_identity_or_strand_mismatch"
+    if "ambiguous genomic breakpoints" in reason:
+        return "base_screen_ambiguous_breakpoints"
+    if "no site breakpoint within target locus" in reason or "no breakpoint within" in reason:
+        return "base_screen_outside_canonical_locus"
+    if any(
+        text in reason
+        for text in ("past its stop codon", "outside the transcript", "before its coding region")
+    ):
+        return "base_screen_no_coding_product"
+    return "missing_or_invalid_transcript_model"
 
 
 def screen() -> None:
@@ -263,7 +303,10 @@ def screen() -> None:
         row["cancer_type"] = row["dcc_project_code"].removesuffix("-US")
         # The shared-family helper labels a missing canonical as 'no_shared_family'.
         # Keep absence of annotation distinct from a negative domain screen.
+        row["pre_annotation_class"] = row["reconstitution_class"]
+        row["pre_annotation_reason"] = row["class_reason"]
         problem = annotation_problem(row, source)
+        row["annotation_problem"] = problem or ""
         if problem:
             row["reconstitution_class"] = "no_transcript_model"
             row["assessment_status"] = "not_assessed"
@@ -275,6 +318,7 @@ def screen() -> None:
                 if row["reconstitution_class"] == "no_transcript_model"
                 else "assessed"
             )
+        row["model_outcome_category"] = model_outcome_category(row)
     write_rows(OUT / "domain_screen.tsv.gz", rows)
     counts_by_class = Counter(row["reconstitution_class"] for row in rows)
     result["class_counts"] = {
@@ -285,7 +329,18 @@ def screen() -> None:
     result["events_with_a_shared_family"] = len(
         {(r["aliquot_id"], r["sv_id"], r["five_prime_gene"], r["three_prime_gene"]) for r in shared}
     )
-    save_summary(screen=result)
+    unassessed = [r for r in rows if r["reconstitution_class"] == "no_transcript_model"]
+    ambiguous = [
+        r
+        for r in unassessed
+        if r["pfam_family"] and "ambiguous genomic breakpoints" in r["pre_annotation_reason"]
+    ]
+    save_summary(
+        screen=result,
+        model_outcome_counts=dict(Counter(r["model_outcome_category"] for r in unassessed)),
+        ambiguous_breakpoint_shared_rows=len(ambiguous),
+        ambiguous_breakpoint_svs=len({(r["aliquot_id"], r["sv_id"]) for r in ambiguous}),
+    )
     log(f"screen complete: {result['class_counts']}")
 
 
@@ -386,8 +441,8 @@ def flags() -> None:
                 < burden[row["donor_unique_id"]]["sample_shared_family_calls"]
                 else "assessed"
             ),
-            normal_recurrence_flag="not_assessed",
-            normal_recurrence_reason="no matched normal RNA assessment for DNA screen",
+            normal_recurrence_flag="not_applicable",
+            normal_recurrence_reason="RNA recurrence check is not applicable to DNA calls",
             donor_paralog_calls=len(paralog_burden[row["donor_unique_id"]]),
         )
         if index % 50 == 0:
@@ -430,6 +485,24 @@ def flags() -> None:
         },
     )
     log("flags complete")
+
+
+DNA_REQUIRED_FLAGS = (
+    "paralog_sequence_flag",
+    "genomic_similarity_flag",
+    "read_evidence_flag",
+    "breakpoint_repeat_flag",
+    "sample_burden_flag",
+)
+
+
+def dna_tier(row: dict[str, Any], sequence_tier: str) -> str:
+    """RNA recurrence is separate from the DNA evidence gate."""
+    if row.get("gene_pairing_status") != "unique" or any(
+        row.get(flag) != "pass" for flag in DNA_REQUIRED_FLAGS
+    ):
+        return "not_assessed"
+    return sequence_tier
 
 
 def sequence() -> None:
@@ -496,22 +569,8 @@ def sequence() -> None:
         metric = lookup.get(key)
         row["sequence_tier"] = metric["tier"] if metric else "not_assessed"
         row["sequence_record_id"] = metric["record_id"] if metric else ""
-        row["tier"] = (
-            "not_assessed"
-            if row["gene_pairing_status"] == "ambiguous"
-            or any(
-                row.get(k) != "pass"
-                for k in (
-                    "paralog_sequence_flag",
-                    "genomic_similarity_flag",
-                    "read_evidence_flag",
-                    "breakpoint_repeat_flag",
-                    "normal_recurrence_flag",
-                    "sample_burden_flag",
-                )
-            )
-            else row["sequence_tier"]
-        )
+        row["tier"] = dna_tier(row, row["sequence_tier"])
+
     write_rows(OUT / "nontrivial_candidates.tsv", rows)
     save_summary(
         candidate_tiers=dict(Counter(r["tier"] for r in rows)),

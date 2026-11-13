@@ -1,12 +1,71 @@
 {
+  "ambiguous_breakpoint_shared_rows": 859,
+  "ambiguous_breakpoint_svs": 74,
+  "before_after": {
+    "baseline_commit": "539b78874390defcd80683ad2d1045d66ae43036",
+    "counts": {
+      "Annotated shared-family rows": {
+        "after": 1247,
+        "before": 1073
+      },
+      "Clean reconstitutions": {
+        "after": 0,
+        "before": 0
+      },
+      "ETS non-trivial rows": {
+        "after": 0,
+        "before": 0
+      },
+      "Kinase non-trivial rows": {
+        "after": 1,
+        "before": 1
+      },
+      "Missing canonical mappings": {
+        "after": 6833,
+        "before": 8792
+      },
+      "Non-trivial family rows": {
+        "after": 16,
+        "before": 13
+      },
+      "Rows reaching artefact assessment": {
+        "after": 161,
+        "before": 149
+      },
+      "Sequence records": {
+        "after": 5,
+        "before": 4
+      },
+      "no_transcript_model class rows (all reasons)": {
+        "after": 8312,
+        "before": 9907
+      }
+    },
+    "final_tiers_after": {
+      "not_assessed": 16
+    },
+    "final_tiers_before": {
+      "not_assessed": 13
+    },
+    "new_fusions": [
+      "ARSE::ARSD",
+      "KIAA1919::SLC16A10",
+      "SERPINB11::SERPINB12"
+    ],
+    "new_nontrivial_rows": 3
+  },
   "candidate_sequence_tiers": {
-    "likely_broken": 3,
-    "not_assessed": 9,
+    "likely_broken": 4,
+    "not_assessed": 11,
     "uncertain": 1
   },
   "candidate_tiers": {
-    "not_assessed": 13
+    "not_assessed": 16
   },
+  "canonical_batch_errors": {},
+  "canonical_fallback_not_found": 2779,
+  "canonical_fallback_requested": 3659,
+  "canonical_fallback_resolved": 880,
   "canonical_lookup_errors": {},
   "donor_status_counts": {
     "Graylist": 26,
@@ -16,30 +75,30 @@
   "eligible_sample_sheet_donors": 828,
   "flag_counts": {
     "breakpoint_repeat_flag": {
-      "not_assessed": 149
+      "not_assessed": 161
     },
     "genomic_similarity_flag": {
-      "flagged": 71,
-      "not_assessed": 78
+      "flagged": 85,
+      "not_assessed": 76
     },
     "normal_recurrence_flag": {
-      "not_assessed": 149
+      "not_applicable": 161
     },
     "paralog_sequence_flag": {
       "flagged": 12,
       "not_assessed": 4,
-      "pass": 133
+      "pass": 145
     },
     "read_evidence_flag": {
-      "not_assessed": 149
+      "not_assessed": 161
     },
     "sample_burden_flag": {
-      "flagged": 63,
-      "not_assessed": 82,
-      "pass": 4
+      "flagged": 77,
+      "not_assessed": 79,
+      "pass": 5
     }
   },
-  "flag_rows": 149,
+  "flag_rows": 161,
   "gene_pairing_counts": {
     "ambiguous": 8209,
     "intergenic": 76908,
@@ -880,25 +939,33 @@
     "sv_rows": 129273,
     "tar_member_bytes": 3053586
   },
+  "model_outcome_counts": {
+    "annotation_identity_or_strand_mismatch": 482,
+    "base_screen_ambiguous_breakpoints": 807,
+    "base_screen_no_coding_product": 84,
+    "base_screen_outside_canonical_locus": 101,
+    "missing_canonical_mapping": 6833,
+    "missing_or_invalid_transcript_model": 5
+  },
   "screen": {
     "class_counts": {
       "ambiguous_junction_register": 0,
       "clean_reconstitution": 0,
-      "gap_or_deletion": 3,
-      "no_shared_family": 10872,
-      "no_transcript_model": 9907,
-      "not_split_on_both": 136,
-      "out_of_frame": 5,
+      "gap_or_deletion": 4,
+      "no_shared_family": 12531,
+      "no_transcript_model": 8312,
+      "not_split_on_both": 145,
+      "out_of_frame": 7,
       "premature_stop_at_junction": 0,
       "splice_site_unresolved": 4,
       "tandem_duplication_or_insertion": 1
     },
-    "events_with_a_shared_family": 598,
-    "family_rows": 1073,
+    "events_with_a_shared_family": 694,
+    "family_rows": 1247,
     "mechanism_counts": {
       "mid_exon_dna": 2,
-      "no_credible_product": 924,
-      "splice_mediated": 143,
+      "no_credible_product": 1076,
+      "splice_mediated": 165,
       "splice_site_unresolved": 4
     },
     "mode": "any_domain",
@@ -906,20 +973,20 @@
   },
   "sense_gene_pairs": 20462,
   "sequence_problems": {},
-  "sequence_records": 4,
+  "sequence_records": 5,
   "sequence_tiers": {
-    "distinct_sequences": 4,
+    "distinct_sequences": 5,
     "overall_distinct_sequences": {
-      "likely_broken": 3,
+      "likely_broken": 4,
       "uncertain": 1
     },
     "overall_records": {
-      "likely_broken": 3,
+      "likely_broken": 4,
       "uncertain": 1
     },
     "records": {
       "pcawg_tcga_sv|gap_or_deletion": {
-        "likely_broken": 3
+        "likely_broken": 4
       },
       "pcawg_tcga_sv|tandem_duplication_or_insertion": {
         "uncertain": 1
@@ -927,7 +994,7 @@
     },
     "rows": {
       "pcawg_tcga_sv|gap_or_deletion": {
-        "likely_broken": 3
+        "likely_broken": 4
       },
       "pcawg_tcga_sv|tandem_duplication_or_insertion": {
         "uncertain": 1
@@ -935,7 +1002,7 @@
     },
     "samples": {
       "pcawg_tcga_sv|gap_or_deletion": {
-        "likely_broken": 3
+        "likely_broken": 4
       },
       "pcawg_tcga_sv|tandem_duplication_or_insertion": {
         "uncertain": 1

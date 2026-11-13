@@ -7,9 +7,9 @@ have at least one SV; **33 files contain only a header**. The sample sheet conta
 Empty files and absent files are different observations, not negative biological
 results. See `sample_inventory.tsv` and `donors_without_bedpe.tsv`.
 
-There are **zero clean reconstitutions**, **13 non-trivial event-family rows**
-from **12 distinct SVs**, and
-**4 distinct sequence records**. Overall candidate tiers
+There are **0 clean reconstitutions**,
+**16 non-trivial event-family rows** from **15 distinct SVs**, and
+**5 distinct sequence records**. Overall candidate tiers
 remain fail-closed when evidence is absent. The #155 sequence-only tier is a
 separate heuristic about the predicted protein; it does not validate a DNA call.
 
@@ -80,22 +80,73 @@ when no family can be classified; they are not counts of unique SVs or donors.
 An absent canonical lookup is explicitly `no_transcript_model` / `not_assessed`,
 not a successful no-shared-family result. Missing model/CDS also cannot pass.
 Canonical gene IDs and exon strands must agree with GENCODE at each breakend;
-otherwise the row is not assessed. Successful batch omissions are cached as absent
-mappings; failed batches are
-listed in `summary.json` and are never persisted as biological negatives.
-There are **20,928 outcome rows**, with **1,073 annotated shared-family rows**
-from **598 gene-pair events**; only **149 shared-family rows** have usable models
-and reach artefact assessment. The 9,907 model-unassessed outcomes limit sensitivity.
+otherwise the row is not assessed. Batch omissions do **not** establish absence:
+the batch helper matches returned `hugoSymbols`, which can be different or missing.
+Every omitted/unavailable batch result falls back to the base single-gene GET.
+Only a definitive single-gene not-found response is negatively cached; network
+and server failures never are. Removed **3,657 poisoned omission markers** from
+the prior run. `pre_annotation_class` and `pre_annotation_reason` preserve the
+base screen result when the identity/strand check overrides it.
+There are **21,004 outcome rows**, with
+**1,247 annotated shared-family rows** from
+**694 gene-pair events**;
+**161 rows** reach artefact assessment.
+
+The inherited `no_transcript_model` class includes both missing data and base-screen
+product/locus verdicts. It must not be read as a count of missing models alone:
+
+| Outcome | Count |
+|---|---:|
+| annotation_identity_or_strand_mismatch | 482 |
+| base_screen_ambiguous_breakpoints | 807 |
+| base_screen_no_coding_product | 84 |
+| base_screen_outside_canonical_locus | 101 |
+| missing_canonical_mapping | 6,833 |
+| missing_or_invalid_transcript_model | 5 |
+
+
+`missing_canonical_mapping` is a definitive single-gene lookup absence;
+`missing_or_invalid_transcript_model` covers missing CDS/exon/valid model data.
+Annotation ID/strand mismatches remain separate. Base-screen coding-product
+verdicts include past-stop, outside-transcript and before-CDS breaks; outside-locus
+and ambiguous-breakpoint decisions also remain separate from missing models.
+
+## Lookup correction: before and after
+
+| Measure | Before 539b788 | Corrected |
+|---|---:|---:|
+| no_transcript_model class rows (all reasons) | 9,907 | 8,312 |
+| Missing canonical mappings | 8,792 | 6,833 |
+| Annotated shared-family rows | 1,073 | 1,247 |
+| Rows reaching artefact assessment | 149 | 161 |
+| Non-trivial family rows | 13 | 16 |
+| Sequence records | 4 | 5 |
+| Clean reconstitutions | 0 | 0 |
+| ETS non-trivial rows | 0 | 0 |
+| Kinase non-trivial rows | 1 | 1 |
+
+New non-trivial candidates after restoring single-gene fallback:
+
+- KIAA1919::SLC16A10 / PF07690, DO2783: gap_or_deletion; sequence likely_broken; final DNA not_assessed.
+- ARSE::ARSD / PF00884, DO44462: out_of_frame; sequence not_assessed; final DNA not_assessed.
+- SERPINB11::SERPINB12 / PF00079, DO11854: out_of_frame; sequence not_assessed; final DNA not_assessed.
+
+Baseline final DNA tiers: {'not_assessed': 13}; corrected: {'not_assessed': 16}.
+
+
+Both runs examine the same 129,273 SVs and 20,462 ordered gene pairs. Recovery
+of a partner model can introduce several Pfam family rows in place of one
+unassessed placeholder, so family-row counts need not change one-for-one.
 
 | Outcome | Count |
 |---|---:|
 | ambiguous_junction_register | 0 |
 | clean_reconstitution | 0 |
-| gap_or_deletion | 3 |
-| no_shared_family | 10,872 |
-| no_transcript_model | 9,907 |
-| not_split_on_both | 136 |
-| out_of_frame | 5 |
+| gap_or_deletion | 4 |
+| no_shared_family | 12,531 |
+| no_transcript_model | 8,312 |
+| not_split_on_both | 145 |
+| out_of_frame | 7 |
 | premature_stop_at_junction | 0 |
 | splice_site_unresolved | 4 |
 | tandem_duplication_or_insertion | 1 |
@@ -113,20 +164,34 @@ links sequence records to sample observations. Candidate rows carry the sequence
 record ID, sequence-only tier, final tier, junction peptide, both frames, donor,
 cancer project, coordinates, caller support and all assessed flags.
 
-Final candidate tiers (DNA evidence plus sequence):
+Final candidate tiers (DNA-applicable evidence plus sequence):
+
+Normal RNA recurrence is **not applicable** to this DNA screen and is excluded
+from the final DNA gate. The remaining absent **split-read support** and
+**repeat/segmental-duplication tracks** keep the final DNA tiers `not_assessed`.
+Positive artefact flags and ambiguous gene assignments can add further limitations.
 
 | Outcome | Count |
 |---|---:|
-| not_assessed | 13 |
+| not_assessed | 16 |
 
 
 Sequence-only tiers on candidate rows (unscorable rows = not assessed):
 
 | Outcome | Count |
 |---|---:|
-| likely_broken | 3 |
-| not_assessed | 9 |
+| likely_broken | 4 |
+| not_assessed | 11 |
 | uncertain | 1 |
+
+
+| Fusion | Indel aa | Domain bits | GA margin | Best/union HMM coverage | Lost key features | Sequence tier |
+|---|---:|---:|---:|---:|---:|---|
+| ABCA6::ABCA10 | -184 | -2.03 | -33.63 | 0.012/0.012 | 0 | likely_broken |
+| AKR1C2::AKR1C3 | -198 | 50.26 | 26.26 | 0.388/0.388 | 32 | likely_broken |
+| KIAA1919::SLC16A10 | -229 | 28.13 | -5.27 | 0.233/0.233 | not_assessed | likely_broken |
+| GNA14::GNAQ | -138 | 137.37 | 88.57 | 0.324/0.577 | 12 | likely_broken |
+| MAP3K3::STRADA | 69 | 186.61 | 154.91 | 0.695/0.996 | 0 | uncertain |
 
 
 ## Artefact checks
@@ -137,7 +202,8 @@ Reference similarities at ±150 and ±500 bp retain identity and aligned length.
 No segdup/RepeatMasker tracks were supplied: repeat/duplication flags are
 `not_assessed`, never a pass. Missing read support also remains `not_assessed`.
 Consequently an unflagged reference-window comparison cannot by itself pass
-the combined genomic/evidence flag. Normal RNA recurrence is not assessed.
+the combined genomic/evidence flag. Normal RNA recurrence is reported separately
+as `not_applicable`; it does not participate in the DNA final tier.
 Shared-family call burden includes annotated shared families whose transcript
 model is unavailable, and is counted per donor by distinct aliquot + SV ID,
 without multiplying Pfam families or gene pairings. `donor_paralog_calls` counts
@@ -152,20 +218,20 @@ positive high-burden flags can still be raised from observed calls.
 
 | Outcome | Count |
 |---|---:|
-| not_assessed | 149 |
+| not_assessed | 161 |
 
 ### genomic_similarity_flag
 
 | Outcome | Count |
 |---|---:|
-| flagged | 71 |
-| not_assessed | 78 |
+| flagged | 85 |
+| not_assessed | 76 |
 
 ### normal_recurrence_flag
 
 | Outcome | Count |
 |---|---:|
-| not_assessed | 149 |
+| not_applicable | 161 |
 
 ### paralog_sequence_flag
 
@@ -173,21 +239,21 @@ positive high-burden flags can still be raised from observed calls.
 |---|---:|
 | flagged | 12 |
 | not_assessed | 4 |
-| pass | 133 |
+| pass | 145 |
 
 ### read_evidence_flag
 
 | Outcome | Count |
 |---|---:|
-| not_assessed | 149 |
+| not_assessed | 161 |
 
 ### sample_burden_flag
 
 | Outcome | Count |
 |---|---:|
-| flagged | 63 |
-| not_assessed | 82 |
-| pass | 4 |
+| flagged | 77 |
+| not_assessed | 79 |
+| pass | 5 |
 
 
 ## Strongest candidates for follow-up
@@ -197,23 +263,23 @@ absence of a positive paralog flag, then caller support; no candidate is promote
 validation data. Full rows are in `strongest_candidates.tsv` and every non-trivial
 row, including failed/uncertain frames, is in `nontrivial_candidates.tsv`.
 
-- **MAP3K3::STRADA / PF00069**, DO5626 (BRCA-US, 4/4 callers): tandem_duplication_or_insertion; sequence-only tier uncertain; paralog check pass, gene pairing ambiguous; overall **not_assessed** (DNA/read/repeat/RNA validation incomplete).
-- **GNA14::GNAQ / PF00503**, DO2341 (BRCA-US, 4/4 callers): gap_or_deletion; sequence-only tier likely_broken; paralog check pass, gene pairing unique; overall **not_assessed** (DNA/read/repeat/RNA validation incomplete).
-- **ABCA6::ABCA10 / PF12698**, DO52171 (LIHC-US, 3/4 callers): gap_or_deletion; sequence-only tier likely_broken; paralog check pass, gene pairing unique; overall **not_assessed** (DNA/read/repeat/RNA validation incomplete).
-- **AKR1C2::AKR1C3 / PF00248**, DO20928 (KIRP-US, 3/4 callers): gap_or_deletion; sequence-only tier likely_broken; paralog check pass, gene pairing unique; overall **not_assessed** (DNA/read/repeat/RNA validation incomplete).
-- **GPC6::GPC5 / PF01153**, DO41157 (UCEC-US, 4/4 callers): out_of_frame; sequence-only tier not_assessed; paralog check pass, gene pairing unique; overall **not_assessed** (DNA/read/repeat/RNA validation incomplete).
-- **NFASC::NTRK1 / PF13895**, DO12484 (GBM-US, 4/4 callers): splice_site_unresolved; sequence-only tier not_assessed; paralog check not_assessed, gene pairing unique; overall **not_assessed** (DNA/read/repeat/RNA validation incomplete).
-- **ZNF69::ZNF844 / PF01352**, DO220140 (SARC-US, 4/4 callers): splice_site_unresolved; sequence-only tier not_assessed; paralog check not_assessed, gene pairing unique; overall **not_assessed** (DNA/read/repeat/RNA validation incomplete).
-- **LMNB2::KRT85 / PF00038**, DO219964 (SARC-US, 3/4 callers): out_of_frame; sequence-only tier not_assessed; paralog check pass, gene pairing unique; overall **not_assessed** (DNA/read/repeat/RNA validation incomplete).
-- **GABRG3::GABRA5 / PF02931**, DO4359 (BRCA-US, 4/4 callers): out_of_frame; sequence-only tier not_assessed; paralog check pass, gene pairing ambiguous; overall **not_assessed** (DNA/read/repeat/RNA validation incomplete).
-- **LNPEP::ERAP2 / PF01433**, DO12454 (GBM-US, 3/4 callers): splice_site_unresolved; sequence-only tier not_assessed; paralog check not_assessed, gene pairing ambiguous; overall **not_assessed** (DNA/read/repeat/RNA validation incomplete).
+- **MAP3K3::STRADA / PF00069**, DO5626 (BRCA-US, 4/4 callers): tandem_duplication_or_insertion; sequence-only tier uncertain; paralog check pass, gene pairing ambiguous; overall **not_assessed** (DNA read/repeat validation incomplete).
+- **GNA14::GNAQ / PF00503**, DO2341 (BRCA-US, 4/4 callers): gap_or_deletion; sequence-only tier likely_broken; paralog check pass, gene pairing unique; overall **not_assessed** (DNA read/repeat validation incomplete).
+- **KIAA1919::SLC16A10 / PF07690**, DO2783 (BRCA-US, 4/4 callers): gap_or_deletion; sequence-only tier likely_broken; paralog check pass, gene pairing unique; overall **not_assessed** (DNA read/repeat validation incomplete).
+- **ABCA6::ABCA10 / PF12698**, DO52171 (LIHC-US, 3/4 callers): gap_or_deletion; sequence-only tier likely_broken; paralog check pass, gene pairing unique; overall **not_assessed** (DNA read/repeat validation incomplete).
+- **AKR1C2::AKR1C3 / PF00248**, DO20928 (KIRP-US, 3/4 callers): gap_or_deletion; sequence-only tier likely_broken; paralog check pass, gene pairing unique; overall **not_assessed** (DNA read/repeat validation incomplete).
+- **GPC6::GPC5 / PF01153**, DO41157 (UCEC-US, 4/4 callers): out_of_frame; sequence-only tier not_assessed; paralog check pass, gene pairing unique; overall **not_assessed** (DNA read/repeat validation incomplete).
+- **NFASC::NTRK1 / PF13895**, DO12484 (GBM-US, 4/4 callers): splice_site_unresolved; sequence-only tier not_assessed; paralog check not_assessed, gene pairing unique; overall **not_assessed** (DNA read/repeat validation incomplete).
+- **SERPINB11::SERPINB12 / PF00079**, DO11854 (GBM-US, 4/4 callers): out_of_frame; sequence-only tier not_assessed; paralog check pass, gene pairing unique; overall **not_assessed** (DNA read/repeat validation incomplete).
+- **ZNF69::ZNF844 / PF01352**, DO220140 (SARC-US, 4/4 callers): splice_site_unresolved; sequence-only tier not_assessed; paralog check not_assessed, gene pairing unique; overall **not_assessed** (DNA read/repeat validation incomplete).
+- **LMNB2::KRT85 / PF00038**, DO219964 (SARC-US, 3/4 callers): out_of_frame; sequence-only tier not_assessed; paralog check pass, gene pairing unique; overall **not_assessed** (DNA read/repeat validation incomplete).
 
 ## Explicit ETS-family examination
 
 `ets_breakend_audit.tsv` includes all SVs overlapping any requested ETS gene,
 including intergenic/antisense/intragenic cases.
-No requested ETS gene yields a non-trivial domain-completion candidate; in
-particular, there is no ERG::FLI1 or FLI1::ERG consensus call in this dataset.
+The table below reports all requested ETS outcomes after lookup recovery.
+The complete breakend audit contains no ERG/FLI1 consensus SV in either direction.
 `ets_sense_pairs.tsv` includes
 all compatible sense gene pairs and their screen outcome. This DNA approach
 can examine mid-exon ETS breaks that RNA exon-boundary fusion tables omit.
@@ -252,17 +318,27 @@ to different Pfam families.
 
 This is a PASS-only consensus screen. Homologous regions are likely under-called;
 absence of a consensus SV is not evidence that a fusion cannot occur. Canonical
-isoforms and available Pfam annotations limit sensitivity; noncoding genes,
-missing mappings, and alternate transcripts remain annotation limitations. No
+isoforms and available Pfam annotations limit sensitivity; genuine missing mappings,
+missing/invalid models, identity mismatches and alternate transcripts are separate
+limitations (see the reason-count table above). The prior run lost **722 shared-family
+rows across 52 SVs**, mostly PCDHA/UGT1A, to **ambiguous genomic breakpoints** in
+the base screen. The corrected run has **859 such rows
+across 74 SVs**. These are sensitivity losses from
+overlapping target loci, not missing transcript lookups; base-branch breakpoint
+selection logic is unchanged here. Of those corrected rows,
+807 retain ambiguity as their
+primary reason; 52
+additional rows also fail the annotation identity/strand check (the original
+ambiguity is retained in `pre_annotation_reason`). No
 RNA confirmation, inserted-junction sequence, split reads, controlled VCF
 confidence intervals, repeat/segdup track assessment or matched normal RNA
 validation is available here. Sequence-only plausibility does not imply an
 expressed, stable or functional fusion protein, nor establish oncogenicity.
 
-The ingest/strand suite contains 59 collected cases across 18 test functions
-(parametrized strand and
-malformed-input coverage), including missing-lookup and unavailable-evidence
-regressions. Final repository checks and exact suite counts are recorded in
+The focused suite covers malformed inputs and all strand combinations, plus
+batch-omission fallback, wrong-symbol responses, definitive single-gene absence,
+network/server errors, DNA-only tier gating and missing-data reason categories.
+Final repository checks and exact suite counts are recorded in
 `validation.json` and the PR description. Commands run from this worktree:
 
 ```sh
