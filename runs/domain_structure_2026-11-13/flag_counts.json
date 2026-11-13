@@ -1,9 +1,9 @@
 {
  "records": 27,
  "by_flag": {
-  "fold_supported": 15,
+  "fold_supported": 14,
   "fold_doubtful": 9,
-  "not_assessed": 3
+  "not_assessed": 4
  },
  "by_cohort": {
   "depmap_22q2": {
@@ -22,9 +22,9 @@
    "not_assessed": 1
   },
   "tcga_gtex": {
-   "fold_supported": 11,
+   "fold_supported": 10,
    "fold_doubtful": 5,
-   "not_assessed": 3
+   "not_assessed": 4
   }
  },
  "by_pr1_tier": {
@@ -37,7 +37,7 @@
    "fold_doubtful": 1
   },
   "not_assessed": {
-   "fold_supported": 1
+   "not_assessed": 1
   },
   "uncertain": {
    "fold_doubtful": 5,
@@ -46,12 +46,13 @@
   }
  },
  "rules_fired": {
-  "S1_all_pass": 15,
+  "S1_all_pass": 14,
   "D3_junction_very_low": 8,
   "D5_halves_not_packed": 5,
   "N1_parents_not_confident": 3,
   "D2_domain_plddt_drop": 3,
   "D4_junction_plddt_drop": 7,
+  "N3_afdb_comparison_missing": 1,
   "D1_domain_plddt_low": 3,
   "D6_fold_differs": 3
  }

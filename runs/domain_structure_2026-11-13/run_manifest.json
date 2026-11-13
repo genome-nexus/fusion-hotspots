@@ -1,7 +1,7 @@
 {
  "schema_version": "domain_structure/1",
- "code_commit": "24f51adeb596544e7d7db5b5d9f2616cbf68e6a0",
- "generated": "2026-11-13T08:57:57",
+ "code_commit": "4cbbe7394a7583f983e1195fc27a2d6d437df7c3",
+ "generated": "2026-11-13T09:09:09",
  "inputs": {
   "shortlist": {
    "path": "runs/domain_function_seq_2026-11-11/shortlist_for_structure.tsv",
@@ -14,7 +14,9 @@
  },
  "predictor": {
   "version": "colabfold 1.6.3; alphafold-colabfold 2.3.20; jax 0.10.2",
-  "settings_id": "set_e20d3cb4e3e2",
+  "settings_id": "set_f6b2876d27c8",
+  "checkpoints_migrated_this_run": 71,
+  "checkpoints_migrated_total": 71,
   "settings": {
    "backend": "colabfold_batch",
    "model_type": "alphafold2_ptm",
@@ -27,6 +29,7 @@
    "num_seeds": 1,
    "max_msa": "256:512",
    "msa_mode": "mmseqs2_uniref_env",
+   "host_url": "https://api.colabfold.com",
    "extra_args": []
   },
   "msa_server": "https://api.colabfold.com",
@@ -58,7 +61,8 @@
   "D6_fold_differs": "mapped TM-score (normalised by the parent domain) < 0.5 against both parent predictions",
   "N0_prediction_missing": "a chimera or parent prediction failed / is missing",
   "N1_parents_not_confident": "neither parent's domain pLDDT is >= 70: no confident reference fold to compare with",
-  "N2_metric_missing": "not doubtful, but a metric needed for fold_supported is missing",
+  "N2_metric_missing": "not doubtful, but a metric needed for fold_supported is missing (a non-finite value counts as missing)",
+  "N3_afdb_comparison_missing": "not doubtful, but the comparison with a parent's AlphaFold DB model was refused or failed (no model, sequence mismatch, low identity, mapping failure)",
   "S1_all_pass": "every input assessed, no doubt rule fired"
  },
  "jobs": {
@@ -806,9 +810,9 @@
  "flag_counts": {
   "records": 27,
   "by_flag": {
-   "fold_supported": 15,
+   "fold_supported": 14,
    "fold_doubtful": 9,
-   "not_assessed": 3
+   "not_assessed": 4
   },
   "by_cohort": {
    "depmap_22q2": {
@@ -827,9 +831,9 @@
     "not_assessed": 1
    },
    "tcga_gtex": {
-    "fold_supported": 11,
+    "fold_supported": 10,
     "fold_doubtful": 5,
-    "not_assessed": 3
+    "not_assessed": 4
    }
   },
   "by_pr1_tier": {
@@ -842,7 +846,7 @@
     "fold_doubtful": 1
    },
    "not_assessed": {
-    "fold_supported": 1
+    "not_assessed": 1
    },
    "uncertain": {
     "fold_doubtful": 5,
@@ -851,12 +855,13 @@
    }
   },
   "rules_fired": {
-   "S1_all_pass": 15,
+   "S1_all_pass": 14,
    "D3_junction_very_low": 8,
    "D5_halves_not_packed": 5,
    "N1_parents_not_confident": 3,
    "D2_domain_plddt_drop": 3,
    "D4_junction_plddt_drop": 7,
+   "N3_afdb_comparison_missing": 1,
    "D1_domain_plddt_low": 3,
    "D6_fold_differs": 3
   }
