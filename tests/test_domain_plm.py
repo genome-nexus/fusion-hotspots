@@ -484,8 +484,10 @@ def test_counts_and_tables_render_not_assessed_rows():
     summary = counts(rows)
     assert summary["plm_status"] == {"not_assessed": 1, "scored": 1}
     assert summary["disagreements"] == {"plm_low_but_tier_likely_intact": 1}
-    text = report_tables(rows, ("FLI1::ERG",))
+    dna = {**rows[-1], "fusion": "KIAA1919::SLC16A10", "source": "pcawg_tcga_dna"}
+    text = report_tables(rows + [dna], ("FLI1::ERG",))
     assert "not assessed: chimera: not scored" in text
+    assert "KIAA1919::SLC16A10" in text
 
 
 # --------------------------------------------------------------------- worker client

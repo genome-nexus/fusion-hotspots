@@ -144,14 +144,20 @@ def table(rows: list[dict[str, Any]], extra: tuple[tuple[str, str], ...] = ()) -
 
 def report_tables(rows: list[dict[str, Any]], named: tuple[str, ...]) -> str:
     shortlist = [r for r in rows if r["scoring_group"] == "shortlist"]
-    named_rows = [r for r in rows if r["fusion"] in named]
-    named_rows.sort(key=lambda r: (named.index(r["fusion"]), r["record_id"]))
+    named_rows = [r for r in rows if r["fusion"] in named or r["source"] == "pcawg_tcga_dna"]
+    named_rows.sort(
+        key=lambda r: (
+            named.index(r["fusion"]) if r["fusion"] in named else len(named),
+            r["fusion"],
+            r["record_id"],
+        )
+    )
     disagreeing = [r for r in rows if r["disagreements"]]
     disagreeing.sort(key=lambda r: (r["scoring_group"] != "shortlist", r["fusion"]))
     parts = [
         "## Shortlist (PR #155 shortlist, PR #160 fold flag)\n",
         table(shortlist, (("record", "record_id"),)),
-        "\n\n## Named cases (every record of each named fusion)\n",
+        "\n\n## Named cases and every PCAWG DNA event\n",
         table(named_rows, (("record", "record_id"), ("source", "source"))),
         "\n\n## Disagreements\n",
         "\n".join(f"* `{key}` -- {text}" for key, text in DISAGREEMENT_RULES.items()),
