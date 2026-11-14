@@ -134,6 +134,9 @@ def _tamper(cache: ScoreCache, seq: str, **changes):
         {"logp": {"9": -0.1}},
         {"logp": {"x": -0.1}},
         {"logp": {"1": True}},
+        {"logp": [None, -0.5]},
+        {"logp": "invalid"},
+        {"logp": {"01": -0.5}},
     ],
 )
 def test_stale_or_corrupt_cache_entry_reads_as_absent(tmp_path, changes):
@@ -153,6 +156,14 @@ def test_cache_with_non_finite_json_reads_as_absent(tmp_path):
     assert cache.get("ACD") == {}
 
 
+@pytest.mark.parametrize("entry", [None, [], "invalid", 5])
+def test_cache_with_wrong_json_shape_reads_as_absent(tmp_path, entry):
+    cache = ScoreCache(tmp_path, SPEC)
+    cache.put("ACD", {1: -0.5})
+    cache.path("ACD").write_text(json.dumps(entry))
+    assert cache.get("ACD") == {}
+
+
 @pytest.mark.parametrize("bad", [math.nan, math.inf, -math.inf, 0.3])
 def test_cache_refuses_to_store_invalid_scores(tmp_path, bad):
     cache = ScoreCache(tmp_path, SPEC)
@@ -168,7 +179,13 @@ def test_valid_logp():
 
 # ----------------------------------------------------------------------------- scoring
 @pytest.mark.parametrize(
-    "scorer", [FakeScorer(value=math.nan), FakeScorer(value=-math.inf), FakeScorer(value=0.5)]
+    "scorer",
+    [
+        FakeScorer(value=math.nan),
+        FakeScorer(value=math.inf),
+        FakeScorer(value=-math.inf),
+        FakeScorer(value=0.5),
+    ],
 )
 def test_non_finite_or_positive_scores_fail_the_sequence_and_are_not_cached(tmp_path, scorer):
     plan, cache, failures = _scored(tmp_path, _record(), scorer)
@@ -190,6 +207,40 @@ def test_reply_missing_positions_is_a_failure(tmp_path):
     plan, cache, failures = _scored(tmp_path, _record(), FakeScorer(drop=1))
     assert len(failures) == 3
     assert metrics_row(plan, cache, failures, "", "")["plm_status"] == "not_assessed"
+
+
+def test_reply_with_extra_positions_is_not_assessed_or_cached(tmp_path):
+    class ExtraScorer(FakeScorer):
+        def score(self, sequence, positions):
+            return {**super().score(sequence, positions), len(sequence) + 1: -1.0}
+
+    plan, cache, failures = _scored(tmp_path, _record(), ExtraScorer())
+    assert len(failures) == 3
+    assert all(cache.get(s.sequence) == {} for s in plan.sides().values())
+    assert metrics_row(plan, cache, failures, "", "")["plm_status"] == "not_assessed"
+
+
+@pytest.mark.parametrize(
+    "changes",
+    [
+        {"spec": asdict(replace(SPEC, model="other"))},
+        {"spec": asdict(replace(SPEC, weights_sha256="b" * 64))},
+        {"sequence": "OTHER"},
+        {"logp": {"1": math.nan}},
+        {"logp": {"1": math.inf}},
+        {"logp": {"1": -math.inf}},
+        {"logp": []},
+    ],
+)
+def test_stale_or_invalid_required_cache_makes_record_not_assessed(tmp_path, changes):
+    plan, cache, _ = _scored(tmp_path, _record())
+    _tamper(cache, plan.chimera.sequence, **changes)
+    row = metrics_row(plan, cache, {}, "", "")
+    assert row["plm_status"] == "not_assessed"
+    assert all(row[c] == "" for c in METRIC_COLUMNS[2:])
+    add_ranks([row])
+    assert row["plm_rank"] == "not_assessed"
+    assert disagreements(row) == []
 
 
 def test_missing_model_makes_every_record_not_assessed(tmp_path):
@@ -436,6 +487,12 @@ print(json.dumps({"header": {"model": mode, "esm_version": "x", "weights_sha256"
       flush=True)
 for line in sys.stdin:
     req = json.loads(line)
+    if mode == "notobject":
+        print("[]", flush=True)
+        continue
+    if mode == "wrongid":
+        print(json.dumps({"id": "wrong"}), flush=True)
+        continue
     seq = req["sequence"]
     if mode == "wrongseq":
         seq = seq[::-1]
@@ -461,7 +518,7 @@ def test_worker_client_round_trip(fake_worker):
     scorer.close()
 
 
-@pytest.mark.parametrize("mode", ["wrongseq", "error"])
+@pytest.mark.parametrize("mode", ["wrongseq", "error", "notobject", "wrongid"])
 def test_worker_client_rejects_bad_replies(fake_worker, mode):
     scorer = WorkerScorer(sys.executable, mode, script=fake_worker)
     with pytest.raises(ScoringError):

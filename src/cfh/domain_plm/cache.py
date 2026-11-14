@@ -65,18 +65,22 @@ class ScoreCache:
         except (OSError, json.JSONDecodeError):
             return {}
         if (
-            entry.get("spec") != asdict(self.spec)
+            not isinstance(entry, dict)
+            or entry.get("spec") != asdict(self.spec)
             or entry.get("sequence") != sequence
             or entry.get("sequence_sha256") != sequence_sha(sequence)
         ):
             return {}
+        values = entry.get("logp")
+        if not isinstance(values, dict):
+            return {}
         out: dict[int, float] = {}
-        for key, value in (entry.get("logp") or {}).items():
+        for key, value in values.items():
             try:
                 position = int(key)
             except (TypeError, ValueError):
                 return {}
-            if not 1 <= position <= len(sequence) or not valid_logp(value):
+            if str(position) != key or not 1 <= position <= len(sequence) or not valid_logp(value):
                 return {}
             out[position] = float(value)
         return out

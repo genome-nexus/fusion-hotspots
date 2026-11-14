@@ -226,12 +226,17 @@ class WorkerScorer:
         self._next += 1
         rid = str(self._next)
         request = {"id": rid, "sequence": sequence, "positions": positions}
-        self._proc.stdin.write(json.dumps(request) + "\n")
-        self._proc.stdin.flush()
+        try:
+            self._proc.stdin.write(json.dumps(request) + "\n")
+            self._proc.stdin.flush()
+        except OSError as error:
+            raise ScoringError("PLM worker input pipe closed") from error
         try:
             reply = json.loads(self._readline())
         except json.JSONDecodeError as error:
             raise ScoringError("PLM worker sent an unparsable reply") from error
+        if not isinstance(reply, dict):
+            raise ScoringError("PLM worker reply is not an object")
         if reply.get("id") != rid:
             raise ScoringError("PLM worker reply out of order")
         if "error" in reply:
@@ -272,7 +277,11 @@ def score_sequences(
             failures[sequence] = str(error)
             log(f"FAILED len={len(sequence)}: {error}")
             continue
-        bad = [p for p in missing if p not in got or not valid_logp(got[p])]
+        if set(got) != set(missing):
+            failures[sequence] = "worker returned wrong score positions or length"
+            log(f"FAILED len={len(sequence)}: {failures[sequence]}")
+            continue
+        bad = [p for p in missing if not valid_logp(got[p])]
         if bad:
             failures[sequence] = f"invalid or missing scores at {len(bad)} position(s)"
             log(f"FAILED len={len(sequence)}: {failures[sequence]}")
