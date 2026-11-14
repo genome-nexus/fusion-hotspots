@@ -177,7 +177,7 @@ def main() -> int:
         parser.error("analyze needs --out")
     if scorer is not None:
         scorer.close()
-    failures: dict[str, str] = {}
+    failures = {}
     for path in sorted(args.work.glob("failures*.json")):
         failures.update(json.loads(path.read_text()))
     structure = {row["record_id"]: row for row in read_tsv(structure_path)}
