@@ -39,6 +39,7 @@ from cfh.domain_plm.metrics import junction_profile
 from cfh.domain_plm.run import (
     NAMED_DNA_FUSIONS,
     NAMED_FUSIONS,
+    ORDER_SEED,
     collect,
     metrics_row,
     read_tsv,
@@ -251,6 +252,11 @@ def main() -> int:
             "windows": {"flank": FLANK, "junction_half_window": JUNCTION_HALF_WINDOW},
             "rank_fraction": RANK_FRACTION,
             "disagreement_rules": DISAGREEMENT_RULES,
+            "random_order_seed": ORDER_SEED,
+        },
+        "scoring_sessions": {
+            path.name: json.loads(path.read_text())
+            for path in sorted(args.work.glob("score_status*.json"))
         },
         "scoring_failures": failures,
     }

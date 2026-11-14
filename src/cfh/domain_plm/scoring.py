@@ -132,6 +132,8 @@ def plan_record(record: ChimeraRecord, w: int = JUNCTION_HALF_WINDOW) -> RecordP
     for role, side in (("chimera", chimera), ("parent5", parent5), ("parent3", parent3)):
         if not side.sequence:
             problem = f"{role}: empty sequence"
+        elif not side.start <= side.domain[0] <= side.domain[1] <= side.end:
+            problem = f"{role}: domain span is outside the scored sequence"
         elif len(side.sequence) > HARD_LIMIT:
             problem = f"{role}: {len(side.sequence)} residues exceeds limit {HARD_LIMIT}"
         elif set(side.sequence) - CANONICAL:

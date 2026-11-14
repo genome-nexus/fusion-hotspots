@@ -315,6 +315,19 @@ def test_context_windows_cover_every_position_inside_the_model_limit():
     assert context_windows(1500, [750]) == {750 - MAX_RESIDUES // 2: [750]}
 
 
+@pytest.mark.parametrize("role", ["chimera", "parent5", "parent3"])
+def test_truncated_domain_sequence_is_not_assessed(tmp_path, role):
+    record = _record()
+    if role == "chimera":
+        record.chimeric_protein = record.chimeric_protein[:40]
+    else:
+        parent = record.five if role == "parent5" else record.three
+        parent.protein = parent.protein[:40]
+    plan = plan_record(record)
+    assert f"{role}: domain span is outside" in plan.problem
+    assert metrics_row(plan, None, {}, "", "")["plm_status"] == "not_assessed"
+
+
 def test_record_longer_than_the_model_context_is_scored_with_a_note(tmp_path):
     record = _record(three=PARTNER + "A" * 1100)
     record.three = replace(record.three, domain_end=1150)

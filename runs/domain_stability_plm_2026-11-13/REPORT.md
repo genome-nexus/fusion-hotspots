@@ -43,16 +43,16 @@ measures or to call a chimeric domain functional from them, so no combined score
 is defined. To compare with PR #155's tier and PR #160's fold flag, the PLM needs a categorical
 reading, and it is a within-run rank, not a calibrated threshold: `plm_rank = bottom_decile` when
 `delta_vs_better_parent` **or** `dip_excess_worst` is in the lowest 10 % of the scored PR #155
-records (ties included), otherwise `not_bottom_decile`. PCAWG/TCGA DNA records are ranked
+records by empirical percentile (fraction of reference values ≤ the record value), otherwise `not_bottom_decile`. PCAWG/TCGA DNA records are ranked
 against the PR #155 distribution but do not shape it. Because the reference is the *scored*
-subset (priority records + a seeded random sample of the rest), the decile is a sample estimate.
+subset (priority records + a seeded random sample of the rest), the decile is a sample estimate. Tied values share a percentile; a tie spanning the 10 % boundary is not labelled bottom decile.
 
 **Fail-safe (every rule has a regression test in `tests/test_domain_plm.py`).**
 
 * Missing PLM env or weights, worker crash, worker error, out-of-order or wrong-sequence reply →
   `not_assessed` for every affected record.
 * Any NaN, ±inf or positive log-probability, or a reply with missing/extra score positions →
-  the whole sequence fails, nothing from it is cached, and its records are `not_assessed`.
+  the whole reply fails, nothing from it is cached, and its records are `not_assessed`. Truncated domain sequences or out-of-bounds domain spans also fail closed.
 * Sequence mismatch: each record's domain span, parent domains, junction index and domain length
   are re-checked against PR #155's `domain_function_metrics.tsv.gz`; any difference →
   `not_assessed`. Non-canonical residues → `not_assessed`.
@@ -75,13 +75,16 @@ subset (priority records + a seeded random sample of the rest), the decile is a 
 * **Scores rank; they do not prove function or stability.** No measure here has been calibrated
   against lab data for chimeric domains; there is no functional cutoff, and the bottom-decile
   label is only a rank within this run.
-* A 35 M-parameter model is the small end of ESM-2; larger models score sequence plausibility
-  better but did not fit the time budget on this machine.
+* A 35 M-parameter model is at the small end of ESM-2. The 150 M candidate was rejected after
+  the earlier worker's timing pilot; it was not used for the committed metrics. No accuracy gain
+  from a larger model was measured in this run.
 * Masked PLL scores each residue with all others visible, so it is insensitive to long-range
   incompatibilities that only show up in 3D (which is what PR #160's fold flag is for).
 * Windowed context (4 records over 1,022 residues) is not identical to full context.
-* Coverage beyond the priority records is a seeded random sample, not the full set; the rank
-  reference distribution is estimated from that sample.
+* Coverage beyond the priority records is a time-limited prefix and reverse-prefix of a seeded
+  random ordering, not the full set. Runtime, record length and shared cached sequences can affect
+  which records finish before the deadline. Priority cases are deliberately enriched, so the pooled
+  rank reference is not an unbiased estimate of the full collection.
 
 ## Tools not run
 
@@ -91,3 +94,17 @@ subset (priority records + a seeded random sample of the rest), the decile is a 
 | INDELi | not run | [Official single-protein workflow](https://github.com/lehner-lab/deep_indel_mutagenesis/blob/main/single_protein_prediction/README.md) predicts single-amino-acid insertion/deletion tolerance using ESM-1v substitution scores, a PDB, rSASA and R packages. These chimeras are not single-residue variants of either parent, so there is no faithful input. Not installed; no claim that the complete dependency stack fits within 5 GB. |
 | FoldX | not run | not installed (academic licence required); not required by the contract. |
 | structure-based stability proxy on the PR #160 ColabFold models | not run | No additional energy model was run; the PLM metrics are sequence plausibility measures, not folding free energies. FoldX is absent and no Rosetta installation was attempted. |
+
+## Reproduce
+
+Use the existing PLM environment (do not reinstall):
+
+```bash
+.venv/bin/python scripts/domain_stability_plm.py analyze --out runs/domain_stability_plm_2026-11-13
+```
+
+Analysis validates the installed model against the external sequence cache; it does not score
+new positions. Without the matching cache, records are `not_assessed`. Model weights and raw
+score cache stay outside the committed artifacts. Both CPU and MPS workers use the same model
+and fp32 settings, and share cache entries; small device-dependent numerical differences are
+possible. `run_manifest.json` records the model hash, input hashes, scoring sessions and order seed.
