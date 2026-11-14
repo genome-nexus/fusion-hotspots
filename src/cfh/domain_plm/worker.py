@@ -25,7 +25,7 @@ from pathlib import Path
 from typing import Any
 
 MAX_RESIDUES = 1022
-"""ESM-2 positional limit (1024 tokens including BOS/EOS)."""
+"""ESM-2 context limit used here (1024 tokens including BOS/EOS)."""
 TOKEN_BUDGET = 8192
 """Tokens per forward batch (batch rows x sequence tokens): bounds attention memory, which
 grows with length squared, so long sequences run in smaller batches. Results do not depend

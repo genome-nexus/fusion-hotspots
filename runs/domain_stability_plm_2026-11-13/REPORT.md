@@ -18,7 +18,7 @@ talks JSON lines to the driver, so CI needs no ML dependencies.
 **Score.** Masked pseudo-log-likelihood (PLL): for each residue *i*, mask *i* alone and take
 `log p(true residue | rest)` (natural log, nats). Three sequences per record, the same windows
 PR #160 predicted: chimeric domain ±30 residues, and each parent's Pfam domain ±30. Flanks are
-context only. Sequences over ESM-2's 1,022-residue context (4 records: GPC3::GPC4 and three
+context only. Sequences over the chosen 1,022-residue context limit (4 records: GPC3::GPC4 and three
 MYH fusions) are scored per position in the 1,022-residue window centred on that position; those
 rows carry `plm_note = <role>_windowed_context_<n>aa`.
 
@@ -31,7 +31,7 @@ compared. All measures are per residue:
 | `delta_vs_5p`, `delta_vs_3p` | chimera mean minus parent mean |
 | `delta_vs_better_parent` | chimera mean minus the higher parent mean |
 | `context_shift_5p`, `context_shift_3p` | **paired** mean of (chimera PLL − parent PLL) over the *same* residues (each chimera residue copied from that parent, scored in both contexts). Inserted/hybrid residues have no partner and deleted residues are absent, so length drops out entirely. `n_paired_*` gives the number of pairs |
-| `chimera_junction_pll`, `chimera_junction_min` | mean and minimum PLL over 20 residues around the crossover (10 last 5'-derived + 10 first 3'-derived) |
+| `chimera_junction_pll`, `chimera_junction_min` | mean and minimum PLL over 20 residues around the crossover (10 through the last 5'-derived/hybrid residue + 10 first 3'-derived, clipped to available context) |
 | `chimera_junction_dip` | junction-window mean minus the same sequence's domain mean (self-normalised) |
 | `parent5_junction_dip`, `parent3_junction_dip` | the same at each parent's own crossover residues |
 | `dip_excess_vs_5p`, `dip_excess_vs_3p`, `dip_excess_worst` | chimera dip minus parent dip (and the lower of the two), so a crossover in a naturally low-scoring loop is not counted against the chimera |

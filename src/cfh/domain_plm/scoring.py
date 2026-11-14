@@ -22,7 +22,7 @@ from cfh.domain_plm.cache import ModelSpec, ScoreCache, valid_logp
 
 CANONICAL = frozenset("ACDEFGHIKLMNPQRSTVWY")
 MAX_RESIDUES = 1022
-"""ESM-2 positional limit (1024 tokens including BOS/EOS); longer sequences are scored
+"""ESM-2 context limit used here (1024 tokens including BOS/EOS); longer sequences are scored
 in per-position centred windows (see :func:`cfh.domain_plm.worker.context_windows`)."""
 HARD_LIMIT = 4000
 """Refuse sequences longer than this (none of the scored windows comes close)."""
