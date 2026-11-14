@@ -1,8 +1,76 @@
 # Domain stability and protein-language-model scores
 
-Run date: 2026-11-13. Stacked on PR #160 (`polly/domain-structure`).
+Run date: 2026-11-13. Stacked on PR #160 (`polly/domain-structure`, base `09207fc`).
 
-Work in progress: both inherited scoring jobs are still running. Final coverage, named-case results, disagreements and validation will be added only after both jobs exit.
+ESM-2 assessed **224 of 3,039 records (7.37%)**: all 45 priority records and 179 of the 2,994 random-order records. The other 2,815 records are **not assessed**, with blank PLM metrics. These are domain/origin records, not independent biological samples. No folding-energy or ΔΔG estimate was produced; these are sequence-plausibility rankings, not proof of stability or function.
+
+## Coverage
+
+| group | records | assessed | not assessed |
+|---|---:|---:|---:|
+| PR #155 shortlist | 27 | 27 | 0 |
+| Additional named priority records | 13 | 13 | 0 |
+| Additional PCAWG DNA events from #161 | 5 | 5 | 0 |
+| Random-order remainder | 2,994 | 179 | 2,815 |
+| **Total** | **3,039** | **224** | **2,815** |
+
+The #155 collection contributes 219 assessed / 3,034 records; the five additional #161 DNA records are all assessed. All 27 shortlisted records retain their #160 flags: 14 `fold_supported`, nine `fold_doubtful`, and four `not_assessed`. The rank reference contains the 219 assessed #155 records; DNA records do not shape that reference. One assessed record (GPC3::GPC4) used windowed context; four planned records require it.
+
+The not-assessed rows lack required cached positions: 2,809 first fail at the chimera, five at parent5 and one at parent3. No missing result is assigned a neutral or favourable score. Shared cached sequences can complete records outside the visited prefixes, so assessed coverage exceeds the number of visits made by these two invocations.
+
+## Scoring completion and provenance
+
+Both inherited drivers (PIDs 26648, 37339) and model workers (26694, 37408) were confirmed absent with `ps` at 21:30 local, before final analysis. No additional scoring was started and no scoring process was killed. The existing PLM environment was reused.
+
+* MPS: the log records the deadline at 21:24:46 after 171 record visits. The old 60-second shutdown wait then raised `TimeoutExpired`; the worker subsequently exited. Valid per-sequence cache files were already durable. Its stored `score_status.json` is from 17:09 and is **not** this invocation’s final status. The driver now waits for graceful model teardown; regression coverage exercises delayed shutdown.
+* CPU: deadline after 27 reverse-order visits at 21:29:09; completed at 21:29:10, zero failures, 13,216.9 seconds including the final in-flight record.
+
+The [archived scoring logs](scoring_logs/) preserve both outcomes and are hashed in [run_manifest.json](run_manifest.json). Traceback source excerpts can differ from the loaded code because this worktree was updated while the inherited driver was running. The manifest records analysis source commit `2e96f9452487d171d53e525ddbfbfdc3904bdf70`, model/weight identity, input hashes and the final stored status files. Record visits include cache hits and do not equal new independent predictions.
+
+## Named cases
+
+All named cases and all five PCAWG DNA events are assessed. Values below are nats per residue; Δ is chimera mean domain PLL minus the specified parent mean. Junction dip is the chimera junction-window mean minus its own domain mean. These are separate measures; there is no combined score. Ranges span distinct domain/origin records. Full record IDs, parent PLLs, paired-context shifts, parent-specific dips and disagreements appear in [report_tables.md](report_tables.md) and [plm_metrics.tsv.gz](plm_metrics.tsv.gz).
+
+| fusion | source | records | Δ vs 5′ | Δ vs 3′ | junction dip | excess dip vs 5′ | excess dip vs 3′ | PLM rank |
+|---|---|---:|---:|---:|---:|---:|---:|---|
+| FLI1::ERG | #155 | 1 | +0.0796 | +0.0113 | +0.0011 | +0.0740 | -0.0768 | not_bottom_decile |
+| STAT5B::STAT5A | #155 | 1 | +0.0418 | -0.0020 | +0.1669 | -0.1139 | -0.0065 | not_bottom_decile |
+| GPC6::GPC5 | #155 | 4 | -0.0363 to +0.0587 | -0.0835 to +0.0116 | -0.1758 to +0.0051 | -0.2413 to +0.0760 | -0.0962 to +0.1961 | not_bottom_decile |
+| GPC4::GPC3 | #155 | 5 | -0.0054 to +0.0823 | +0.0088 to +0.0965 | -0.0425 to +0.1183 | -0.0848 to +0.1874 | -0.0934 to +0.0915 | not_bottom_decile |
+| GPC3::GPC4 | #155 | 3 | -0.0253 to -0.0011 | -0.0395 to -0.0153 | +0.0163 to +0.0882 | -0.1141 to +0.0488 | +0.0090 to +0.1862 | not_bottom_decile |
+| LPO::MPO | #155 | 2 | +0.0194 to +0.0345 | +0.0200 to +0.0351 | +0.0329 to +0.0366 | -0.0034 to +0.0037 | +0.0086 to +0.1276 | not_bottom_decile |
+| PIM3::ULK1 | #155 | 1 | -0.0198 | +0.0458 | -0.1572 | +0.0835 | -0.2618 | not_bottom_decile |
+| GNA14::GNAQ | #155 | 1 | -0.0403 | -0.1099 | -0.0226 | +0.1144 | -0.0883 | not_bottom_decile |
+| ABCA6::ABCA10 | #155 | 2 | -0.0280 to -0.0113 | -0.0409 to +0.0107 | -0.1895 to -0.1791 | +0.0052 to +0.0072 | -0.0720 to -0.0026 | not_bottom_decile |
+| MAP3K3::STRADA | PCAWG DNA | 1 | +0.0581 | +0.0146 | -0.0335 | +0.1732 | +0.0052 | not_bottom_decile |
+| GNA14::GNAQ | PCAWG DNA | 1 | -0.0331 | -0.0961 | -0.0342 | +0.1071 | -0.1021 | not_bottom_decile |
+| ABCA6::ABCA10 | PCAWG DNA | 1 | -0.1138 | -0.1697 | +0.1022 | +0.3400 | -0.1801 | not_bottom_decile |
+| AKR1C2::AKR1C3 | PCAWG DNA | 1 | -0.0124 | +0.0069 | -0.0130 | -0.0157 | +0.0035 | not_bottom_decile |
+| KIAA1919::SLC16A10 | PCAWG DNA | 1 | -0.2372 | -0.2328 | -0.2919 | -0.5930 | +0.0608 | bottom_decile |
+
+**FLI1::ERG and STAT5B::STAT5A:** domain likelihood is near or above the parents, and neither ranks in the bottom decile. Both remain #155 `uncertain` and #160 `fold_doubtful`; PLM plausibility does not remove the structural concern.
+
+**Glypican pairs:** all 12 records across GPC6::GPC5, GPC4::GPC3 and GPC3::GPC4 are outside the PLM bottom decile. This includes deletion records called `likely_broken` by #155 and three shortlisted glypican records with #160 `fold_doubtful`. Near-paralog sequence plausibility can coexist with an unfavourable sequence tier or structural flag.
+
+**LPO::MPO:** both clean-reconstitution records have slightly higher domain PLL than either parent and are outside the bottom decile. Both are #155 `likely_intact`; the shortlisted record is #160 `fold_supported`, while the other has no #160 assessment.
+
+**PIM3::ULK1:** Δ vs 5′ = −0.0198, Δ vs 3′ = +0.0458; junction dip = −0.1572 and excess vs 3′ = −0.2618. It remains #155 `uncertain` / #160 `fold_doubtful`, despite not ranking in the PLM bottom decile.
+
+**PCAWG DNA events:** MAP3K3::STRADA is slightly above both parents and #155-method `uncertain`. ABCA6::ABCA10, AKR1C2::AKR1C3 and GNA14::GNAQ have `likely_broken` sequence tiers but are outside the PLM bottom decile. KIAA1919::SLC16A10 is `likely_broken` and PLM bottom decile: Δ = −0.2372/−0.2328, junction dip = −0.2919, worst parent-adjusted dip excess = −0.5930. None of these five additional DNA records has a #160 structure assessment. Their `pr155_tier` column copies the same sequence-tier method’s results from the #161 metrics input; these records were not in the original #155 collection. DNA candidates’ expression and biological function are not established by PLM scores.
+
+## Disagreements
+
+**39 records** have at least one descriptive disagreement. Category counts overlap; the record-level table is in [report_tables.md](report_tables.md#disagreements). No not-assessed PLM result takes part in a PLM disagreement.
+
+| comparison | records |
+|---|---:|
+| `plm_low_but_fold_supported` | 2 |
+| `plm_low_but_tier_likely_intact` | 20 |
+| `plm_not_low_but_fold_doubtful` | 9 |
+| `plm_not_low_but_tier_likely_broken` | 13 |
+| `tier_likely_intact_but_fold_doubtful` | 1 |
+
+Among the #155 records, 20 `likely_intact` cases are PLM bottom decile and ten `likely_broken` cases are outside it. The latter category rises to 13 when the three additional DNA cases are included. Two #160 `fold_supported` records are PLM bottom decile; all nine `fold_doubtful` records are outside it. This disagreement is a reason to retain separate measures, not to re-tier the candidates.
 
 ## Method
 
@@ -108,3 +176,18 @@ new positions. Without the matching cache, records are `not_assessed`. Model wei
 score cache stay outside the committed artifacts. Both CPU and MPS workers use the same model
 and fp32 settings, and share cache entries; small device-dependent numerical differences are
 possible. `run_manifest.json` records the model hash, input hashes, scoring sessions and order seed.
+
+
+## Verification
+
+[validation_audit.json](validation_audit.json) records the output checks: all 3,039 upstream tiers preserved, all 27 #160 flags preserved, unchanged upstream run directories versus `09207fc`, complete priority coverage, finite assessed metrics/profiles, blank not-assessed metrics, matching input/log hashes and absent scoring processes. The junction profile file contains 4479 residue rows for 224 records. Regression tests cover missing output/model, non-finite scores, wrong positions/length, stale model/weight/sequence caches, truncated domains, delayed shutdown and preservation of tiers/flags.
+
+Final-commit gates (results reported in the PR):
+
+```bash
+.venv/bin/pre-commit run --all-files
+.venv/bin/ruff check .
+.venv/bin/ruff format --check .
+.venv/bin/mypy src scripts/domain_stability_plm.py
+.venv/bin/pytest -m "not network"
+```

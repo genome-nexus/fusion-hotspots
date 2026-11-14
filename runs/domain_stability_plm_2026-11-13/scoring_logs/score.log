@@ -1,0 +1,69 @@
+2026-11-13 17:59:14 3034 PR #155 records + 5 PCAWG DNA records; 0 cannot be scored; order: {'shortlist': 27, 'named': 13, 'pcawg_dna': 5, 'random_order': 2994}
+2026-11-13 17:59:20 model {'model': 'esm2_t12_35M_UR50D', 'esm_version': '2.0.0', 'torch_version': '2.5.1', 'weights_sha256': '7f21e80e61d16a71735163ef555d3009afb0c98da74c48e29df08606973cc55e', 'device': 'mps', 'max_residues': 1022, 'long_sequences': 'per-position centred window of max_residues residues'}; cache runs/.domain_stability_plm_work/scores/plm_37a97d037d72b8bd
+2026-11-13 17:59:20 [1/3039] shortlist KRT82::KRT7: 0.0 s/record
+2026-11-13 17:59:20 [2/3039] shortlist YWHAB::YWHAZ: 0.0 s/record
+2026-11-13 17:59:20 [3/3039] shortlist PTN::MDK: 0.0 s/record
+2026-11-13 17:59:20 [4/3039] shortlist CRIP1::CRIP2: 0.0 s/record
+2026-11-13 17:59:20 [5/3039] shortlist AFM::ALB: 0.0 s/record
+2026-11-13 17:59:20 [6/3039] shortlist KLK3::PRSS8: 0.0 s/record
+2026-11-13 18:04:07 [7/3039] shortlist LPO::MPO: 40.9 s/record
+2026-11-13 18:17:14 [8/3039] shortlist GPC3::GPC4: 134.2 s/record
+2026-11-13 18:19:14 [9/3039] shortlist VIM::KRT18: 132.6 s/record
+2026-11-13 18:19:21 [10/3039] shortlist COL3A1::COL1A1: 120.0 s/record
+2026-11-13 18:23:28 [11/3039] shortlist SPNS2::SPNS3: 131.6 s/record
+2026-11-13 18:25:08 [12/3039] shortlist PIM3::ULK1: 129.0 s/record
+2026-11-13 18:27:31 [13/3039] shortlist GNAL::GNAS: 130.1 s/record
+2026-11-13 18:27:41 [14/3039] shortlist COL1A1::COL18A1: 121.5 s/record
+2026-11-13 18:27:48 [15/3039] shortlist COL1A1::COL12A1: 113.8 s/record
+2026-11-13 18:31:50 [16/3039] shortlist GPC6::GPC5: 121.9 s/record
+2026-11-13 18:31:54 [17/3039] shortlist GPC4::GPC3: 114.9 s/record
+2026-11-13 18:32:12 [18/3039] shortlist CMTM7::CMTM8: 109.6 s/record
+2026-11-13 18:43:37 [19/3039] shortlist MYH10::MYH14: 139.8 s/record
+2026-11-13 18:45:38 [20/3039] shortlist KRT13::KRT5: 138.9 s/record
+2026-11-13 18:46:16 [21/3039] shortlist KRT13::KRT7: 134.1 s/record
+2026-11-13 18:47:31 [22/3039] shortlist KRT8::KRT5: 131.4 s/record
+2026-11-13 18:48:09 [23/3039] shortlist KRT19::KRT7: 127.3 s/record
+2026-11-13 18:48:47 [24/3039] shortlist KRT5::KRT8: 123.6 s/record
+2026-11-13 18:49:24 [25/3039] shortlist KRT5::KRT13: 120.2 s/record
+2026-11-13 18:49:36 [26/3039] shortlist FLI1::ERG: 116.0 s/record
+2026-11-13 18:50:59 [27/3039] shortlist STAT5B::STAT5A: 114.8 s/record
+2026-11-13 18:51:26 [28/3039] named ABCA6::ABCA10: 111.6 s/record
+2026-11-13 18:53:51 [29/3039] named ABCA6::ABCA10: 112.8 s/record
+2026-11-13 18:55:24 [30/3039] named GNA14::GNAQ: 112.1 s/record
+2026-11-13 18:56:06 [31/3039] named GPC3::GPC4: 109.9 s/record
+2026-11-13 18:58:05 [32/3039] named GPC3::GPC4: 110.2 s/record
+2026-11-13 18:58:47 [33/3039] named GPC4::GPC3: 108.1 s/record
+2026-11-13 19:01:01 [34/3039] named GPC4::GPC3: 108.8 s/record
+2026-11-13 19:03:06 [35/3039] named GPC4::GPC3: 109.3 s/record
+2026-11-13 19:04:47 [36/3039] named GPC4::GPC3: 109.1 s/record
+2026-11-13 19:06:51 [37/3039] named GPC6::GPC5: 109.5 s/record
+2026-11-13 19:07:01 [38/3039] named GPC6::GPC5: 106.9 s/record
+2026-11-13 19:07:52 [39/3039] named GPC6::GPC5: 105.4 s/record
+2026-11-13 19:10:10 [40/3039] named LPO::MPO: 106.2 s/record
+2026-11-13 19:11:32 [41/3039] pcawg_dna ABCA6::ABCA10: 105.7 s/record
+2026-11-13 19:12:46 [42/3039] pcawg_dna AKR1C2::AKR1C3: 104.9 s/record
+2026-11-13 19:14:21 [43/3039] pcawg_dna KIAA1919::SLC16A10: 104.7 s/record
+2026-11-13 19:14:29 [44/3039] pcawg_dna GNA14::GNAQ: 102.5 s/record
+2026-11-13 19:16:55 [45/3039] pcawg_dna MAP3K3::STRADA: 103.4 s/record
+2026-11-13 19:24:15 [50/3039] random_order PGA3::CTSE: 101.9 s/record
+2026-11-13 19:44:34 [75/3039] random_order PRSS1::CTRB2: 84.2 s/record
+2026-11-13 20:12:43 [100/3039] random_order CELA2A::CTRC: 80.0 s/record
+2026-11-13 20:43:24 [125/3039] random_order COL6A1::COL18A1: 78.7 s/record
+2026-11-13 21:00:24 [150/3039] random_order COL4A6::COL4A2: 72.4 s/record
+2026-11-13 21:24:46 deadline reached after 171 records; stopping (resume picks up here)
+Traceback (most recent call last):
+  File "/Users/foriskuang/Projects/fusion-hotspots/.worktrees/domain-stability-plm/scripts/domain_stability_plm.py", line 264, in <module>
+    write_outputs(out, rows, profiles, manifest, NAMED_FUSIONS + NAMED_DNA_FUSIONS)
+             ^^^^^^
+  File "/Users/foriskuang/Projects/fusion-hotspots/.worktrees/domain-stability-plm/scripts/domain_stability_plm.py", line 154, in main
+    done, failures = score_in_order(todo, scorer, cache, log, deadline)
+    ^^^^^^^^^^^^^^
+  File "/Users/foriskuang/Projects/fusion-hotspots/.worktrees/domain-stability-plm/src/cfh/domain_plm/scoring.py", line 249, in close
+    return {int(k): v for k, v in reply["logp"].items()}
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/foriskuang/.local/share/uv/python/cpython-3.12.12-macos-aarch64-none/lib/python3.12/subprocess.py", line 1264, in wait
+    return self._wait(timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/foriskuang/.local/share/uv/python/cpython-3.12.12-macos-aarch64-none/lib/python3.12/subprocess.py", line 2045, in _wait
+    raise TimeoutExpired(self.args, timeout)
+subprocess.TimeoutExpired: Command '['/Users/foriskuang/.cache/cfh_plm/env/bin/python', '-I', '/Users/foriskuang/Projects/fusion-hotspots/.worktrees/domain-stability-plm/src/cfh/domain_plm/worker.py', 'esm2_t12_35M_UR50D', 'mps', '64']' timed out after 60 seconds

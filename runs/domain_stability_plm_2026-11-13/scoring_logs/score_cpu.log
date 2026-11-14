@@ -1,0 +1,5 @@
+2026-11-13 17:48:50 3034 PR #155 records + 5 PCAWG DNA records; 0 cannot be scored; order: {'shortlist': 27, 'named': 13, 'pcawg_dna': 5, 'random_order': 2994}
+2026-11-13 17:48:53 model {'model': 'esm2_t12_35M_UR50D', 'esm_version': '2.0.0', 'torch_version': '2.5.1', 'weights_sha256': '7f21e80e61d16a71735163ef555d3009afb0c98da74c48e29df08606973cc55e', 'device': 'cpu', 'max_residues': 1022, 'long_sequences': 'per-position centred window of max_residues residues'}; cache runs/.domain_stability_plm_work/scores/plm_37a97d037d72b8bd
+2026-11-13 20:59:27 [25/2994] random_order COL1A1::COL3A1: 457.4 s/record
+2026-11-13 21:29:09 deadline reached after 27 records; stopping (resume picks up here)
+2026-11-13 21:29:10 score finished: 27 records this invocation, 0 failures

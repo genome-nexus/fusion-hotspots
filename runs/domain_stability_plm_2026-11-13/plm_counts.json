@@ -1,0 +1,73 @@
+{
+ "records": 3039,
+ "pr155_records": 3034,
+ "pcawg_tcga_records": 5,
+ "plm_status": {
+  "not_assessed": 2815,
+  "scored": 224
+ },
+ "pr155_plm_status_by_group": {
+  "named|scored": 13,
+  "random_order|not_assessed": 2815,
+  "random_order|scored": 179,
+  "shortlist|scored": 27
+ },
+ "pr155_plm_status_by_tier": {
+  "likely_broken|not_assessed": 133,
+  "likely_broken|scored": 14,
+  "likely_intact|not_assessed": 2016,
+  "likely_intact|scored": 162,
+  "not_assessed|not_assessed": 119,
+  "not_assessed|scored": 6,
+  "uncertain|not_assessed": 547,
+  "uncertain|scored": 37
+ },
+ "pr155_plm_status_by_junction_class": {
+  "ambiguous_junction_register|not_assessed": 668,
+  "ambiguous_junction_register|scored": 50,
+  "clean_reconstitution|not_assessed": 1559,
+  "clean_reconstitution|scored": 120,
+  "gap_or_deletion|not_assessed": 278,
+  "gap_or_deletion|scored": 25,
+  "tandem_duplication_or_insertion|not_assessed": 310,
+  "tandem_duplication_or_insertion|scored": 24
+ },
+ "not_assessed_reasons": {
+  "chimera: not scored": 2809,
+  "parent5: not scored": 5,
+  "parent3: not scored": 1
+ },
+ "scored_pr155_tier_x_plm_rank": {
+  "likely_broken|bottom_decile": 4,
+  "likely_broken|not_bottom_decile": 10,
+  "likely_intact|bottom_decile": 20,
+  "likely_intact|not_bottom_decile": 142,
+  "not_assessed|not_bottom_decile": 6,
+  "uncertain|bottom_decile": 9,
+  "uncertain|not_bottom_decile": 28
+ },
+ "scored_pr155_junction_class_x_plm_rank": {
+  "ambiguous_junction_register|bottom_decile": 12,
+  "ambiguous_junction_register|not_bottom_decile": 38,
+  "clean_reconstitution|bottom_decile": 8,
+  "clean_reconstitution|not_bottom_decile": 112,
+  "gap_or_deletion|bottom_decile": 7,
+  "gap_or_deletion|not_bottom_decile": 18,
+  "tandem_duplication_or_insertion|bottom_decile": 6,
+  "tandem_duplication_or_insertion|not_bottom_decile": 18
+ },
+ "fold_flag_x_plm_rank": {
+  "fold_doubtful|not_bottom_decile": 9,
+  "fold_supported|bottom_decile": 2,
+  "fold_supported|not_bottom_decile": 12,
+  "not_assessed|bottom_decile": 2,
+  "not_assessed|not_bottom_decile": 2
+ },
+ "disagreements": {
+  "plm_low_but_fold_supported": 2,
+  "plm_low_but_tier_likely_intact": 20,
+  "plm_not_low_but_fold_doubtful": 9,
+  "plm_not_low_but_tier_likely_broken": 13,
+  "tier_likely_intact_but_fold_doubtful": 1
+ }
+}
