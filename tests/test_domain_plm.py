@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import math
+import subprocess
 import sys
 from dataclasses import asdict, replace
 from pathlib import Path
@@ -529,6 +530,21 @@ def test_worker_client_round_trip(fake_worker):
     assert scorer.spec == ModelSpec("ok", "x", "w")
     assert scorer.score("ACDE", [1, 3]) == {1: -1.0, 3: -1.0}
     scorer.close()
+
+
+def test_worker_close_allows_slow_graceful_shutdown(fake_worker, monkeypatch):
+    scorer = WorkerScorer(sys.executable, "ok", script=fake_worker)
+    wait = scorer._proc.wait
+
+    def slow_shutdown(timeout=None):
+        if timeout is not None:
+            # Model teardown can exceed any caller-specified short deadline.
+            raise subprocess.TimeoutExpired("model teardown", timeout)
+        return wait(timeout=5)
+
+    monkeypatch.setattr(scorer._proc, "wait", slow_shutdown)
+    scorer.close()
+    assert scorer._proc.poll() == 0
 
 
 @pytest.mark.parametrize("mode", ["wrongseq", "error", "notobject", "wrongid"])

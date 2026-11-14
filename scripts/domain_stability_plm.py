@@ -217,6 +217,9 @@ def main() -> int:
     for row in rows:
         row["disagreements"] = ";".join(disagreements(row))
     spec = scorer.spec if scorer else None
+    scoring_logs = [
+        path for name in ("score.log", "score_cpu.log") if (path := args.work / name).exists()
+    ]
     manifest = {
         "schema_version": SCHEMA_VERSION,
         "code_commit": git_commit(),
@@ -258,10 +261,20 @@ def main() -> int:
             path.name: json.loads(path.read_text())
             for path in sorted(args.work.glob("score_status*.json"))
         },
+        "scoring_sessions_note": "Status files are written after worker shutdown and may be "
+        "older than the latest invocation if shutdown failed; consult the archived logs.",
+        "scoring_logs": {
+            path.name: {"path": f"scoring_logs/{path.name}", "sha256": sha256(path)}
+            for path in scoring_logs
+        },
         "scoring_failures": failures,
     }
     out = args.out
     write_outputs(out, rows, profiles, manifest, NAMED_FUSIONS + NAMED_DNA_FUSIONS)
+    if scoring_logs:
+        (out / "scoring_logs").mkdir(exist_ok=True)
+        for path in scoring_logs:
+            (out / "scoring_logs" / path.name).write_bytes(path.read_bytes())
     log(f"wrote {out}: {Counter(r['plm_status'] for r in rows)}")
     return 0
 

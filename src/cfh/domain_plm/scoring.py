@@ -253,7 +253,10 @@ class WorkerScorer:
     def close(self) -> None:
         if self._proc.stdin:
             self._proc.stdin.close()
-        self._proc.wait(timeout=60)
+        # MPS teardown can outlast a minute even after scoring has finished.
+        # Keep waiting for graceful EOF shutdown: aborting here loses the
+        # driver's completion status or prevents cached analysis from writing.
+        self._proc.wait()
 
 
 def score_sequences(
