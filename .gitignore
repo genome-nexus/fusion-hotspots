@@ -22,3 +22,6 @@ runs/.cohort_scan_cache/
 runs/.domain_screen_pilot_work/
 runs/.domain_function_seq_work/
 runs/.domain_structure_work/
+
+# domain-stability-plm score cache, failures and logs (not committed)
+runs/.domain_stability_plm_work/

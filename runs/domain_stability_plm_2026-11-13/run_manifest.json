@@ -1,0 +1,116 @@
+{
+ "schema_version": "domain_plm/1",
+ "code_commit": "2e96f9452487d171d53e525ddbfbfdc3904bdf70",
+ "generated": "2026-11-13T21:31:13",
+ "inputs": {
+  "pr155_records": {
+   "path": "runs/domain_function_seq_2026-11-11/chimera_records.json.gz",
+   "sha256": "96a279bdfc5d91dbb708a9f258c53500274b5408655dfd0c065578558eb4f5b1"
+  },
+  "pr155_metrics": {
+   "path": "runs/domain_function_seq_2026-11-11/domain_function_metrics.tsv.gz",
+   "sha256": "0696ac08f84d6a996b6509609d27ae2183f98f22084165a073128422e6869ac1"
+  },
+  "pr155_shortlist": {
+   "path": "runs/domain_function_seq_2026-11-11/shortlist_for_structure.tsv",
+   "sha256": "32998c6bfc8d5c0371c3d313e63d715449f473b47182b840f63d3422bad3b8db"
+  },
+  "pr160_structure_metrics": {
+   "path": "runs/domain_structure_2026-11-13/domain_structure_metrics.tsv.gz",
+   "sha256": "24c4fc52a3d5cbc44e95b183aadbed92d211a9b164b8d134ada961f2e4c08e4b"
+  },
+  "pcawg_tcga_records": {
+   "path": "runs/domain_stability_plm_2026-11-13/inputs/pcawg_tcga_chimera_records.json.gz",
+   "sha256": "9aca8c3c42760a50f6f1bcb6430883df459ddeb8b293aff586a216f2b660ba25"
+  },
+  "pcawg_tcga_metrics": {
+   "path": "runs/domain_stability_plm_2026-11-13/inputs/pcawg_tcga_domain_function_metrics.tsv.gz",
+   "sha256": "c691e20bbbab3fb8e86e35610c85e26b027f6a91db21b040de550f1d7d76b008"
+  }
+ },
+ "pcawg_tcga_source": {
+  "branch": "origin/polly/pcawg-tcga-sv-screen",
+  "commit": "fb0cfcf7eec9880b2e3b9a59c89ffb2295d2dc1b",
+  "path": "runs/pcawg_tcga_sv_screen_2026-11-13/chimera_records.json.gz",
+  "blob": "488c74df28a9162a424b03b3c87bda90385a4195"
+ },
+ "model": {
+  "spec": {
+   "model": "esm2_t12_35M_UR50D",
+   "esm_version": "2.0.0",
+   "weights_sha256": "7f21e80e61d16a71735163ef555d3009afb0c98da74c48e29df08606973cc55e"
+  },
+  "spec_id": "plm_37a97d037d72b8bd",
+  "header": {
+   "model": "esm2_t12_35M_UR50D",
+   "esm_version": "2.0.0",
+   "torch_version": "2.5.1",
+   "weights_sha256": "7f21e80e61d16a71735163ef555d3009afb0c98da74c48e29df08606973cc55e",
+   "device": "mps",
+   "max_residues": 1022,
+   "long_sequences": "per-position centred window of max_residues residues"
+  },
+  "problem": "",
+  "weights_url": "https://dl.fbaipublicfiles.com/fair-esm/models/esm2_t12_35M_UR50D.pt"
+ },
+ "method": {
+  "score": "masked pseudo-log-likelihood: one residue masked per forward pass, log p(true residue), natural log",
+  "windows": {
+   "flank": 30,
+   "junction_half_window": 10
+  },
+  "rank_fraction": 0.1,
+  "disagreement_rules": {
+   "plm_low_but_tier_likely_intact": "PLM bottom decile; PR #155 tier likely_intact",
+   "plm_not_low_but_tier_likely_broken": "PLM not bottom decile; PR #155 tier likely_broken",
+   "plm_low_but_fold_supported": "PLM bottom decile; PR #160 fold_supported",
+   "plm_not_low_but_fold_doubtful": "PLM not bottom decile; PR #160 fold_doubtful",
+   "tier_likely_intact_but_fold_doubtful": "PR #155 likely_intact; PR #160 fold_doubtful",
+   "tier_likely_broken_but_fold_supported": "PR #155 likely_broken; PR #160 fold_supported"
+  },
+  "random_order_seed": 20261113
+ },
+ "scoring_sessions": {
+  "score_status.json": {
+   "finished": "2026-11-13T17:09:10",
+   "records_scored_this_invocation": 1,
+   "wall_seconds_this_invocation": 228.7,
+   "failures": 0,
+   "model": {
+    "model": "esm2_t12_35M_UR50D",
+    "esm_version": "2.0.0",
+    "torch_version": "2.5.1",
+    "weights_sha256": "7f21e80e61d16a71735163ef555d3009afb0c98da74c48e29df08606973cc55e",
+    "device": "mps",
+    "max_residues": 1022
+   }
+  },
+  "score_status_from_end.json": {
+   "finished": "2026-11-13T21:29:10",
+   "records_scored_this_invocation": 27,
+   "wall_seconds_this_invocation": 13216.9,
+   "failures": 0,
+   "model": {
+    "model": "esm2_t12_35M_UR50D",
+    "esm_version": "2.0.0",
+    "torch_version": "2.5.1",
+    "weights_sha256": "7f21e80e61d16a71735163ef555d3009afb0c98da74c48e29df08606973cc55e",
+    "device": "cpu",
+    "max_residues": 1022,
+    "long_sequences": "per-position centred window of max_residues residues"
+   }
+  }
+ },
+ "scoring_sessions_note": "Status files are written after worker shutdown and may be older than the latest invocation if shutdown failed; consult the archived logs.",
+ "scoring_logs": {
+  "score.log": {
+   "path": "scoring_logs/score.log",
+   "sha256": "5636a84852a6339270c4f8b77a48c7d5d64429f182f9fe32dbf725f1eb13388a"
+  },
+  "score_cpu.log": {
+   "path": "scoring_logs/score_cpu.log",
+   "sha256": "d7b51168c1ec9d53b5e3b81fa42c83a3e9d2b34a12fef5077dfe004b7c6617b7"
+  }
+ },
+ "scoring_failures": {}
+}

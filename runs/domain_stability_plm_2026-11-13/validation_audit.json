@@ -1,0 +1,27 @@
+{
+  "observed_at": "2026-11-13T21:32:55-05:00",
+  "scoring_processes_absent": [
+    26648,
+    26694,
+    37339,
+    37408
+  ],
+  "records": 3039,
+  "scored": 224,
+  "not_assessed": 2815,
+  "priority_scored": 45,
+  "random_order_scored": 179,
+  "upstream_tiers_preserved": 3039,
+  "upstream_structure_flags_preserved": 27,
+  "profile_rows": 4479,
+  "checks_passed": [
+    "unique complete input record set",
+    "all priority records assessed",
+    "finite metrics and profiles",
+    "not-assessed metrics blank; no PLM disagreement",
+    "upstream tiers and flags copied unchanged",
+    "upstream run directories unchanged vs 09207fc",
+    "input and archived-log SHA256 checks",
+    "both scoring drivers and workers absent"
+  ]
+}
