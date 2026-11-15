@@ -1,0 +1,269 @@
+# Sequence-level functional-domain checks for chimeric domains
+
+`cfh.domain_function` (driver: `scripts/domain_function_seq.py`) asks, for every
+in-frame chimeric domain the junction screen produced, whether there is
+*sequence-level evidence* that the rebuilt domain could still work. It is the
+first of three stacked steps: structure prediction of chimeras (PR 2) and
+stability / protein-language-model scores (PR 3: PROVEAN, ESM, INDELi, FoldX)
+consume the records written here. None of those are computed here.
+
+**Nothing here is a calibrated predictor of activity.** The tier is a
+transparent, documented heuristic over reported metrics; calibrating an
+intact/broken cutoff would need assayed chimeras.
+
+## Inputs and records
+
+Input: the pilot's `combined_candidates.tsv.gz` (all five cohorts). Rows in the
+four translated shared-domain classes are used: `clean_reconstitution`,
+`tandem_duplication_or_insertion`, `gap_or_deletion`,
+`ambiguous_junction_register`. `out_of_frame`, `premature_stop_at_junction` and
+`splice_site_unresolved` have no in-frame chimeric domain.
+
+Each junction is rebuilt with the screen's own `predict_junction` +
+`classify_family` on the same cached transcript models, and the rebuilt class
+must equal the screen's class (a mismatch is counted in the manifest, never
+accepted). Parents with an internal stop codon (selenoproteins) are excluded and
+counted. Records are written to `chimera_records.json.gz` (`schema_version =
+"domain_function_seq/2"`); `cfh.domain_function.record.read_records_json` loads
+it and checks the version.
+
+**Identity.** A record is one chimeric domain *from one origin*: `record_id`
+hashes the Pfam family, junction class, both parent transcripts, both parent
+domain spans, both junction residues, the hybrid-codon residue, the chimeric
+domain span and the flanked sequence (domain ± 30 residues). Two junctions that
+produce the same sequence from different crossover points (common between
+paralogues that are identical around the junction) are separate records, each
+assessed on its own coordinates. `sequence_id` hashes only family, transcripts
+and flanked sequence, so PR 2 can predict one structure per sequence.
+
+**Contents.** Fusion name(s), Pfam accession, 5'/3' parent gene, transcript,
+full protein, parent domain span and sequence, junction residues, hybrid-codon
+residue, the full translated fusion protein, the chimeric domain span (+ flanked
+sequence), the screen's junction class/reason and indel (size, residues), and
+**observations**: one entry per screen row (cohort, sample id, biological
+sample, breakpoints, split / paired-end reads, caller, the six pilot artefact
+flags).
+
+**Samples and read support** (`finalize_support`). Each biological sample counts
+once. Sample ids are namespaced by cohort, except that the two TARGET tables
+(`target_consolidated`, `target_starfusion`) share one `TARGET:` namespace:
+they are two call sets over the same TARGET RNA-seq with identical barcodes. Rows
+of one sample (two tables, callers, or several event rows) may re-report the same
+reads, so a sample's read support is the **largest** count among its rows, never
+a sum. Reported: `n_samples` (distinct biological samples), `n_rows`
+(observations), `samples_per_cohort`, `max_split_reads_one_sample`,
+`total_split_reads_over_samples` (sum of per-sample maxima),
+`samples_with_split_reads` and `max_paired_end_reads_one_sample`. Artefact-flag
+counts stay per row: `artefact_clean_rows` = rows where all six flags pass,
+`artefact_core_clean_rows` = rows where all but the two context flags pass (see
+the shortlist section).
+
+**Cache.** The driver caches built records in `<work>/records.pickle` with a
+fingerprint: screen sha256, a digest of every transcript-cache file (relative
+path, size, mtime), sha256 of the record-building modules, and the schema and
+records versions. Any mismatch, or an older cache format, rebuilds; the
+fingerprint is written to `run_manifest.json` (`records_fingerprint`,
+`records_cache_reused`).
+
+## Metrics (`domain_function_metrics.tsv.gz`, one row per record)
+
+### Profile-HMM integrity (HMMER via pyhmmer)
+
+* The family HMM is fetched per family from the InterPro API
+  (`/api/entry/pfam/<acc>/?annotation=hmm`) and cached; the Pfam/InterPro
+  release is in `run_manifest.json`. No Pfam-A database is downloaded.
+* The **translated fusion sequence** is scanned: the chimeric domain plus 30
+  flanking residues of the actual fusion protein (not a pre-cut domain slice).
+  Each parent is scanned the same way (parent domain ±30 residues).
+* HMMER runs with filters off (`--max`), every hit reported, `Z = domZ = 1`
+  (E-values are per single comparison; thresholds use bit scores).
+* Reported per sequence (chimera / parent5 / parent3): best domain hit
+  overlapping the domain (`*_domain_bits`, `*_i_evalue`, `*_ga_margin` = bits −
+  domain GA, `*_passes_ga`, `*_match_coverage` = HMM match states spanned /
+  model length, `*_hmm_span`, `*_ali_span` in protein coordinates), full
+  sequence bits, `delta_bits_vs_5p/3p`, number of domain hits in the chimera,
+  whether the chimera's hit spans the junction, and per sequence the number of hits
+  overlapping the domain (`*_hits_in_domain`) with the union of their match-state
+  coverage (`*_match_coverage_union`), so a domain HMMER splits around an indel is
+  visible rather than judged on one fragment.
+* **Junction residues in insert states**: junction residues are the 3 chimera
+  residues each side of the junction plus every junction-inserted residue
+  (below); `junction_residues_in_inserts` counts those HMMER aligned to insert
+  states and `junction_residues_outside_alignment` those outside the hit.
+* **HMMvar-style score** (Liu et al. 2014, BMC Bioinformatics 15:5,
+  doi:10.1186/1471-2105-15-5): `hmmvar_delta_vs_5p/3p` = chimera minus parent
+  HMMER full-sequence log-odds score (bits) of the scanned windows. It is the
+  unnormalised log-likelihood-ratio difference against the profile; the windows
+  of an indel chimera differ in length from the parent's.
+
+Caveats. Passing GA supports *family membership*, not a correct fold or
+activity. HMMER absorbs extra residues in insert states, so a junction
+insertion can sit in insert states and still score well — hence the insert
+count. A low score in a family whose parents also score low (`U1`) is
+uninformative.
+
+### Alignment model of the junction
+
+The two parent windows are aligned (Biopython `PairwiseAligner`, BLOSUM62, gap
+−11/−1, free end gaps). Chimera residues take their parent's column (the hybrid
+residue takes the 3' column of residue F−1). A residue whose column is not
+after the previous one is **junction-inserted** (a tandem copy of aligned
+columns); columns skipped at the junction are **junction-deleted**
+(`aligned_inserted_residues`, `aligned_inserted_sequence`,
+`aligned_deleted_columns`, `aligned_deleted_5p/3p`). The screen's own indel
+call is kept alongside (`pilot_indel_residues`, `pilot_indel_sequence`).
+
+### Key residues (UniProtKB/Swiss-Prot)
+
+Each parent gene maps to the reviewed human entry with that primary gene name.
+Key features: Active site, Binding site (incl. metal), Site (excluding
+translocation breakpoints), DNA binding, Motif, Region (excluding Disordered).
+UniProt positions map to the parent transcript protein by global alignment.
+
+*Annotation status per parent* (`key_annotation_status_5p/3p`): `annotated` or
+`no_annotations_in_domain` count as assessed. `no_uniprot_entry`,
+`low_uniprot_identity` (< 90 % identity over the parent window) and
+`incomplete_annotation` do not. A key feature whose start or end is not an
+exact integer (UniProt modifiers UNKNOWN / UNSURE / OUTSIDE, or a missing value)
+is kept, not dropped. If it could overlap the parent window it makes that parent
+`incomplete_annotation`, listed in `key_incomplete_annotations`.
+
+*Scope.* Features overlapping the parent's Pfam domain span are judged over their
+in-domain residues, and only these drive counts, lists and rules. Features only
+in the ±30 flanks are listed in `key_flank_features` as `label=status` and never
+tiered. Past the crossover the two parents' flanks are usually not homologous
+(e.g. the L40 vs S27a tails after ubiquitin in UBA52::RPS27A), so a "lost" call
+there is an alignment artefact, not domain damage. A first version of this fix
+tiered flank sites, and 42 of its 123 B3 calls rested only on such sites.
+
+*Residue status.*
+Whether a parent residue is in the chimera is decided from the junction
+coordinates, not the alignment: the 5' parent contributes residues 1..F, the 3'
+parent residues T.. onwards. A present residue is **retained**. For an absent
+residue, the residue now occupying its aligned column decides: **conserved**
+(same amino acid, from the other parent), **swapped** (the other parent's
+different residue, the expected outcome of a paralogue chimera), **altered**
+(matches neither, e.g. the hybrid-codon residue), or **lost** (no chimera
+residue occupies the column: a junction-deleted column, or a column where the
+other parent has a gap). A UniProt position that does not align to the
+transcript is **unresolved**. That is mapping uncertainty: it is never counted
+as retained. A feature takes its worst residue status for display (retained <
+conserved < swapped < altered < unresolved < lost). Unresolved in-domain
+positions are also counted per record (`key_unresolved_positions`, listed in
+`key_unresolved_positions_list`), independently of each feature's worst
+status. Any unresolved position blocks `likely_intact` (`key_residue_mapping`),
+even inside a feature whose worst status is `lost`; for a long region, loss
+alone is reported only.
+`junction_to_key_5p/3p` = residues from the junction to the nearest key *site*
+(point features and spans ≤ 10 residues; a whole-domain DNA-binding span would
+make every junction "near"); `junction_near_key` = within 5.
+
+### Secondary structure at the junction (AlphaFold DB)
+
+For each parent's UniProt accession the AFDB model (`/api/prediction/<acc>`,
+current version, fragment F1) is downloaded once; only a compact derived JSON is
+cached and the mmCIF is deleted. Secondary structure is the file's own
+`_struct_conf` category (AFDB writes DSSP there): H/G/I → helix, E → strand,
+anything else (turn, bend, PPII, coil) → loop. Each parent gets
+`structure_status_5p/3p`: `ok`, `no_dssp` (no `_struct_conf`),
+`no_uniprot_entry`, `no_afdb_model`, `afdb_fetch_failed`,
+`afdb_sequence_mismatch` (the model's sequence, including an empty one,
+differs from UniProt; the model is rejected) or `low_uniprot_identity`. Anything
+but `ok` gives `not_assessed` secondary structure — never an assumed loop — and
+blocks `likely_intact`, even when the junction has no indel. Reported: DSSP context of 7 residues
+around each parent's junction, `junction_ss_5p/3p`, the classes of the
+junction-indel residues (`indel_ss`, `indel_in_ss`; `no_indel` for none) and the
+minimum pLDDT of those residues.
+
+### SCHEMA-like broken contacts
+
+After Voigt et al. 2002 (Nat Struct Biol 9:553; see also Meyer et al. 2003,
+Protein Sci 12:1686, doi:10.1110/ps.0306603). Contacts in each parent model:
+any heavy-atom pair within 4.5 Å between residues ≥ 3 apart in sequence,
+restricted to that parent's Pfam domain and to residues with pLDDT ≥ 70
+(`schema_plddt_coverage_*` = fraction of domain residues kept). A contact is
+broken (counts toward **E**) when the chimera's residue pair at those alignment
+columns matches neither parent's pair. `schema_E_core_*` restricts to pairs of
+buried residues (FreeSASA relative SASA < 0.20 in the full-length model).
+Standard SCHEMA assumes aligned blocks, so junction indels are reported
+separately: `schema_lost_to_deletion_*` (contacts with a residue in a deleted
+column) and `schema_touching_inserted_*` (contacts of the source copy of an
+inserted residue). E is reported against each parent structure; **there is no
+universal E threshold** and E is not used for tiering.
+
+## HEURISTIC tier
+
+Rules (also in `run_manifest.json` → `tier_rules`, and per record in
+`tier_rules` / `tier_missing_inputs`):
+
+| rule | tier | condition |
+|---|---|---|
+| B1_below_GA | likely_broken | chimera best hit < domain GA (or no hit) while both parents ≥ GA |
+| B2_low_coverage | likely_broken | chimera hits in the domain together span < 50 % of match states while both parents ≥ GA |
+| B3_point_feature_lost | likely_broken | an Active site / Binding site / Site residue is lost (absent, and nothing occupies its aligned column) |
+| U1_parent_below_GA | uncertain | a parent scores below GA |
+| U2_bit_drop | uncertain | chimera bits > 10 below the weaker parent |
+| U3_partial_coverage | uncertain | chimera coverage < 80 % |
+| U4_point_feature_altered | uncertain | a point key residue differs from both parents |
+| U5_indel_in_ss | uncertain | a junction-indel residue is helix/strand in a parent model |
+| U6_indel_near_key | uncertain | indel present and junction ≤ 5 residues from a key site |
+| U7_junction_outside_hit | uncertain | the chimera's best hit does not span the junction |
+| U8_domain_split | uncertain | HMMER splits the chimeric domain into more hits than either parent |
+| U9_motif_lost_or_altered | uncertain | a motif-scale (≤ 10 residues) DNA-binding / Motif / Region feature has a lost or altered residue |
+| N1_missing | not_assessed | not broken, no U rule fired, but an input needed for intact is missing, rejected or incomplete (named in `tier_missing_inputs`) |
+| I1_all_pass | likely_intact | everything assessed and nothing above fired |
+
+Broken rules fire on whatever is available. `likely_intact` requires every
+input:
+
+* HMM scores for the chimera and both parents;
+* an assessed key-residue annotation for both parents, with no unresolved
+  residue;
+* a validated AlphaFold DB structure with DSSP for both parents
+  (`structure_status_* == ok`);
+* indel secondary structure, when there is an indel.
+
+So `likely_intact` means: the domain still scores as its family; no point key
+site (Active site / Binding site / Site) and no motif-scale feature (≤ 10
+residues) is lost or altered; and no key residue is unresolved. Swapped and
+conserved features are allowed, since replacing a residue with the other
+paralogue's aligned residue is what a paralogue chimera does. Longer span
+features (domain-scale DNA-binding regions, tails, triple-helical or interaction
+regions) are listed in `key_span_lost_or_altered` but not tiered. Their residues
+past the crossover are routinely replaced by the other parent's equivalent
+region, or follow the other parent's architecture where it lacks the segment,
+and their domain-scale integrity is what the HMM rules measure. In the pilot
+run, 507 records list a longer region as lost or altered (reported only), and 28
+have a motif-scale one (U9). This was decided after review: under
+the old survival logic, 44 likely_intact records listed a lost or altered span
+feature. Motif-scale features now block likely_intact (rule U9); the wording is
+narrowed for longer regions.
+
+Thresholds (50 %, 80 %, 10 bits, 5 residues) are documented
+heuristics, not calibrated values. `metric_disagreements` lists metric pairs
+that point different ways (e.g. passes GA but indel in a helix; passes GA with
+junction residues in insert states; below GA but key sites retained; intact but
+broken core contacts) instead of hiding them.
+
+## Shortlist for structure prediction
+
+`shortlist_for_structure.tsv`: one record per fusion and Pfam family. Within each
+stage records are ordered by tier (intact, uncertain, not_assessed, broken),
+then lowest `schema_E_max` (max over the two parent structures; missing last),
+then highest GA margin, then the best single sample's split reads and the number
+of distinct samples. Up to 25 rows:
+
+1. `ranked` — records with at least one screen row on which all six pilot
+   artefact flags pass;
+2. `fill` — records with a row passing every flag except the two *context*
+   flags, `genomic_similarity` and `sample_burden`. These fire on > 99 % of
+   shared-domain records (3015 and 3008 of 3034 in the pilot run): the partners
+   are paralogues, usually in segmental duplications, and the samples carry many
+   shared-family calls, so within this set the two flags do not separate
+   candidates. The flags that fired are named in `shortlist_reason`
+   (`fill;flagged:...`).
+
+The named cases (FLI1::ERG, STAT5B::STAT5A, GPC4::GPC3, GPC6::GPC5,
+GPC3::GPC4, LPO::MPO, PIM3::ULK1) are then appended when absent, as
+`named_case;flagged:...`. Records carry both `artefact_clean_rows` and
+`artefact_core_clean_rows`.
